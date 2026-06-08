@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subscription } from 'rxjs';
@@ -49,6 +49,12 @@ import { ArchiveUnitService } from './archive-unit.service';
   standalone: false,
 })
 export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy {
+  private dialog = inject(MatDialog);
+  private archiveUnitService = inject(ArchiveUnitService);
+  private spinnerOverlayService = inject(SpinnerOverlayService);
+  private snackBarService = inject(SnackBarService);
+  private translateService = inject(TranslateService);
+
   @Input() archiveUnit: ArchiveUnit;
   @Input() editMode = false;
   @Input() transactionId: string;
@@ -62,14 +68,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   canSave = false;
 
   private readonly subscriptions = new Subscription();
-
-  constructor(
-    private dialog: MatDialog,
-    private archiveUnitService: ArchiveUnitService,
-    private spinnerOverlayService: SpinnerOverlayService,
-    private snackBarService: SnackBarService,
-    private translateService: TranslateService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['editMode']) {

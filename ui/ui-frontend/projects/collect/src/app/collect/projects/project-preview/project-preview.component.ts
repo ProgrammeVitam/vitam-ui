@@ -49,6 +49,7 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
+  inject,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -120,6 +121,19 @@ import { LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.comp
   ],
 })
 export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
+  private formBuilder = inject(FormBuilder);
+  private projectService = inject(ProjectsService);
+  private projectApiService = inject(ProjectsApiService);
+  private securityService = inject(SecurityService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dialog = inject(MatDialog);
+  private translationService = inject(TranslateService);
+  private snackBarService = inject(SnackBarService);
+  private renderer = inject(Renderer2);
+  private schemaService = inject(SchemaService);
+  private externalReferentialService = inject(ExternalReferentialService);
+
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
   @Output()
@@ -189,21 +203,9 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   transactions$: BehaviorSubject<PaginatedResponse<Transaction>> = new BehaviorSubject<PaginatedResponse<Transaction>>(null);
   openedTransactions$ = this.transactions$.pipe(map((ts) => ts?.values?.filter((t) => t?.status === 'OPEN')));
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private projectService: ProjectsService,
-    private projectApiService: ProjectsApiService,
-    private securityService: SecurityService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog,
-    private translationService: TranslateService,
-    private snackBarService: SnackBarService,
-    private renderer: Renderer2,
-    private schemaService: SchemaService,
-    filingPlanService: FilingPlanService,
-    private externalReferentialService: ExternalReferentialService,
-  ) {
+  constructor() {
+    const filingPlanService = inject(FilingPlanService);
+
     filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
     this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {

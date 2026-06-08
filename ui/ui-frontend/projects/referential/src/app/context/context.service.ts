@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Context, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
@@ -46,13 +46,17 @@ import { ContextApiService } from '../core/api/context-api.service';
   providedIn: 'root',
 })
 export class ContextService extends SearchService<Context> {
+  private contextApiService: ContextApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Context>();
 
-  constructor(
-    private contextApiService: ContextApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const contextApiService = inject(ContextApiService);
+
     super(contextApiService, 'ALL');
+
+    this.contextApiService = contextApiService;
   }
 
   get(id: string): Observable<Context> {

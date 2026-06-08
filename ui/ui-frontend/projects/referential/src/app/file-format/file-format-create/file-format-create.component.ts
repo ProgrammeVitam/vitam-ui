@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -57,6 +57,14 @@ import { FileFormatCreateValidators } from './file-format-create.validators';
   standalone: false,
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<FileFormatCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private startupService = inject(StartupService);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private fileFormatService = inject(FileFormatService);
+  private fileFormatCreateValidators = inject(FileFormatCreateValidators);
+
   form: FormGroup;
   tenantIdentifier: string;
   hasPriorityOverFileFormatIDsOptions: VitamuiSelectOptions;
@@ -70,15 +78,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
-  constructor(
-    public dialogRef: MatDialogRef<FileFormatCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private startupService: StartupService,
-    private confirmDialogService: ConfirmDialogService,
-    private fileFormatService: FileFormatService,
-    private fileFormatCreateValidators: FileFormatCreateValidators,
-  ) {
+  constructor() {
     this.tenantIdentifier = this.startupService.getTenantIdentifier();
   }
 

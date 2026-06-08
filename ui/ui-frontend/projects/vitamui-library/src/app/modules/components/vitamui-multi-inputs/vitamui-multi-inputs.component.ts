@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditableFieldComponent } from '../editable-field/editable-field.component';
@@ -64,7 +64,9 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
   @ViewChild('input') private input: ElementRef;
   valSub: Subscription;
 
-  constructor(elementRef: ElementRef) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+
     super(elementRef);
   }
 

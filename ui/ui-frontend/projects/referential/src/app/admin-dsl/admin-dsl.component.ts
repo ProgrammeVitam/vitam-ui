@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -50,6 +50,14 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class AdminDslComponent extends AppRootComponent {
+  private route: ActivatedRoute;
+  private adminDslService = inject(AdminDslService);
+  private snackBarService = inject(SnackBarService);
+  private accessContractService = inject(AccessContractService);
+  private formBuilder = inject(FormBuilder);
+  private clipboard = inject(Clipboard);
+  private translateService = inject(TranslateService);
+
   tenantId: number;
   form: FormGroup;
   accessContracts: Option[] = [];
@@ -58,16 +66,11 @@ export class AdminDslComponent extends AppRootComponent {
     label: this.translateService.instant(`DSL.HOME.${queryType}`),
   }));
 
-  constructor(
-    private route: ActivatedRoute,
-    private adminDslService: AdminDslService,
-    private snackBarService: SnackBarService,
-    private accessContractService: AccessContractService,
-    private formBuilder: FormBuilder,
-    private clipboard: Clipboard,
-    private translateService: TranslateService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+
     super(route);
+    this.route = route;
 
     this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {

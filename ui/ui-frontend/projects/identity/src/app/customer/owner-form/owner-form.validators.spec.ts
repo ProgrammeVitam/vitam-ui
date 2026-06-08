@@ -34,17 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
+import { OwnerService } from '../owner.service';
 import { OwnerFormValidators } from './owner-form.validators';
 
 describe('Owner Form Validators', () => {
+  const createValidators = (ownerServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: OwnerService, useValue: ownerServiceSpy }],
+    });
+    return TestBed.runInInjectionContext(() => new OwnerFormValidators());
+  };
+
   it('should return null', fakeAsync(() => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
-    ownerServiceSpy.exists.and.returnValue(of(false));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerServiceSpy = {
+      exists: vi.fn().mockName('OwnerService.exists'),
+    };
+    ownerServiceSpy.exists.mockReturnValue(of(false));
+    const ownerFormValidators = createValidators(ownerServiceSpy);
     from(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
@@ -53,9 +63,11 @@ describe('Owner Form Validators', () => {
   }));
 
   it('should return { uniqueCode: true }', fakeAsync(() => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
-    ownerServiceSpy.exists.and.returnValue(of(true));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerServiceSpy = {
+      exists: vi.fn().mockName('OwnerService.exists'),
+    };
+    ownerServiceSpy.exists.mockReturnValue(of(true));
+    const ownerFormValidators = createValidators(ownerServiceSpy);
     from(ownerFormValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ uniqueCode: true });
     });
@@ -64,9 +76,11 @@ describe('Owner Form Validators', () => {
   }));
 
   it('should not call the service', fakeAsync(() => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
-    ownerServiceSpy.exists.and.returnValue(of(true));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerServiceSpy = {
+      exists: vi.fn().mockName('OwnerService.exists'),
+    };
+    ownerServiceSpy.exists.mockReturnValue(of(true));
+    const ownerFormValidators = createValidators(ownerServiceSpy);
     from(ownerFormValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
@@ -75,9 +89,11 @@ describe('Owner Form Validators', () => {
   }));
 
   it('should call the service', fakeAsync(() => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['exists']);
-    ownerServiceSpy.exists.and.returnValue(of(true));
-    const ownerFormValidators = new OwnerFormValidators(ownerServiceSpy);
+    const ownerServiceSpy = {
+      exists: vi.fn().mockName('OwnerService.exists'),
+    };
+    ownerServiceSpy.exists.mockReturnValue(of(true));
+    const ownerFormValidators = createValidators(ownerServiceSpy);
     from(ownerFormValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ uniqueCode: true });
     });

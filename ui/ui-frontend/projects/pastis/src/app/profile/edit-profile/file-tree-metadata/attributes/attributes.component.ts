@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -94,6 +94,14 @@ import { FileTreeMetadataService } from '../file-tree-metadata.service';
   standalone: false,
 })
 export class AttributesPopupComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<AttributesPopupComponent>>(MatDialogRef);
+  dialogReceivedData = inject<PastisDialogData>(MAT_DIALOG_DATA);
+  private sedaService = inject(SedaService);
+  private fileService = inject(FileService);
+  private fileTreeMetadataService = inject(FileTreeMetadataService);
+  private popUpService = inject(PopupService);
+  private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
+
   displayedColumns: string[] = ['selected', 'nomDuChamp', 'valeurFixe', 'commentaire'];
 
   attributeCardinalities: string[];
@@ -112,16 +120,6 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
 
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
-
-  constructor(
-    public dialogRef: MatDialogRef<AttributesPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public dialogReceivedData: PastisDialogData,
-    private sedaService: SedaService,
-    private fileService: FileService,
-    private fileTreeMetadataService: FileTreeMetadataService,
-    private popUpService: PopupService,
-    private sedaLanguageService: PastisPopupMetadataLanguageService,
-  ) {}
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -50,6 +50,8 @@ import { ProjectsService } from './projects.service';
   standalone: false,
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
+  private dialog = inject(MatDialog);
+
   tenantIdentifier: string;
   projectId: string;
   isLPExtended = false;
@@ -57,11 +59,10 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
   @ViewChild(ProjectListComponent, { static: true }) projectListComponent: ProjectListComponent;
 
-  constructor(
-    projectsService: ProjectsService,
-    route: ActivatedRoute,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
+    const projectsService = inject(ProjectsService);
+    const route = inject(ActivatedRoute);
+
     super(route, projectsService);
     route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;

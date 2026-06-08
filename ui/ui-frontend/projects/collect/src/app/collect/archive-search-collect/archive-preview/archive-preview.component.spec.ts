@@ -158,7 +158,7 @@ describe('ArchivePreviewComponent', () => {
     const archiveUnit: Unit = {
       '#id': 'aeaqaaaaaehlvxukaazfaame7fyo5myaaaba',
       Title: 'Porte de Bagnolet par producteur1',
-      DescriptionLevel: DescriptionLevel.RECORD_GRP,
+      DescriptionLevel: DescriptionLevel.RECORD_GRP as any,
       Description: 'Station Porte de Bagnolet ligne 3 Paris',
       '#tenant': 1,
       '#unitups': ['aeaqaaaaaehlvxukaazfaame7fyo5myaaaca'],

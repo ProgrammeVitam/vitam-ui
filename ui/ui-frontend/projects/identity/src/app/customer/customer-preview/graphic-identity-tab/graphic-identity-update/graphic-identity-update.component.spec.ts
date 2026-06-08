@@ -104,8 +104,10 @@ const expectedCustomer: Customer = {
   standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  spinnerDiameter = 25;
 
   writeValue() {}
 
@@ -119,8 +121,12 @@ describe('GraphicIdentityUpdateComponent', () => {
   let fixture: ComponentFixture<GraphicIdentityUpdateComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const snackBarSpy = {
+      open: vi.fn().mockName('SnackBarService.open'),
+    };
     await TestBed.configureTestingModule({
       declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
       imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],

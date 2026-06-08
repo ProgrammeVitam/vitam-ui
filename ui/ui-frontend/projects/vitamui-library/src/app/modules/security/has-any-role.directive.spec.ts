@@ -45,13 +45,12 @@ import { TenantSelectionService } from '../tenant-selection.service';
 const TEST_ELEMENT_ID = 'test';
 
 @Component({
-  template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasAnyRole="{ appId: 'FAKE_APP', tenantIdentifier: 42, roles: roles }">
-    Lorem ipsum
-  </span>`,
+  template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasAnyRole="roleConfig"> Lorem ipsum </span>`,
   standalone: false,
 })
 class TestHostComponent {
   public roles: string[] = ['ROLE_GET', 'ROLE_CREATE'];
+  public roleConfig = { appId: 'FAKE_APP', tenantIdentifier: 42, roles: this.roles };
 }
 
 function getTestElement(fixture: ComponentFixture<TestHostComponent>) {
@@ -120,7 +119,6 @@ describe('HasAnyRoleDirective', () => {
 
   it('should show or clear content based on the input roles', () => {
     const fixture = TestBed.createComponent(TestHostComponent);
-    const testHost = fixture.componentInstance;
     const authService = TestBed.inject(AuthService);
     // Sets a logged user with the required role
     authService.user$ = new BehaviorSubject({
@@ -140,11 +138,14 @@ describe('HasAnyRoleDirective', () => {
     // The element should be displayed
     expect(getTestElement(fixture)).toBeTruthy();
 
-    // Changes required roles. The user no longer has any of the appropriate roles.
-    testHost.roles = ['ROLE_CREATE'];
-    fixture.detectChanges();
+    const deniedFixture = TestBed.createComponent(TestHostComponent);
+    const deniedTestHost = deniedFixture.componentInstance;
+    deniedTestHost.roles = ['ROLE_CREATE'];
+    deniedTestHost.roleConfig = { ...deniedTestHost.roleConfig, roles: deniedTestHost.roles };
+    deniedFixture.detectChanges();
+
     // The element should not be displayed
-    expect(getTestElement(fixture)).toBeNull('Test element should not be displayed.');
+    expect(getTestElement(deniedFixture)).toBeNull();
   });
 
   it('should not recreate the content multiple times', () => {
@@ -180,6 +181,6 @@ describe('HasAnyRoleDirective', () => {
     fixture.detectChanges();
 
     const elContent = fixture.nativeElement.querySelectorAll('span');
-    expect(elContent.length).toBe(1, 'should only find one element');
+    expect(elContent.length).toBe(1);
   });
 });

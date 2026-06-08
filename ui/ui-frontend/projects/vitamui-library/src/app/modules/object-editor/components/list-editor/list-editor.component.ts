@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import { EditObject } from '../../models/edit-object.model';
@@ -46,14 +46,14 @@ import { EditObject } from '../../models/edit-object.model';
   standalone: false,
 })
 export class ListEditorComponent implements OnChanges {
+  private favoriteEntryService = inject(FavoriteEntryService);
+
   @Input() editObject: EditObject;
 
   favoriteEntry: [key: string, value: any];
   favoritePath: string;
 
   readonly DisplayObjectType = DisplayObjectType;
-
-  constructor(private favoriteEntryService: FavoriteEntryService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { editObject } = changes;

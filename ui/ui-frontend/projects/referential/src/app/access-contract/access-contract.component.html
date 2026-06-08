@@ -1,11 +1,12 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-access-contract-preview
-      *ngIf="openedItem"
-      [accessContract]="openedItem"
-      [tenantIdentifier]="tenantIdentifier"
-      (previewClose)="closePanel()"
-    ></app-access-contract-preview>
+    @if (openedItem) {
+      <app-access-contract-preview
+        [accessContract]="openedItem"
+        [tenantIdentifier]="tenantIdentifier"
+        (previewClose)="closePanel()"
+      ></app-access-contract-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

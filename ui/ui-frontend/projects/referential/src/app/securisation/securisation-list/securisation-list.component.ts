@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
@@ -55,6 +55,8 @@ export class TraceabilityFilter {
   standalone: false,
 })
 export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+  securisationService: SecurisationService;
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
@@ -83,8 +85,12 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
   private readonly orderChange = new Subject<void>();
   private _searchText: string;
 
-  constructor(public securisationService: SecurisationService) {
+  constructor() {
+    const securisationService = inject(SecurisationService);
+
     super(securisationService);
+
+    this.securisationService = securisationService;
   }
 
   ngOnInit() {

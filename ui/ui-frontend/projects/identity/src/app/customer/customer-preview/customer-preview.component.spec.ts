@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
@@ -55,9 +55,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 export class InformationTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
-  @Input() gdprReadOnlyStatus: boolean;
+  @Input()
+  customer: Customer;
+  @Input()
+  readOnly: boolean;
+  @Input()
+  gdprReadOnlyStatus: boolean;
 }
 
 @Component({
@@ -66,8 +69,10 @@ export class InformationTabStubComponent {
   standalone: false,
 })
 export class SsoTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  @Input()
+  customer: Customer;
+  @Input()
+  readOnly: boolean;
 }
 
 @Component({
@@ -76,8 +81,10 @@ export class SsoTabStubComponent {
   standalone: false,
 })
 export class GraphicIdentityTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  @Input()
+  customer: Customer;
+  @Input()
+  readOnly: boolean;
 }
 
 @Component({
@@ -87,8 +94,12 @@ export class GraphicIdentityTabStubComponent {
 class TestHostComponent {
   customer: any;
 
-  @ViewChild(CustomerPreviewComponent, { static: false }) component: CustomerPreviewComponent;
+  @ViewChild(CustomerPreviewComponent, { static: false })
+  component: CustomerPreviewComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
@@ -135,8 +146,8 @@ describe('CustomerPreviewComponent', () => {
   });
 
   it('should call window.open', () => {
-    const openSpy = spyOn(window, 'open');
-    openSpy.and.stub();
+    const openSpy = vi.spyOn(window, 'open');
+    openSpy.mockImplementation(() => null as any);
     testhost.component.openPopup();
     expect(openSpy).toHaveBeenCalledWith(
       'https://dev.vitamui.com/identity/customer/11',

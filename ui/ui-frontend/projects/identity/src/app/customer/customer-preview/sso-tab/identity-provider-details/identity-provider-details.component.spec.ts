@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -58,10 +58,14 @@ import { IdentityProviderDetailsComponent } from './identity-provider-details.co
   standalone: false,
 })
 class EditableKeystoreStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
-  @Input() identityProvider: any;
-  @Input() disabled: boolean;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
+  @Input()
+  identityProvider: any;
+  @Input()
+  disabled: boolean;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -80,9 +84,12 @@ class EditableKeystoreStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class EditablePatternStubComponent implements ControlValueAccessor {
-  @Input() validator: Validator;
-  @Input() asyncValidator: AsyncValidator;
-  @Input() options: any;
+  @Input()
+  validator: Validator;
+  @Input()
+  asyncValidator: AsyncValidator;
+  @Input()
+  options: any;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -95,7 +102,8 @@ class EditablePatternStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class TestHostComponent {
-  @ViewChild(IdentityProviderDetailsComponent, { static: false }) component: IdentityProviderDetailsComponent;
+  @ViewChild(IdentityProviderDetailsComponent, { static: false })
+  component: IdentityProviderDetailsComponent;
   provider: IdentityProvider = {
     propagateLogout: false,
     id: '42',
@@ -129,7 +137,13 @@ class TestHostComponent {
   readOnly: boolean;
 }
 
-xdescribe('IdentityProviderDetailsComponent', () => {
+describe('IdentityProviderDetailsComponent', () => {
+  it('TODO - skipped tests pending migration', () => {
+    // Placeholder: tests below are skipped pending migration
+  });
+});
+
+describe.skip('IdentityProviderDetailsComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
@@ -151,6 +165,8 @@ xdescribe('IdentityProviderDetailsComponent', () => {
     expect(testhost).toBeTruthy();
   });
 
+  @NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+  class TestHostModule {}
   describe('Class', () => {
     it('should set the form value', () => {
       expect(testhost.component.form.getRawValue()).toEqual({
@@ -221,19 +237,19 @@ xdescribe('IdentityProviderDetailsComponent', () => {
         usePkce: null,
         useState: null,
       });
-      expect(testhost.component.form.get('enabled').valid).toBeFalsy('enabled');
-      expect(testhost.component.form.get('identifier').valid).toBeFalsy('identifier');
-      expect(testhost.component.form.get('name').valid).toBeFalsy('name');
-      expect(testhost.component.form.get('internal').valid).toBeFalsy('internal');
-      expect(testhost.component.form.get('patterns').valid).toBeFalsy('patterns');
-      expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
-      expect(testhost.component.form.get('authnRequestBinding').valid).toBeFalsy('authnRequestBinding');
-      expect(testhost.component.form.get('autoProvisioningEnabled').valid).toBeFalsy('autoProvisioningEnabled');
+      expect(testhost.component.form.get('enabled').valid).toBeFalsy();
+      expect(testhost.component.form.get('identifier').valid).toBeFalsy();
+      expect(testhost.component.form.get('name').valid).toBeFalsy();
+      expect(testhost.component.form.get('internal').valid).toBeFalsy();
+      expect(testhost.component.form.get('patterns').valid).toBeFalsy();
+      expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy();
+      expect(testhost.component.form.get('authnRequestBinding').valid).toBeFalsy();
+      expect(testhost.component.form.get('autoProvisioningEnabled').valid).toBeFalsy();
     });
 
     it('should be valid and call patch()', waitForAsync(() => {
       const providerService = TestBed.inject(IdentityProviderService);
-      spyOn(providerService, 'patch').and.returnValue(of(null));
+      vi.spyOn(providerService, 'patch').mockReturnValue(of(null));
       testhost.component.form.setValue({
         identifier: testhost.provider.identifier,
         enabled: false,

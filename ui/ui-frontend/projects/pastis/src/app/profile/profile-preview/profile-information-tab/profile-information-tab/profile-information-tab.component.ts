@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -53,6 +53,10 @@ import { MiscValidators, SnackBarService } from 'vitamui-library';
   standalone: false,
 })
 export class ProfileInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+  private profileService = inject(ProfileService);
+  private snackBarService = inject(SnackBarService);
+
   @Input()
   set inputProfile(profileDescription: ProfileDescription) {
     this._inputProfile = profileDescription;
@@ -75,11 +79,7 @@ export class ProfileInformationTabComponent {
     }
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private profileService: ProfileService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       identifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(10), MiscValidators.allowedIdentifier]],
       id: [null, Validators.required],

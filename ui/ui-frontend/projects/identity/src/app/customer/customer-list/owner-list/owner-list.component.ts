@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -53,6 +53,11 @@ import { TenantService } from '../../tenant.service';
   standalone: false,
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
+  private dialog = inject(MatDialog);
+  private ownerService = inject(OwnerService);
+  private tenantService = inject(TenantService);
+  private customerDataService = inject(CustomerDataService);
+
   @Input()
   set customer(customer: Customer) {
     this._customer = customer;
@@ -70,13 +75,6 @@ export class OwnerListComponent implements OnDestroy, OnInit {
 
   ownersWithoutTenant: Owner[];
   myTenants: Tenant[];
-
-  constructor(
-    private dialog: MatDialog,
-    private ownerService: OwnerService,
-    private tenantService: TenantService,
-    private customerDataService: CustomerDataService,
-  ) {}
 
   ngOnInit() {
     this.filteredData(this.customerDataService.tenants);

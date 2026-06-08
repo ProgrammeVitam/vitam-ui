@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Option, Project, ProjectAttachments, SearchService } from 'vitamui-library';
@@ -44,6 +44,9 @@ import { ProjectsApiService } from '../core/api/project-api.service';
   providedIn: 'root',
 })
 export class ProjectsService extends SearchService<Project> {
+  private projectsApiService: ProjectsApiService;
+  private translationService = inject(TranslateService);
+
   pageEvent = new Subject<string>();
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
@@ -73,11 +76,12 @@ export class ProjectsService extends SearchService<Project> {
     { key: 'Public and Private Archive', label: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
 
-  constructor(
-    private projectsApiService: ProjectsApiService,
-    private translationService: TranslateService,
-  ) {
+  constructor() {
+    const projectsApiService = inject(ProjectsApiService);
+
     super(projectsApiService, 'ALL');
+
+    this.projectsApiService = projectsApiService;
   }
 
   public create(project: Project): Observable<any> {

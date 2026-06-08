@@ -81,61 +81,56 @@
         </thead>
 
         <tbody class="vitamui-table-body">
-          <tr
-            *ngFor="let project of dataSource"
-            class="vitamui-table-rows vitamui-row align-items-center clickable"
-            [class.selected]="(selectedProjectId$ | async) === project.id"
-            (click)="showProjectDetails(project.id)"
-          >
-            <td>
-              <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
-            </td>
-            <td>{{ project.messageIdentifier }}</td>
-            <td>{{ project.submissionAgencyIdentifier }}</td>
-            <td>
-              <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
-            </td>
-            <td>
-              <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
-            </td>
-            <td>
-              <vitamui-menu-button
-                [overlayPos]="'end'"
-                [icon]="'vitamui-icon-more-horiz'"
-                menuButtonSize="medium"
-                (click)="stopPropagation($event)"
-              >
-                <button mat-menu-item (click)="searchArchiveUnitsByProject(project)">
-                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
-                </button>
-                <button mat-menu-item (click)="searchTransactions(project)">
-                  {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
-                </button>
-              </vitamui-menu-button>
-            </td>
-          </tr>
+          @for (project of dataSource; track project) {
+            <tr
+              class="vitamui-table-rows vitamui-row align-items-center clickable"
+              [class.selected]="(selectedProjectId$ | async) === project.id"
+              (click)="showProjectDetails(project.id)"
+            >
+              <td>
+                <i class="vitamui-icon {{ getProjectIcon(project) }}"></i>
+              </td>
+              <td>{{ project.messageIdentifier }}</td>
+              <td>{{ project.submissionAgencyIdentifier }}</td>
+              <td>
+                <div>{{ project.createdOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+              </td>
+              <td>
+                <div>{{ project.lastModifyOn | dateTime: 'dd/MM/yyyy' | empty }}</div>
+              </td>
+              <td>
+                <vitamui-menu-button
+                  [overlayPos]="'end'"
+                  [icon]="'vitamui-icon-more-horiz'"
+                  menuButtonSize="medium"
+                  (click)="stopPropagation($event)"
+                >
+                  <button mat-menu-item (click)="searchArchiveUnitsByProject(project)">
+                    {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_PROJECT_ARCHIVE_UNITS' | translate }}
+                  </button>
+                  <button mat-menu-item (click)="searchTransactions(project)">
+                    {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.ACTIONS.SHOW_TRANSACTIONS' | translate }}
+                  </button>
+                </vitamui-menu-button>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
 
-      <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-      <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-      <div *ngIf="infiniteScrollDisabled && projectsService.canLoadMore && !pending; then loadMore"></div>
+      @if (!dataSource || pending) {
+        <div class="vitamui-min-content">
+          <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+        </div>
+      }
+      @if (!pending && dataSource?.length === 0) {
+        <div class="vitamui-min-content vitamui-table-message">{{ 'COLLECT.NO_RESULT' | translate }}</div>
+      }
+      @if (infiniteScrollDisabled && projectsService.canLoadMore && !pending) {
+        <div (click)="projectsService.loadMore()" class="vitamui-min-content vitamui-table-message">
+          <span class="clickable">{{ 'COLLECT.LOAD_MORE_RESULTS' | translate }}</span>
+        </div>
+      }
     </div>
-
-    <ng-template #noResults>
-      <div class="vitamui-min-content vitamui-table-message">{{ 'COLLECT.NO_RESULT' | translate }}</div>
-    </ng-template>
-
-    <ng-template #loadMore>
-      <div (click)="projectsService.loadMore()" class="vitamui-min-content vitamui-table-message">
-        <span class="clickable">{{ 'COLLECT.LOAD_MORE_RESULTS' | translate }}</span>
-      </div>
-    </ng-template>
-
-    <ng-template #loadingSpinner>
-      <div class="vitamui-min-content">
-        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-      </div>
-    </ng-template>
   </div>
 </div>

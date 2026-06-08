@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OntologyApiService } from '../api/ontology-api.service';
 import { IOntology } from '../models/ontology/ontology.interface';
@@ -43,7 +43,7 @@ import { IOntology } from '../models/ontology/ontology.interface';
   providedIn: 'root',
 })
 export class OntologyService {
-  constructor(private ontologyApiService: OntologyApiService) {}
+  private ontologyApiService = inject(OntologyApiService);
 
   getInternalOntologyFieldsList(): Observable<IOntology[]> {
     return this.ontologyApiService.getInternalOntologyFieldsList();

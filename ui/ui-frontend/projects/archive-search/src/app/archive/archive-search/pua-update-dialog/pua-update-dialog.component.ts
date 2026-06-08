@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -77,6 +77,13 @@ export interface PuaUpdateDialogComponentData {
   styleUrl: './pua-update-dialog.component.scss',
 })
 export class PuaUpdateDialogComponent {
+  data = inject<PuaUpdateDialogComponentData>(MAT_DIALOG_DATA);
+  private dialogRef = inject<MatDialogRef<PuaUpdateDialogComponent>>(MatDialogRef);
+  private archiveService = inject(ArchiveService);
+  private translate = inject(TranslateService);
+  private logger = inject(Logger);
+  private snackBarService = inject(SnackBarService);
+
   form: FormGroup;
   puas$: Observable<VitamuiSelectOptions>;
 
@@ -86,16 +93,10 @@ export class PuaUpdateDialogComponent {
   };
   updating: boolean;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: PuaUpdateDialogComponentData,
-    fb: FormBuilder,
-    archiveUnitProfilesService: ArchiveUnitProfilesService,
-    private dialogRef: MatDialogRef<PuaUpdateDialogComponent>,
-    private archiveService: ArchiveService,
-    private translate: TranslateService,
-    private logger: Logger,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const fb = inject(FormBuilder);
+    const archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
+
     this.puas$ = archiveUnitProfilesService
       .getAll()
       .pipe(map((puas) => ({ options: puas.map((pua) => ({ key: pua.identifier, label: `${pua.identifier} - ${pua.name}` })) })));

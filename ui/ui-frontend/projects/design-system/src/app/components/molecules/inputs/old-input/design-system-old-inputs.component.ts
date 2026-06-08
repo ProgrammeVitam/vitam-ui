@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field';
-import { NgForOf } from '@angular/common';
+
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -56,7 +56,6 @@ import { extend } from 'underscore';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    NgForOf,
     ReactiveFormsModule,
     TranslatePipe,
     VitamUICommonModule,
@@ -66,6 +65,8 @@ import { extend } from 'underscore';
   styleUrl: './design-system-old-inputs.component.scss',
 })
 export class DesignSystemOldInputsComponent implements OnInit {
+  private countryService = inject(CountryService);
+
   patternOptions = [
     { value: 'pattern 1', disabled: false },
     { value: 'pattern 2', disabled: false },
@@ -96,8 +97,6 @@ export class DesignSystemOldInputsComponent implements OnInit {
   file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
 
   countries: Option[] = [];
-
-  constructor(private countryService: CountryService) {}
 
   ngOnInit() {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {

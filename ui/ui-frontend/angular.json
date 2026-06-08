@@ -14,7 +14,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/identity",
             "index": "projects/identity/src/index.html",
@@ -79,7 +79,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "identity:build",
             "host": "dev.vitamui.com",
@@ -95,33 +95,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "identity:build"
-          }
-        },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/identity/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/identity/src/polyfills.ts",
             "tsConfig": "projects/identity/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/identity/src/sass/styles.scss"
+            "setupFiles": [
+              "test.ts"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/identity/src/assets",
-              "projects/identity/src/favicon.ico",
-              "projects/identity/src/manifest.webmanifest"
-            ]
+            "outputFile": "junit/identity.xml"
           }
         },
         "lint": {
@@ -129,8 +110,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/identity/**/*.ts",
-              "projects/identity/**/*.html"
+              "projects/identity/src/**/*.ts",
+              "projects/identity/src/**/*.html"
             ]
           }
         }
@@ -148,7 +129,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/portal",
             "index": "projects/portal/src/index.html",
@@ -213,7 +194,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "portal:build",
             "host": "dev.vitamui.com",
@@ -230,26 +211,13 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/portal/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/portal/src/polyfills.ts",
             "tsConfig": "projects/portal/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/portal/src/sass/styles.scss"
+            "setupFiles": [
+              "test.ts"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/portal/src/assets",
-              "projects/portal/src/favicon.ico",
-              "projects/portal/src/manifest.webmanifest"
-            ]
+            "outputFile": "junit/portal.xml"
           }
         },
         "lint": {
@@ -257,8 +225,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/portal/**/*.ts",
-              "projects/portal/**/*.html"
+              "projects/portal/src/**/*.ts",
+              "projects/portal/src/**/*.html"
             ]
           }
         }
@@ -276,7 +244,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/referential",
             "index": "projects/referential/src/index.html",
@@ -341,7 +309,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "referential:build",
             "host": "dev.vitamui.com",
@@ -357,33 +325,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "referential:build"
-          }
-        },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/referential/src/test.ts",
-            "polyfills": "projects/referential/src/polyfills.ts",
             "tsConfig": "projects/referential/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js",
-            "assets": [
-              "projects/referential/src/favicon.ico",
-              "projects/referential/src/assets",
-              "projects/referential/src/manifest.webmanifest"
+            "setupFiles": [
+              "test.ts"
             ],
-            "styles": [
-              "projects/referential/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": []
+            "outputFile": "junit/referential.xml"
           }
         },
         "lint": {
@@ -391,8 +340,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/referential/**/*.ts",
-              "projects/referential/**/*.html"
+              "projects/referential/src/**/*.ts",
+              "projects/referential/src/**/*.html"
             ]
           }
         }
@@ -414,7 +363,7 @@
       "prefix": "vitamui",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "builder": "@angular/build:ng-packagr",
           "options": {
             "project": "projects/vitamui-library/ng-package.json"
           },
@@ -429,11 +378,13 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/vitamui-library/src/test.ts",
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js"
+            "setupFiles": [
+              "test.ts"
+            ],
+            "outputFile": "junit/vitamui-library.xml"
           }
         },
         "lint": {
@@ -441,8 +392,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/vitamui-library/**/*.ts",
-              "projects/vitamui-library/**/*.html"
+              "projects/vitamui-library/src/**/*.ts",
+              "projects/vitamui-library/src/**/*.html"
             ]
           }
         }
@@ -460,7 +411,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/design-system",
             "index": "projects/design-system/src/index.html",
@@ -510,7 +461,7 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "host": "dev.vitamui.com",
             "port": 4242,
@@ -527,26 +478,13 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/design-system/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/design-system/src/polyfills.ts",
             "tsConfig": "projects/design-system/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/design-system/src/sass/styles.scss"
+            "setupFiles": [
+              "test.ts"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/design-system/src/assets",
-              "projects/design-system/src/favicon.ico",
-              "projects/design-system/src/manifest.webmanifest"
-            ]
+            "outputFile": "junit/design-system.xml"
           }
         },
         "lint": {
@@ -554,8 +492,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/design-system/**/*.ts",
-              "projects/design-system/**/*.html"
+              "projects/design-system/src/**/*.ts",
+              "projects/design-system/src/**/*.html"
             ]
           }
         }
@@ -573,7 +511,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/ingest",
             "index": "projects/ingest/src/index.html",
@@ -622,7 +560,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "ingest:build",
             "host": "dev.vitamui.com",
@@ -638,33 +576,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "ingest:build"
-          }
-        },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/ingest/src/test.ts",
-            "polyfills": "projects/ingest/src/polyfills.ts",
             "tsConfig": "projects/ingest/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js",
-            "assets": [
-              "projects/ingest/src/favicon.ico",
-              "projects/ingest/src/assets",
-              "projects/ingest/src/manifest.webmanifest"
+            "setupFiles": [
+              "test.ts"
             ],
-            "styles": [
-              "projects/ingest/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": []
+            "outputFile": "junit/ingest.xml"
           }
         },
         "lint": {
@@ -672,8 +591,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/ingest/**/*.ts",
-              "projects/ingest/**/*.html"
+              "projects/ingest/src/**/*.ts",
+              "projects/ingest/src/**/*.html"
             ]
           }
         }
@@ -690,7 +609,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "allowedCommonJsDependencies": [
               "fast-xml-parser"
@@ -742,7 +661,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "archive-search:build",
             "host": "dev.vitamui.com",
@@ -758,33 +677,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "archive-search:build"
-          }
-        },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/archive-search/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/archive-search/src/polyfills.ts",
             "tsConfig": "projects/archive-search/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/archive-search/src/sass/styles.scss"
+            "setupFiles": [
+              "test.ts"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/archive-search/src/assets",
-              "projects/archive-search/src/favicon.ico",
-              "projects/archive-search/src/manifest.webmanifest"
-            ]
+            "outputFile": "junit/archive-search.xml"
           }
         },
         "lint": {
@@ -792,8 +692,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/archive-search/**/*.ts",
-              "projects/archive-search/**/*.html"
+              "projects/archive-search/src/**/*.ts",
+              "projects/archive-search/src/**/*.html"
             ]
           }
         }
@@ -810,7 +710,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "allowedCommonJsDependencies": [
               "jszip"
@@ -862,7 +762,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "collect:build",
             "host": "dev.vitamui.com",
@@ -878,33 +778,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "collect:build"
-          }
-        },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/collect/src/test.ts",
-            "karmaConfig": "karma.conf.ci.js",
-            "polyfills": "projects/collect/src/polyfills.ts",
             "tsConfig": "projects/collect/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "projects/collect/src/sass/styles.scss"
+            "setupFiles": [
+              "test.ts"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "assets": [
-              "projects/collect/src/assets",
-              "projects/collect/src/favicon.ico",
-              "projects/collect/src/manifest.webmanifest"
-            ]
+            "outputFile": "junit/collect.xml"
           }
         },
         "lint": {
@@ -912,8 +793,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/collect/**/*.ts",
-              "projects/collect/**/*.html"
+              "projects/collect/src/**/*.ts",
+              "projects/collect/src/**/*.html"
             ]
           }
         }
@@ -930,7 +811,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/pastis",
             "index": "projects/pastis/src/index.html",
@@ -987,7 +868,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "pastis:build",
             "host": "dev.vitamui.com",
@@ -1008,33 +889,14 @@
           },
           "defaultConfiguration": "development"
         },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "pastis:build"
-          }
-        },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "projects/pastis/src/test.ts",
-            "polyfills": "projects/pastis/src/polyfills.ts",
             "tsConfig": "projects/pastis/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.ci.js",
-            "assets": [
-              "projects/pastis/src/favicon.ico",
-              "projects/pastis/src/assets",
-              "projects/pastis/src/manifest.webmanifest"
+            "setupFiles": [
+              "test.ts"
             ],
-            "styles": [
-              "projects/pastis/src/sass/styles.scss"
-            ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "projects/vitamui-library/src/sass"
-              ]
-            },
-            "scripts": []
+            "outputFile": "junit/pastis.xml"
           }
         },
         "lint": {
@@ -1042,8 +904,8 @@
           "options": {
             "cache": true,
             "lintFilePatterns": [
-              "projects/pastis/**/*.ts",
-              "projects/pastis/**/*.html"
+              "projects/pastis/src/**/*.ts",
+              "projects/pastis/src/**/*.html"
             ]
           }
         }
@@ -1056,5 +918,31 @@
       "@angular-eslint/schematics",
       "@angular-eslint/schematics"
     ]
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
   }
 }

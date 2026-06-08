@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
 import { Template } from '../../object-viewer/models/template.model';
@@ -43,10 +43,8 @@ import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/
 
 @Injectable()
 export class TemplateService {
-  constructor(
-    private dataStructureService: DataStructureService,
-    private schemaElementToDisplayRuleService: SchemaElementToDisplayRuleService,
-  ) {}
+  private dataStructureService = inject(DataStructureService);
+  private schemaElementToDisplayRuleService = inject(SchemaElementToDisplayRuleService);
 
   public toProjected(originalData: any, template: DisplayRule[]): any {
     if (!template) return originalData;

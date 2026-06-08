@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SearchUnitApiService, VitamuiHttpHeaders } from 'vitamui-library';
@@ -44,7 +44,7 @@ import { SearchUnitApiService, VitamuiHttpHeaders } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AdminDslService {
-  constructor(private unitApiService: SearchUnitApiService) {}
+  private unitApiService = inject(SearchUnitApiService);
 
   getById(unitId: string, accessContractId: string) {
     const headers = new HttpHeaders()

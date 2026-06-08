@@ -145,7 +145,7 @@ pipeline {
                     script {
                         if (env.DO_CHECKS_AND_TESTS == 'true') {
                             junit '**/target/surefire-reports/*.xml'
-                            junit '**/target/junit/*.xml'
+                            junit 'ui/ui-frontend/junit/*.xml'
                         }
                     }
                 }

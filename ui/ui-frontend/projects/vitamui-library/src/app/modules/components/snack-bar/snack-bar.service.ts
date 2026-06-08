@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentType } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
@@ -50,11 +50,9 @@ const DEFAULT_DURATION = 10_000;
   providedIn: 'root',
 })
 export class SnackBarService {
-  constructor(
-    private matSnackBar: MatSnackBar,
-    private applicationService: ApplicationService,
-    private translateService: TranslateService,
-  ) {}
+  private matSnackBar = inject(MatSnackBar);
+  private applicationService = inject(ApplicationService);
+  private translateService = inject(TranslateService);
 
   public async open(data: SnackBarData<SnackBarUrlButton | SnackBarAppButton>): Promise<MatSnackBarRef<SnackBarComponent>> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);

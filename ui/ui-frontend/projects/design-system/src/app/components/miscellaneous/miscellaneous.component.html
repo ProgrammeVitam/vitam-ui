@@ -77,7 +77,11 @@
     [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
     (vitamuiScroll)="onScroll()"
   >
-    <div *ngFor="let value of infiniteValues">value {{ value }}</div>
-    <mat-spinner *ngIf="infiniteScrollDisabled" class="vitamui-spinner medium"></mat-spinner>
+    @for (value of infiniteValues; track value) {
+      <div>value {{ value }}</div>
+    }
+    @if (infiniteScrollDisabled) {
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    }
   </div>
 </div>

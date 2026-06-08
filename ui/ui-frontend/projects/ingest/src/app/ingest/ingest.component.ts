@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -53,6 +53,12 @@ import { IngestListComponent } from './ingest-list/ingest-list.component';
   standalone: false,
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
+  private router = inject(Router);
+  private route: ActivatedRoute;
+  dialog = inject(MatDialog);
+  private formBuilder = inject(FormBuilder);
+  private uploadSipService = inject(UploadService);
+
   IngestType = IngestType;
   search: string;
   uploadError = false;
@@ -70,15 +76,12 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   @ViewChild('inputFile') inputFile: ElementRef;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private uploadSipService: UploadService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
 
     route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;

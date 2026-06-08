@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -50,6 +50,9 @@ import { ContextPermissionTabComponent } from './context-permission-tab/context-
   standalone: false,
 })
 export class ContextPreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private contextService = inject(ContextService);
+
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() context: Context;
 
@@ -68,11 +71,6 @@ export class ContextPreviewComponent implements AfterViewInit {
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private contextService: ContextService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabLinks[0] = this.infoTab;

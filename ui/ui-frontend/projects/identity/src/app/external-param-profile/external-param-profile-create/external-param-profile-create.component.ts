@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
@@ -52,22 +52,23 @@ import { DecimalPipe } from '@angular/common';
   standalone: false,
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
+  private formBuilder = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<ExternalParamProfileCreateComponent>>(MatDialogRef);
+  private externalParamProfileService = inject(ExternalParamProfileService);
+  private externalParamProfileValidators = inject(ExternalParamProfileValidators);
+  private confirmDialogService = inject(ConfirmDialogService);
+  data = inject(MAT_DIALOG_DATA);
+
   form: FormGroup;
   activeAccessContractsIdentifiers$: Observable<string[]>;
   private keyPressSubscription: Subscription;
   tenantIdentifier: string;
   thresholdOptions: Option[];
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private dialogRef: MatDialogRef<ExternalParamProfileCreateComponent>,
-    private externalParamProfileService: ExternalParamProfileService,
-    private externalParamProfileValidators: ExternalParamProfileValidators,
-    private confirmDialogService: ConfirmDialogService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    translateService: TranslateService,
-    decimalPipe: DecimalPipe,
-  ) {
+  constructor() {
+    const translateService = inject(TranslateService);
+    const decimalPipe = inject(DecimalPipe);
+
     this.thresholdOptions = [100, 10000, 100000, 1000000, 10000000, 100000000, 1000000000].map((thresholdValue) => ({
       key: thresholdValue,
       label: translateService.instant('EXTERNAL_PARAM_PROFILE.MAX_BULK_OPERATIONS_THRESHOLD_VALUES', {

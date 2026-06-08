@@ -34,17 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
+import { ProfileService } from './profile.service';
 import { ProfileValidators } from './profile.validators';
 
 describe('ProfileValidators', () => {
+  const createValidators = (profileServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: ProfileService, useValue: profileServiceSpy }],
+    });
+    return TestBed.runInInjectionContext(() => new ProfileValidators());
+  };
+
   it('should return null', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(false));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(false));
+    const profileValidators = createValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
@@ -53,9 +63,11 @@ describe('ProfileValidators', () => {
   }));
 
   it('should return { nameExists: true }', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(true));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(true));
+    const profileValidators = createValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
@@ -64,9 +76,11 @@ describe('ProfileValidators', () => {
   }));
 
   it('should not call the service', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(true));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(true));
+    const profileValidators = createValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
@@ -75,9 +89,11 @@ describe('ProfileValidators', () => {
   }));
 
   it('should call the service', fakeAsync(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['exists']);
-    profileServiceSpy.exists.and.returnValue(of(true));
-    const profileValidators = new ProfileValidators(profileServiceSpy);
+    const profileServiceSpy = {
+      exists: vi.fn().mockName('ProfileService.exists'),
+    };
+    profileServiceSpy.exists.mockReturnValue(of(true));
+    const profileValidators = createValidators(profileServiceSpy);
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });

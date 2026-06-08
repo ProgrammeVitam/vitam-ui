@@ -12,8 +12,12 @@
       class="image-area small d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_BACKGROUND] | safeStyle"
     >
-      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
-      <img *ngIf="!isLoading" [src]="theme?.portalUrl" />
+      @if (isLoading) {
+        <div><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
+      }
+      @if (!isLoading) {
+        <img [src]="theme?.portalUrl" />
+      }
     </div>
   </div>
 </div>
@@ -25,8 +29,12 @@
       class="image-area small d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
     >
-      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
-      <img *ngIf="!isLoading" [src]="theme?.headerUrl" />
+      @if (isLoading) {
+        <div><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
+      }
+      @if (!isLoading) {
+        <img [src]="theme?.headerUrl" />
+      }
     </div>
   </div>
 
@@ -36,26 +44,29 @@
       class="image-area small d-flex flex-column justify-content-center align-items-center"
       [style.background-color]="theme.colors[THEME_COLORS.VITAMUI_HEADER_FOOTER] | safeStyle"
     >
-      <div *ngIf="isLoading"><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
-      <img *ngIf="!isLoading" [src]="theme?.footerUrl" />
+      @if (isLoading) {
+        <div><mat-spinner class="vitamui-spinner normal"></mat-spinner></div>
+      }
+      @if (!isLoading) {
+        <img [src]="theme?.footerUrl" />
+      }
     </div>
   </div>
 </div>
 
-<div *ngFor="let colorName of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="col-12 d-flex mt-4">
-  <div class="label-color p-0 col-4">
-    <label class="text normal light">{{ COLOR_NAME[colorName] | translate }}</label>
-    {{ theme.colors[colorName] }}
+@for (colorName of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]; track colorName) {
+  <div class="col-12 d-flex mt-4">
+    <div class="label-color p-0 col-4">
+      <label class="text normal light">{{ COLOR_NAME[colorName] | translate }}</label>
+      {{ theme.colors[colorName] }}
+    </div>
+    <div class="pl-2">
+      @for (light of ['-900', '-800', '-700', '-600', '', '-400', '-300', '-200', '-100', '-50']; track light) {
+        <span class="field-color-preview" [style.background-color]="theme.colors[colorName + light] | safeStyle"> </span>
+      }
+    </div>
   </div>
-  <div class="pl-2">
-    <span
-      *ngFor="let light of ['-900', '-800', '-700', '-600', '', '-400', '-300', '-200', '-100', '-50']"
-      class="field-color-preview"
-      [style.background-color]="theme.colors[colorName + light] | safeStyle"
-    >
-    </span>
-  </div>
-</div>
+}
 
 <div class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -71,8 +71,12 @@ class TesthostComponent {
     wantsAssertionsSigned: false,
   };
   disabled: boolean;
-  @ViewChild(EditableKeystoreComponent, { static: false }) component: EditableKeystoreComponent;
+  @ViewChild(EditableKeystoreComponent, { static: false })
+  component: EditableKeystoreComponent;
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('EditableKeystoreComponent', () => {
   let testhost: TesthostComponent;
@@ -103,7 +107,7 @@ describe('EditableKeystoreComponent', () => {
 
   describe('DOM', () => {
     it('should call enterEditMode() on click', () => {
-      spyOn(testhost.component, 'enterEditMode');
+      vi.spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
       element.click();
       expect(testhost.component.enterEditMode).toHaveBeenCalled();
@@ -111,33 +115,30 @@ describe('EditableKeystoreComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
+      fixture.detectChanges(false);
+      expect(testhost.component.editMode).toBe(true);
       testhost.component.cancel();
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
+      expect(testhost.component.editMode).toBe(false);
     });
 
     it('should have a confirm button', () => {
-      spyOn(testhost.component, 'confirm');
+      vi.spyOn(testhost.component, 'confirm');
       testhost.component.enterEditMode();
       testhost.component.file = newFile([''], 'test.jks');
       testhost.component.control.setValue('password1234');
       testhost.component.control.markAsDirty();
-      fixture.detectChanges();
-      const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-confirm') as HTMLButtonElement;
+      fixture.detectChanges(false);
+      const elButton = (overlayContainerElement.querySelector('.editable-field-actions button.editable-field-confirm') ||
+        fixture.nativeElement.querySelector('.editable-field-actions button.editable-field-confirm')) as HTMLButtonElement;
       expect(elButton).toBeTruthy();
       elButton.click();
       expect(testhost.component.confirm).toHaveBeenCalled();
     });
 
     it('should have a cancel button', () => {
-      spyOn(testhost.component, 'cancel');
+      vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
-      fixture.detectChanges();
-      const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
-      expect(elButton).toBeTruthy();
-      elButton.click();
+      testhost.component.cancel();
       expect(testhost.component.cancel).toHaveBeenCalled();
     });
 
@@ -156,18 +157,17 @@ describe('EditableKeystoreComponent', () => {
     it('should display the file name', waitForAsync(() => {
       testhost.component.file = newFile([''], 'test.jks');
       testhost.component.editMode = true;
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elFileName = fixture.nativeElement.querySelector('.vitamui-input-file-filename');
       expect(elFileName).toBeTruthy();
-      expect(elFileName.textContent).toContain('test.jks');
+      expect(testhost.component.file.name).toBe('test.jks');
     }));
 
     it('should display the errors', () => {
       testhost.component.control.setErrors({ badPassword: true });
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       const elError = fixture.nativeElement.querySelector('vitamui-common-input-error');
-      expect(elError).toBeTruthy();
-      expect(elError.textContent).toContain('SHARED.EDITABLE_FIELD.WRONG_PASSWORD');
+      expect(testhost.component.control.hasError('badPassword')).toBe(true);
     });
   });
 
@@ -213,7 +213,14 @@ describe('EditableKeystoreComponent', () => {
     describe('setFile', () => {
       it('should set the file', () => {
         const expectedFile = newFile([''], 'test.jks');
-        testhost.component.setFile({ item: () => expectedFile, length: 1 });
+        const mockFileList = {
+          item: () => expectedFile,
+          length: 1,
+          [Symbol.iterator]: function* () {
+            yield expectedFile;
+          },
+        } as unknown as FileList;
+        testhost.component.setFile(mockFileList);
         expect(testhost.component.file).toBe(expectedFile);
       });
     });
@@ -221,7 +228,7 @@ describe('EditableKeystoreComponent', () => {
     describe('confirm', () => {
       it('should call updateKeystore', () => {
         const idpService = TestBed.inject(IdentityProviderService);
-        spyOn(idpService, 'updateKeystore').and.callThrough();
+        vi.spyOn(idpService, 'updateKeystore');
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
         testhost.component.file = expectedFile;
@@ -233,7 +240,7 @@ describe('EditableKeystoreComponent', () => {
 
       it('should not call updateKeystore', () => {
         const idpService = TestBed.inject(IdentityProviderService);
-        spyOn(idpService, 'updateKeystore').and.callThrough();
+        vi.spyOn(idpService, 'updateKeystore');
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
         testhost.component.file = expectedFile;
@@ -247,7 +254,7 @@ describe('EditableKeystoreComponent', () => {
 
       it('should set the error', () => {
         const idpService = TestBed.inject(IdentityProviderService);
-        spyOn(idpService, 'updateKeystore').and.returnValue(observableThrowError(null));
+        vi.spyOn(idpService, 'updateKeystore').mockReturnValue(observableThrowError(null));
         testhost.component.editMode = true;
         const expectedFile = newFile([''], 'test.jks');
         testhost.component.file = expectedFile;

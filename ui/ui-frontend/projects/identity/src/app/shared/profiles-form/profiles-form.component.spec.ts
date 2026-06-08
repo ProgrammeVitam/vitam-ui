@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -147,8 +147,12 @@ const expectedApp = {
 class TesthostComponent {
   profiles: string[];
 
-  @ViewChild(ProfilesFormComponent, { static: false }) component: ProfilesFormComponent;
+  @ViewChild(ProfilesFormComponent, { static: false })
+  component: ProfilesFormComponent;
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('ProfilesFormComponent', () => {
   let testhost: TesthostComponent;
@@ -196,7 +200,7 @@ describe('ProfilesFormComponent', () => {
       const elAddButton = fixture.nativeElement.querySelector('button[type=button]');
       expect(elAddButton).toBeTruthy();
       expect(elAddButton.textContent).toContain('COMMON.ADD');
-      spyOn(testhost.component, 'add');
+      vi.spyOn(testhost.component, 'add');
       testhost.component.profileSelect.setValue(expectedProfiles[3].id);
       fixture.detectChanges();
       elAddButton.click();
@@ -218,7 +222,7 @@ describe('ProfilesFormComponent', () => {
       expect(elCells[2].textContent).toContain('profile 2');
       const elDelButton = elCells[3].querySelector('button');
       expect(elDelButton).toBeTruthy();
-      spyOn(testhost.component, 'remove');
+      vi.spyOn(testhost.component, 'remove');
       elDelButton.click();
       expect(testhost.component.remove).toHaveBeenCalledWith(0);
     });
@@ -227,7 +231,7 @@ describe('ProfilesFormComponent', () => {
   describe('Component', () => {
     it('should fill the application tree', () => {
       expect(testhost.component.applications).toEqual(
-        jasmine.arrayContaining([
+        expect.arrayContaining([
           {
             key: 'GROUPS_APP',
             label: 'Groupes de profils',

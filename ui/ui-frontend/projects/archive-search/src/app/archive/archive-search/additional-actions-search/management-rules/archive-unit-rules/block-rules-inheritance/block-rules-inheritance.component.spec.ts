@@ -108,11 +108,17 @@ const ruleActions: ActionsRules[] = [
   },
 ];
 
-const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+const matDialogRefSpy = {
+  open: vi.fn().mockName('MatDialogRef.open'),
+  close: vi.fn().mockName('MatDialogRef.close'),
+};
+matDialogRefSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
-const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
-matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+const matDialogSpy = {
+  open: vi.fn().mockName('MatDialog.open'),
+  close: vi.fn().mockName('MatDialog.close'),
+};
+matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
 const managementRulesSharedDataServiceMock = {
   getCriteriaSearchDSLQuery: () => of({}),
@@ -125,12 +131,24 @@ const managementRulesSharedDataServiceMock = {
   emitRuleActions: () => of({}),
 };
 
-const managementRulesValidatorServiceMock = jasmine.createSpyObj('ManagementRulesValidatorService', {
-  uniquePreventRuleId: () => of({}),
-  uniqueRuleId: () => of({}),
-  ruleIdPattern: () => of({}),
-  checkRuleIdExistence: () => of({}),
-});
+const managementRulesValidatorServiceMock = {
+  uniquePreventRuleId: vi
+    .fn()
+    .mockName('ManagementRulesValidatorService.uniquePreventRuleId')
+    .mockReturnValue(() => of({})),
+  uniqueRuleId: vi
+    .fn()
+    .mockName('ManagementRulesValidatorService.uniqueRuleId')
+    .mockReturnValue(() => of({})),
+  ruleIdPattern: vi
+    .fn()
+    .mockName('ManagementRulesValidatorService.ruleIdPattern')
+    .mockReturnValue(() => of({})),
+  checkRuleIdExistence: vi
+    .fn()
+    .mockName('ManagementRulesValidatorService.checkRuleIdExistence')
+    .mockReturnValue(() => of({})),
+};
 
 describe('BlockRulesInheritanceComponent', () => {
   let component: BlockRulesInheritanceComponent;
@@ -175,8 +193,8 @@ describe('BlockRulesInheritanceComponent', () => {
   });
 
   it('should call getManagementRules and emitManagementRules of ManagementRulesSharedDataService', () => {
-    spyOn(managementRulesSharedDataServiceMock, 'getManagementRules').and.callThrough();
-    spyOn(managementRulesSharedDataServiceMock, 'emitManagementRules').and.callThrough();
+    vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
+    vi.spyOn(managementRulesSharedDataServiceMock, 'emitManagementRules');
     // When
     component.blockRuleInheritance();
 

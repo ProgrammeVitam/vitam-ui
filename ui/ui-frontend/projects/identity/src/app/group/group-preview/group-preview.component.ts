@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Group, isLevelAllowed } from 'vitamui-library';
+import { AuthService, Group, isLevelAllowed, StartupService } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 
@@ -47,6 +47,10 @@ import { GroupService } from '../group.service';
   standalone: false,
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
+  private groupService = inject(GroupService);
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+
   @Input() isPopup: boolean;
 
   @Input() group: Group;
@@ -54,11 +58,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   @Output() previewClose = new EventEmitter();
 
   private groupUpdateSub: Subscription;
-
-  constructor(
-    private groupService: GroupService,
-    private authService: AuthService,
-  ) {}
+  public groupUsersCount: number;
 
   ngOnInit(): void {
     if (this.group) {
@@ -85,6 +85,14 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
   }
+  openPopup() {
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/group/' + this.group.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
+    this.emitClose();
+  }
 
   levelNotAllowed(): boolean {
     if (this.group) {
@@ -98,5 +106,11 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.groupUpdateSub.unsubscribe();
+  }
+
+  filterEvents(event: any): boolean {
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_GROUP') || event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP'))
+    );
   }
 }

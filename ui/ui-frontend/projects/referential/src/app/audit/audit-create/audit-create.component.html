@@ -13,86 +13,93 @@
     <cdk-step>
       <mat-dialog-content>
         <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
-          <mat-button-toggle *ngFor="let action of getAuditActions()" [value]="action">
-            <span>{{ 'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
-          </mat-button-toggle>
+          @for (action of getAuditActions(); track action) {
+            <mat-button-toggle [value]="action">
+              <span>{{ 'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
+            </mat-button-toggle>
+          }
         </mat-button-toggle-group>
 
-        <div class="mt-4" *ngIf="showAuditPerimeter()">
-          <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_AUDIT_PERIMETER' | translate }}</div>
+        @if (showAuditPerimeter()) {
+          <div class="mt-4">
+            <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_AUDIT_PERIMETER' | translate }}</div>
+            <vitamui-select
+              formControlName="auditPerimeter"
+              [placeholder]="'AUDIT.CREATE_DIALOG.AUDIT_PERIMETER' | translate"
+              [options]="auditPerimetersOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </div>
+        }
 
-          <vitamui-select
-            formControlName="auditPerimeter"
-            [placeholder]="'AUDIT.CREATE_DIALOG.AUDIT_PERIMETER' | translate"
-            [options]="auditPerimetersOptions"
-            [multiple]="false"
-            [enableSearch]="false"
-          ></vitamui-select>
-        </div>
-
-        <div class="mt-4" *ngIf="!showAuditPerimeter()">
-          <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.ENTER_CONCERNED_CONSISTENCY_AUDIT_IDENTIFIER' | translate }}</div>
-          <vitamui-input
-            class="w-100 mt-4"
-            formControlName="evidenceAudit"
-            [placeholder]="'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate"
-            [errorMessageMap]="{ invalidEvidenceAuditId: 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }"
-          >
-          </vitamui-input>
-        </div>
-      </mat-dialog-content>
-
-      <ng-container *ngTemplateOutlet="actions"></ng-container>
-    </cdk-step>
-
-    <cdk-step *ngIf="showAuditPerimeter()">
-      <mat-dialog-content>
-        @if (chooseOriginatingAgency()) {
-          <vitamui-slide-toggle [formControl]="allProducerServices">
-            <span>{{ 'AUDIT.CREATE_DIALOG.SELECT_ALL_PRODUCERS' | translate }}</span>
-          </vitamui-slide-toggle>
-
-          <vitamui-select
-            [multiple]="true"
-            *ngIf="showProducerSelection()"
-            [formControl]="producerServicesMultiSelect"
-            formControlName="originatingAgencyIds"
-            [options]="producerServicesMultiSelectOptions"
-            required
-            [placeholder]="'AUDIT.CREATE_DIALOG.PRODUCERS' | translate"
-            [searchBarPlaceHolder]="'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER' | translate"
-          >
-          </vitamui-select>
-        } @else if (enterIngestOperationsIdentifiers()) {
-          <vitamui-input
-            class="w-100 mt-4"
-            [formControl]="ingestOperationsEntries"
-            formControlName="ingestOperationIds"
-            [placeholder]="'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER' | translate"
-          >
-          </vitamui-input>
-        } @else if (chooseAttachmentPosition()) {
-          <vitamui-library-filing-plan
-            [formControl]="selectedNodes"
-            [tenantIdentifier]="tenantIdentifier"
-            [mode]="FILLING_PLAN_MODE_INCLUDE"
-          >
-          </vitamui-library-filing-plan>
-        } @else if (chooseIngestOperationPeriod()) {
-          <ng-container *ngTemplateOutlet="refining"></ng-container>
+        @if (!showAuditPerimeter()) {
+          <div class="mt-4">
+            <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.ENTER_CONCERNED_CONSISTENCY_AUDIT_IDENTIFIER' | translate }}</div>
+            <vitamui-input
+              class="w-100 mt-4"
+              formControlName="evidenceAudit"
+              [placeholder]="'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate"
+              [errorMessageMap]="{ invalidEvidenceAuditId: 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }"
+            >
+            </vitamui-input>
+          </div>
         }
       </mat-dialog-content>
 
       <ng-container *ngTemplateOutlet="actions"></ng-container>
     </cdk-step>
 
-    <cdk-step *ngIf="refiningStep">
-      <mat-dialog-content>
-        <ng-container *ngTemplateOutlet="refining"></ng-container>
-      </mat-dialog-content>
+    @if (showAuditPerimeter()) {
+      <cdk-step>
+        <mat-dialog-content>
+          @if (chooseOriginatingAgency()) {
+            <vitamui-slide-toggle [formControl]="allProducerServices">
+              <span>{{ 'AUDIT.CREATE_DIALOG.SELECT_ALL_PRODUCERS' | translate }}</span>
+            </vitamui-slide-toggle>
+            @if (showProducerSelection()) {
+              <vitamui-select
+                [multiple]="true"
+                [formControl]="producerServicesMultiSelect"
+                formControlName="originatingAgencyIds"
+                [options]="producerServicesMultiSelectOptions"
+                required
+                [placeholder]="'AUDIT.CREATE_DIALOG.PRODUCERS' | translate"
+                [searchBarPlaceHolder]="'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER' | translate"
+              >
+              </vitamui-select>
+            }
+          } @else if (enterIngestOperationsIdentifiers()) {
+            <vitamui-input
+              class="w-100 mt-4"
+              [formControl]="ingestOperationsEntries"
+              formControlName="ingestOperationIds"
+              [placeholder]="'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER' | translate"
+            >
+            </vitamui-input>
+          } @else if (chooseAttachmentPosition()) {
+            <vitamui-library-filing-plan
+              [formControl]="selectedNodes"
+              [tenantIdentifier]="tenantIdentifier"
+              [mode]="FILLING_PLAN_MODE_INCLUDE"
+            >
+            </vitamui-library-filing-plan>
+          } @else if (chooseIngestOperationPeriod()) {
+            <ng-container *ngTemplateOutlet="refining"></ng-container>
+          }
+        </mat-dialog-content>
+        <ng-container *ngTemplateOutlet="actions"></ng-container>
+      </cdk-step>
+    }
 
-      <ng-container *ngTemplateOutlet="actions"></ng-container>
-    </cdk-step>
+    @if (refiningStep) {
+      <cdk-step>
+        <mat-dialog-content>
+          <ng-container *ngTemplateOutlet="refining"></ng-container>
+        </mat-dialog-content>
+        <ng-container *ngTemplateOutlet="actions"></ng-container>
+      </cdk-step>
+    }
   </vitamui-stepper>
 </form>
 
@@ -100,19 +107,17 @@
   <mat-dialog-actions>
     <div>
       <vitamui-next-step [stepper]="stepper" [disabled]="!isStepOneValid()"></vitamui-next-step>
-      <button *ngIf="stepper.selectedIndex > 0 || !showAuditPerimeter()" type="submit" class="btn primary" [disabled]="!canSubmit()">
-        {{ 'AUDIT.CREATE_DIALOG.START_AUDIT' | translate }}
-      </button>
-      <button
-        *ngIf="stepper.selectedIndex === 1 && (chooseAttachmentPosition() || chooseOriginatingAgency())"
-        type="button"
-        class="btn cancel link"
-        (click)="initPeriodScreen()"
-        [disabled]="!canSubmit()"
-      >
-        <i class="vitamui-icon vitamui-icon-plus"></i>
-        <span>{{ 'AUDIT.CREATE_DIALOG.REFINE_OVER_PERIOD' | translate }}</span>
-      </button>
+      @if (stepper.selectedIndex > 0 || !showAuditPerimeter()) {
+        <button type="submit" class="btn primary" [disabled]="!canSubmit()">
+          {{ 'AUDIT.CREATE_DIALOG.START_AUDIT' | translate }}
+        </button>
+      }
+      @if (stepper.selectedIndex === 1 && (chooseAttachmentPosition() || chooseOriginatingAgency())) {
+        <button type="button" class="btn cancel link" (click)="initPeriodScreen()" [disabled]="!canSubmit()">
+          <i class="vitamui-icon vitamui-icon-plus"></i>
+          <span>{{ 'AUDIT.CREATE_DIALOG.REFINE_OVER_PERIOD' | translate }}</span>
+        </button>
+      }
       <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
     </div>
     <vitamui-previous-step [stepper]="stepper" (click)="onPreviousStep()"></vitamui-previous-step>
@@ -152,7 +157,9 @@
       ></vitamui-datepicker>
     </div>
   </div>
-  <p *ngIf="canShowPeriodErrorMessage()" class="text-red">
-    {{ 'AUDIT.CREATE_DIALOG.END_PERIOD_DATE_BEFORE_START_PERIOD_DATE' | translate }}
-  </p>
+  @if (canShowPeriodErrorMessage()) {
+    <p class="text-red">
+      {{ 'AUDIT.CREATE_DIALOG.END_PERIOD_DATE_BEFORE_START_PERIOD_DATE' | translate }}
+    </p>
+  }
 </ng-template>

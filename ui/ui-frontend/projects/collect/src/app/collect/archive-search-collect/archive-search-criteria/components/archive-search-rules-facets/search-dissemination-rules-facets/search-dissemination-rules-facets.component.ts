@@ -36,7 +36,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -49,11 +49,9 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   standalone: false,
 })
 export class SearchDisseminationRulesFacetsComponent implements OnChanges {
-  constructor(
-    private facetsService: ArchiveFacetsService,
-    private translateService: TranslateService,
-    private datePipe: DatePipe,
-  ) {}
+  private facetsService = inject(ArchiveFacetsService);
+  private translateService = inject(TranslateService);
+  private datePipe = inject(DatePipe);
 
   @Input()
   disseminationRuleFacets: RuleFacets;

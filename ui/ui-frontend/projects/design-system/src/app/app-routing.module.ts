@@ -35,8 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { TableComponent } from './components/organisms/table/table.component';
 import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
 import { ButtonsComponent } from './components/atoms/buttons/buttons.component';
@@ -143,9 +142,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    QuicklinkModule,
     RouterModule.forRoot(routes, {
-      preloadingStrategy: QuicklinkStrategy,
+      preloadingStrategy: PreloadAllModules,
     }),
   ],
   exports: [RouterModule],

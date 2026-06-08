@@ -55,8 +55,8 @@ describe('ManagementRuleValidators', () => {
         id: ['azerty', ManagementRuleValidators.ruleIdPattern],
       });
 
-      expect(formGroup.valid).toBeTruthy('Form group must be valid');
-      expect(formGroup.get('id').errors).toBeNull('Id control must not have errors');
+      expect(formGroup.valid).toBeTruthy();
+      expect(formGroup.get('id').errors).toBeNull();
     });
 
     it('should detect not allowed rule id pattern', () => {
@@ -64,8 +64,8 @@ describe('ManagementRuleValidators', () => {
         id: ['ÀÖØöøÿ ', ManagementRuleValidators.ruleIdPattern],
       });
 
-      expect(formGroup.invalid).toBeTruthy('Form group must be invalid');
-      expect(formGroup.get('id').errors).toBeTruthy('Id control must have errors');
+      expect(formGroup.invalid).toBeTruthy();
+      expect(formGroup.get('id').errors).toBeTruthy();
     });
   });
 });

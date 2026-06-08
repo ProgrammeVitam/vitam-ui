@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Inject, ModuleWithProviders, NgModule, provideAppInitializer } from '@angular/core';
+import { ModuleWithProviders, NgModule, provideAppInitializer, inject } from '@angular/core';
 import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
 import { first, tap } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
@@ -57,6 +57,10 @@ import { OidcAuthenticatorService } from './services/oidc-authenticator.service'
   ],
 })
 export class AuthenticationModule {
+  private configService = inject(ConfigService);
+  private oAuthService = inject(OAuthService);
+  private location = inject(WINDOW_LOCATION);
+
   private static loading: Promise<any> = null;
 
   private static loadModule() {
@@ -65,12 +69,9 @@ export class AuthenticationModule {
     return result;
   }
 
-  constructor(
-    private configService: ConfigService,
-    private oAuthService: OAuthService,
-    @Inject(WINDOW_LOCATION) private location: any,
-    authService: AuthService,
-  ) {
+  constructor() {
+    const authService = inject(AuthService);
+
     AuthenticationModule.loading = this.configService.config$
       .pipe(
         first((config) => !!config),

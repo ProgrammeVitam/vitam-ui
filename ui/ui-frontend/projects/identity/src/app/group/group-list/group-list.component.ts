@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 
 import {
@@ -59,6 +59,9 @@ import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
   standalone: false,
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
+  groupService: GroupService;
+  private locale = inject(LOCALE_ID);
+
   @Output() groupClick = new EventEmitter<Group>();
 
   private updatedGroupSub: Subscription;
@@ -85,11 +88,12 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
 
   levelFilterOptions: Array<{ value: string; label: string }> = [];
 
-  constructor(
-    public groupService: GroupService,
-    @Inject(LOCALE_ID) private locale: string,
-  ) {
+  constructor() {
+    const groupService = inject(GroupService);
+
     super(groupService);
+
+    this.groupService = groupService;
   }
 
   ngOnInit() {

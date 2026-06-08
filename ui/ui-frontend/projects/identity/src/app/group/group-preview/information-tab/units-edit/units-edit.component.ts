@@ -39,7 +39,7 @@ import { take } from 'rxjs/operators';
 
 import { ConfirmDialogService, Group } from 'vitamui-library';
 
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -52,17 +52,20 @@ import { GroupService } from '../../../group.service';
   standalone: false,
 })
 export class UnitsEditComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<UnitsEditComponent>>(MatDialogRef);
+  data = inject<{
+    group: Group;
+  }>(MAT_DIALOG_DATA);
+  private groupService = inject(GroupService);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
 
-  constructor(
-    public dialogRef: MatDialogRef<UnitsEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { group: Group },
-    private groupService: GroupService,
-    private confirmDialogService: ConfirmDialogService,
-    formBuilder: FormBuilder,
-  ) {
+  constructor() {
+    const formBuilder = inject(FormBuilder);
+
     this.form = formBuilder.group({
       units: [this.data.group.units],
     });

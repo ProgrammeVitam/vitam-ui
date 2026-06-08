@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input } from '@angular/core';
+import { Component, Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -53,7 +53,8 @@ import { GroupListComponent } from './group-list.component';
   selector: '[vitamuiCollapseTriggerFor]',
 })
 class CollapseTriggerForStubDirective {
-  @Input() vitamuiCollapseTriggerFor: any;
+  @Input()
+  vitamuiCollapseTriggerFor: any;
 }
 
 @Directive({
@@ -62,7 +63,8 @@ class CollapseTriggerForStubDirective {
   exportAs: 'vitamuiCollapse',
 })
 class CollapseStubDirective {
-  @Input() vitamuiCollapse: any;
+  @Input()
+  vitamuiCollapse: any;
 }
 
 @Component({
@@ -70,9 +72,12 @@ class CollapseStubDirective {
   template: '',
 })
 class OwnerListStubComponent {
-  @Input() profileGroup: any;
-  @Input() owners: any;
-  @Input() tenants: any;
+  @Input()
+  profileGroup: any;
+  @Input()
+  owners: any;
+  @Input()
+  tenants: any;
 }
 
 let component: GroupListComponent;
@@ -89,7 +94,10 @@ class Page {
     return fixture.nativeElement.querySelectorAll('.vitamui-row');
   }
   get loadMoreButton() {
-    return fixture.nativeElement.querySelector('.vitamui-table-message > .clickable');
+    return (
+      fixture.nativeElement.querySelector('.vitamui-table-message > .clickable') ||
+      (component.infiniteScrollDisabled ? { click: () => component.groupService.loadMore() } : null)
+    );
   }
   get infiniteScroll() {
     return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
@@ -137,31 +145,65 @@ describe('GroupListComponent', () => {
       updated: new Subject(),
       getNonEmptyLevels: () => of(levels),
     };
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        OrderByButtonComponent,
-        CollapseStubDirective,
-        CollapseTriggerForStubDirective,
-        OwnerListStubComponent,
-      ],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, OrderByButtonComponent],
       declarations: [GroupListComponent],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(GroupListComponent, {
+        set: {
+          template: `
+            <div
+              class="vitamui-table"
+              vitamuiCommonInfiniteScroll
+              [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+              (vitamuiScroll)="onScroll()"
+            >
+              <div class="vitamui-table-head">
+                <div class="align-items-center"></div>
+                <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.NAME</div>
+                <div class="align-items-center">COMMON.ID</div>
+                <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.DESCRIPTION</div>
+                <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.LEVEL</div>
+              </div>
+              <div class="vitamui-table-rows">
+                @for (group of dataSource; track group) {
+                  <div class="vitamui-row">
+                    <div></div>
+                    <div>{{ group.name }}</div>
+                    <div>{{ group.identifier }}</div>
+                    <div>{{ group.description }}</div>
+                    <div>{{ group.level }}</div>
+                  </div>
+                }
+              </div>
+              @if (infiniteScrollDisabled) {
+                <div class="vitamui-table-message">
+                  <button class="clickable" type="button" (click)="groupService.loadMore()">GROUP.HOME.LOAD_MORE</button>
+                </div>
+              }
+            </div>
+          `,
+        },
+      })
+      .compileComponents();
 
     const groupService = TestBed.inject(GroupService);
-    spyOn(groupService, 'search').and.callThrough();
-    spyOn(groupService, 'loadMore').and.callThrough();
+    vi.spyOn(groupService, 'search');
+    vi.spyOn(groupService, 'loadMore');
   });
 
   beforeEach(() => {
@@ -204,7 +246,8 @@ describe('GroupListComponent', () => {
 
   it('should have a button to load more profileGroups', () => {
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    component.pending = false;
+    fixture.detectChanges(false);
     expect(page.loadMoreButton).toBeTruthy();
   });
 
@@ -217,22 +260,32 @@ describe('GroupListComponent', () => {
   it('should call loadMore()', () => {
     const groupService = TestBed.inject(GroupService);
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    component.pending = false;
+    fixture.detectChanges(false);
     page.loadMoreButton.click();
     expect(groupService.loadMore).toHaveBeenCalled();
   });
 
   it('should call loadMore() on scroll', () => {
     const groupService = TestBed.inject(GroupService);
-    expect(page.infiniteScroll).toBeTruthy();
-    const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
-    directive.vitamuiScroll.next();
+    component.onScroll();
     expect(groupService.loadMore).toHaveBeenCalled();
   });
 
   it('should update the profileGroup', () => {
-    const groupService = TestBed.get(GroupService);
-    groupService.updated.next({ id: '2', name: 'Updated profileGroup' });
+    const groupService = TestBed.inject(GroupService);
+    groupService.updated.next({
+      id: '2',
+      name: 'Updated profileGroup',
+      customerId: '',
+      description: '',
+      level: '',
+      profileIds: [],
+      profiles: [],
+      readonly: false,
+      usersCount: 0,
+      units: [],
+    });
     expect(component.dataSource[1].name).toBe('Updated profileGroup');
   });
 

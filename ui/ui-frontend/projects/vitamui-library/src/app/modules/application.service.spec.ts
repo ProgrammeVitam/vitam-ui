@@ -50,7 +50,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;
   let appService: ApplicationService;
-  const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+  const routerSpy = {
+    navigate: vi.fn().mockName('Router.navigate'),
+  };
 
   beforeEach(() => {
     const authStubService = { token: 'fakeToken', user: {}, getAnyTenantIdentifier: () => 10 };
@@ -88,23 +90,28 @@ describe('ApplicationService', () => {
   }));
 
   it('should call /fake-api/ui/applications/filtered?filterApp=true', () => {
-    appService.list().subscribe((response) => {
-      expect(response.APPLICATION_CONFIGURATION).toEqual([
-        {
-          id: 'account',
-          identifier: ApplicationId.ACCOUNTS_APP,
-          url: 'http://app-test-2.vitamui.com',
-          icon: 'vitamui-icon vitamui-icon-user',
-          name: 'Mon compte',
-          category: 'users',
-          position: 7,
-          hasHighlight: false,
-          hasCustomerList: false,
-          hasTenantList: false,
-          target: '',
-        } as Application,
-      ]);
-    }, fail);
+    appService.list().subscribe(
+      (response) => {
+        expect(response.APPLICATION_CONFIGURATION).toEqual([
+          {
+            id: 'account',
+            identifier: ApplicationId.ACCOUNTS_APP,
+            url: 'http://app-test-2.vitamui.com',
+            icon: 'vitamui-icon vitamui-icon-user',
+            name: 'Mon compte',
+            category: 'users',
+            position: 7,
+            hasHighlight: false,
+            hasCustomerList: false,
+            hasTenantList: false,
+            target: '',
+          } as Application,
+        ]);
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/ui/applications/filtered?filterApp=true');
     expect(req.request.method).toEqual('GET');
     req.flush({
@@ -128,8 +135,13 @@ describe('ApplicationService', () => {
   });
 
   it('should return an empty list if the API returns an error', () => {
-    appService.list().subscribe((response) => {
-      expect(response).toEqual({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: [] });
-    }, fail);
+    appService.list().subscribe(
+      (response) => {
+        expect(response).toEqual({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: [] });
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
   });
 });

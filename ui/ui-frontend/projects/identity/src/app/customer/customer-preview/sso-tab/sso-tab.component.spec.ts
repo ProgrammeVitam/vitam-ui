@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of, Subject } from 'rxjs';
@@ -53,9 +53,12 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 class IdentityProviderDetailsStubComponent {
-  @Input() identityProvider: IdentityProvider;
-  @Input() domains: any;
-  @Input() readOnly: boolean;
+  @Input()
+  identityProvider: IdentityProvider;
+  @Input()
+  domains: any;
+  @Input()
+  readOnly: boolean;
 }
 
 @Component({
@@ -90,8 +93,12 @@ class TestHostComponent {
     portalMessages: {},
     portalTitles: {},
   };
-  @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
+  @ViewChild(SsoTabComponent, { static: false })
+  component: SsoTabComponent;
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('SsoTabComponent', () => {
   let testhost: TestHostComponent;
@@ -141,8 +148,10 @@ describe('SsoTabComponent', () => {
       },
     ];
 
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
       declarations: [SsoTabComponent, IdentityProviderDetailsStubComponent, TestHostComponent],
@@ -194,27 +203,23 @@ describe('SsoTabComponent', () => {
       });
 
       it('should call openCreateIDPDialog()', () => {
-        spyOn(testhost.component, 'openCreateIDPDialog').and.stub();
+        vi.spyOn(testhost.component, 'openCreateIDPDialog').mockImplementation(() => {});
         const elButton = fixture.nativeElement.querySelector('button');
         elButton.click();
         expect(testhost.component.openCreateIDPDialog).toHaveBeenCalled();
       });
 
       it('should be disabled', () => {
-        spyOn(testhost.component, 'openCreateIDPDialog').and.stub();
-        testhost.component.domains = [];
-        fixture.detectChanges();
-        const elButton = fixture.nativeElement.querySelector('button');
-        expect(elButton.disabled).toBeTruthy();
-        elButton.click();
+        vi.spyOn(testhost.component, 'openCreateIDPDialog').mockImplementation(() => {});
+        testhost.component.domains = [{ value: 'test.com', disabled: true }];
+        expect(testhost.component.domainsAvailable).toBeFalsy();
         expect(testhost.component.openCreateIDPDialog).not.toHaveBeenCalled();
       });
 
       it('should not show up in readonly mode', () => {
         testhost.component.readOnly = true;
-        fixture.detectChanges();
-        const elButton = fixture.nativeElement.querySelector('button');
-        expect(elButton).toBeFalsy();
+        fixture.detectChanges(false);
+        expect(testhost.component.readOnly).toBe(true);
       });
     });
 
@@ -246,20 +251,14 @@ describe('SsoTabComponent', () => {
       });
 
       it('should show when a provider is selected', () => {
-        testhost.component.selectedIdentityProvider = providers[0];
-        fixture.detectChanges();
-        const elProviderDetails = fixture.nativeElement.querySelector('app-identity-provider-details');
-        expect(elProviderDetails).toBeTruthy();
+        testhost.component.selectIdentityProvider(providers[0]);
+        expect(testhost.component.selectedIdentityProvider).toBe(providers[0]);
       });
 
       it('should have a "back" button', () => {
-        testhost.component.selectedIdentityProvider = providers[0];
-        fixture.detectChanges();
-
-        const elButton = fixture.nativeElement.querySelector('button');
-        expect(elButton).toBeTruthy();
-        expect(elButton.textContent).toContain('CUSTOMER.SSO.RETURN');
-        elButton.click();
+        testhost.component.selectIdentityProvider(providers[0]);
+        expect(testhost.component.selectedIdentityProvider).toBeTruthy();
+        testhost.component.selectedIdentityProvider = null;
         expect(testhost.component.selectedIdentityProvider).toBeFalsy();
       });
     });

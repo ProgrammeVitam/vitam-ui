@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
@@ -81,8 +81,10 @@ describe('SimpleCriteriaSearchComponent', () => {
   let schema: BehaviorSubject<ItemNode<SchemaElement>[]>;
 
   beforeEach(async () => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     schema = new BehaviorSubject<ItemNode<SchemaElement>[]>([]);
     const schemaServiceMock = {
@@ -130,7 +132,7 @@ describe('SimpleCriteriaSearchComponent', () => {
       keyElt: null,
     };
 
-    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+    vi.spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject');
 
     // When
     component.addCriteria(criteria as SearchCriteriaAddAction);
@@ -166,7 +168,7 @@ describe('SimpleCriteriaSearchComponent', () => {
       },
     };
 
-    spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject').and.callThrough();
+    vi.spyOn(archiveExchangeDataServiceMock, 'addSimpleSearchCriteriaSubject');
 
     // When
     component.addCriteria(criteria as SearchCriteriaAddAction);
@@ -175,9 +177,9 @@ describe('SimpleCriteriaSearchComponent', () => {
     expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).toHaveBeenCalled();
   });
 
-  describe('DOM', () => {
-    it('should have 4 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', () => {
-      // Given
+  it('should have 4 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', fakeAsync(() => {
+    // Given
+    setTimeout(() =>
       schema.next([
         {
           item: {
@@ -186,20 +188,23 @@ describe('SimpleCriteriaSearchComponent', () => {
           } as SchemaElement,
           children: [],
         },
-      ]);
-      fixture.detectChanges();
+      ]),
+    );
+    tick(0);
+    fixture.detectChanges();
 
-      // When
-      const nativeElement = fixture.nativeElement;
-      const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
-      const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
+    // When
+    const nativeElement = fixture.nativeElement;
+    const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
+    const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
 
-      // Then
-      expect(editableInputs.length).toBe(4);
-      expect(formFieldValueWrapper.length).toBe(0);
-    });
-    it('should have 3 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', () => {
-      // Given
+    // Then
+    expect(editableInputs.length).toBe(4);
+    expect(formFieldValueWrapper.length).toBe(0);
+  }));
+  it('should have 3 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', fakeAsync(() => {
+    // Given
+    setTimeout(() =>
       schema.next([
         {
           item: {
@@ -209,17 +214,18 @@ describe('SimpleCriteriaSearchComponent', () => {
           } as SchemaElement,
           children: [],
         },
-      ]);
-      fixture.detectChanges();
+      ]),
+    );
+    tick(0);
+    fixture.detectChanges();
 
-      // When
-      const nativeElement = fixture.nativeElement;
-      const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
-      const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
+    // When
+    const nativeElement = fixture.nativeElement;
+    const editableInputs = nativeElement.querySelectorAll('vitamui-common-editable-input');
+    const formFieldValueWrapper = nativeElement.querySelectorAll('vitamui-form-field-value-wrapper');
 
-      // Then
-      expect(editableInputs.length).toBe(3);
-      expect(formFieldValueWrapper.length).toBe(1);
-    });
-  });
+    // Then
+    expect(editableInputs.length).toBe(3);
+    expect(formFieldValueWrapper.length).toBe(1);
+  }));
 });

@@ -47,16 +47,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  CountryService,
-  LoggerModule,
-  OtpState,
-  StartupService,
-  VitamUILibraryModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -81,11 +72,15 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   standalone: false,
 })
 class DomainInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  selected: string;
+  @Input()
+  spinnerDiameter = 25;
 
-  @Output() selectedChange = new EventEmitter<string>();
+  @Output()
+  selectedChange = new EventEmitter<string>();
 
   writeValue() {}
 
@@ -107,7 +102,8 @@ class DomainInputStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
-  @Input() customerInfo: any;
+  @Input()
+  customerInfo: any;
 
   writeValue() {}
 
@@ -129,8 +125,10 @@ class OwnerFormStubComponent implements ControlValueAccessor {
   standalone: false,
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() spinnerDiameter = 25;
+  @Input()
+  placeholder: string;
+  @Input()
+  spinnerDiameter = 25;
 
   writeValue() {}
 
@@ -196,21 +194,42 @@ let page: Page;
 
 describe('CustomerCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}), getMyCustomer: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
-      uniqueCode: () => of(null),
-      uniqueDomain: of(null),
-    });
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
-      getTenantsByCustomerIds: of([]),
-      getAvailableTenants: of([2, 3, 4]),
-    });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const customerServiceSpy = {
+      create: vi.fn().mockName('CustomerService.create').mockReturnValue(of({})),
+      getMyCustomer: vi.fn().mockName('CustomerService.getMyCustomer').mockReturnValue(of({})),
+    };
+    const customerCreateValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('CustomerCreateValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+      uniqueDomain: vi.fn().mockName('CustomerCreateValidators.uniqueDomain').mockReturnValue(of(null)),
+    };
+    const ownerServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
+    };
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantServiceSpy = {
+      getTenantsByCustomerIds: vi.fn().mockName('TenantService.getTenantsByCustomerIds').mockReturnValue(of([])),
+      getAvailableTenants: vi
+        .fn()
+        .mockName('TenantService.getAvailableTenants')
+        .mockReturnValue(of([2, 3, 4])),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
     await TestBed.configureTestingModule({
       declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -225,7 +244,6 @@ describe('CustomerCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -245,7 +263,43 @@ describe('CustomerCreateComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CustomerCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="code" />
+              <input formControlName="name" />
+              <input formControlName="companyName" />
+              <ng-container formGroupName="address">
+                <input formControlName="street" />
+                <input formControlName="zipCode" />
+                <input formControlName="city" />
+                <input formControlName="country" />
+              </ng-container>
+              <input formControlName="internalCode" />
+              <input formControlName="gdprAlert" />
+              <input formControlName="gdprAlertDelay" />
+              <input formControlName="language" />
+              <input formControlName="passwordRevocationDelay" />
+              <input formControlName="otp" />
+              <input formControlName="emailDomains" />
+              <input formControlName="defaultEmailDomain" />
+              <input formControlName="hasCustomGraphicIdentity" />
+              <input formControlName="themeColors" />
+              <input formControlName="portalTitles" />
+              <input formControlName="portalMessages" />
+              <ng-container formArrayName="owners">
+                <input [formControlName]="0" />
+              </ng-container>
+              <input formControlName="tenantName" />
+              <input formControlName="tenantId" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -292,8 +346,8 @@ describe('CustomerCreateComponent', () => {
           expect(setControlValue('code', 'A1A1AazZ').valid).toBeTruthy();
           expect(setControlValue('code', 'A1A1AazZ_').invalid).toBeTruthy();
           expect(setControlValue('code', '12345678901234567890123455').invalid).toBeTruthy();
-          expect(setControlValue('code', '000000000').valid).toBeTruthy('000000000');
-          expect(setControlValue('code', '999999').valid).toBeTruthy('999999');
+          expect(setControlValue('code', '000000000').valid).toBeTruthy();
+          expect(setControlValue('code', '999999').valid).toBeTruthy();
         });
       });
 

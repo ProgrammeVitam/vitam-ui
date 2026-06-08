@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -45,7 +45,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe],
 })
 export class DialogComponent implements OnInit {
-  constructor(private dialog: MatDialog) {}
+  private dialog = inject(MatDialog);
 
   ngOnInit() {
     this.openDialog();

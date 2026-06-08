@@ -35,8 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { CommonModule } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
@@ -59,7 +58,6 @@ import { EntryOperationValidatorService } from './entry-operation-validator.serv
   templateUrl: './originating-agency-reassignment-dialog.component.html',
   styleUrls: ['./originating-agency-reassignment-dialog.component.scss'],
   imports: [
-    CommonModule,
     TranslatePipe,
     MatDialogModule,
     DialogHeaderComponent,
@@ -71,27 +69,24 @@ import { EntryOperationValidatorService } from './entry-operation-validator.serv
   ],
 })
 export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnDestroy {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<OriginatingAgencyReassignmentDialogComponent>>(MatDialogRef);
+  dialog = inject(MatDialog);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private agencyService = inject(AgencyService);
+  private entryOperationValidator = inject(EntryOperationValidatorService);
+  data = inject<{
+    itemSelected: number;
+    reassignmentMode: ReassignmentMode;
+    tenantIdentifier?: number;
+    accessContract?: string;
+  }>(MAT_DIALOG_DATA);
+
   form: FormGroup;
   originatingAgenciesOptions: VitamuiSelectOptions = { options: [] };
   itemSelected: number;
   reassignmentMode: ReassignmentMode;
   private destroy$ = new Subject<void>();
-
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<OriginatingAgencyReassignmentDialogComponent>,
-    public dialog: MatDialog,
-    private confirmDialogService: ConfirmDialogService,
-    private agencyService: AgencyService,
-    private entryOperationValidator: EntryOperationValidatorService,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      itemSelected: number;
-      reassignmentMode: ReassignmentMode;
-      tenantIdentifier?: number;
-      accessContract?: string;
-    },
-  ) {}
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;

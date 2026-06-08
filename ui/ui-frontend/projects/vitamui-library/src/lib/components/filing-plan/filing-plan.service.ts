@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Injectable, LOCALE_ID, inject } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
@@ -63,13 +63,11 @@ export enum FilingPlanMode {
   providedIn: 'root',
 })
 export class FilingPlanService {
-  private _pending = 0;
+  private searchUnitApi = inject(SearchUnitApiService);
+  private accessContractService = inject(AccessContractService);
+  private locale = inject(LOCALE_ID);
 
-  constructor(
-    private searchUnitApi: SearchUnitApiService,
-    private accessContractService: AccessContractService,
-    @Inject(LOCALE_ID) private locale: string,
-  ) {}
+  private _pending = 0;
 
   get pending(): boolean {
     return this._pending > 0;

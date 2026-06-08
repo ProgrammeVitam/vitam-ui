@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -61,6 +61,10 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class OntologyInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+  private ontologyService = inject(OntologyService);
+  private securityService = inject(SecurityService);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
   disabled = true;
@@ -112,11 +116,7 @@ export class OntologyInformationTabComponent {
     }, {} as Partial<Ontology>);
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ontologyService: OntologyService,
-    private securityService: SecurityService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       identifier: [{ value: null, disabled: true }, Validators.required],
       shortName: [{ value: null, disabled: true }, Validators.required],

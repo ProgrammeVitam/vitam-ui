@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -53,6 +53,11 @@ const DEBOUNCE_TIME = 400;
   standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
+  private formBuilder = inject(FormBuilder);
+  private hierarchyService = inject(HierarchyService);
+  private profileValidators = inject(ProfileValidators);
+  private authService = inject(AuthService);
+
   form: FormGroup;
   userLevel: string;
   previousValue: {
@@ -68,12 +73,7 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
 
   private updateSub: Subscription;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private hierarchyService: HierarchyService,
-    private profileValidators: ProfileValidators,
-    private authService: AuthService,
-  ) {
+  constructor() {
     this.userLevel = this.authService.user.level;
     this.form = this.formBuilder.group({
       name: [null, Validators.required],

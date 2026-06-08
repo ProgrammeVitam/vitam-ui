@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
@@ -56,14 +56,12 @@ const REMOVE_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.REMOVE';
 
 @Injectable()
 export class EditObjectService {
-  constructor(
-    private schemaService: SchemaService,
-    private typeService: TypeService,
-    private dataService: DataStructureService,
-    private pathService: PathService,
-    private formBuilder: FormBuilder,
-    private logger: Logger,
-  ) {}
+  private schemaService = inject(SchemaService);
+  private typeService = inject(TypeService);
+  private dataService = inject(DataStructureService);
+  private pathService = inject(PathService);
+  private formBuilder = inject(FormBuilder);
+  private logger = inject(Logger);
 
   public editObject(path: string, data: any, template: DisplayRule[], schema: Schema): EditObject {
     const schemaPath = this.schemaService.normalize(path);

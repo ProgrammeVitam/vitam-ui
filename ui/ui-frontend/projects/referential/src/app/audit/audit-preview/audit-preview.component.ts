@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, input, OnInit, Output, Signal } from '@angular/core';
+import { Component, computed, EventEmitter, input, OnInit, Output, Signal, inject } from '@angular/core';
 import {
   Event,
   ExternalParameters,
@@ -67,6 +67,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class AuditPreviewComponent implements OnInit {
+  private auditService = inject(AuditService);
+  private externalParameterService = inject(ExternalParametersService);
+  private snackBarService = inject(SnackBarService);
+
   audit: Signal<Event> = input.required<Event>();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
@@ -100,12 +104,6 @@ export class AuditPreviewComponent implements OnInit {
       ].includes(status) || status?.endsWith('FATAL')
     );
   });
-
-  constructor(
-    private auditService: AuditService,
-    private externalParameterService: ExternalParametersService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

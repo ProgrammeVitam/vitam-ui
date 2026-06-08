@@ -1,9 +1,11 @@
 <div class="vitamui-body">
   <div class="vitamui-container">
     <div class="row">
-      <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4" *ngFor="let option of tenants" (click)="selectTenantIdentifier(option.value)">
-        <div class="tenant-box clickable"><i class="vitamui-icon vitamui-icon-safe"></i> <span [innerHTML]="option.label"></span></div>
-      </div>
+      @for (option of tenants; track option) {
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4" (click)="selectTenantIdentifier(option.value)">
+          <div class="tenant-box clickable"><i class="vitamui-icon vitamui-icon-safe"></i> <span [innerHTML]="option.label"></span></div>
+        </div>
+      }
     </div>
   </div>
 </div>

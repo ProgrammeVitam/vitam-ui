@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilingPlanMode, IngestContract } from 'vitamui-library';
@@ -47,6 +47,15 @@ import { IngestContractService } from '../../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<IngestContractNodeUpdateComponent>>(MatDialogRef);
+  data = inject<{
+    ingestContract: IngestContract;
+    accessContractId: string;
+    tenantIdentifier: number;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private ingestContractService = inject(IngestContractService);
+
   ingestContract: IngestContract;
   accessContractId: string;
   tenantIdentifier: number;
@@ -62,12 +71,7 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   checkParentIdControl = new FormControl();
   checkParentLinkControl = new FormControl();
 
-  constructor(
-    public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { ingestContract: IngestContract; accessContractId: string; tenantIdentifier: number },
-    private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService,
-  ) {
+  constructor() {
     this.accessContractId = this.data.accessContractId;
     this.ingestContract = this.data.ingestContract;
     this.tenantIdentifier = this.data.tenantIdentifier;

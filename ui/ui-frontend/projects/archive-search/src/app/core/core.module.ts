@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 
@@ -51,7 +51,9 @@ import { environment } from '../../environments/environment';
   ],
 })
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+  constructor() {
+    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
+
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Route, Router, Routes } from '@angular/router';
 import { VitamuiSelectOptions } from 'vitamui-library';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -48,6 +48,8 @@ import { RouteData } from './app-routing.module';
   standalone: false,
 })
 export class AppComponent {
+  private router = inject(Router);
+
   title = 'Design system App';
 
   routes: Routes;
@@ -55,11 +57,11 @@ export class AppComponent {
   form: FormGroup;
   url: string;
 
-  constructor(
-    private router: Router,
-    fb: FormBuilder,
-    translateService: TranslateService,
-  ) {
+  constructor() {
+    const router = this.router;
+    const fb = inject(FormBuilder);
+    const translateService = inject(TranslateService);
+
     this.routes = router.config;
 
     function extractSearchData(context: string, route: Route, acc: VitamuiSelectOptions) {

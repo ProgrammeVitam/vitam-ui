@@ -64,7 +64,9 @@ describe('AuditPreviewComponent', () => {
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters),
     };
-    const snackBarSpy = jasmine.createSpyObj(['open']);
+    const snackBarSpy = {
+      open: vi.fn(),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [MockTruncatePipe],

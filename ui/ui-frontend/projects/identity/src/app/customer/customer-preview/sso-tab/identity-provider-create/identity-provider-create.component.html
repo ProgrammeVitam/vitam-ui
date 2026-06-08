@@ -56,160 +56,162 @@
       </mat-dialog-content>
 
       <mat-dialog-actions>
-        <button (click)="onSubmit()" class="btn primary" [disabled]="disableNextButton" *ngIf="!displayNextButton">
-          {{ 'COMMON.SUBMIT' | translate }}
-        </button>
-        <vitamui-next-step [disabled]="disableNextButton" *ngIf="displayNextButton"></vitamui-next-step>
+        @if (!displayNextButton) {
+          <button (click)="onSubmit()" class="btn primary" [disabled]="disableNextButton">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+        }
+        @if (displayNextButton) {
+          <vitamui-next-step [disabled]="disableNextButton"></vitamui-next-step>
+        }
         <button type="button" class="btn cancel link" (click)="onCancel()">
           {{ 'COMMON.UNDO' | translate }}
         </button>
       </mat-dialog-actions>
     </cdk-step>
-    <cdk-step *ngIf="form.get('protocoleType').value !== 'CERTIFICAT'">
-      @if (form.get('protocoleType').value === 'SAML') {
-        <mat-dialog-content>
-          <div class="text small lighter mb-4">{{ 'CUSTOMER.SSO.MODAL.SUBTITLE_SAML' | translate }}</div>
-          <div class="row mt-3 align-items-center">
-            <div class="col-6 vitamui-input-file">
-              <mat-button-toggle-group
-                formControlName="authnRequestBinding"
-                #group="matButtonToggleGroup"
-                class="vitamui-button-toggle-group"
+    @if (form.get('protocoleType').value !== 'CERTIFICAT') {
+      <cdk-step>
+        @if (form.get('protocoleType').value === 'SAML') {
+          <mat-dialog-content>
+            <div class="text small lighter mb-4">{{ 'CUSTOMER.SSO.MODAL.SUBTITLE_SAML' | translate }}</div>
+            <div class="row mt-3 align-items-center">
+              <div class="col-6 vitamui-input-file">
+                <mat-button-toggle-group
+                  formControlName="authnRequestBinding"
+                  #group="matButtonToggleGroup"
+                  class="vitamui-button-toggle-group"
+                >
+                  <mat-button-toggle value="GET">GET </mat-button-toggle>
+                  <mat-button-toggle value="POST">POST </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+            <div class="row mt-3 align-items-center">
+              <div class="col-6 vitamui-input-file">
+                <label for="keystore">
+                  <span class="text link bold primary">{{ 'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate }}</span>
+                  <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
+                </label>
+                <input id="keystore" type="file" accept=".jks" (change)="setKeystore($event.target.files)" />
+              </div>
+            </div>
+            <div class="row mt-3 align-items-center">
+              <vitamui-input
+                class="col-6"
+                formControlName="keystorePassword"
+                type="password"
+                [placeholder]="'CUSTOMER.SSO.MODAL.KEYSTORE_PWD' | translate"
+                [errorMessageMap]="{ badPassword: 'CUSTOMER.SSO.MODAL.WRONG_PASSWORD' | translate }"
               >
-                <mat-button-toggle value="GET">GET </mat-button-toggle>
-                <mat-button-toggle value="POST">POST </mat-button-toggle>
-              </mat-button-toggle-group>
+              </vitamui-input>
             </div>
-          </div>
-          <div class="row mt-3 align-items-center">
-            <div class="col-6 vitamui-input-file">
-              <label for="keystore">
-                <span class="text link bold primary">{{ 'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate }}</span>
-                <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
+            <div class="mt-3 vitamui-input-file">
+              <label for="idpMetadata">
+                <span class="text link bold primary">{{ 'CUSTOMER.SSO.MODAL.UPLOAD_METADATA' | translate }}</span>
+                <div class="vitamui-input-file-filename">{{ idpMetadata?.name }}</div>
               </label>
-              <input id="keystore" type="file" accept=".jks" (change)="setKeystore($event.target.files)" />
+              <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)" />
             </div>
-          </div>
-          <div class="row mt-3 align-items-center">
-            <vitamui-input
-              class="col-6"
-              formControlName="keystorePassword"
-              type="password"
-              [placeholder]="'CUSTOMER.SSO.MODAL.KEYSTORE_PWD' | translate"
-              [errorMessageMap]="{ badPassword: 'CUSTOMER.SSO.MODAL.WRONG_PASSWORD' | translate }"
-            >
-            </vitamui-input>
-          </div>
-
-          <div class="mt-3 vitamui-input-file">
-            <label for="idpMetadata">
-              <span class="text link bold primary">{{ 'CUSTOMER.SSO.MODAL.UPLOAD_METADATA' | translate }}</span>
-              <div class="vitamui-input-file-filename">{{ idpMetadata?.name }}</div>
-            </label>
-            <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)" />
-          </div>
-
-          <div class="row">
-            <vitamui-input
-              class="col-6"
-              formControlName="maximumAuthenticationLifetime"
-              [placeholder]="'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate"
-            >
-            </vitamui-input>
-            <div class="row ml-0">
-              <vitamui-slide-toggle formControlName="wantsAssertionsSigned" class="col-12">
-                <span>{{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}</span>
-              </vitamui-slide-toggle>
-
-              <vitamui-slide-toggle formControlName="authnRequestSigned" class="col-12">
-                <span>{{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}</span>
-              </vitamui-slide-toggle>
-              <vitamui-slide-toggle formControlName="propagateLogout" class="col-12">
-                <span>{{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}</span>
-              </vitamui-slide-toggle>
-            </div>
-          </div>
-        </mat-dialog-content>
-        <mat-dialog-actions>
-          <div>
-            <button (click)="onSubmit()" type="submit" class="btn primary" [disabled]="!isFormValid">
-              {{ 'COMMON.SUBMIT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <vitamui-previous-step></vitamui-previous-step>
-        </mat-dialog-actions>
-      } @else {
-        <mat-dialog-content>
-          <div class="text small lighter mb-3 oidc-row">{{ 'CUSTOMER.SSO.MODAL.SUBTITLE_OIDC' | translate }}</div>
-          <div class="gap-3 align-items-stretch">
-            <div class="oidc-row">
-              <vitamui-input class="col-11 p-0" formControlName="clientId" [placeholder]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate">
+            <div class="row">
+              <vitamui-input
+                class="col-6"
+                formControlName="maximumAuthenticationLifetime"
+                [placeholder]="'CUSTOMER.SSO.MAXIMUM_AUTHENTICATION_LIFETIME' | translate"
+              >
               </vitamui-input>
-            </div>
-            <div class="oidc-row">
-              <vitamui-input class="col-11 p-0" formControlName="clientSecret" [placeholder]="'CUSTOMER.SSO.CLIENT_SECRET' | translate">
-              </vitamui-input>
-            </div>
-            <div class="oidc-row">
-              <vitamui-input class="col-11 p-0" formControlName="discoveryUrl" [placeholder]="'CUSTOMER.SSO.URL_DISCOVERY' | translate">
-              </vitamui-input>
-            </div>
-            <div class="oidc-row">
-              <vitamui-input class="col-11 p-0" formControlName="scope" [placeholder]="'CUSTOMER.SSO.PERIMETER' | translate">
-              </vitamui-input>
-            </div>
-
-            <div class="hgap-4">
-              <vitamui-select
-                formControlName="preferredJwsAlgorithm"
-                [placeholder]="'CUSTOMER.SSO.JWS_ALGORITHME' | translate"
-                [options]="jwsAlgorithms"
-                [multiple]="false"
-                [enableSearch]="false"
-              ></vitamui-select>
-              <div>
-                <vitamui-slide-toggle formControlName="useState" class="col-6">
-                  <span>{{ 'CUSTOMER.SSO.STATEFUL' | translate }}</span>
+              <div class="row ml-0">
+                <vitamui-slide-toggle formControlName="wantsAssertionsSigned" class="col-12">
+                  <span>{{ 'CUSTOMER.SSO.WANTS_ASSERTION_SIGNED' | translate }}</span>
                 </vitamui-slide-toggle>
-                <vitamui-slide-toggle formControlName="usePkce" class="col-6">
-                  <span>{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</span>
+                <vitamui-slide-toggle formControlName="authnRequestSigned" class="col-12">
+                  <span>{{ 'CUSTOMER.SSO.AUTHN_REQUEST_SIGNED' | translate }}</span>
                 </vitamui-slide-toggle>
-                <vitamui-slide-toggle class="col-6" formControlName="useNonce">
-                  <span>{{ 'CUSTOMER.SSO.USE_NONCE' | translate }}</span>
-                </vitamui-slide-toggle>
-                <vitamui-slide-toggle class="col-6" formControlName="propagateLogout">
+                <vitamui-slide-toggle formControlName="propagateLogout" class="col-12">
                   <span>{{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}</span>
                 </vitamui-slide-toggle>
               </div>
             </div>
+          </mat-dialog-content>
+          <mat-dialog-actions>
             <div>
-              <div class="text small lighter mb-4 oidc-row">
-                <label class="custom-label">{{ 'SHARED.EDITABLE_PARAMS.CUSTOM_SETTINGS' | translate }} </label>
-              </div>
-              <app-custom-params
-                formControlName="customParams"
-                [keyPlaceholder]="'SHARED.EDITABLE_PARAMS.KEY'"
-                [valuePlaceholder]="'SHARED.EDITABLE_PARAMS.VALUE'"
-              >
-              </app-custom-params>
+              <button (click)="onSubmit()" type="submit" class="btn primary" [disabled]="!isFormValid">
+                {{ 'COMMON.SUBMIT' | translate }}
+              </button>
+              <button type="button" class="btn cancel link" (click)="onCancel()">
+                {{ 'COMMON.UNDO' | translate }}
+              </button>
             </div>
-          </div>
-        </mat-dialog-content>
-        <mat-dialog-actions>
-          <div>
-            <button type="button" (click)="onSubmit()" class="btn primary" [disabled]="!form.valid">
-              {{ 'COMMON.SUBMIT' | translate }}
-            </button>
-            <button type="button" class="btn cancel link" (click)="onCancel()">
-              {{ 'COMMON.UNDO' | translate }}
-            </button>
-          </div>
-          <vitamui-previous-step></vitamui-previous-step>
-        </mat-dialog-actions>
-      }
-    </cdk-step>
+            <vitamui-previous-step></vitamui-previous-step>
+          </mat-dialog-actions>
+        } @else {
+          <mat-dialog-content>
+            <div class="text small lighter mb-3 oidc-row">{{ 'CUSTOMER.SSO.MODAL.SUBTITLE_OIDC' | translate }}</div>
+            <div class="gap-3 align-items-stretch">
+              <div class="oidc-row">
+                <vitamui-input class="col-11 p-0" formControlName="clientId" [placeholder]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate">
+                </vitamui-input>
+              </div>
+              <div class="oidc-row">
+                <vitamui-input class="col-11 p-0" formControlName="clientSecret" [placeholder]="'CUSTOMER.SSO.CLIENT_SECRET' | translate">
+                </vitamui-input>
+              </div>
+              <div class="oidc-row">
+                <vitamui-input class="col-11 p-0" formControlName="discoveryUrl" [placeholder]="'CUSTOMER.SSO.URL_DISCOVERY' | translate">
+                </vitamui-input>
+              </div>
+              <div class="oidc-row">
+                <vitamui-input class="col-11 p-0" formControlName="scope" [placeholder]="'CUSTOMER.SSO.PERIMETER' | translate">
+                </vitamui-input>
+              </div>
+              <div class="hgap-4">
+                <vitamui-select
+                  formControlName="preferredJwsAlgorithm"
+                  [placeholder]="'CUSTOMER.SSO.JWS_ALGORITHME' | translate"
+                  [options]="jwsAlgorithms"
+                  [multiple]="false"
+                  [enableSearch]="false"
+                ></vitamui-select>
+                <div>
+                  <vitamui-slide-toggle formControlName="useState" class="col-6">
+                    <span>{{ 'CUSTOMER.SSO.STATEFUL' | translate }}</span>
+                  </vitamui-slide-toggle>
+                  <vitamui-slide-toggle formControlName="usePkce" class="col-6">
+                    <span>{{ 'CUSTOMER.SSO.USE_PKCE' | translate }}</span>
+                  </vitamui-slide-toggle>
+                  <vitamui-slide-toggle class="col-6" formControlName="useNonce">
+                    <span>{{ 'CUSTOMER.SSO.USE_NONCE' | translate }}</span>
+                  </vitamui-slide-toggle>
+                  <vitamui-slide-toggle class="col-6" formControlName="propagateLogout">
+                    <span>{{ 'CUSTOMER.SSO.PROPAGATE_LOGOUT' | translate }}</span>
+                  </vitamui-slide-toggle>
+                </div>
+              </div>
+              <div>
+                <div class="text small lighter mb-4 oidc-row">
+                  <label class="custom-label">{{ 'SHARED.EDITABLE_PARAMS.CUSTOM_SETTINGS' | translate }} </label>
+                </div>
+                <app-custom-params
+                  formControlName="customParams"
+                  [keyPlaceholder]="'SHARED.EDITABLE_PARAMS.KEY'"
+                  [valuePlaceholder]="'SHARED.EDITABLE_PARAMS.VALUE'"
+                >
+                </app-custom-params>
+              </div>
+            </div>
+          </mat-dialog-content>
+          <mat-dialog-actions>
+            <div>
+              <button type="button" (click)="onSubmit()" class="btn primary" [disabled]="!form.valid">
+                {{ 'COMMON.SUBMIT' | translate }}
+              </button>
+              <button type="button" class="btn cancel link" (click)="onCancel()">
+                {{ 'COMMON.UNDO' | translate }}
+              </button>
+            </div>
+            <vitamui-previous-step></vitamui-previous-step>
+          </mat-dialog-actions>
+        }
+      </cdk-step>
+    }
   </vitamui-stepper>
 </form>

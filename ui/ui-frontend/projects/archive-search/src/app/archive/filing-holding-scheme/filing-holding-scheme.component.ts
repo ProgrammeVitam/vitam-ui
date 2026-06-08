@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -63,6 +63,11 @@ import { NodeData } from '../models/nodedata.interface';
   standalone: false,
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
+  private translateService = inject(TranslateService);
+  private archiveService = inject(ArchiveService);
+  private route = inject(ActivatedRoute);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
   private subscriptions = new Subscription();
@@ -89,12 +94,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
     LEAVE: false,
   };
 
-  constructor(
-    private translateService: TranslateService,
-    private archiveService: ArchiveService,
-    private route: ActivatedRoute,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {
+  constructor() {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });

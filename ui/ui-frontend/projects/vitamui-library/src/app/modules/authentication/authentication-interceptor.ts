@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
 import { first, switchMap } from 'rxjs/operators';
@@ -43,10 +43,8 @@ import { ConfigService } from '../config.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  constructor(
-    private authStorage: OAuthStorage,
-    private configService: ConfigService,
-  ) {}
+  private authStorage = inject(OAuthStorage);
+  private configService = inject(ConfigService);
 
   private checkUrl(url: string): boolean {
     const found = this.configService.config.ALLOWED_URLS.find((u) => url.includes(u));

@@ -8,47 +8,55 @@
   <div class="header-actions">
     <ng-content select="[extended-content]"></ng-content>
 
-    <div class="d-flex align-items-center user-alerts" *ngIf="userAlerts">
-      <vitamui-common-user-alerts-menu
-        [userAlerts]="userAlerts"
-        [hasMoreAlerts]="hasMoreAlerts"
-        (openAlert)="openAlert($event)"
-        (closeAlert)="removeAlert($event)"
-        (seeMoreAlerts)="seeMoreAlerts()"
-      >
-      </vitamui-common-user-alerts-menu>
-    </div>
+    @if (userAlerts) {
+      <div class="d-flex align-items-center user-alerts">
+        <vitamui-common-user-alerts-menu
+          [userAlerts]="userAlerts"
+          [hasMoreAlerts]="hasMoreAlerts"
+          (openAlert)="openAlert($event)"
+          (closeAlert)="removeAlert($event)"
+          (seeMoreAlerts)="seeMoreAlerts()"
+        >
+        </vitamui-common-user-alerts-menu>
+      </div>
+    }
 
-    <div class="d-flex align-items-center" *ngIf="hasSiteSelection">
-      <vitamui-common-select-site></vitamui-common-select-site>
-    </div>
+    @if (hasSiteSelection) {
+      <div class="d-flex align-items-center">
+        <vitamui-common-select-site></vitamui-common-select-site>
+      </div>
+    }
 
-    <div class="d-flex align-items-center" *ngIf="hasLangSelection">
-      <vitamui-common-select-language [displayMode]="'select'"></vitamui-common-select-language>
-    </div>
+    @if (hasLangSelection) {
+      <div class="d-flex align-items-center">
+        <vitamui-common-select-language [displayMode]="'select'"></vitamui-common-select-language>
+      </div>
+    }
 
     <div class="d-flex align-items-center" [class.selection]="hasTenantSelection || hasCustomerSelection">
       <!-- tenant selection -->
-      <vitamui-common-item-select
-        *ngIf="hasTenantSelection"
-        [label]="'SELECT_TENANT.SELECT' | translate"
-        [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
-        [items]="appTenants"
-        [selectedItem]="selectedTenant"
-        (itemSelected)="updateTenant($event)"
-      >
-      </vitamui-common-item-select>
+      @if (hasTenantSelection) {
+        <vitamui-common-item-select
+          [label]="'SELECT_TENANT.SELECT' | translate"
+          [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
+          [items]="appTenants"
+          [selectedItem]="selectedTenant"
+          (itemSelected)="updateTenant($event)"
+        >
+        </vitamui-common-item-select>
+      }
 
       <!-- customer selection -->
-      <vitamui-common-item-select
-        *ngIf="hasCustomerSelection"
-        [label]="'SELECT_CUSTOMER.SELECT' | translate"
-        [selectedLabel]="'SELECT_CUSTOMER.SELECTED' | translate"
-        [items]="customers"
-        [selectedItem]="selectedCustomer"
-        (itemSelected)="updateCustomer($event)"
-      >
-      </vitamui-common-item-select>
+      @if (hasCustomerSelection) {
+        <vitamui-common-item-select
+          [label]="'SELECT_CUSTOMER.SELECT' | translate"
+          [selectedLabel]="'SELECT_CUSTOMER.SELECTED' | translate"
+          [items]="customers"
+          [selectedItem]="selectedCustomer"
+          (itemSelected)="updateCustomer($event)"
+        >
+        </vitamui-common-item-select>
+      }
     </div>
 
     <div class="d-flex align-items-center pl-3 mr-4 account" [matMenuTriggerFor]="accountMenu">
@@ -65,10 +73,14 @@
       <div class="account-menu">
         <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
           <ng-container>
-            <button mat-menu-item [routerLink]="['/account']" *ngIf="hasAccountProfile">{{ 'HEADER.MY_ACCOUNT' | translate }}</button>
-            <button mat-menu-item (click)="enabledSubrogation()" *ngIf="!!!currentUser?.superUser">
-              {{ 'HEADER.NAVIGATE_AS' | translate }}
-            </button>
+            @if (hasAccountProfile) {
+              <button mat-menu-item [routerLink]="['/account']">{{ 'HEADER.MY_ACCOUNT' | translate }}</button>
+            }
+            @if (!!!currentUser?.superUser) {
+              <button mat-menu-item (click)="enabledSubrogation()">
+                {{ 'HEADER.NAVIGATE_AS' | translate }}
+              </button>
+            }
             <button mat-menu-item (click)="logout()">{{ 'HEADER.LOGOUT' | translate }}</button>
           </ng-container>
         </mat-menu>

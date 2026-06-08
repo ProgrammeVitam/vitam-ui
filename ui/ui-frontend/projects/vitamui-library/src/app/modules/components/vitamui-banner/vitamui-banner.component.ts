@@ -36,13 +36,12 @@
  */
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'vitamui-banner',
   templateUrl: './vitamui-banner.component.html',
   styleUrls: ['./vitamui-banner.component.scss'],
-  imports: [CommonModule, SearchBarComponent],
+  imports: [SearchBarComponent],
 })
 export class VitamuiBannerComponent {
   @Input() searchbarPlaceholder: string;

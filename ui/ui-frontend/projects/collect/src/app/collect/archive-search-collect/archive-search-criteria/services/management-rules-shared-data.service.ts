@@ -36,7 +36,7 @@
  */
 
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Rule, RuleApiService, SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
 import { ActionsRules, ManagementRules } from '../models/rule-action.interface';
@@ -45,6 +45,8 @@ import { ActionsRules, ManagementRules } from '../models/rule-action.interface';
   providedIn: 'root',
 })
 export class ManagementRulesSharedDataService {
+  private ruleApiService = inject(RuleApiService);
+
   private accessContract = new BehaviorSubject<string>('');
   private selectedItems = new BehaviorSubject<number>(0);
   private criteriaSearchListToSave = new BehaviorSubject<SearchCriteriaEltDto[]>([]);
@@ -61,8 +63,6 @@ export class ManagementRulesSharedDataService {
   allRuleActions = this.ruleActions.asObservable();
   allManagementRules = this.managementRules.asObservable();
   hasExactCounts = this.hasExactCount.asObservable();
-
-  constructor(private ruleApiService: RuleApiService) {}
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);

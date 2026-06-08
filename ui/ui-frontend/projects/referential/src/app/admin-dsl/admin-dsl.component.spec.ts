@@ -50,7 +50,9 @@ import { TranslateModule } from '@ngx-translate/core';
 describe('AdminDslComponent', () => {
   let component: AdminDslComponent;
   let fixture: ComponentFixture<AdminDslComponent>;
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   const adminDslValue = {
     id: 'id',
@@ -61,6 +63,10 @@ describe('AdminDslComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(AdminDslComponent, {
+      set: { template: '' },
+    });
+
     const adminDslServiceMock = {
       getByDsl: () => of({}),
     };

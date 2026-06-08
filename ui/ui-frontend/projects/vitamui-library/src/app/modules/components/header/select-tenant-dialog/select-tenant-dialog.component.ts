@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { StartupService } from './../../../startup.service';
 import { MenuOption } from '../../../models/menu-option.interface';
-import { CommonModule } from '@angular/common';
+
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ItemSelectModule } from '../item-select/item-select.module';
@@ -47,9 +47,13 @@ import { ItemSelectModule } from '../item-select/item-select.module';
   selector: 'vitamui-common-select-tenant-dialog',
   templateUrl: './select-tenant-dialog.component.html',
   styleUrls: ['./select-tenant-dialog.component.scss'],
-  imports: [CommonModule, MatButtonModule, TranslatePipe, ItemSelectModule, MatDialogModule],
+  imports: [MatButtonModule, TranslatePipe, ItemSelectModule, MatDialogModule],
 })
 export class SelectTenantDialogComponent implements OnInit {
+  private dialogRef = inject<MatDialogRef<SelectTenantDialogComponent>>(MatDialogRef);
+  private data = inject(MAT_DIALOG_DATA);
+  private startupService = inject(StartupService);
+
   public static readonly SELECT_TENANT_DIALOG_CONFIG: MatDialogConfig = {
     disableClose: true,
     panelClass: 'small',
@@ -57,12 +61,6 @@ export class SelectTenantDialogComponent implements OnInit {
   public selectedTenant: MenuOption;
   public tenants: MenuOption[];
   public platformName: string;
-
-  constructor(
-    private dialogRef: MatDialogRef<SelectTenantDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: any,
-    private startupService: StartupService,
-  ) {}
 
   ngOnInit() {
     this.tenants = this.data.tenants;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -49,6 +49,9 @@ import { ManagementContractService } from '../../management-contract.service';
   standalone: false,
 })
 export class ManagementContractStorageTabComponent implements OnDestroy {
+  private formBuilder = inject(FormBuilder);
+  private managementContractService = inject(ManagementContractService);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
   submited = false;
@@ -93,10 +96,7 @@ export class ManagementContractStorageTabComponent implements OnDestroy {
     return this._inputManagementContract?.storage;
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private managementContractService: ManagementContractService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       unitStrategy: [null, Validators.required],
       objectGroupStrategy: [null, Validators.required],

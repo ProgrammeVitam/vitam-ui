@@ -62,9 +62,9 @@ describe('VitamuiTreeNodeComponent', () => {
     fixture = TestBed.createComponent(VitamuiTreeNodeComponent);
     component = fixture.componentInstance;
 
-    spyOn(component.nodeToggle, 'emit');
-    spyOn(component.checkboxClick, 'emit');
-    spyOn(component.labelClick, 'emit');
+    vi.spyOn(component.nodeToggle, 'emit');
+    vi.spyOn(component.checkboxClick, 'emit');
+    vi.spyOn(component.labelClick, 'emit');
     component.node = node;
 
     fixture.detectChanges();

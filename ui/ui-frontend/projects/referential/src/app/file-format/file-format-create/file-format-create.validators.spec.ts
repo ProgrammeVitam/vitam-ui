@@ -43,9 +43,11 @@ import { FileFormatCreateValidators } from './file-format-create.validators';
 describe('FileFormat Create Validators', () => {
   describe('uniqueName', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(false));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(false));
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -54,9 +56,11 @@ describe('FileFormat Create Validators', () => {
     }));
 
     it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -65,9 +69,11 @@ describe('FileFormat Create Validators', () => {
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      fileFormatServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy);
+      const fileFormatServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
+      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -76,9 +82,11 @@ describe('FileFormat Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
@@ -89,9 +97,11 @@ describe('FileFormat Create Validators', () => {
 
   describe('uniquePuid', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(false));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(false));
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -100,9 +110,11 @@ describe('FileFormat Create Validators', () => {
     }));
 
     it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniquePuid()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ puidExists: true });
       });
@@ -111,9 +123,11 @@ describe('FileFormat Create Validators', () => {
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const fileFormatServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      fileFormatServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy);
+      const fileFormatServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      fileFormatServiceSpy.existsProperties.mockReturnValue(of(true));
+      const customerCreateValidators = new FileFormatCreateValidators(fileFormatServiceSpy as any);
       from(customerCreateValidators.uniquePuid('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -122,9 +136,11 @@ describe('FileFormat Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('FileFormatService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        existsProperties: vi.fn().mockName('FileFormatService.existsProperties'),
+      };
+      customerServiceSpy.existsProperties.mockReturnValue(of(true));
+      const customerCreateValidators = new FileFormatCreateValidators(customerServiceSpy as any);
       from(customerCreateValidators.uniquePuid('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ puidExists: true });
       });

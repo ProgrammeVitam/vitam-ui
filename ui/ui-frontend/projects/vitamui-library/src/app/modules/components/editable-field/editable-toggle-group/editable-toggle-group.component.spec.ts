@@ -36,7 +36,7 @@
  */
 /* eslint-disable no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -60,8 +60,12 @@ class TesthostComponent {
   label = 'Test label';
   maxlength = 42;
 
-  @ViewChild(EditableToggleGroupComponent) component: EditableToggleGroupComponent;
+  @ViewChild(EditableToggleGroupComponent)
+  component: EditableToggleGroupComponent;
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('EditableToggleGroupComponent', () => {
   let testhost: TesthostComponent;
@@ -91,7 +95,7 @@ describe('EditableToggleGroupComponent', () => {
 
   describe('DOM', () => {
     it('should call enterEditMode() on click', () => {
-      spyOn(testhost.component, 'enterEditMode');
+      vi.spyOn(testhost.component, 'enterEditMode');
       const element = fixture.nativeElement.querySelector('.editable-field');
       element.click();
       expect(testhost.component.enterEditMode).toHaveBeenCalled();
@@ -119,15 +123,15 @@ describe('EditableToggleGroupComponent', () => {
 
     it('should open then close the action buttons', () => {
       testhost.component.enterEditMode();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeTruthy();
       testhost.component.cancel();
-      fixture.detectChanges();
+      fixture.detectChanges(false);
       expect(overlayContainerElement.querySelector('.editable-field-actions')).toBeFalsy();
     });
 
     it('should have a confirm button', () => {
-      spyOn(testhost.component, 'confirm');
+      vi.spyOn(testhost.component, 'confirm');
       testhost.component.enterEditMode();
       testhost.component.control.markAsDirty();
       fixture.detectChanges();
@@ -138,7 +142,7 @@ describe('EditableToggleGroupComponent', () => {
     });
 
     it('should have a cancel button', () => {
-      spyOn(testhost.component, 'cancel');
+      vi.spyOn(testhost.component, 'cancel');
       testhost.component.enterEditMode();
       fixture.detectChanges();
       const elButton = overlayContainerElement.querySelector('.editable-field-actions button.editable-field-cancel') as HTMLButtonElement;
@@ -148,14 +152,14 @@ describe('EditableToggleGroupComponent', () => {
     });
 
     it('should have a spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(true);
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(true);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeTruthy();
     });
 
     it('should hide the spinner', () => {
-      spyOnProperty(testhost.component, 'showSpinner').and.returnValue(false);
+      vi.spyOn(testhost.component as any, 'showSpinner', 'get').mockReturnValue(false);
       fixture.detectChanges();
       const elSpinner = fixture.nativeElement.querySelector('.editable-field mat-spinner');
       expect(elSpinner).toBeFalsy();

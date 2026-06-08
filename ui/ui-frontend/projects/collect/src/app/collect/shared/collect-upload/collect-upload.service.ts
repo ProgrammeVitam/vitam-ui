@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import JSZip from 'jszip';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -46,6 +46,8 @@ import { VitamuiHttpHeaders } from 'vitamui-library';
   providedIn: 'root',
 })
 export class CollectUploadService {
+  private httpClient = inject(HttpClient);
+
   private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
   zipFile: JSZip;
   private filesToUploadSubject$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
@@ -53,7 +55,7 @@ export class CollectUploadService {
   private zippedFile: CollectZippedUploadFile = null;
   private watchZippedFile$: BehaviorSubject<CollectZippedUploadFile> = new BehaviorSubject<CollectZippedUploadFile>(null);
 
-  constructor(private httpClient: HttpClient) {
+  constructor() {
     this.zipFile = new JSZip();
   }
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'vitamui-library';
@@ -50,18 +50,19 @@ import { firstValueFrom } from 'rxjs';
   standalone: false,
 })
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
+  dialog = inject(MatDialog);
+  private applicationService = inject(ApplicationService);
+
   search = '';
 
   @ViewChild(SecurityProfileListComponent, { static: true }) contextListComponent: SecurityProfileListComponent;
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('SECURITY_PROFILE').pipe(shareReplay(1));
 
-  constructor(
-    public dialog: MatDialog,
-    route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private applicationService: ApplicationService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
   }
 

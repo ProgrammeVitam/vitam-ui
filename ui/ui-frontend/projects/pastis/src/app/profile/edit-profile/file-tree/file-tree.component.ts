@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -134,6 +134,17 @@ function constantToTranslate() {
   standalone: false,
 })
 export class FileTreeComponent implements OnInit, OnDestroy {
+  fileTreeService = inject(FileTreeService);
+  profileService = inject(ProfileService);
+  private fileService = inject(FileService);
+  private fileMetadataService = inject(FileTreeMetadataService);
+  private sedaService = inject(SedaService);
+  private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
+  private translateService = inject(TranslateService);
+  private logger = inject(Logger);
+  private cdr = inject(ChangeDetectorRef);
+  private snackBarService = inject(SnackBarService);
+
   static archiveUnits: FileNode;
   static uaIdAndPosition = new Map<any, number>();
   private static ROOT_LEVEL = 1;
@@ -191,19 +202,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   text: string;
 
   private subscriptions = new Subscription();
-
-  constructor(
-    public fileTreeService: FileTreeService,
-    public profileService: ProfileService,
-    private fileService: FileService,
-    private fileMetadataService: FileTreeMetadataService,
-    private sedaService: SedaService,
-    private sedaLanguageService: PastisPopupMetadataLanguageService,
-    private translateService: TranslateService,
-    private logger: Logger,
-    private cdr: ChangeDetectorRef,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit(): void {
     if (!this.isStandalone) {

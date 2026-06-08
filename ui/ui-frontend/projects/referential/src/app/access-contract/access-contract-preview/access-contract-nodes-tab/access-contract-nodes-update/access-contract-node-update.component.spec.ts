@@ -100,13 +100,24 @@ const expectedCustomer: Customer = {
 };
 
 // TODO fix tests with filling plan
-xdescribe('AccessContractNodeUpdateComponent', () => {
+
+describe('Skipped spec placeholder', () => {
+  it('TODO fix tests with filling plan', () => {
+    expect(true).toBe(true);
+  });
+});
+
+describe.skip('AccessContractNodeUpdateComponent', () => {
   let component: AccessContractNodeUpdateComponent;
   let fixture: ComponentFixture<AccessContractNodeUpdateComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const snackBarSpy = {
+      open: vi.fn().mockName('SnackBarService.open'),
+    };
     await TestBed.configureTestingModule({
       declarations: [AccessContractNodeUpdateComponent],
       imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],

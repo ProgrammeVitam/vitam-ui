@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { FileNode } from '../../models/file-node';
 import { finalize, mergeMap, Observable, switchMap } from 'rxjs';
@@ -49,10 +49,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ArchiveUnitProfileSaverService {
-  constructor(
-    private profileService: ProfileService,
-    private toggleService: ToggleSidenavService,
-  ) {}
+  private profileService = inject(ProfileService);
+  private toggleService = inject(ToggleSidenavService);
 
   create(profileDescription: ProfileDescription, data: FileNode[]): Observable<ArchivalProfileUnit> {
     this.toggleService.showPending();

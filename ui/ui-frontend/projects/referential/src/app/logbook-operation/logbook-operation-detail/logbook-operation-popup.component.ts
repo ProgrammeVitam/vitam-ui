@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -50,10 +50,10 @@ import { ActivatedRoute } from '@angular/router';
   standalone: false,
 })
 export class LogbookOperationPopupComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+
   eventId: string;
   tenantIdentifier: number;
-
-  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.eventId = this.route.snapshot.paramMap.get('id');

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule, Location } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, Input, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationId } from '../../application-id.enum';
 import { ApplicationService } from '../../application.service';
@@ -50,19 +50,17 @@ import { VitamuiBreadcrumbComponent } from './vitamui-breadcrumb/vitamui-breadcr
   selector: 'vitamui-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
   styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
-  imports: [CommonModule, TranslateModule, VitamuiBreadcrumbComponent],
+  imports: [TranslateModule, VitamuiBreadcrumbComponent],
 })
 export class VitamuiTitleBreadcrumbComponent {
+  location = inject(Location);
+  private applicationService = inject(ApplicationService);
+  private router = inject(Router);
+  private startupService = inject(StartupService);
+  private logger = inject(Logger);
+
   @Input()
   public data?: BreadCrumbData[];
-
-  constructor(
-    public location: Location,
-    private applicationService: ApplicationService,
-    private router: Router,
-    private startupService: StartupService,
-    private logger: Logger,
-  ) {}
 
   public navigateTo(data: BreadCrumbData): void {
     if (data.redirectUrl) {

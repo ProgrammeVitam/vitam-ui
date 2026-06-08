@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -45,9 +45,13 @@ import { OntologyService } from '../ontology.service';
   providedIn: 'root',
 })
 export class OntologyCreateValidators {
-  private debounceTime = 400;
+  private ontologyService: OntologyService;
 
-  constructor(private ontologyService: OntologyService) {}
+  constructor(ontologyService: OntologyService = inject(OntologyService)) {
+    this.ontologyService = ontologyService;
+  }
+
+  private debounceTime = 400;
 
   uniqueID = (): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {

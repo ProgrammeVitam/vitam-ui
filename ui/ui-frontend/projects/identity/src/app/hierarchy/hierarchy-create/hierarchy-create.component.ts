@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription, forkJoin } from 'rxjs';
@@ -58,18 +58,16 @@ import { HierarchyService } from '../hierarchy.service';
   standalone: false,
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<HierarchyCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  authService = inject(AuthService);
+  private formBuilder = inject(FormBuilder);
+  private hierarchyService = inject(HierarchyService);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   form: FormGroup;
 
   private keyPressSubscription: Subscription;
-
-  constructor(
-    public dialogRef: MatDialogRef<HierarchyCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public authService: AuthService,
-    private formBuilder: FormBuilder,
-    private hierarchyService: HierarchyService,
-    private confirmDialogService: ConfirmDialogService,
-  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({

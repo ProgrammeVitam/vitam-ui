@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 
@@ -45,9 +45,11 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-dr
   selector: 'vitamui-drag-drop-file',
   templateUrl: './vitamui-drag-drop-file.component.html',
   styleUrls: ['./vitamui-drag-drop-file.component.scss'],
-  imports: [CommonModule, MatIconModule, DragAndDropDirective],
+  imports: [MatIconModule, DragAndDropDirective],
 })
 export class VitamuiDragDropFileComponent {
+  private translateService = inject(TranslateService);
+
   private IMAGE_TYPE_PREFIX = 'image';
   private imageToUpload: File = null;
   private lastImageUploaded: File = null;
@@ -94,8 +96,6 @@ export class VitamuiDragDropFileComponent {
   public delete = new EventEmitter<void>();
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
-
-  constructor(private translateService: TranslateService) {}
 
   private isFileList(files: FileList | File[]): files is FileList {
     return files instanceof FileList;

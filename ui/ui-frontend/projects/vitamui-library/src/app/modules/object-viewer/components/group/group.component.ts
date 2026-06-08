@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { DisplayObject } from '../../models';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
@@ -48,6 +48,9 @@ import { DisplayObjectType } from '../../types';
   standalone: false,
 })
 export class GroupComponent implements OnInit, OnChanges {
+  private layoutService = inject(LayoutService);
+  private favoriteEntryService = inject(FavoriteEntryService);
+
   @Input() displayObject: DisplayObject;
 
   favoriteEntry: [key: string, value: any];
@@ -57,11 +60,6 @@ export class GroupComponent implements OnInit, OnChanges {
 
   readonly DisplayObjectType = DisplayObjectType;
   readonly entries = Object.entries;
-
-  constructor(
-    private layoutService: LayoutService,
-    private favoriteEntryService: FavoriteEntryService,
-  ) {}
 
   ngOnInit(): void {
     if (this.displayObject.key !== 'Generalities') {

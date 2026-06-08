@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,6 +50,10 @@ import { IngestContractService } from '../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractFormatTabComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  private ingestContractService = inject(IngestContractService);
+  private fileFormatService = inject(FileFormatService);
+
   @Input() tenantIdentifier: number;
 
   @Input() set ingestContract(ingestContract: IngestContract) {
@@ -94,11 +98,7 @@ export class IngestContractFormatTabComponent implements OnInit {
     };
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService,
-    private fileFormatService: FileFormatService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       everyFormatType: [true, Validators.required],
       formatType: [null],

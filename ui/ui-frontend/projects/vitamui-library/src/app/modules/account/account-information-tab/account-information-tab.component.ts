@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Account } from '../../models/account/account.interface';
@@ -46,6 +46,8 @@ import { Account } from '../../models/account/account.interface';
   standalone: false,
 })
 export class AccountInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+
   public form: FormGroup;
 
   public language: string;
@@ -63,7 +65,7 @@ export class AccountInformationTabComponent {
   }
   private _account: Account;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     this.form = this.formBuilder.group({
       id: [null],
       firstname: [{ value: null, disabled: true }, Validators.required],

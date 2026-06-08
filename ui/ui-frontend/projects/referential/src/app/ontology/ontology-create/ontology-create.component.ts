@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -42,16 +42,23 @@ import { ConfirmDialogService, setTypeDetailAndStringSize, VitamUICommonModule, 
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 import { collections, sizes, types } from '../ontology-form-options';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
   styleUrls: ['./ontology-create.component.scss'],
-  imports: [CommonModule, MatDialogModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [MatDialogModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<OntologyCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private ontologyService = inject(OntologyService);
+  private ontologyCreateValidator = inject(OntologyCreateValidators);
+
   form: FormGroup;
   hasCustomGraphicIdentity = false;
   hasError = true;
@@ -65,15 +72,6 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   private keyPressSubscription: Subscription;
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
-
-  constructor(
-    public dialogRef: MatDialogRef<OntologyCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private ontologyService: OntologyService,
-    private ontologyCreateValidator: OntologyCreateValidators,
-  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({

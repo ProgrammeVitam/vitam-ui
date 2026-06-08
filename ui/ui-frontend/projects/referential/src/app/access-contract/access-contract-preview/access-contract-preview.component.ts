@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -50,6 +50,9 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
   standalone: false,
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private accessContractService = inject(AccessContractService);
+
   @Input() accessContract: AccessContract;
   @Input() tenantIdentifier: number;
 
@@ -64,11 +67,6 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   @ViewChild('infoTab', { static: false }) infoTab: AccessContractInformationTabComponent;
   @ViewChild('authorizationsTab', { static: false }) authorizationsTab: AccessContractAuthorizationsTabComponent;
   @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
-
-  constructor(
-    private matDialog: MatDialog,
-    private accessContractService: AccessContractService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

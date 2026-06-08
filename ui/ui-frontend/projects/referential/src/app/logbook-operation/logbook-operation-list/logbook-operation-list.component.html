@@ -30,65 +30,57 @@
   </div>
 
   <div class="vitamui-table-body">
-    <div class="vitamui-table-rows" *ngFor="let event of dataSource" (click)="handleClick(event)">
-      <div class="vitamui-row d-flex align-items-center clickable">
-        <div class="col-2 d-flex align-items-center text break">
-          <div class="mr-3"><i [ngClass]="event | eventTypeBadgeClass"></i></div>
-          <div class="overflow-hidden">{{ event.id }}</div>
-        </div>
-        <div class="col-3" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">
-          <vitamui-common-event-type-label [key]="event.typeProc"></vitamui-common-event-type-label>
-        </div>
-
-        <div class="col-2" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">
-          <vitamui-common-event-type-label [key]="manageOperationLabel(event.type)"></vitamui-common-event-type-label>
-        </div>
-
-        <div class="col-1">
-          <div>{{ event?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
-          <div class="text normal light">{{ event?.dateTime | dateTime: 'HH:mm:ss' }}</div>
-        </div>
-
-        <div class="col-1">
-          <div>{{ (event | lastEvent)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
-          <div class="text normal light">{{ (event | lastEvent)?.dateTime | dateTime: 'HH:mm:ss' }}</div>
-        </div>
-
-        <div class="col-1" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">{{ (event | lastEvent)?.outcome }}</div>
-        <div class="col-2" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2" [ngClass]="event | eventTypeColorClass">
-          <vitamui-common-event-type-label [key]="(event | lastEvent)?.type"></vitamui-common-event-type-label>
+    @for (event of dataSource; track event) {
+      <div class="vitamui-table-rows" (click)="handleClick(event)">
+        <div class="vitamui-row d-flex align-items-center clickable">
+          <div class="col-2 d-flex align-items-center text break">
+            <div class="mr-3"><i [ngClass]="event | eventTypeBadgeClass"></i></div>
+            <div class="overflow-hidden">{{ event.id }}</div>
+          </div>
+          <div class="col-3" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">
+            <vitamui-common-event-type-label [key]="event.typeProc"></vitamui-common-event-type-label>
+          </div>
+          <div class="col-2" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">
+            <vitamui-common-event-type-label [key]="manageOperationLabel(event.type)"></vitamui-common-event-type-label>
+          </div>
+          <div class="col-1">
+            <div>{{ event?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+            <div class="text normal light">{{ event?.dateTime | dateTime: 'HH:mm:ss' }}</div>
+          </div>
+          <div class="col-1">
+            <div>{{ (event | lastEvent)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+            <div class="text normal light">{{ (event | lastEvent)?.dateTime | dateTime: 'HH:mm:ss' }}</div>
+          </div>
+          <div class="col-1" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2">{{ (event | lastEvent)?.outcome }}</div>
+          <div class="col-2" vitamuiCommonEllipsis [vitamuiCommonEllipsisLines]="2" [ngClass]="event | eventTypeColorClass">
+            <vitamui-common-event-type-label [key]="(event | lastEvent)?.type"></vitamui-common-event-type-label>
+          </div>
         </div>
       </div>
+    }
+  </div>
+
+  @if (!dataSource || pending) {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
     </div>
-  </div>
-
-  <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && logbookSearchService.canLoadMore && !pending; then loadMore"></div>
+  }
+  @if (!pending && dataSource?.length === 0) {
+    <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+  }
+  @if (infiniteScrollDisabled && logbookSearchService.canLoadMore && !pending) {
+    <div class="vitamui-min-content vitamui-table-message" (click)="logbookSearchService.loadMore()">
+      <span class="clickable">A{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+    </div>
+  }
 </div>
-
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
-</ng-template>
-
-<ng-template #loadMore>
-  <div class="vitamui-min-content vitamui-table-message" (click)="logbookSearchService.loadMore()">
-    <span class="clickable">A{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
-  </div>
-</ng-template>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
 
 <ng-template #operationFilterTemplate>
   <vitamui-common-table-filter [(filter)]="filterMap['operationCategories']" (filterChange)="onFilterChange('operationCategories', $event)">
-    <ng-container *ngFor="let operation of getOperationCategories()">
+    @for (operation of getOperationCategories(); track operation) {
       <vitamui-common-table-filter-option value="{{ operation }}">
         {{ 'LOGBOOK.OPERATIONS_CATEGORIES.' + operation | translate }}
       </vitamui-common-table-filter-option>
-    </ng-container>
+    }
   </vitamui-common-table-filter>
 </ng-template>

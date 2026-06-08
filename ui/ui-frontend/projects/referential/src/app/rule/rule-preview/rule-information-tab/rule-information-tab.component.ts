@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -52,6 +52,11 @@ const RULES_APP = 'RULES_APP';
   standalone: false,
 })
 export class RuleInformationTabComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
+  private securityService = inject(SecurityService);
+  private ruleService = inject(RuleService);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
@@ -93,12 +98,7 @@ export class RuleInformationTabComponent implements OnInit {
     }
   }
 
-  constructor(
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private securityService: SecurityService,
-    private ruleService: RuleService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
       ruleValue: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],

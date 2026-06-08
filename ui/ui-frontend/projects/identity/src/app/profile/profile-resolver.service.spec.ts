@@ -63,8 +63,12 @@ describe('ProfileResolver', () => {
   let profileResolver: ProfileResolver;
 
   beforeEach(() => {
-    const profileServiceSpy = jasmine.createSpyObj('ProfileService', ['get']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const profileServiceSpy = {
+      get: vi.fn().mockName('ProfileService.get'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     TestBed.configureTestingModule({
       providers: [ProfileResolver, { provide: ProfileService, useValue: profileServiceSpy }, { provide: Router, useValue: routerSpy }],
@@ -79,10 +83,10 @@ describe('ProfileResolver', () => {
 
   it('should get the profile with the id', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
 
     const rngProfileService = TestBed.inject(ProfileService);
-    rngProfileService.get = jasmine.createSpy().and.returnValue(of(expectedProfile));
+    rngProfileService.get = vi.fn().mockReturnValue(of(expectedProfile));
     profileResolver.resolve(route).subscribe((profile) => {
       expect(profile).toEqual(expectedProfile);
     });
@@ -93,9 +97,9 @@ describe('ProfileResolver', () => {
 
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
     const rngProfileService = TestBed.inject(ProfileService);
-    rngProfileService.get = jasmine.createSpy().and.returnValue(of(null));
+    rngProfileService.get = vi.fn().mockReturnValue(of(null));
     const router = TestBed.inject(Router);
     profileResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);

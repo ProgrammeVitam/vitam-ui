@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -48,6 +48,15 @@ import { ContextCreateValidators } from '../context-create/context-create.valida
   standalone: false,
 })
 export class ContextEditComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<ContextEditComponent>>(MatDialogRef);
+  data = inject<{
+    permissions: ContextPermission[];
+    enableControl: boolean;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private contextCreateValidators = inject(ContextCreateValidators);
+
   form: FormGroup;
   hasError = true;
   message: string;
@@ -57,13 +66,9 @@ export class ContextEditComponent implements OnInit, OnDestroy {
 
   private permissions: ContextPermission[];
 
-  constructor(
-    public dialogRef: MatDialogRef<ContextEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { permissions: ContextPermission[]; enableControl: boolean },
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private contextCreateValidators: ContextCreateValidators,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.permissions = data.permissions;
 
     let permissions: any[] = [];

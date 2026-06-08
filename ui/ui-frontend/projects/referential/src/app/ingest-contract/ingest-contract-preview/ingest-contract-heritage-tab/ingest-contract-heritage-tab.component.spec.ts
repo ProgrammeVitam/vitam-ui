@@ -74,6 +74,8 @@ describe('IngestContractHeritageTabComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(IngestContractHeritageTabComponent, { set: { template: '' } });
+
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [IngestContractHeritageTabComponent],

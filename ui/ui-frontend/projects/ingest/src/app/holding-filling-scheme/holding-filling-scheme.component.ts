@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalEventService, SidenavPage } from 'vitamui-library';
@@ -48,17 +48,21 @@ import { UploadComponent } from '../core/common/upload.component';
   standalone: false,
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
+  private router = inject(Router);
+  private route: ActivatedRoute;
+  dialog = inject(MatDialog);
+
   IngestType = IngestType;
 
   tenantIdentifier: string;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    public dialog: MatDialog,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+
+    this.route = route;
   }
 
   ngOnInit() {

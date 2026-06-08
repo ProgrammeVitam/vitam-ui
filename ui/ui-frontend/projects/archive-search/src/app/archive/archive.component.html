@@ -1,7 +1,9 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
-    <app-filing-holding-scheme (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"></app-filing-holding-scheme>
-  </mat-sidenav>
+  @if (foundAccessContract) {
+    <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" vitamuiCommonResizeSidebar="left">
+      <app-filing-holding-scheme (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"></app-filing-holding-scheme>
+    </mat-sidenav>
+  }
 
   <mat-sidenav
     [ngClass]="isLPExtended ? 'extended-lateral-panel' : 'normal-lateral-panel'"
@@ -10,14 +12,15 @@
     position="end"
     [fixedInViewport]="true"
   >
-    <app-archive-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      (showExtendedLateralPanel)="showExtendedLateralPanel()"
-      [archiveUnit]="openedItem"
-      (backToNormalLateralPanel)="backToNormalLateralPanel()"
-      [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
-    ></app-archive-preview>
+    @if (openedItem) {
+      <app-archive-preview
+        (previewClose)="closePanel()"
+        (showExtendedLateralPanel)="showExtendedLateralPanel()"
+        [archiveUnit]="openedItem"
+        (backToNormalLateralPanel)="backToNormalLateralPanel()"
+        [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
+      ></app-archive-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -26,20 +29,23 @@
         <h5>{{ 'APPLICATION.ARCHIVE_SEARCH_MANAGEMENT_APP.NAME' | translate }}</h5>
       </vitamui-title-breadcrumb>
     </div>
-    <div class="vitamui-content" *ngIf="foundAccessContract">
-      <div class="row">
-        <button
-          *ngIf="!show"
-          type="button"
-          class="btn secondary right-arround left-not-arround"
-          (click)="hiddenTreeBlock(show)"
-          [vitamuiTooltip]="'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate"
-          [vitamuiTooltipShowDelay]="300"
-        >
-          <i class="material-icons">chevron_right</i>
-        </button>
+    @if (foundAccessContract) {
+      <div class="vitamui-content">
+        <div class="row">
+          @if (!show) {
+            <button
+              type="button"
+              class="btn secondary right-arround left-not-arround"
+              (click)="hiddenTreeBlock(show)"
+              [vitamuiTooltip]="'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate"
+              [vitamuiTooltipShowDelay]="300"
+            >
+              <i class="material-icons">chevron_right</i>
+            </button>
+          }
+        </div>
+        <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)"> </app-archive-search>
       </div>
-      <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)"> </app-archive-search>
-    </div>
+    }
   </mat-sidenav-content>
 </mat-sidenav-container>

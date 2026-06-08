@@ -5,17 +5,17 @@
   $checkboxSize: 24px;
   $boxSize: 16px;
   .mat-mdc-checkbox {
-    --mdc-checkbox-state-layer-size: $checkboxSize;
+    --mat-checkbox-state-layer-size: $checkboxSize;
 
     &.mat-primary {
-      --mdc-checkbox-selected-checkmark-color: var(--vitamui-white);
+      --mat-checkbox-selected-checkmark-color: var(--vitamui-white);
 
-      --mdc-checkbox-unselected-icon-color: var(--vitamui-grey-700);
+      --mat-checkbox-unselected-icon-color: var(--vitamui-grey-700);
 
       --mat-checkbox-label-text-color: var(--vitamui-grey-900);
 
       --mat-checkbox-disabled-label-color: var(--vitamui-grey-700);
-      --mdc-checkbox-disabled-selected-checkmark-color: var(--vitamui-grey-700);
+      --mat-checkbox-disabled-selected-checkmark-color: var(--vitamui-grey-700);
     }
   }
   .mat-mdc-checkbox-touch-target {

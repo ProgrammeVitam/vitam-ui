@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import {
   ApiEvent,
   ApplicationId,
@@ -54,6 +54,10 @@ import { SecurisationService } from '../../securisation.service';
   standalone: false,
 })
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
+  private readonly securingService = inject(SecurisationService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private snackBarService = inject(SnackBarService);
+
   @Input() id: string;
   @Input() securisation: Event;
 
@@ -61,12 +65,6 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   display = false;
 
   accessContractId: string;
-
-  constructor(
-    private readonly securingService: SecurisationService,
-    private readonly externalParameterService: ExternalParametersService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

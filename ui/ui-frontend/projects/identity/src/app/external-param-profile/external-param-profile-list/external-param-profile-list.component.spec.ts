@@ -61,9 +61,15 @@ describe('ExternalParamProfileListComponent', () => {
   let component: ExternalParamProfileListComponent;
   let fixture: ComponentFixture<ExternalParamProfileListComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const profileServiceSpy = jasmine.createSpyObj('ProfileService', { create: of({}) });
-  const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { create: of({}) });
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const profileServiceSpy = {
+    create: vi.fn().mockName('ProfileService.create').mockReturnValue(of({})),
+  };
+  const profileValidatorsSpy = {
+    create: vi.fn().mockName('ProfileValidators.create').mockReturnValue(of({})),
+  };
 
   const externalParamListServiceSpy = {
     search: () => of([]),

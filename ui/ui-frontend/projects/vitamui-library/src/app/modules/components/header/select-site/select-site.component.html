@@ -11,8 +11,8 @@
     <i class="vitamui-icon vitamui-icon-chevron-down"></i>
   </div>
   <mat-menu #siteMenu="matMenu" [overlapTrigger]="false" xPosition="before">
-    <ng-container *ngFor="let site of sites">
+    @for (site of sites; track site) {
       <button mat-menu-item (click)="onSelectSite(site)">{{ site.code + ' - ' + site.name }}</button>
-    </ng-container>
+    }
   </mat-menu>
 </div>

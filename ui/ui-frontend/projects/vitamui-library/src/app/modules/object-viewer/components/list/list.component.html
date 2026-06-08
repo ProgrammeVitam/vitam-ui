@@ -1,14 +1,21 @@
-<ng-container *ngIf="!isPrimitiveList">
-  <ng-container *ngFor="let child of displayObject.children">
-    <vitamui-common-group *ngIf="child.type === DisplayObjectType.GROUP" [displayObject]="child"></vitamui-common-group>
-    <vitamui-common-list *ngIf="child.type === DisplayObjectType.LIST" [displayObject]="child"></vitamui-common-list>
-    <vitamui-common-primitive *ngIf="child.type === DisplayObjectType.PRIMITIVE" [displayObject]="child"></vitamui-common-primitive>
-  </ng-container>
-</ng-container>
+@if (!isPrimitiveList) {
+  @for (child of displayObject.children; track child) {
+    @if (child.type === DisplayObjectType.GROUP) {
+      <vitamui-common-group [displayObject]="child"></vitamui-common-group>
+    }
+    @if (child.type === DisplayObjectType.LIST) {
+      <vitamui-common-list [displayObject]="child"></vitamui-common-list>
+    }
+    @if (child.type === DisplayObjectType.PRIMITIVE) {
+      <vitamui-common-primitive [displayObject]="child"></vitamui-common-primitive>
+    }
+  }
+}
 
-<vitamui-common-data
-  *ngIf="isPrimitiveList"
-  [label]="displayObject.displayRule.ui.label | translate"
-  [value]="displayObject.value.length === 1 ? displayObject.value[0] : displayObject.value"
->
-</vitamui-common-data>
+@if (isPrimitiveList) {
+  <vitamui-common-data
+    [label]="displayObject.displayRule.ui.label | translate"
+    [value]="displayObject.value.length === 1 ? displayObject.value[0] : displayObject.value"
+  >
+  </vitamui-common-data>
+}

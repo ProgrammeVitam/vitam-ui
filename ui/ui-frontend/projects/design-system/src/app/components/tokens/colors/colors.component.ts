@@ -36,13 +36,13 @@
  */
 import { Component } from '@angular/core';
 import { rgbToHsl, toHex } from 'vitamui-library';
-import { KeyValuePipe, NgClass, NgForOf } from '@angular/common';
+import { KeyValuePipe, NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './colors.component.html',
   styleUrls: ['./colors.component.scss'],
-  imports: [NgClass, TranslatePipe, KeyValuePipe, NgForOf],
+  imports: [NgClass, TranslatePipe, KeyValuePipe],
 })
 export class ColorsComponent {
   private hueIds = [900, 800, 700, 600, 500, 400, 300, 200, 100, 50];

@@ -1,23 +1,25 @@
 <mat-tab-group #matTabGroup [(selectedIndex)]="tabIndex">
-  <div *ngFor="let category of content | keyvalue">
-    <mat-tab label="{{ 'MENU.' + category.key.identifier | translate }}">
-      <ng-template matTabContent>
-        <div class="row category">
-          <ng-container
-            *ngIf="category.value.type === CONTENT_TYPE.APPLICATION"
-            [ngTemplateOutlet]="apps"
-            [ngTemplateOutletContext]="{ values: category.value.data }"
-          ></ng-container>
-        </div>
-      </ng-template>
-    </mat-tab>
-  </div>
+  @for (category of content | keyvalue; track category) {
+    <div>
+      <mat-tab label="{{ 'MENU.' + category.key.identifier | translate }}">
+        <ng-template matTabContent>
+          <div class="row category">
+            @if (category.value.type === CONTENT_TYPE.APPLICATION) {
+              <ng-container [ngTemplateOutlet]="apps" [ngTemplateOutletContext]="{ values: category.value.data }"></ng-container>
+            }
+          </div>
+        </ng-template>
+      </mat-tab>
+    </div>
+  }
 </mat-tab-group>
 
 <ng-template #apps let-values="values">
-  <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let value of values">
-    <vitamui-application-card [application]="value">
-      <svg-icon src="{{ value.identifier }}" [svgStyle]="{ 'width.%': 60 }"></svg-icon>
-    </vitamui-application-card>
-  </div>
+  @for (value of values; track value) {
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+      <vitamui-application-card [application]="value">
+        <svg-icon src="{{ value.identifier }}" [svgStyle]="{ 'width.%': 60 }"></svg-icon>
+      </vitamui-application-card>
+    </div>
+  }
 </ng-template>

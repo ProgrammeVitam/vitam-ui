@@ -35,14 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BaseHttpClient, BASE_URL, Tenant } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TenantApiService extends BaseHttpClient<Tenant> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/tenants');
   }
 

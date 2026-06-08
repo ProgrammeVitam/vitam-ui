@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateProfilNoticeComponent } from './create-profil-notice.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from '../../core/services/profile.service';
 import { ApplicationService, InputComponent, SelectComponent, SlideToggleComponent } from 'vitamui-library';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileType } from '../../models/profile-type.enum';
@@ -50,22 +50,32 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 describe('CreateProfilNoticeComponent', () => {
   let component: CreateProfilNoticeComponent;
   let fixture: ComponentFixture<CreateProfilNoticeComponent>;
-  let mockDialogRef: jasmine.SpyObj<MatDialogRef<CreateProfilNoticeComponent>>;
-  let mockProfileService: jasmine.SpyObj<ProfileService>;
-  let mockAppService: jasmine.SpyObj<ApplicationService>;
-  let mockTranslate: jasmine.SpyObj<TranslateService>;
+  let mockDialogRef: any;
+  let mockProfileService: any;
+  let mockAppService: any;
+  let mockTranslate: any;
   let externalIdSubject: BehaviorSubject<boolean>;
 
   beforeEach(() => {
-    mockDialogRef = jasmine.createSpyObj('MatDialogRef', ['close']);
-    mockProfileService = jasmine.createSpyObj('ProfileService', ['checkPuaProfile', 'checkPaProfile', 'controlSchema']);
-    mockAppService = jasmine.createSpyObj('ApplicationService', ['isApplicationExternalIdentifierEnabled']);
+    mockDialogRef = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    mockProfileService = {
+      checkPuaProfile: vi.fn().mockName('ProfileService.checkPuaProfile'),
+      checkPaProfile: vi.fn().mockName('ProfileService.checkPaProfile'),
+      controlSchema: vi.fn().mockName('ProfileService.controlSchema'),
+    };
+    mockAppService = {
+      isApplicationExternalIdentifierEnabled: vi.fn().mockName('ApplicationService.isApplicationExternalIdentifierEnabled'),
+    };
     mockProfileService.controlSchema = new BehaviorSubject<string>(JSON.stringify({ additionalProperties: true }));
-    mockTranslate = jasmine.createSpyObj('TranslateService', ['instant']);
+    mockTranslate = {
+      instant: vi.fn().mockName('TranslateService.instant'),
+    };
 
-    mockTranslate.instant.and.callFake((key: string) => key);
+    mockTranslate.instant.mockImplementation((key: string) => key);
     externalIdSubject = new BehaviorSubject<boolean>(true);
-    mockAppService.isApplicationExternalIdentifierEnabled.and.returnValue(externalIdSubject.asObservable());
+    mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(externalIdSubject.asObservable());
 
     TestBed.configureTestingModule({
       imports: [
@@ -90,16 +100,16 @@ describe('CreateProfilNoticeComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should validate identifier via checkPaProfile when not PUA', fakeAsync(() => {
+  it('should validate identifier via checkPaProfile when not PUA', async () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
-    mockProfileService.checkPaProfile.and.returnValue(of(true));
+    mockProfileService.checkPaProfile.mockReturnValue(of(true));
     component.noticeForm.controls.identifier?.setValue('DUPLICATE');
 
-    expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(jasmine.objectContaining({ identifier: 'DUPLICATE' }));
-  }));
+    expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE' }));
+  });
 
-  it('should disable identifier validators if External ID is disabled', fakeAsync(() => {
+  it('should disable identifier validators if External ID is disabled', async () => {
     fixture.detectChanges();
     component.noticeForm.controls.profileType?.setValue(ProfileType.PUA);
 
@@ -111,59 +121,59 @@ describe('CreateProfilNoticeComponent', () => {
 
     const identifierCtrl = component.noticeForm.controls.identifier;
 
-    expect(component.externalIdentifierEnabledSignal()).toBeFalse();
+    expect(component.externalIdentifierEnabledSignal()).toBe(false);
 
-    expect(identifierCtrl?.hasValidator(Validators.required)).toBeFalse();
-    expect(identifierCtrl?.hasValidator(Validators.minLength(2))).toBeFalse();
-    expect(identifierCtrl?.hasValidator(Validators.maxLength(100))).toBeFalse();
+    expect(identifierCtrl?.hasValidator(Validators.required)).toBe(false);
+    expect(identifierCtrl?.hasValidator(Validators.minLength(2))).toBe(false);
+    expect(identifierCtrl?.hasValidator(Validators.maxLength(100))).toBe(false);
 
     identifierCtrl?.setValue('');
-    expect(identifierCtrl?.valid).toBeTrue();
+    expect(identifierCtrl?.valid).toBe(true);
     expect(identifierCtrl?.validator).toBeNull();
-  }));
+  });
 
-  it('should check PA and set isIdentifierOK to true if unique', fakeAsync(() => {
+  it('should check PA and set isIdentifierOK to true if unique', async () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
-    mockProfileService.checkPaProfile.and.returnValue(of(false));
+    mockProfileService.checkPaProfile.mockReturnValue(of(false));
     component.noticeForm.controls.identifier?.setValue('UNIQUE_TEST');
 
-    expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(jasmine.objectContaining({ identifier: 'UNIQUE_TEST' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBeFalse();
-  }));
+    expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_TEST' }));
+    expect(component.noticeForm.controls.identifier.invalid).toBe(false);
+  });
 
-  it('should check PA and alert if duplicated', fakeAsync(() => {
+  it('should check PA and alert if duplicated', async () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
-    mockAppService.isApplicationExternalIdentifierEnabled.and.returnValue(of(true));
-    mockProfileService.checkPaProfile.and.returnValue(of(true));
+    mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
+    mockProfileService.checkPaProfile.mockReturnValue(of(true));
 
     component.noticeForm.controls.identifier?.setValue('DUPLICATE_PA');
 
-    expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(jasmine.objectContaining({ identifier: 'DUPLICATE_PA' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBeTrue();
-  }));
+    expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_PA' }));
+    expect(component.noticeForm.controls.identifier.invalid).toBe(true);
+  });
 
-  it('should check PUA and set isIdentifierOK to true if unique', fakeAsync(() => {
+  it('should check PUA and set isIdentifierOK to true if unique', async () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
-    mockProfileService.checkPuaProfile.and.returnValue(of(false));
+    mockProfileService.checkPuaProfile.mockReturnValue(of(false));
     component.noticeForm.controls.identifier?.setValue('UNIQUE_PUA');
 
-    expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(jasmine.objectContaining({ identifier: 'UNIQUE_PUA' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBeFalse();
-  }));
+    expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_PUA' }));
+    expect(component.noticeForm.controls.identifier.invalid).toBe(false);
+  });
 
-  it('should check PUA and alert if duplicated', fakeAsync(() => {
+  it('should check PUA and alert if duplicated', async () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
-    mockProfileService.checkPuaProfile.and.returnValue(of(true));
+    mockProfileService.checkPuaProfile.mockReturnValue(of(true));
     component.noticeForm.controls.identifier?.setValue('DUPLICATE_TEST');
 
-    expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(jasmine.objectContaining({ identifier: 'DUPLICATE_TEST' }));
+    expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_TEST' }));
     component.noticeForm.controls.profileType?.setValue(ProfileType.PUA);
-    expect(component.noticeForm.controls.identifier.invalid).toBeTrue();
-  }));
+    expect(component.noticeForm.controls.identifier.invalid).toBe(true);
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

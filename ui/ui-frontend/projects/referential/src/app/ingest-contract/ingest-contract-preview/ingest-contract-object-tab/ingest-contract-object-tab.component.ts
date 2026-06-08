@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,6 +50,9 @@ import { IngestContractService } from '../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractObjectTabComponent {
+  private formBuilder = inject(FormBuilder);
+  private ingestContractService = inject(IngestContractService);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -104,10 +107,7 @@ export class IngestContractObjectTabComponent {
     }
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ingestContractService: IngestContractService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       masterMandatory: [true],
       everyDataObjectVersion: [true, Validators.required],

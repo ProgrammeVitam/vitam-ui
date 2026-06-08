@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import {
   AccessContract,
@@ -55,6 +55,14 @@ import { RULE_TYPES } from '../../../../rule/rules.constants';
   standalone: false,
 })
 export class AccessContractAuthorizationsUpdateComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<AccessContractAuthorizationsUpdateComponent>>(MatDialogRef);
+  private formBuilder = inject(FormBuilder);
+  private accessContractService = inject(AccessContractService);
+  private agencyService = inject(AgencyService);
+  data = inject<{
+    accessContract: AccessContractDisplay;
+  }>(MAT_DIALOG_DATA);
+
   protected readonly AccessRightType = AccessRightType;
   originatingAgenciesOptions: VitamuiSelectOptions;
   ruleTypesOptions: VitamuiSelectOptions = { options: RULE_TYPES };
@@ -68,16 +76,9 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
 
   accessRightSelected: FormControl = new FormControl();
 
-  constructor(
-    public dialogRef: MatDialogRef<AccessContractAuthorizationsUpdateComponent>,
-    private formBuilder: FormBuilder,
-    private accessContractService: AccessContractService,
-    private agencyService: AgencyService,
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      accessContract: AccessContractDisplay;
-    },
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.form = this.formBuilder.group(
       {
         accessRightSelected: this.accessRightSelected,

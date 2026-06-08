@@ -22,15 +22,17 @@
           >{{ 'INGEST_CONTRACT.CREATE_DIALOG.INGEST_CONTRACT_ACTIVE' | translate }}
         </vitamui-slide-toggle>
 
-        <div class="d-flex" *ngIf="isSlaveMode">
-          <vitamui-input
-            formControlName="identifier"
-            [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
-            class="w-100"
-            [errorMessageMap]="{ identifierExists: 'INGEST_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXIST' | translate }"
-          >
-          </vitamui-input>
-        </div>
+        @if (isSlaveMode) {
+          <div class="d-flex">
+            <vitamui-input
+              formControlName="identifier"
+              [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
+              class="w-100"
+              [errorMessageMap]="{ identifierExists: 'INGEST_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXIST' | translate }"
+            >
+            </vitamui-input>
+          </div>
+        }
 
         <div class="d-flex">
           <vitamui-input
@@ -91,23 +93,25 @@
           ></i>
         </vitamui-slide-toggle>
 
-        <div class="d-flex mb-5" *ngIf="form?.controls.everyFormatType?.value === false">
-          <vitamui-select
-            [multiple]="true"
-            class="col-8"
-            formControlName="formatType"
-            [options]="formatTypesOptions"
-            [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SELECT' | translate"
-            [searchBarPlaceHolder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SEARCH' | translate"
-            [required]="true"
-          ></vitamui-select>
-          <div class="mt-4">
-            <i
-              class="vitamui-icon vitamui-icon-info primary"
-              vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.CHOOSE_ALLOWED_FILE_FORMATS' | translate }}"
-            ></i>
+        @if (form?.controls.everyFormatType?.value === false) {
+          <div class="d-flex mb-5">
+            <vitamui-select
+              [multiple]="true"
+              class="col-8"
+              formControlName="formatType"
+              [options]="formatTypesOptions"
+              [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SELECT' | translate"
+              [searchBarPlaceHolder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SEARCH' | translate"
+              [required]="true"
+            ></vitamui-select>
+            <div class="mt-4">
+              <i
+                class="vitamui-icon vitamui-icon-info primary"
+                vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.CHOOSE_ALLOWED_FILE_FORMATS' | translate }}"
+              ></i>
+            </div>
           </div>
-        </div>
+        }
 
         <vitamui-slide-toggle formControlName="formatUnidentifiedAuthorized">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS' | translate }}
@@ -145,17 +149,19 @@
           ></i>
         </vitamui-slide-toggle>
 
-        <div class="d-flex" *ngIf="form?.controls.everyDataObjectVersion?.value === false">
-          <vitamui-select
-            formControlName="dataObjectVersion"
-            placeholder="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_USAGES' | translate }}"
-            [options]="usages"
-            [multiple]="true"
-            [enableSearch]="false"
-            [enableSelectAll]="false"
-            [enableDisplaySelected]="false"
-          ></vitamui-select>
-        </div>
+        @if (form?.controls.everyDataObjectVersion?.value === false) {
+          <div class="d-flex">
+            <vitamui-select
+              formControlName="dataObjectVersion"
+              placeholder="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_USAGES' | translate }}"
+              [options]="usages"
+              [multiple]="true"
+              [enableSearch]="false"
+              [enableSelectAll]="false"
+              [enableDisplaySelected]="false"
+            ></vitamui-select>
+          </div>
+        }
       </mat-dialog-content>
 
       <mat-dialog-actions>

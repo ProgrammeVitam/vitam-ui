@@ -18,24 +18,26 @@
     >
     </vitamui-input>
 
-    <vitamui-input
-      [multiple]="true"
-      *ngIf="isInternal$ | async"
-      class="w-100"
-      formControlName="hasPriorityOverFileFormatIDs"
-      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
-    ></vitamui-input>
+    @if (isInternal$ | async) {
+      <vitamui-input
+        [multiple]="true"
+        class="w-100"
+        formControlName="hasPriorityOverFileFormatIDs"
+        [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
+      ></vitamui-input>
+    }
 
-    <vitamui-select
-      [multiple]="true"
-      *ngIf="(isInternal$ | async) === false"
-      class="w-100"
-      formControlName="hasPriorityOverFileFormatIDs"
-      [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
-      [searchBarPlaceHolder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH' | translate"
-      [options]="fileFormatOptions$ | async"
-    >
-    </vitamui-select>
+    @if ((isInternal$ | async) === false) {
+      <vitamui-select
+        [multiple]="true"
+        class="w-100"
+        formControlName="hasPriorityOverFileFormatIDs"
+        [placeholder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
+        [searchBarPlaceHolder]="'FILE_FORMATS.TAB.INFORMATION.HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH' | translate"
+        [options]="fileFormatOptions$ | async"
+      >
+      </vitamui-select>
+    }
 
     <vitamui-input
       class="w-100"

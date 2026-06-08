@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -50,6 +50,10 @@ import { shareReplay } from 'rxjs/operators';
   standalone: false,
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> {
+  dialog = inject(MatDialog);
+  private route: ActivatedRoute;
+  private applicationService = inject(ApplicationService);
+
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
 
   search = '';
@@ -58,13 +62,13 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
 
-  constructor(
-    public dialog: MatDialog,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private applicationService: ApplicationService,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
+
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });

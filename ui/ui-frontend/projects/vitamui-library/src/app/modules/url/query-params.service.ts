@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -86,11 +86,9 @@ class QueryParamBuilder {
   providedIn: 'root',
 })
 export class QueryParamsService {
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private location: Location,
-  ) {}
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
 
   setQueryParams(
     queryParams: Params,

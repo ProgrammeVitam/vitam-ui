@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, resource, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, resource, ViewChildren, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   CountryOption,
@@ -66,6 +66,8 @@ import { delay, map } from 'rxjs/operators';
   styleUrl: './design-system-select.component.scss',
 })
 export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
+  private countryService = inject(CountryService);
+
   configs: {
     name: string;
     multiple?: boolean;
@@ -91,8 +93,6 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
   });
 
   @ViewChildren(SelectComponent, { read: ElementRef }) components: QueryList<ElementRef>;
-
-  constructor(private countryService: CountryService) {}
 
   ngOnInit() {
     this.initMultiselectOptions();

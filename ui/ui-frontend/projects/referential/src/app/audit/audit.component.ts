@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -50,6 +50,11 @@ import { DateTime } from 'luxon';
   standalone: false,
 })
 export class AuditComponent extends SidenavPage<Event> {
+  dialog = inject(MatDialog);
+  route: ActivatedRoute;
+  globalEventService: GlobalEventService;
+  private formBuilder = inject(FormBuilder);
+
   public dateRangeFilterForm: FormGroup;
   public filters: any = {};
   public search: string;
@@ -58,13 +63,13 @@ export class AuditComponent extends SidenavPage<Event> {
   @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
   @ViewChild(AuditListComponent, { static: true }) auditListComponent: AuditListComponent;
 
-  constructor(
-    public dialog: MatDialog,
-    public route: ActivatedRoute,
-    public globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
+    this.globalEventService = globalEventService;
 
     route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;

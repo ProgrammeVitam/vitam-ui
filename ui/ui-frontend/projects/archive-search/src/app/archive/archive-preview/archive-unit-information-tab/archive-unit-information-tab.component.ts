@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { AccessContract, AccessContractService, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
@@ -47,6 +47,10 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
   standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
+  private archiveService = inject(ArchiveService);
+  private accessContractService = inject(AccessContractService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   @Input() archiveUnit: Unit;
   @Input() tenantIdentifier: number;
 
@@ -59,12 +63,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
 
   private accessContract: AccessContract;
   private subscriptions = new Subscription();
-
-  constructor(
-    private archiveService: ArchiveService,
-    private accessContractService: AccessContractService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
 
   ngOnInit() {
     this.getAccessContract();

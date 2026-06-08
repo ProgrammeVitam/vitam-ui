@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TableFilterDirective } from './table-filter.directive';
@@ -48,6 +48,9 @@ import { TableFilterDirective } from './table-filter.directive';
   standalone: false,
 })
 export class TesthostComponent {}
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('TableFilterDirective', () => {
   let testhost: TesthostComponent;

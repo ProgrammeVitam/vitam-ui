@@ -144,8 +144,14 @@ describe('ContextPermissionTabComponent', () => {
   let component: ContextPermissionTabComponent;
   let fixture: ComponentFixture<ContextPermissionTabComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open', 'close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
+  const matDialogRefSpy = {
+    open: vi.fn().mockName('MatDialogRef.open'),
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+    close: vi.fn().mockName('MatDialog.close'),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -1,13 +1,17 @@
-<ng-container *ngIf="!disabled">
+@if (!disabled) {
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
         <label>{{ label }}</label>
         <span class="editable-field-text-content">
-          <div *ngFor="let domain of control.value">
-            {{ domain }}
-            <ng-container *ngIf="domain === defaultDomain">{{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}</ng-container>
-          </div>
+          @for (domain of control.value; track domain) {
+            <div>
+              {{ domain }}
+              @if (domain === defaultDomain) {
+                {{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}
+              }
+            </div>
+          }
         </span>
         <div class="editable-field-control" [ngStyle]="{ 'margin-top': label ? '15px' : '0' }">
           <app-domains-input
@@ -20,15 +24,17 @@
           ></app-domains-input>
         </div>
       </div>
-      <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
-      <div *ngIf="showSpinner">
-        <mat-spinner class="vitamui-spinner small"></mat-spinner>
-      </div>
+      @if (!showSpinner && !editMode) {
+        <i class="material-icons edit-icon">edit</i>
+      }
+      @if (showSpinner) {
+        <div>
+          <mat-spinner class="vitamui-spinner small"></mat-spinner>
+        </div>
+      }
     </div>
   </div>
-
   <div class="vitamui-input-errors"></div>
-
   <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayOpen]="editMode"
@@ -42,11 +48,18 @@
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-</ng-container>
+}
 
-<div *ngIf="disabled" class="read-only-field disabled-input">
-  <label>{{ label }}</label>
-  <div *ngFor="let domain of control?.value">
-    {{ domain }} <ng-container *ngIf="domain === defaultDomain">{{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}</ng-container>
+@if (disabled) {
+  <div class="read-only-field disabled-input">
+    <label>{{ label }}</label>
+    @for (domain of control?.value; track domain) {
+      <div>
+        {{ domain }}
+        @if (domain === defaultDomain) {
+          {{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}
+        }
+      </div>
+    }
   </div>
-</div>
+}

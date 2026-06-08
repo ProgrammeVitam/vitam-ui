@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
@@ -51,13 +51,17 @@ const keySnackbar = 'APPLICATION.RULES_APP.MESSAGES.';
   providedIn: 'root',
 })
 export class RuleService extends SearchService<Rule> {
+  private ruleApiService: RuleApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<Rule>();
 
-  constructor(
-    private ruleApiService: RuleApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const ruleApiService = inject(RuleApiService);
+
     super(ruleApiService, 'ALL');
+
+    this.ruleApiService = ruleApiService;
   }
 
   get(ruleId: string): Observable<Rule> {

@@ -81,15 +81,23 @@ let page: Page;
 
 describe('OntologyCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', {
-      create: of({}),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const ontologyServiceSpy = {
+      create: vi.fn().mockName('OntologyService.create').mockReturnValue(of({})),
+    };
 
-    const ontologyCreateValidatorsSpy = jasmine.createSpyObj('OntologyCreateValidators', {
-      uniqueID: () => () => of(null),
-      patternID: () => of(null),
-    });
+    const ontologyCreateValidatorsSpy = {
+      uniqueID: vi
+        .fn()
+        .mockName('OntologyCreateValidators.uniqueID')
+        .mockReturnValue(() => () => of(null)),
+      patternID: vi
+        .fn()
+        .mockName('OntologyCreateValidators.patternID')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -128,11 +136,11 @@ describe('OntologyCreateComponent', () => {
 
   describe('Template', () => {
     it('should have the right inputs', () => {
-      expect(page.control('identifier')).toBeTruthy('id');
-      expect(page.control('shortName')).toBeTruthy('name');
-      expect(page.control('type')).toBeTruthy('type');
-      expect(page.control('collections')).toBeTruthy('collections');
-      expect(page.control('description')).toBeTruthy('desc');
+      expect(page.control('identifier')).toBeTruthy();
+      expect(page.control('shortName')).toBeTruthy();
+      expect(page.control('type')).toBeTruthy();
+      expect(page.control('collections')).toBeTruthy();
+      expect(page.control('description')).toBeTruthy();
     });
 
     it('should have a submit button', () => {
@@ -152,14 +160,14 @@ describe('OntologyCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('shortName', 'n').invalid).toBeTruthy('shortName too short');
-          expect(setControlValue('shortName', 'name').valid).toBeTruthy('shortName');
+          expect(setControlValue('shortName', 'n').invalid).toBeTruthy();
+          expect(setControlValue('shortName', 'name').valid).toBeTruthy();
 
-          expect(setControlValue('identifier', '').invalid).toBeTruthy('identifier required');
-          expect(setControlValue('identifier', 'i').invalid).toBeTruthy('identifier too short');
+          expect(setControlValue('identifier', '').invalid).toBeTruthy();
+          expect(setControlValue('identifier', 'i').invalid).toBeTruthy();
 
-          expect(setControlValue('type', '').invalid).toBeTruthy('type required');
-          expect(setControlValue('type', 't').valid).toBeTruthy('type');
+          expect(setControlValue('type', '').invalid).toBeTruthy();
+          expect(setControlValue('type', 't').valid).toBeTruthy();
         });
       });
 

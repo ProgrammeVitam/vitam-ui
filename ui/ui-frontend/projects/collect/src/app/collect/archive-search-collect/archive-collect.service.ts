@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable, LOCALE_ID, TemplateRef } from '@angular/core';
+import { Injectable, LOCALE_ID, TemplateRef, inject } from '@angular/core';
 import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
@@ -74,18 +74,22 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ArchiveCollectService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  constructor(
-    private projectsApiService: ProjectsApiService,
-    private transactionApiService: TransactionApiService,
-    private translateService: TranslateService,
-    private searchUnitApiService: SearchUnitApiService,
-    @Inject(LOCALE_ID) private locale: string,
-    private accessContractApiService: AccessContractApiService,
-    private securityService: SecurityService,
-    public dialog: MatDialog,
-    private snackBarService: SnackBarService,
-  ) {
+  private projectsApiService: ProjectsApiService;
+  private transactionApiService = inject(TransactionApiService);
+  private translateService = inject(TranslateService);
+  private searchUnitApiService = inject(SearchUnitApiService);
+  private locale = inject(LOCALE_ID);
+  private accessContractApiService = inject(AccessContractApiService);
+  private securityService = inject(SecurityService);
+  dialog = inject(MatDialog);
+  private snackBarService = inject(SnackBarService);
+
+  constructor() {
+    const projectsApiService = inject(ProjectsApiService);
+
     super(projectsApiService, 'ALL');
+
+    this.projectsApiService = projectsApiService;
   }
 
   projectId: string;

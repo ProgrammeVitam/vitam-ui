@@ -34,22 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
   standalone: false,
 })
 export class EllipsisDirective implements OnInit, AfterViewInit {
+  private renderer = inject(Renderer2);
+  private elementRef = inject(ElementRef);
+
   @Input() isToolTipOnMouseEnter = false;
   @Input() vitamuiCommonEllipsisLines = 1;
 
   domElement: any;
-
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-  ) {}
 
   ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;

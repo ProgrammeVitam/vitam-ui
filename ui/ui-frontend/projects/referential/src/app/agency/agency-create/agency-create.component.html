@@ -5,7 +5,7 @@
 
 <mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial class="gap-3 align-items-stretch">
-    <ng-container *ngIf="!isLoading; else loading">
+    @if (!isLoading) {
       <vitamui-input
         formControlName="identifier"
         [placeholder]="'AGENCY.CREATE_DIALOG.IDENTIFIER' | translate"
@@ -15,7 +15,6 @@
         }"
       >
       </vitamui-input>
-
       <vitamui-input
         formControlName="name"
         [placeholder]="'AGENCY.CREATE_DIALOG.NAME' | translate"
@@ -25,10 +24,15 @@
         }"
       >
       </vitamui-input>
-
       <vitamui-input formControlName="description" [placeholder]="'AGENCY.CREATE_DIALOG.DESCRIPTION' | translate" [textarea]="true">
       </vitamui-input>
-    </ng-container>
+    } @else {
+      <div class="loader">
+        @if (isLoading) {
+          <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+        }
+      </div>
+    }
   </form>
 </mat-dialog-content>
 
@@ -48,9 +52,3 @@
 
   <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
 </mat-dialog-actions>
-
-<ng-template #loading>
-  <div class="loader">
-    <mat-spinner *ngIf="isLoading" class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>

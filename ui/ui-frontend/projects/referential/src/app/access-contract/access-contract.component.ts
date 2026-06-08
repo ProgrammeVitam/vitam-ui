@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -64,6 +64,14 @@ import { shareReplay } from 'rxjs/operators';
   standalone: false,
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
+  globalEventService: GlobalEventService;
+  private dialog = inject(MatDialog);
+  private route: ActivatedRoute;
+  private readonly accessContractService = inject(AccessContractService);
+  private applicationService = inject(ApplicationService);
+  private translateService = inject(TranslateService);
+  private downloadSnackBarService = inject(DownloadSnackBarService);
+
   public search = '';
   public tenantIdentifier: number;
 
@@ -71,16 +79,14 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').pipe(shareReplay(1));
 
-  constructor(
-    public globalEventService: GlobalEventService,
-    private dialog: MatDialog,
-    private route: ActivatedRoute,
-    private readonly accessContractService: AccessContractService,
-    private applicationService: ApplicationService,
-    private translateService: TranslateService,
-    private downloadSnackBarService: DownloadSnackBarService,
-  ) {
+  constructor() {
+    const globalEventService = inject(GlobalEventService);
+    const route = inject(ActivatedRoute);
+
     super(route, globalEventService);
+
+    this.globalEventService = globalEventService;
+    this.route = route;
   }
 
   ngOnInit() {

@@ -48,6 +48,7 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 
 import { merge, Subject, Subscription } from 'rxjs';
@@ -68,6 +69,9 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
   standalone: false,
 })
 export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> implements OnInit, OnChanges, OnDestroy {
+  logbookSearchService: LogbookSearchService;
+  private logbookDownloadService = inject(LogbookDownloadService);
+
   @Input() tenantIdentifier: number;
 
   @Input() set searchText(searchText: string) {
@@ -100,11 +104,12 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   private _searchFilters: Readonly<EventFilter>;
   private logbookOperationsSubscription: Subscription;
 
-  constructor(
-    public logbookSearchService: LogbookSearchService,
-    private logbookDownloadService: LogbookDownloadService,
-  ) {
+  constructor() {
+    const logbookSearchService = inject(LogbookSearchService);
+
     super(logbookSearchService);
+
+    this.logbookSearchService = logbookSearchService;
   }
 
   ngOnInit() {

@@ -42,61 +42,59 @@
     </div>
 
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let rule of dataSource; let index = index" (click)="ruleClick.emit(rule)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="col-1"><i class="vitamui-icon vitamui-icon-rules vitamui-row-icon"></i></div>
-          <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleId }}</div>
-          <div class="col-2 word-break">{{ getRuleType(rule?.ruleType) }}</div>
-          <div class="col-4 word-break">{{ rule?.ruleValue }}</div>
-          <div class="col-1" vitamuiCommonEllipsis>{{ rule?.ruleDuration }}</div>
-          <div class="col-1" vitamuiCommonEllipsis>{{ getRuleMeasurement(rule?.ruleMeasurement) }}</div>
-          <div class="col-1 actions">
-            <div>
-              <button
-                class="btn btn-circle primary"
-                (click)="$event.stopPropagation(); deleteRuleDialog(rule)"
-                *vitamuiCommonHasRole="{
-                  appId: 'RULES_APP',
-                  tenantIdentifier: +genericUserRole.tenantIdentifier,
-                  role: 'ROLE_DELETE_RULES',
-                }"
-              >
-                <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
-              </button>
+      @for (rule of dataSource; track rule; let index = $index) {
+        <div class="vitamui-table-rows" (click)="ruleClick.emit(rule)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="col-1"><i class="vitamui-icon vitamui-icon-rules vitamui-row-icon"></i></div>
+            <div class="col-2" vitamuiCommonEllipsis>{{ rule?.ruleId }}</div>
+            <div class="col-2 word-break">{{ getRuleType(rule?.ruleType) }}</div>
+            <div class="col-4 word-break">{{ rule?.ruleValue }}</div>
+            <div class="col-1" vitamuiCommonEllipsis>{{ rule?.ruleDuration }}</div>
+            <div class="col-1" vitamuiCommonEllipsis>{{ getRuleMeasurement(rule?.ruleMeasurement) }}</div>
+            <div class="col-1 actions">
+              <div>
+                <button
+                  class="btn btn-circle primary"
+                  (click)="$event.stopPropagation(); deleteRuleDialog(rule)"
+                  *vitamuiCommonHasRole="{
+                    appId: 'RULES_APP',
+                    tenantIdentifier: +genericUserRole.tenantIdentifier,
+                    role: 'ROLE_DELETE_RULES',
+                  }"
+                >
+                  <i class="vitamui-icon vitamui-icon-delete btn-icon"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
 
-    <div *ngIf="!dataSource || pending; then loadingSpinner"></div>
-    <div *ngIf="!pending && dataSource?.length === 0; then noResults"></div>
-    <div *ngIf="infiniteScrollDisabled && ruleService.canLoadMore && !pending; then loadMore"></div>
+    @if (!dataSource || pending) {
+      <div class="vitamui-min-content">
+        <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+      </div>
+    }
+    @if (!pending && dataSource?.length === 0) {
+      <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+    }
+    @if (infiniteScrollDisabled && ruleService.canLoadMore && !pending) {
+      <div class="vitamui-min-content vitamui-table-message" (click)="ruleService.loadMore()">
+        <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
+      </div>
+    }
   </div>
 </div>
 
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
-</ng-template>
-
-<ng-template #loadMore>
-  <div class="vitamui-min-content vitamui-table-message" (click)="ruleService.loadMore()">
-    <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
-  </div>
-</ng-template>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
-
 <ng-template #ruleTypeFilterTemplate>
   <vitamui-common-table-filter [(filter)]="filterMap['ruleType']" (filterChange)="onFilterChange('ruleType', $event)">
-    <vitamui-common-table-filter-option *ngFor="let ruleType of ruleTypes" value="{{ ruleType.key }}">
-      <div class="table-filter-icon">
-        <span class="badge-state">{{ ruleType.label }}</span>
-      </div>
-    </vitamui-common-table-filter-option>
+    @for (ruleType of ruleTypes; track ruleType) {
+      <vitamui-common-table-filter-option value="{{ ruleType.key }}">
+        <div class="table-filter-icon">
+          <span class="badge-state">{{ ruleType.label }}</span>
+        </div>
+      </vitamui-common-table-filter-option>
+    }
   </vitamui-common-table-filter>
 </ng-template>

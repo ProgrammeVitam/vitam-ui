@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   ObjectPurgedPersistentOperationType,
@@ -49,12 +49,13 @@ import {
   standalone: false,
 })
 export class PurgedPersistentIdentifierModalComponent implements OnInit {
-  messageKey: string;
+  private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
+  data = inject<{
+    ark: string;
+    purgedPersistentIdentifier: PurgedPersistentIdentifierDto;
+  }>(MAT_DIALOG_DATA);
 
-  constructor(
-    private dialogRef: MatDialogRef<PurgedPersistentIdentifierDto>,
-    @Inject(MAT_DIALOG_DATA) public data: { ark: string; purgedPersistentIdentifier: PurgedPersistentIdentifierDto },
-  ) {}
+  messageKey: string;
 
   ngOnInit(): void {
     const type = this.data.purgedPersistentIdentifier.type;

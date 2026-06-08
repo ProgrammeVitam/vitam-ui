@@ -37,19 +37,15 @@
     </div>
   </div>
 
-  <div class="form-group bottom" *ngIf="submitting; then loadingSpinner; else saveBtn"></div>
+  @if (submitting) {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    </div>
+  } @else {
+    <div class="form-group bottom">
+      <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submitting">
+        {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
+      </button>
+    </div>
+  }
 </form>
-
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
-
-<ng-template #saveBtn>
-  <div class="form-group bottom">
-    <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submitting">
-      {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
-    </button>
-  </div>
-</ng-template>

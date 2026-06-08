@@ -86,8 +86,10 @@ import { PopupService } from '../../core/services/popup.service';
 import { UserActionSaveProfileComponent } from './save-profile.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+const matDialogSpy = {
+  open: vi.fn().mockName('MatDialog.open'),
+};
+matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 describe('UserActionOpenProfileComponent', () => {
   let component: UserActionSaveProfileComponent;
   let fixture: ComponentFixture<UserActionSaveProfileComponent>;

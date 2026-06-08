@@ -2,8 +2,23 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": ["jasmine", "node"]
+    "types": [
+      "node",
+      "vitest/globals"
+    ],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strict": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false
   },
-  "files": ["src/test.ts"],
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "include": [
+    "**/*.ts"
+  ],
+  "files": [
+    "../../test.ts"
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }

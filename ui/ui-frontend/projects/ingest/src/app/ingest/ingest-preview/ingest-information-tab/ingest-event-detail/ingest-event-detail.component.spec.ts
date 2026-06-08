@@ -49,9 +49,9 @@ describe('IngestEventDetailComponent', () => {
   let component: IngestEventDetailComponent;
   let fixture: ComponentFixture<IngestEventDetailComponent>;
 
-  const eventDisplayHelperServiceSpy = jasmine.createSpyObj('EventDisplayHelperService', {
-    initEvents: of([]),
-  });
+  const eventDisplayHelperServiceSpy = {
+    initEvents: vi.fn().mockName('EventDisplayHelperService.initEvents').mockReturnValue(of([])),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

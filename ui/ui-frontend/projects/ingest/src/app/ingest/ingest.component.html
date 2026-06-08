@@ -1,12 +1,9 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-ingest-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      (ingestHasChanged)="ingestChangedStatus($event)"
-      [ingestFromParent]="openedItem"
-    >
-    </app-ingest-preview>
+    @if (openedItem) {
+      <app-ingest-preview (previewClose)="closePanel()" (ingestHasChanged)="ingestChangedStatus($event)" [ingestFromParent]="openedItem">
+      </app-ingest-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

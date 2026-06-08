@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -87,6 +87,19 @@ const COMPLEX_INPUTS = ['otherCriteriaList'];
   standalone: false,
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
+  dialog = inject(MatDialog);
+  private formBuilder = inject(FormBuilder);
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private translateService = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+  private searchCriteriaService = inject(SearchCriteriaService);
+  private archiveHelperService = inject(ArchiveSearchHelperService);
+  private schemaService = inject(SchemaService);
+  private agencyService = inject(AgencyService);
+  private archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
+  private cdr = inject(ChangeDetectorRef);
+
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
@@ -109,57 +122,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     archiveUnitProfile: { options: [] as Option[] },
   } satisfies { [key: string]: VitamuiSelectOptions };
 
-  constructor(
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private translateService: TranslateService,
-    private route: ActivatedRoute,
-    private searchCriteriaService: SearchCriteriaService,
-    private archiveHelperService: ArchiveSearchHelperService,
-    schemaService: SchemaService,
-    agencyService: AgencyService,
-    archiveUnitProfilesService: ArchiveUnitProfilesService,
-  ) {
-    agencyService
-      .getAll()
-      .pipe(
-        map(
-          (agencies): VitamuiSelectOptions => ({
-            options: agencies.map((agency) => ({
-              key: agency.identifier,
-              label: `${agency.identifier} - ${agency.name}`,
-              info: agency.description,
-            })),
-          }),
-        ),
-      )
-      .subscribe((options) => (this.selectOptions.agency = options));
-
-    archiveUnitProfilesService
-      .getAll()
-      .pipe(
-        map(
-          (archiveUnitProfiles): VitamuiSelectOptions => ({
-            options: archiveUnitProfiles.map((archiveUnitProfile) => ({
-              key: archiveUnitProfile.identifier,
-              label: `${archiveUnitProfile.identifier} - ${archiveUnitProfile.name}`,
-            })),
-          }),
-        ),
-      )
-      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
-
-    const descriptiveSchemaTree$ = schemaService.getDescriptiveSchemaTree().pipe(share());
-    descriptiveSchemaTree$.subscribe((schema) => (this.otherCriteriaOptions = schema));
-
-    const titleSearchTypes$ = descriptiveSchemaTree$.pipe(
-      map((schema) => this.searchTypes(schema, 'Title')),
-      share(),
-    );
-    titleSearchTypes$.subscribe((titleSearchTypes) => (this.titleSearchTypes = titleSearchTypes));
-
+  constructor() {
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
     const otherCriteriaControl = this.formBuilder.group({});
 
@@ -175,17 +138,66 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       otherCriteriaList: otherCriteriaListControl,
       otherCriteria: otherCriteriaControl,
     });
+  }
 
-    otherCriteriaListControl.valueChanges.subscribe((schemaElements) => {
+  private addCriteriaFromParams(params: Params) {
+    Object.entries(params).forEach(async ([key, value]) =>
+      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
+    );
+  }
+
+  ngOnInit() {
+    this.agencyService
+      .getAll()
+      .pipe(
+        map(
+          (agencies): VitamuiSelectOptions => ({
+            options: agencies.map((agency) => ({
+              key: agency.identifier,
+              label: `${agency.identifier} - ${agency.name}`,
+              info: agency.description,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.selectOptions.agency = options));
+
+    this.archiveUnitProfilesService
+      .getAll()
+      .pipe(
+        map(
+          (archiveUnitProfiles): VitamuiSelectOptions => ({
+            options: archiveUnitProfiles.map((archiveUnitProfile) => ({
+              key: archiveUnitProfile.identifier,
+              label: `${archiveUnitProfile.identifier} - ${archiveUnitProfile.name}`,
+            })),
+          }),
+        ),
+      )
+      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
+
+    const descriptiveSchemaTree$ = this.schemaService.getDescriptiveSchemaTree().pipe(share());
+    descriptiveSchemaTree$.subscribe((schema) => (this.otherCriteriaOptions = schema));
+
+    const titleSearchTypes$ = descriptiveSchemaTree$.pipe(
+      map((schema) => this.searchTypes(schema, 'Title')),
+      share(),
+    );
+    titleSearchTypes$.subscribe((titleSearchTypes) => {
+      this.titleSearchTypes = titleSearchTypes;
+      this.cdr.detectChanges(); // Force la détection de changements
+    });
+
+    const otherCriteriaControl = this.form.controls.otherCriteria as FormGroup;
+    this.otherCriteriaList.valueChanges.subscribe((schemaElements) => {
       const currentPaths = Object.keys(otherCriteriaControl.controls);
       const expectedPaths = schemaElements.map((element) => element.Path);
-
       this.addMissingControls(expectedPaths, currentPaths, otherCriteriaControl);
       this.removeObsoleteControls(expectedPaths, currentPaths, otherCriteriaControl);
     });
 
     // Sync title type with criteria
-    const titleKeys$ = archiveExchangeDataService.searchCriteria$.pipe(
+    const titleKeys$ = this.archiveExchangeDataService.searchCriteria$.pipe(
       filter((searchCriteria) => !!searchCriteria),
       map((searchCriteria) => Array.from(searchCriteria.keys())),
       map((criteriaKeys) => criteriaKeys.filter((criteriaKey) => /^TITLE(\.[^.]+)?$/i.test(criteriaKey))),
@@ -193,13 +205,16 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     combineLatest([titleKeys$, titleSearchTypes$]).subscribe(([titleKeys, titleSearchTypes]) => {
       const hasTitleSearchCriteria = !!titleKeys?.length;
       const type = hasTitleSearchCriteria ? titleKeys[0].split('.')[1] || '' : null;
-      titleSearchTypes.forEach((item) => (item.disabled = hasTitleSearchCriteria && item.value !== type));
-
-      if (hasTitleSearchCriteria) this.titleSelectedType = titleSearchTypes.find((item) => item.value === type);
+      this.titleSearchTypes = titleSearchTypes.map((item) => ({
+        ...item,
+        disabled: hasTitleSearchCriteria && item.value !== type,
+      }));
+      if (hasTitleSearchCriteria) this.titleSelectedType = this.titleSearchTypes.find((item) => item.value === type);
+      this.cdr.detectChanges(); // Force la détection de changements
     });
 
     // Sync archive unit types with criteria
-    archiveExchangeDataService.searchCriteria$
+    this.archiveExchangeDataService.searchCriteria$
       .pipe(
         filter((searchCriteria) => !!searchCriteria),
         map((searchCriteria) => searchCriteria.get(ALL_ARCHIVE_UNIT_TYPES)),
@@ -225,15 +240,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             control.reset(undefined, { emitEvent: false });
           });
       });
-  }
 
-  private addCriteriaFromParams(params: Params) {
-    Object.entries(params).forEach(async ([key, value]) =>
-      this.archiveExchangeDataService.addSimpleSearchCriteriaSubjects(await this.searchCriteriaService.toSearchCriteria({ [key]: value })),
-    );
-  }
-
-  ngOnInit() {
     this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
       this.criteriaSearchListToSave = data;
     });

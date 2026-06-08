@@ -34,7 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, Component, ContentChild, ElementRef, forwardRef, HostListener, Injector, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  ElementRef,
+  forwardRef,
+  HostListener,
+  Injector,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
@@ -110,7 +120,10 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
     this.confirm();
   }
 
-  constructor(injector: Injector, elementRef: ElementRef) {
+  constructor() {
+    const injector = inject(Injector);
+    const elementRef = inject(ElementRef);
+
     super(injector);
     this.#componentRef = elementRef.nativeElement;
   }

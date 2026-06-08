@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
 import { Logger, SnackBarService, Transaction, VitamErrorDetails } from 'vitamui-library';
@@ -47,6 +47,17 @@ import { ArchiveCollectService } from '../archive-collect.service';
   standalone: false,
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
+  data = inject<{
+    tenantIdentifier: string;
+    selectedTransaction: Transaction;
+  }>(MAT_DIALOG_DATA);
+  private logger = inject(Logger);
+  private dialog = inject(MatDialog);
+  private dialogRef = inject<MatDialogRef<UpdateUnitsMetadataComponent>>(MatDialogRef);
+  private dialogRefToClose = inject<MatDialogRef<UpdateUnitsMetadataComponent>>(MatDialogRef);
+  private archiveCollectService = inject(ArchiveCollectService);
+  private snackBarService = inject(SnackBarService);
+
   isLoadingData = false;
 
   fileToUpload: File = undefined;
@@ -57,20 +68,6 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   @ViewChild('confirmDeleteUpdateUnitsMetadataDialog', { static: true })
   confirmDeleteUpdateUnitsMetadataDialog: TemplateRef<UpdateUnitsMetadataComponent>;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: {
-      tenantIdentifier: string;
-      selectedTransaction: Transaction;
-    },
-    private logger: Logger,
-    private dialog: MatDialog,
-    private dialogRef: MatDialogRef<UpdateUnitsMetadataComponent>,
-    private dialogRefToClose: MatDialogRef<UpdateUnitsMetadataComponent>,
-    private archiveCollectService: ArchiveCollectService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();

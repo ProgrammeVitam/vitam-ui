@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
@@ -64,6 +64,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
+  ruleService: RuleService;
+  private authService = inject(AuthService);
+  private matDialog = inject(MatDialog);
+  private translateService = inject(TranslateService);
+  private snackBarService = inject(SnackBarService);
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
@@ -106,14 +112,12 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(
-    public ruleService: RuleService,
-    private authService: AuthService,
-    private matDialog: MatDialog,
-    private translateService: TranslateService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const ruleService = inject(RuleService);
+
     super(ruleService);
+    this.ruleService = ruleService;
+
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,

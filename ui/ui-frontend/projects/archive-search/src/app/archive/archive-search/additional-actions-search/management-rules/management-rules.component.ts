@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -74,6 +74,17 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
   standalone: false,
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
+  private archiveService = inject(ArchiveService);
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  dialog = inject(MatDialog);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private location = inject(Location);
+  private translate = inject(TranslateService);
+  private logger = inject(Logger);
+  private ruleService = inject(RuleService);
+  private snackBarService = inject(SnackBarService);
+
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
 
@@ -170,18 +181,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     },
   ];
 
-  constructor(
-    private archiveService: ArchiveService,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    public dialog: MatDialog,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private translate: TranslateService,
-    private logger: Logger,
-    private ruleService: RuleService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     this.applyChanges();
   }
 

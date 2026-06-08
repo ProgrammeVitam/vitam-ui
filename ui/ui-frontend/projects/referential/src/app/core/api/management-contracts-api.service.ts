@@ -65,7 +65,7 @@
  */
 
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL, ManagementContract, PaginatedHttpClient } from 'vitamui-library';
@@ -76,7 +76,10 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class ManagementContractsApiService extends PaginatedHttpClient<ManagementContract> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/management-contract');
   }
 

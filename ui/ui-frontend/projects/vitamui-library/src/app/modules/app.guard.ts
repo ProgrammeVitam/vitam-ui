@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -51,14 +51,12 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   providedIn: 'root',
 })
 export class AppGuard {
-  constructor(
-    private authService: AuthService,
-    private startupService: StartupService,
-    private titleService: Title,
-    private globalEventService: GlobalEventService,
-    @Inject(WINDOW_LOCATION) private location: any,
-    private translateService: TranslateService,
-  ) {}
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+  private titleService = inject(Title);
+  private globalEventService = inject(GlobalEventService);
+  private location = inject(WINDOW_LOCATION);
+  private translateService = inject(TranslateService);
 
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!next.data.hasOwnProperty('appId')) {

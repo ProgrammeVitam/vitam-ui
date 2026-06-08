@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, effect, Injector, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, Injector, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
@@ -47,22 +47,23 @@ import { Subscription } from 'rxjs';
 import { Notice } from '../../models/notice.model';
 import { PastisMaterialModule } from '../../material.module';
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
-import { CommonModule } from '@angular/common';
+
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
 
 @Component({
-  imports: [
-    CommonModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    PastisMaterialModule,
-    PastisGenericPopupComponent,
-  ],
+  imports: [VitamUILibraryModule, ReactiveFormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
   selector: 'app-create-profil-notice',
   templateUrl: './create-profil-notice.component.html',
 })
 export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
+  private profileService = inject(ProfileService);
+  private applicationService = inject(ApplicationService);
+  private translateService = inject(TranslateService);
+  private fb = inject(FormBuilder);
+  private injector = inject(Injector);
+  private dialogRef = inject<MatDialogRef<CreateProfilNoticeComponent>>(MatDialogRef);
+  private identifierValidator = inject(IdentifierExistsValidator);
+
   notice: Notice;
   noticeForm: FormGroup;
   stepIndex = 0;
@@ -78,16 +79,6 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
   readonly ProfileType = ProfileType;
   readonly ProfileVersionOptions = ProfileVersionOptions;
   identifierControl: FormControl;
-
-  constructor(
-    private profileService: ProfileService,
-    private applicationService: ApplicationService,
-    private translateService: TranslateService,
-    private fb: FormBuilder,
-    private injector: Injector,
-    private dialogRef: MatDialogRef<CreateProfilNoticeComponent>,
-    private identifierValidator: IdentifierExistsValidator,
-  ) {}
 
   ngOnInit() {
     this.notice = {

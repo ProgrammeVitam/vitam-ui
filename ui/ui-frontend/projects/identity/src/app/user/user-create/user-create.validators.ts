@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -45,9 +45,9 @@ import { UserService } from '../user.service';
   providedIn: 'root',
 })
 export class UserCreateValidators {
-  private debounceTime = 400;
+  private userService = inject(UserService);
 
-  constructor(private userService: UserService) {}
+  private debounceTime = 400;
 
   uniqueEmail = (emailToCheck?: string): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {

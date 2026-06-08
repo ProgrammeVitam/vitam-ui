@@ -2,7 +2,7 @@
 
 <form [formGroup]="form" (ngSubmit)="reassign()">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <ng-container *ngIf="reassignmentMode !== ReassignmentMode.BY_ID">
+    @if (reassignmentMode !== ReassignmentMode.BY_ID) {
       <p class="text bold primary m-0 mt-1">
         {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_SECTION_TITLE' | translate }}
       </p>
@@ -17,14 +17,13 @@
           invalidOperationIds: 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ERRORS.INVALID_IDS',
         }"
       ></vitamui-input>
-
       <div class="row ml-0 mt-n2">
         <i class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon light"></i>
         <span class="text caption light ml-1">
           {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.ENTRY_OPERATION_IDS_HINT' | translate }}
         </span>
       </div>
-    </ng-container>
+    }
 
     <p class="text bold primary m-0">
       {{ sectionTitle | translate }}
@@ -50,20 +49,22 @@
       [options]="originatingAgenciesOptions"
     ></vitamui-select>
 
-    <vitamui-slide-toggle formControlName="propagateToObjectGroups" *ngIf="reassignmentMode === ReassignmentMode.BY_ID">
-      {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS' | translate }}
-      <i
-        class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon secondary"
-        tabindex="0"
-        [vitamuiTooltip]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.INFO' | translate"
-        [vitamuiTooltipPosition]="'RIGHT'"
-        [vitamuiTooltipShowDelay]="300"
-        [vitamuiTooltipDisabled]="false"
-        [vitamuiTooltipClass]="'secondary'"
-        [outline]="true"
-      >
-      </i>
-    </vitamui-slide-toggle>
+    @if (reassignmentMode === ReassignmentMode.BY_ID) {
+      <vitamui-slide-toggle formControlName="propagateToObjectGroups">
+        {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.PROPAGATE_TO_TECHNICAL_OBJECT_GROUPS' | translate }}
+        <i
+          class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon secondary"
+          tabindex="0"
+          [vitamuiTooltip]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.INFO' | translate"
+          [vitamuiTooltipPosition]="'RIGHT'"
+          [vitamuiTooltipShowDelay]="300"
+          [vitamuiTooltipDisabled]="false"
+          [vitamuiTooltipClass]="'secondary'"
+          [outline]="true"
+        >
+        </i>
+      </vitamui-slide-toggle>
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions>

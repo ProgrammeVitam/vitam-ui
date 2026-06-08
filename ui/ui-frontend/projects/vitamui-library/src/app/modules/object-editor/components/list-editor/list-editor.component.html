@@ -1,4 +1,4 @@
-<ng-container *ngIf="editObject?.key && editObject?.kind === 'object-array'; else content">
+@if (editObject?.key && editObject?.kind === 'object-array') {
   <div
     class="header mat-elevation-z1"
     [ngClass]="{ 'display-none': editObject.children.length > 0, disabled: editObject.children.length === 0 }"
@@ -11,9 +11,9 @@
             <i class="vitamui-icon icon vitamui-icon-chevron-right"></i>
             <span class="object-name">{{ editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required }}</span>
           </div>
-          <div *ngIf="favoriteEntry" class="v-col align-items-center favorite-entry">
-            {{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}
-          </div>
+          @if (favoriteEntry) {
+            <div class="v-col align-items-center favorite-entry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</div>
+          }
         </div>
       </div>
     </div>
@@ -21,21 +21,78 @@
   <div class="content">
     <div *ngTemplateOutlet="content"></div>
   </div>
-</ng-container>
+} @else {
+  @if (editObject?.kind === 'object-array') {
+    @for (child of editObject.children; track child; let i = $index) {
+      <div class="row">
+        <div class="col">
+          @if (child.type === DisplayObjectType.GROUP) {
+            <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+          }
+          @if (child.type === DisplayObjectType.LIST) {
+            <vitamui-common-list-editor [editObject]="child"></vitamui-common-list-editor>
+          }
+          @if (child.type === DisplayObjectType.PRIMITIVE) {
+            <vitamui-common-primitive-editor [editObject]="child"></vitamui-common-primitive-editor>
+          }
+        </div>
+      </div>
+    }
+  }
+  @if (
+    editObject?.kind === 'primitive-array' &&
+    editObject?.cardinality.includes('MANY') &&
+    ['textfield', 'textarea'].includes(editObject?.displayRule?.ui?.component)
+  ) {
+    <vitamui-input
+      [multiple]="true"
+      [placeholder]="editObject.displayRule.ui.label | translate | empty"
+      [required]="editObject.required"
+      [textarea]="editObject.displayRule.ui.layout.size === 'large'"
+      [formControl]="editObject.control"
+    >
+    </vitamui-input>
+  }
+  @if (
+    editObject?.kind === 'primitive-array' &&
+    editObject?.cardinality.includes('ONE') &&
+    ['textfield'].includes(editObject?.displayRule?.ui?.component)
+  ) {
+    <vitamui-editor-list-input [editObject]="editObject"></vitamui-editor-list-input>
+  }
+  @if (
+    editObject?.kind === 'primitive-array' &&
+    editObject?.cardinality.includes('ONE') &&
+    ['textarea'].includes(editObject?.displayRule?.ui?.component)
+  ) {
+    <vitamui-editor-list-textarea [editObject]="editObject"></vitamui-editor-list-textarea>
+  }
+  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'select') {
+    <vitamui-editor-list-select [editObject]="editObject"></vitamui-editor-list-select>
+  }
+  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'datetime') {
+    <vitamui-editor-list-date [editObject]="editObject"></vitamui-editor-list-date>
+  }
+}
 
 <ng-template #content>
-  <ng-container *ngIf="editObject?.kind === 'object-array'">
-    <div *ngFor="let child of editObject.children; index as i" class="row">
-      <div class="col">
-        <vitamui-common-group-editor *ngIf="child.type === DisplayObjectType.GROUP" [editObject]="child"></vitamui-common-group-editor>
-        <vitamui-common-list-editor *ngIf="child.type === DisplayObjectType.LIST" [editObject]="child"></vitamui-common-list-editor>
-        <vitamui-common-primitive-editor
-          *ngIf="child.type === DisplayObjectType.PRIMITIVE"
-          [editObject]="child"
-        ></vitamui-common-primitive-editor>
+  @if (editObject?.kind === 'object-array') {
+    @for (child of editObject.children; track child; let i = $index) {
+      <div class="row">
+        <div class="col">
+          @if (child.type === DisplayObjectType.GROUP) {
+            <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+          }
+          @if (child.type === DisplayObjectType.LIST) {
+            <vitamui-common-list-editor [editObject]="child"></vitamui-common-list-editor>
+          }
+          @if (child.type === DisplayObjectType.PRIMITIVE) {
+            <vitamui-common-primitive-editor [editObject]="child"></vitamui-common-primitive-editor>
+          }
+        </div>
       </div>
-    </div>
-  </ng-container>
+    }
+  }
 
   @if (
     editObject?.kind === 'primitive-array' &&

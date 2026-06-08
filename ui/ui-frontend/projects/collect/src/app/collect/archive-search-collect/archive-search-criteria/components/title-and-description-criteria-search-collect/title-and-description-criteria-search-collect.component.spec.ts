@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -56,8 +57,12 @@ class FakeLoader implements TranslateLoader {
 }
 
 describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   let component: TitleAndDescriptionCriteriaSearchCollectComponent;
   let fixture: ComponentFixture<TitleAndDescriptionCriteriaSearchCollectComponent>;
@@ -74,6 +79,7 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
         }),
         RouterTestingModule,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

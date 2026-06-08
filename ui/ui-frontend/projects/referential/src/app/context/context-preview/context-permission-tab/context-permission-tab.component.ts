@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -63,6 +63,14 @@ import { ContextService } from '../../context.service';
   standalone: false,
 })
 export class ContextPermissionTabComponent implements OnInit {
+  dialog = inject(MatDialog);
+  private contextService = inject(ContextService);
+  private customerApiService = inject(CustomerApiService);
+  private tenantApiService = inject(TenantApiService);
+  private authService = inject(AuthService);
+  private accessService = inject(AccessContractService);
+  private ingestService = inject(IngestContractService);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   submited = false;
@@ -104,16 +112,6 @@ export class ContextPermissionTabComponent implements OnInit {
   previousValue = (): Context => {
     return this._context;
   };
-
-  constructor(
-    public dialog: MatDialog,
-    private contextService: ContextService,
-    private customerApiService: CustomerApiService,
-    private tenantApiService: TenantApiService,
-    private authService: AuthService,
-    private accessService: AccessContractService,
-    private ingestService: IngestContractService,
-  ) {}
 
   ngOnInit(): void {
     let accessContractObservable: Observable<any> = of();

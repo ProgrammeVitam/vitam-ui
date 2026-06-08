@@ -1,9 +1,11 @@
 <div mat-dialog-title [class.with-progress-bar]="stepper && stepper.steps.length">
-  <vitamui-common-progress-bar
-    *ngIf="stepper?.steps?.length"
-    [index]="stepper.selectedIndex"
-    [count]="stepper.steps.length"
-  ></vitamui-common-progress-bar>
-  <div *ngIf="subhead" class="text medium light">{{ subhead }}</div>
-  <div *ngIf="title" class="text large bold" [innerHTML]="getTitle()"></div>
+  @if (stepper?.steps?.length) {
+    <vitamui-common-progress-bar [index]="stepper.selectedIndex" [count]="stepper.steps.length"></vitamui-common-progress-bar>
+  }
+  @if (subhead) {
+    <div class="text medium light">{{ subhead }}</div>
+  }
+  @if (title) {
+    <div class="text large bold" [innerHTML]="getTitle()"></div>
+  }
 </div>

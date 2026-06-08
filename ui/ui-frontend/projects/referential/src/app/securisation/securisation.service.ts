@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { download, Event, SearchService, VitamuiHttpHeaders } from 'vitamui-library';
 
 import { OperationApiService } from '../core/api/operation-api.service';
@@ -44,8 +44,14 @@ import { OperationApiService } from '../core/api/operation-api.service';
   providedIn: 'root',
 })
 export class SecurisationService extends SearchService<Event> {
-  constructor(private operationApiService: OperationApiService) {
+  private operationApiService: OperationApiService;
+
+  constructor() {
+    const operationApiService = inject(OperationApiService);
+
     super(operationApiService, 'ALL');
+
+    this.operationApiService = operationApiService;
   }
 
   download(id: string, accessContractId: string) {

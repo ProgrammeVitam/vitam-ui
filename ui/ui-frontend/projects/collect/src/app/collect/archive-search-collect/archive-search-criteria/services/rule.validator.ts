@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -46,13 +46,11 @@ import { ManagementRulesSharedDataService } from './management-rules-shared-data
   providedIn: 'root',
 })
 export class RuleValidator {
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   private debounceTime = 400;
   ruleCategorySelected: string;
-
-  constructor(
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);

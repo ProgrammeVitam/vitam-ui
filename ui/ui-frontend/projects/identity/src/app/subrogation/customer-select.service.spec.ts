@@ -73,12 +73,17 @@ describe('CustomerSelectService', () => {
 
   it('should call /fake-api/customers with the right params', () => {
     const subrogeable = true;
-    searchService.getAll(true).subscribe((response) => {
-      expect(response).toEqual([
-        { value: 'idteamvitamui', label: '000000 - teamvitamui' },
-        { value: 'idtotal', label: '000001 - total' },
-      ]);
-    }, fail);
+    searchService.getAll(true).subscribe(
+      (response) => {
+        expect(response).toEqual([
+          { value: 'idteamvitamui', label: '000000 - teamvitamui' },
+          { value: 'idtotal', label: '000001 - total' },
+        ]);
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -92,9 +97,14 @@ describe('CustomerSelectService', () => {
 
   it('should return an empty list if the API returns an error', () => {
     const subrogeable = true;
-    searchService.getAll(true).subscribe((response) => {
-      expect(response).toEqual([]);
-    }, fail);
+    searchService.getAll(true).subscribe(
+      (response) => {
+        expect(response).toEqual([]);
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -106,9 +116,14 @@ describe('CustomerSelectService', () => {
 
   it('should return an empty list if the API returns nothing', () => {
     const subrogeable = true;
-    searchService.getAll(true).subscribe((response) => {
-      expect(response).toEqual([]);
-    }, fail);
+    searchService.getAll(true).subscribe(
+      (response) => {
+        expect(response).toEqual([]);
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'subrogeable', value: subrogeable, operator: Operators.equals }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };

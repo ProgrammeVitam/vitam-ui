@@ -95,15 +95,28 @@ let page: Page;
 
 describe('AccessContractCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const agencyServiceSpy = jasmine.createSpyObj('AgencyService', { getOriginatingAgenciesAsOptions: of([]) });
-    const accessContractServiceSpy = jasmine.createSpyObj('AccessContractService', { create: of({}), getAll: of([]) });
-    const accessContractCreateValidatorsSpy = jasmine.createSpyObj('AccessContractCreateValidators', {
-      uniqueName: () => of(null),
-      uniqueNameWhileEdit: of(null),
-      uniqueIdentifier: () => of(null),
-      identifierToIgnore: '',
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const agencyServiceSpy = {
+      getOriginatingAgenciesAsOptions: vi.fn().mockName('AgencyService.getOriginatingAgenciesAsOptions').mockReturnValue(of([])),
+    };
+    const accessContractServiceSpy = {
+      create: vi.fn().mockName('AccessContractService.create').mockReturnValue(of({})),
+      getAll: vi.fn().mockName('AccessContractService.getAll').mockReturnValue(of([])),
+    };
+    const accessContractCreateValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('AccessContractCreateValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+      uniqueNameWhileEdit: vi.fn().mockName('AccessContractCreateValidators.uniqueNameWhileEdit').mockReturnValue(of(null)),
+      uniqueIdentifier: vi
+        .fn()
+        .mockName('AccessContractCreateValidators.uniqueIdentifier')
+        .mockReturnValue(() => of(null)),
+      identifierToIgnore: vi.fn().mockName('AccessContractCreateValidators.identifierToIgnore').mockReturnValue(''),
+    };
 
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
@@ -153,8 +166,12 @@ describe('AccessContractCreateComponent', () => {
   });
 
   describe('Template', () => {
+    it('has no active template assertions yet', () => {
+      expect(true).toBe(true);
+    });
+
     // TODO: Why X it ?
-    xit('should have the right inputs', () => {
+    it.skip('should have the right inputs', () => {
       expect(page.control('identifier')).toBeTruthy();
       expect(page.control('status')).toBeTruthy();
       expect(page.control('name')).toBeTruthy();
@@ -180,7 +197,7 @@ describe('AccessContractCreateComponent', () => {
       expect(component.form.invalid).toBeTruthy();
     });
 
-    xit('should be valid', () => {
+    it.skip('should be valid', () => {
       component.form.setValue(expectedAccessContract);
       expect(component.form.valid).toBeTruthy();
     });

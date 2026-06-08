@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SearchCriteriaHistory, SearchService } from 'vitamui-library';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
@@ -43,8 +43,14 @@ import { ArchiveApiService } from '../../../core/api/archive-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaListService extends SearchService<any> {
-  constructor(private archiveApiService: ArchiveApiService) {
+  private archiveApiService: ArchiveApiService;
+
+  constructor() {
+    const archiveApiService = inject(ArchiveApiService);
+
     super(archiveApiService, 'ALL');
+
+    this.archiveApiService = archiveApiService;
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {

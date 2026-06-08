@@ -46,10 +46,27 @@ import {
   Unit,
   UnitType,
 } from '../models';
-import { newNode } from '../models/nodes/filing-holding-scheme.handler.spec';
 import { LeavesTreeApiService } from './leaves-tree-api.service';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { DescriptionLevel } from '../../../lib/models/description-level.enum';
+
+function newNode(
+  currentId: string,
+  currentChildren: FilingHoldingSchemeNode[] = [],
+  currentDescriptionLevel: DescriptionLevel = DescriptionLevel.ITEM,
+  currentCount?: number,
+): FilingHoldingSchemeNode {
+  return {
+    id: currentId,
+    title: currentId,
+    unitType: UnitType.INGEST,
+    descriptionLevel: currentDescriptionLevel,
+    checked: false,
+    children: currentChildren,
+    vitamId: 'whatever',
+    count: currentCount,
+  };
+}
 
 export function newToggledNode(
   currentId: string,
@@ -145,11 +162,11 @@ export function newPagedResult(results: Unit[] = [], totalResults = 0, pageNumbe
 
 describe('FilingHoldingSchemeNodeService', () => {
   let leavesTreeApiService: LeavesTreeApiService;
-  const searchArchiveUnitsByCriteriaSpy = jasmine.createSpyObj<SearchArchiveUnitsInterface>('SearchArchiveUnitsInterface', [
-    'searchArchiveUnitsByCriteria',
-  ]);
+  const searchArchiveUnitsByCriteriaSpy = {
+    searchArchiveUnitsByCriteria: vi.fn().mockName('SearchArchiveUnitsInterface.searchArchiveUnitsByCriteria'),
+  };
   beforeEach(() => {
-    searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.calls.reset();
+    searchArchiveUnitsByCriteriaSpy.searchArchiveUnitsByCriteria.mockClear();
     leavesTreeApiService = new LeavesTreeApiService(searchArchiveUnitsByCriteriaSpy);
   });
 

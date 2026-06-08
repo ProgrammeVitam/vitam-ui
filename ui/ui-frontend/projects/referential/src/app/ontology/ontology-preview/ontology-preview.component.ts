@@ -34,14 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
 import { ConfirmActionComponent, Ontology, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyService } from '../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab/ontology-information-tab.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaInformationTabComponent } from './schema-information-tab/schema-information-tab.component';
 
@@ -50,7 +61,6 @@ import { SchemaInformationTabComponent } from './schema-information-tab/schema-i
   templateUrl: './ontology-preview.component.html',
   styleUrls: ['./ontology-preview.component.scss'],
   imports: [
-    CommonModule,
     FormsModule,
     MatTabsModule,
     OntologyInformationTabComponent,
@@ -61,6 +71,10 @@ import { SchemaInformationTabComponent } from './schema-information-tab/schema-i
   ],
 })
 export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
+  private matDialog = inject(MatDialog);
+  private ontologyService = inject(OntologyService);
+  schemaService = inject(SchemaService);
+
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
@@ -86,12 +100,6 @@ export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private ontologyService: OntologyService,
-    public schemaService: SchemaService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabLinks[0] = this.infoTab;

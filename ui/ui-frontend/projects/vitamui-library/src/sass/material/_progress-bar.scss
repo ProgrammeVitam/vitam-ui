@@ -1,9 +1,9 @@
 :root {
   .mat-mdc-progress-bar {
-    --mdc-linear-progress-track-color: var(--vitamui-primary-50);
-    --mdc-linear-progress-active-indicator-color: var(--vitamui-primary);
-    --mdc-linear-progress-track-height: 8px;
-    --mdc-linear-progress-active-indicator-height: 8px;
+    --mat-progress-bar-track-color: var(--vitamui-primary-50);
+    --mat-progress-bar-active-indicator-color: var(--vitamui-primary);
+    --mat-progress-bar-track-height: 8px;
+    --mat-progress-bar-active-indicator-height: 8px;
     border-radius: 8px;
   }
 }

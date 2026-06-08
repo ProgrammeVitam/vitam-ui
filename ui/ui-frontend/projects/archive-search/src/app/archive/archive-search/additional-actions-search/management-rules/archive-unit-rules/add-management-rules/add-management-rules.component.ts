@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -70,6 +70,15 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   standalone: false,
 })
 export class AddManagementRulesComponent implements OnDestroy, OnInit {
+  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private archiveService = inject(ArchiveService);
+  private formBuilder = inject(FormBuilder);
+  dialog = inject(MatDialog);
+  ruleService = inject(RuleService);
+  private managementRulesValidatorService = inject(ManagementRulesValidatorService);
+  private translateService = inject(TranslateService);
+  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
   @Output() cancelStep = new EventEmitter<any>();
@@ -116,16 +125,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<AddManagementRulesComponent>;
 
-  constructor(
-    private managementRulesSharedDataService: ManagementRulesSharedDataService,
-    private archiveService: ArchiveService,
-    private formBuilder: FormBuilder,
-    public dialog: MatDialog,
-    public ruleService: RuleService,
-    private managementRulesValidatorService: ManagementRulesValidatorService,
-    private translateService: TranslateService,
-    private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
-  ) {
+  constructor() {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       rule: '',

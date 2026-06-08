@@ -62,8 +62,12 @@ describe('OwnerResolver', () => {
   let ownerResolver: OwnerResolver;
 
   beforeEach(() => {
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', ['get']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const ownerServiceSpy = {
+      get: vi.fn().mockName('OwnerService.get'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     TestBed.configureTestingModule({
       providers: [OwnerResolver, { provide: OwnerService, useValue: ownerServiceSpy }, { provide: Router, useValue: routerSpy }],
@@ -78,10 +82,10 @@ describe('OwnerResolver', () => {
 
   it('should get the owner with the id', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
 
     const ownerService = TestBed.inject(OwnerService);
-    ownerService.get = jasmine.createSpy().and.returnValue(of(expectedOwner));
+    ownerService.get = vi.fn().mockReturnValue(of(expectedOwner));
     ownerResolver.resolve(route).subscribe((customer) => {
       expect(customer).toEqual(expectedOwner);
     });
@@ -92,9 +96,9 @@ describe('OwnerResolver', () => {
 
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
     const ownerService = TestBed.inject(OwnerService);
-    ownerService.get = jasmine.createSpy().and.returnValue(of(null));
+    ownerService.get = vi.fn().mockReturnValue(of(null));
     const router = TestBed.inject(Router);
     ownerResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);

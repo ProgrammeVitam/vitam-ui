@@ -1,13 +1,14 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-ingest-contract-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      [ingestContract]="openedItem"
-      [tenantIdentifier]="tenantId"
-      [readOnly]="(hasUpdateIngestRole$ | async) === false"
-    >
-    </app-ingest-contract-preview>
+    @if (openedItem) {
+      <app-ingest-contract-preview
+        (previewClose)="closePanel()"
+        [ingestContract]="openedItem"
+        [tenantIdentifier]="tenantId"
+        [readOnly]="(hasUpdateIngestRole$ | async) === false"
+      >
+      </app-ingest-contract-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>

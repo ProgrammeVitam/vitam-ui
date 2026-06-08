@@ -21,63 +21,65 @@
     </div>
   </div>
   <div class="vitamui-table-body">
-    <div class="vitamui-table-rows" *ngFor="let permission of permissions; let i = index">
-      <div class="vitamui-row d-flex align-items-center">
-        <div class="col-1 d-flex align-items-center">
-          <i (click)="onDelete(i)" class="text normal vitamui-icon vitamui-icon-cross"></i>
+    @for (permission of permissions; track permission; let i = $index) {
+      <div class="vitamui-table-rows">
+        <div class="vitamui-row d-flex align-items-center">
+          <div class="col-1 d-flex align-items-center">
+            <i (click)="onDelete(i)" class="text normal vitamui-icon vitamui-icon-cross"></i>
+          </div>
+          @if (selectedOrganisations?.length > i) {
+            <vitamui-select
+              class="col-3 pb-2 customers selectorPosition"
+              [(ngModel)]="selectedOrganisations[i]"
+              (ngModelChange)="onCustomerSelect(permission)"
+              [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate"
+              [options]="customersOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          }
+          @if (selectedOrganisations?.length > i && selectedOrganisations[i] !== null) {
+            <vitamui-select
+              class="col-3 pb-2 tenants selectorPosition"
+              [(ngModel)]="permission.tenant"
+              (ngModelChange)="onTenantSelect()"
+              [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate"
+              [options]="tenantOptionsByOrganisation.get(selectedOrganisations[i])"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          }
+          @if (permission.tenant) {
+            <vitamui-select
+              class="col-3 pb-2 contractsSelect selectorPosition"
+              [(ngModel)]="permission.accessContracts"
+              (ngModelChange)="onContractSelect()"
+              [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate"
+              [options]="accessContractsOptionsByOrganisation.get('' + permission.tenant)"
+              [multiple]="true"
+              [enableSearch]="false"
+              [enableSelectAll]="true"
+              [enableDisplaySelected]="false"
+              [selectAllLabel]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT_TITLE' | translate"
+            ></vitamui-select>
+          }
+          @if (permission.tenant) {
+            <vitamui-select
+              class="col-3 pb-2 ingestContracts selectorPosition"
+              [(ngModel)]="permission.ingestContracts"
+              (ngModelChange)="onContractSelect()"
+              [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate"
+              [options]="ingestContractsOptionsByOrganisation.get('' + permission.tenant)"
+              [multiple]="true"
+              [enableSearch]="false"
+              [enableSelectAll]="true"
+              [enableDisplaySelected]="false"
+              [selectAllLabel]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT_TITLE' | translate"
+            ></vitamui-select>
+          }
         </div>
-
-        <vitamui-select
-          class="col-3 pb-2 customers selectorPosition"
-          *ngIf="selectedOrganisations?.length > i"
-          [(ngModel)]="selectedOrganisations[i]"
-          (ngModelChange)="onCustomerSelect(permission)"
-          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ORGANISATIONS' | translate"
-          [options]="customersOptions"
-          [multiple]="false"
-          [enableSearch]="false"
-        ></vitamui-select>
-
-        <vitamui-select
-          class="col-3 pb-2 tenants selectorPosition"
-          *ngIf="selectedOrganisations?.length > i && selectedOrganisations[i] !== null"
-          [(ngModel)]="permission.tenant"
-          (ngModelChange)="onTenantSelect()"
-          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.TENANTS' | translate"
-          [options]="tenantOptionsByOrganisation.get(selectedOrganisations[i])"
-          [multiple]="false"
-          [enableSearch]="false"
-        ></vitamui-select>
-
-        <vitamui-select
-          class="col-3 pb-2 contractsSelect selectorPosition"
-          *ngIf="permission.tenant"
-          [(ngModel)]="permission.accessContracts"
-          (ngModelChange)="onContractSelect()"
-          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT' | translate"
-          [options]="accessContractsOptionsByOrganisation.get('' + permission.tenant)"
-          [multiple]="true"
-          [enableSearch]="false"
-          [enableSelectAll]="true"
-          [enableDisplaySelected]="false"
-          [selectAllLabel]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.ACCESS_CONTRACT_TITLE' | translate"
-        ></vitamui-select>
-
-        <vitamui-select
-          class="col-3 pb-2 ingestContracts selectorPosition"
-          *ngIf="permission.tenant"
-          [(ngModel)]="permission.ingestContracts"
-          (ngModelChange)="onContractSelect()"
-          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT' | translate"
-          [options]="ingestContractsOptionsByOrganisation.get('' + permission.tenant)"
-          [multiple]="true"
-          [enableSearch]="false"
-          [enableSelectAll]="true"
-          [enableDisplaySelected]="false"
-          [selectAllLabel]="'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ARRAY.INGEST_CONTRACT_TITLE' | translate"
-        ></vitamui-select>
       </div>
-    </div>
+    }
   </div>
 </div>
 

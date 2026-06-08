@@ -97,7 +97,9 @@ describe('SecurisationCheckTabComponent', () => {
     ],
   };
 
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   beforeEach(async () => {
     const accessContractServiceMock = {
@@ -115,10 +117,7 @@ describe('SecurisationCheckTabComponent', () => {
         {
           provide: ExternalParametersService,
           useValue: {
-            getUserExternalParameters: () =>
-              of({
-                [ExternalParameters.PARAM_ACCESS_CONTRACT]: 'contractID',
-              }),
+            getUserExternalParameters: () => of(new Map([[ExternalParameters.PARAM_ACCESS_CONTRACT, 'contractID']])),
           },
         },
         { provide: SnackBarService, useValue: snackBarSpy },

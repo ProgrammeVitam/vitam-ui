@@ -2,7 +2,9 @@
   <div class="tree-text">
     <div class="tree-title">
       <span>{{ 'COLLECT.FILING_SCHEMA.TREE_LEAVES_TITLE' | translate }}</span>
-      <mat-spinner diameter="20" color="accent" *ngIf="nestedDataSourceLeaves.data.length === 0"></mat-spinner>
+      @if (nestedDataSourceLeaves.data.length === 0) {
+        <mat-spinner diameter="20" color="accent"></mat-spinner>
+      }
     </div>
   </div>
   @if (virtualPathLimitReached) {
@@ -33,20 +35,28 @@
           (nodeToggle)="toggleLeave(node)"
         >
         </vitamui-tree-node>
-        <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-secondary pad">
-          {{ node.count | number: '1.0' }}
-        </span>
+        @if (nodeHasPositiveCount(node)) {
+          <span class="badge badge-secondary pad">
+            {{ node.count | number: '1.0' }}
+          </span>
+        }
       </div>
       <div [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlLeaves.isExpanded(node)" class="flex-column childs">
-        <ng-container matTreeNodeOutlet *ngIf="nestedTreeControlLeaves.isExpanded(node)"></ng-container>
-        <div *ngIf="node.isLoadingChildren">
-          <mat-spinner diameter="20" color="accent"></mat-spinner>
-        </div>
-        <div *ngIf="canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)">
-          <a class="load-more-ua" (click)="toggleLoadMore(node)">
-            {{ 'COLLECT.FILING_SCHEMA.LOAD_MORE' | translate }}
-          </a>
-        </div>
+        @if (nestedTreeControlLeaves.isExpanded(node)) {
+          <ng-container matTreeNodeOutlet></ng-container>
+        }
+        @if (node.isLoadingChildren) {
+          <div>
+            <mat-spinner diameter="20" color="accent"></mat-spinner>
+          </div>
+        }
+        @if (canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)) {
+          <div>
+            <a class="load-more-ua" (click)="toggleLoadMore(node)">
+              {{ 'COLLECT.FILING_SCHEMA.LOAD_MORE' | translate }}
+            </a>
+          </div>
+        }
       </div>
     </mat-nested-tree-node>
 
@@ -64,9 +74,11 @@
             >
             </vitamui-tree-node>
           </div>
-          <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-secondary pad">
-            {{ node.count | number: '1.0' }}
-          </span>
+          @if (nodeHasPositiveCount(node)) {
+            <span class="badge badge-secondary pad">
+              {{ node.count | number: '1.0' }}
+            </span>
+          }
         </div>
       }
     </mat-tree-node>
@@ -92,15 +104,21 @@
         }
       </div>
       <div class="flex-column childs" [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlLeaves.isExpanded(node)">
-        <ng-container matTreeNodeOutlet *ngIf="nestedTreeControlLeaves.isExpanded(node)"></ng-container>
-        <div *ngIf="node.isLoadingChildren">
-          <mat-spinner diameter="20" color="accent"></mat-spinner>
-        </div>
-        <div *ngIf="canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)">
-          <a class="load-more-ua" (click)="toggleLoadMoreOrphans(node)">
-            {{ 'COLLECT.FILING_SCHEMA.LOAD_MORE' | translate }}
-          </a>
-        </div>
+        @if (nestedTreeControlLeaves.isExpanded(node)) {
+          <ng-container matTreeNodeOutlet></ng-container>
+        }
+        @if (node.isLoadingChildren) {
+          <div>
+            <mat-spinner diameter="20" color="accent"></mat-spinner>
+          </div>
+        }
+        @if (canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)) {
+          <div>
+            <a class="load-more-ua" (click)="toggleLoadMoreOrphans(node)">
+              {{ 'COLLECT.FILING_SCHEMA.LOAD_MORE' | translate }}
+            </a>
+          </div>
+        }
       </div>
     </mat-nested-tree-node>
 
@@ -118,21 +136,29 @@
           (nodeToggle)="toggleLeave(node)"
         >
         </vitamui-tree-node>
-        <span *ngIf="nodeHasPositiveCount(node)" class="badge badge-secondary pad">
-          {{ node.count | number: '1.0' }}
-        </span>
+        @if (nodeHasPositiveCount(node)) {
+          <span class="badge badge-secondary pad">
+            {{ node.count | number: '1.0' }}
+          </span>
+        }
       </div>
       @if (nodeHasResultOrShowAll(node)) {
         <div [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlLeaves.isExpanded(node)" class="flex-column childs">
-          <ng-container matTreeNodeOutlet *ngIf="!node.isLoadingChilds && nestedTreeControlLeaves.isExpanded(node)"></ng-container>
-          <div *ngIf="node.isLoadingChildren">
-            <mat-spinner diameter="20" color="accent"></mat-spinner>
-          </div>
-          <div *ngIf="canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)">
-            <a class="load-more-ua" (click)="toggleLoadMore(node)">
-              {{ 'COLLECT.FILING_SCHEMA.LOAD_MORE' | translate }}
-            </a>
-          </div>
+          @if (!node.isLoadingChilds && nestedTreeControlLeaves.isExpanded(node)) {
+            <ng-container matTreeNodeOutlet></ng-container>
+          }
+          @if (node.isLoadingChildren) {
+            <div>
+              <mat-spinner diameter="20" color="accent"></mat-spinner>
+            </div>
+          }
+          @if (canLoadMoreUAForNode(node) && nestedTreeControlLeaves.isExpanded(node)) {
+            <div>
+              <a class="load-more-ua" (click)="toggleLoadMore(node)">
+                {{ 'COLLECT.FILING_SCHEMA.LOAD_MORE' | translate }}
+              </a>
+            </div>
+          }
         </div>
       }
     </mat-nested-tree-node>

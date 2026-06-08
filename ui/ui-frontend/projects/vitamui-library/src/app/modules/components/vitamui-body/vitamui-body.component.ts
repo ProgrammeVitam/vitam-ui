@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 
 @Component({
   selector: 'vitamui-common-body',
   templateUrl: './vitamui-body.component.html',
   styleUrls: ['./vitamui-body.component.scss'],
-  imports: [CommonModule, ScrollTopComponent],
+  imports: [ScrollTopComponent],
 })
 export class VitamuiBodyComponent {
   constructor() {}

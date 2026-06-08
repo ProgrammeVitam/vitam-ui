@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { Event } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
@@ -46,16 +46,14 @@ import { SecurisationService } from '../securisation.service';
   standalone: false,
 })
 export class SecurisationPreviewComponent implements OnInit {
+  private securisationService = inject(SecurisationService);
+  private externalParameterService = inject(ExternalParametersService);
+  private snackBarService = inject(SnackBarService);
+
   @Input() securisation: Event;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   accessContractId: string;
-
-  constructor(
-    private securisationService: SecurisationService,
-    private externalParameterService: ExternalParametersService,
-    private snackBarService: SnackBarService,
-  ) {}
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

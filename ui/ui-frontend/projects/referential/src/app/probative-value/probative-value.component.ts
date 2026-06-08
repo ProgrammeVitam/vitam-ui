@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -50,6 +50,11 @@ import { DateTime } from 'luxon';
   standalone: false,
 })
 export class ProbativeValueComponent extends SidenavPage<Event> implements OnDestroy {
+  dialog = inject(MatDialog);
+  private router = inject(Router);
+  private route: ActivatedRoute;
+  private formBuilder = inject(FormBuilder);
+
   search: string;
   dateRangeFilterForm: FormGroup;
   filters: any = {};
@@ -59,14 +64,12 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
   @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
   @ViewChild(ProbativeValueListComponent, { static: true }) probativeValueListComponent: ProbativeValueListComponent;
 
-  constructor(
-    public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder,
-  ) {
+  constructor() {
+    const route = inject(ActivatedRoute);
+    const globalEventService = inject(GlobalEventService);
+
     super(route, globalEventService);
+    this.route = route;
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,

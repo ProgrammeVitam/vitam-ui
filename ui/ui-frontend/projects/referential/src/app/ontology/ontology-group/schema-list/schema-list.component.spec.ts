@@ -48,7 +48,7 @@ describe('SchemaListComponent', () => {
   let fixture: ComponentFixture<SchemaListComponent>;
 
   const schemaServiceMock = {
-    getSchemaTreeByCategory: () => of(null),
+    getSchemaTreeByCategory: () => of([]),
   };
 
   const tenantSelectionServiceMock = {

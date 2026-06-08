@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -42,7 +42,7 @@ import { ConfirmDialogService, Context, Option, VitamUICommonModule, VitamUILibr
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';
-import { CommonModule } from '@angular/common';
+
 import { ContextEditPermissionModule } from './context-edit-permission/context-edit-permission.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -57,7 +57,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './context-create.component.html',
   styleUrls: ['./context-create.component.scss'],
   imports: [
-    CommonModule,
     ContextEditPermissionModule,
     MatButtonToggleModule,
     MatDialogModule,
@@ -73,6 +72,16 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class ContextCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<ContextCreateComponent>>(MatDialogRef);
+  data = inject<{
+    isSlaveMode: boolean;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private contextService = inject(ContextService);
+  private contextCreateValidators = inject(ContextCreateValidators);
+  private securityProfileService = inject(SecurityProfileService);
+
   protected readonly isSlaveMode: boolean;
 
   form: FormGroup;
@@ -89,15 +98,9 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   securityProfiles: Option[] = [];
 
-  constructor(
-    public dialogRef: MatDialogRef<ContextCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { isSlaveMode: boolean },
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private contextService: ContextService,
-    private contextCreateValidators: ContextCreateValidators,
-    private securityProfileService: SecurityProfileService,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.isSlaveMode = data.isSlaveMode;
   }
 

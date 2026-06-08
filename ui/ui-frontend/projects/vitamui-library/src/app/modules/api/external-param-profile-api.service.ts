@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
 import { ExternalParamProfile } from '../models';
@@ -45,7 +45,10 @@ import { PaginatedHttpClient } from '../paginated-http-client';
   providedIn: 'root',
 })
 export class ExternalParamProfileApiService extends PaginatedHttpClient<ExternalParamProfile> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/externalparamprofile');
   }
 

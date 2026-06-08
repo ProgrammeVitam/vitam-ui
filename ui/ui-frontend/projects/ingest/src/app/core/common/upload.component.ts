@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BytesPipe, StartupService, SnackBarService } from 'vitamui-library';
@@ -51,6 +51,15 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class UploadComponent implements OnInit {
+  data = inject(MAT_DIALOG_DATA);
+  dialogRef = inject<MatDialogRef<UploadComponent>>(MatDialogRef);
+  private formBuilder = inject(FormBuilder);
+  private uploadService = inject(UploadService);
+  private snackBarService = inject(SnackBarService);
+  private startupService = inject(StartupService);
+  private bytesPipe = inject(BytesPipe);
+  private translateService = inject(TranslateService);
+
   IngestType = IngestType;
 
   sipForm: FormGroup;
@@ -70,16 +79,9 @@ export class UploadComponent implements OnInit {
 
   private snackbarRef: MatSnackBarRef<unknown>;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<UploadComponent>,
-    private formBuilder: FormBuilder,
-    private uploadService: UploadService,
-    private snackBarService: SnackBarService,
-    private startupService: StartupService,
-    private bytesPipe: BytesPipe,
-    private translateService: TranslateService,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.sipForm = this.formBuilder.group({
       hasSip: null,
     });

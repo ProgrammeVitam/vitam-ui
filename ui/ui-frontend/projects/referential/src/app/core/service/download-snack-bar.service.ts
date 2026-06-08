@@ -36,7 +36,7 @@
  */
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DownloadSnackBarComponent, SnackBarService } from 'vitamui-library';
 
@@ -44,15 +44,15 @@ import { DownloadSnackBarComponent, SnackBarService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class DownloadSnackBarService {
+  private overlay = inject(Overlay);
+  private snackBarService = inject(SnackBarService);
+
   private overlayRef: OverlayRef;
   private downloadBarRef: any;
 
   public cancelDownload = new Subject<void>();
 
-  constructor(
-    private overlay: Overlay,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
     const positionStrategy = this.overlay.position().global();
     positionStrategy.left('0');
     positionStrategy.right('0');

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 
 import { of, timer } from 'rxjs';
@@ -45,9 +45,9 @@ import { AuditService } from '../audit.service';
   providedIn: 'root',
 })
 export class AuditCreateValidators {
-  private debounceTime = 400;
+  private auditService = inject(AuditService);
 
-  constructor(private auditService: AuditService) {}
+  private debounceTime = 400;
 
   checkEvidenceAuditId = (): AsyncValidatorFn => {
     return this.auditExists('invalidEvidenceAuditId');

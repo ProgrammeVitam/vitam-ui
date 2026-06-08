@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonTooltipModule, InputComponent, TooltipDirective } from 'vitamui-library';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -44,7 +44,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'design-system-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, CommonTooltipModule, MatTooltipModule, FormsModule, InputComponent],
+  imports: [ReactiveFormsModule, CommonTooltipModule, MatTooltipModule, FormsModule, InputComponent],
 })
 export class TooltipComponent implements AfterViewInit {
   outlineValues = [true, false];

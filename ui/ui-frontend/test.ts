@@ -34,9 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+/// <reference types="vitest/globals" />
+
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import '@angular/compiler';
+import '@analogjs/vitest-angular/setup-zone';
 import 'zone.js/testing';
 
-import { getTestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-
-getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    imports: [...(moduleDef?.imports ?? []), TranslateModule.forRoot()],
+    schemas: [...(moduleDef?.schemas ?? []), CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
+  })) as typeof TestBed.configureTestingModule;

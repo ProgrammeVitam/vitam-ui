@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { AuthService, isLevelAllowed, Profile } from 'vitamui-library';
+import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({
@@ -47,6 +47,10 @@ import { HierarchyService } from '../hierarchy.service';
   standalone: false,
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
+  private hierarchyService = inject(HierarchyService);
+  private authService = inject(AuthService);
+  private startupService = inject(StartupService);
+
   @Input()
   set id(id: string) {
     this.hierarchyService.get(id).subscribe((profile) => (this.profile = profile));
@@ -57,11 +61,6 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   @Output() previewClose = new EventEmitter();
 
   profileUpdateSub: Subscription;
-
-  constructor(
-    private hierarchyService: HierarchyService,
-    private authService: AuthService,
-  ) {}
 
   ngOnInit() {
     this.profileUpdateSub = this.hierarchyService.updated.subscribe((updatedProfile) => {
@@ -75,6 +74,15 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
     this.profileUpdateSub.unsubscribe();
   }
 
+  openPopup() {
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/profile-hierarchy/' + this.profile.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no',
+    );
+    this.emitClose();
+  }
+
   emitClose() {
     this.previewClose.emit();
   }
@@ -83,5 +91,11 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
     if (this.profile) {
       return !isLevelAllowed(this.authService.user, this.profile.level);
     }
+  }
+
+  filterEvents(event: Event): boolean {
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') || event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE'))
+    );
   }
 }

@@ -35,11 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
-import { ApiEvent, HistoryEvent, IEvent } from '../models';
+import { ApiEvent, IEvent } from '../models';
+import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { VitamResponse } from '../models/vitam/vitam-response.interface';
 import { PaginatedApi } from '../paginated-api.interface';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
@@ -54,13 +55,14 @@ const API_CONTEXT_INDEX = 2;
   providedIn: 'root',
 })
 export class LogbookApiService implements PaginatedApi<IEvent> {
+  private http = inject(HttpClient);
+
   private readonly apiUrl: string;
   private readonly baseUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    @Inject(BASE_URL) baseUrl: string,
-  ) {
+  constructor() {
+    const baseUrl = inject(BASE_URL);
+
     this.apiUrl = baseUrl + '/logbooks';
     this.baseUrl = baseUrl;
   }
@@ -143,10 +145,26 @@ export class LogbookApiService implements PaginatedApi<IEvent> {
       .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
-  findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<HistoryEvent[]> {
+  findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<{ $results: IEvent[] }> {
     return this.http
-      .get<HistoryEvent[]>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers })
-      .pipe(map((event) => event.map((event) => ({ ...event, parsedData: JSON.parse(event.data) }))));
+      .get<{ $results: ApiEvent[] }>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers })
+      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
+  }
+
+  findOperationsBySelectQuery(
+    selectQuery: VitamSelectQuery,
+    vitamTenantIdentifier?: number,
+    headers?: HttpHeaders,
+  ): Observable<{ $results: IEvent[] }> {
+    let params = new HttpParams();
+
+    if (vitamTenantIdentifier) {
+      params = params.append('vitamTenantIdentifier', vitamTenantIdentifier.toString());
+    }
+
+    return this.http
+      .post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, { headers, params })
+      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
   downloadManifest(id: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {

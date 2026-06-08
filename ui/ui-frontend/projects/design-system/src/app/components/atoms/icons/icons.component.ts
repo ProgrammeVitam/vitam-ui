@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { SelectComponent } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -43,7 +43,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss'],
-  imports: [CommonModule, TranslatePipe, FormsModule, SelectComponent],
+  imports: [TranslatePipe, FormsModule, SelectComponent],
 })
 export class IconsComponent {
   icons: (string | string[])[];

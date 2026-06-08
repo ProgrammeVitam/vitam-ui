@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { DisplayObjectService, DisplayRule } from './models';
 import { Mode } from './models/display-object.enum';
@@ -46,14 +46,12 @@ import { Mode } from './models/display-object.enum';
   standalone: false,
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
+  private logger = inject(Logger);
+  displayObjectService = inject(DisplayObjectService);
+
   @Input() data!: any;
   @Input() template!: DisplayRule[];
   @Input() mode: Mode = Mode.TEMPLATE_DRIVEN;
-
-  constructor(
-    private logger: Logger,
-    public displayObjectService: DisplayObjectService,
-  ) {}
 
   ngOnInit(): void {
     this.displayObjectService.setMode(this.mode);

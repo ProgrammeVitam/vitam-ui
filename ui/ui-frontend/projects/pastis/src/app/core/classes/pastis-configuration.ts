@@ -34,12 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { PastisApiService } from '../api/api.pastis.service';
 
 @Injectable()
 export class PastisConfiguration {
+  private pastisApi = inject(PastisApiService);
+
   // routes pastis
   pastisEditPage: string;
   sedaUrl: string;
@@ -73,8 +75,6 @@ export class PastisConfiguration {
   updateArchivalProfileUnitById: string;
   importProfileInExistingNotice: string;
   metaModelUrl: string;
-
-  constructor(private pastisApi: PastisApiService) {}
 
   public initConfiguration(): Promise<any> {
     if (environment.apiServerUrl !== undefined && environment.standalone) {

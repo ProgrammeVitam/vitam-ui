@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL, PaginatedHttpClient, SecurityProfile } from 'vitamui-library';
@@ -46,7 +46,10 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class SecurityProfileApiService extends PaginatedHttpClient<SecurityProfile> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/security-profile');
   }
 

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -61,7 +61,7 @@ const fieldKeys = [ALL_ARCHIVE_UNIT_TYPES, ERRORS, SearchCriteriaTypeEnum.FIELDS
   providedIn: 'root',
 })
 export class ArchiveSearchHelperService {
-  constructor(private archiveExchangeDataService: ArchiveSharedDataService) {}
+  private archiveExchangeDataService = inject(ArchiveSharedDataService);
 
   addCriteria(
     searchCriterias: Map<string, CriteriaSearchCriteria>,

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SchemaApiService } from '../api/schema-api.service';
 import { Collection, Schema } from '../models';
@@ -47,11 +47,10 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class SchemaService {
+  private api = inject(SchemaApiService);
+  private translateService = inject(TranslateService);
+
   selectedPath$ = new Subject<string>();
-  constructor(
-    private api: SchemaApiService,
-    private translateService: TranslateService,
-  ) {}
 
   public getSchemas(collections: Collection[]): Observable<Schema[]> {
     return this.api.getSchemas(collections);

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   ManagementContractValidationErrors,
@@ -50,6 +50,9 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges {
+  private formBuilder = inject(FormBuilder);
+  private translateService = inject(TranslateService);
+
   @Input() form: FormGroup;
   @Output() objectUsagePolicyAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output() objectUsagePolicyRemoved: EventEmitter<void> = new EventEmitter<void>();
@@ -91,11 +94,6 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
   objectUsagePoliciesToggle = false;
   addButtonDisabled = false;
   isExistingTypeOption = false;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.form) {

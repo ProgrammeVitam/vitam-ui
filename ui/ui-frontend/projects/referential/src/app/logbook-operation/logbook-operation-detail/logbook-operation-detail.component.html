@@ -7,12 +7,16 @@
   [toolTipTitleDuration]="300"
   [actionsBelowTitle]="true"
 >
-  <button class="btn primary ml-1" *ngIf="showDownloadButton" (click)="downloadReports()" [disabled]="disableDownloadButton">
-    {{ downloadButtonTitle | translate }}
-  </button>
-  <button class="btn primary ml-2" *ngIf="hasATRDownloadable()" (click)="downloadATR()">
-    {{ 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_ATR' | translate }}
-  </button>
+  @if (showDownloadButton) {
+    <button class="btn primary ml-1" (click)="downloadReports()" [disabled]="disableDownloadButton">
+      {{ downloadButtonTitle | translate }}
+    </button>
+  }
+  @if (hasATRDownloadable()) {
+    <button class="btn primary ml-2" (click)="downloadATR()">
+      {{ 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_ATR' | translate }}
+    </button>
+  }
 </vitamui-common-sidenav-header>
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">

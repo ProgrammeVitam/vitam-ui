@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
@@ -57,14 +57,18 @@ import { ProfileService } from '../profile/profile.service';
   providedIn: 'root',
 })
 export class UserService extends SearchService<User> {
+  private userApi: UserApiService;
+  private snackBarService = inject(SnackBarService);
+  private rngProfileService = inject(ProfileService);
+
   userUpdated = new Subject<User>();
 
-  constructor(
-    private userApi: UserApiService,
-    private snackBarService: SnackBarService,
-    private rngProfileService: ProfileService,
-  ) {
+  constructor() {
+    const userApi = inject(UserApiService);
+
     super(userApi, '');
+
+    this.userApi = userApi;
   }
 
   create(user: User) {

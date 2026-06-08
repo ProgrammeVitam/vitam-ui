@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
   CriteriaSearchCriteria,
@@ -54,11 +54,9 @@ import {
   providers: [TranslateWithOptionalTypeSuffixPipe],
 })
 export class CriteriaSearchComponent {
-  constructor(
-    private queryParamsService: QueryParamsService,
-    private translateService: TranslateService,
-    private translateWithOptionalTypeSuffixPipe: TranslateWithOptionalTypeSuffixPipe,
-  ) {}
+  private queryParamsService = inject(QueryParamsService);
+  private translateService = inject(TranslateService);
+  private translateWithOptionalTypeSuffixPipe = inject(TranslateWithOptionalTypeSuffixPipe);
 
   @Input()
   criteriaKey: string;

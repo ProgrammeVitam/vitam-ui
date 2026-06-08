@@ -68,19 +68,32 @@ describe('TransferAcknowledgmentComponent', () => {
   let component: TransferAcknowledgmentComponent;
   let fixture: ComponentFixture<TransferAcknowledgmentComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
-  const startupServiceStub = jasmine.createSpyObj('StartupService', {
-    getPortalUrl: () => '',
-    getConfigStringValue: () => '',
-    getReferentialUrl: () => '',
-  });
+  const startupServiceStub = {
+    getPortalUrl: vi
+      .fn()
+      .mockName('StartupService.getPortalUrl')
+      .mockReturnValue(() => ''),
+    getConfigStringValue: vi
+      .fn()
+      .mockName('StartupService.getConfigStringValue')
+      .mockReturnValue(() => ''),
+    getReferentialUrl: vi
+      .fn()
+      .mockName('StartupService.getReferentialUrl')
+      .mockReturnValue(() => ''),
+  };
 
-  const archiveSearchServiceStub = jasmine.createSpyObj('ArchiveService', {
-    transferAcknowledgment: of('operationId'),
-    openSnackBarForWorkflow: of({}),
-  });
+  const archiveSearchServiceStub = {
+    transferAcknowledgment: vi.fn().mockName('ArchiveService.transferAcknowledgment').mockReturnValue(of('operationId')),
+    openSnackBarForWorkflow: vi.fn().mockName('ArchiveService.openSnackBarForWorkflow').mockReturnValue(of({})),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -205,7 +218,7 @@ describe('TransferAcknowledgmentComponent', () => {
 </ArchiveTransferReply>`;
 
     await component.parseXmlToTransferDetails(xmlOK);
-    expect(component.isAtrNotValid).toBeFalse();
+    expect(component.isAtrNotValid).toBe(false);
     expect(component.transfertDetails).toEqual({
       messageRequestIdentifier: 'SIP SEDA de test',
       date: '2024-06-04T12:56:58.824Z',
@@ -220,14 +233,14 @@ describe('TransferAcknowledgmentComponent', () => {
     const xmlNoArchiveTransferReply = '<toto></toto>';
 
     await component.parseXmlToTransferDetails(xmlNoArchiveTransferReply);
-    expect(component.isAtrNotValid).toBeTrue();
+    expect(component.isAtrNotValid).toBe(true);
   });
 
   it('should parseXmlToTransferDetails for invalid XML', async () => {
     const xmlBadFormat = 'This is not XML';
 
     await component.parseXmlToTransferDetails(xmlBadFormat);
-    expect(component.hasError).toBeTrue();
+    expect(component.hasError).toBe(true);
     expect(component.message).toBeTruthy();
   });
 
@@ -246,7 +259,7 @@ describe('TransferAcknowledgmentComponent', () => {
       const blob = new Blob([contents], { type: 'text/plain' });
       const file = new File([blob], 'atrFile.xml', { type: 'text/plain' });
       component.fileToUpload = file;
-      spyOn(component, 'handleFile');
+      vi.spyOn(component, 'handleFile');
       const nativeElement = fixture.nativeElement;
       const checkBox = nativeElement.querySelector('input[type=file]');
 

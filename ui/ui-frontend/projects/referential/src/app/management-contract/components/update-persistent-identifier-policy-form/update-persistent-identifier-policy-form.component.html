@@ -1,12 +1,13 @@
 <div [formGroup]="form">
-  <vitamui-input
-    *ngIf="isExistingTypeOption"
-    formControlName="authority"
-    [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.NAMING_AUTHORITY' | translate"
-    class="mt-2 w-100"
-    [errorMessageMap]="authorityErrorMap"
-  >
-  </vitamui-input>
+  @if (isExistingTypeOption) {
+    <vitamui-input
+      formControlName="authority"
+      [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.NAMING_AUTHORITY' | translate"
+      class="mt-2 w-100"
+      [errorMessageMap]="authorityErrorMap"
+    >
+    </vitamui-input>
+  }
   @if (isExistingTypeOption) {
     <h5 class="primary">{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.POSITIONING_TITLE' | translate }}</h5>
     <div class="header row">
@@ -34,7 +35,7 @@
     </div>
     <div class="content" [ngStyle]="{ display: objectUsagePoliciesToggle ? 'block' : 'none' }">
       <div class="container" formArrayName="objectUsagePolicies">
-        <ng-container *ngFor="let objectUsagePolicy of getObjectUsagePolicies(); index as i">
+        @for (objectUsagePolicy of getObjectUsagePolicies(); track objectUsagePolicy; let i = $index) {
           <div class="row" [formGroupName]="i">
             <div class="col">
               <div class="row">
@@ -92,15 +93,14 @@
                   </div>
                 </div>
               </div>
-              <vitamui-common-input-error
-                *ngIf="form.get('objectUsagePolicies').at(i).hasError('invalidObjectUsagePolicy')"
-                class="vitamui-input-errors"
-              >
-                {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_OBJECT_USAGE_POLICY' | translate }}
-              </vitamui-common-input-error>
+              @if (form.get('objectUsagePolicies').at(i).hasError('invalidObjectUsagePolicy')) {
+                <vitamui-common-input-error class="vitamui-input-errors">
+                  {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_OBJECT_USAGE_POLICY' | translate }}
+                </vitamui-common-input-error>
+              }
             </div>
           </div>
-        </ng-container>
+        }
         <div class="row">
           <div class="col">
             <button
@@ -117,8 +117,10 @@
         </div>
       </div>
     </div>
-    <vitamui-common-input-error *ngIf="form.hasError('invalidPersistentIdentifierPolicyTarget')" class="vitamui-input-errors">
-      {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
-    </vitamui-common-input-error>
+    @if (form.hasError('invalidPersistentIdentifierPolicyTarget')) {
+      <vitamui-common-input-error class="vitamui-input-errors">
+        {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
+      </vitamui-common-input-error>
+    }
   }
 </div>

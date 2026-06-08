@@ -48,7 +48,7 @@ import {
   Profile,
 } from 'vitamui-library';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DEFAULT_PAGE_SIZE } from '../../core/customer.service';
@@ -63,6 +63,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
+  hierarchyService: HierarchyService;
+  private route = inject(ActivatedRoute);
+
   @Input()
   set searchText(searchText: string) {
     this._searchText = searchText;
@@ -79,11 +82,12 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
   private readonly orderChange = new Subject<string>();
   private readonly searchKeys = ['name', 'description', 'identifier'];
 
-  constructor(
-    public hierarchyService: HierarchyService,
-    private route: ActivatedRoute,
-  ) {
+  constructor() {
+    const hierarchyService = inject(HierarchyService);
+
     super(hierarchyService);
+    this.hierarchyService = hierarchyService;
+
     this.updatedProfileSub = this.hierarchyService.updated.subscribe((updatedProfile: Profile) => {
       const profileIndex = this.dataSource.findIndex((profile) => updatedProfile.id === profile.id);
       if (profileIndex > -1) {

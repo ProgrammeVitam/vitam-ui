@@ -9,7 +9,9 @@
   <div class="input-box focus-within-zone">
     <label>
       <span class="ellipsis">{{ placeholder }} ({{ (_selectedType || types[0]).label | lowercase }})</span>
-      <span *ngIf="isRequired()" class="required-marker">*</span>
+      @if (isRequired()) {
+        <span class="required-marker">*</span>
+      }
     </label>
     <input type="text" [ngModel]="control.value?.value" (ngModelChange)="inputValueChange($event)" [disabled]="control.disabled" />
   </div>

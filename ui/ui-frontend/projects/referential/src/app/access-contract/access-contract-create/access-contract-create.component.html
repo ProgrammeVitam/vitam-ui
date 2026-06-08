@@ -97,17 +97,19 @@
                 </mat-button-toggle-group>
               </div>
 
-              <div class="mt-2" *ngIf="form.get('thirdStep.downloadChoose').value === 'SELECTION'">
-                <vitamui-select
-                  formControlName="dataObjectVersion"
-                  [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER' | translate"
-                  [options]="usages"
-                  [multiple]="true"
-                  [enableSearch]="false"
-                  [enableDisplaySelected]="false"
-                  [enableSelectAll]="false"
-                ></vitamui-select>
-              </div>
+              @if (form.get('thirdStep.downloadChoose').value === 'SELECTION') {
+                <div class="mt-2">
+                  <vitamui-select
+                    formControlName="dataObjectVersion"
+                    [placeholder]="'ACCESS_CONTRACT.CREATE_DIALOG.EVERY_DATA_OBJECT_VERSION_SELECT_PLACEHOLDER' | translate"
+                    [options]="usages"
+                    [multiple]="true"
+                    [enableSearch]="false"
+                    [enableDisplaySelected]="false"
+                    [enableSelectAll]="false"
+                  ></vitamui-select>
+                </div>
+              }
             </div>
           </div>
         </div>
@@ -133,11 +135,9 @@
           ></i>
         </vitamui-slide-toggle>
 
-        <vitamui-library-filing-plan
-          *ngIf="!allNodes.value"
-          [formControl]="selectNodesControl"
-          [mode]="FILLING_PLAN_MODE.BOTH"
-        ></vitamui-library-filing-plan>
+        @if (!allNodes.value) {
+          <vitamui-library-filing-plan [formControl]="selectNodesControl" [mode]="FILLING_PLAN_MODE.BOTH"></vitamui-library-filing-plan>
+        }
       </mat-dialog-content>
 
       <mat-dialog-actions>

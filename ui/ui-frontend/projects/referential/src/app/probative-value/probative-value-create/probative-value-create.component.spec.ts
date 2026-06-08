@@ -41,7 +41,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import {
   ConfirmDialogService,
@@ -61,6 +60,10 @@ describe('ProbativeValueCreateComponent', () => {
   let fixture: ComponentFixture<ProbativeValueCreateComponent>;
 
   beforeEach(async () => {
+    TestBed.overrideComponent(ProbativeValueCreateComponent, {
+      set: { template: '' },
+    });
+
     const parameters: Map<string, string> = new Map<string, string>();
     const externalParametersServiceMock = {
       getUserExternalParameters: () => of(parameters),
@@ -85,8 +88,7 @@ describe('ProbativeValueCreateComponent', () => {
         { provide: ProbativeValueService, useValue: {} },
         { provide: SearchUnitApiService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        { provide: TranslateService, useValue: { instant: (key: string) => key } },
-        { provide: SnackBarService, useValue: {} },
+        { provide: SnackBarService, useValue: { open: vi.fn() } },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

@@ -7,20 +7,22 @@
     <span>{{ 'INGEST_CONTRACT.TAB.OBJECTS.ALL_USAGES' | translate }}</span>
   </vitamui-slide-toggle>
 
-  <div *ngIf="!form?.controls.everyDataObjectVersion?.value" class="py-3">
-    <ng-container *ngIf="!form?.controls.everyDataObjectVersion?.value">
-      <vitamui-select
-        [multiple]="true"
-        formControlName="dataObjectVersion"
-        [placeholder]="'INGEST_CONTRACT.TAB.OBJECTS.SELECT_FORMAT' | translate"
-        [options]="usages"
-        [enableSearch]="false"
-        [enableSelectAll]="false"
-        [enableDisplaySelected]="false"
-      >
-      </vitamui-select>
-    </ng-container>
-  </div>
+  @if (!form?.controls.everyDataObjectVersion?.value) {
+    <div class="py-3">
+      @if (!form?.controls.everyDataObjectVersion?.value) {
+        <vitamui-select
+          [multiple]="true"
+          formControlName="dataObjectVersion"
+          [placeholder]="'INGEST_CONTRACT.TAB.OBJECTS.SELECT_FORMAT' | translate"
+          [options]="usages"
+          [enableSearch]="false"
+          [enableSelectAll]="false"
+          [enableDisplaySelected]="false"
+        >
+        </vitamui-select>
+      }
+    </div>
+  }
 
   <button type="submit" class="btn primary mt-4" [disabled]="isInvalid() || unchanged() || submited">
     {{ 'COMMON.SAVE' | translate }}

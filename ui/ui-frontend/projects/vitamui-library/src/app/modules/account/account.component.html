@@ -7,10 +7,12 @@
   </vitamui-title-breadcrumb>
 
   <div class="d-flex">
-    <div *ngIf="displayAppTab">
-      <button class="btn primary btn-header">Demander une modification</button>
-      <button class="btn primary">Contacter l'administrateur</button>
-    </div>
+    @if (displayAppTab) {
+      <div>
+        <button class="btn primary btn-header">Demander une modification</button>
+        <button class="btn primary">Contacter l'administrateur</button>
+      </div>
+    }
   </div>
 </div>
 

@@ -36,7 +36,7 @@
  */
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -75,6 +75,16 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     @Input() vitamuiCommonCollapse: any;
   }
 
+  @Pipe({
+    name: 'dateTime',
+    standalone: false,
+  })
+  class DateTimeStubPipe implements PipeTransform {
+    transform(value: string = ''): string {
+      return value;
+    }
+  }
+
   const inheritedPropertyCarried: InheritedPropertyDto = {
     PropertyName: 'name',
     PropertyValue: {},
@@ -111,7 +121,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesInformationsTabComponent],
+      declarations: [ArchiveUnitRulesInformationsTabComponent, DateTimeStubPipe],
       imports: [
         CollapseStubDirective,
         CollapseTriggerForStubDirective,

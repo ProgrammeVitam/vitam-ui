@@ -37,7 +37,7 @@
 /* eslint-disable no-magic-numbers */
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -61,6 +61,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 class TesthostComponent {
   roles: any[] = [{ name: 'ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_1' }, { name: 'DEFAULT_ROLE_TEST_2' }];
 }
+
+@NgModule({ declarations: [TesthostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('RoleToggleComponent', () => {
   let testhost: TesthostComponent;
@@ -102,9 +105,9 @@ describe('RoleToggleComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(slideToggles[0].attributes['ng-reflect-model']).toBe('true');
-      expect(slideToggles[1].attributes['ng-reflect-model']).toBe('false');
-      expect(slideToggles[2].attributes['ng-reflect-model']).toBe('false');
+      expect(slideToggles[0].componentInstance.checked).toBe(true);
+      expect(slideToggles[1].componentInstance.checked).toBe(false);
+      expect(slideToggles[2].componentInstance.checked).toBe(false);
     });
   }));
 

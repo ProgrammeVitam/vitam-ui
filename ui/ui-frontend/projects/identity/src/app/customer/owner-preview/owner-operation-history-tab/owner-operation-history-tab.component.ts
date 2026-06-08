@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AuthService, HistoryEvent, LogbookService } from 'vitamui-library';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { AuthService, IEvent, LogbookService } from 'vitamui-library';
 
 const EVENT_LIMIT = 100;
 @Component({
@@ -45,17 +45,16 @@ const EVENT_LIMIT = 100;
   standalone: false,
 })
 export class OwnerOperationHistoryTabComponent implements OnChanges {
+  private authService = inject(AuthService);
+  private logbookService = inject(LogbookService);
+
   @Input() id: string;
   @Input() identifier: string;
   @Input() externalParamId: string;
+  @Input() filter: (event: any) => boolean;
 
-  events: HistoryEvent[] = [];
+  events: IEvent[] = [];
   loading = false;
-
-  constructor(
-    private authService: AuthService,
-    private logbookService: LogbookService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('id') || changes.hasOwnProperty('externalParamId')) {
@@ -74,7 +73,7 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
     this.logbookService.listHistoryForOwner(this.id, this.identifier, this.externalParamId, tenantIdentifier).subscribe(
       (results) => {
         this.loading = false;
-        this.events = results.slice(0, EVENT_LIMIT);
+        this.events = results.filter((event) => (this.filter ? this.filter(event) : true)).slice(0, EVENT_LIMIT);
       },
       () => (this.loading = false),
     );

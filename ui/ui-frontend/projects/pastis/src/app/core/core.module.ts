@@ -36,20 +36,21 @@
  */
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { SharedModule } from '../shared/shared.module';
-import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [],
-  exports: [VitamUICommonModule, NgxUiLoaderModule],
-  imports: [CommonModule, VitamUICommonModule, PastisMaterialModule, SharedModule, NgxUiLoaderModule],
+  exports: [VitamUICommonModule],
+  imports: [CommonModule, VitamUICommonModule, PastisMaterialModule, SharedModule],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+  constructor() {
+    const parentModule = inject(CoreModule, { optional: true, skipSelf: true });
+
     throwIfAlreadyLoaded(parentModule, 'CoreModule');
   }
 }

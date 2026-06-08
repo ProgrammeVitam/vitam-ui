@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -49,6 +49,8 @@ import { delay } from 'rxjs/operators';
   providers: [{ provide: SchemaService, useClass: MockSchemaService }],
 })
 export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewInit {
+  private schemaService = inject(SchemaService);
+
   configs: {
     name: string;
     multiple?: boolean;
@@ -61,8 +63,6 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
   schemaOptions$: Observable<ItemNode<SchemaElement>[]>;
 
   @ViewChildren(SelectWithTreeComponent, { read: ElementRef }) components: QueryList<ElementRef>;
-
-  constructor(private schemaService: SchemaService) {}
 
   ngOnInit() {
     this.initSchemaOptions();

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable @angular-eslint/component-selector */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 
 import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-group.service';
 
@@ -46,6 +46,8 @@ import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-g
   standalone: false,
 })
 export class VitamUIRadioComponent implements OnInit {
+  private radioGroupService = inject(VitamUIRadioGroupService);
+
   @Input()
   value: string;
 
@@ -54,8 +56,6 @@ export class VitamUIRadioComponent implements OnInit {
 
   @Input()
   checked: boolean;
-
-  constructor(private radioGroupService: VitamUIRadioGroupService) {}
 
   ngOnInit() {
     this.checked = this.checked !== undefined;

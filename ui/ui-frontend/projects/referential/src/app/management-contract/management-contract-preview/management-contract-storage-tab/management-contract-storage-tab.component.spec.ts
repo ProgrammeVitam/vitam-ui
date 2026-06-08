@@ -77,9 +77,14 @@ describe('ManagementContractStorageTabComponent', () => {
     },
   };
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close', 'keydownEvents']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+    keydownEvents: vi.fn().mockName('MatDialogRef.keydownEvents'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
+  matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
   const managementContractServiceMock = {
     get: () => of({}),
@@ -136,7 +141,7 @@ describe('ManagementContractStorageTabComponent', () => {
     component._inputManagementContract = managementContract;
     component.form.setValue(storageStrategyForm);
 
-    spyOn(managementContractServiceMock, 'patch').and.callThrough();
+    vi.spyOn(managementContractServiceMock, 'patch');
 
     // When
     component.prepareSubmit();
@@ -170,8 +175,8 @@ describe('ManagementContractStorageTabComponent', () => {
     // component.inputManagementContract = managementContract;
     component._inputManagementContract = managementContract;
     component.form.setValue(storageStrategyForm);
-    spyOn(managementContractServiceMock, 'get').and.callThrough();
-    spyOn(managementContractServiceMock, 'patch').and.callThrough();
+    vi.spyOn(managementContractServiceMock, 'get');
+    vi.spyOn(managementContractServiceMock, 'patch');
 
     // When
     component.onSubmit();

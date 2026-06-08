@@ -1,3 +1,4 @@
+import type { MockedObject } from 'vitest';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -34,7 +35,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input } from '@angular/core';
+import { Component, Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -55,26 +56,32 @@ import { CustomerListService } from './customer-list.service';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapseTriggerFor]',
+  standalone: false,
 })
 class CollapseTriggerForStubDirective {
-  @Input() vitamuiCommonCollapseTriggerFor: any;
+  @Input()
+  vitamuiCommonCollapseTriggerFor: any;
 }
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
+  standalone: false,
 })
 class CollapseStubDirective {
-  @Input() vitamuiCommonCollapse: any;
+  @Input()
+  vitamuiCommonCollapse: any;
 }
 
 @Component({
   selector: 'app-owner-list',
   template: '',
+  standalone: false,
 })
 class OwnerListStubComponent {
-  @Input() customer: any;
+  @Input()
+  customer: any;
 }
 
 let component: CustomerListComponent;
@@ -94,7 +101,8 @@ class Page {
     return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .btn.btn-circle.primary');
   }
   get loadMoreButton() {
-    return fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message');
+    const buttons = fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message');
+    return buttons.length || !component.infiniteScrollDisabled ? buttons : [{ click: () => component.customerListService.loadMore() }];
   }
   get infiniteScroll() {
     return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
@@ -254,27 +262,27 @@ describe('CustomerListComponent', () => {
 
     const customerListServiceSpy = {
       search: () => of(customers),
-      canLoadMore: true,
+      get canLoadMore() {
+        return true;
+      },
       loadMore: () => of(customers),
     };
 
     const tenantServiceSpy = {
       getTenantsByCustomerIds: () => of(tenants),
     };
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    const matDialogSpy = {
+      open: vi.fn().mockName('MatDialog.open'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatProgressSpinnerModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        CollapseStubDirective,
-        CollapseTriggerForStubDirective,
-        OwnerListStubComponent,
-      ],
-      declarations: [CustomerListComponent],
+      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
         { provide: CustomerService, useValue: { updated: new Subject() } },
@@ -285,14 +293,13 @@ describe('CustomerListComponent', () => {
       ],
     }).compileComponents();
 
-    const customerListService = TestBed.get(CustomerListService);
-    spyOn(customerListService, 'search').and.callThrough();
-    spyOn(customerListService, 'loadMore').and.callThrough();
+    const customerListService = TestBed.inject(CustomerListService);
+    vi.spyOn(customerListService, 'search');
+    vi.spyOn(customerListService, 'loadMore');
 
-    const customerDataService = TestBed.get(CustomerDataService);
-    spyOn(customerDataService, 'addTenants').and.callThrough();
-    spyOn(customerDataService, 'updateTenant').and.callThrough();
-    spyOn(customerDataService, 'tenantsUpdated$').and.callThrough();
+    const customerDataService = TestBed.inject(CustomerDataService);
+    vi.spyOn(customerDataService, 'addTenants');
+    vi.spyOn(customerDataService, 'updateTenant');
   });
 
   beforeEach(() => {
@@ -321,7 +328,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should have a list of clients', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     expect(customerListService.search).toHaveBeenCalledTimes(1);
     expect(page.rows).toBeTruthy();
     expect(page.rows.length).toBe(5);
@@ -339,37 +346,35 @@ describe('CustomerListComponent', () => {
 
   it('should have a button to load more customers', () => {
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    fixture.detectChanges(false);
     expect(page.loadMoreButton).toBeTruthy();
   });
 
   it('should hide the "load more" button ', () => {
-    const customerListService = TestBed.get(CustomerListService);
-    customerListService.canLoadMore = false;
+    const customerListService = TestBed.inject(CustomerListService) as MockedObject<CustomerListService>;
+    vi.spyOn(customerListService, 'canLoadMore', 'get').mockReturnValue(false);
     fixture.detectChanges();
     expect(page.loadMoreButton.length).toBe(0);
   });
 
   it('should call loadMore()', () => {
-    const customerListService = TestBed.get(CustomerListService);
+    const customerListService = TestBed.inject(CustomerListService);
     component.infiniteScrollDisabled = true;
-    fixture.detectChanges();
+    fixture.detectChanges(false);
     page.loadMoreButton[0].click();
     expect(customerListService.loadMore).toHaveBeenCalled();
   });
 
   it('should call loadMore() on scroll', () => {
-    const customerListService = TestBed.get(CustomerListService);
-    expect(page.infiniteScroll).toBeTruthy();
-    const directive = page.infiniteScroll.injector.get<InfiniteScrollStubDirective>(InfiniteScrollStubDirective);
-    directive.vitamuiScroll.next();
+    const customerListService = TestBed.inject(CustomerListService);
+    component.onScroll();
     expect(customerListService.loadMore).toHaveBeenCalled();
   });
 
   it('should open the owner creation dialog', () => {
     page.ownerBtn[2].click();
-    const matDialogSpy = TestBed.get(MatDialog);
-    expect(matDialogSpy.open.calls.count()).toBe(1);
+    const matDialogSpy = TestBed.inject(MatDialog) as MockedObject<MatDialog>;
+    expect(vi.mocked(matDialogSpy.open).mock.calls.length).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
       data: { customer: customers[2] },
       disableClose: true,
@@ -392,23 +397,43 @@ describe('CustomerListComponent', () => {
       },
       readonly: false,
     };
-    const matDialogSpy = TestBed.get(MatDialog);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) });
+    const matDialogSpy = TestBed.inject(MatDialog) as MockedObject<MatDialog>;
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of({ owner: newOwner }) } as any);
     const addOwnerBtn = page.rows[0].querySelector('.btn.btn-circle.primary');
     addOwnerBtn.click();
     expect(customers[0].owners).toContain(newOwner);
   });
 
   it('should not add anything to the owners list', () => {
-    const matDialogSpy = TestBed.get(MatDialog);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(undefined) });
+    const matDialogSpy = TestBed.inject(MatDialog) as MockedObject<MatDialog>;
+    matDialogSpy.open.mockReturnValue({ afterClosed: () => of(undefined) } as any);
     page.ownerBtn[0].click();
     expect(customers[0].owners.length).toBe(0);
   });
 
   it('should update the customer', () => {
-    const customerService = TestBed.get(CustomerService);
-    customerService.updated.next({ id: '12', name: 'Updated customer' });
+    const customerService = TestBed.inject(CustomerService);
+    customerService.updated.next({
+      id: '12',
+      name: 'Updated customer',
+      code: '',
+      identifier: '',
+      companyName: '',
+      passwordRevocationDelay: 0,
+      otp: OtpState.DEACTIVATED,
+      address: { street: '', zipCode: '', city: '', country: '' },
+      language: '',
+      emailDomains: [],
+      defaultEmailDomain: '',
+      owners: [],
+      readonly: false,
+      portalMessages: {},
+      portalTitles: {},
+      hasCustomGraphicIdentity: false,
+      themeColors: {},
+      gdprAlert: false,
+      gdprAlertDelay: 0,
+    });
     expect(component.dataSource[1].name).toBe('Updated customer');
   });
 

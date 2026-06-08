@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import createSpyObj = jasmine.createSpyObj;
+import { vi } from 'vitest';
+const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 import { Clipboard } from '@angular/cdk/clipboard';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -67,15 +68,16 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   let component: CollectObjectGroupDetailsTabComponent;
   let fixture: ComponentFixture<CollectObjectGroupDetailsTabComponent>;
 
-  const clipboardSpy = createSpyObj<Clipboard>('Clipboard', ['copy']);
-  const archiveCollectServiceSpy = createSpyObj<ArchiveCollectService>('ArchiveService', [
+  const clipboardSpy = createSpyObj('Clipboard', ['copy']);
+  const archiveCollectServiceSpy = createSpyObj('ArchiveService', [
     'downloadObjectFromUnit',
     'getObjectGroupDetailsById',
     'hasCollectRole',
   ]);
+  archiveCollectServiceSpy.hasCollectRole.mockReturnValue(of(true));
 
-  const tenantSelectionServiceSpy = jasmine.createSpyObj('TenantSelectionService', {
-    getSelectedTenant: {
+  const tenantSelectionServiceSpy = {
+    getSelectedTenant: vi.fn().mockName('TenantSelectionService.getSelectedTenant').mockReturnValue({
       name: 'tenantName',
       identifier: 2,
       ownerId: 'owner',
@@ -87,8 +89,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       itemIngestContractIdentifier: 'string',
       accessContractHoldingIdentifier: 'string',
       accessContractLogbookIdentifier: 'string',
-    },
-  });
+    }),
+  };
   const formatIdentificationDto: FormatIdentificationDto = {
     FormatLitteral: 'FormatLitteral',
     MimeType: 'MimeType',
@@ -179,7 +181,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   });
 
   it('onClickDownloadObject', fakeAsync(() => {
-    TestBed.flushEffects();
+    TestBed.tick();
     tick();
 
     fixture.componentRef.setInput('archiveUnit', archiveUnit);
@@ -187,7 +189,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     const event = {
       stopPropagation: () => {},
     } as Event;
-    const preventDefaultSpy = spyOn(event, 'stopPropagation');
+    const preventDefaultSpy = vi.spyOn(event, 'stopPropagation');
     component.onClickDownloadObject(event, newVersionWithQualifier(ObjectQualifierType.BINARYMASTER, 1));
     expect(archiveCollectServiceSpy.downloadObjectFromUnit).toHaveBeenCalledWith(
       'archiveUnitTestID',
@@ -363,7 +365,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   it('getObjectGroupDetailsById', () => {
     const unit = newUnit('unitId', 'objectId');
-    archiveCollectServiceSpy.getObjectGroupDetailsById.and.returnValue(of(newApiUnitObject()));
+    archiveCollectServiceSpy.getObjectGroupDetailsById.mockReturnValue(of(newApiUnitObject()));
     component.getObjectGroupDetailsById(unit);
     expect(archiveCollectServiceSpy.getObjectGroupDetailsById).toHaveBeenCalled();
     expect(archiveCollectServiceSpy.getObjectGroupDetailsById).toHaveBeenCalledWith(unit['#object']);

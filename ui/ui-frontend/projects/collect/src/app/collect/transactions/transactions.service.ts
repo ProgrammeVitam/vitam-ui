@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { saveAs } from 'file-saver-es';
@@ -58,15 +58,19 @@ import { TransactionValidationMode } from '../models/transaction-validation-mode
   providedIn: 'root',
 })
 export class TransactionsService extends SearchService<Transaction> {
+  private transactionApiService: TransactionApiService;
+  private projectApiService = inject(ProjectsApiService);
+  private snackBarService = inject(SnackBarService);
+
   transactions$: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]);
   project$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
-  constructor(
-    private transactionApiService: TransactionApiService,
-    private projectApiService: ProjectsApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const transactionApiService = inject(TransactionApiService);
+
     super(transactionApiService, 'ALL');
+
+    this.transactionApiService = transactionApiService;
   }
 
   public getTransactionsByProjectId(

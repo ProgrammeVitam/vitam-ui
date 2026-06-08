@@ -34,18 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
+import { CustomerService } from '../../core/customer.service';
 import { CustomerCreateValidators } from './customer-create.validators';
 
 describe('Customer Create Validators', () => {
+  const createValidators = (customerServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
+    TestBed.configureTestingModule({
+      providers: [{ provide: CustomerService, useValue: customerServiceSpy }],
+    });
+    return TestBed.runInInjectionContext(() => new CustomerCreateValidators());
+  };
+
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(false));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        exists: vi.fn().mockName('CustomerService.exists'),
+      };
+      customerServiceSpy.exists.mockReturnValue(of(false));
+      const customerCreateValidators = createValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -54,9 +64,11 @@ describe('Customer Create Validators', () => {
     }));
 
     it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        exists: vi.fn().mockName('CustomerService.exists'),
+      };
+      customerServiceSpy.exists.mockReturnValue(of(true));
+      const customerCreateValidators = createValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
@@ -65,9 +77,11 @@ describe('Customer Create Validators', () => {
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        exists: vi.fn().mockName('CustomerService.exists'),
+      };
+      customerServiceSpy.exists.mockReturnValue(of(true));
+      const customerCreateValidators = createValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
@@ -76,9 +90,11 @@ describe('Customer Create Validators', () => {
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        exists: vi.fn().mockName('CustomerService.exists'),
+      };
+      customerServiceSpy.exists.mockReturnValue(of(true));
+      const customerCreateValidators = createValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
@@ -89,9 +105,11 @@ describe('Customer Create Validators', () => {
 
   describe('uniqueDomain', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(false));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        exists: vi.fn().mockName('CustomerService.exists'),
+      };
+      customerServiceSpy.exists.mockReturnValue(of(false));
+      const customerCreateValidators = createValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
@@ -100,9 +118,11 @@ describe('Customer Create Validators', () => {
     }));
 
     it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new CustomerCreateValidators(customerServiceSpy);
+      const customerServiceSpy = {
+        exists: vi.fn().mockName('CustomerService.exists'),
+      };
+      customerServiceSpy.exists.mockReturnValue(of(true));
+      const customerCreateValidators = createValidators(customerServiceSpy);
       from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toEqual({ uniqueDomain: true });
       });

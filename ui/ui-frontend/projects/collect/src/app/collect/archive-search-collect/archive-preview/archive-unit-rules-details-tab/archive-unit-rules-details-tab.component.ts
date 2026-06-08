@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'vitamui-library';
@@ -58,16 +58,14 @@ const CURRENT_PAGE = 0;
   standalone: false,
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy {
+  private collectService = inject(ArchiveCollectService);
+  private translateService = inject(TranslateService);
+
   @Input()
   archiveUnit: Unit;
   archiveUnitRules: Unit;
   listOfCriteriaSearch: SearchCriteriaEltDto[] = [];
   selectUnitWithInheritedRulesSubscription: Subscription;
-
-  constructor(
-    private collectService: ArchiveCollectService,
-    private translateService: TranslateService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.archiveUnit && this.archiveUnit['#opi']) {

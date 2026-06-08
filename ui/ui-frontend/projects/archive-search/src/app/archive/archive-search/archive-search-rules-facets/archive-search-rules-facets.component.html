@@ -4,64 +4,74 @@
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.STORAGE_RULE' | translate }} </span>
     </ng-template>
 
-    <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-storage-rules-facets
-        [exactCount]="exactCount"
-        [totalResults]="totalResults"
-        [storageRuleFacets]="storageRuleFacets"
-      ></app-search-storage-rules-facets>
-    </div>
+    @if (facetsVisibles) {
+      <div id="facet-content">
+        <app-search-storage-rules-facets
+          [exactCount]="exactCount"
+          [totalResults]="totalResults"
+          [storageRuleFacets]="storageRuleFacets"
+        ></app-search-storage-rules-facets>
+      </div>
+    }
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }} </span>
     </ng-template>
 
-    <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-appraisal-rules-facets
-        [exactCount]="exactCount"
-        [totalResults]="totalResults"
-        [appraisalRuleFacets]="appraisalRuleFacets"
-      ></app-search-appraisal-rules-facets>
-    </div>
+    @if (facetsVisibles) {
+      <div id="facet-content">
+        <app-search-appraisal-rules-facets
+          [exactCount]="exactCount"
+          [totalResults]="totalResults"
+          [appraisalRuleFacets]="appraisalRuleFacets"
+        ></app-search-appraisal-rules-facets>
+      </div>
+    }
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }} </span>
     </ng-template>
 
-    <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-access-rules-facets
-        [exactCount]="exactCount"
-        [totalResults]="totalResults"
-        [accessRuleFacets]="accessRuleFacets"
-      ></app-search-access-rules-facets>
-    </div>
+    @if (facetsVisibles) {
+      <div id="facet-content">
+        <app-search-access-rules-facets
+          [exactCount]="exactCount"
+          [totalResults]="totalResults"
+          [accessRuleFacets]="accessRuleFacets"
+        ></app-search-access-rules-facets>
+      </div>
+    }
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DISSEMINATION' | translate }} </span>
     </ng-template>
 
-    <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-dissemination-rules-facets
-        [exactCount]="exactCount"
-        [totalResults]="totalResults"
-        [disseminationRuleFacets]="disseminationRuleFacets"
-      ></app-search-dissemination-rules-facets>
-    </div>
+    @if (facetsVisibles) {
+      <div id="facet-content">
+        <app-search-dissemination-rules-facets
+          [exactCount]="exactCount"
+          [totalResults]="totalResults"
+          [disseminationRuleFacets]="disseminationRuleFacets"
+        ></app-search-dissemination-rules-facets>
+      </div>
+    }
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSE' | translate }} </span>
     </ng-template>
 
-    <div *ngIf="facetsVisibles" id="facet-content">
-      <app-search-reuse-rules-facets
-        [exactCount]="exactCount"
-        [totalResults]="totalResults"
-        [reuseRuleFacets]="reuseRuleFacets"
-      ></app-search-reuse-rules-facets>
-    </div>
+    @if (facetsVisibles) {
+      <div id="facet-content">
+        <app-search-reuse-rules-facets
+          [exactCount]="exactCount"
+          [totalResults]="totalResults"
+          [reuseRuleFacets]="reuseRuleFacets"
+        ></app-search-reuse-rules-facets>
+      </div>
+    }
   </mat-tab>
 </mat-tab-group>

@@ -36,7 +36,7 @@
  */
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   ApiUnitObject,
@@ -57,7 +57,10 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
 export class TransactionApiService extends PaginatedHttpClient<Transaction> {
   baseUrl: string;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+  constructor() {
+    const http = inject(HttpClient);
+    const baseUrl = inject(BASE_URL);
+
     super(http, baseUrl + '/transactions');
     this.baseUrl = baseUrl;
   }

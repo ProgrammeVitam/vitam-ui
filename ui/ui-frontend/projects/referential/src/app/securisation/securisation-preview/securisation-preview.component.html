@@ -7,14 +7,11 @@
   [toolTipTitleDuration]="300"
   [actionsBelowTitle]="true"
 >
-  <button
-    *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'"
-    class="btn primary"
-    (click)="downloadReport()"
-    [disabled]="!accessContractId"
-  >
-    {{ 'SECURE.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
-  </button>
+  @if (securisation.events[securisation.events.length - 1].outcome !== 'WARNING') {
+    <button class="btn primary" (click)="downloadReport()" [disabled]="!accessContractId">
+      {{ 'SECURE.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
+    </button>
+  }
 </vitamui-common-sidenav-header>
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">

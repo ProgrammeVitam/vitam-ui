@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { LogbookOperation } from '../../../../models/logbook-event.interface';
 import { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
@@ -54,13 +54,13 @@ import { EventDisplayHelperService } from '../../event-display-helper.service';
   standalone: false,
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
+  private eventDisplayHelper = inject(EventDisplayHelperService);
+
   @Input()
   ingest: LogbookOperation;
 
   events: Event[] = [];
   isShown = false;
-
-  constructor(private eventDisplayHelper: EventDisplayHelperService) {}
 
   ngOnInit() {
     this.events = this.eventDisplayHelper.initEvents(this.ingest);

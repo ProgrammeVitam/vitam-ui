@@ -15,13 +15,14 @@
       </div>
     </vitamui-slide-toggle>
 
-    <vitamui-library-filing-plan
-      *ngIf="!allRootUnitsControl.value"
-      [formControl]="selectedRootsControl"
-      [tenantIdentifier]="tenantIdentifier"
-      [mode]="FILLING_PLAN_MODE_BOTH"
-    >
-    </vitamui-library-filing-plan>
+    @if (!allRootUnitsControl.value) {
+      <vitamui-library-filing-plan
+        [formControl]="selectedRootsControl"
+        [tenantIdentifier]="tenantIdentifier"
+        [mode]="FILLING_PLAN_MODE_BOTH"
+      >
+      </vitamui-library-filing-plan>
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions>

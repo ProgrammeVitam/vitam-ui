@@ -39,7 +39,7 @@ import { map, tap } from 'rxjs/operators';
 import { Criterion, CriteriaSearchQuery, IdentityProvider, Operators, SnackBarService } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ProviderApiService } from './provider-api.service';
 
@@ -47,12 +47,10 @@ import { ProviderApiService } from './provider-api.service';
   providedIn: 'root',
 })
 export class IdentityProviderService {
-  updated = new Subject<IdentityProvider>();
+  private providerApi = inject(ProviderApiService);
+  private snackBarService = inject(SnackBarService);
 
-  constructor(
-    private providerApi: ProviderApiService,
-    private snackBarService: SnackBarService,
-  ) {}
+  updated = new Subject<IdentityProvider>();
 
   create(idp: IdentityProvider): Observable<IdentityProvider> {
     return this.providerApi.create(idp).pipe(

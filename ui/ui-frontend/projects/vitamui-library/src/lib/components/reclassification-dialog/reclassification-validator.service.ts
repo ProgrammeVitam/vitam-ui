@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -45,10 +45,10 @@ import { ReclassificationService } from '../../../app/modules/services/reclassif
   providedIn: 'root',
 })
 export class ReclassificationValidatorService {
+  private reclassificationService = inject(ReclassificationService);
+
   private auTitleSubject = new BehaviorSubject<string>('');
   debounceTime = 400;
-
-  constructor(private reclassificationService: ReclassificationService) {}
 
   emitArchiveUnitTitle(auTitle: string) {
     this.auTitleSubject.next(auTitle);

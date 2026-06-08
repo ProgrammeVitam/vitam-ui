@@ -12,16 +12,20 @@
   ></app-classification-tree>
 </div>
 
-<div *ngIf="searchHasMatches" vitamuiVerticalResizeSidebar="top"></div>
+@if (searchHasMatches) {
+  <div vitamuiVerticalResizeSidebar="top"></div>
+}
 
-<div *ngIf="searchHasMatches" class="vitamui-sidepanel-header flex-column">
-  <app-leaves-tree
-    [transactionId]="transactionId"
-    [nestedDataSourceLeaves]="nestedDataSourceLeaves"
-    [searchRequestResultFacets]="requestResultFacets"
-    [searchRequestTotalResults]="searchRequestTotalResults"
-    (addToSearchCriteria)="addToSearchCriteria($event)"
-    (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')"
-  >
-  </app-leaves-tree>
-</div>
+@if (searchHasMatches) {
+  <div class="vitamui-sidepanel-header flex-column">
+    <app-leaves-tree
+      [transactionId]="transactionId"
+      [nestedDataSourceLeaves]="nestedDataSourceLeaves"
+      [searchRequestResultFacets]="requestResultFacets"
+      [searchRequestTotalResults]="searchRequestTotalResults"
+      (addToSearchCriteria)="addToSearchCriteria($event)"
+      (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')"
+    >
+    </app-leaves-tree>
+  </div>
+}

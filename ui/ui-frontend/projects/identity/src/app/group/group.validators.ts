@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -45,9 +45,9 @@ import { GroupService } from './group.service';
   providedIn: 'root',
 })
 export class GroupValidators {
-  private debounceTime = 400;
+  private groupService = inject(GroupService);
 
-  constructor(private groupService: GroupService) {}
+  private debounceTime = 400;
 
   nameExists = (customerId: string, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

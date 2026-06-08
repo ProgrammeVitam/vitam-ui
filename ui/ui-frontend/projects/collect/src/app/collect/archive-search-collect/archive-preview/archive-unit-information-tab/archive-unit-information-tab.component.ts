@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, input, InputSignal, OnChanges, Output, Signal, SimpleChanges } from '@angular/core';
+import { Component, computed, EventEmitter, input, InputSignal, OnChanges, Output, Signal, SimpleChanges, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   TenantSelectionService,
@@ -53,6 +53,9 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
+  private archiveService = inject(ArchiveCollectService);
+  private tenantSelectionService = inject(TenantSelectionService);
+
   OBJECTS_TAB_INDEX = 3;
 
   archiveUnit: InputSignal<Unit> = input(null);
@@ -72,11 +75,6 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
   objectsGroupErrors: Signal<ValidationError[]> = computed(() => {
     return getErrorOnObjectsGroup(this.archiveUnit());
   });
-
-  constructor(
-    private archiveService: ArchiveCollectService,
-    private tenantSelectionService: TenantSelectionService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.checkDownloadPermissions();

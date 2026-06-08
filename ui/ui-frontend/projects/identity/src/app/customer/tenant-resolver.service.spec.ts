@@ -61,8 +61,12 @@ describe('TenantResolver', () => {
   let tenantResolver: TenantResolver;
 
   beforeEach(() => {
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', ['get']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const tenantServiceSpy = {
+      get: vi.fn().mockName('TenantService.get'),
+    };
+    const routerSpy = {
+      navigate: vi.fn().mockName('Router.navigate'),
+    };
 
     TestBed.configureTestingModule({
       providers: [TenantResolver, { provide: TenantService, useValue: tenantServiceSpy }, { provide: Router, useValue: routerSpy }],
@@ -77,10 +81,10 @@ describe('TenantResolver', () => {
 
   it('should get the tenant with the id', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
 
     const tenantService = TestBed.inject(TenantService);
-    tenantService.get = jasmine.createSpy().and.returnValue(of(expectedTenant));
+    tenantService.get = vi.fn().mockReturnValue(of(expectedTenant));
     tenantResolver.resolve(route).subscribe((customer) => {
       expect(customer).toEqual(expectedTenant);
     });
@@ -91,9 +95,9 @@ describe('TenantResolver', () => {
 
   it('should redirect to / if an error occurs', () => {
     const route = new ActivatedRouteSnapshot();
-    spyOn(route.paramMap, 'get').and.returnValue('42');
+    vi.spyOn(route.paramMap, 'get').mockReturnValue('42');
     const tenantService = TestBed.inject(TenantService);
-    tenantService.get = jasmine.createSpy().and.returnValue(of(null));
+    tenantService.get = vi.fn().mockReturnValue(of(null));
     const router = TestBed.inject(Router);
     tenantResolver.resolve(route).subscribe(() => {
       expect(router.navigate).toHaveBeenCalledWith(['/']);

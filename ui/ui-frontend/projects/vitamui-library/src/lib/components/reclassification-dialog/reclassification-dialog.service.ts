@@ -44,7 +44,7 @@ import {
   searchByIdsQuery,
   withAdditionalFieldsQuery,
 } from './reclassification-dialog.queries';
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { iif, switchMap } from 'rxjs';
 import { filter, first, map, shareReplay, tap } from 'rxjs/operators';
@@ -56,7 +56,7 @@ import {
   ReclassificationCriteriaDto,
   ReclassificationQuery,
 } from '../../../app/modules/services/reclassification.interface';
-import { ReclassificationMode } from './reclassification-dialog.component';
+import { ReclassificationMode } from './reclassification-dialog.types';
 
 export const RECLASSIFICATION_THRESHOLD = 10_000;
 
@@ -77,6 +77,9 @@ export interface BuildQueryParams {
 
 @Injectable()
 export class BaseReclassificationDialogService implements ReclassificationDialogService {
+  protected reclassificationService = inject(ReclassificationService);
+  protected translateService = inject(TranslateService);
+
   // Inputs
   readonly transactionId = signal<string>(null);
   readonly initialQuery = signal<SearchCriteriaDto>(null);
@@ -163,11 +166,6 @@ export class BaseReclassificationDialogService implements ReclassificationDialog
   readonly parentCount = toSignal(this.parentCount$, { initialValue: 0 });
   readonly hasParent = computed(() => this.parentCount() > 0);
   readonly parents = toSignal(this.parents$, { initialValue: [] });
-
-  constructor(
-    protected reclassificationService: ReclassificationService,
-    protected translateService: TranslateService,
-  ) {}
 
   triggerLoadChildrenCount() {
     this.childrenCount$.pipe(first()).subscribe();

@@ -48,7 +48,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 describe('IngestContractSignatureTabComponent', () => {
   let component: IngestContractSignatureTabComponent;
   let fixture: ComponentFixture<IngestContractSignatureTabComponent>;
-  const ingestContractServiceSpy = jasmine.createSpyObj('IngestContractService', { patch: of() });
+  const ingestContractServiceSpy = {
+    patch: vi.fn().mockName('IngestContractService.patch').mockReturnValue(of()),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -111,7 +113,7 @@ describe('IngestContractSignatureTabComponent', () => {
     component.onSubmit();
 
     expect(ingestContractServiceSpy.patch).toHaveBeenCalledWith(
-      jasmine.objectContaining({
+      expect.objectContaining({
         signaturePolicy: {
           signedDocument: SignedDocumentPolicyEnum.FORBIDDEN,
           declaredSignature: undefined,
@@ -133,7 +135,7 @@ describe('IngestContractSignatureTabComponent', () => {
     component.onSubmit();
 
     expect(ingestContractServiceSpy.patch).toHaveBeenCalledWith(
-      jasmine.objectContaining({
+      expect.objectContaining({
         signaturePolicy: {
           signedDocument: SignedDocumentPolicyEnum.ALLOWED,
           declaredSignature: false,

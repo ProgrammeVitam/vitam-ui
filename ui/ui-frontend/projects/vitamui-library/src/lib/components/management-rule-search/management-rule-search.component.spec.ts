@@ -50,19 +50,19 @@ import { ManagementRuleCriteriaService } from './services/management-rule-criter
 describe('ManagementRuleSearchComponent', () => {
   let component: ManagementRuleSearchComponent;
   let fixture: ComponentFixture<ManagementRuleSearchComponent>;
-  let mockQueryParamsService: jasmine.SpyObj<QueryParamsService>;
-  let mockSearchCriteriaService: jasmine.SpyObj<SearchCriteriaService>;
+  let mockQueryParamsService: any;
+  let mockSearchCriteriaService: any;
 
-  let mockManagementRuleCriteriaService: jasmine.SpyObj<ManagementRuleCriteriaService>;
+  let mockManagementRuleCriteriaService: any;
 
   beforeEach(async () => {
-    mockManagementRuleCriteriaService = jasmine.createSpyObj('ManagementRuleCriteriaService', [
-      'initializeFromSearchCriteria',
-      'addFromParams',
-      'buildDateCriteria',
-      'applyDefaultOriginCriteria',
-    ]);
-    mockManagementRuleCriteriaService.initializeFromSearchCriteria.and.callFake((_obs, _keys, _criteria, _destroyed, onDefault) => {
+    mockManagementRuleCriteriaService = {
+      initializeFromSearchCriteria: vi.fn().mockName('ManagementRuleCriteriaService.initializeFromSearchCriteria'),
+      addFromParams: vi.fn().mockName('ManagementRuleCriteriaService.addFromParams'),
+      buildDateCriteria: vi.fn().mockName('ManagementRuleCriteriaService.buildDateCriteria'),
+      applyDefaultOriginCriteria: vi.fn().mockName('ManagementRuleCriteriaService.applyDefaultOriginCriteria'),
+    };
+    mockManagementRuleCriteriaService.initializeFromSearchCriteria.mockImplementation((_obs, _keys, _criteria, _destroyed, onDefault) => {
       onDefault();
       return of().subscribe();
     });
@@ -71,8 +71,8 @@ describe('ManagementRuleSearchComponent', () => {
       searchCriteria$: of(new Map()),
       addSimpleSearchCriteriaSubject: of(),
       addSimpleSearchCriteriaSubjects: of(),
-      sendRemoveFromChildSearchCriteriaAction: jasmine.createSpy(),
-      getRemoveAction: jasmine.createSpy().and.returnValue(of(null)),
+      sendRemoveFromChildSearchCriteriaAction: vi.fn(),
+      getRemoveAction: vi.fn().mockReturnValue(of(null)),
     };
     const mockManagementRuleSearchConfigFactory = (startupService: StartupService) => {
       const applicationConfigurationMap = {
@@ -110,8 +110,13 @@ describe('ManagementRuleSearchComponent', () => {
       return applicationConfigurationMap[startupService.CURRENT_APP_ID];
     };
 
-    mockQueryParamsService = jasmine.createSpyObj('QueryParamsService', ['builder']);
-    mockSearchCriteriaService = jasmine.createSpyObj('SearchCriteriaService', ['addCriteria', 'removeCriteria']);
+    mockQueryParamsService = {
+      builder: vi.fn().mockName('QueryParamsService.builder'),
+    };
+    mockSearchCriteriaService = {
+      addCriteria: vi.fn().mockName('SearchCriteriaService.addCriteria'),
+      removeCriteria: vi.fn().mockName('SearchCriteriaService.removeCriteria'),
+    };
 
     await TestBed.configureTestingModule({
       imports: [ManagementRuleSearchComponent, TranslateModule.forRoot()],
@@ -180,6 +185,6 @@ describe('ManagementRuleSearchComponent', () => {
     fixture.componentRef.setInput('hasWaitingToRecalculateCriteria', true);
     component.ngOnInit();
 
-    expect(component.additionalCriteria.get(ORIGIN_WAITING_RECALCULATE)).toBeTrue();
+    expect(component.additionalCriteria.get(ORIGIN_WAITING_RECALCULATE)).toBe(true);
   });
 });

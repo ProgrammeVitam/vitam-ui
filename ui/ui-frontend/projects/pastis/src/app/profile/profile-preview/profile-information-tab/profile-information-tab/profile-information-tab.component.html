@@ -12,12 +12,13 @@
 
     <div class="col-6 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.TYPE' | translate }}</label>
-      <div *ngIf="inputProfile.type === 'PA'; else pua">
-        {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE_ARCHIVAGE' | translate }}
-      </div>
-      <ng-template #pua class="read_only">
+      @if (inputProfile.type === 'PA') {
+        <div>
+          {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE_ARCHIVAGE' | translate }}
+        </div>
+      } @else {
         {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE_UNITE_ARCHIVISTIQUE' | translate }}
-      </ng-template>
+      }
     </div>
   </div>
 
@@ -37,17 +38,22 @@
   <div class="row">
     <div class="col-12 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFIL_ATTACHE' | translate }}</label>
-      <div *ngIf="isProfilAttached(inputProfile); else pas_profil">
-        {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PRESENCE_PROFIL_ATTACHE' | translate }}
-      </div>
-      <ng-template #pas_profil>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.PAS_PROFIL_ATTACHE' | translate }}</ng-template>
+      @if (isProfilAttached(inputProfile)) {
+        <div>
+          {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PRESENCE_PROFIL_ATTACHE' | translate }}
+        </div>
+      } @else {
+        {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PAS_PROFIL_ATTACHE' | translate }}
+      }
     </div>
   </div>
 
   <div class="form-group bottom">
     <button type="submit" class="btn secondary" [disabled]="!canSubmit()">
       {{ 'PROFILE_PREVIEW.INFORMATION_TAB.ENREGISTRER' | translate }}
-      <mat-spinner style="float: right" *ngIf="pending" diameter="30" color="accent"></mat-spinner>
+      @if (pending) {
+        <mat-spinner style="float: right" diameter="30" color="accent"></mat-spinner>
+      }
     </button>
   </div>
 </form>

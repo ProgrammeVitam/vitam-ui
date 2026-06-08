@@ -27,9 +27,11 @@
         </span>
         <ng-template #statusFilterTemplate>
           <vitamui-common-table-filter [(filter)]="selectedFilters" (filterChange)="changeFilter($event)">
-            <vitamui-common-table-filter-option *ngFor="let operationType of availableOperationsType" value="{{ operationType.name }}">
-              <div class="table-filter-icon">{{ operationType.translation }}</div>
-            </vitamui-common-table-filter-option>
+            @for (operationType of availableOperationsType; track operationType) {
+              <vitamui-common-table-filter-option value="{{ operationType.name }}">
+                <div class="table-filter-icon">{{ operationType.translation }}</div>
+              </vitamui-common-table-filter-option>
+            }
           </vitamui-common-table-filter>
         </ng-template>
       </th>
@@ -101,23 +103,39 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let operation of operationsProcessed">
-      <td>
-        <span [ngSwitch]="operation.OpType">
-          <i class="vitamui-icon vitamui-icon-archive-ingest" *ngSwitchCase="RegisterValueEventType.INGEST"></i>
-          <i class="vitamui-icon vitamui-icon-ic24-prservation" *ngSwitchCase="RegisterValueEventType.PRESERVATION"></i>
-          <i class="vitamui-icon vitamui-icon-ic24-user-transfer" *ngSwitchCase="RegisterValueEventType.TRANSFER_REPLY"></i>
-          <i class="vitamui-icon vitamui-icon-ic24-limination" *ngSwitchCase="RegisterValueEventType.ELIMINATION"></i>
-          <i class="vitamui-icon vitamui-icon-ic24-rattribution" *ngSwitchCase="RegisterValueEventType.ORIGINATING_AGENCY_REASSIGNMENT"></i>
-          <i class="vitamui-icon vitamui-icon-question-mark" *ngSwitchDefault></i>
-          {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.TYPE.' + operation.OpType | translate }}
-        </span>
-      </td>
-      <td>{{ operation.CreationDate | date: 'dd/MM/yyyy' }}</td>
-      <td>{{ operation.Units }}</td>
-      <td>{{ operation.Objects }}</td>
-      <td>{{ operation.Gots }}</td>
-      <td>{{ operation.ObjSize }}</td>
-    </tr>
+    @for (operation of operationsProcessed; track operation) {
+      <tr>
+        <td>
+          <span>
+            @switch (operation.OpType) {
+              @case (RegisterValueEventType.INGEST) {
+                <i class="vitamui-icon vitamui-icon-archive-ingest"></i>
+              }
+              @case (RegisterValueEventType.PRESERVATION) {
+                <i class="vitamui-icon vitamui-icon-ic24-prservation"></i>
+              }
+              @case (RegisterValueEventType.TRANSFER_REPLY) {
+                <i class="vitamui-icon vitamui-icon-ic24-user-transfer"></i>
+              }
+              @case (RegisterValueEventType.ELIMINATION) {
+                <i class="vitamui-icon vitamui-icon-ic24-limination"></i>
+              }
+              @case (RegisterValueEventType.ORIGINATING_AGENCY_REASSIGNMENT) {
+                <i class="vitamui-icon vitamui-icon-ic24-rattribution"></i>
+              }
+              @default {
+                <i class="vitamui-icon vitamui-icon-question-mark"></i>
+              }
+            }
+            {{ 'ACCESSION_REGISTER.PREVIEW.OPERATIONS.TYPE.' + operation.OpType | translate }}
+          </span>
+        </td>
+        <td>{{ operation.CreationDate | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ operation.Units }}</td>
+        <td>{{ operation.Objects }}</td>
+        <td>{{ operation.Gots }}</td>
+        <td>{{ operation.ObjSize }}</td>
+      </tr>
+    }
   </tbody>
 </table>

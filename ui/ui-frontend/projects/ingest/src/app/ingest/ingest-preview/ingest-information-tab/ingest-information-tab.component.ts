@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import {
   AgIdExtDeflateJson,
   EvDetDataDeflateJson,
@@ -56,11 +56,11 @@ import { catchError, map } from 'rxjs/operators';
   standalone: false,
 })
 export class IngestInformationTabComponent implements OnChanges {
+  private applicationService = inject(ApplicationService);
+
   @Input() ingest: LogbookOperation;
   evDetDataDeflated: EvDetDataDeflateJson;
   agIdExtDeflated: AgIdExtDeflateJson;
-
-  constructor(private applicationService: ApplicationService) {}
 
   ngOnChanges() {
     this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest);

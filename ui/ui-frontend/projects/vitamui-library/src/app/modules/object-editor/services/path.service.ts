@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 
 @Injectable()
 export class PathService {
-  constructor(private dataStructureService: DataStructureService) {}
+  private dataStructureService = inject(DataStructureService);
 
   public dot(path: string): string {
     return path.replace(/\[/g, '.').replace(/\]/g, '');

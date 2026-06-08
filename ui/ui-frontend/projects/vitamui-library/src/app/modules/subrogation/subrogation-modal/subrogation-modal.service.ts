@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SubrogationModalComponent } from './subrogation-modal.component';
@@ -43,7 +43,7 @@ import { SubrogationModalComponent } from './subrogation-modal.component';
   providedIn: 'root',
 })
 export class SubrogationModalService {
-  constructor(private dialog: MatDialog) {}
+  private dialog = inject(MatDialog);
 
   open(domains: string[], customerId: string, subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
     this.dialog.open(SubrogationModalComponent, {

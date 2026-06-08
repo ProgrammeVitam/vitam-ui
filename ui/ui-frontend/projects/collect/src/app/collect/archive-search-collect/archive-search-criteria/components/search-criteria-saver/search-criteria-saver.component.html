@@ -16,110 +16,106 @@
   </div>
 
   <!-- Create New Criteria -->
-  <div class="col-7" *ngIf="ToUpdate === false">
-    <div class="row triangle"></div>
-
-    <form [formGroup]="searchCriteriaForm" class="pl-5">
-      <span class="large text bold pb-4">
-        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}
-      </span>
-      <div class="row mt-3">
-        <vitamui-input
-          [(ngModel)]="nameControl"
-          formControlName="name"
-          class="w-75 ml-5"
-          [placeholder]="'COLLECT.SEARCH_CRITERIA_SAVER.NAME' | translate"
-        ></vitamui-input>
-
-        <button type="submit" class="btn primary ml-2" (click)="onSubmit()" [disabled]="searchCriteriaForm.invalid">OK</button>
-      </div>
-    </form>
-  </div>
+  @if (ToUpdate === false) {
+    <div class="col-7">
+      <div class="row triangle"></div>
+      <form [formGroup]="searchCriteriaForm" class="pl-5">
+        <span class="large text bold pb-4">
+          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}
+        </span>
+        <div class="row mt-3">
+          <vitamui-input
+            [(ngModel)]="nameControl"
+            formControlName="name"
+            class="w-75 ml-5"
+            [placeholder]="'COLLECT.SEARCH_CRITERIA_SAVER.NAME' | translate"
+          ></vitamui-input>
+          <button type="submit" class="btn primary ml-2" (click)="onSubmit()" [disabled]="searchCriteriaForm.invalid">OK</button>
+        </div>
+      </form>
+    </div>
+  }
 
   <!-- Update Existing Criteria -->
-  <div class="col-7" *ngIf="ToUpdate">
-    <div class="row triangle"></div>
-
-    <span class="large text bold ml-7">
-      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_LABEL' | translate }}
-    </span>
-    <br /><br />
-
-    <span class="normal text bold ml-7">
-      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_REPLACE_LABEL' | translate }}
-    </span>
-
-    <div class="filtre-list-container mt-2 ml-7">
-      @for (criteria of searchCriteriaHistories; track $index) {
-        @if (criteria !== searchCriteriaHistory) {
-          <div class="mb-2 w-400">
-            <vitamui-elements
-              [icon]="'vitamui-icon-save'"
-              [title]="criteria.name"
-              [number]="getNbFilters(criteria)"
-              [unit]="'filtres'"
-              [hasToolTipOnTitle]="true"
-              [toolTipTitleText]="criteria.name"
-              [toolTipTitleDuration]="300"
-              (elementClick)="preUpdate(criteria, $event)"
-            ></vitamui-elements>
-          </div>
+  @if (ToUpdate) {
+    <div class="col-7">
+      <div class="row triangle"></div>
+      <span class="large text bold ml-7">
+        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_LABEL' | translate }}
+      </span>
+      <br /><br />
+      <span class="normal text bold ml-7">
+        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_REPLACE_LABEL' | translate }}
+      </span>
+      <div class="filtre-list-container mt-2 ml-7">
+        @for (criteria of searchCriteriaHistories; track $index) {
+          @if (criteria !== searchCriteriaHistory) {
+            <div class="mb-2 w-400">
+              <vitamui-elements
+                [icon]="'vitamui-icon-save'"
+                [title]="criteria.name"
+                [number]="getNbFilters(criteria)"
+                [unit]="'filtres'"
+                [hasToolTipOnTitle]="true"
+                [toolTipTitleText]="criteria.name"
+                [toolTipTitleDuration]="300"
+                (elementClick)="preUpdate(criteria, $event)"
+              ></vitamui-elements>
+            </div>
+          }
         }
-      }
-    </div>
-
-    <div class="justify-content-center gap-2 m-7">
-      <button class="btn primary" (click)="createNewCriteria()" [disabled]="criteriaId !== '' || searchCriteriaHistories.length === 10">
-        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_BUTTON' | translate }}
-      </button>
-
-      <ng-container *ngIf="searchCriteriaHistories.length === 10">
-        <div class="text danger">
-          <i class="material-icons">report_problem</i>
-          <span>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT' | translate }}</span>
-        </div>
-        <div class="text caption">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE' | translate }}</div>
-      </ng-container>
-    </div>
-  </div>
-
-  <!-- Update Confirmation -->
-  <div class="col-7" *ngIf="criteriaToUpdate && updateConfirm">
-    <div class="row triangle"></div>
-
-    <div class="large text bold pl-7">
-      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_MESSAGE' | translate }}
-    </div>
-
-    <div class="no-scroll-results mt-4 pl-7">
-      <div class="vitamui-elements-selected w-400">
-        <vitamui-elements
-          [icon]="'vitamui-icon-save'"
-          [title]="criteriaToUpdate.name"
-          [number]="getNbFilters(criteriaToUpdate)"
-          [unit]="'filtres'"
-          [hasToolTipOnTitle]="true"
-          [toolTipTitleText]="criteriaToUpdate.name"
-          [toolTipTitleDuration]="300"
-          (elementClick)="preUpdate(criteriaToUpdate, $event)"
-        ></vitamui-elements>
+      </div>
+      <div class="justify-content-center gap-2 m-7">
+        <button class="btn primary" (click)="createNewCriteria()" [disabled]="criteriaId !== '' || searchCriteriaHistories.length === 10">
+          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NEW_SAVE_BUTTON' | translate }}
+        </button>
+        @if (searchCriteriaHistories.length === 10) {
+          <div class="text danger">
+            <i class="material-icons">report_problem</i>
+            <span>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT' | translate }}</span>
+          </div>
+          <div class="text caption">{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_MESSAGE' | translate }}</div>
+        }
       </div>
     </div>
+  }
 
-    <div *ngIf="searchCriteriaHistories.length === 0" class="no-results-center search-criterias" (click)="onCancel()">
-      {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
+  <!-- Update Confirmation -->
+  @if (criteriaToUpdate && updateConfirm) {
+    <div class="col-7">
+      <div class="row triangle"></div>
+      <div class="large text bold pl-7">
+        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_MESSAGE' | translate }}
+      </div>
+      <div class="no-scroll-results mt-4 pl-7">
+        <div class="vitamui-elements-selected w-400">
+          <vitamui-elements
+            [icon]="'vitamui-icon-save'"
+            [title]="criteriaToUpdate.name"
+            [number]="getNbFilters(criteriaToUpdate)"
+            [unit]="'filtres'"
+            [hasToolTipOnTitle]="true"
+            [toolTipTitleText]="criteriaToUpdate.name"
+            [toolTipTitleDuration]="300"
+            (elementClick)="preUpdate(criteriaToUpdate, $event)"
+          ></vitamui-elements>
+        </div>
+      </div>
+      @if (searchCriteriaHistories.length === 0) {
+        <div class="no-results-center search-criterias" (click)="onCancel()">
+          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
+        </div>
+      }
+      <div class="justify-content-center m-7">
+        <button class="btn primary" (click)="update()">
+          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_BUTTON' | translate }}
+        </button>
+        <button type="button" class="btn cancel link ml-3" (click)="cancel()">
+          {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CANCEL_BUTTON' | translate }}
+        </button>
+      </div>
     </div>
-
-    <div class="justify-content-center m-7">
-      <button class="btn primary" (click)="update()">
-        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_BUTTON' | translate }}
-      </button>
-
-      <button type="button" class="btn cancel link ml-3" (click)="cancel()">
-        {{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CANCEL_BUTTON' | translate }}
-      </button>
-    </div>
-  </div>
+  }
 
   <!-- Close Button -->
   <button class="col btn link cancel close-button">

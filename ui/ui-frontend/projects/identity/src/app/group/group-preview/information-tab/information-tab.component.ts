@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge, of, Subscription } from 'rxjs';
@@ -56,6 +56,12 @@ const DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
+  private formBuilder = inject(FormBuilder);
+  private groupService = inject(GroupService);
+  private groupValidators = inject(GroupValidators);
+  authService = inject(AuthService);
+  private dialog = inject(MatDialog);
+
   form: FormGroup;
   groupsCount: number;
   previousValue: {
@@ -72,13 +78,7 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
 
   @Input() readOnly: boolean;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private groupService: GroupService,
-    private groupValidators: GroupValidators,
-    public authService: AuthService,
-    private dialog: MatDialog,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
       identifier: [{ value: null, disabled: true }, Validators.required],

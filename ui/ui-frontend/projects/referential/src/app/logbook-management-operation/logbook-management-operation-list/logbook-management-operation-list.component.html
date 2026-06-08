@@ -19,12 +19,12 @@
   <div class="row row-data">
     <div class="col-12 title-text">
       <div class="result-layout">
-        <span class="result-number" *ngIf="totalResults > 1 || totalResults === 0"
-          >{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.RESULTS' | translate }}</span
-        >
-        <span class="result-number" *ngIf="totalResults === 1"
-          >{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.ONE_RESULT' | translate }}</span
-        >
+        @if (totalResults > 1 || totalResults === 0) {
+          <span class="result-number">{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.RESULTS' | translate }}</span>
+        }
+        @if (totalResults === 1) {
+          <span class="result-number">{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.ONE_RESULT' | translate }}</span>
+        }
       </div>
     </div>
   </div>
@@ -137,55 +137,54 @@
       </div>
 
       <div class="vitamui-table-body">
-        <div class="vitamui-table-rows" *ngFor="let operation of results" (click)="operationClick.emit(operation)">
-          <div class="vitamui-row d-flex align-items-center clickable">
-            <div class="col-3">
-              <span [vitamuiTooltip]="operation.operationId" [vitamuiTooltipShowDelay]="300">
-                {{ operation?.operationId | truncate: 30 }}
-              </span>
-            </div>
-            <div class="col-2">
-              <div class="vitamui-cell-content">
-                <vitamui-common-event-type-label [key]="operation.processType"> </vitamui-common-event-type-label>
+        @for (operation of results; track operation) {
+          <div class="vitamui-table-rows" (click)="operationClick.emit(operation)">
+            <div class="vitamui-row d-flex align-items-center clickable">
+              <div class="col-3">
+                <span [vitamuiTooltip]="operation.operationId" [vitamuiTooltipShowDelay]="300">
+                  {{ operation?.operationId | truncate: 30 }}
+                </span>
               </div>
-            </div>
-            <div class="col-2">
-              <div>{{ operation?.processDate | dateTime: 'dd/MM/yyyy' }}</div>
-              <span class="date">
-                {{ operation?.processDate | dateTime: 'HH:mm:ss' }}
-              </span>
-            </div>
-
-            <div class="col-2">
-              <span
-                class="text bold"
-                [ngClass]="{
-                  success: operationStatus(operation) === 'OK',
-                  danger: ['KO', 'FATAL'].includes(operationStatus(operation)),
-                  warning: operationStatus(operation) === 'WARNING',
-                }"
-                >{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</span
-              >
-              <br />
-              <span>{{ 'STATE_VALUE.' + operation?.globalState | translate }}</span>
-            </div>
-            <div class="col-3">
-              <div class="vitamui-cell-content">
-                <vitamui-common-event-type-label [key]="operation.previousStep"> </vitamui-common-event-type-label>
+              <div class="col-2">
+                <div class="vitamui-cell-content">
+                  <vitamui-common-event-type-label [key]="operation.processType"> </vitamui-common-event-type-label>
+                </div>
+              </div>
+              <div class="col-2">
+                <div>{{ operation?.processDate | dateTime: 'dd/MM/yyyy' }}</div>
+                <span class="date">
+                  {{ operation?.processDate | dateTime: 'HH:mm:ss' }}
+                </span>
+              </div>
+              <div class="col-2">
+                <span
+                  class="text bold"
+                  [ngClass]="{
+                    success: operationStatus(operation) === 'OK',
+                    danger: ['KO', 'FATAL'].includes(operationStatus(operation)),
+                    warning: operationStatus(operation) === 'WARNING',
+                  }"
+                  >{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</span
+                >
+                <br />
+                <span>{{ 'STATE_VALUE.' + operation?.globalState | translate }}</span>
+              </div>
+              <div class="col-3">
+                <div class="vitamui-cell-content">
+                  <vitamui-common-event-type-label [key]="operation.previousStep"> </vitamui-common-event-type-label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        }
       </div>
-      <div *ngIf="show; then noResultFound; else loadingSpinner"></div>
+      @if (show) {
+        <div class="text-center">{{ 'LOGBOOK_OPERATION_LIST.NO_RESULTS' | translate }}</div>
+      } @else {
+        <div class="vitamui-min-content">
+          <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+        </div>
+      }
     </div>
   </div>
 </div>
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
-<ng-template #noResultFound>
-  <div class="text-center">{{ 'LOGBOOK_OPERATION_LIST.NO_RESULTS' | translate }}</div>
-</ng-template>

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { LogbookOperation } from '../../../models/logbook-event.interface';
 import { Event } from '../event';
@@ -48,12 +48,14 @@ import { EventDisplayHelperService } from '../event-display-helper.service';
   standalone: false,
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
+  private eventDisplayHelper = inject(EventDisplayHelperService);
+
   @Input() ingest: LogbookOperation;
 
   ingestErrorsTreeControl: NestedTreeControl<Event>;
   ingestErrorsTreeDataSource: MatTreeNestedDataSource<Event>;
 
-  constructor(private eventDisplayHelper: EventDisplayHelperService) {
+  constructor() {
     this.ingestErrorsTreeControl = new NestedTreeControl<Event>((node) => node.subEvents);
     this.ingestErrorsTreeDataSource = new MatTreeNestedDataSource<Event>();
   }

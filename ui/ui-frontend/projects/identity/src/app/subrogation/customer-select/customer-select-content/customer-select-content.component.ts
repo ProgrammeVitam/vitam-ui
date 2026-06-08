@@ -34,30 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CustomerSelectionService, MenuOption } from 'vitamui-library';
 import { CustomerMenuService } from '../customer-menu.service';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-customer-select-content',
   templateUrl: './customer-select-content.component.html',
   styleUrls: ['./customer-select-content.component.scss'],
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
 })
 export class CustomerSelectContentComponent implements OnInit {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private customerMenuService = inject(CustomerMenuService);
+  private customerSelectionService = inject(CustomerSelectionService);
+
   @Input() customers: MenuOption[];
   @Input() isModalMenu: boolean;
 
   @Output() customerSelected: EventEmitter<string> = new EventEmitter<string>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private customerMenuService: CustomerMenuService,
-    private customerSelectionService: CustomerSelectionService,
-  ) {}
 
   ngOnInit(): void {
     if (this.customers) {

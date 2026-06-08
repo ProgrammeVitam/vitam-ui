@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* eslint-disable no-magic-numbers */
-import { Component } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatPseudoCheckboxModule } from '@angular/material/core';
@@ -62,6 +62,9 @@ export class TestHostComponent {
   onSearch(_value: string) {}
   onClose() {}
 }
+
+@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
+class TestHostModule {}
 
 describe('TableFilterComponent', () => {
   let testhost: TestHostComponent;
@@ -134,7 +137,7 @@ describe('TableFilterComponent', () => {
 
     testhost.showSearchBar = true;
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     searchInput = fixture.nativeElement.querySelector('input');
 
@@ -142,18 +145,18 @@ describe('TableFilterComponent', () => {
   });
 
   it('should emit the search text on input', () => {
-    spyOn(testhost, 'onSearch');
+    vi.spyOn(testhost, 'onSearch');
 
     testhost.showSearchBar = true;
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     const searchInput = fixture.nativeElement.querySelector('input');
 
     searchInput.value = 'toto';
     searchInput.dispatchEvent(new Event('input'));
 
-    fixture.detectChanges();
+    fixture.changeDetectorRef.detectChanges();
 
     expect(testhost.onSearch).toHaveBeenCalledWith('toto');
   });

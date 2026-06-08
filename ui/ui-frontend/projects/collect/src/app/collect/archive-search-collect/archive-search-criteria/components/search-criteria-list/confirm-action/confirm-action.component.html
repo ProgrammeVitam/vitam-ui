@@ -1,9 +1,10 @@
-<vitamui-common-confirm-dialog
-  *ngIf="dialogType === 'delete'"
-  dialogTitle="{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_DELETE_CRITERIA_LABEL' | translate }} {{ objectType }}"
-  confirmLabel="CONFIRMER"
-  cancelLabel="ANNULER"
->
-  <h5>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_DELETE_CRITERIA_MESSGE' | translate }}</h5>
-  <strong> {{ objectName }} - {{ objectDate | date: 'dd/MM/yyyy' }}</strong>
-</vitamui-common-confirm-dialog>
+@if (dialogType === 'delete') {
+  <vitamui-common-confirm-dialog
+    dialogTitle="{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_DELETE_CRITERIA_LABEL' | translate }} {{ objectType }}"
+    confirmLabel="CONFIRMER"
+    cancelLabel="ANNULER"
+  >
+    <h5>{{ 'COLLECT.SEARCH_CRITERIA_SAVER.SAVE_DELETE_CRITERIA_MESSGE' | translate }}</h5>
+    <strong> {{ objectName }} - {{ objectDate | date: 'dd/MM/yyyy' }}</strong>
+  </vitamui-common-confirm-dialog>
+}

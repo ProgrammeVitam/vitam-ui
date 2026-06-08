@@ -127,8 +127,8 @@ describe('LogbookManagementOperationListComponent', () => {
       ],
     }).compileComponents();
 
-    const logbookManagementOperationService = TestBed.get(LogbookManagementOperationService);
-    spyOn(logbookManagementOperationService, 'listOperationsDetails').and.callThrough();
+    const logbookManagementOperationService = TestBed.inject(LogbookManagementOperationService);
+    vi.spyOn(logbookManagementOperationService, 'listOperationsDetails');
   });
 
   beforeEach(() => {

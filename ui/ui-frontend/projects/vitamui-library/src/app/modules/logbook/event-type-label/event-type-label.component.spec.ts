@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('EventTypeLabelComponent', () => {
   let component: EventTypeLabelComponent;

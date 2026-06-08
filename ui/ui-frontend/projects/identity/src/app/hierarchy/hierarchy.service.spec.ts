@@ -44,7 +44,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 describe('HierarchyService', () => {
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    const snackBarSpy = {
+      open: vi.fn().mockName('SnackBarService.open'),
+    };
 
     TestBed.configureTestingModule({
       imports: [],

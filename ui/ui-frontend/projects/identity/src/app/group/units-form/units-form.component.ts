@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, Input, OnInit, inject } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { GroupValidators } from '../group.validators';
 
@@ -55,6 +55,8 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class UnitsFormComponent implements ControlValueAccessor, OnInit {
+  private groupValidators = inject(GroupValidators);
+
   units: string[] = [];
 
   removedUnits: string[] = [];
@@ -62,8 +64,6 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit {
   unitControl: FormControl;
 
   @Input() customer: string;
-
-  constructor(private groupValidators: GroupValidators) {}
 
   onChange = (_: any) => {};
   onTouched = () => {};

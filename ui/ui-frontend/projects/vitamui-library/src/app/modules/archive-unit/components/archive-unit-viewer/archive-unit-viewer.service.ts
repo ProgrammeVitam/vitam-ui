@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Logger } from '../../../logger/logger';
 import { Collection, Schema } from '../../../models';
@@ -50,6 +50,12 @@ enum Mode {
 
 @Injectable()
 export class ArchiveUnitViewerService implements DisplayObjectService {
+  private logger = inject(Logger);
+  private schemaService = inject(SchemaService);
+  private archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
+  private archiveUnitEditObjectService = inject(ArchiveUnitEditObjectService);
+  private editObjectService = inject(EditObjectService);
+
   private displayObject = new BehaviorSubject<DisplayObject>(null);
   private data = new BehaviorSubject<any>(null);
   private customTemplate = new BehaviorSubject<DisplayRule[]>([]);
@@ -60,13 +66,7 @@ export class ArchiveUnitViewerService implements DisplayObjectService {
 
   displayObject$: Observable<DisplayObject> = this.displayObject.asObservable();
 
-  constructor(
-    private logger: Logger,
-    private schemaService: SchemaService,
-    private archiveUnitTemplateService: ArchiveUnitTemplateService,
-    private archiveUnitEditObjectService: ArchiveUnitEditObjectService,
-    private editObjectService: EditObjectService,
-  ) {
+  constructor() {
     combineLatest([this.schemaService.getSchema(Collection.ARCHIVE_UNIT), this.data, this.customTemplate]).subscribe(
       ([schema, data, template]) => {
         if (data === null) return this.displayObject.next(null);

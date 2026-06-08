@@ -36,6 +36,7 @@
  */
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -76,8 +77,12 @@ describe('AddUnitsComponent', () => {
   let component: AddUnitsComponent;
   let fixture: ComponentFixture<AddUnitsComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const matDialogRefSpy = {
+    close: vi.fn().mockName('MatDialogRef.close'),
+  };
+  const matDialogSpy = {
+    open: vi.fn().mockName('MatDialog.open'),
+  };
 
   const archiveCollectServiceMock = {
     searchArchiveUnitsByCriteria: () =>
@@ -107,6 +112,7 @@ describe('AddUnitsComponent', () => {
           loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

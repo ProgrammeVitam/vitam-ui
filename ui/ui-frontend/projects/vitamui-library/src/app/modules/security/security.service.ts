@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -46,10 +46,8 @@ import { TenantSelectionService } from '../tenant-selection.service';
   providedIn: 'root',
 })
 export class SecurityService {
-  constructor(
-    private authService: AuthService,
-    private tenantSelectionService: TenantSelectionService,
-  ) {}
+  private authService = inject(AuthService);
+  private tenantSelectionService = inject(TenantSelectionService);
 
   /**
    * Returns true if the logged user has any of the specified roles and false otherwise.

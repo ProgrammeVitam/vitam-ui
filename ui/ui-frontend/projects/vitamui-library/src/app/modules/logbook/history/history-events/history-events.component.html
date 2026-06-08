@@ -7,7 +7,8 @@
     <div class="history-event-date">
       @if (event.parsedData && event.parsedData["Date d'opération"]) {
         {{ event.parsedData["Date d'opération"] | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
-      } @else {
+      }
+      @if (!event.parsedData || !event.parsedData["Date d'opération"]) {
         {{ event.dateTime | dateTime: 'dd/MM/yyyy | HH:mm:ss' }}
       }
     </div>
@@ -21,12 +22,12 @@
         <span> {{ 'COMMON.BY_USER' | translate: { userIdentifier: event.userIdentifier } }}</span>
       }
       @if (event.subrogatorIdentifier) {
-        <span>({{ 'COMMON.SUBROGATED_BY' | translate: { subrogatorIdentifier: event.subrogatorIdentifier } }})</span>
+        <span> ({{ 'COMMON.SUBROGATED_BY' | translate: { subrogatorIdentifier: event.subrogatorIdentifier } }})</span>
       }
       .
     </div>
     @if (checkEventData(event)) {
-      <pre class="history-event-details">{{ getEventData(event) }}</pre>
+      <div class="history-event-details">{{ getEventData(event) }}</div>
     }
   </div>
 }

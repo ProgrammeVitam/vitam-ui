@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ArchivalProfileUnit, ArchivalProfileUnitModel } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
 import { Profile, ProfileModel } from '../../models/profile';
@@ -83,7 +83,7 @@ import { ProfileVersion } from '../../models/profile-version.enum';
   providedIn: 'root',
 })
 export class NoticeService {
-  constructor(private fileService: FileService) {}
+  private fileService = inject(FileService);
 
   notice: Notice;
 

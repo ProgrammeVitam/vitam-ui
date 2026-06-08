@@ -73,7 +73,9 @@ describe('UnitsEditComponent', () => {
   let fixture: ComponentFixture<UnitsEditComponent>;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [UnitsEditComponent, UnitsFormStubComponent],
@@ -104,7 +106,7 @@ describe('UnitsEditComponent', () => {
   describe('Component', () => {
     it('should call groupService.patch when form is dirty', () => {
       const groupService = TestBed.inject(GroupService);
-      spyOn(groupService, 'patch').and.callThrough();
+      vi.spyOn(groupService, 'patch');
       const matDialogRefSpy = TestBed.inject(MatDialogRef);
       component.form.setValue({ units: ['1', '2', '3'] });
       component.form.markAsDirty();
@@ -115,7 +117,7 @@ describe('UnitsEditComponent', () => {
 
     it('should not call groupService.patch when form is pristine', () => {
       const groupService = TestBed.inject(GroupService);
-      spyOn(groupService, 'patch').and.callThrough();
+      vi.spyOn(groupService, 'patch');
       component.form.markAsPristine();
       component.onSubmit();
       expect(groupService.patch).toHaveBeenCalledTimes(0);

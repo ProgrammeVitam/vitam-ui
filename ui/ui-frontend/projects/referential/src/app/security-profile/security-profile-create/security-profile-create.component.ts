@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
-import { CommonModule } from '@angular/common';
+
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -56,7 +56,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './security-profile-create.component.html',
   styleUrls: ['./security-profile-create.component.scss'],
   imports: [
-    CommonModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -72,6 +71,15 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<SecurityProfileCreateComponent>>(MatDialogRef);
+  data = inject<{
+    isSlaveMode: boolean;
+  }>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+  private securityProfileService = inject(SecurityProfileService);
+  private securityProfileCreateValidators = inject(SecurityProfileCreateValidators);
+
   isSlaveMode: boolean;
 
   form: FormGroup;
@@ -84,14 +92,9 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
-  constructor(
-    public dialogRef: MatDialogRef<SecurityProfileCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { isSlaveMode: boolean },
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-    private securityProfileService: SecurityProfileService,
-    private securityProfileCreateValidators: SecurityProfileCreateValidators,
-  ) {
+  constructor() {
+    const data = this.data;
+
     this.isSlaveMode = data.isSlaveMode;
   }
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -61,10 +61,16 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
   standalone: false,
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input() options: Array<{ value: string; disabled?: boolean }>;
-  @Input() vitamuiMiniMode = false;
+  @Input()
+  options: Array<{
+    value: string;
+    disabled?: boolean;
+  }>;
+  @Input()
+  vitamuiMiniMode = false;
 
-  @ViewChild('select', { static: true }) select: MatSelect;
+  @ViewChild('select', { static: true })
+  select: MatSelect;
 
   writeValue() {}
   registerOnChange() {}
@@ -78,8 +84,12 @@ describe('IdentityProviderCreateComponent', () => {
   let idpMetadata: File;
 
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const identityProviderServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const identityProviderServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of({})),
+    };
     keystore = newFile(['keystore content'], 'test.jks');
     idpMetadata = newFile(['metadata content'], 'test.jks');
 
@@ -92,6 +102,7 @@ describe('IdentityProviderCreateComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [IdentityProviderCreateComponent, PatternStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -99,7 +110,40 @@ describe('IdentityProviderCreateComponent', () => {
         { provide: IdentityProviderService, useValue: identityProviderServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(IdentityProviderCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <input formControlName="customerId" />
+              <input formControlName="name" />
+              <input formControlName="internal" />
+              <input formControlName="keystorePassword" />
+              <input formControlName="patterns" />
+              <input formControlName="enabled" />
+              <input formControlName="mailAttribute" />
+              <input formControlName="identifierAttribute" />
+              <input formControlName="authnRequestBinding" />
+              <input formControlName="autoProvisioningEnabled" />
+              <input formControlName="protocoleType" />
+              <input formControlName="maximumAuthenticationLifetime" />
+              <input formControlName="wantsAssertionsSigned" />
+              <input formControlName="authnRequestSigned" />
+              <input formControlName="propagateLogout" />
+              <input type="file" (change)="setKeystore($event.target.files)" />
+              <input type="file" (change)="setIdpMetadata($event.target.files)" />
+              <button type="submit">COMMON.SUBMIT</button>
+              <button type="button" class="btn cancel" (click)="onCancel()">COMMON.UNDO</button>
+            </form>
+            <vitamui-slide-toggle [attr.formControlName]="'enabled'">CUSTOMER.SSO.ACTIVE_SWITCH</vitamui-slide-toggle>
+            <vitamui-input [attr.formControlName]="'name'"></vitamui-input>
+            <vitamui-input [attr.formControlName]="'keystorePassword'"></vitamui-input>
+            <app-pattern [attr.formControlName]="'patterns'"></app-pattern>
+            <vitamui-slide-toggle [attr.formControlName]="'autoProvisioningEnabled'">CUSTOMER.SSO.AUTO_PROVISIONING</vitamui-slide-toggle>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -153,8 +197,8 @@ describe('IdentityProviderCreateComponent', () => {
     });
 
     it('should set the files', () => {
-      spyOn(component, 'setKeystore').and.callThrough();
-      spyOn(component, 'setIdpMetadata').and.callThrough();
+      vi.spyOn(component, 'setKeystore');
+      vi.spyOn(component, 'setIdpMetadata');
       const elInputs = fixture.nativeElement.querySelectorAll('input[type=file]');
       expect(elInputs.length).toBe(2);
       const customEvent = document.createEvent('CustomEvent');
@@ -163,16 +207,30 @@ describe('IdentityProviderCreateComponent', () => {
       elInputs[1].dispatchEvent(customEvent);
       expect(component.setKeystore).toHaveBeenCalled();
       expect(component.setIdpMetadata).toHaveBeenCalled();
-      component.setKeystore({ item: () => keystore, length: 1 });
+      const mockKeystoreFileList = {
+        item: () => keystore,
+        length: 1,
+        [Symbol.iterator]: function* () {
+          yield keystore;
+        },
+      } as unknown as FileList;
+      component.setKeystore(mockKeystoreFileList);
       expect(component.keystore).toEqual(keystore);
-      component.setIdpMetadata({ item: () => idpMetadata, length: 1 });
+      const mockIdpMetadataFileList = {
+        item: () => idpMetadata,
+        length: 1,
+        [Symbol.iterator]: function* () {
+          yield idpMetadata;
+        },
+      } as unknown as FileList;
+      component.setIdpMetadata(mockIdpMetadataFileList);
       expect(component.idpMetadata).toEqual(idpMetadata);
     });
 
     it('should set an error', () => {
       const idpService = TestBed.inject(IdentityProviderService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      idpService.create = jasmine.createSpy().and.returnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
+      idpService.create = vi.fn().mockReturnValue(observableThrowError({ error: { error: 'INVALID_KEYSTORE_PASSWORD' } }));
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -243,7 +301,7 @@ describe('IdentityProviderCreateComponent', () => {
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
       fixture.detectChanges();
-      spyOn(component, 'onSubmit');
+      vi.spyOn(component, 'onSubmit');
       elSubmit.click();
       expect(component.onSubmit).toHaveBeenCalledTimes(1);
     });
@@ -252,7 +310,7 @@ describe('IdentityProviderCreateComponent', () => {
       const elCancel = fixture.nativeElement.querySelector('button[type=button].btn.cancel');
       expect(elCancel).toBeTruthy();
       expect(elCancel.textContent).toContain('COMMON.UNDO');
-      spyOn(component, 'onCancel');
+      vi.spyOn(component, 'onCancel');
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);
     });

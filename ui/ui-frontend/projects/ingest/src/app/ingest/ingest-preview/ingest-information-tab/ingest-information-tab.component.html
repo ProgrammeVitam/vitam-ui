@@ -1,61 +1,59 @@
-<div *ngIf="ingest" class="gap-2">
-  <vitamui-common-data [label]="'INGEST_DETAIL.DEPOSIT_ID' | translate" [value]="ingest.obIdIn"></vitamui-common-data>
-  <vitamui-common-data [label]="'INGEST_DETAIL.NAME' | translate" [value]="evDetDataDeflated?.EvDetailReq"></vitamui-common-data>
-  <vitamui-common-data
-    [label]="'INGEST_DETAIL.OPERATION_ID' | translate"
-    [value]="ingest.id"
-    [valueUrl]="getOpiUrl$() | async"
-    [valueTooltip]="'INGEST_DETAIL.OPERATION_ID_TOOLTIP' | translate"
-    [canCopyValue]="true"
-  ></vitamui-common-data>
-
-  <div class="row gap-2">
+@if (ingest) {
+  <div class="gap-2">
+    <vitamui-common-data [label]="'INGEST_DETAIL.DEPOSIT_ID' | translate" [value]="ingest.obIdIn"></vitamui-common-data>
+    <vitamui-common-data [label]="'INGEST_DETAIL.NAME' | translate" [value]="evDetDataDeflated?.EvDetailReq"></vitamui-common-data>
     <vitamui-common-data
-      class="col-6"
-      [label]="'INGEST_DETAIL.START_DATE' | translate"
-      [value]="ingest?.evDateTime | dateTime: 'dd/MM/yyyy'"
+      [label]="'INGEST_DETAIL.OPERATION_ID' | translate"
+      [value]="ingest.id"
+      [valueUrl]="getOpiUrl$() | async"
+      [valueTooltip]="'INGEST_DETAIL.OPERATION_ID_TOOLTIP' | translate"
+      [canCopyValue]="true"
     ></vitamui-common-data>
+    <div class="row gap-2">
+      <vitamui-common-data
+        class="col-6"
+        [label]="'INGEST_DETAIL.START_DATE' | translate"
+        [value]="ingest?.evDateTime | dateTime: 'dd/MM/yyyy'"
+      ></vitamui-common-data>
+      <vitamui-common-data
+        class="col-6"
+        [label]="'INGEST_DETAIL.END_DATE' | translate"
+        [value]="ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy'"
+      ></vitamui-common-data>
+      <vitamui-common-data
+        class="col-6"
+        [label]="'INGEST_DETAIL.PRODUCT_SERVICE' | translate"
+        [value]="agIdExtDeflated?.originatingAgency"
+      ></vitamui-common-data>
+      <vitamui-common-data
+        class="col-6"
+        [label]="'INGEST_DETAIL.VERSATILE_SERVICE' | translate"
+        [value]="agIdExtDeflated?.submissionAgency"
+      ></vitamui-common-data>
+      <vitamui-common-data
+        class="col-6"
+        [label]="'INGEST_DETAIL.ENTRY_CONTRACT' | translate"
+        [value]="evDetDataDeflated?.ArchivalAgreement"
+      ></vitamui-common-data>
+      <vitamui-common-data
+        class="col-6"
+        [label]="'INGEST_DETAIL.ARCHIVING_PROFIL' | translate"
+        [value]="evDetDataDeflated?.ArchivalProfile"
+      ></vitamui-common-data>
+    </div>
+    <vitamui-common-data [label]="'INGEST_DETAIL.STATUS' | translate" [value]="evDetDataDeflated?.LegalStatus"></vitamui-common-data>
     <vitamui-common-data
-      class="col-6"
-      [label]="'INGEST_DETAIL.END_DATE' | translate"
-      [value]="ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy'"
+      [label]="'INGEST_DETAIL.MESSAGE' | translate"
+      [value]="ingestMessage()"
+      [valueCss]="'bold ' + getIngestStatusClass()"
     ></vitamui-common-data>
-
-    <vitamui-common-data
-      class="col-6"
-      [label]="'INGEST_DETAIL.PRODUCT_SERVICE' | translate"
-      [value]="agIdExtDeflated?.originatingAgency"
-    ></vitamui-common-data>
-    <vitamui-common-data
-      class="col-6"
-      [label]="'INGEST_DETAIL.VERSATILE_SERVICE' | translate"
-      [value]="agIdExtDeflated?.submissionAgency"
-    ></vitamui-common-data>
-
-    <vitamui-common-data
-      class="col-6"
-      [label]="'INGEST_DETAIL.ENTRY_CONTRACT' | translate"
-      [value]="evDetDataDeflated?.ArchivalAgreement"
-    ></vitamui-common-data>
-    <vitamui-common-data
-      class="col-6"
-      [label]="'INGEST_DETAIL.ARCHIVING_PROFIL' | translate"
-      [value]="evDetDataDeflated?.ArchivalProfile"
-    ></vitamui-common-data>
-  </div>
-
-  <vitamui-common-data [label]="'INGEST_DETAIL.STATUS' | translate" [value]="evDetDataDeflated?.LegalStatus"></vitamui-common-data>
-
-  <vitamui-common-data
-    [label]="'INGEST_DETAIL.MESSAGE' | translate"
-    [value]="ingestMessage()"
-    [valueCss]="'bold ' + getIngestStatusClass()"
-  ></vitamui-common-data>
-
-  <div class="w-100">
-    <label class="text caption bold primary">{{ 'INGEST_DETAIL.OPERATION_DETAILS' | translate }}</label>
-    <div *ngIf="hasEvent()">
-      <app-ingest-event-detail [ingest]="ingest"></app-ingest-event-detail>
+    <div class="w-100">
+      <label class="text caption bold primary">{{ 'INGEST_DETAIL.OPERATION_DETAILS' | translate }}</label>
+      @if (hasEvent()) {
+        <div>
+          <app-ingest-event-detail [ingest]="ingest"></app-ingest-event-detail>
+        </div>
+      }
     </div>
   </div>
-</div>
+}

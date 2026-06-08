@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 import { LoggerModule } from '../../logger';
 import { Collection, Schema } from '../../models';
 import { MockSchemaService } from '../../schema/mock-schema.service';
@@ -45,7 +46,10 @@ describe('SchemaService', () => {
   let service: SchemaService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [LoggerModule.forRoot()], providers: [MockSchemaService, SchemaService, PathService] });
+    TestBed.configureTestingModule({
+      imports: [LoggerModule.forRoot(), TranslateModule.forRoot()],
+      providers: [MockSchemaService, SchemaService, PathService],
+    });
     service = TestBed.inject(SchemaService);
   });
 
@@ -74,7 +78,7 @@ describe('SchemaService', () => {
           const data = service.data(path, schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
 
           expect(data).toEqual(
-            jasmine.objectContaining({
+            expect.objectContaining({
               Title: null,
             }),
           );
@@ -111,7 +115,7 @@ describe('SchemaService', () => {
           expect(children.length).toEqual(keys.length);
           expect(children.map((child) => child.split('.').pop())).toEqual(pathService.paths(data));
           expect(data).toEqual(
-            jasmine.objectContaining({
+            expect.objectContaining({
               BirthDate: null,
             }),
           );
@@ -132,7 +136,7 @@ describe('SchemaService', () => {
           expect(children.length).toEqual(keys.length);
           expect(children.map((child) => child.split('.').pop())).toEqual(pathService.paths(data));
           expect(data).toEqual(
-            jasmine.objectContaining({
+            expect.objectContaining({
               Address: null,
               City: null,
               Country: null,

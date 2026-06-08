@@ -25,69 +25,79 @@
       <div class="col-2">{{ 'INGEST_LIST.STATUS' | translate }}</div>
     </div>
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let ingest of dataSource; let index = index" (click)="ingestClick.emit(ingest)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          <div class="row col-1">
-            <div>
-              <i
-                class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-{{ getIngestStatusColor(ingest) }}"
-                [style.fontSize.px]="30"
-              ></i>
+      @for (ingest of dataSource; track ingest; let index = $index) {
+        <div class="vitamui-table-rows" (click)="ingestClick.emit(ingest)">
+          <div class="vitamui-row d-flex align-items-center clickable">
+            <div class="row col-1">
+              <div>
+                <i
+                  class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-{{ getIngestStatusColor(ingest) }}"
+                  [style.fontSize.px]="30"
+                ></i>
+              </div>
+            </div>
+            <div class="col-5">{{ ingest?.obIdIn }}</div>
+            <div class="col-2">
+              <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
+              <span class="date">
+                {{ ingest?.evDateTime | dateTime: 'HH:mm:ss' }}
+              </span>
+            </div>
+            <div class="col-2">
+              <div>{{ ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy' }}</div>
+              <span class="date">
+                {{ ingestEndDate(ingest) | dateTime: 'HH:mm:ss' }}
+              </span>
+            </div>
+            <div class="col-2">
+              @switch (getIngestStatus(ingest)) {
+                @case (IngestStatus.OK) {
+                  <div>
+                    <span class="text success bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
+                    <br />
+                    <span class="text success">{{ 'INGEST_LIST.RESULT.OK' | translate }}</span>
+                  </div>
+                }
+                @case (IngestStatus.IN_PROGRESS) {
+                  <div>
+                    <span class="status">{{ 'INGEST_LIST.RESULT.STARTED' | translate }}</span>
+                    <br />
+                    <span class="text light bold">....</span>
+                  </div>
+                }
+                @case (IngestStatus.WARNING) {
+                  <div>
+                    <span class="text warning bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
+                    <br />
+                    <span class="text warning">{{ 'INGEST_LIST.RESULT.WARNING' | translate }}</span>
+                  </div>
+                }
+                @case (IngestStatus.FATAL) {
+                  <div>
+                    <span class="text danger bold">{{ 'INGEST_LIST.RESULT_STATUS.BREAK' | translate }}</span>
+                    <br />
+                    <span class="text danger">{{ 'INGEST_LIST.RESULT.FATAL' | translate }}</span>
+                  </div>
+                }
+                @case (IngestStatus.KO) {
+                  <div>
+                    <span class="text danger bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
+                    <br />
+                    <span class="text danger">{{ 'INGEST_LIST.RESULT.KO' | translate }}</span>
+                  </div>
+                }
+              }
             </div>
           </div>
-          <div class="col-5">{{ ingest?.obIdIn }}</div>
-          <div class="col-2">
-            <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
-            <span class="date">
-              {{ ingest?.evDateTime | dateTime: 'HH:mm:ss' }}
-            </span>
-          </div>
-          <div class="col-2">
-            <div>{{ ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy' }}</div>
-            <span class="date">
-              {{ ingestEndDate(ingest) | dateTime: 'HH:mm:ss' }}
-            </span>
-          </div>
-          <div class="col-2">
-            <ng-container [ngSwitch]="getIngestStatus(ingest)">
-              <div *ngSwitchCase="IngestStatus.OK">
-                <span class="text success bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
-                <br />
-                <span class="text success">{{ 'INGEST_LIST.RESULT.OK' | translate }}</span>
-              </div>
-              <div *ngSwitchCase="IngestStatus.IN_PROGRESS">
-                <span class="status">{{ 'INGEST_LIST.RESULT.STARTED' | translate }}</span>
-                <br />
-                <span class="text light bold">....</span>
-              </div>
-              <div *ngSwitchCase="IngestStatus.WARNING">
-                <span class="text warning bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
-                <br />
-                <span class="text warning">{{ 'INGEST_LIST.RESULT.WARNING' | translate }}</span>
-              </div>
-              <div *ngSwitchCase="IngestStatus.FATAL">
-                <span class="text danger bold">{{ 'INGEST_LIST.RESULT_STATUS.BREAK' | translate }}</span>
-                <br />
-                <span class="text danger">{{ 'INGEST_LIST.RESULT.FATAL' | translate }}</span>
-              </div>
-              <div *ngSwitchCase="IngestStatus.KO">
-                <span class="text danger bold">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span>
-                <br />
-                <span class="text danger">{{ 'INGEST_LIST.RESULT.KO' | translate }}</span>
-              </div>
-            </ng-container>
-          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
-  <div *ngIf="!pending && !ingestService.canLoadMore; then resultfound; else loadingSpinner"></div>
+  @if (!pending && !ingestService.canLoadMore) {
+    <div class="text-center">{{ 'INGEST_LIST.NORESULTS' | translate }}</div>
+  } @else {
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    </div>
+  }
 </div>
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
-<ng-template #resultfound>
-  <div class="text-center">{{ 'INGEST_LIST.NORESULTS' | translate }}</div>
-</ng-template>

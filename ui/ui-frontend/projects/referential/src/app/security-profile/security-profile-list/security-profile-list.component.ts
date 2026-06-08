@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AdminUserProfile, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, SecurityProfile } from 'vitamui-library';
@@ -49,6 +49,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
+  securityProfileService: SecurityProfileService;
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
@@ -87,8 +89,12 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
 
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(public securityProfileService: SecurityProfileService) {
+  constructor() {
+    const securityProfileService = inject(SecurityProfileService);
+
     super(securityProfileService);
+
+    this.securityProfileService = securityProfileService;
   }
 
   ngOnInit() {

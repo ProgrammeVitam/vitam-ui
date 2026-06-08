@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
@@ -46,10 +46,9 @@ import { ArchiveService } from '../archive.service';
   providedIn: 'root',
 })
 export class ArchiveUnitValidatorService {
-  constructor(
-    private archiveService: ArchiveService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {}
+  private archiveService = inject(ArchiveService);
+  private archiveSharedDataService = inject(ArchiveSharedDataService);
+
   debounceTime = 400;
 
   alreadyExistParents(codeToIgnore?: string, archiveUnitAllunitup?: string[]): AsyncValidatorFn {

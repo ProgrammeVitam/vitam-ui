@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
@@ -55,23 +55,21 @@ const WARNING_DURATION = 2000;
   providedIn: 'root',
 })
 export class StartupService {
+  private configService = inject(ConfigService);
+  private logger = inject(Logger);
+  private authService = inject(AuthService);
+  private securityApi = inject(SecurityApiService);
+  private applicationApi = inject(ApplicationApiService);
+  private themeService = inject(ThemeService);
+  private applicationService = inject(ApplicationService);
+  private userInfoApiService = inject(BaseUserInfoApiService);
+  private location = inject(WINDOW_LOCATION);
+
   public userRefresh = new Subject<any>();
   public CURRENT_APP_ID: ApplicationId = ApplicationId.PORTAL_APP;
 
   private configurationData: AppConfiguration = null;
   private CURRENT_TENANT_IDENTIFIER: string;
-
-  constructor(
-    private configService: ConfigService,
-    private logger: Logger,
-    private authService: AuthService,
-    private securityApi: SecurityApiService,
-    private applicationApi: ApplicationApiService,
-    private themeService: ThemeService,
-    private applicationService: ApplicationService,
-    private userInfoApiService: BaseUserInfoApiService,
-    @Inject(WINDOW_LOCATION) private location: any,
-  ) {}
 
   load(): Observable<AuthUser> {
     this.configurationData = this.configService.config;

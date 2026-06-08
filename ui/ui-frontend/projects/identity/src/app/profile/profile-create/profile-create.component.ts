@@ -46,7 +46,7 @@ import {
   Role,
 } from 'vitamui-library';
 
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -62,22 +62,22 @@ import { ProfileValidators } from '../profile.validators';
   standalone: false,
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {
+  dialogRef = inject<MatDialogRef<ProfileCreateComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  rngProfileService = inject(ProfileService);
+  authService = inject(AuthService);
+  customerService = inject(CustomerService);
+  profileValidators = inject(ProfileValidators);
+  private formBuilder = inject(FormBuilder);
+  private confirmDialogService = inject(ConfirmDialogService);
+
   adminProfileForm: FormGroup;
   tenantWithProofId: string;
   roleEnum = Role;
 
   private keyPressSubscription: Subscription;
 
-  constructor(
-    public dialogRef: MatDialogRef<ProfileCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public rngProfileService: ProfileService,
-    public authService: AuthService,
-    public customerService: CustomerService,
-    public profileValidators: ProfileValidators,
-    private formBuilder: FormBuilder,
-    private confirmDialogService: ConfirmDialogService,
-  ) {
+  constructor() {
     this.adminProfileForm = this.formBuilder.group({
       enabled: true,
       name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],

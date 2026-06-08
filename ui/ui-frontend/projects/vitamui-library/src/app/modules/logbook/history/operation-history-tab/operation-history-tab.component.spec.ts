@@ -37,21 +37,32 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { AuthService } from '../../../auth.service';
-import { HistoryEvent } from '../../../models';
+import { IEvent } from '../../../models';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
 
-const logbookEvent: HistoryEvent = {
+const logbookEvent: IEvent = {
+  id: 'eventObjectId',
+  idRequest: 'aedqaaaaaghc5pzqaayl2amc3mdleuiaaaaq',
+  parentId: null,
   type: 'STORAGE_SECURISATION_TIMESTAMP',
+  typeProc: 'TRACEABILITY',
   dateTime: new Date(),
   outcome: 'OK',
   outDetail: 'STORAGE_SECURISATION_TIMESTAMP.OK',
+  outMessage: "Succès de la création du tampon d'horodatage de l'ensemble des journaux d'écriture",
   data: null,
   parsedData: {},
+  objectId: 'eventId',
   obId: 'eventId',
+  collectionName: 'LogbookOperations',
+  agId: null,
+  agIdApp: 'agIdApp',
+  agIdExt: null,
+  rightsStatementIdentifier: null,
   obIdReq: null,
 };
 
@@ -93,7 +104,7 @@ describe('OperationHistoryTabComponent', () => {
     expect(component.filterByIdentifier(event)).toBeTruthy();
   });
 
-  it('Component should return false when all conditions are not respected', () => {
+  it('Component should return fakse when all conditions are not respected', () => {
     // Given
     const event = logbookEvent;
 
@@ -107,14 +118,25 @@ describe('OperationHistoryTabComponent', () => {
 
   it('Component should return false when obId is null', () => {
     // Given
-    const event: HistoryEvent = {
+    const event: IEvent = {
+      id: 'eventObjectId',
+      idRequest: 'aeeaaaaaaghkyonpaa3fsamcys3raeiaaaaq',
+      parentId: null,
       type: 'STP_SANITY_CHECK_SIP.STARTED',
+      typeProc: 'INGEST',
       dateTime: new Date(),
       outcome: 'OK',
       outDetail: 'STP_SANITY_CHECK_SIP.STARTED.OK',
+      outMessage: "Succès du début du processus des contrôles préalables à l'entrée",
       data: null,
       parsedData: {},
+      objectId: null,
       obId: null,
+      collectionName: 'IngestCollection',
+      agId: null,
+      agIdApp: 'agIdApp',
+      agIdExt: null,
+      rightsStatementIdentifier: null,
       obIdReq: null,
     };
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Optional, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { DecimalPipe } from '@angular/common';
 
@@ -48,13 +48,11 @@ registerLocaleData(localeFr, 'fr');
   standalone: false,
 })
 export class BytesPipe implements PipeTransform {
+  private numberPipe = inject(DecimalPipe);
+  private logger = inject(Logger, { optional: true });
+
   private static NUMBER_OF_BYTES_IN_ONE_KB = 1024;
   private static DEFAULT_PRECISION = 2;
-
-  constructor(
-    private numberPipe: DecimalPipe,
-    @Optional() private logger?: Logger,
-  ) {}
 
   transform(value: any, precision = BytesPipe.DEFAULT_PRECISION): any {
     if (value === undefined || value === '' || isNaN(parseFloat(value)) || !isFinite(value)) {

@@ -20,12 +20,13 @@
     </vitamui-input>
   </div>
 
-  <button
-    *ngIf="checkUpdateRole | async"
-    type="submit"
-    class="btn primary mt-3"
-    [disabled]="isInvalid() || unchanged() || isLoading || (checkUpdateRole | async) !== true"
-  >
-    <span>{{ 'COMMON.SAVE' | translate }} </span>
-  </button>
+  @if (checkUpdateRole | async) {
+    <button
+      type="submit"
+      class="btn primary mt-3"
+      [disabled]="isInvalid() || unchanged() || isLoading || (checkUpdateRole | async) !== true"
+    >
+      <span>{{ 'COMMON.SAVE' | translate }} </span>
+    </button>
+  }
 </form>

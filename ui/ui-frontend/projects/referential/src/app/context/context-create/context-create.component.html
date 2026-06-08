@@ -23,16 +23,17 @@
         >
         </vitamui-input>
 
-        <vitamui-input
-          *ngIf="isSlaveMode"
-          formControlName="identifier"
-          [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER' | translate"
-          [errorMessageMap]="{
-            identifierExists: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER_ALREADY_EXISTS' | translate,
-            incorrectIdentifier: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.INCORRECT_IDENTIFIER' | translate,
-          }"
-        >
-        </vitamui-input>
+        @if (isSlaveMode) {
+          <vitamui-input
+            formControlName="identifier"
+            [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER' | translate"
+            [errorMessageMap]="{
+              identifierExists: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER_ALREADY_EXISTS' | translate,
+              incorrectIdentifier: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.INCORRECT_IDENTIFIER' | translate,
+            }"
+          >
+          </vitamui-input>
+        }
 
         <vitamui-select
           formControlName="securityProfile"
@@ -46,18 +47,20 @@
           <vitamui-slide-toggle formControlName="enableControl">
             {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE' | translate }}
           </vitamui-slide-toggle>
-          <i
-            class="vitamui-icon vitamui-icon-info primary ml-3"
-            *ngIf="form?.controls.enableControl?.value === false"
-            vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_FALSE' | translate }}"
-          >
-          </i>
-          <i
-            class="vitamui-icon vitamui-icon-info primary ml-3"
-            *ngIf="form?.controls.enableControl?.value === true"
-            vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_TRUE' | translate }}"
-          >
-          </i>
+          @if (form?.controls.enableControl?.value === false) {
+            <i
+              class="vitamui-icon vitamui-icon-info primary ml-3"
+              vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_FALSE' | translate }}"
+            >
+            </i>
+          }
+          @if (form?.controls.enableControl?.value === true) {
+            <i
+              class="vitamui-icon vitamui-icon-info primary ml-3"
+              vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_TRUE' | translate }}"
+            >
+            </i>
+          }
         </div>
       </mat-dialog-content>
 
@@ -72,18 +75,24 @@
         <div class="pb-4">
           <app-context-edit-permission formControlName="permissions" (changeOrganisations)="onChangeOrganisations($event)">
           </app-context-edit-permission>
-          <div *ngIf="isPermissionsOnMultipleOrganisations">
-            <span class="text danger">
-              {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ORGANISATION_ERROR' | translate }}
-            </span>
-          </div>
+          @if (isPermissionsOnMultipleOrganisations) {
+            <div>
+              <span class="text danger">
+                {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.ORGANISATION_ERROR' | translate }}
+              </span>
+            </div>
+          }
           <ng-container>
-            <span class="text danger" *ngIf="!!form.get('permissions')?.errors?.permissionsTenant">
-              {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.TENANT_ERROR' | translate }}
-            </span>
-            <span class="text danger" *ngIf="!!form.get('permissions')?.errors?.noPermissions">
-              {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.PERMISSION_ERROR' | translate }}
-            </span>
+            @if (!!form.get('permissions')?.errors?.permissionsTenant) {
+              <span class="text danger">
+                {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.TENANT_ERROR' | translate }}
+              </span>
+            }
+            @if (!!form.get('permissions')?.errors?.noPermissions) {
+              <span class="text danger">
+                {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.PERMISSION_ERROR' | translate }}
+              </span>
+            }
           </ng-container>
         </div>
       </mat-dialog-content>

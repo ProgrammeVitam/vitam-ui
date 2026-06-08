@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
@@ -46,13 +46,17 @@ import { FileFormatApiService } from '../core/api/file-format-api.service';
   providedIn: 'root',
 })
 export class FileFormatService extends SearchService<FileFormat> {
+  private fileFormatApiService: FileFormatApiService;
+  private snackBarService = inject(SnackBarService);
+
   updated = new Subject<FileFormat>();
 
-  constructor(
-    private fileFormatApiService: FileFormatApiService,
-    private snackBarService: SnackBarService,
-  ) {
+  constructor() {
+    const fileFormatApiService = inject(FileFormatApiService);
+
     super(fileFormatApiService, 'ALL');
+
+    this.fileFormatApiService = fileFormatApiService;
   }
 
   get(id: string): Observable<FileFormat> {

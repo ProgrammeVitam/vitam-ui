@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -49,6 +49,9 @@ import { FileFormatInformationTabComponent } from './file-format-information-tab
   standalone: false,
 })
 export class FileFormatPreviewComponent implements AfterViewInit {
+  private matDialog = inject(MatDialog);
+  private fileFormatService = inject(FileFormatService);
+
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() fileFormat: FileFormat;
 
@@ -66,11 +69,6 @@ export class FileFormatPreviewComponent implements AfterViewInit {
       return '';
     }
   }
-
-  constructor(
-    private matDialog: MatDialog,
-    private fileFormatService: FileFormatService,
-  ) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { TableFilterComponent } from './table-filter.component';
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
@@ -44,7 +44,7 @@ import { TableFilterOptionComponent } from './table-filter-option/table-filter-o
   selector: 'vitamui-common-table-filter-search',
   templateUrl: './table-filter-search.component.html',
   styleUrls: ['./table-filter-search.component.scss'],
-  imports: [CommonModule, FormsModule, TableFilterComponent, TableFilterOptionComponent],
+  imports: [FormsModule, TableFilterComponent, TableFilterOptionComponent],
 })
 export class TableFilterSearchComponent {
   @Input() filter: any[];

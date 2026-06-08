@@ -45,7 +45,7 @@ import { DisplayRuleHelperService } from '../../../object-viewer/services/displa
 import { SchemaElementToDisplayRuleService } from '../../../object-viewer/services/schema-element-to-display-rule.service';
 import { SchemaService } from '../../../schema';
 import { ArchiveUnitEditorService } from './archive-unit-editor.service';
-import arrayWithExactContents = jasmine.arrayWithExactContents;
+const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
 
 describe('ArchiveUnitEditorService', () => {
   let service: ArchiveUnitEditorService;
@@ -94,8 +94,8 @@ describe('ArchiveUnitEditorService', () => {
         BBB: 'bbb',
       },
     };
-    spyOn(service, 'getOriginalValue').and.returnValue(originalValue);
-    spyOn(service, 'getValue').and.returnValue(value);
+    vi.spyOn(service, 'getOriginalValue').mockReturnValue(originalValue);
+    vi.spyOn(service, 'getValue').mockReturnValue(value);
 
     const jsonPatch = service.toJsonPatch();
     expect(jsonPatch).toEqual(

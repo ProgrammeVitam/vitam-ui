@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';
@@ -48,8 +48,6 @@ import { DialogContentWithStateComponent } from '../dialog-content-with-state/di
   imports: [TranslatePipe, MatDialogModule, DialogHeaderComponent, DialogContentWithStateComponent],
 })
 export class AlertDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<AlertDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+  dialogRef = inject<MatDialogRef<AlertDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
 }

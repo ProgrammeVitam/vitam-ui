@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
@@ -52,6 +52,12 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class ManagementContractIdentificationTabComponent implements OnChanges, OnDestroy {
+  private managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
+  private formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
+  private managementContractService = inject(ManagementContractService);
+  private formBuilder = inject(FormBuilder);
+  private translateService = inject(TranslateService);
+
   @Input() managementContract: ManagementContract;
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -69,14 +75,6 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
   ];
 
   private subscriptions: Subscription = new Subscription();
-
-  constructor(
-    private managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService,
-    private formGroupToManagementContractConverterService: FormGroupToManagementContractConverterService,
-    private managementContractService: ManagementContractService,
-    private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.managementContract) {

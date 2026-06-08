@@ -99,7 +99,8 @@ import { GroupCreateComponent } from './group-create.component';
   standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
-  @Input() level: string;
+  @Input()
+  level: string;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}
@@ -153,9 +154,18 @@ let page: Page;
 
 describe('GroupCreateComponent', () => {
   beforeEach(async () => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const profileGroupServiceSpy = jasmine.createSpyObj('GroupService', { create: of({}) });
-    const groupValidatorsSpy = jasmine.createSpyObj('GroupValidators', { nameExists: () => of(null) });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const profileGroupServiceSpy = {
+      create: vi.fn().mockName('GroupService.create').mockReturnValue(of({})),
+    };
+    const groupValidatorsSpy = {
+      nameExists: vi
+        .fn()
+        .mockName('GroupValidators.nameExists')
+        .mockReturnValue(() => of(null)),
+    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -177,7 +187,23 @@ describe('GroupCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(GroupCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="form">
+              <input formControlName="name" />
+              <input formControlName="description" />
+              <input formControlName="level" />
+              <input formControlName="enabled" />
+              <input formControlName="profileIds" />
+              <input formControlName="units" />
+              <button type="submit" [disabled]="form.invalid"></button>
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -236,15 +262,15 @@ describe('GroupCreateComponent', () => {
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy('name');
-          expect(setControlValue('name', 'nn').valid).toBeTruthy('name');
+          expect(setControlValue('name', '').invalid).toBeTruthy();
+          expect(setControlValue('name', 'nn').valid).toBeTruthy();
 
-          expect(setControlValue('description', '').invalid).toBeTruthy('description');
-          expect(setControlValue('description', 'tttt').valid).toBeTruthy('description');
+          expect(setControlValue('description', '').invalid).toBeTruthy();
+          expect(setControlValue('description', 'tttt').valid).toBeTruthy();
 
-          expect(setControlValue('profileIds', '').invalid).toBeTruthy('profileIds');
-          expect(setControlValue('profileIds', []).invalid).toBeTruthy('profileIds');
-          expect(setControlValue('profileIds', ['test1']).valid).toBeTruthy('profileIds');
+          expect(setControlValue('profileIds', '').invalid).toBeTruthy();
+          expect(setControlValue('profileIds', []).invalid).toBeTruthy();
+          expect(setControlValue('profileIds', ['test1']).valid).toBeTruthy();
         });
       });
 

@@ -119,18 +119,20 @@
   ></vitamui-dialog-header>
 
   <mat-dialog-content>
-    <div *ngIf="!operation?.stepCancellable">
-      <p>
-        {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_FORCED_MODE_REASON' | translate }}
-      </p>
-      <vitamui-input
-        [textarea]="true"
-        class="w-100"
-        [formControl]="reason"
-        [placeholder]="'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER' | translate"
-      >
-      </vitamui-input>
-    </div>
+    @if (!operation?.stepCancellable) {
+      <div>
+        <p>
+          {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_FORCED_MODE_REASON' | translate }}
+        </p>
+        <vitamui-input
+          [textarea]="true"
+          class="w-100"
+          [formControl]="reason"
+          [placeholder]="'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_CANCEL_FORCED_MODE_REASON_PLACEHOLDER' | translate"
+        >
+        </vitamui-input>
+      </div>
+    }
   </mat-dialog-content>
   <mat-dialog-actions class="dialog-action">
     <button [matDialogClose]="true" [disabled]="!operation?.stepCancellable && !reason.valid" class="btn primary btn-confirm-dialog">

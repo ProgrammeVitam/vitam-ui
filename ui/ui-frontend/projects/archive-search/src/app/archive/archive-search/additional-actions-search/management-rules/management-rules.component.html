@@ -11,13 +11,15 @@
         <div class="col-4 radio-btn-area py-3 gap-5 align-items-stretch">
           <div class="gap-3 align-items-stretch">
             <label class="text bold normal primary"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
-            <div class="radio-group" *ngFor="let ruleCategory of rulesCategories">
-              <div class="radio-btn-list d-flex align-items-center">
-                <mat-radio-button (change)="selectRule(ruleCategory)" [disabled]="ruleCategory.isDisabled" [value]="ruleCategory.id">
-                  {{ ruleCategory.name }}
-                </mat-radio-button>
+            @for (ruleCategory of rulesCategories; track ruleCategory) {
+              <div class="radio-group">
+                <div class="radio-btn-list d-flex align-items-center">
+                  <mat-radio-button (change)="selectRule(ruleCategory)" [disabled]="ruleCategory.isDisabled" [value]="ruleCategory.id">
+                    {{ ruleCategory.name }}
+                  </mat-radio-button>
+                </div>
               </div>
-            </div>
+            }
           </div>
 
           <div class="gap-3 align-items-stretch">
@@ -60,16 +62,18 @@
           <div class="row">
             <div class="col-12">
               <mat-tab-group [selectedIndex]="indexOfSelectedCategory">
-                <div *ngFor="let item of rulesCategoriesToShow">
-                  <mat-tab label="{{ item.name }}">
-                    <app-archive-unit-rules
-                      [selectedItem]="selectedItem"
-                      [ruleCategory]="item.id"
-                      [hasExactCount]="hasExactCount"
-                      [rules$]="rules$"
-                    ></app-archive-unit-rules>
-                  </mat-tab>
-                </div>
+                @for (item of rulesCategoriesToShow; track item) {
+                  <div>
+                    <mat-tab label="{{ item.name }}">
+                      <app-archive-unit-rules
+                        [selectedItem]="selectedItem"
+                        [ruleCategory]="item.id"
+                        [hasExactCount]="hasExactCount"
+                        [rules$]="rules$"
+                      ></app-archive-unit-rules>
+                    </mat-tab>
+                  </div>
+                }
               </mat-tab-group>
             </div>
           </div>

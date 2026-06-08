@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -49,6 +49,9 @@ import { SecurityProfileService } from '../../security-profile.service';
   standalone: false,
 })
 export class SecurityProfileInformationTabComponent {
+  private formBuilder = inject(FormBuilder);
+  private securityProfileService = inject(SecurityProfileService);
+
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() fullAccessUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() securityProfileUpdated: EventEmitter<SecurityProfile> = new EventEmitter<SecurityProfile>();
@@ -99,10 +102,7 @@ export class SecurityProfileInformationTabComponent {
     }
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private securityProfileService: SecurityProfileService,
-  ) {
+  constructor() {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       name: [null, Validators.required],

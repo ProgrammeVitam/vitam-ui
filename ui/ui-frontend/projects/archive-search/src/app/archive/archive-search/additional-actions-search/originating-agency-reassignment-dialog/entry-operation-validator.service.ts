@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
@@ -44,9 +44,9 @@ import { ArchiveService } from '../../../archive.service';
   providedIn: 'root',
 })
 export class EntryOperationValidatorService {
-  debounceTime = 400;
+  private archiveService = inject(ArchiveService);
 
-  constructor(private archiveService: ArchiveService) {}
+  debounceTime = 400;
 
   /**
    * Validates entry operation IDs.

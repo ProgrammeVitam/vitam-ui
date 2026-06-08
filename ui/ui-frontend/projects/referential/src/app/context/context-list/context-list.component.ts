@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
@@ -61,6 +61,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
+  contextService: ContextService;
+  private route = inject(ActivatedRoute);
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
   set searchText(searchText: string) {
@@ -102,11 +105,12 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   private _connectedUserInfo: AdminUserProfile;
 
-  constructor(
-    public contextService: ContextService,
-    private route: ActivatedRoute,
-  ) {
+  constructor() {
+    const contextService = inject(ContextService);
+
     super(contextService);
+
+    this.contextService = contextService;
   }
 
   ngOnInit() {

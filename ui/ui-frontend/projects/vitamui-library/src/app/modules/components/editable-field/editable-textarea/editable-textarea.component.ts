@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
@@ -58,7 +58,9 @@ export class EditableTextareaComponent extends EditableFieldComponent {
   @Input({ transform: coerceBooleanProperty }) required = false;
   @ViewChild('input') private input: ElementRef;
 
-  constructor(elementRef: ElementRef) {
+  constructor() {
+    const elementRef = inject(ElementRef);
+
     super(elementRef);
   }
 

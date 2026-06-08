@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -67,6 +67,21 @@ const MAX_ALERTS_TO_DISPLAY = 3;
   standalone: false,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  private subrogationService = inject(SubrogationService);
+  private startupService = inject(StartupService);
+  private menuOverlayService = inject(MenuOverlayService);
+  private authService = inject(AuthService);
+  private tenantSelectionService = inject(TenantSelectionService);
+  private customerSelectionService = inject(CustomerSelectionService);
+  private themeService = inject(ThemeService);
+  private matDialog = inject(MatDialog);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private applicationService = inject(ApplicationService);
+  private globalEventService = inject(GlobalEventService);
+  private translateService = inject(TranslateService);
+  private userAlertsService = inject(UserAlertsService);
+
   @Input() hasLangSelection = false;
 
   @Output() alertClick = new EventEmitter<AlertAnalytics>();
@@ -90,23 +105,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private currentAppId: ApplicationId;
   private destroyer$ = new Subject<void>();
-
-  constructor(
-    private subrogationService: SubrogationService,
-    private startupService: StartupService,
-    private menuOverlayService: MenuOverlayService,
-    private authService: AuthService,
-    private tenantSelectionService: TenantSelectionService,
-    private customerSelectionService: CustomerSelectionService,
-    private themeService: ThemeService,
-    private matDialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    private applicationService: ApplicationService,
-    private globalEventService: GlobalEventService,
-    private translateService: TranslateService,
-    private userAlertsService: UserAlertsService,
-  ) {}
 
   ngOnInit() {
     this.portalUrl = this.startupService.getPortalUrl();

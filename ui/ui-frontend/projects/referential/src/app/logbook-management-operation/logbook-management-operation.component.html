@@ -1,12 +1,13 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-    <app-logbook-management-operation-preview
-      *ngIf="openedItem"
-      (previewClose)="closePanel()"
-      [operation]="openedItem"
-      [tenantIdentifier]="tenantIdentifier"
-      [tenant]="tenant"
-    ></app-logbook-management-operation-preview>
+    @if (openedItem) {
+      <app-logbook-management-operation-preview
+        (previewClose)="closePanel()"
+        [operation]="openedItem"
+        [tenantIdentifier]="tenantIdentifier"
+        [tenant]="tenant"
+      ></app-logbook-management-operation-preview>
+    }
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -44,27 +45,35 @@
                 ></vitamui-datepicker>
               </div>
 
-              <div class="col-1 filter-text" *ngIf="showStartDateMax" [ngStyle]="{ flex: '0 5%' }">
-                <span>{{ 'LOGBOOK_OPERATION_PAGE.AND' | translate }}</span>
-              </div>
+              @if (showStartDateMax) {
+                <div class="col-1 filter-text" [ngStyle]="{ flex: '0 5%' }">
+                  <span>{{ 'LOGBOOK_OPERATION_PAGE.AND' | translate }}</span>
+                </div>
+              }
 
-              <div class="col-2 filter-text" *ngIf="!showStartDateMax" (click)="showIntervalDate(true)">
-                <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.ADD_INTERVAL' | translate }} </span>
-              </div>
+              @if (!showStartDateMax) {
+                <div class="col-2 filter-text" (click)="showIntervalDate(true)">
+                  <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.ADD_INTERVAL' | translate }} </span>
+                </div>
+              }
 
-              <div class="col-3" *ngIf="showStartDateMax">
-                <vitamui-datepicker
-                  [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
-                  formControlName="startDateMax"
-                  [min]="dateRangeFilterForm.get('startDateMin').value"
-                  outputType="Date"
-                  format="dd/MM/yyyy"
-                ></vitamui-datepicker>
-              </div>
+              @if (showStartDateMax) {
+                <div class="col-3">
+                  <vitamui-datepicker
+                    [label]="'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate"
+                    formControlName="startDateMax"
+                    [min]="dateRangeFilterForm.get('startDateMin').value"
+                    outputType="Date"
+                    format="dd/MM/yyyy"
+                  ></vitamui-datepicker>
+                </div>
+              }
 
-              <div class="col-2 filter-text" *ngIf="showStartDateMax" (click)="showIntervalDate(false)">
-                <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}</span>
-              </div>
+              @if (showStartDateMax) {
+                <div class="col-2 filter-text" (click)="showIntervalDate(false)">
+                  <span class="clickable text primary bold">{{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}</span>
+                </div>
+              }
             </div>
           </div>
           <div class="col-2"></div>

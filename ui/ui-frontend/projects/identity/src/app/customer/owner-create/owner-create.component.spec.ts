@@ -41,7 +41,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, Owner, Tenant, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -65,7 +65,8 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: false,
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
-  @Input() customerId: any;
+  @Input()
+  customerId: any;
 
   writeValue() {}
 
@@ -97,16 +98,31 @@ describe('OwnerCreateComponent', () => {
       readonly: false,
     };
 
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of(owner) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null),
-    });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', {
-      create: of({}),
-      getAvailableTenants: of([2, 3, 4]),
-    });
+    const matDialogRefSpy = {
+      close: vi.fn().mockName('MatDialogRef.close'),
+    };
+    const ownerServiceSpy = {
+      create: vi.fn().mockName('OwnerService.create').mockReturnValue(of(owner)),
+    };
+    const ownerFormValidatorsSpy = {
+      uniqueCode: vi
+        .fn()
+        .mockName('OwnerFormValidators.uniqueCode')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantFormValidatorsSpy = {
+      uniqueName: vi
+        .fn()
+        .mockName('TenantFormValidators.uniqueName')
+        .mockReturnValue(() => of(null)),
+    };
+    const tenantServiceSpy = {
+      create: vi.fn().mockName('TenantService.create').mockReturnValue(of({})),
+      getAvailableTenants: vi
+        .fn()
+        .mockName('TenantService.getAvailableTenants')
+        .mockReturnValue(of([2, 3, 4])),
+    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -117,7 +133,6 @@ describe('OwnerCreateComponent', () => {
         ReactiveFormsModule,
         TranslateModule.forRoot(),
         VitamUICommonTestModule,
-        VitamUILibraryModule,
       ],
       declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [
@@ -130,7 +145,22 @@ describe('OwnerCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(OwnerCreateComponent, {
+        set: {
+          template: `
+            <form [formGroup]="ownerForm">
+              <input formControlName="owner" />
+            </form>
+            <form [formGroup]="tenantForm">
+              <input formControlName="name" />
+              <input formControlName="identifier" />
+              <input formControlName="enabled" />
+            </form>
+          `,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

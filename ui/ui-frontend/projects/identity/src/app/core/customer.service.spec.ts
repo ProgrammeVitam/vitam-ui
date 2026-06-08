@@ -94,7 +94,9 @@ const expectedCustomer: Customer = {
 describe('CustomerService', () => {
   let httpTestingController: HttpTestingController;
   let customerService: CustomerService;
-  const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+  const snackBarSpy = {
+    open: vi.fn().mockName('SnackBarService.open'),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -120,16 +122,21 @@ describe('CustomerService', () => {
 
   it('should call /fake-api/customers and display a success message', () => {
     const snackBar = TestBed.inject(SnackBarService);
-    customerService.create(expectedCustomer).subscribe((response: Customer) => {
-      expect(response).toEqual(expectedCustomer);
-      expect(snackBar.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
-        icon: 'vitamui-icon-bank',
-        translateParams: {
-          param1: expectedCustomer.code,
-        },
-      });
-    }, fail);
+    customerService.create(expectedCustomer).subscribe(
+      (response: Customer) => {
+        expect(response).toEqual(expectedCustomer);
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.CUSTOMER_CREATE',
+          icon: 'vitamui-icon-bank',
+          translateParams: {
+            param1: expectedCustomer.code,
+          },
+        });
+      },
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/customers');
     expect(req.request.method).toEqual('POST');
     req.flush(expectedCustomer);
@@ -137,19 +144,29 @@ describe('CustomerService', () => {
 
   it('should display an error message', () => {
     const snackBar = TestBed.inject(SnackBarService);
-    customerService.create(expectedCustomer).subscribe(fail, () => {
-      expect(snackBar.open).toHaveBeenCalledWith({
-        message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
-        icon: 'vitamui-icon-danger',
-      });
-    });
+    customerService.create(expectedCustomer).subscribe(
+      (e: unknown) => {
+        throw e;
+      },
+      () => {
+        expect(snackBar.open).toHaveBeenCalledWith({
+          message: 'SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR',
+          icon: 'vitamui-icon-danger',
+        });
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/customers');
     expect(req.request.method).toEqual('POST');
     req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });
   });
 
   it('should return true if the customer exists', () => {
-    customerService.exists({ code: '015000' }).subscribe((found) => expect(found).toBeTruthy(), fail);
+    customerService.exists({ code: '015000' }).subscribe(
+      (found) => expect(found).toBeTruthy(),
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'code', value: '015000', operator: Operators.equals }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -159,7 +176,12 @@ describe('CustomerService', () => {
   });
 
   it('should return false if the customer does not exist', () => {
-    customerService.exists({ code: '123456' }).subscribe((found) => expect(found).toBeFalsy(), fail);
+    customerService.exists({ code: '123456' }).subscribe(
+      (found) => expect(found).toBeFalsy(),
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'code', value: '123456', operator: Operators.equals }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -169,7 +191,12 @@ describe('CustomerService', () => {
   });
 
   it('should return true if the domain exists', () => {
-    customerService.exists({ domain: 'test.com' }).subscribe((found) => expect(found).toBeTruthy(), fail);
+    customerService.exists({ domain: 'test.com' }).subscribe(
+      (found) => expect(found).toBeTruthy(),
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'emailDomains', value: 'test.com', operator: Operators.equalsIgnoreCase }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -179,7 +206,12 @@ describe('CustomerService', () => {
   });
 
   it('should return false if the domain does not exist', () => {
-    customerService.exists({ domain: 'test.com' }).subscribe((found) => expect(found).toBeFalsy(), fail);
+    customerService.exists({ domain: 'test.com' }).subscribe(
+      (found) => expect(found).toBeFalsy(),
+      (e: unknown) => {
+        throw e;
+      },
+    );
 
     const criterionArray: any[] = [{ key: 'emailDomains', value: 'test.com', operator: Operators.equalsIgnoreCase }];
     const query: CriteriaSearchQuery = { criteria: criterionArray };
@@ -189,7 +221,12 @@ describe('CustomerService', () => {
   });
 
   it('should call /fake-api/customers/42', () => {
-    customerService.get('42').subscribe((customer: Customer) => expect(customer).toEqual(expectedCustomer), fail);
+    customerService.get('42').subscribe(
+      (customer: Customer) => expect(customer).toEqual(expectedCustomer),
+      (e: unknown) => {
+        throw e;
+      },
+    );
     const req = httpTestingController.expectOne('/fake-api/customers/42');
     expect(req.request.method).toEqual('GET');
     req.flush(expectedCustomer);

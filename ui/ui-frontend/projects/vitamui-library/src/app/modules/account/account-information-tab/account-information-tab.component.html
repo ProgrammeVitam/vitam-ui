@@ -45,13 +45,17 @@
   <div class="row">
     <div class="col-4">
       <label>{{ 'ACCOUNT.DELIVERY_ADRESS' | translate }}</label>
-      <span *ngIf="form.get('address').value?.street"
-        >{{ form.get('address').value?.street }}
-        <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">,</span>
-      </span>
-      <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">
-        {{ form.get('address').value?.zipCode }}, {{ form.get('address').value?.city }}
-      </span>
+      @if (form.get('address').value?.street) {
+        <span
+          >{{ form.get('address').value?.street }}
+          @if (form.get('address').value?.city && form.get('address').value?.zipCode) {
+            <span>,</span>
+          }
+        </span>
+      }
+      @if (form.get('address').value?.city && form.get('address').value?.zipCode) {
+        <span> {{ form.get('address').value?.zipCode }}, {{ form.get('address').value?.city }} </span>
+      }
     </div>
   </div>
 

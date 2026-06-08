@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { VitamUICommonModule } from 'vitamui-library';
 
 @Component({
   selector: 'design-system-slide-toggle',
   templateUrl: './slide-toggle.component.html',
   styleUrls: ['./slide-toggle.component.scss'],
-  imports: [CommonModule, VitamUICommonModule],
+  imports: [VitamUICommonModule],
 })
 export class SlideToggleComponent {}

@@ -1,12 +1,14 @@
 <h2>{{ 'ICONS.COLORS' | translate }}</h2>
 
 <ul>
-  <li *ngFor="let color of colors">
-    <div class="icon-container">
-      <i class="vitamui-icon vitamui-icon-truck {{ color }}"></i>
-    </div>
-    <div class="text-container text caption">{{ color }}</div>
-  </li>
+  @for (color of colors; track color) {
+    <li>
+      <div class="icon-container">
+        <i class="vitamui-icon vitamui-icon-truck {{ color }}"></i>
+      </div>
+      <div class="text-container text caption">{{ color }}</div>
+    </li>
+  }
 </ul>
 
 <div class="color-select-container">
@@ -21,14 +23,18 @@
 </div>
 
 <ul>
-  <li *ngFor="let icon of icons">
-    <div class="icon-container">
-      <i class="vitamui-icon vitamui-icon-{{ icon }} {{ selectedColor }}">
-        <ng-container *ngIf="coloredIcons[icon] as paths">
-          <span *ngFor="let path of paths" [class]="path"></span>
-        </ng-container>
-      </i>
-    </div>
-    <div class="text-container text caption">{{ icon }}</div>
-  </li>
+  @for (icon of icons; track icon) {
+    <li>
+      <div class="icon-container">
+        <i class="vitamui-icon vitamui-icon-{{ icon }} {{ selectedColor }}">
+          @if (coloredIcons[icon]; as paths) {
+            @for (path of paths; track path) {
+              <span [class]="path"></span>
+            }
+          }
+        </i>
+      </div>
+      <div class="text-container text caption">{{ icon }}</div>
+    </li>
+  }
 </ul>

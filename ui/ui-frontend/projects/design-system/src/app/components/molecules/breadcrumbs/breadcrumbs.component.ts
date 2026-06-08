@@ -36,13 +36,13 @@
  */
 import { Component } from '@angular/core';
 import { ApplicationId } from 'vitamui-library';
-import { CommonModule } from '@angular/common';
+
 import { VitamUICommonModule } from 'vitamui-library';
 
 @Component({
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss'],
-  imports: [CommonModule, VitamUICommonModule],
+  imports: [VitamUICommonModule],
 })
 export class BreadcrumbsComponent {
   public breadCrumbData = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.CUSTOMERS_APP }, { label: 'Client n°1' }];

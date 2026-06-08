@@ -168,7 +168,7 @@ describe('PathService', () => {
       };
       const entries = service.entries(data);
 
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'A',
         value: {
           B: {
@@ -176,29 +176,29 @@ describe('PathService', () => {
           },
         },
       });
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'A.B',
         value: {
           C: {},
         },
       });
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'A.B.C',
         value: {},
       });
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'D[0]',
         value: { E: {} },
       });
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'D[1]',
         value: { F: {} },
       });
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'D[0].E',
         value: {},
       });
-      expect(entries).toContain({
+      expect(entries).toContainEqual({
         key: 'D[1].F',
         value: {},
       });

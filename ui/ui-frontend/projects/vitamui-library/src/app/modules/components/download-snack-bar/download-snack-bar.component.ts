@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -46,6 +46,8 @@ import { filter } from 'rxjs/operators';
   standalone: false,
 })
 export class DownloadSnackBarComponent {
+  private matDialog = inject(MatDialog);
+
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
 
   progressionValue: number;
@@ -65,8 +67,6 @@ export class DownloadSnackBarComponent {
   };
 
   private readonly _cancel = new Subject<void>();
-
-  constructor(private matDialog: MatDialog) {}
 
   initialize(isCompressed: boolean, count?: number, total?: number) {
     this.count = count;

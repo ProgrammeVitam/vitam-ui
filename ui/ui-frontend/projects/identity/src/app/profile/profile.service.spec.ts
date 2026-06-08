@@ -47,7 +47,9 @@ describe('ProfileService', () => {
   let rngProfileService: ProfileService;
 
   beforeEach(() => {
-    const snackBarSpy = jasmine.createSpyObj('SnackBarService', ['open']);
+    const snackBarSpy = {
+      open: vi.fn().mockName('SnackBarService.open'),
+    };
 
     TestBed.configureTestingModule({
       imports: [],
@@ -89,7 +91,12 @@ describe('ProfileService', () => {
         readonly: false,
         externalParamId: null,
       };
-      rngProfileService.get('42').subscribe((profile) => expect(profile).toEqual(expectedProfile), fail);
+      rngProfileService.get('42').subscribe(
+        (profile) => expect(profile).toEqual(expectedProfile),
+        (e: unknown) => {
+          throw e;
+        },
+      );
       const req = httpTestingController.expectOne('/fake-api/profiles/42?embedded=ALL');
       expect(req.request.method).toEqual('GET');
       req.flush(expectedProfile);
@@ -119,17 +126,27 @@ describe('ProfileService', () => {
         readonly: false,
         externalParamId: null,
       };
-      rngProfileService.updated.subscribe((profileGroup) => expect(profileGroup).toEqual(expectedResponse), fail);
-      rngProfileService.patch(expectedRequest).subscribe((profileGroup) => {
-        expect(profileGroup).toEqual(expectedResponse);
-        expect(snackBar.open).toHaveBeenCalledWith({
-          message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
-          translateParams: {
-            param1: expectedResponse.name,
-          },
-          icon: 'vitamui-icon-admin-key',
-        });
-      }, fail);
+      rngProfileService.updated.subscribe(
+        (profileGroup) => expect(profileGroup).toEqual(expectedResponse),
+        (e: unknown) => {
+          throw e;
+        },
+      );
+      rngProfileService.patch(expectedRequest).subscribe(
+        (profileGroup) => {
+          expect(profileGroup).toEqual(expectedResponse);
+          expect(snackBar.open).toHaveBeenCalledWith({
+            message: 'SHARED.SNACKBAR.PROFILE_UPDATE',
+            translateParams: {
+              param1: expectedResponse.name,
+            },
+            icon: 'vitamui-icon-admin-key',
+          });
+        },
+        (e: unknown) => {
+          throw e;
+        },
+      );
       const req = httpTestingController.expectOne('/fake-api/profiles/42');
       expect(req.request.method).toEqual('PATCH');
       expect(req.request.body).toEqual(expectedRequest);
@@ -142,10 +159,15 @@ describe('ProfileService', () => {
         id: '42',
         name: 'Profile Group Name',
       };
-      rngProfileService.patch(expectedRequest).subscribe(fail, () => {
-        expect(snackBar.open).toHaveBeenCalledTimes(1);
-        expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
-      });
+      rngProfileService.patch(expectedRequest).subscribe(
+        (e: unknown) => {
+          throw e;
+        },
+        () => {
+          expect(snackBar.open).toHaveBeenCalledTimes(1);
+          expect(snackBar.open).toHaveBeenCalledWith({ message: 'Expected message', translate: false });
+        },
+      );
       const req = httpTestingController.expectOne('/fake-api/profiles/42');
       expect(req.request.method).toEqual('PATCH');
       req.flush({ message: 'Expected message' }, { status: 400, statusText: 'Bad request' });

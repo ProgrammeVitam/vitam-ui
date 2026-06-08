@@ -53,7 +53,7 @@ import {
   SubrogationUser,
 } from 'vitamui-library';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -70,6 +70,12 @@ const MAXIMUM_CRITICALITY = 2;
   standalone: false,
 })
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
+  subrogationService: SubrogationService;
+  dialog = inject(MatDialog);
+  private activatedRoute = inject(ActivatedRoute);
+  private subrogationModalService = inject(SubrogationModalService);
+  private authService = inject(AuthService);
+
   @Input() emailDomains: string[];
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -89,14 +95,12 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   private readonly searchChange = new Subject<string>();
   private readonly searchKeys = ['firstname', 'lastname', 'email', 'mobile', 'phone', 'identifier'];
 
-  constructor(
-    public subrogationService: SubrogationService,
-    public dialog: MatDialog,
-    private activatedRoute: ActivatedRoute,
-    private subrogationModalService: SubrogationModalService,
-    private authService: AuthService,
-  ) {
+  constructor() {
+    const subrogationService = inject(SubrogationService);
+
     super(subrogationService);
+
+    this.subrogationService = subrogationService;
   }
 
   ngOnInit() {

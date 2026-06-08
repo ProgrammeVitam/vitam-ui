@@ -38,7 +38,7 @@ import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { HttpBackend, HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 
 import { ApplicationApiService } from './api/application-api.service';
 import { Logger } from './logger/logger';
@@ -48,16 +48,17 @@ import { AppConfiguration } from './models';
   providedIn: 'root',
 })
 export class ConfigService implements OnDestroy {
+  private logger = inject(Logger);
+  private applicationApi = inject(ApplicationApiService);
+
   private http: HttpClient;
 
   public config: AppConfiguration = null;
   public config$ = new BehaviorSubject<AppConfiguration>(null);
 
-  constructor(
-    httpBackend: HttpBackend,
-    private logger: Logger,
-    private applicationApi: ApplicationApiService,
-  ) {
+  constructor() {
+    const httpBackend = inject(HttpBackend);
+
     this.http = new HttpClient(httpBackend);
   }
 

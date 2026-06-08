@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
@@ -53,7 +53,7 @@ import {
   VitamUICommonModule,
 } from 'vitamui-library';
 import { AgencyCreateModule } from '../agency-create';
-import { CommonModule } from '@angular/common';
+
 import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -64,9 +64,14 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
   styleUrls: ['./agency-list.component.scss'],
-  imports: [AgencyCreateModule, CommonModule, ImportDialogModule, MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule],
+  imports: [AgencyCreateModule, ImportDialogModule, MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
+  agencyService: AgencyService;
+  private route = inject(ActivatedRoute);
+  private matDialog = inject(MatDialog);
+  private securityService = inject(SecurityService);
+
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {
     this._searchText = searchText;
@@ -101,13 +106,12 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   private _connectedUserInfo: AdminUserProfile;
   private readonly destroyer$ = new Subject<void>();
 
-  constructor(
-    public agencyService: AgencyService,
-    private route: ActivatedRoute,
-    private matDialog: MatDialog,
-    private securityService: SecurityService,
-  ) {
+  constructor() {
+    const agencyService = inject(AgencyService);
+
     super(agencyService);
+
+    this.agencyService = agencyService;
   }
 
   ngOnInit() {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FacetDetails } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
@@ -46,12 +46,12 @@ import { AccessionRegistersService } from '../accession-register.service';
   standalone: false,
 })
 export class AccessionRegisterFacetsComponent implements OnInit {
+  accessionRegistersService = inject(AccessionRegistersService);
+
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();
 
   stateFacetDetails$: Observable<FacetDetails[]>;
   advancedSearchPanelOpenState$: Observable<boolean>;
-
-  constructor(public accessionRegistersService: AccessionRegistersService) {}
 
   ngOnInit(): void {
     this.advancedSearchPanelOpenState$ = this.accessionRegistersService.isOpenAdvancedSearchPanel();

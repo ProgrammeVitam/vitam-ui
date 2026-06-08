@@ -2,17 +2,11 @@
 >{{ 'CUSTOMER.GRAPHIC_IDENTITY.TOGGLE_TITLE' | translate }}
 
 <div class="mt-4">
-  <app-graphic-identity-form
-    *ngIf="!displayCustomGraphicIdentity.value && defaultForm"
-    [graphicIdentityForm]="defaultForm"
-    [disabled]="true"
-  >
-  </app-graphic-identity-form>
+  @if (!displayCustomGraphicIdentity.value && defaultForm) {
+    <app-graphic-identity-form [graphicIdentityForm]="defaultForm" [disabled]="true"> </app-graphic-identity-form>
+  }
 
-  <app-graphic-identity-form
-    *ngIf="displayCustomGraphicIdentity.value && customerForm"
-    [graphicIdentityForm]="customerForm"
-    (formChange)="sendForm($event)"
-  >
-  </app-graphic-identity-form>
+  @if (displayCustomGraphicIdentity.value && customerForm) {
+    <app-graphic-identity-form [graphicIdentityForm]="customerForm" (formChange)="sendForm($event)"> </app-graphic-identity-form>
+  }
 </div>

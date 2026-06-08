@@ -77,6 +77,8 @@ describe('IngestContractObjectTabComponent', () => {
   };
 
   beforeEach(async () => {
+    TestBed.overrideComponent(IngestContractObjectTabComponent, { set: { template: '' } });
+
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, FormsModule, VitamUICommonTestModule, MatSelectModule, NoopAnimationsModule],
       declarations: [IngestContractObjectTabComponent],
