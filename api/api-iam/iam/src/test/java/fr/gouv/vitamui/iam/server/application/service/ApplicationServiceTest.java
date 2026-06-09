@@ -2,8 +2,7 @@ package fr.gouv.vitamui.iam.server.application.service;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.IdentifierNameDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -88,23 +87,7 @@ class ApplicationServiceTest {
     }
 
     @Test
-    void testGetAllWithoutFilter() {
-        final Application app = IamServerUtilsTest.buildApplication();
-        final Application app2 = IamServerUtilsTest.buildApplication("id2", "url2");
-        final List<Application> apps = Arrays.asList(app, app2);
-        when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
-
-        wireInternalSecurityServerCalls(true);
-
-        final QueryDto criteria = QueryDto.criteria("filterApp", false, CriterionOperator.EQUALS);
-
-        final List<ApplicationDto> result = applicationService.getAll(Optional.of(criteria.toJson()), Optional.empty());
-        Assertions.assertNotNull(result, "Applications should be returned.");
-        Assertions.assertEquals(2, result.size(), "Applications size should be returned.");
-    }
-
-    @Test
-    void testGetAllForNullUserThenThrowException() {
+    void testGetAllFilteredByUserForNullUserThenThrowException() {
         final Application app = IamServerUtilsTest.buildApplication();
         final List<Application> apps = List.of(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
