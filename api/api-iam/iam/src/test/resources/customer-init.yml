@@ -1,21 +1,36 @@
-
 customer-init:
   profiles:
+    # Mandatory: The profile bellow is a specific profile for each customer's generic administrator created, this profile is added to disable generic accounts creation role
+    - name: Profil restreint pour la gestion des utilisateurs
+      description: Profil restreint pour la gestion des utilisateurs
+      level:
+      app-name: USERS_APP
+      roles:
+        - ROLE_GET_USERS
+        - ROLE_CREATE_USERS
+        - ROLE_UPDATE_USERS
+        - ROLE_UPDATE_STANDARD_USERS
+        - ROLE_MFA_USERS
+        - ROLE_ANONYMIZATION_USERS
+        - ROLE_GET_GROUPS
+        - ROLE_GET_USER_INFOS
+        - ROLE_CREATE_USER_INFOS
+        - ROLE_UPDATE_USER_INFOS
     - name: profile1
       description: desc1
       level: 1
       app-name: app1
       roles:
-       - role_1
-       - role_2
-       - role_3
+        - role_1
+        - role_2
+        - role_3
     - name: profile2
       description: desc2
       level: 2
       app-name: app2
       roles:
-       - role_2
-       - role_3
+        - role_2
+        - role_3
 
   profiles-groups:
     - name: group1
@@ -37,9 +52,9 @@ customer-init:
       level: 1
       app-name: app2
       roles:
-       - role_1
-       - role_2
-       - role_3
+        - role_1
+        - role_2
+        - role_3
 
   admin-profiles:
     - name: profile4

@@ -114,6 +114,7 @@ public final class EntityFactory {
         group.setName(name);
         group.setDescription(description);
         group.setLevel(level);
+        group.setReadonly(isReadonly);
         group.setEnabled(true);
         group.setProfileIds(profiles.stream().map(Profile::getId).collect(Collectors.toList()));
         return group;

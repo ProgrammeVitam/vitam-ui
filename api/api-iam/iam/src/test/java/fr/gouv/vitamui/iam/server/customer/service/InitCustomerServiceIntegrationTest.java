@@ -215,7 +215,7 @@ public class InitCustomerServiceIntegrationTest {
             .is(EventType.EXT_VITAMUI_CREATE_PROFILE);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
-        assertThat(ev).hasSize(10);
+        assertThat(ev).hasSize(11);
 
         criteria = Criteria.where("obIdReq")
             .is(MongoDbCollections.GROUPS)
@@ -223,7 +223,7 @@ public class InitCustomerServiceIntegrationTest {
             .is(EventType.EXT_VITAMUI_CREATE_GROUP);
         ev = eventRepository.findAll(Query.query(criteria));
         assertThat(ev).isNotEmpty();
-        assertThat(ev).hasSize(2);
+        assertThat(ev).hasSize(3);
 
         criteria = Criteria.where("obIdReq")
             .is(MongoDbCollections.USERS)
