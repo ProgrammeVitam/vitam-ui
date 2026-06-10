@@ -34,38 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export enum ApplicationId {
-  DESIGN_SYSTEM_APP = 'DESIGN_SYSTEM_APP',
-  PORTAL_APP = 'PORTAL_APP',
-  CUSTOMERS_APP = 'CUSTOMERS_APP',
-  USERS_APP = 'USERS_APP',
-  GROUPS_APP = 'GROUPS_APP',
-  PROFILES_APP = 'PROFILES_APP',
-  SUBROGATIONS_APP = 'SUBROGATIONS_APP',
-  ACCOUNTS_APP = 'ACCOUNTS_APP',
-  HIERARCHY_PROFILE_APP = 'HIERARCHY_PROFILE_APP',
-  INGEST_APP = 'INGEST_MANAGEMENT_APP',
-  ARCHIVE_SEARCH_APP = 'ARCHIVE_SEARCH_MANAGEMENT_APP',
-  PERSISTENT_IDENTIFIER_SEARCH_APP = 'PERSISTENT_IDENTIFIER_SEARCH_APP',
-  PASTIS_APP = 'PASTIS_APP',
-  RULES_APP = 'RULES_APP',
-  HOLDING_FILLING_SCHEME_APP = 'HOLDING_FILLING_SCHEME_APP',
-  LOGBOOK_OPERATION_APP = 'LOGBOOK_OPERATION_APP',
-  PROBATIVE_VALUE_APP = 'PROBATIVE_VALUE_APP',
-  DSL_APP = 'DSL_APP',
-  SECURE_APP = 'SECURE_APP',
-  AUDIT_APP = 'AUDIT_APP',
-  ONTOLOGY_APP = 'ONTOLOGY_APP',
-  PRESERVATION_APP = 'PRESERVATION_APP',
-  SECURITY_PROFILES_APP = 'SECURITY_PROFILES_APP',
-  CONTEXTS_APP = 'CONTEXTS_APP',
-  FILE_FORMATS_APP = 'FILE_FORMATS_APP',
-  AGENCIES_APP = 'AGENCIES_APP',
-  ACCESS_APP = 'ACCESS_APP',
-  INGEST_APP_REF = 'INGEST_APP',
-  LOGBOOK_MANAGEMENT_OPERATION_APP = 'LOGBOOK_MANAGEMENT_OPERATION_APP',
-  EXTERNAL_PARAM_PROFILE_APP = 'EXTERNAL_PARAM_PROFILE_APP',
-  EXTERNAL_PARAMS = 'EXTERNAL_PARAMS',
-  MANAGEMENT_CONTRACT_APP = 'MANAGEMENT_CONTRACT_APP',
-  COLLECT_APP = 'COLLECT_APP',
-}
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { VitamUICommonModule } from 'vitamui-library';
+
+@Component({
+  selector: 'app-preservation',
+  templateUrl: './preservation.component.html',
+  styleUrl: './preservation.component.scss',
+  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule],
+})
+export class PreservationComponent {}

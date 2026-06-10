@@ -314,6 +314,10 @@
       "NAME": "Ontologie",
       "TOOLTIP": "Consulter et gérer les vocabulaires internes et externes de l'ontologie"
     },
+    "PRESERVATION_APP": {
+      "NAME": "Griffons et scénarios de préservation",
+      "TOOLTIP": "Consulter et gérer les griffons et les scénarios de préservation"
+    },
     "AUDIT_APP": {
       "NAME": "Audits",
       "TOOLTIP": "Paramétrer et lancer des audits"
