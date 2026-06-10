@@ -49,6 +49,7 @@ export class ItemSelectComponent {
   @Input() selectedLabel: string;
   @Input() items: MenuOption[];
   @Input() appearance: 'fill' | 'outline' = 'fill';
+  @Input() panelClass: string = '';
   @Output() itemSelected = new EventEmitter<MenuOption>();
 
   @Input() set selectedItem(value: MenuOption) {
