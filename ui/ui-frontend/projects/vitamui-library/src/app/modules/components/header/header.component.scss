@@ -37,13 +37,11 @@ vitamui-common-item-select {
   @include elevation.shadow-0;
 }
 
-vitamui-common-user-alerts-menu,
 vitamui-common-select-language,
 .selection {
   height: $header-height;
 }
 
-vitamui-common-user-alerts-menu,
 .selection {
   border-left: 1px solid var(--vitamui-grey-200);
 }

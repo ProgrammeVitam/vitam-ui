@@ -8,19 +8,6 @@
   <div class="header-actions">
     <ng-content select="[extended-content]"></ng-content>
 
-    @if (userAlerts) {
-      <div class="d-flex align-items-center user-alerts">
-        <vitamui-common-user-alerts-menu
-          [userAlerts]="userAlerts"
-          [hasMoreAlerts]="hasMoreAlerts"
-          (openAlert)="openAlert($event)"
-          (closeAlert)="removeAlert($event)"
-          (seeMoreAlerts)="seeMoreAlerts()"
-        >
-        </vitamui-common-user-alerts-menu>
-      </div>
-    }
-
     @if (hasSiteSelection) {
       <div class="d-flex align-items-center">
         <vitamui-common-select-site></vitamui-common-select-site>

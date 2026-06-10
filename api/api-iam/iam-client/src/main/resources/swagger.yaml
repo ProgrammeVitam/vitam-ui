@@ -2790,11 +2790,6 @@ components:
                     type: integer
                     format: int32
                     example: null
-                alerts:
-                    type: array
-                    example: null
-                    items:
-                        $ref: "#/components/schemas/AlertAnalyticsDto"
             example: null
         ApplicationAnalyticsDto:
             type: object

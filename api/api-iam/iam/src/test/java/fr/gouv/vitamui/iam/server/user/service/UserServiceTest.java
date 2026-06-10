@@ -37,7 +37,6 @@ import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.token.domain.Token;
 import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
-import fr.gouv.vitamui.iam.server.user.domain.AlertAnalytics;
 import fr.gouv.vitamui.iam.server.user.domain.ApplicationAnalytics;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
@@ -1043,51 +1042,5 @@ public final class UserServiceTest {
         assertThat(applications).hasSize(1);
         assertThat(applications.get(0).getApplicationId()).isEqualTo(applicationId);
         assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);
-    }
-
-    private AlertAnalytics buildAlert(final String mockedData) {
-        var alert = new AlertAnalytics();
-        alert.setType(mockedData);
-        alert.setAction(mockedData);
-        alert.setApplicationId(mockedData);
-        alert.setStatus(mockedData);
-        alert.setCreationDate(mockedData);
-        alert.setId(mockedData);
-        alert.setIdentifier(mockedData);
-        alert.setKey(mockedData);
-        return alert;
-    }
-
-    @Test
-    public void patchAlertAnalyticsOk() {
-        // Given
-        userService = spy(userService);
-        final var firstAlert = buildAlert("firstAlert");
-        final var secondAlert = buildAlert("secondAlert");
-        final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
-        final User user = IamServerUtilsTest.buildUser(authUserDto.getId(), "", "");
-        final var listAlerts = new ArrayList<AlertAnalytics>();
-
-        listAlerts.add(firstAlert);
-        listAlerts.add(secondAlert);
-
-        when(userService.getMe()).thenReturn(authUserDto);
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        assertThat(user.getAnalytics().getApplications()).isNullOrEmpty();
-
-        // When
-        userService.patchAnalytics(Map.of("alerts", listAlerts));
-
-        // Then
-        verify(userRepository).findById(user.getId());
-        verifyNoMoreInteractions(applicationService);
-
-        final ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(captor.capture());
-        assertThat(captor.getValue()).isEqualToIgnoringGivenFields(user);
-        final List<AlertAnalytics> applications = captor.getValue().getAnalytics().getAlerts();
-        assertThat(applications).hasSize(2);
-        assertThat(applications.get(0).getApplicationId()).isEqualTo("firstAlert");
-        assertThat(applications.get(1).getApplicationId()).isEqualTo("secondAlert");
     }
 }
