@@ -185,7 +185,7 @@ export * from './app/modules/directives/resize-sidebar/resize-sidebar.directive'
 export * from './app/modules/directives/resize-sidebar/resize-sidebar.module';
 export * from './app/modules/directives/resize-sidebar/resize-vertical.directive';
 export * from './app/modules/directives/row-collapse/row-collapse.module';
-export * from './app/modules/logbook/event-type-label/event-type-label.module';
+export * from './app/modules/logbook/event-type-label/event-type-label.component';
 export * from './app/modules/logbook/history/history-events/history-events.component';
 export * from './app/modules/logbook/history/multi-operation-history-tab/multi-operation-history-tab.component';
 export * from './app/modules/logbook/history/operation-history-tab/operation-history-tab.component';

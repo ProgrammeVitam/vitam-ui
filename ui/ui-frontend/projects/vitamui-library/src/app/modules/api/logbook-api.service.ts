@@ -39,7 +39,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
-import { ApiEvent, IEvent, VitamSelectQuery } from '../models';
+import { ApiEvent, HistoryEvent, IEvent } from '../models';
 import { VitamResponse } from '../models/vitam/vitam-response.interface';
 import { PaginatedApi } from '../paginated-api.interface';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
@@ -143,26 +143,10 @@ export class LogbookApiService implements PaginatedApi<IEvent> {
       .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
   }
 
-  findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<{ $results: IEvent[] }> {
+  findOperationByIdAndCollectionName(id: string, resourcePath: string, headers?: HttpHeaders): Observable<HistoryEvent[]> {
     return this.http
-      .get<{ $results: ApiEvent[] }>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers })
-      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
-  }
-
-  findOperationsBySelectQuery(
-    selectQuery: VitamSelectQuery,
-    vitamTenantIdentifier?: number,
-    headers?: HttpHeaders,
-  ): Observable<{ $results: IEvent[] }> {
-    let params = new HttpParams();
-
-    if (vitamTenantIdentifier) {
-      params = params.append('vitamTenantIdentifier', vitamTenantIdentifier.toString());
-    }
-
-    return this.http
-      .post<{ $results: ApiEvent[] }>(this.apiUrl + '/operations', selectQuery, { headers, params })
-      .pipe(map((response) => ({ $results: response.$results.map(LogbookApiService.toEvent) })));
+      .get<HistoryEvent[]>(this.baseUrl + '/' + resourcePath + '/' + id + '/history', { headers })
+      .pipe(map((event) => event.map((event) => ({ ...event, parsedData: JSON.parse(event.data) }))));
   }
 
   downloadManifest(id: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {

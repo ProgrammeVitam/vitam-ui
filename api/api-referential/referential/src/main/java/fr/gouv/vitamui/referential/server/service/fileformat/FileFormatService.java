@@ -54,10 +54,8 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
@@ -300,13 +298,16 @@ public class FileFormatService extends AbstractService {
         }
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier)
+    public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamContext, final String identifier)
         throws VitamClientException {
         LOGGER.debug("findHistoryById for identifier" + identifier);
         LOGGER.debug("File Format History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        return logbookService
-            .findEventsByIdentifierAndCollectionNames(identifier, AdminCollections.AGENCIES.getName(), vitamContext)
-            .toJsonNode();
+        return logbookService.findEventsByIdentifierAndCollectionNames(
+            identifier,
+            AdminCollections.AGENCIES.getName(),
+            vitamContext,
+            List.of("EXT_VITAMUI_UPDATE_FILE_FORMAT", "EXT_VITAMUI_CREATE_FILE_FORMAT")
+        );
     }
 
     public JsonNode importFileFormats(VitamContext context, String fileName, MultipartFile file) {
@@ -350,15 +351,10 @@ public class FileFormatService extends AbstractService {
         this.delete(vitamContext, id);
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(String identifier) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(String identifier) throws VitamClientException {
         VitamContext vitamContext = buildVitamContext();
 
-        JsonNode body = this.findHistoryByIdentifier(vitamContext, identifier);
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return findHistoryByIdentifier(vitamContext, identifier);
     }
 
     public PaginatedValuesDto<FileFormatDto> getAllPaginated(

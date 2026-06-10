@@ -4,6 +4,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto;
+import fr.gouv.vitamui.commons.vitam.api.util.EvIdAppSessionParser;
 import fr.gouv.vitamui.commons.vitam.xls.ExcelFileGeneratorUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -116,7 +117,7 @@ public class UserExportService {
         String operationDateTime = operation.getEvDateTime();
         row.createCell(1).setCellValue(dateFormatService.formatDate(operationDateTime));
         row.createCell(2).setCellValue(dateFormatService.formatTime(operationDateTime));
-        row.createCell(3).setCellValue(operationParser.parseUserId(operation.getEvIdAppSession()));
+        row.createCell(3).setCellValue(EvIdAppSessionParser.parseUserId(operation.getEvIdAppSession()));
         row.createCell(4).setCellValue(translateService.translate(operation.getEvType()));
         row.createCell(5).setCellValue(parseOldValues(operation));
         row.createCell(6).setCellValue(parseNewValues(operation));

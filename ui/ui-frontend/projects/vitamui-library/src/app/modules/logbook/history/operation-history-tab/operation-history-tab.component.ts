@@ -40,8 +40,12 @@ import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../auth.service';
-import { IEvent } from '../../../models';
+import { HistoryEvent } from '../../../models';
 import { LogbookService } from '../../logbook.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CollapseModule } from '../../../components/collapse/collapse.module';
+import { TranslatePipe } from '@ngx-translate/core';
+import { HistoryEventsComponent } from '../history-events/history-events.component';
 
 const EVENT_LIMIT = 100;
 
@@ -49,16 +53,15 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-operation-history-tab',
   templateUrl: './operation-history-tab.component.html',
   styleUrls: ['./operation-history-tab.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, CollapseModule, HistoryEventsComponent, TranslatePipe],
 })
 export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
   @Input() id: string;
   @Input() identifier: string;
   @Input() collectionName: string;
-  @Input() filter: (event: any) => boolean;
   @Input() filteringByIdentifier = true;
 
-  events: IEvent[] = [];
+  events: HistoryEvent[] = [];
   loading = false;
 
   private isDestroyed$ = new Subject<void>();
@@ -89,25 +92,26 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
         map((paramMap) =>
           paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier),
         ),
-        switchMap((tenantIdentifier) => {
-          return this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier);
-        }),
+        switchMap((tenantIdentifier) =>
+          this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier),
+        ),
         takeUntil(this.isDestroyed$),
       )
-      .subscribe(
-        (results) => {
+      .subscribe({
+        next: (results) => {
           this.events = results
             .filter((event) => {
-              return this.filter ? this.filter(event) && (!this.filteringByIdentifier || this.filterByIdentifier(event)) : true;
+              // FIXME: shouldn't we filter on API side?
+              return this.filteringByIdentifier ? this.filterByIdentifier(event) : true;
             })
             .slice(0, EVENT_LIMIT);
           this.loading = false;
         },
-        () => (this.loading = false),
-      );
+        error: () => (this.loading = false),
+      });
   }
 
-  filterByIdentifier(event: any): boolean {
-    return event.objectId && event.objectId === this.identifier;
+  filterByIdentifier(event: HistoryEvent): boolean {
+    return event.obId && event.obId === this.identifier;
   }
 }

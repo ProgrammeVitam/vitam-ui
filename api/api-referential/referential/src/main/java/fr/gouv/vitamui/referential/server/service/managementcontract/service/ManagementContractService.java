@@ -48,11 +48,9 @@ import fr.gouv.vitamui.commons.api.domain.ManagementContractDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractCommonService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
@@ -267,10 +265,14 @@ public class ManagementContractService extends AbstractService {
         return getOne(vitamContext, identifier);
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamContext, final String id)
+        throws VitamClientException {
         try {
             LOGGER.debug(MANAGEMENT_CONTRACT_EVENT_ID_APP_SESSION, vitamContext.getApplicationSessionId());
-            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext).toJsonNode();
+            return logbookService.toHistoryEvents(
+                logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext),
+                List.of("STP_UPDATE_MANAGEMENT_CONTRACT", "STP_IMPORT_MANAGEMENT_CONTRACT")
+            );
         } catch (InvalidCreateOperationException e) {
             LOGGER.error("Unable to fetch history");
             throw new InternalServerException("Unable to fetch history", e);
@@ -347,15 +349,9 @@ public class ManagementContractService extends AbstractService {
         return this.check(vitamContext, managementContractDto);
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(String id) throws VitamClientException {
+    public List<HistoryEventDto> findHistoryById(String id) throws VitamClientException {
         VitamContext vitamContext = buildVitamContext();
 
-        final JsonNode body = this.findHistoryByIdentifier(vitamContext, id);
-
-        try {
-            return JsonUtils.treeToValue(body, LogbookOperationsCommonResponseDto.class, false);
-        } catch (final JsonProcessingException e) {
-            throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
-        }
+        return this.findHistoryByIdentifier(vitamContext, id);
     }
 }

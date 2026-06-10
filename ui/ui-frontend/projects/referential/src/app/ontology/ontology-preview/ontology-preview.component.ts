@@ -63,10 +63,6 @@ export class OntologyPreviewComponent implements AfterViewInit {
   tabLinks: Array<OntologyInformationTabComponent> = [];
   @ViewChild('infoTab', { static: false }) infoTab: OntologyInformationTabComponent;
 
-  filterEvents(event: any): boolean {
-    return event.outDetail && (event.outDetail.includes('STP_UPDATE_ONTOLOGY') || event.outDetail.includes('STP_IMPORT_ONTOLOGY'));
-  }
-
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
     if (this.tabUpdated[this.tabs.selectedIndex]) {

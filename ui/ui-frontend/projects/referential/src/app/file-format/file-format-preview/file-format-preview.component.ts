@@ -110,13 +110,6 @@ export class FileFormatPreviewComponent implements AfterViewInit {
     return await dialog.afterClosed().toPromise();
   }
 
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_FILE_FORMAT') || event.outDetail.includes('EXT_VITAMUI_CREATE_FILE_FORMAT'))
-    );
-  }
-
   async emitClose() {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();

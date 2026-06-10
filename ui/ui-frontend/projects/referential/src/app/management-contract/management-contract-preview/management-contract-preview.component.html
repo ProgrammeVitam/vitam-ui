@@ -36,7 +36,8 @@
       <vitamui-common-operation-history-tab
         [id]="inputManagementContract?.id"
         [identifier]="inputManagementContract?.identifier"
-        [filter]="filterEvents"
+        collectionName="management-contract"
+        [filteringByIdentifier]="false"
       >
       </vitamui-common-operation-history-tab>
     </mat-tab>

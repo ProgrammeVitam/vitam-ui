@@ -17,12 +17,7 @@
     </mat-tab>
 
     <mat-tab [label]="'CUSTOMER.TAB.HISTORY' | translate">
-      <app-owner-operation-history-tab
-        [id]="owner?.id"
-        [identifier]="owner?.identifier"
-        [externalParamId]="tenant?.id"
-        [filter]="filterEvents"
-      ></app-owner-operation-history-tab>
+      <app-owner-operation-history-tab [id]="owner?.id" [identifier]="owner?.identifier" [externalParamId]="tenant?.id" />
     </mat-tab>
   </mat-tab-group>
 </div>

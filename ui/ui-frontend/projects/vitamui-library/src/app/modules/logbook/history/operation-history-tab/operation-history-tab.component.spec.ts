@@ -39,28 +39,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { AuthService } from '../../../auth.service';
-import { IEvent } from '../../../models';
+import { HistoryEvent } from '../../../models';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
+import { TranslateModule } from '@ngx-translate/core';
 
-const logbookEvent: IEvent = {
-  id: 'eventObjectId',
-  idRequest: 'aedqaaaaaghc5pzqaayl2amc3mdleuiaaaaq',
-  parentId: null,
+const logbookEvent: HistoryEvent = {
   type: 'STORAGE_SECURISATION_TIMESTAMP',
-  typeProc: 'TRACEABILITY',
   dateTime: new Date(),
   outcome: 'OK',
   outDetail: 'STORAGE_SECURISATION_TIMESTAMP.OK',
-  outMessage: "Succès de la création du tampon d'horodatage de l'ensemble des journaux d'écriture",
   data: null,
   parsedData: {},
-  objectId: 'eventId',
-  collectionName: 'LogbookOperations',
-  agId: null,
-  agIdApp: 'agIdApp',
-  agIdExt: null,
-  rightsStatementIdentifier: null,
+  obId: 'eventId',
   obIdReq: null,
 };
 
@@ -70,8 +61,7 @@ describe('OperationHistoryTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule],
-      declarations: [OperationHistoryTabComponent],
+      imports: [OperationHistoryTabComponent, VitamUICommonTestModule, TranslateModule.forRoot()],
       providers: [
         { provide: AuthService, useValue: {} },
         { provide: LogbookService, useValue: {} },
@@ -103,7 +93,7 @@ describe('OperationHistoryTabComponent', () => {
     expect(component.filterByIdentifier(event)).toBeTruthy();
   });
 
-  it('Component should return fakse when all conditions are not respected', () => {
+  it('Component should return false when all conditions are not respected', () => {
     // Given
     const event = logbookEvent;
 
@@ -115,26 +105,16 @@ describe('OperationHistoryTabComponent', () => {
     expect(component.filterByIdentifier(event)).toBeFalsy();
   });
 
-  it('Component should return false when objectId is null', () => {
+  it('Component should return false when obId is null', () => {
     // Given
-    const event: IEvent = {
-      id: 'eventObjectId',
-      idRequest: 'aeeaaaaaaghkyonpaa3fsamcys3raeiaaaaq',
-      parentId: null,
+    const event: HistoryEvent = {
       type: 'STP_SANITY_CHECK_SIP.STARTED',
-      typeProc: 'INGEST',
       dateTime: new Date(),
       outcome: 'OK',
       outDetail: 'STP_SANITY_CHECK_SIP.STARTED.OK',
-      outMessage: "Succès du début du processus des contrôles préalables à l'entrée",
       data: null,
       parsedData: {},
-      objectId: null,
-      collectionName: 'IngestCollection',
-      agId: null,
-      agIdApp: 'agIdApp',
-      agIdExt: null,
-      rightsStatementIdentifier: null,
+      obId: null,
       obIdReq: null,
     };
 
