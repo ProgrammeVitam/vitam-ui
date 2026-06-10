@@ -139,13 +139,6 @@ export class AgencyPreviewComponent implements AfterViewInit {
     return await dialog.afterClosed().toPromise();
   }
 
-  public filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('EXT_VITAMUI_UPDATE_ACCESS_CONTRACT') || event.outDetail.includes('EXT_VITAMUI_CREATE_ACCESS_CONTRACT'))
-    );
-  }
-
   public async emitClose() {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();

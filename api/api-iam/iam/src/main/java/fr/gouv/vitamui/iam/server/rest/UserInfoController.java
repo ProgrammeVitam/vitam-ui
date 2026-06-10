@@ -46,7 +46,7 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,6 +70,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -171,8 +172,8 @@ public class UserInfoController implements CrudController<UserInfoDto> {
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     @Operation(operationId = "userInfo_findHistoryById", summary = "Get user info history by id")
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
-        throws VitamClientException {
+    @Secured(ServicesData.ROLE_GET_USER_INFOS)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for user info with id :{}", id);

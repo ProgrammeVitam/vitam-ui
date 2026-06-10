@@ -38,7 +38,7 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { AccessContract, ConfirmActionComponent, AccessContractService } from 'vitamui-library';
+import { AccessContract, AccessContractService, ConfirmActionComponent } from 'vitamui-library';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab/access-contract-authorizations-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
@@ -95,15 +95,6 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     await this.checkBeforeExit();
 
     this.previewClose.emit();
-  }
-
-  public filterEvents(event: any): boolean {
-    return (
-      event.outDetail &&
-      (event.outDetail.includes('STP_UPDATE_ACCESS_CONTRACT') ||
-        event.outDetail.includes('STP_IMPORT_ACCESS_CONTRACT') ||
-        event.outDetail.includes('STP_BACKUP_ACCESS_CONTRACT'))
-    );
   }
 
   private async checkBeforeExit() {

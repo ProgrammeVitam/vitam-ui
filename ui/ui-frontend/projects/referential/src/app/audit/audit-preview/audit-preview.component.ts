@@ -39,9 +39,9 @@ import {
   Event,
   ExternalParameters,
   ExternalParametersService,
+  SnackBarService,
   VitamUICommonModule,
   VitamUILibraryModule,
-  SnackBarService,
 } from 'vitamui-library';
 import { AuditService } from '../audit.service';
 import { CommonModule } from '@angular/common';
@@ -124,12 +124,6 @@ export class AuditPreviewComponent implements OnInit {
 
   downloadReport() {
     this.auditService.download(this.audit().id, this.audit().type, this.accessContractId);
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_AUDIT') || event.outDetail.includes('EXT_VITAMUI_CREATE_AUDIT'))
-    );
   }
 
   private getLastStepStatus(audit: Event): string {

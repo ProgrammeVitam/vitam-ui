@@ -50,7 +50,7 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.rule.RuleService;
 import jakarta.validation.Valid;
@@ -79,6 +79,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -181,7 +182,7 @@ public class RuleController {
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(IDENTIFIER_MANDATORY_MESSAGE, id);
         SanityChecker.checkSecureParameter(id);

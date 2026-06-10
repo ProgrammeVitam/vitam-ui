@@ -64,7 +64,7 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
@@ -362,11 +362,13 @@ public class OperationService extends AbstractService {
         }
     }
 
-    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, String id) {
+    public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamContext, String id) {
         try {
             LOGGER.info("Operation History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            RequestResponse<LogbookOperation> requestResponse = logbookService.selectOperationbyId(id, vitamContext);
-            return requestResponse.toJsonNode();
+            return logbookService.toHistoryEvents(
+                logbookService.selectOperationbyId(id, vitamContext),
+                List.of("EXT_VITAMUI_UPDATE_AUDIT", "EXT_VITAMUI_CREATE_AUDIT")
+            );
         } catch (VitamClientException e) {
             throw new InternalServerException("Unable to fetch history", e);
         }
@@ -417,14 +419,9 @@ public class OperationService extends AbstractService {
         return true; // Suppose que l'opération est toujours réussie
     }
 
-    public LogbookOperationsCommonResponseDto findHistoryById(String id) {
+    public List<HistoryEventDto> findHistoryById(String id) {
         VitamContext vitamContext = buildVitamContext();
-        JsonNode history = this.findHistoryByIdentifier(vitamContext, id);
-        try {
-            return objectMapper.treeToValue(history, LogbookOperationsCommonResponseDto.class);
-        } catch (JsonProcessingException e) {
-            throw new InternalServerException("Error parsing history data", e);
-        }
+        return this.findHistoryByIdentifier(vitamContext, id);
     }
 
     public ResponseEntity<Resource> export(String id, ReportType type) {

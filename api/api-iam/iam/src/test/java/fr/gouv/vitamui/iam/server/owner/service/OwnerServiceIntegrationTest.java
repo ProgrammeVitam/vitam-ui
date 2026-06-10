@@ -1,11 +1,7 @@
 package fr.gouv.vitamui.iam.server.owner.service;
 
 import com.google.common.collect.ImmutableMap;
-import fr.gouv.vitam.common.GlobalDataRest;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
@@ -15,7 +11,7 @@ import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.test.VitamClientTestConfig;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -27,7 +23,6 @@ import fr.gouv.vitamui.iam.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
-import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,11 +40,13 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -206,15 +203,11 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
 
         Mockito.when(securityService.getTenantIdentifier()).thenReturn(tenant.getIdentifier());
         Mockito.when(securityService.getTenant(eq(tenant.getIdentifier()))).thenReturn(tenant);
-        final RequestResponse<LogbookOperation> operationsResponse = new RequestResponseOK<LogbookOperation>()
-            .addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
-            .addHeader(GlobalDataRest.X_APPLICATION_ID, "appId")
-            .setHttpCode(Response.Status.OK.getStatusCode());
         Mockito.when(
-            logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any())
-        ).thenReturn(operationsResponse);
+            logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any(), anyList())
+        ).thenReturn(List.of());
 
-        final LogbookOperationsCommonResponseDto historyResult = ownerService.findHistoryById(ownerCreated.getId());
+        final List<HistoryEventDto> historyResult = ownerService.findHistoryById(ownerCreated.getId());
 
         assertThat(historyResult).isNotNull();
         Mockito.verify(securityService).getTenantIdentifier();

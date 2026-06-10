@@ -50,7 +50,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.externalparamprofile.service.ExternalParamProfileService;
@@ -74,6 +74,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -179,7 +180,7 @@ public class ExternalParamProfileController implements CrudController<ExternalPa
     )
     @GetMapping(CommonConstants.PATH_LOGBOOK)
     @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
-    public LogbookOperationsCommonResponseDto findHistoryById(final @PathVariable("id") String id)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);

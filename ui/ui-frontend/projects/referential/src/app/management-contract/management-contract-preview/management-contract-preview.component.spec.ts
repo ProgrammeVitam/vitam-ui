@@ -84,47 +84,6 @@ describe('ManagementContractPreviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return false', () => {
-    // Given
-    const event = { id: 'id', eventDetails: 'test test' };
-
-    // When
-    const respone = component.filterEvents(event);
-
-    // Then
-    expect(respone).toBeFalsy();
-  });
-
-  it('should return true', () => {
-    // Given
-    const event = {
-      id: 'aeeaaaaaaghjmgheaax42amfo3qv6jyaaaaq',
-      evId: 'aeeaaaaaaghjmgheaax42amfo3qv6jyaaaaq',
-      evIdReq: 'aeeaaaaaaghjmgheaax42amfo3qv6jyaaaaq',
-      evType: 'PROCESS_SIP_UNITARY',
-      evTypeProc: 'INGEST',
-      evDateTime: '2023-01-03T09:05:59.803',
-      outcome: 'STARTED',
-      outDetail: 'STP_IMPORT_MANAGEMENT_CONTRACT.STARTED',
-      outMessg: 'Début du processus du SIP : aeeaaaaaaghjmgheaax42amfo3qv6jyaaaaq',
-      evDetData:
-        '{\n  "EvDetailReq" : "Versement",\n  "EvDateTimeReq" : "2023-01-03T09:05:57",\n  "ArchivalAgreement" : "ArchivalAgreement0",\n  "ServiceLevel" : null,\n  "_up" : [ "aeaqaaaaaehffa3qaavjkamfop2tqpyaaada" ]\n}',
-      obId: 'aeeaaaaaaghjmgheaax42amfo3qv6jyaaaaq',
-      agId: '{"Name":"vitam-env-itrec-vm-2","Role":"ingest-external","ServerId":1050024164,"SiteId":1,"GlobalPlatformId":244717796}',
-      agIdApp: 'CT-000001',
-      agIdExt: '{"originatingAgency":"Identifier0","TransferringAgency":"Vitam","ArchivalAgency":"Vitam","submissionAgency":"Identifier0"}',
-      rightsStatementIdentifier: '{"ArchivalAgreement":"ArchivalAgreement0"}',
-
-      obIdIn: 'Versement',
-    };
-
-    // When
-    const respone = component.filterEvents(event);
-
-    // Then
-    expect(respone).toBeTruthy();
-  });
-
   it('should return the exact array ', () => {
     // Given
     component.tabUpdated = [false, false];
