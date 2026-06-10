@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -44,12 +43,11 @@ import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
 import { GlobalEventService } from './global-event.service';
-import { Application, ApplicationInfo } from './models/application/application.interface';
+import { Application } from './models/application/application.interface';
 import { Category } from './models/application/category.interface';
 import { Tenant } from './models/customer/tenant.interface';
 import { ApplicationAnalytics } from './models/user/application-analytics.interface';
 import { TenantSelectionService } from './tenant-selection.service';
-import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -91,20 +89,14 @@ export class ApplicationService {
   /**
    * Get and init applications list for the current auth user.
    */
-  public list(): Observable<ApplicationInfo> {
-    const params = new HttpParams().set('filterApp', 'true');
-    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, this.authService.getAnyTenantIdentifier());
-    return this.applicationApi.getAllByParams(params, headers).pipe(
-      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {} })),
-      map((applicationInfo: ApplicationInfo) => {
-        this._applications = applicationInfo.APPLICATION_CONFIGURATION;
-        if (this.configService.config.GATEWAY_ENABLED) {
-          this._categories = this.sortCategories(this.configService.config.CATEGORY_CONFIGURATION);
-        } else {
-          this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);
-        }
+  public list(): Observable<Application[]> {
+    return this.applicationApi.getAll().pipe(
+      catchError(() => of([])),
+      map((applications: Application[]) => {
+        this._applications = applications;
+        this._categories = this.sortCategories(this.configService.config.CATEGORY_CONFIGURATION);
         this._applications$.next(this._applications);
-        return applicationInfo;
+        return applications;
       }),
     );
   }

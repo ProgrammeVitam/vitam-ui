@@ -36,10 +36,8 @@
  */
 import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges, inject } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
-import { map, shareReplay } from 'rxjs/operators';
-import { Application, ApplicationApiService, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
-
-import { HttpParams } from '@angular/common/http';
+import { shareReplay } from 'rxjs/operators';
+import { ApplicationApiService, IdentifierName, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
 import { OptionTree } from './option-tree.interface';
 import { zip } from 'rxjs';
 
@@ -62,7 +60,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
 
   profiles: Profile[] = [];
   profileIds: string[] = [];
-  applicationsDetails: Application[] = [];
+  private applicationsDetails: IdentifierName[] = [];
 
   public loading = true;
 
@@ -83,10 +81,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   @ViewChild('profileInput', { static: false }) profileInput: SelectComponent;
   @ViewChild('addButton', { static: false }) addButton: ElementRef;
 
-  private applicationsDetails$ = this.appApiService.getAllByParams(new HttpParams().set('filterApp', 'false')).pipe(
-    map((applications) => applications.APPLICATION_CONFIGURATION),
-    shareReplay(1),
-  );
+  private applicationsDetails$ = this.appApiService.listNames().pipe(shareReplay(1));
 
   ngOnInit(): void {
     this.applicationsDetails$.subscribe((applicationsDetails) => (this.applicationsDetails = applicationsDetails));
@@ -243,8 +238,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   private buildApplicationOption(profile: Profile): OptionTree {
-    const application = this.applicationsDetails.find((app) => app.identifier === profile.applicationName);
-    let appLabel = this.applicationsDetails.find((app) => app.identifier === application.identifier).name;
+    const appLabel = this.applicationsDetails.find((app) => app.identifier === profile.applicationName).name;
 
     return {
       key: profile.applicationName,
@@ -290,7 +284,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
     this.appSelect.reset();
   }
 
-  private filterProfileIds(profileIds: string[], profiles: Profile[], applicationsDetails: Application[]): string[] {
+  private filterProfileIds(profileIds: string[], profiles: Profile[], applicationsDetails: IdentifierName[]): string[] {
     return profiles
       .filter((profile) => applicationsDetails.some((app) => app.identifier === profile.applicationName))
       .map((profile) => profile.id)
@@ -298,7 +292,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   }
 }
 
-function byApplicationName(profiles: Profile[], applications: Application[]): (idA: string, idB: string) => number {
+function byApplicationName(profiles: Profile[], applications: IdentifierName[]): (idA: string, idB: string) => number {
   return (idA, idB) => {
     const nameA = getApplicationName(profiles, idA, applications);
     const nameB = getApplicationName(profiles, idB, applications);
@@ -314,7 +308,7 @@ function byApplicationName(profiles: Profile[], applications: Application[]): (i
   };
 }
 
-function getApplicationName(profiles: Profile[], profileId: string, applications: Application[]): string {
+function getApplicationName(profiles: Profile[], profileId: string, applications: IdentifierName[]): string {
   const profile = profiles.find((p) => p.id === profileId);
 
   if (!profile) {

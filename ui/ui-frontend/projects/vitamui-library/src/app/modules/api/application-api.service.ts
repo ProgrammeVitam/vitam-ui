@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { BASE_URL } from '../injection-tokens';
-import { AppConfiguration, ApplicationInfo, AttachmentType } from '../models';
+import { AppConfiguration, Application, AttachmentType } from '../models';
+import { IdentifierName } from '../models/application/identifier-name.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -56,8 +57,12 @@ export class ApplicationApiService {
     this.apiUrl = baseUrl + '/ui/applications';
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<ApplicationInfo> {
-    return this.http.get<ApplicationInfo>(`${this.apiUrl}/filtered`, { params, headers });
+  getAll(headers?: HttpHeaders): Observable<Application[]> {
+    return this.http.get<Application[]>(`${this.apiUrl}`, { headers });
+  }
+
+  listNames(): Observable<IdentifierName[]> {
+    return this.http.get<IdentifierName[]>(`${this.apiUrl}/listNames`);
   }
 
   isApplicationExternalIdentifierEnabled(id: string): Observable<boolean> {
