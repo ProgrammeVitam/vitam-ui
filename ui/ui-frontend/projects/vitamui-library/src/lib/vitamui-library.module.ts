@@ -62,6 +62,7 @@ import { ConfirmActionComponent } from './components/confirm-action/confirm-acti
 import { ManagementRuleSearchComponent } from './components/management-rule-search/management-rule-search.component';
 import { ConfirmDialogComponent } from './components/dialog/confirm-dialog/confirm-dialog.component';
 import { ErrorsDetailsDialogComponent } from './components/dialog/errors-details-dialog/errors-details-dialog.component';
+import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 
 const components = [
   AlertDialogComponent,
@@ -97,6 +98,14 @@ const components = [
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { autoFocus: false } },
     { provide: MAT_BUTTON_TOGGLE_DEFAULT_OPTIONS, useValue: { hideSingleSelectionIndicator: true } },
+    {
+      provide: OVERLAY_DEFAULT_CONFIG,
+      useValue: {
+        // Forces Angular Material to use CDK overlay implementation instead of the native Popover API (top-layer).
+        // This restores pre-Angular 21 behavior where overlays respect z-index stacking contexts, preventing dialogs/tooltips from always appearing above structural UI elements like sticky headers.
+        usePopover: false,
+      },
+    },
   ],
 })
 export class VitamUILibraryModule {}

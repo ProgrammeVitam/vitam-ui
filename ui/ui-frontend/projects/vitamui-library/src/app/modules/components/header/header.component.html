@@ -29,6 +29,7 @@
           [items]="appTenants"
           [selectedItem]="selectedTenant"
           (itemSelected)="updateTenant($event)"
+          panelClass="header-select"
         >
         </vitamui-common-item-select>
       }
@@ -41,6 +42,7 @@
           [items]="customers"
           [selectedItem]="selectedCustomer"
           (itemSelected)="updateCustomer($event)"
+          panelClass="header-select"
         >
         </vitamui-common-item-select>
       }
@@ -58,7 +60,7 @@
       </div>
 
       <div class="account-menu">
-        <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
+        <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before" class="header-select">
           <ng-container>
             @if (hasAccountProfile) {
               <button mat-menu-item [routerLink]="['/account']">{{ 'HEADER.MY_ACCOUNT' | translate }}</button>
