@@ -95,7 +95,6 @@ export * from './components/table-filter/table-filter.component';
 export * from './components/table-filter/table-filter-option/table-filter-option.component';
 export * from './components/table-filter/table-filter-search.component';
 export * from './components/table-filter/table-filter.directive';
-export * from './components/user-alerts/index';
 export * from './components/vitamui-field-error/vitamui-field-error.component';
 export * from './components/vitamui-multi-inputs/index';
 export * from './components/snack-bar/snack-bar.service';
