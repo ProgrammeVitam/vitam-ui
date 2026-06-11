@@ -15,7 +15,7 @@ spring:
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
   data:
     mongodb:
-      uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
+      uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password | urlencode | regex_replace('/', '%2F') }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
   servlet:
     multipart:
       max-file-size: -1

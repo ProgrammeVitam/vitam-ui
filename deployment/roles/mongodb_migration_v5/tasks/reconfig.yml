@@ -2,7 +2,7 @@
 
 # https://www.mongodb.com/docs/v4.2/reference/command/isMaster/#output
 - name: Check if the member is primary of the replicaset or not
-  command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --eval 'rs.isMaster().ismaster'"
+  command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password | quote }} --quiet --eval 'rs.isMaster().ismaster'"
   register: primary_test_command
   no_log: "{{ hide_passwords_during_deploy }}"
 
@@ -16,7 +16,7 @@
   when: primary_test_command.stdout == 'true'
 
 - name: "Reconfigure replicaset for {{ mongo_type }}"
-  command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/{{ mongo_type }}/reconfig.js"
+  command: "mongosh --host {{ ip_service }} --port {{ mongo_port }} -u {{ mongodb.localadmin.user }} -p {{ mongodb.localadmin.password | quote }} --quiet --file {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/{{ mongo_type }}/reconfig.js"
   no_log: "{{ hide_passwords_during_deploy }}"
   when:
     - primary_test_command.stdout == 'true'

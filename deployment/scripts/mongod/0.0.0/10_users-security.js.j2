@@ -7,7 +7,7 @@ if (! db.getUser("{{ mongodb.security.user }}")) {
     db.createUser(
         {
             user: "{{ mongodb.security.user }}",
-            pwd: "{{ mongodb.security.password }}",
+            pwd: {{ mongodb.security.password | to_json }},
             roles: {{ mongodb.security.roles }}
         }
     )
@@ -16,7 +16,7 @@ else {
     db.updateUser(
         "{{ mongodb.security.user }}",
         {
-            pwd: "{{ mongodb.security.password }}",
+            pwd: {{ mongodb.security.password | to_json }},
             roles: {{ mongodb.security.roles }}
         }
     )

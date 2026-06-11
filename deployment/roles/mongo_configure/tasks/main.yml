@@ -3,7 +3,7 @@
 - name: Set mongo connection & credentials
   set_fact:
     mongo_connection: "--host {{ ip_service }} --port {{ mongodb.mongod_port }} --quiet"
-    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }}"
+    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password | quote }}"
   no_log: "{{ hide_passwords_during_deploy }}"
   tags: update_mongodb_configuration
 

@@ -13,7 +13,7 @@
 - name: Set Mongo URI and credentials
   set_fact:
     mongod_uri: "{{ mongo_nodes | join(',') }}"
-    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
+    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password | quote }} --quiet"
   no_log: "{{ hide_passwords_during_deploy }}"
 
 - name: Compute security.populate_certificates script

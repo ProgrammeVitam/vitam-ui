@@ -7,7 +7,7 @@
 
 - block:
     - name: Check if authentication is enabled
-      command: "mongosh mongodb://{{ mongod_uri }}/admin?replicaSet={{ mongod_replicaset_name }} -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'"
+      command: "mongosh mongodb://{{ mongod_uri }}/admin?replicaSet={{ mongod_replicaset_name }} -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password | quote }} --quiet --eval 'db.help()'"
       register: mongo_authent_enabled
       failed_when: false
       no_log: "{{ hide_passwords_during_deploy }}"
@@ -20,7 +20,7 @@
 
 - block:
     - name: Check if authentication is enabled (docker)
-      shell: "docker exec {{ mongodb.docker.image_name }} /bin/bash -c \"mongosh mongodb://{{ mongod_uri }}/admin?replicaSet={{ mongod_replicaset_name }} -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet --eval 'db.help()'\""
+      shell: "docker exec {{ mongodb.docker.image_name }} /bin/bash -c \"mongosh mongodb://{{ mongod_uri }}/admin?replicaSet={{ mongod_replicaset_name }} -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password | quote }} --quiet --eval 'db.help()'\""
       failed_when: false
       register: mongo_authent_enabled
 
@@ -33,6 +33,6 @@
 # When authentication is required, we set mongodb admin credentials
 - name: Set mongodb authentication credentials
   set_fact:
-    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --authenticationDatabase {{ mongodb.admin.db }}"
+    mongo_credentials: "-u {{ mongodb.admin.user }} -p {{ mongodb.admin.password | quote }} --authenticationDatabase {{ mongodb.admin.db }}"
   when: not mongo_no_auth
   no_log: "{{ hide_passwords_during_deploy }}"

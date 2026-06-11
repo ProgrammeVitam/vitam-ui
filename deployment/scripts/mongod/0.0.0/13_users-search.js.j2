@@ -7,7 +7,7 @@ if (! db.getUser("{{ mongodb.archivesearch.user }}")) {
     db.createUser(
         {
             user: "{{ mongodb.archivesearch.user }}",
-            pwd: "{{ mongodb.archivesearch.password }}",
+            pwd: {{ mongodb.archivesearch.password | to_json }},
             roles: {{ mongodb.archivesearch.roles }}
         }
     )
@@ -16,7 +16,7 @@ else {
     db.updateUser(
         "{{ mongodb.archivesearch.user }}",
         {
-            pwd: "{{ mongodb.archivesearch.password }}",
+            pwd: {{ mongodb.archivesearch.password | to_json }},
             roles: {{ mongodb.archivesearch.roles }}
         }
     )

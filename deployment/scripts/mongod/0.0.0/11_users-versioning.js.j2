@@ -7,7 +7,7 @@ if (! db.getUser("{{ mongodb.versioning.user }}")) {
     db.createUser(
         {
             user: "{{ mongodb.versioning.user }}",
-            pwd: "{{ mongodb.versioning.password }}",
+            pwd: {{ mongodb.versioning.password | to_json }},
             roles: {{ mongodb.versioning.roles }}
         }
     )
@@ -16,7 +16,7 @@ else {
     db.updateUser(
         "{{ mongodb.versioning.user }}",
         {
-            pwd: "{{ mongodb.versioning.password }}",
+            pwd: {{ mongodb.versioning.password | to_json }},
             roles: {{ mongodb.versioning.roles }}
         }
     )

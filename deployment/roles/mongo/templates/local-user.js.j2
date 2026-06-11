@@ -31,7 +31,7 @@ if (!admin.getUser("{{ mongodb.localadmin.user }}")) {
     admin.createUser(
         {
             user: "{{ mongodb.localadmin.user }}",
-            pwd: "{{ mongodb.localadmin.password }}",
+            pwd: {{ mongodb.localadmin.password | to_json }},
             roles: [
                 { role: "clusterAdmin", db: "admin" },
                 { role: "dbAdmin", db: "logbook" },
@@ -47,7 +47,7 @@ if (!admin.getUser("{{ mongodb.localadmin.user }}")) {
     admin.updateUser(
         "{{ mongodb.localadmin.user }}",
         {
-            pwd: "{{ mongodb.localadmin.password }}",
+            pwd: {{ mongodb.localadmin.password | to_json }},
             roles: [
                 { role: "clusterAdmin", db: "admin" },
                 { role: "dbAdmin", db: "logbook" },
