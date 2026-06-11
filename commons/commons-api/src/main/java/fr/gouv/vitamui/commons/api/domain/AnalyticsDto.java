@@ -14,6 +14,4 @@ public class AnalyticsDto implements Serializable {
     private List<ApplicationAnalyticsDto> applications = new ArrayList<>();
 
     private Integer lastTenantIdentifier;
-
-    private List<AlertAnalyticsDto> alerts = new ArrayList<>();
 }
