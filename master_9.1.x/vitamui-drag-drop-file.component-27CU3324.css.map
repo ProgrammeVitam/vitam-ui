@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/app/modules/components/vitamui-drag-drop-file/vitamui-drag-drop-file.component.scss"],
+  "sourcesContent": [":host {\n  display: flex;\n  flex-direction: column;\n\n  .on-over {\n    border: 2px solid var(--vitamui-grey-600);\n\n    .drop-area {\n      background: var(--vitamui-grey-900);\n      opacity: 0.9;\n      color: white;\n    }\n  }\n\n  .pj {\n    transform: rotate(45deg);\n  }\n\n  .pointer {\n    cursor: pointer;\n  }\n\n  .error-message {\n    color: var(--vitamui-red);\n  }\n\n  .disabled {\n    pointer-events: none;\n    opacity: 0.4;\n  }\n\n  .contents {\n    display: contents;\n  }\n\n  .delete {\n    position: relative;\n    top: 3px;\n    right: -212px;\n    height: 0;\n  }\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KACA,eAAA,OAEA,MAAA,CAAA,QACE,OAAA,IAAA,MAAA,IAAA,oBAEA,MAAA,CAHF,QAGE,CAAA,UACE,WAAA,IAAA,oBACA,QAAA,GACA,MAAA,KAIJ,MAAA,CAAA,GACE,UAAA,OAAA,OAGF,MAAA,CAAA,QACE,OAAA,QAGF,MAAA,CAAA,cACE,MAAA,IAAA,eAGF,MAAA,CAAA,SACE,eAAA,KACA,QAAA,GAGF,MAAA,CAAA,SACE,QAAA,SAGF,MAAA,CAAA,OACE,SAAA,SACA,IAAA,IACA,MAAA,OACA,OAAA",
+  "names": []
+}
