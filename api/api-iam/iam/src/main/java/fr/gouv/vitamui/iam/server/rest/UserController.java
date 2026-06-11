@@ -249,7 +249,7 @@ public class UserController implements CrudController<UserDto> {
      */
     @PostMapping(CommonConstants.PATH_ANALYTICS)
     public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto)
-        throws InvalidParseOperationException, PreconditionFailedException {
+        throws PreconditionFailedException {
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch analytics with {}", partialDto);
         return userService.patchAnalytics(partialDto);

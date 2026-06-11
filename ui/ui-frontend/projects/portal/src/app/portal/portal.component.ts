@@ -40,7 +40,6 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
-  AlertAnalytics,
   Application,
   ApplicationId,
   ApplicationService,
@@ -54,7 +53,6 @@ import {
   StartupService,
   ThemeDataType,
   ThemeService,
-  UserAlertsService,
   UserInfo,
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
@@ -74,7 +72,6 @@ export class PortalComponent implements OnInit, OnDestroy {
   public welcomeMessage: string;
   public portalLogoUrl: SafeResourceUrl;
   public loading = true;
-  public showAlerts = false;
 
   private destroyer$ = new Subject<void>();
 
@@ -87,7 +84,6 @@ export class PortalComponent implements OnInit, OnDestroy {
     private langagueService: LanguageService,
     private titleService: Title,
     private globalEventService: GlobalEventService,
-    private userAlertsService: UserAlertsService,
   ) {}
 
   ngOnInit() {
@@ -117,14 +113,6 @@ export class PortalComponent implements OnInit, OnDestroy {
     this.destroyer$.complete();
   }
 
-  public openAlert(alert: AlertAnalytics): void {
-    this.userAlertsService.openAlert(alert).subscribe();
-  }
-
-  public removeAlert(alert: AlertAnalytics): void {
-    this.userAlertsService.removeUserAlertById(alert.id).subscribe();
-  }
-
   private convertAppMapToContentMap(appMap: Map<Category, Application[]>): Map<Category, Content> {
     const contentMap: Map<Category, Content> = new Map();
 
@@ -134,33 +122,8 @@ export class PortalComponent implements OnInit, OnDestroy {
       contentMap.set(category, content);
     }
 
-    // // Set alerts
-    // this.userAlertsService.getUserAlerts$().pipe(takeUntil(this.destroyer$)).subscribe((alerts: AlertAnalytics[]) => {
-    //   const existingAlertContent = this.retreiveAlertContent();
-    //
-    //   if (existingAlertContent) {
-    //     existingAlertContent.data = alerts;
-    //   } else {
-    //     const content: Content = { type: ContentTypeEnum.ALERT, data: alerts };
-    //     const category: Category = { displayTitle: true, identifier: 'USER_ALERTS', title: 'USER_ALERTS', order: 9999 };
-    //     contentMap.set(category, content);
-    //   }
-    // })
-
     return contentMap;
   }
-
-  // private retreiveAlertContent(): Content {
-  //   let alertContent;
-  //
-  //   this.content.forEach((content: Content) => {
-  //     if (content.type === ContentTypeEnum.ALERT) {
-  //       alertContent = content;
-  //     }
-  //   });
-  //
-  //   return alertContent;
-  // }
 
   private initPortalTitleAndMessage(lang: FullLangString): void {
     const translatedAppName = this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + ApplicationId.PORTAL_APP + '.NAME');
