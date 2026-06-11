@@ -44,7 +44,7 @@ import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { GlobalEventService } from '../../global-event.service';
-import { Application, AuthUser, ThemeDataType, UserAlerts } from '../../models';
+import { Application, AuthUser, ThemeDataType } from '../../models';
 import { Tenant } from '../../models/customer/tenant.interface';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';
@@ -91,8 +91,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public tenants: MenuOption[];
   public appTenants: MenuOption[];
   public headerLogoUrl: SafeResourceUrl;
-  public userAlerts: UserAlerts;
-  public hasMoreAlerts = false;
 
   private currentAppId: ApplicationId;
   private destroyer$ = new Subject<void>();
