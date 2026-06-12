@@ -1,8 +1,10 @@
-#!/bin/sh
+#!/bin/bash -e
 
-pip install virtualenv
-virtualenv .virtualenvs/vitam-ui
-. .virtualenvs/vitam-ui/bin/activate
-pip install ansible==2.9.27
-cd tools/docker/mongo || return 1
+# Use the centralized Ansible setup script in the same directory (tools/)
+echo "--- Using centralized Ansible setup script ---"
+VENV_NAME_MONGO=".virtualenvs/vitam-ui"
+bash "$(dirname "$0")/setup_ansible_venv.sh" "$VENV_NAME_MONGO"
+source "$(dirname "$0")/$VENV_NAME_MONGO/bin/activate"
+
+cd "$(dirname "$0")/docker/mongo" || return 1
 ./start_dev.sh
