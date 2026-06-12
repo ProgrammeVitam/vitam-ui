@@ -54,7 +54,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Optional;
 
@@ -62,8 +64,9 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-public class UnitServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class UnitServiceTest {
 
     @Mock
     private UnitCommonService unitCommonService;
@@ -88,7 +91,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void searchUnits_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void searchUnits_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
@@ -102,7 +105,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void searchUnits_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void searchUnits_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
@@ -116,7 +119,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void searchUnits_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void searchUnits_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
@@ -131,7 +134,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void searchUnitsWithErrors_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void searchUnitsWithErrors_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
@@ -145,7 +148,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void searchUnitsWithErrors_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void searchUnitsWithErrors_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
 
@@ -159,7 +162,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void searchUnitsWithErrors_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void searchUnitsWithErrors_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode dslQuery = JsonHandler.createObjectNode();
@@ -174,7 +177,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void findObjectMetadataById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findObjectMetadataById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
         JsonNode dslQuery = JsonHandler.createObjectNode();
@@ -189,7 +192,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void findObjectMetadataById_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void findObjectMetadataById_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
         JsonNode dslQuery = JsonHandler.createObjectNode();
@@ -204,7 +207,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void findObjectMetadataById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findObjectMetadataById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String unitId = "id";
@@ -220,7 +223,7 @@ public class UnitServiceTest {
     }
 
     @Test
-    public void getFinalFillingHoldingSchemeQueryWithAllProjectionFields() throws Exception {
+    void getFinalFillingHoldingSchemeQueryWithAllProjectionFields() throws Exception {
         // Given
         JsonNode expectedQuery = JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_QUERY));
 

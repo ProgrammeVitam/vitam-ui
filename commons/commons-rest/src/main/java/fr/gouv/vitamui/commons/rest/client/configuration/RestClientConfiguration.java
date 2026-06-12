@@ -46,7 +46,7 @@ import lombok.experimental.Accessors;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * The RestClientConfiguration stores properties used in the RestClient
+ * The RestClientConfiguration stores properties used in the VitamuiRestClient
  */
 
 @Getter

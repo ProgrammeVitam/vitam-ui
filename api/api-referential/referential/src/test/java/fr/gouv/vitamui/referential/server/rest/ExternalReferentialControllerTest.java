@@ -47,10 +47,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
@@ -58,19 +60,20 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 @WebMvcTest(controllers = { ExternalReferentialController.class })
 @Import(value = { WebSecurityConfig.class, RestExceptionHandler.class })
 public class ExternalReferentialControllerTest extends AbstractRestControllerMockMvcTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @MockBean
+    @MockitoBean
     private ExternalReferentialService externalReferentialService;
 
-    @MockBean
+    @MockitoBean
     private ApiAuthenticationProvider apiAuthenticationProvider;
 
-    @MockBean
+    @MockitoBean
     private SecurityService securityService;
 
     @Override
@@ -79,7 +82,7 @@ public class ExternalReferentialControllerTest extends AbstractRestControllerMoc
     }
 
     @Test
-    public void testListExternalReferentialConfig() throws Exception {
+    void testListExternalReferentialConfig() throws Exception {
         // Given
         Mockito.when(externalReferentialService.listExternalReferentialConfig()).thenReturn(
             List.of(
@@ -104,7 +107,7 @@ public class ExternalReferentialControllerTest extends AbstractRestControllerMoc
     }
 
     @Test
-    public void testListAgencies() throws Exception {
+    void testListAgencies() throws Exception {
         // Given
         Mockito.when(externalReferentialService.listAgencies("system_id", 2)).thenReturn(
             List.of(new ExternalAgencyDto().setIdentifier("id").setName("name").setDescription("description"))
@@ -129,7 +132,7 @@ public class ExternalReferentialControllerTest extends AbstractRestControllerMoc
     }
 
     @Test
-    public void testListIngestContracts() throws Exception {
+    void testListIngestContracts() throws Exception {
         // Given
         Mockito.when(externalReferentialService.listIngestContracts("system_id", 2)).thenReturn(
             List.of(new ExternalIngestContractDto().setIdentifier("id").setName("name").setDescription("description"))
@@ -154,7 +157,7 @@ public class ExternalReferentialControllerTest extends AbstractRestControllerMoc
     }
 
     @Test
-    public void testListArchiveProfiles() throws Exception {
+    void testListArchiveProfiles() throws Exception {
         // Given
         Mockito.when(externalReferentialService.listArchiveProfiles("system_id", 2)).thenReturn(
             List.of(new ExternalProfileDto().setIdentifier("id").setName("name").setDescription("description"))

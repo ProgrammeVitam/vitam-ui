@@ -80,7 +80,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("unchecked")
-public class ArchiveSearchMgtRulesServiceTest {
+class ArchiveSearchMgtRulesServiceTest {
 
     @MockitoBean(name = "objectMapper")
     private ObjectMapper objectMapper;
@@ -124,7 +124,7 @@ public class ArchiveSearchMgtRulesServiceTest {
     }
 
     @Test
-    public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto()
+    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto()
         throws VitamClientException, IOException, InvalidParseOperationException {
         // Given
 
@@ -160,7 +160,7 @@ public class ArchiveSearchMgtRulesServiceTest {
     }
 
     @Test
-    public void testUpdateArchiveUnitsRulesWithCorrectAccessContractThenReturnSuccess() throws Exception {
+    void testUpdateArchiveUnitsRulesWithCorrectAccessContractThenReturnSuccess() throws Exception {
         // Given
         when(unitCommonService.massUpdateUnitsRules(any(), any())).thenReturn(
             buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE)
@@ -229,7 +229,7 @@ public class ArchiveSearchMgtRulesServiceTest {
     }
 
     @Test
-    public void testUpdateArchiveUnitsRulesWithInCorrectAccessContractThenReturBadRequest() throws Exception {
+    void testUpdateArchiveUnitsRulesWithInCorrectAccessContractThenReturBadRequest() throws Exception {
         // Given
         when(unitCommonService.massUpdateUnitsRules(any(), any())).thenReturn(
             buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE)

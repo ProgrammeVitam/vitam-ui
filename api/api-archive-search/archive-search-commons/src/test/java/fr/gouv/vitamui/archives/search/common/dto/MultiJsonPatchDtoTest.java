@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MultiJsonPatchDtoTest {
 
     @Test
-    public void testJsonPatchSerializationDeserialization() throws JsonProcessingException {
+    void testJsonPatchSerializationDeserialization() throws JsonProcessingException {
         // Création d'un exemple de MultiJsonPatchDto
         ObjectMapper objectMapper = new ObjectMapper();
         JsonPatch jsonPatch = new JsonPatch();
@@ -78,7 +78,7 @@ class MultiJsonPatchDtoTest {
     }
 
     @Test
-    public void testMultiJsonPatchWithAddInstruction() throws JsonProcessingException {
+    void testMultiJsonPatchWithAddInstruction() throws JsonProcessingException {
         // Création d'un exemple de MultiJsonPatchDto avec une instruction ADD
         MultiJsonPatchDto multiJsonPatchDto = new MultiJsonPatchDto();
         JsonPatch jsonPatch = new JsonPatch();

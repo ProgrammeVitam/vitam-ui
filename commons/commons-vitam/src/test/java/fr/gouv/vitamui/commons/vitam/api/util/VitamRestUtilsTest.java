@@ -27,7 +27,7 @@ public class VitamRestUtilsTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(VitamRestUtilsTest.class);
 
     @Test
-    public void testCheckResponseOk() throws IOException {
+    void testCheckResponseOk() throws IOException {
         final JsonNode resposeContent = stringToJsonNode("{\"message\": \"an error occured\"}");
         final RequestResponseOK<JsonNode> vitamResponse = new RequestResponseOK<>(resposeContent);
         vitamResponse.setHttpCode(200);
@@ -45,7 +45,7 @@ public class VitamRestUtilsTest {
     }
 
     @Test
-    public void testCheckResponseNotAccepted() {
+    void testCheckResponseNotAccepted() {
         assertThrows(InternalServerException.class, () -> {
             final JsonNode resposeContent = stringToJsonNode("{\"message\": \"an error occured\"}");
             final RequestResponseOK<JsonNode> vitamResponse = new RequestResponseOK<>(resposeContent);
@@ -55,7 +55,7 @@ public class VitamRestUtilsTest {
     }
 
     @Test
-    public void testCheckJavaxResponseAccepted() throws IOException {
+    void testCheckJavaxResponseAccepted() throws IOException {
         final Response vitamResponse = Response.ok().build();
 
         try {
@@ -68,7 +68,7 @@ public class VitamRestUtilsTest {
     }
 
     @Test
-    public void testCheckResponseNotFound() throws IOException {
+    void testCheckResponseNotFound() throws IOException {
         final String responseMessage = "An error occured.";
         final Response vitamResponse = Response.status(Status.NOT_FOUND).build();
 

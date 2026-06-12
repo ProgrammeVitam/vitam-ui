@@ -60,7 +60,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class VitamFileFormatCommonServiceTest {
+class VitamFileFormatCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -82,7 +82,7 @@ public class VitamFileFormatCommonServiceTest {
     }
 
     @Test
-    public void findFileFormats_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findFileFormats_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
@@ -96,7 +96,7 @@ public class VitamFileFormatCommonServiceTest {
     }
 
     @Test
-    public void findFileFormats_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
+    void findFileFormats_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
 
@@ -110,7 +110,7 @@ public class VitamFileFormatCommonServiceTest {
     }
 
     @Test
-    public void findFileFormats_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findFileFormats_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode select = JsonHandler.createObjectNode();
@@ -125,7 +125,7 @@ public class VitamFileFormatCommonServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_return_ok_when_vitamclient_ok()
+    void findFileFormatById_should_return_ok_when_vitamclient_ok()
         throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
@@ -144,7 +144,7 @@ public class VitamFileFormatCommonServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_throw_BadRequestException_when_vitamclient_400()
+    void findFileFormatById_should_throw_BadRequestException_when_vitamclient_400()
         throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
@@ -163,7 +163,7 @@ public class VitamFileFormatCommonServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findFileFormatById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";

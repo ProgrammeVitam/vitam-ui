@@ -16,13 +16,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests {@link CasJsonWrapper}.
- *
- *
  */
 public final class CasJsonWrapperTest {
 
     @Test
-    public void test() {
+    void test() {
         final ProfileDto profile = new ProfileDto();
         profile.setId("myProfile");
         profile.setTenantIdentifier(100);

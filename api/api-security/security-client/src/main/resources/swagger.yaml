@@ -1,401 +1,401 @@
 openapi: 3.0.1
 info:
-  title: security
-  contact:
-    name: Programme Vitam
-    email: contact@programmevitam.fr
-  version: 9.0.0-SNAPSHOT
+    title: security
+    contact:
+        name: Programme Vitam
+        email: contact@programmevitam.fr
+    version: 10.0.0-SNAPSHOT
 servers:
-- url: http://dev.vitamui.com:8084
-  description: Generated server url
+    -   url: http://dev.vitamui.com:8084
+        description: Generated server url
 security:
-- bearer: []
-  x-tenant-id: []
+    -   bearer: [ ]
+        x-tenant-id: [ ]
 tags:
-- name: Certificates
-  description: Certificates Management
-- name: Contexts
-  description: Contexts Management
+    -   name: Certificates
+        description: Certificates Management
+    -   name: Contexts
+        description: Contexts Management
 paths:
-  /security/v1/contexts/{id}:
-    get:
-      tags:
-      - Contexts
-      summary: Get a context by its id
-      operationId: contexts_getOne
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      - name: criteria
-        in: query
-        required: false
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ContextDto"
-              example: null
-    put:
-      tags:
-      - Contexts
-      summary: Update a context
-      operationId: contexts_update
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ContextDto"
-            example: null
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ContextDto"
-              example: null
-    delete:
-      tags:
-      - Contexts
-      summary: Remove a context
-      operationId: contexts_delete
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-    head:
-      tags:
-      - Contexts
-      summary: "Check the existence of a context, by its id"
-      operationId: contexts_checkExist
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-  /security/v1/contexts/{id}/tenant/{tenantIdentifier}:
-    put:
-      tags:
-      - Contexts
-      summary: Add a tenant to a context
-      operationId: contexts_addTenant
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      - name: tenantIdentifier
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-          example: null
-      responses:
-        "201":
-          description: Created
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ContextDto"
-              example: null
-  /security/v1/certificates/{id}:
-    get:
-      tags:
-      - Certificates
-      summary: Get a certificate by its id
-      operationId: certificates_getOne
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      - name: criteria
-        in: query
-        required: false
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CertificateDto"
-              example: null
-    put:
-      tags:
-      - Certificates
-      summary: Update a certificate
-      operationId: certificates_update
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CertificateDto"
-            example: null
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CertificateDto"
-              example: null
-    delete:
-      tags:
-      - Certificates
-      summary: Remove a certificate
-      operationId: certificates_delete
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-    head:
-      tags:
-      - Certificates
-      summary: Check the existence of a certificate
-      operationId: certificates_checkExist
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-  /security/v1/contexts:
-    get:
-      tags:
-      - Contexts
-      summary: Get all contexts
-      operationId: contexts_getAll
-      parameters:
-      - name: criteria
-        in: query
-        required: false
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: "#/components/schemas/ContextDto"
-              example: null
-    post:
-      tags:
-      - Contexts
-      summary: Create a context
-      operationId: contexts_create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ContextDto"
-            example: null
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ContextDto"
-              example: null
-  /security/v1/contexts/certificate:
-    post:
-      tags:
-      - Contexts
-      summary: Find a context by certificate
-      operationId: contexts_findByCertificate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-              example: null
-            example: null
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ContextDto"
-              example: null
-  /security/v1/certificates:
-    get:
-      tags:
-      - Certificates
-      summary: Get all certificates
-      operationId: certificates_getAll
-      parameters:
-      - name: criteria
-        in: query
-        required: false
-        schema:
-          type: string
-          example: null
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: array
-                example: null
-                items:
-                  $ref: "#/components/schemas/CertificateDto"
-              example: null
-    post:
-      tags:
-      - Certificates
-      summary: Create a certificate
-      operationId: certificates_create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CertificateDto"
-            example: null
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/CertificateDto"
-              example: null
+    /security/v1/contexts/{id}:
+        get:
+            tags:
+                - Contexts
+            summary: Get a context by its id
+            operationId: contexts_getOne
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ContextDto"
+                            example: null
+        put:
+            tags:
+                - Contexts
+            summary: Update a context
+            operationId: contexts_update
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ContextDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ContextDto"
+                            example: null
+        delete:
+            tags:
+                - Contexts
+            summary: Remove a context
+            operationId: contexts_delete
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+        head:
+            tags:
+                - Contexts
+            summary: "Check the existence of a context, by its id"
+            operationId: contexts_checkExist
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+    /security/v1/contexts/{id}/tenant/{tenantIdentifier}:
+        put:
+            tags:
+                - Contexts
+            summary: Add a tenant to a context
+            operationId: contexts_addTenant
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: tenantIdentifier
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+                        format: int32
+                        example: null
+            responses:
+                "201":
+                    description: Created
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ContextDto"
+                            example: null
+    /security/v1/certificates/{id}:
+        get:
+            tags:
+                - Certificates
+            summary: Get a certificate by its id
+            operationId: certificates_getOne
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CertificateDto"
+                            example: null
+        put:
+            tags:
+                - Certificates
+            summary: Update a certificate
+            operationId: certificates_update
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CertificateDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CertificateDto"
+                            example: null
+        delete:
+            tags:
+                - Certificates
+            summary: Remove a certificate
+            operationId: certificates_delete
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+        head:
+            tags:
+                - Certificates
+            summary: Check the existence of a certificate
+            operationId: certificates_checkExist
+            parameters:
+                -   name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+    /security/v1/contexts:
+        get:
+            tags:
+                - Contexts
+            summary: Get all contexts
+            operationId: contexts_getAll
+            parameters:
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/ContextDto"
+                            example: null
+        post:
+            tags:
+                - Contexts
+            summary: Create a context
+            operationId: contexts_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/ContextDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ContextDto"
+                            example: null
+    /security/v1/contexts/certificate:
+        post:
+            tags:
+                - Contexts
+            summary: Find a context by certificate
+            operationId: contexts_findByCertificate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: string
+                            example: null
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ContextDto"
+                            example: null
+    /security/v1/certificates:
+        get:
+            tags:
+                - Certificates
+            summary: Get all certificates
+            operationId: certificates_getAll
+            parameters:
+                -   name: criteria
+                    in: query
+                    required: false
+                    schema:
+                        type: string
+                        example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/CertificateDto"
+                            example: null
+        post:
+            tags:
+                - Certificates
+            summary: Create a certificate
+            operationId: certificates_create
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/CertificateDto"
+                        example: null
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/CertificateDto"
+                            example: null
 components:
-  schemas:
-    ContextDto:
-      required:
-      - name
-      - roleNames
-      - tenants
-      type: object
-      properties:
-        id:
-          type: string
-          example: null
-        fullAccess:
-          type: boolean
-          example: null
-        name:
-          type: string
-          example: null
-        tenants:
-          maxItems: 2147483647
-          minItems: 1
-          type: array
-          example: null
-          items:
-            type: integer
-            format: int32
+    schemas:
+        ContextDto:
+            required:
+                - name
+                - roleNames
+                - tenants
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                fullAccess:
+                    type: boolean
+                    example: null
+                name:
+                    type: string
+                    example: null
+                tenants:
+                    maxItems: 2147483647
+                    minItems: 1
+                    type: array
+                    example: null
+                    items:
+                        type: integer
+                        format: int32
+                        example: null
+                roleNames:
+                    maxItems: 2147483647
+                    minItems: 1
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
             example: null
-        roleNames:
-          maxItems: 2147483647
-          minItems: 1
-          type: array
-          example: null
-          items:
-            type: string
+        CertificateDto:
+            required:
+                - contextId
+                - data
+                - issuerDN
+                - serialNumber
+                - subjectDN
+            type: object
+            properties:
+                id:
+                    type: string
+                    example: null
+                subjectDN:
+                    maxLength: 100
+                    minLength: 2
+                    type: string
+                    example: null
+                contextId:
+                    type: string
+                    example: null
+                serialNumber:
+                    type: string
+                    example: null
+                issuerDN:
+                    type: string
+                    example: null
+                data:
+                    type: string
+                    example: null
             example: null
-      example: null
-    CertificateDto:
-      required:
-      - contextId
-      - data
-      - issuerDN
-      - serialNumber
-      - subjectDN
-      type: object
-      properties:
-        id:
-          type: string
-          example: null
-        subjectDN:
-          maxLength: 100
-          minLength: 2
-          type: string
-          example: null
-        contextId:
-          type: string
-          example: null
-        serialNumber:
-          type: string
-          example: null
-        issuerDN:
-          type: string
-          example: null
-        data:
-          type: string
-          example: null
-      example: null
-  securitySchemes:
-    bearer:
-      type: http
-      description: Bearer token
-      scheme: bearer
-    x-tenant-id:
-      type: apiKey
-      description: Tenant ID
-      name: X-Tenant-Id
-      in: header
+    securitySchemes:
+        bearer:
+            type: http
+            description: Bearer token
+            scheme: bearer
+        x-tenant-id:
+            type: apiKey
+            description: Tenant ID
+            name: X-Tenant-Id
+            in: header

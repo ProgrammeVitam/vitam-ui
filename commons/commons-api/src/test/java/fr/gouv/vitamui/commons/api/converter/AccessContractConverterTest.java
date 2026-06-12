@@ -27,7 +27,7 @@ public class AccessContractConverterTest {
     }
 
     @Test
-    public void convertVitamToDto_with_deprecated() {
+    void convertVitamToDto_with_deprecated() {
         AccessContractModel accessContractModel = (AccessContractModel) new AccessContractModel()
             .setDataObjectVersion(Set.of("DataObjectVersion"))
             .setOriginatingAgencies(Set.of("OriginatingAgencies"))
@@ -84,7 +84,7 @@ public class AccessContractConverterTest {
     }
 
     @Test
-    public void convertVitamToDto() {
+    void convertVitamToDto() {
         AccessContractModel accessContractModel = (AccessContractModel) new AccessContractModel()
             .setDataObjectVersion(Set.of("DataObjectVersion"))
             .setOriginatingAgencies(Set.of("OriginatingAgencies"))
@@ -141,7 +141,7 @@ public class AccessContractConverterTest {
     }
 
     @Test
-    public void convertDtoToVitam() {
+    void convertDtoToVitam() {
         AccessContractDto accessContractDto = new AccessContractDto()
             .setDataObjectVersion(Set.of("DataObjectVersion"))
             .setOriginatingAgencies(Set.of("OriginatingAgencies"))

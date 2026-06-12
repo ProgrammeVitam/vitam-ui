@@ -37,11 +37,9 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link OwnerService}.
- *
- *
  */
 
-public class OwnerServiceTest {
+class OwnerServiceTest {
 
     private AutoCloseable mocks;
 
@@ -100,7 +98,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testCreateOK() {
+    void testCreateOK() {
         prepareServices();
 
         final OwnerDto dto = buildOwnerDto();
@@ -110,7 +108,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testCreatedFailsAsIdIsProvided() {
+    void testCreatedFailsAsIdIsProvided() {
         prepareServices();
 
         final OwnerDto dto = buildOwnerDto();
@@ -122,7 +120,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsCustomerDoesNotExist() {
+    void testCreateFailsAsCustomerDoesNotExist() {
         prepareServices();
         when(customerRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -139,7 +137,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsSetReadonlyIsTrue() {
+    void testCreateFailsAsSetReadonlyIsTrue() {
         prepareServices();
 
         final OwnerDto dto = buildOwnerDto();
@@ -154,7 +152,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsCodeAlreadyExists() {
+    void testCreateFailsAsCodeAlreadyExists() {
         final Owner owner = buildOwner();
         owner.setId("AnotherId");
 
@@ -179,7 +177,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateOK() {
+    void testUpdateOK() {
         prepareServices();
 
         final OwnerDto dto = buildOwnerDto();
@@ -188,7 +186,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateWithCodeOK() {
+    void testUpdateWithCodeOK() {
         prepareServices();
         when(ownerRepository.findByCode(any())).thenReturn(Optional.of(buildOwner()));
 
@@ -198,7 +196,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsOwnerIsDoesNotExist() {
+    void testUpdateFailsAsOwnerIsDoesNotExist() {
         prepareServices();
         when(ownerRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -211,7 +209,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() {
+    void testUpdateFailsAsCustomerDoesNotExist() {
         prepareServices();
         when(customerRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -228,7 +226,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsSetReadonlyIsTrue() {
+    void testUpdateFailsAsSetReadonlyIsTrue() {
         prepareServices();
 
         final OwnerDto dto = buildOwnerDto();
@@ -242,7 +240,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsIsReadonlyIsTrue() {
+    void testUpdateFailsAsIsReadonlyIsTrue() {
         final Owner owner = buildOwner();
         owner.setReadonly(true);
 
@@ -259,7 +257,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsCodeAlreadyExists() {
+    void testUpdateFailsAsCodeAlreadyExists() {
         final Owner owner = buildOwner();
         owner.setId("AnotherId");
 
@@ -279,7 +277,7 @@ public class OwnerServiceTest {
     }
 
     @Test
-    public void testProcessPatch() {
+    void testProcessPatch() {
         prepareServices();
 
         final Owner owner = buildOwner();

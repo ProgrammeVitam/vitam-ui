@@ -66,7 +66,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class IngestServiceTest {
+class IngestServiceTest {
 
     @Mock
     private IngestExternalParametersService ingestExternalParametersService;
@@ -98,8 +98,7 @@ public class IngestServiceTest {
      * Test for <a href="https://assistance.programmevitam.fr/plugins/tracker/?aid=13172">#13172 bug</a>
      */
     @Test
-    public void getAllPaginatedWhenEmptyOriginatingAgenciesAndEveryOriginatingAgencyIsFalse()
-        throws VitamClientException {
+    void getAllPaginatedWhenEmptyOriginatingAgenciesAndEveryOriginatingAgencyIsFalse() throws VitamClientException {
         final VitamContext vitamContext = new VitamContext(1);
         final String accessContract = "AccessContract42";
         final String criteria = "{\"evTypeProc\":\"INGEST\"}";

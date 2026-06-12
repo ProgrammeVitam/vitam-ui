@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OwnerConverterTest {
+class OwnerConverterTest {
 
     private final OwnerConverter ownerConverter = new OwnerConverter(new AddressConverter());
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         Owner owner = new Owner();
         owner.setAddress(new Address());
         owner.setCode("12345687");
@@ -35,7 +35,7 @@ public class OwnerConverterTest {
     }
 
     @Test
-    public void testConvertDtoToEntity() {
+    void testConvertDtoToEntity() {
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setAddress(new AddressDto());
         ownerDto.setCode("code");
@@ -50,7 +50,7 @@ public class OwnerConverterTest {
     }
 
     @Test
-    public void testConvertDtoToLogbook() throws InvalidParseOperationException {
+    void testConvertDtoToLogbook() throws InvalidParseOperationException {
         OwnerDto ownerDto = new OwnerDto();
         ownerDto.setAddress(new AddressDto());
         ownerDto.setCode("code");

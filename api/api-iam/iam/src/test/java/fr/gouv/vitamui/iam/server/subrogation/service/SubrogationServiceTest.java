@@ -106,7 +106,7 @@ public final class SubrogationServiceTest {
     }
 
     @Test
-    public void testCreateSubrogation() {
+    void testCreateSubrogation() {
         final Customer customer = buildCustomer();
         final User user1 = new User();
         final User user2 = new User();
@@ -144,7 +144,7 @@ public final class SubrogationServiceTest {
      * Test that an user cannot create a subrogation for another user.
      */
     @Test
-    public void testCreateSubrogationForAnotherUser() {
+    void testCreateSubrogationForAnotherUser() {
         assertThrows(IllegalArgumentException.class, () -> {
             final Customer customer = buildCustomer();
             final User user1 = new User();
@@ -176,7 +176,7 @@ public final class SubrogationServiceTest {
     }
 
     @Test
-    public void testAccept() {
+    void testAccept() {
         final String idSubro = "ID";
         final Subrogation subro = buildSubrogation();
         Mockito.when(subrogationRepository.findById(idSubro)).thenReturn(Optional.of(subro));
@@ -191,7 +191,7 @@ public final class SubrogationServiceTest {
     }
 
     @Test
-    public void testAcceptBadUser() {
+    void testAcceptBadUser() {
         assertThrows(IllegalArgumentException.class, () -> {
             final Subrogation subro = buildSubrogation();
             Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
@@ -211,7 +211,7 @@ public final class SubrogationServiceTest {
     }
 
     @Test
-    public void testDecline() {
+    void testDecline() {
         final Subrogation subro = buildSubrogation();
         Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));
         Mockito.when(securityService.getUser()).thenReturn(
@@ -221,7 +221,7 @@ public final class SubrogationServiceTest {
     }
 
     @Test
-    public void testDeclineBadUser() {
+    void testDeclineBadUser() {
         assertThrows(IllegalArgumentException.class, () -> {
             final Subrogation subro = buildSubrogation();
             Mockito.when(subrogationRepository.findById(SUBROGATION_ID)).thenReturn(Optional.of(subro));

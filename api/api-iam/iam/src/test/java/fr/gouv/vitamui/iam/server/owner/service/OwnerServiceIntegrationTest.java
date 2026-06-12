@@ -107,7 +107,7 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testCreateOwner() {
+    void testCreateOwner() {
         final OwnerDto owner = createOwner();
         assertThat(owner.getCode()).isNotBlank();
 
@@ -141,7 +141,7 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testPatch() {
+    void testPatch() {
         final OwnerDto owner = createOwner();
 
         final Map<String, Object> partialDto = new HashMap<>();
@@ -189,7 +189,7 @@ public class OwnerServiceIntegrationTest extends AbstractLogbookIntegrationTest 
     }
 
     @Test
-    public void testFindOwnerHistory() throws VitamClientException {
+    void testFindOwnerHistory() throws VitamClientException {
         final OwnerDto ownerCreated = createOwner();
         final Owner owner = new Owner();
         VitamUIUtils.copyProperties(ownerCreated, owner);

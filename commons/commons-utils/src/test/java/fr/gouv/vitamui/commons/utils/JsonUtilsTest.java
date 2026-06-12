@@ -9,7 +9,7 @@ import java.io.IOException;
 public class JsonUtilsTest {
 
     @Test
-    public void readTreeTest() throws IOException {
+    void readTreeTest() throws IOException {
         JsonNode json = JsonUtils.readTree("{}");
         Assertions.assertNotNull(json);
     }

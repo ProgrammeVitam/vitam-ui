@@ -128,7 +128,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
+                    <artifactId>spring-boot-starter-webmvc</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.apache.components</groupId>
@@ -145,6 +145,42 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-restclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-restclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-webclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-webclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-jackson</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-http-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-http-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-reactor</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-http-codec</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -534,6 +570,16 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Project Reactor -->
@@ -562,8 +608,8 @@
             <artifactId>micrometer-tracing-bridge-otel</artifactId>
         </dependency>
         <dependency>
-          <groupId>io.opentelemetry</groupId>
-          <artifactId>opentelemetry-exporter-otlp</artifactId>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
         </dependency>
 
         <!-- Logging -->
@@ -710,7 +756,8 @@
                             <prettier>
                                 <devDependencies>
                                     <prettier>${spotless-maven-plugin.prettier.version}</prettier>
-                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}</prettier-plugin-java>
+                                    <prettier-plugin-java>${spotless-maven-plugin.prettier-plugin-java.version}
+                                    </prettier-plugin-java>
                                 </devDependencies>
                                 <config>
                                     <printWidth>120</printWidth>
@@ -762,7 +809,9 @@
                     <recompressZippedFiles>false</recompressZippedFiles>
                     <archive>
                         <compress>false</compress>
-                        <manifestFile>${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp-tomcat/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestFile>
+                            ${project.build.directory}/war/work/org.apereo.cas/cas-server-webapp-tomcat/META-INF/MANIFEST.MF
+                        </manifestFile>
                     </archive>
                     <overlays>
                         <overlay>
@@ -847,7 +896,9 @@
                         </exclude>
                     </excludes>
                     <arguments>
-                        <argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
+                        <argument>
+                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
+                        </argument>
                     </arguments>
                 </configuration>
                 <executions>

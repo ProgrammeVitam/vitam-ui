@@ -34,7 +34,7 @@ public class SubrogationRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         Subrogation subro = new Subrogation();
         subro.setDate(new Date());
         subro.setStatus(SubrogationStatusEnum.CREATED);

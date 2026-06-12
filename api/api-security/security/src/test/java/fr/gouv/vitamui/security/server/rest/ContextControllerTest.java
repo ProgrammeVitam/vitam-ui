@@ -57,7 +57,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     }
 
     @Test
-    public void testCreationFailsAsTheRoleIsNull() throws PreconditionFailedException {
+    void testCreationFailsAsTheRoleIsNull() throws PreconditionFailedException {
         final ContextDto dto = buildDto();
         dto.setRoleNames(Collections.singletonList(null));
 
@@ -65,7 +65,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     }
 
     @Test
-    public void testUpdateFailsAsTheRoleIsNull() throws PreconditionFailedException {
+    void testUpdateFailsAsTheRoleIsNull() throws PreconditionFailedException {
         final ContextDto dto = buildDto();
         dto.setRoleNames(Collections.singletonList(null));
         dto.setId(ID);
@@ -74,7 +74,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     }
 
     @Test
-    public void testCreationFailsAsTheRolesAreNotAllowed() {
+    void testCreationFailsAsTheRolesAreNotAllowed() {
         try {
             final ContextDto dto = buildDto();
             final Map<String, String[]> map = new HashMap<>();
@@ -89,7 +89,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     }
 
     @Test
-    public void testUpdateFailsAsTheRolesAreNotAllowed() {
+    void testUpdateFailsAsTheRolesAreNotAllowed() {
         try {
             final ContextDto dto = buildDto();
             dto.setRoleNames(List.of("badRole"));

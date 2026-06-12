@@ -4,10 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- *
  * Class.
- *
- *
  */
 public class CriterionTest {
 
@@ -19,7 +16,7 @@ public class CriterionTest {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         criteria = new Criterion("latsName", "nole", CriterionOperator.EQUALS);
     }
 }

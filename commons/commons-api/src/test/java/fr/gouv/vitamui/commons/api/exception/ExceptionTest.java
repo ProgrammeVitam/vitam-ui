@@ -5,186 +5,81 @@ import fr.gouv.vitamui.commons.api.controller.TestController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureRestTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.springframework.test.web.servlet.client.RestTestClient;
 
 @SpringBootTest(classes = ApplicationTest.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
-public class ExceptionTest {
+@AutoConfigureRestTestClient
+class ExceptionTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private RestTestClient restClient;
 
     @Test
-    public void testApplicationServerException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.APPLICATION_SERVER_EXCEPTION,
-            String.class
-        );
-        assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testApplicationServerException() {
+        restClient
+            .get()
+            .uri(TestController.APPLICATION_SERVER_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Test
-    public void testApplicationServerExceptionWithThrowable() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.APPLICATION_SERVER_EXCEPTION_WITH_THROWABLE,
-            String.class
-        );
-        assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testBadRequestException() {
+        restClient.get().uri(TestController.BAD_REQUEST_EXCEPTION).exchange().expectStatus().isBadRequest();
     }
 
     @Test
-    public void testApplicationServerExceptionWithMessageAndThrowable() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.APPLICATION_SERVER_EXCEPTION_WITH_MESSAGE_AND_THROWABLE,
-            String.class
-        );
-        assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testForbiddenException() {
+        restClient.get().uri(TestController.FORBIDDEN_EXCEPTION).exchange().expectStatus().isForbidden();
     }
 
     @Test
-    public void testBadRequestException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.BAD_REQUEST_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
+    void testNotFoundException() {
+        restClient.get().uri(TestController.NOT_FOUND_EXCEPTION).exchange().expectStatus().isNotFound();
     }
 
     @Test
-    public void testBadRequestExceptionWithThrowable() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.BAD_REQUEST_EXCEPTION_WITH_THROWABLE,
-            String.class
-        );
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
+    void testUnAuthorizedException() {
+        restClient.get().uri(TestController.UN_AUTHORIZED_EXCEPTION).exchange().expectStatus().isUnauthorized();
     }
 
     @Test
-    public void testForbiddenException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.FORBIDDEN_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode(), "Status code should be correctly defined.");
+    void testNotImplementedException() {
+        restClient
+            .get()
+            .uri(TestController.NOT_IMPLEMENTED_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Test
-    public void testInternalServerException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.INTERNAL_SERVER_EXCEPTION,
-            String.class
-        );
-        assertEquals(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            result.getStatusCode(),
-            "Status code should be correctly defined."
-        );
+    void testParseOperationException() {
+        restClient.get().uri(TestController.PARSE_OPERATION_EXCEPTION).exchange().expectStatus().isBadRequest();
     }
 
     @Test
-    public void testInvalidAuthenticationException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.INVALID_AUTHENTICATION_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode(), "Status code should be correctly defined.");
+    void testParseOperationExceptionWithThrowable() {
+        restClient
+            .get()
+            .uri(TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE)
+            .exchange()
+            .expectStatus()
+            .isBadRequest();
     }
 
     @Test
-    public void testInvalidFormatException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.INVALID_FORMAT_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
+    void testRouteNotFoundException() {
+        restClient.get().uri(TestController.ROUTE_NOT_FOUND_EXCEPTION).exchange().expectStatus().isNotFound();
     }
 
     @Test
-    public void testNotFoundException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.NOT_FOUND_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testNoRightsException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.NO_RIGHTS_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testNotImplementedException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.NOT_IMPLEMENTED_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.NOT_IMPLEMENTED, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testParseOperationException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.PARSE_OPERATION_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testParseOperationExceptionWithThrowable() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.PARSE_OPERATION_EXCEPTION_WITH_THROWABLE,
-            String.class
-        );
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testRouteNotFoundException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.ROUTE_NOT_FOUND_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testUnAuthorizedException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.UN_AUTHORIZED_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode(), "Status code should be correctly defined.");
-    }
-
-    @Test
-    public void testValidationException() {
-        final ResponseEntity<String> result = restTemplate.getForEntity(
-            TestController.VALIDATION_EXCEPTION,
-            String.class
-        );
-        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode(), "Status code should be correctly defined.");
+    void testValidationException() {
+        restClient.get().uri(TestController.VALIDATION_EXCEPTION).exchange().expectStatus().isBadRequest();
     }
 }

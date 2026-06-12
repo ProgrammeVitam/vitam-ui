@@ -50,7 +50,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyCollection;
@@ -59,7 +61,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
-public class CustomerServiceTest {
+class CustomerServiceTest {
 
     @Mock
     private InitCustomerService initCustomerService;
@@ -143,7 +145,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testGetPaginatedValues() {
+    void testGetPaginatedValues() {
         final CustomerDto customer = buildDto();
 
         final Customer customerCreated = new Customer();
@@ -173,7 +175,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckExistByCode() {
+    void testCheckExistByCode() {
         final CustomerDto customer = buildDto();
 
         final Customer customerCreated = new Customer();
@@ -190,7 +192,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckNotExistByCode() {
+    void testCheckNotExistByCode() {
         when(customerRepository.exists(any(Query.class))).thenReturn(false);
 
         final boolean result = customerService.checkExist(null);
@@ -198,7 +200,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckExistByDomain() {
+    void testCheckExistByDomain() {
         final CustomerDto customer = buildDto();
 
         final Customer customerCreated = new Customer();
@@ -215,7 +217,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckNotExistByDomain() {
+    void testCheckNotExistByDomain() {
         when(customerRepository.findByEmailDomainsContainsIgnoreCase(any())).thenReturn(null);
 
         final boolean result = customerService.checkExist(null);
@@ -223,14 +225,14 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCreateDefaultIdp() {
+    void testCreateDefaultIdp() {
         List<String> emailsDomain = Arrays.asList("@vitamui.com", "vitamui.fr");
         emailsDomain = emailsDomain.stream().map(s -> ".*" + s).collect(Collectors.toList());
         assertThat(emailsDomain).isEqualTo(Arrays.asList(".*@vitamui.com", ".*vitamui.fr"));
     }
 
     @Test
-    public void testUpdateCustomerCode() {
+    void testUpdateCustomerCode() {
         final CustomerDto customer = buildDto();
 
         final Customer customerCreated = new Customer();
@@ -275,7 +277,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void should_patch_customer_address_and_name_when_changes_occured() {
+    void should_patch_customer_address_and_name_when_changes_occured() {
         // Given
         final Customer customer = new Customer();
         final Customer anotherCustomer = IamServerUtilsTest.buildCustomer(
@@ -304,13 +306,13 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckCodeNoConflict() {
+    void testCheckCodeNoConflict() {
         when(customerRepository.findByCode("0123456")).thenReturn(Optional.empty());
         customerService.checkCode(Optional.empty(), "0123456");
     }
 
     @Test
-    public void testCheckCodeExistingCustomerOk() {
+    void testCheckCodeExistingCustomerOk() {
         final Customer customer = IamServerUtilsTest.buildCustomer(
             "id",
             "name",
@@ -323,7 +325,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckCodeExistingCustomerKO() {
+    void testCheckCodeExistingCustomerKO() {
         assertThrows(IllegalArgumentException.class, () -> {
             final Customer customer = IamServerUtilsTest.buildCustomer(
                 "id",
@@ -362,7 +364,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCheckNotExistByDomainMail() {
+    void testCheckNotExistByDomainMail() {
         when(customerRepository.findByIdAndEmailDomainsIgnoreCase(anyString(), any())).thenReturn(null);
 
         final boolean result = customerService.checkExist(null);
@@ -370,7 +372,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsDuplicatePatterns() {
+    void testCreateFailsAsDuplicatePatterns() {
         final CustomerDto customerDto = new CustomerDto();
         customerDto.setName("name");
         customerDto.setCode("0123456");

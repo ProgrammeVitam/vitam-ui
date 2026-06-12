@@ -7,17 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Tests the {@link BaseStatusController}.
  */
-public final class BaseStatusControllerTest {
+final class BaseStatusControllerTest {
 
     private final MockStatusController controller = new MockStatusController();
 
     @Test
-    public void testStatus() {
+    void testStatus() {
         assertEquals("OK", controller.status());
     }
 
     @Test
-    public void testAutoTest() {
+    void testAutoTest() {
         assertEquals("Test : OK", controller.autotest());
     }
 }

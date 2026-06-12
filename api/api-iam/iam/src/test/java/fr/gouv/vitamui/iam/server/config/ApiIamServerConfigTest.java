@@ -28,12 +28,12 @@ public class ApiIamServerConfigTest extends AbstractMongoTests {
     private PasswordConfiguration passwordConfiguration;
 
     @Test
-    public void testContext() {
+    void testContext() {
         assertThat(logbookService).isNotNull();
     }
 
     @Test
-    public void testPasswordConfiguration() {
+    void testPasswordConfiguration() {
         assertThat(passwordConfiguration).isNotNull();
         assertThat(passwordConfiguration.getMaxOldPassword()).isEqualTo(Integer.valueOf(12));
     }

@@ -27,7 +27,7 @@ public class OwnerRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSave() {
+    void testSave() {
         final Owner o = repository.save(IamServerUtilsTest.builOwner("id"));
         assertThat(o.getId()).isEqualTo("id");
     }

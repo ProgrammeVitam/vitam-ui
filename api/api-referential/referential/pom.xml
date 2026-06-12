@@ -60,12 +60,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
         </dependency>
+        <!--for building a reactive web server        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-webflux</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -255,12 +260,12 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                    <configuration>
-                        <to>
-                            <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/referential</image>
-                            <tags>${project.version}</tags>
-                        </to>
-                    </configuration>
+                <configuration>
+                    <to>
+                        <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/referential</image>
+                        <tags>${project.version}</tags>
+                    </to>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -288,6 +293,15 @@
                     <arguments>
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <vitam.config.folder>src/test/resources</vitam.config.folder>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
         </plugins>

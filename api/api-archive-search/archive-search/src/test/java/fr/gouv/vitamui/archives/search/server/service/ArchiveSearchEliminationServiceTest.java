@@ -54,7 +54,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(SpringExtension.class)
-public class ArchiveSearchEliminationServiceTest {
+class ArchiveSearchEliminationServiceTest {
 
     @MockitoBean(name = "eliminationService")
     private EliminationService eliminationService;
@@ -90,7 +90,7 @@ public class ArchiveSearchEliminationServiceTest {
     }
 
     @Test
-    public void getFinalEliminationConstructedQuery() throws Exception {
+    void getFinalEliminationConstructedQuery() throws Exception {
         JsonNode fromString = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY));
         EliminationRequestBody eliminationRequestBody2 = archiveSearchEliminationService.getEliminationRequestBody(
             fromString,

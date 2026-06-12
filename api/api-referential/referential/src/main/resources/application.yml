@@ -8,11 +8,9 @@ spring:
     name: API Referential
     description: This API is used to manage Vitam's referentiel
     version: v1
-  # This property is deprecated and will be removed in future Spring Boot versions
-      # enabled : false
-  jackson:
-    serialization:
-      write-dates-as-timestamps: false
+    # This property is deprecated and will be removed in future Spring Boot versions
+    # enabled : false
+
   jmx:
     unique-names: true
 
@@ -28,8 +26,8 @@ management:
       enabled: true
 
 swagger:
- layer: api-external
- file-path: file:../../../tools/swagger/docs/api-external/referential/swagger.json
+  layer: api-external
+  file-path: file:../../../tools/swagger/docs/api-external/referential/swagger.json
 
 # internal ontology file path
 internal_ontology_file_path: "src/main/resources/internal-ontology/internal_ontology_fields.json"

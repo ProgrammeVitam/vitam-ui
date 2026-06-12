@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link UserRepository}
- *
  */
 
 @SpringBootTest
@@ -33,7 +32,7 @@ public class ApplicationRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testSaveApplication() {
+    void testSaveApplication() {
         final Application app = repository.save(IamServerUtilsTest.buildApplication("identifier", "url"));
         assertThat(app.getIdentifier()).isEqualTo("identifier");
     }

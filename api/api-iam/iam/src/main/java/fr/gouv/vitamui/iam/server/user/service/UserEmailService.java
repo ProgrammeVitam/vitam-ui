@@ -41,7 +41,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
@@ -79,10 +79,10 @@ public class UserEmailService {
     @Autowired
     private IdentityProviderService internalIdentityProviderService;
 
-    private final RestClientFactory restClientFactory;
+    private final VitamuiRestClientFactory vitamuiRestClientFactory;
 
-    public UserEmailService(final RestClientFactory restClientFactory) {
-        this.restClientFactory = restClientFactory;
+    public UserEmailService(final VitamuiRestClientFactory vitamuiRestClientFactory) {
+        this.vitamuiRestClientFactory = vitamuiRestClientFactory;
     }
 
     public void sendCreationEmail(final UserDto userDto) {
@@ -104,17 +104,19 @@ public class UserEmailService {
             ) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
-                restClientFactory
-                    .getRestTemplate()
-                    .getForEntity(
-                        restClientFactory.getBaseUrl() + casResetPasswordUrl,
-                        Boolean.class,
+                vitamuiRestClientFactory
+                    .getRestClient()
+                    .get()
+                    .uri(
+                        vitamuiRestClientFactory.getBaseUrl() + casResetPasswordUrl,
                         userDto.getEmail(),
                         userDto.getFirstname(),
                         userDto.getLastname(),
                         LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(),
                         userDto.getCustomerId()
-                    );
+                    )
+                    .retrieve()
+                    .body(Boolean.class);
             }
         }
     }

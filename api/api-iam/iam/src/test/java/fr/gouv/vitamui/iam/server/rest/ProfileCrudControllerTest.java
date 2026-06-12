@@ -151,7 +151,7 @@ public final class ProfileCrudControllerTest extends AbstractMongoTests implemen
     }
 
     @Test
-    public void testCreationFailsAsCustomerDoesNotExist() throws Exception {
+    void testCreationFailsAsCustomerDoesNotExist() throws Exception {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
         dto.setCustomerId("Bad Customer Id");
@@ -169,8 +169,7 @@ public final class ProfileCrudControllerTest extends AbstractMongoTests implemen
     }
 
     @Test
-    public void testCreationFailsAsTheTenantDoesNotExist()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsTheTenantDoesNotExist() throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
 
@@ -189,8 +188,7 @@ public final class ProfileCrudControllerTest extends AbstractMongoTests implemen
     }
 
     @Test
-    public void testCreationFailsAsTheRoleDoesNotExist()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsTheRoleDoesNotExist() throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
         dto.setRoles(null);
@@ -206,8 +204,7 @@ public final class ProfileCrudControllerTest extends AbstractMongoTests implemen
     }
 
     @Test
-    public void testCreationFailsAsTheRolesAreNotAllowed()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsTheRolesAreNotAllowed() throws InvalidParseOperationException, PreconditionFailedException {
         final Role role = new Role("Bad Role");
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
@@ -227,8 +224,7 @@ public final class ProfileCrudControllerTest extends AbstractMongoTests implemen
     }
 
     @Test
-    public void testCreationFailsAsTheNameAlreadyExists()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsTheNameAlreadyExists() throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
 
@@ -264,13 +260,13 @@ public final class ProfileCrudControllerTest extends AbstractMongoTests implemen
     }
 
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() {
+    void testUpdateFailsAsCustomerDoesNotExist() {
         final ProfileDto dto = buildProfileDto();
         Assertions.assertThrows(UnsupportedOperationException.class, () -> controller.update("Bad Id", dto));
     }
 
     @Test
-    public void testCannotDelete() throws PreconditionFailedException {
+    void testCannotDelete() throws PreconditionFailedException {
         prepareServices();
         Assertions.assertThrows(UnsupportedOperationException.class, () -> controller.delete(PROFILE_ID));
     }

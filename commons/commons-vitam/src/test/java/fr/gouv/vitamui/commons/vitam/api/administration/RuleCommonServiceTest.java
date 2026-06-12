@@ -45,7 +45,7 @@ public class RuleCommonServiceTest {
     }
 
     @Test
-    public void testfindRulesDurationByRuleId()
+    void testfindRulesDurationByRuleId()
         throws VitamClientException, JsonProcessingException, InvalidCreateOperationException {
         // Prepare
         final var fileRule = buildFileRuleModel(RuleMeasurementEnum.YEAR);
@@ -64,7 +64,7 @@ public class RuleCommonServiceTest {
     }
 
     @Test
-    public void testfindRulesDurationByRuleId_with_rule_duration_in_months()
+    void testfindRulesDurationByRuleId_with_rule_duration_in_months()
         throws VitamClientException, JsonProcessingException, InvalidCreateOperationException {
         // Prepare
         final var fileRule = buildFileRuleModel(RuleMeasurementEnum.MONTH);

@@ -22,10 +22,10 @@ import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MongoUtilsTest {
+class MongoUtilsTest {
 
     @Test
-    public void testAddCriteria() {
+    void testAddCriteria() {
         final List<CriteriaDefinition> criteria = new ArrayList<>();
         MongoUtils.addCriteria(Optional.of("val"), "key", criteria);
         assertThat(criteria.size()).isEqualTo(1);
@@ -33,7 +33,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void testAddCriteriaGreaterThan() {
+    void testAddCriteriaGreaterThan() {
         final List<CriteriaDefinition> criteria = new ArrayList<>();
         MongoUtils.addCriteriaGreaterThan(Optional.of("val"), "key", criteria);
         assertThat(criteria.size()).isEqualTo(1);
@@ -41,7 +41,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void testAddCriteriaIgnoreCase() {
+    void testAddCriteriaIgnoreCase() {
         final List<CriteriaDefinition> criteria = new ArrayList<>();
         MongoUtils.addCriteriaIgnoreCase("key", Optional.of("val"), criteria);
         assertThat(criteria.size()).isEqualTo(1);
@@ -51,7 +51,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void testGetCriteriaDefinitionFromEntityClass() {
+    void testGetCriteriaDefinitionFromEntityClass() {
         Criterion c = new Criterion("firstName", "alex", CriterionOperator.EQUALS);
         CriteriaDefinition criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(c, Person.class);
         assertThat(criteria.getKey()).isEqualTo("firstName");
@@ -78,7 +78,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void testGetReturnTypeFieldSearch() {
+    void testGetReturnTypeFieldSearch() {
         Type type = MongoUtils.getTypeOfField(Person.class, "address.street");
         assertThat(ReflectionUtils.castTypeToClass(type)).isEqualTo(String.class);
 
@@ -90,7 +90,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void testGetReturnTypeFielFieldUnknow() {
+    void testGetReturnTypeFielFieldUnknow() {
         Assertions.assertThrows(
             IllegalArgumentException.class,
             () -> MongoUtils.getTypeOfField(Person.class, "unknowfield")
@@ -98,7 +98,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void getCriteria_when_valueContainsSpecialChar_andUseEqualsOp_then_return_regexpCriteria() {
+    void getCriteria_when_valueContainsSpecialChar_andUseEqualsOp_then_return_regexpCriteria() {
         String key = "test";
         String val = "toto.*toto";
         Criteria crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
@@ -122,7 +122,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void getCriteria_when_valueContainsSpecialChar_and_useEqualsIgnoreCaseOp_then_return_regexpCriteria() {
+    void getCriteria_when_valueContainsSpecialChar_and_useEqualsIgnoreCaseOp_then_return_regexpCriteria() {
         String key = "test";
         String val = "toto.*toto";
         Criteria crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALSIGNORECASE);
@@ -154,7 +154,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void getCriteria_when_valueNotContainsSpecialChar_then_return_eqCriteria() {
+    void getCriteria_when_valueNotContainsSpecialChar_then_return_eqCriteria() {
         String key = "test";
         String val = "totototo";
         Criteria crit = MongoUtils.getCriteria(key, val, CriterionOperator.EQUALS);
@@ -162,7 +162,7 @@ public class MongoUtilsTest {
     }
 
     @Test
-    public void getCriteria_with_elemMatch() {
+    void getCriteria_with_elemMatch() {
         QueryDto queryDto = QueryDto.criteria("country", "France", CriterionOperator.EQUALS);
         Criterion criterion = new Criterion("addressList", queryDto, CriterionOperator.ELEMMATCH);
         Criteria criteria = MongoUtils.getCriteriaDefinitionFromEntityClass(criterion, Person.class);

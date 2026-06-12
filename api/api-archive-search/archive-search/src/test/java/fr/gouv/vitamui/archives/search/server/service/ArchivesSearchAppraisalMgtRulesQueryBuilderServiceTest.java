@@ -95,7 +95,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         "appraisal/expected-search-query-with-appraisal-inheritance-and-prevent-rule-identifier.txt";
 
     @Test
-    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -106,7 +106,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -139,7 +139,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaIntervalDate()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaIntervalDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -165,7 +165,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaRuleCode()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaRuleCode()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -189,7 +189,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedRules()
+    void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -222,7 +222,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedOrScopedRules()
+    void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedOrScopedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -306,7 +306,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasNoRule()
+    void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasNoRule()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -348,7 +348,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasFinalActionElimination()
+    void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasFinalActionElimination()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -390,7 +390,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasFinalActionKeep()
+    void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasFinalActionKeep()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -423,7 +423,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery()
+    void testfillQueryFromAppraisalCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery()
         throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -451,7 +451,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
+    void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -477,8 +477,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery()
-        throws Exception {
+    void testfillQueryFromAppraisalCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
@@ -504,8 +503,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery()
-        throws Exception {
+    void testfillQueryFromAppraisalCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
@@ -531,7 +529,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromAppraisalCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery()
+    void testfillQueryFromAppraisalCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery()
         throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -639,8 +637,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListStorageRulesWithInheritedParameterThenReturnTheExactQuery()
-        throws Exception {
+    void testFillQueryFromCriteriaListStorageRulesWithInheritedParameterThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();

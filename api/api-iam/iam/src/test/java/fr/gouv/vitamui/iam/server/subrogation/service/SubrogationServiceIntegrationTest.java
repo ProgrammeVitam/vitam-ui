@@ -120,7 +120,7 @@ public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegratio
     }
 
     @Test
-    public void testDeclineSubrogation() {
+    void testDeclineSubrogation() {
         final String superUserEmail = "sub-roggator@vitamui.com";
         final String superUserCustomerId = "surrogate_system";
 
@@ -157,7 +157,7 @@ public class SubrogationServiceIntegrationTest extends AbstractLogbookIntegratio
     }
 
     @Test
-    public void testStopSubrogation() {
+    void testStopSubrogation() {
         final String superUserEmail = "sub-roggator@vitamui.com";
         final String superUserCustomerId = "surrogate_system";
 

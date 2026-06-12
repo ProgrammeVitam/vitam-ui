@@ -34,7 +34,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -43,8 +45,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link GroupController}.
- *
- *
  */
 public final class GroupControllerTest implements CrudControllerTest {
 
@@ -147,7 +147,7 @@ public final class GroupControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsCustomerDoesNotExist() throws Exception {
+    void testCreationFailsAsCustomerDoesNotExist() throws Exception {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
 
@@ -166,7 +166,7 @@ public final class GroupControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsTheProfileDoesNotExist()
+    void testCreationFailsAsTheProfileDoesNotExist()
         throws InvalidParseOperationException, PreconditionFailedException {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
@@ -183,8 +183,7 @@ public final class GroupControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsTheNameIsAlreadyUsed()
-        throws InvalidParseOperationException, PreconditionFailedException {
+    void testCreationFailsAsTheNameIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final GroupDto dto = buildGroupDto();
         dto.setId(null);
 
@@ -227,7 +226,7 @@ public final class GroupControllerTest implements CrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() {
+    void testUpdateFailsAsCustomerDoesNotExist() {
         assertThrows(UnsupportedOperationException.class, () -> {
             final GroupDto dto = buildGroupDto();
 

@@ -9,11 +9,11 @@ import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @WebMvcTest(controllers = { SubrogationController.class })
-public class SubrogationControllerTest extends ApiIamControllerTest<SubrogationDto> {
+class SubrogationControllerTest extends ApiIamControllerTest<SubrogationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubrogationControllerTest.class);
 
@@ -21,7 +21,7 @@ public class SubrogationControllerTest extends ApiIamControllerTest<SubrogationD
     SubrogationService subrogationService;
 
     @Test
-    public void testDeleteSubrogation() {
+    void testDeleteSubrogation() {
         super.performDelete(
             RestApi.CAS_SUBROGATIONS_PATH,
             ImmutableMap.of("superUser", "julien@vitamui.com", "surrogate", "pierre@vitamui.com")

@@ -50,12 +50,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,23 +67,23 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(controllers = { TransactionArchiveUnitController.class })
 class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TransactionArchiveUnitControllerTest.class);
 
     private static final String ANY_TRANSACTION_CODE = "ANY_TRANSACTION_CODE";
 
-    @MockitoBean
+    @Mock
     private TransactionArchiveUnitService transactionArchiveUnitService;
 
-    @MockitoBean
+    @Mock
     private ExternalParametersService externalParametersService;
 
     private TransactionArchiveUnitController transactionArchiveUnitController;
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         transactionArchiveUnitController = new TransactionArchiveUnitController(
             transactionArchiveUnitService,
             externalParametersService,
@@ -130,9 +130,6 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
         nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
         query.setCriteriaList(List.of(nodeCriteria));
         VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
-        Mockito.when(
-            transactionArchiveUnitService.searchArchiveUnitsByCriteria(eq("transactionId"), eq(query), any())
-        ).thenReturn(expectedResponse);
 
         assertThatCode(() -> transactionArchiveUnitController.searchArchiveUnits("transactionId", query))
             .isInstanceOf(PreconditionFailedException.class)

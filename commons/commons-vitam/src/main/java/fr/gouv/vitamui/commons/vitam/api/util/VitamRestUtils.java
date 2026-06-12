@@ -223,7 +223,7 @@ public class VitamRestUtils {
      *
      * @param response Response of which the status is checked
      * @param acceptedStatus Statuses accepted
-     * TODO(refacto): commonize with BaseClient.checkResponse
+     * TODO(refacto): commonize with BaseClientVitamui.checkResponse
      */
     public static void checkResponse(final RequestResponse<?> response, final Integer... acceptedStatus) {
         Assert.notNull(response, "The server response cannot be null");

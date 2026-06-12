@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ApplicationConverterTest {
+class ApplicationConverterTest {
 
     private final ApplicationConverter applicationConverter = new ApplicationConverter();
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         Application app = new Application();
         app.setUrl("url");
         app.setId("identifier");
@@ -24,7 +24,7 @@ public class ApplicationConverterTest {
     }
 
     @Test
-    public void testConvertDtoToEntity() {
+    void testConvertDtoToEntity() {
         ApplicationDto appDto = new ApplicationDto();
         appDto.setUrl("url");
         appDto.setIdentifier("identifier");
@@ -34,7 +34,7 @@ public class ApplicationConverterTest {
     }
 
     @Test
-    public void testConvertToLogbook() throws InvalidParseOperationException {
+    void testConvertToLogbook() throws InvalidParseOperationException {
         ApplicationDto applicationDto = new ApplicationDto();
         applicationDto.setUrl("url");
         applicationDto.setIdentifier("identifier");

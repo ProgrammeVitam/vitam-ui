@@ -29,6 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -91,6 +92,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
 
     @BeforeEach
     public void setup() throws Exception {
+        MockitoAnnotations.openMocks(this);
         service = new ProfileService(
             sequenceGeneratorService,
             profileRepository,
@@ -109,7 +111,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testCreateProfileUser() throws Exception {
+    void testCreateProfileUser() throws Exception {
         final ProfileDto profileDto = DtoFactory.buildProfileDto(
             "User",
             "User",
@@ -162,7 +164,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testProcessPatchSuccess() {
+    void testProcessPatchSuccess() {
         final Profile entity = new Profile();
         final Profile other = IamServerUtilsTest.buildProfile();
 
@@ -183,7 +185,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAddMoreRestrictions() {
+    void testAddMoreRestrictions() {
         final String userLevel = "TEST";
 
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
@@ -209,7 +211,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAddMoreRestrictionsAdminUser() {
+    void testAddMoreRestrictionsAdminUser() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.setLevel(ApiIamConstants.ADMIN_LEVEL);
 
@@ -229,7 +231,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void levelValidPatternValidator() {
+    void levelValidPatternValidator() {
         String level = "TEST.TOTO.TATA";
         boolean levelValid = Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level);
         assertThat(levelValid).isTrue();
@@ -264,7 +266,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void getLevels_whenProfilesExist_returnsLevels() {
+    void getLevels_whenProfilesExist_returnsLevels() {
         final Optional<String> criteria = Optional.of(
             "{\"criteria\":[{\"key\":\"applicationName\",\"value\":\"ARCHIVE_APP\",\"operator\":\"EQUALS\"},{\"key\":\"tenantIdentifier\",\"value\":107,\"operator\":\"EQUALS\"}]}"
         );
@@ -283,7 +285,7 @@ public class ProfileServiceTest extends AbstractMongoTests {
     }
 
     @Test
-    public void getLevels_whenNoProfile_returnsEmptyList() {
+    void getLevels_whenNoProfile_returnsEmptyList() {
         final Optional<String> criteria = Optional.of(
             "{\"criteria\":[{\"key\":\"applicationName\",\"value\":\"ARCHIVE_APP\",\"operator\":\"EQUALS\"},{\"key\":\"tenantIdentifier\",\"value\":107,\"operator\":\"EQUALS\"}]}"
         );

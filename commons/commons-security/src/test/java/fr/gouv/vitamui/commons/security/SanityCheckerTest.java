@@ -53,7 +53,7 @@ public class SanityCheckerTest {
     private final String TEST_BAD_JSON = "bad_json.json";
 
     @Test
-    public void givenJsonWhenValueIsTooBigORContainXMLTag()
+    void givenJsonWhenValueIsTooBigORContainXMLTag()
         throws InvalidParseOperationException, PreconditionFailedException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
@@ -62,7 +62,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void givenJsonWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
+    void givenJsonWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
         assertThat(json).isNotNull();
@@ -70,8 +70,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void givenJsonStringWhenValueIsTooBigORContainXMLTagUsingAll()
-        throws InvalidParseOperationException, IOException {
+    void givenJsonStringWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
         final JsonNode json = JsonHandler.getFromFile(file);
         assertThat(json).isNotNull();
@@ -81,7 +80,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$fields_$and_$roots()
+    void sanitizeJson_should_not_fail_with_keys_$fields_$and_$roots()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithProjectionRootsFieldsKeys = "probative_action_json_with_fields_projection_roots_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithProjectionRootsFieldsKeys);
@@ -91,7 +90,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void givenJsonWhenGoodSanityThenReturnTrue() throws FileNotFoundException, InvalidParseOperationException {
+    void givenJsonWhenGoodSanityThenReturnTrue() throws FileNotFoundException, InvalidParseOperationException {
         final long limit = SanityChecker.getLimitJsonSize();
         final String TEST_GOOD_JSON = "good_json_sanity.json";
         try {
@@ -110,7 +109,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void givenStringNotValidParam() throws InvalidParseOperationException, PreconditionFailedException {
+    void givenStringNotValidParam() throws InvalidParseOperationException, PreconditionFailedException {
         final String bad = "aa\u0003bb";
         Assertions.assertThatThrownBy(() -> SanityChecker.checkSecureParameter(bad)).isInstanceOf(
             PreconditionFailedException.class
@@ -118,7 +117,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void givenCriteriaWhenGoodSanityThenReturnTrue()
+    void givenCriteriaWhenGoodSanityThenReturnTrue()
         throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
         final String TEST_GOOD_JSON_CRITERIA = "good_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_GOOD_JSON_CRITERIA);
@@ -127,8 +126,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void givenCriteriaWhenBadSanityThenReturnException()
-        throws FileNotFoundException, InvalidParseOperationException {
+    void givenCriteriaWhenBadSanityThenReturnException() throws FileNotFoundException, InvalidParseOperationException {
         final String TEST_BAD_JSON_CRITERIA = "bad_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON_CRITERIA);
         final JsonNode json = JsonHandler.getFromFile(file);
@@ -138,8 +136,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testCheckSecureParameterWithBadString()
-        throws PreconditionFailedException, InvalidParseOperationException {
+    void testCheckSecureParameterWithBadString() throws PreconditionFailedException, InvalidParseOperationException {
         final String bad = "a$/§§*";
         assertThatThrownBy(() -> SanityChecker.checkSecureParameter(bad)).isInstanceOf(
             PreconditionFailedException.class
@@ -147,8 +144,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testCheckSecureParameterWithXmlString()
-        throws PreconditionFailedException, InvalidParseOperationException {
+    void testCheckSecureParameterWithXmlString() throws PreconditionFailedException, InvalidParseOperationException {
         final String badText = "text<strong>text</strong>bb";
         assertThatThrownBy(() -> SanityChecker.checkSecureParameter(badText)).isInstanceOf(
             PreconditionFailedException.class
@@ -156,14 +152,14 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testCheckSecureParameterWithBadStringAndThrowException() {
+    void testCheckSecureParameterWithBadStringAndThrowException() {
         assertThatCode(() -> SanityChecker.checkSecureParameter("§§§§§***ù^65")).hasMessage(
             "the parameter §§§§§***ù^65 is not valid"
         );
     }
 
     @Test
-    public void testCheckSecureParameterWithGivenStringScript()
+    void testCheckSecureParameterWithGivenStringScript()
         throws PreconditionFailedException, InvalidParseOperationException {
         final String badStringScript = "aa<script>bb";
         final String badStringCdata = "aa<![CDATA[bb";
@@ -180,14 +176,14 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testCheckSecureParameterGivenStringGoodSanity()
+    void testCheckSecureParameterGivenStringGoodSanity()
         throws PreconditionFailedException, InvalidParseOperationException {
         final String goodText = "abcdef";
         SanityChecker.checkSecureParameter(goodText);
     }
 
     @Test
-    public void testCheckSecureParameterGivenStringBadSize() throws PreconditionFailedException {
+    void testCheckSecureParameterGivenStringBadSize() throws PreconditionFailedException {
         final int limit = SanityChecker.getLimitParamSize();
         try {
             final String bad = new String(StringUtils.getRandom(40));
@@ -201,31 +197,31 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testIsValidFileNameWithBadName() {
+    void testIsValidFileNameWithBadName() {
         final String badString = "aa<script>bb";
         assertThatCode(() -> SanityChecker.isValidFileName(badString)).hasMessage("The fileName is not valid");
     }
 
     @Test
-    public void testIsValidFileNameWithGoodName() {
+    void testIsValidFileNameWithGoodName() {
         final String goodFileName = "fileName";
         assertThatCode(() -> SanityChecker.isValidFileName(goodFileName)).doesNotThrowAnyException();
     }
 
     @Test
-    public void testIsValidFileNameWithXmlString() {
+    void testIsValidFileNameWithXmlString() {
         final String badString = "text<strong>text</strong>bb";
         assertThatCode(() -> SanityChecker.isValidFileName(badString)).hasMessage("The fileName is not valid");
     }
 
     @Test
-    public void testIsValidFileNameWhenGivenStringIsBad() {
+    void testIsValidFileNameWhenGivenStringIsBad() {
         final String badText = "aa<![CDATA[bb";
         assertThatCode(() -> SanityChecker.isValidFileName(badText)).hasMessage("The fileName is not valid");
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$action_$add_$pull()
+    void sanitizeJson_should_not_fail_with_keys_$action_$add_$pull()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithActionPullAddKeys = "reclassification_action_json_with_action_add_pull_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithActionPullAddKeys);
@@ -235,12 +231,12 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testCheckSecureParameterWithIdAsParameter() {
+    void testCheckSecureParameterWithIdAsParameter() {
         assertThatCode(() -> SanityChecker.checkSecureParameter("#id")).doesNotThrowAnyException();
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$query_$in_$or()
+    void sanitizeJson_should_not_fail_with_keys_$query_$in_$or()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithInOrQueryKeys = "audit_action_json_with_in_or_query_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithInOrQueryKeys);
@@ -250,8 +246,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$exists()
-        throws FileNotFoundException, InvalidParseOperationException {
+    void sanitizeJson_should_not_fail_with_keys_$exists() throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithExistsKey = "audit_action_json_with_exists_key.json";
         final File file = PropertiesUtils.findFile(jsonWithExistsKey);
         final JsonNode json = JsonHandler.getFromFile(file);
@@ -260,12 +255,12 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void isValidParameterName_tests() {
+    void isValidParameterName_tests() {
         assertThat(SanityChecker.isValidParameter("vitamui-primary")).isTrue();
     }
 
     @Test
-    public void givenJsonWithLongKeyThenReturnTrue()
+    void givenJsonWithLongKeyThenReturnTrue()
         throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
         final String JSON_WITH_LONG_KEY = "json_with_long_key.json";
         final File file = PropertiesUtils.findFile(JSON_WITH_LONG_KEY);
@@ -274,7 +269,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$eq_$offset()
+    void sanitizeJson_should_not_fail_with_keys_$eq_$offset()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithOffsetEqKeys = "logbook_operations_with_equal_offset_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithOffsetEqKeys);
@@ -284,7 +279,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$limit_$orderBy()
+    void sanitizeJson_should_not_fail_with_keys_$limit_$orderBy()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithLimitOrderByKeys = "logbook_operations_with_limit_orderby_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithLimitOrderByKeys);
@@ -294,7 +289,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$gte_and_$lte_$orderBy()
+    void sanitizeJson_should_not_fail_with_keys_$gte_and_$lte_$orderBy()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithGteAndLteKeys = "logbook_operations_with_gte_and_lte_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithGteAndLteKeys);
@@ -304,7 +299,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_ingest_search_keys()
+    void sanitizeJson_should_not_fail_with_ingest_search_keys()
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithIngestComplexe_Keys = "ingest_search_complexe_key.json";
         final File file = PropertiesUtils.findFile(jsonWithIngestComplexe_Keys);
@@ -314,7 +309,7 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void checkEsapiSanity() throws InvalidParseOperationException {
+    void checkEsapiSanity() throws InvalidParseOperationException {
         String json =
             "{\"id\":null,\"subjectDN\":\"subject\",\"contextId\":\"contextId\",\"serialNumber\":\"1234\",\"issuerDN\":\"issuer\",\"data\":\"-- BEGIN CERT -- XXX --- END CERT ---\"}";
         JsonNode jsonNode = JsonUtils.toJsonNode(json);

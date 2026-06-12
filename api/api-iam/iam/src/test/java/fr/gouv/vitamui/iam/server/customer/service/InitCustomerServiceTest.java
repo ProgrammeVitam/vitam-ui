@@ -50,7 +50,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class InitCustomerServiceTest {
+class InitCustomerServiceTest {
 
     private static final String TENANT_NAME = "TENANT_NAME";
     private static final Integer TENANT_ID = 10;

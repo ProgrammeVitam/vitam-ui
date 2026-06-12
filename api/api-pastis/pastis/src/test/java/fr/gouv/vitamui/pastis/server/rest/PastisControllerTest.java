@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,7 +46,7 @@ public class PastisControllerTest extends ControllerTest {
     }
 
     @Test
-    public void testGetArchiveProfile_should_return_ok() throws IOException, TechnicalException {
+    void testGetArchiveProfile_should_return_ok() throws IOException, TechnicalException {
         UriComponentsBuilder uriBuilder = getUriBuilder("/archiveprofile");
 
         Mockito.when(service.getArchiveProfile(any(ElementProperties.class), any(ProfileVersion.class))).thenReturn("");
@@ -59,7 +59,7 @@ public class PastisControllerTest extends ControllerTest {
     }
 
     @Test
-    public void testCreate() throws TechnicalException, NoSuchAlgorithmException {
+    void testCreate() throws TechnicalException, NoSuchAlgorithmException {
         Mockito.when(
             service.createProfile(any(ProfileType.class), any(ProfileVersion.class), any(Boolean.class))
         ).thenReturn(new ProfileResponse());

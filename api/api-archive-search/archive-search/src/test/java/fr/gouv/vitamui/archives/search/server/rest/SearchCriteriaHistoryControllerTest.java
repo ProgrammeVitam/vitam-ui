@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -53,7 +53,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.util.Arrays;
 
 @WebMvcTest(controllers = { SearchCriteriaHistoryController.class })
-public class SearchCriteriaHistoryControllerTest extends ApiArchiveSearchControllerTest<SearchCriteriaHistoryDto> {
+class SearchCriteriaHistoryControllerTest extends ApiArchiveSearchControllerTest<SearchCriteriaHistoryDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchCriteriaHistoryControllerTest.class);
 
@@ -65,7 +65,7 @@ public class SearchCriteriaHistoryControllerTest extends ApiArchiveSearchControl
     );
 
     @Test
-    public void testGetSearchCriteriaHistories() throws Exception {
+    void testGetSearchCriteriaHistories() throws Exception {
         LOGGER.debug("get search criterias");
         Mockito.when(service.getSearchCriteriaHistoryDtos()).thenReturn(Arrays.asList(new SearchCriteriaHistoryDto()));
 
@@ -74,12 +74,12 @@ public class SearchCriteriaHistoryControllerTest extends ApiArchiveSearchControl
     }
 
     @Test
-    public void testUpdateSearchCriteriaHistory() {
+    void testUpdateSearchCriteriaHistory() {
         super.testUpdateEntity();
     }
 
     @Test
-    public void testDeleteSearchCriteriaHistory() {
+    void testDeleteSearchCriteriaHistory() {
         super.performDelete("/1");
     }
 

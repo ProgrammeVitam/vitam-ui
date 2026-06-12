@@ -47,8 +47,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,23 +60,24 @@ public class JsonUtils {
     private static final ObjectMapper mapperWithNonNullFields;
 
     static {
+        // Jackson 3: findAndRegisterModules() auto-registers JavaTimeModule,
+        // Jdk8Module is merged into Jackson core — no longer needed separately
+
         mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.registerModule(new Jdk8Module());
+        mapper.findAndRegisterModules();
 
         mapperDontFailOnUnknowProperties = new ObjectMapper();
-        mapperDontFailOnUnknowProperties.registerModule(new JavaTimeModule());
-        mapperDontFailOnUnknowProperties.registerModule(new Jdk8Module());
+        mapperDontFailOnUnknowProperties.findAndRegisterModules();
         mapperDontFailOnUnknowProperties.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         mapperWithNonNullFields = new ObjectMapper();
-        mapperWithNonNullFields.registerModule(new JavaTimeModule());
-        mapperWithNonNullFields.registerModule(new Jdk8Module());
+        mapperWithNonNullFields.findAndRegisterModules();
         mapperWithNonNullFields.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
     /**
      * Convert Object to json string
+     *
      * @param object : the object to convert
      * @return
      * @throws JsonProcessingException
@@ -89,6 +88,7 @@ public class JsonUtils {
 
     /**
      * Convert value Object to specified Type.
+     *
      * @param fromValue
      * @param clazz
      * @return
@@ -99,6 +99,7 @@ public class JsonUtils {
 
     /**
      * Convert value Object to specified Type with ignoring null fields.
+     *
      * @param fromValue
      * @param clazz
      * @return
@@ -109,6 +110,7 @@ public class JsonUtils {
 
     /**
      * Convert value Object to specified Type.
+     *
      * @param fromValue
      * @param clazz
      * @return
@@ -125,8 +127,8 @@ public class JsonUtils {
 
     /**
      * Convert json string to Object
-     * @param <T>
      *
+     * @param <T>
      * @param json
      * @param type
      * @return
@@ -177,6 +179,7 @@ public class JsonUtils {
 
     /**
      * Convert Object to {@link JsonNode}.
+     *
      * @param object : the object to check
      * @return a jsonNode
      */
@@ -185,7 +188,6 @@ public class JsonUtils {
     }
 
     /**
-     *
      * @return An empty ObjectNode
      * @throws IOException
      */

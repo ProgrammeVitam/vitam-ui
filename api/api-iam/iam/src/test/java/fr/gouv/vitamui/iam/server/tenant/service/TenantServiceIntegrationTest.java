@@ -50,6 +50,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -156,6 +157,7 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         GroupService groupService = new GroupService(
             new SequenceGeneratorService(sequenceRepository),
             groupRepository,
@@ -236,7 +238,7 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
     }
 
     @Test
-    public void testFindByNames() {
+    void testFindByNames() {
         repository.save(IamServerUtilsTest.buildTenant("id1", "test", 1));
         repository.save(IamServerUtilsTest.buildTenant("id1", "test contains string", 1));
 
@@ -248,7 +250,7 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
     }
 
     @Test
-    public void testCheckExist() {
+    void testCheckExist() {
         final CustomerDto customer = IamServerUtilsTest.buildCustomerDto();
 
         repository.save(IamServerUtilsTest.buildTenant("id1", "test", 1));
@@ -265,7 +267,7 @@ public class TenantServiceIntegrationTest extends AbstractLogbookIntegrationTest
     }
 
     @Test
-    public void testCreatePatch() {
+    void testCreatePatch() {
         final Owner owner = IamServerUtilsTest.buildOwner();
         owner.setIdentifier("identifier_" + owner.getId());
 

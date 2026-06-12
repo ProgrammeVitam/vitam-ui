@@ -36,7 +36,7 @@ public class PdfFileGeneratorTest {
     }
 
     @Test
-    public void testCreatePdfWithDynamicInfo() throws Exception {
+    void testCreatePdfWithDynamicInfo() throws Exception {
         // The template contains "${data},${dynamic.field}"
         try (
             final InputStream templateInput = new FileInputStream(
@@ -61,7 +61,7 @@ public class PdfFileGeneratorTest {
     }
 
     @Test
-    public void testCreatePdfWithMetadata() throws Exception {
+    void testCreatePdfWithMetadata() throws Exception {
         // The template contains "${data},${dynamic.field},${imageField}"
         try (
             final InputStream templateInput = new FileInputStream(new File(TEST_DIRECTORY + "template-metadata.odt"));
@@ -87,7 +87,7 @@ public class PdfFileGeneratorTest {
     }
 
     @Test
-    public void testCreatePdfWithMetadataAndHtml() throws Exception {
+    void testCreatePdfWithMetadataAndHtml() throws Exception {
         // The template contains "${data},${dynamic.field},${imageField},${htmlField}"
         try (
             final InputStream templateInput = new FileInputStream(

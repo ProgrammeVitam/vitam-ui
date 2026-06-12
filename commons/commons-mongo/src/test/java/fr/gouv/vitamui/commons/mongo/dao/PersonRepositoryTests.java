@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class PersonRepositoryTests extends AbstractMongoTests {
 
@@ -49,13 +51,13 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void readFirstPageCorrectly() {
+    void readFirstPageCorrectly() {
         final Page<Person> persons = repository.findAll(PageRequest.of(0, 10));
         assertThat(persons.isFirst(), is(true));
     }
 
     @Test
-    public void readEmptyCollection() {
+    void readEmptyCollection() {
         Iterable<Person> persons = repository.findAll();
         assertThat(persons.iterator().hasNext(), is(false));
         repository.deleteAll();
@@ -64,7 +66,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void addElementsToCollection() {
+    void addElementsToCollection() {
         // save a couple of persons
         repository.save(new Person("Alice", "Smith", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -73,7 +75,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testFirstName() {
+    void testFirstName() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -86,7 +88,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testCheckExistByName() {
+    void testCheckExistByName() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -99,7 +101,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindOne() {
+    void testFindOne() {
         // save a couple of persons
         final Person p = repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
 
@@ -108,7 +110,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         // save a person
         final Person p = repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         final boolean exists = repository.exists(Criteria.where("id").is(p.getId()));
@@ -116,7 +118,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByEmail() {
+    void testFindByEmail() {
         // save a person
         final Person p = repository.save(
             new Person(
@@ -145,7 +147,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testNotInOperator() {
+    void testNotInOperator() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -157,7 +159,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testLastName() {
+    void testLastName() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -170,7 +172,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testLastConnection() {
+    void testLastConnection() {
         // save a couple of persons
         final Person person = new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now());
         final OffsetDateTime dateTime = OffsetDateTime.now();
@@ -181,7 +183,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testExistByName() {
+    void testExistByName() {
         // save a couple of persons
         final Person person = new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now());
         repository.save(person);
@@ -196,7 +198,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testExistByNameWithCriteria() {
+    void testExistByNameWithCriteria() {
         // save a couple of persons
         final Person person = new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now());
         repository.save(person);
@@ -208,7 +210,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testExistByAgeWithCriteriaMultiples() {
+    void testExistByAgeWithCriteriaMultiples() {
         // save a couple of persons
         final Person person = new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now());
         repository.save(person);
@@ -222,7 +224,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByEmails() {
+    void testFindByEmails() {
         // save a couple of persons
         final List<String> emailsMoctar = new ArrayList<>();
         final String emailVitamUIMoctar = "moctar.diagne@vitamui.com";
@@ -243,7 +245,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValues() {
+    void testBuildPaginatedValues() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -262,7 +264,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithCriteria() {
+    void testBuildPaginatedValuesWithCriteria() {
         // save a couple of persons
         final Person moctar = new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now());
         repository.save(moctar);
@@ -284,7 +286,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithCriteriaInteger() {
+    void testBuildPaginatedValuesWithCriteriaInteger() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
@@ -305,7 +307,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithCriteriaGreaterInteger() {
+    void testBuildPaginatedValuesWithCriteriaGreaterInteger() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
@@ -326,7 +328,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithCriteriaBoolean() {
+    void testBuildPaginatedValuesWithCriteriaBoolean() {
         // save a couple of persons
         final Person p = new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now());
         p.setEnabled(true);
@@ -348,7 +350,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithMultipleCriteria() {
+    void testBuildPaginatedValuesWithMultipleCriteria() {
         // save a couple of persons
         final Person moctar = new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now());
         repository.save(moctar);
@@ -372,7 +374,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithCriteriaListValues() {
+    void testBuildPaginatedValuesWithCriteriaListValues() {
         // save a couple of persons
         final Person moctar = new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now());
         final Person makhtar = new Person("Makhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now());
@@ -400,7 +402,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithoutOrderBy() {
+    void testBuildPaginatedValuesWithoutOrderBy() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -411,7 +413,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithOrderByEmpty() {
+    void testBuildPaginatedValuesWithOrderByEmpty() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -422,7 +424,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithoutDirection() {
+    void testBuildPaginatedValuesWithoutDirection() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -441,7 +443,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithDirectionEmpty() {
+    void testBuildPaginatedValuesWithDirectionEmpty() {
         // save a couple of persons
         repository.save(new Person("Moctar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
@@ -460,7 +462,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithOrderBy() {
+    void testBuildPaginatedValuesWithOrderBy() {
         // save a couple of persons
         final Person cakhtar = repository.save(new Person("cakhtar", "D", 21, new ArrayList<>(), OffsetDateTime.now()));
         final Person abakhtar = repository.save(
@@ -489,7 +491,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testBuildPaginatedValuesWithCriteriaContains() {
+    void testBuildPaginatedValuesWithCriteriaContains() {
         // save a couple of persons
         final Person moctar = new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now());
         repository.save(moctar);
@@ -512,7 +514,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testAndOperator() {
+    void testAndOperator() {
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Julien", "Cornille", 21, new ArrayList<>(), OffsetDateTime.now()));
         final Criteria criteria = new Criteria()
@@ -528,7 +530,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testOneDistinctField() {
+    void testOneDistinctField() {
         repository.save(new Person("Makhtar", "D", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Julien", "Cornille", 19, new ArrayList<>(), OffsetDateTime.now()));
@@ -550,7 +552,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testMultipleDistinctFields() {
+    void testMultipleDistinctFields() {
         repository.save(new Person("M", "D", 22, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 20, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
@@ -576,7 +578,7 @@ public class PersonRepositoryTests extends AbstractMongoTests {
     }
 
     @Test
-    public void testCount() {
+    void testCount() {
         repository.save(new Person("M", "D", 22, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Makhtar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));
         repository.save(new Person("Moctar", "Diagne", 19, new ArrayList<>(), OffsetDateTime.now()));

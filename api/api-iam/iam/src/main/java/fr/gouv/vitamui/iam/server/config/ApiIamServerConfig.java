@@ -37,13 +37,15 @@
 
 package fr.gouv.vitamui.iam.server.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
@@ -108,11 +110,10 @@ import fr.gouv.vitamui.iam.server.user.service.UserExportService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -121,6 +122,7 @@ import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -141,6 +143,14 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @Bean
     public MultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
     }
 
     @Bean
@@ -173,15 +183,15 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityApiClientsFactory securityApiClientsFactory(
-        final RestTemplateBuilder restTemplateBuilder,
+    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+        final RestClient.Builder restClientBuilder,
         final ApiIamApplicationProperties apiIamApplicationProperties
     ) {
-        return new SecurityApiClientsFactory(apiIamApplicationProperties.getSecurityClient(), restTemplateBuilder);
+        return new SecurityApiClientsFactoryVitamui(apiIamApplicationProperties.getSecurityClient(), restClientBuilder);
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
+    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -483,10 +493,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public UserEmailService userEmailService(
-        final RestTemplateBuilder restTemplateBuilder,
+        final RestClient.Builder restClientBuilder,
         final RestClientConfiguration casClientProperties
     ) {
-        final BaseRestClientFactory factory = new BaseRestClientFactory(casClientProperties, restTemplateBuilder);
+        final BaseVitamuiRestClientFactory factory = new BaseVitamuiRestClientFactory(
+            casClientProperties,
+            restClientBuilder
+        );
         return new UserEmailService(factory);
     }
 

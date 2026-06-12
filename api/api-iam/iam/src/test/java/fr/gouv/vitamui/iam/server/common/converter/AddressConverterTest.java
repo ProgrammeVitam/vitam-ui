@@ -4,12 +4,12 @@ import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.iam.server.common.domain.Address;
 import org.junit.jupiter.api.Test;
 
-public class AddressConverterTest {
+class AddressConverterTest {
 
     private final AddressConverter converter = new AddressConverter();
 
     @Test
-    public void testConvertToEntity() {
+    void testConvertToEntity() {
         AddressDto dto = new AddressDto();
         dto.setCity("city");
         dto.setCountry("country");

@@ -39,7 +39,19 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.AttributeXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.BaliseXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ChoiceXml;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.DataXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.DocumentationXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ElementXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.GrammarXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.OneOrMoreXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.OptionalXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.StartXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ValueXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.ZeroOrMoreXML;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
 import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
 import jakarta.xml.bind.JAXBContext;
@@ -60,7 +72,7 @@ import java.io.OutputStreamWriter;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
-public class RNGProfileValidatorTest {
+class RNGProfileValidatorTest {
 
     @TempDir
     public File tempFolder;

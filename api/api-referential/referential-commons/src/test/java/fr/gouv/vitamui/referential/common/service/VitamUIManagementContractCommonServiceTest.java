@@ -46,7 +46,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class VitamUIManagementContractCommonServiceTest {
+class VitamUIManagementContractCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -55,7 +55,7 @@ public class VitamUIManagementContractCommonServiceTest {
     private VitamUIManagementContractCommonService vitamUIManagementContractCommonService;
 
     @Test
-    public void patchAccessContract_should_return_ok_when_vitamAdminExternalClient_ok()
+    void patchAccessContract_should_return_ok_when_vitamAdminExternalClient_ok()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -71,7 +71,7 @@ public class VitamUIManagementContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_return_ok_when_vitamAdminExternalClient_400()
+    void patchAccessContract_should_return_ok_when_vitamAdminExternalClient_400()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -87,7 +87,7 @@ public class VitamUIManagementContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_throw_InvalidParseOperationException_when_vitamAdminExternalClient_throws_InvalidParseOperationException()
+    void patchAccessContract_should_throw_InvalidParseOperationException_when_vitamAdminExternalClient_throws_InvalidParseOperationException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -103,7 +103,7 @@ public class VitamUIManagementContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_throw_AccessExternalClientException_when_vitamAdminExternalClient_throws_AccessExternalClientException()
+    void patchAccessContract_should_throw_AccessExternalClientException_when_vitamAdminExternalClient_throws_AccessExternalClientException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";

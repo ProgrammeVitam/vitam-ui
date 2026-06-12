@@ -223,7 +223,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     }
 
     @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFile() throws Exception {
+    void testExportCSVWithEnThenReturnTheExactExpectedFile() throws Exception {
         // Given
         setUpData();
         // query
@@ -267,7 +267,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     }
 
     @Test
-    public void testExportCSVWithFrAndSpecialCharsThenReturnTheExactExpectedContentCorrectlyEncoded() throws Exception {
+    void testExportCSVWithFrAndSpecialCharsThenReturnTheExactExpectedContentCorrectlyEncoded() throws Exception {
         try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
             // Given
             when(unitCommonService.searchUnits(any(), any())).thenReturn(
@@ -341,7 +341,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     }
 
     @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsFilingUnit() throws Exception {
+    void testExportCSVWithEnThenReturnTheExactExpectedFileAsFilingUnit() throws Exception {
         try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
             // Given
             when(unitCommonService.searchUnits(any(), any())).thenReturn(
@@ -415,7 +415,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     }
 
     @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsHoldingUnit() throws Exception {
+    void testExportCSVWithEnThenReturnTheExactExpectedFileAsHoldingUnit() throws Exception {
         try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
             // Given
             when(unitCommonService.searchUnits(any(), any())).thenReturn(
@@ -489,7 +489,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     }
 
     @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithObject() throws Exception {
+    void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithObject() throws Exception {
         // Given
         try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
             when(unitCommonService.searchUnits(any(), any())).thenReturn(
@@ -563,7 +563,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     }
 
     @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithoutObject() throws Exception {
+    void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithoutObject() throws Exception {
         try (MockedStatic mockRulesUpdateCommonService = Mockito.mockStatic(RulesUpdateCommonService.class)) {
             // Given
             when(unitCommonService.searchUnits(any(), any())).thenReturn(

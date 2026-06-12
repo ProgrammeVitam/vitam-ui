@@ -58,7 +58,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class VitamUIAccessContractCommonServiceTest {
+class VitamUIAccessContractCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -72,7 +72,7 @@ public class VitamUIAccessContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_return_ok_when_vitamclient_ok()
+    void patchAccessContract_should_return_ok_when_vitamclient_ok()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -88,7 +88,7 @@ public class VitamUIAccessContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_return_400_when_vitamclient_400()
+    void patchAccessContract_should_return_400_when_vitamclient_400()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -104,7 +104,7 @@ public class VitamUIAccessContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
+    void patchAccessContract_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -120,7 +120,7 @@ public class VitamUIAccessContractCommonServiceTest {
     }
 
     @Test
-    public void patchAccessContract_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
+    void patchAccessContract_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";

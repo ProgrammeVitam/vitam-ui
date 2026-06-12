@@ -139,7 +139,6 @@ public abstract class ApiWebSecurityConfig {
             "/error**",
             "/favicon.ico",
             "/actuator/**",
-            "*/users/me",
             "/swagger-ui.html",
             "/swagger-ui/**",
             "/v3/api-docs.yaml",

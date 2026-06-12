@@ -53,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class LogbookManagementOperationServiceTest {
+class LogbookManagementOperationServiceTest {
 
     @Mock
     private ObjectMapper objectMapper;
@@ -82,7 +82,7 @@ public class LogbookManagementOperationServiceTest {
     }
 
     @Test
-    public void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct()
+    void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct()
         throws VitamClientException, JsonProcessingException { // Given
         VitamContext vitamContext = new VitamContext(0);
         OperationActionStatus replay = OperationActionStatus.REPLAY;
@@ -115,7 +115,7 @@ public class LogbookManagementOperationServiceTest {
     }
 
     @Test
-    public void updateOperationActionProcess_should_throw_VitamClientException_when_actionId_is_not_correct()
+    void updateOperationActionProcess_should_throw_VitamClientException_when_actionId_is_not_correct()
         throws VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
@@ -137,7 +137,7 @@ public class LogbookManagementOperationServiceTest {
     }
 
     @Test
-    public void cancelOperationProcessExecution_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
+    void cancelOperationProcessExecution_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException()
         throws VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);

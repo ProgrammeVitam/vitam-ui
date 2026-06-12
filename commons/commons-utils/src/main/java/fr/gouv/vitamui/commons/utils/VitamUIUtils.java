@@ -322,7 +322,7 @@ public final class VitamUIUtils {
 
     public static String secureFormatHeadersLogging(HttpHeaders headers) {
         return headers
-            .entrySet()
+            .headerSet()
             .stream()
             .map(entry -> {
                 List<String> values = entry.getValue();

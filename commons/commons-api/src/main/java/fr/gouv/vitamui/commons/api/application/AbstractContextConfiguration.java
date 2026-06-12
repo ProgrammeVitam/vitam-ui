@@ -43,18 +43,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.support.DefaultFormattingConversionService;
-import org.springframework.web.servlet.DispatcherServlet;
 
 import java.util.regex.Pattern;
 
 public abstract class AbstractContextConfiguration {
-
-    @Bean
-    public DispatcherServlet dispatcherServlet() {
-        final DispatcherServlet ds = new DispatcherServlet();
-        ds.setThrowExceptionIfNoHandlerFound(true);
-        return ds;
-    }
 
     @Bean
     @ConfigurationPropertiesBinding

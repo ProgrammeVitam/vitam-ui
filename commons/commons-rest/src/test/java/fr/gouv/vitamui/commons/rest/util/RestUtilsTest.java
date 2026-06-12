@@ -57,7 +57,7 @@ import java.util.Optional;
 public class RestUtilsTest {
 
     @Test
-    public void testCheckResponseEntityWhenDownloadingEmptyResourcesThenOK() throws IOException {
+    void testCheckResponseEntityWhenDownloadingEmptyResourcesThenOK() throws IOException {
         final HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Resource> response = ResponseEntity.ok()
             .headers(headers)
@@ -77,7 +77,7 @@ public class RestUtilsTest {
     }
 
     @Test
-    public void testCheckResponseEntityWhenDownloadingNotEmptyResourcesThenGetAllBytes() throws IOException {
+    void testCheckResponseEntityWhenDownloadingNotEmptyResourcesThenGetAllBytes() throws IOException {
         final HttpHeaders headers = new HttpHeaders();
         ResponseEntity<Resource> response = ResponseEntity.ok()
             .headers(headers)

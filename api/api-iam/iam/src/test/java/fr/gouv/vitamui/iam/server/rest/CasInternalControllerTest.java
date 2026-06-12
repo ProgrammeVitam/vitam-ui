@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = { CasController.class })
-public class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
+class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CasInternalControllerTest.class);
 
@@ -45,7 +45,7 @@ public class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
     private CasController casController = MvcUriComponentsBuilder.on(CasController.class);
 
     @Test
-    public void test_login_isOK() throws Exception {
+    void test_login_isOK() throws Exception {
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         loginRequestDto.setPassword("1234");
         loginRequestDto.setLoginEmail("user");
@@ -64,7 +64,7 @@ public class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
     }
 
     @Test
-    public void testDeleteSubrogation() {
+    void testDeleteSubrogation() {
         super.performDelete(
             RestApi.CAS_SUBROGATIONS_PATH,
             ImmutableMap.of("superUser", "julien@vitamui.com", "surrogate", "pierre@vitamui.com")

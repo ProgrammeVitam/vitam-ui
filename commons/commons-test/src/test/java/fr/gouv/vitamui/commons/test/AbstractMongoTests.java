@@ -28,23 +28,33 @@
 package fr.gouv.vitamui.commons.test;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MongoDBContainer;
 
 public class AbstractMongoTests {
 
-    private static final MongoDBContainer mongoDBContainer = new MongoDBContainer(
+    @ServiceConnection
+    protected static final MongoDBContainer mongoDBContainer = new MongoDBContainer(
         "mongodb/mongodb-community-server:8.0.23-ubuntu2204-slim"
     );
 
+    static {
+        mongoDBContainer.start();
+    }
+
     @BeforeAll
     static void startContainers() {
-        mongoDBContainer.start();
+        System.out.println("Starting MongoDB container with @ServiceConnection...");
     }
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+        String uri = mongoDBContainer.getReplicaSetUrl();
+        System.out.println("Setting spring.data.mongodb.uri via DynamicPropertySource to: " + uri);
+        registry.add("spring.data.mongodb.uri", () -> uri);
+        // Also set the old property just in case
+        registry.add("spring.mongodb.uri", () -> uri);
     }
 }

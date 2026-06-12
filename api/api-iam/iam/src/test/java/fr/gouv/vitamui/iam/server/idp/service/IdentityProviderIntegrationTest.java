@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -76,6 +77,7 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         IdentityProviderConverter identityProviderConverter = new IdentityProviderConverter(spMetadataGenerator);
         service = new IdentityProviderService(
             sequenceGeneratorService,
@@ -93,7 +95,7 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
     }
 
     @Test
-    public void testCreateIdp() {
+    void testCreateIdp() {
         final IdentityProviderDto idp = createIdp();
         assertThat(idp.getIdentifier()).isNotBlank();
 
@@ -108,7 +110,7 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
     }
 
     @Test
-    public void testPatch() {
+    void testPatch() {
         final IdentityProviderDto dto = createIdp();
 
         final Map<String, Object> partialDto = new HashMap<>();

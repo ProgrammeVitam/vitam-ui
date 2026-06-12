@@ -51,7 +51,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testUnzipFolderKo() {
+    void testUnzipFolderKo() {
         assertThrows(SecurityException.class, () -> SecureZipUtils.unzipFolder(EVIL_ZIP_FILE, UNZIP_FOLDER));
 
         File evilFile = new File(EVIL_FILE_PATH);
@@ -59,7 +59,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testUnzipFolderOk() throws IOException, SecurityException {
+    void testUnzipFolderOk() throws IOException, SecurityException {
         testUnzipFolder(GOOD_ZIP_FILE, UNZIP_FOLDER);
     }
 
@@ -78,7 +78,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testZipFolderOk() throws Exception {
+    void testZipFolderOk() throws Exception {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
@@ -92,7 +92,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testZipFolderKoFileSymlink() throws Exception {
+    void testZipFolderKoFileSymlink() throws Exception {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
@@ -109,7 +109,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testZipFolderKoFolderSymlink() throws Exception {
+    void testZipFolderKoFolderSymlink() throws Exception {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
@@ -125,7 +125,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testZipFilesOk() throws Exception {
+    void testZipFilesOk() throws Exception {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 
@@ -145,7 +145,7 @@ class SecureZipUtilsTest {
     }
 
     @Test
-    public void testZipStreamsOk() throws IOException {
+    void testZipStreamsOk() throws IOException {
         final String zipFolder = UNZIP_FOLDER + "testZip/";
         SecureZipUtils.unzipFolder(GOOD_ZIP_FILE, zipFolder);
 

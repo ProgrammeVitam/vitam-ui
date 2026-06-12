@@ -13,13 +13,13 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = { ProfileController.class })
-public class ProfileControllerTest extends ApiIamControllerTest<ProfileDto> {
+class ProfileControllerTest extends ApiIamControllerTest<ProfileDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileControllerTest.class);
 
@@ -27,25 +27,25 @@ public class ProfileControllerTest extends ApiIamControllerTest<ProfileDto> {
     private ProfileService profileService;
 
     @Test
-    public void testGetAllProfiles() {
+    void testGetAllProfiles() {
         LOGGER.debug("testGetAllEntity");
         super.testGetAllEntityWithCriteria();
     }
 
     @Test
-    public void testPatchProfile() {
+    void testPatchProfile() {
         LOGGER.debug("testPatchProfile");
         super.testPatchEntity();
     }
 
     @Test
-    public void testGetPaginatedProfile() {
+    void testGetPaginatedProfile() {
         LOGGER.debug("testGetPaginatedProfile");
         super.testGetPaginatedEntities();
     }
 
     @Test
-    public void testGetLevels() {
+    void testGetLevels() {
         LOGGER.debug("testGetLevels");
         super.performGet(CommonConstants.PATH_LEVELS, ImmutableMap.of(), status().isOk());
         Mockito.verify(profileService, Mockito.times(1)).getLevels(ArgumentMatchers.any());

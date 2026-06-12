@@ -35,11 +35,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @WebMvcTest(controllers = { ManagementContractController.class })
-public class ManagementContractControllerTest extends ApiReferentialControllerTest<ManagementContractDto> {
+class ManagementContractControllerTest extends ApiReferentialControllerTest<ManagementContractDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagementContractControllerTest.class);
 
@@ -80,12 +80,12 @@ public class ManagementContractControllerTest extends ApiReferentialControllerTe
     }
 
     @Test
-    public void getAll() {
+    void getAll() {
         super.testGetAllEntity();
     }
 
     @Test
-    public void testManagementContract() {
+    void testManagementContract() {
         Assertions.assertNotNull(managementContractService);
     }
 }

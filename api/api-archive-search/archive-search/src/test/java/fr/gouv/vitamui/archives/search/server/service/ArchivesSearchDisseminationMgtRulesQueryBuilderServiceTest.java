@@ -145,7 +145,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaOnDate()
+    void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaOnDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -167,7 +167,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaIntervalDate()
+    void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaIntervalDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -193,7 +193,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaRuleCode()
+    void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaRuleCode()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -217,7 +217,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesWithOnlyInheritedRules()
+    void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesWithOnlyInheritedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -248,7 +248,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesWithOnlyInheritedOrScopedRules()
+    void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesWithOnlyInheritedOrScopedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -286,7 +286,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesInWaitingToCalculate()
+    void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesInWaitingToCalculate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -326,7 +326,7 @@ public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesHasNoRule()
+    void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesHasNoRule()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();

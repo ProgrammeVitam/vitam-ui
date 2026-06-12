@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ServicesDataTest {
 
     @Test
-    public void getServiceByNameTest() {
+    void getServiceByNameTest() {
         List<String> services = ServicesData.getServicesByName(ServicesData.SERVICE_USERS);
         assertThat(services).isNotEmpty();
         assertThat(services).size().isEqualTo(10);

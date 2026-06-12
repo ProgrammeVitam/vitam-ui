@@ -11,7 +11,9 @@ import fr.gouv.vitamui.referential.server.config.ExternalArchivingSystemReferenc
 import fr.gouv.vitamui.referential.server.config.ExternalArchivingSystemTenantConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,8 +24,12 @@ import static fr.gouv.vitamui.referential.server.service.externalreferential.Ext
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ExternalArchivingSystemConfigurationManagerTest {
+    static {
+        System.setProperty("vitam.config.folder", "src/test/resources");
+    }
 
     private static final String UNKNOWN_ARCHIVING_SYSTEM_ID = "unknown_id";
     private static final int SOME_TENANT_IDENTIFIER = 5;
@@ -34,7 +40,7 @@ class ExternalArchivingSystemConfigurationManagerTest {
     private static final String ARCHIVING_SYSTEM_NAME2 = "Ext 2";
 
     @Test
-    public void testEmptyConfiguration() {
+    void testEmptyConfiguration() {
         ApiReferentialApplicationProperties emptyConfig = new ApiReferentialApplicationProperties()
             .setExternalArchivingSystemClients(Collections.emptyList())
             .setExternalArchivingSystemTenants(Collections.emptyList());
@@ -61,7 +67,7 @@ class ExternalArchivingSystemConfigurationManagerTest {
     }
 
     @Test
-    public void testComplexConfiguration() {
+    void testComplexConfiguration() {
         // Given
         ApiReferentialApplicationProperties complexConfig = new ApiReferentialApplicationProperties()
             .setExternalArchivingSystemClients(

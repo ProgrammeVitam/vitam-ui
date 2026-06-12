@@ -64,7 +64,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class VitamSecurityProfileCommonServiceTest {
+class VitamSecurityProfileCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -78,7 +78,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void patchSecurityProfile_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void patchSecurityProfile_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
@@ -93,7 +93,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void patchSecurityProfile_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void patchSecurityProfile_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
         JsonNode jsonNode = JsonHandler.createObjectNode();
@@ -108,7 +108,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void patchSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void patchSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -124,7 +124,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void deleteSecurityProfile_should_return_ok_when_vitamclient_ok()
+    void deleteSecurityProfile_should_return_ok_when_vitamclient_ok()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "1";
@@ -147,7 +147,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void deleteSecurityProfile_should_throw_JsonProcessingException_when_vitamclient_400()
+    void deleteSecurityProfile_should_throw_JsonProcessingException_when_vitamclient_400()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "1";
@@ -170,7 +170,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void deleteSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void deleteSecurityProfile_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "id_0";
@@ -185,7 +185,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void findSecurityProfiles_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findSecurityProfiles_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
@@ -199,8 +199,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void findSecurityProfiles_should_throw_BadRequestException_when_vitamclient_400()
-        throws VitamClientException {
+    void findSecurityProfiles_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
@@ -214,7 +213,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void findSecurityProfiles_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findSecurityProfiles_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
@@ -229,7 +228,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void findSecurityProfileById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findSecurityProfileById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String securityProfileId = "SPId_0";
 
@@ -243,7 +242,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void findSecurityProfileById_should_return_InternalServerException_when_vitamclient_400()
+    void findSecurityProfileById_should_return_InternalServerException_when_vitamclient_400()
         throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String securityProfileId = "SPId_0";
@@ -258,7 +257,7 @@ public class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    public void findSecurityProfileById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findSecurityProfileById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String securityProfileId = "SPId_0";

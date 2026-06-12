@@ -48,7 +48,7 @@ public class UserRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByEmail() {
+    void testFindByEmail() {
         final String email1 = "user@vitamui.com";
         final String email2 = "user@vitam.fr";
         final String customer1 = "customerId1";
@@ -69,7 +69,7 @@ public class UserRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testAllFindByEmail() {
+    void testAllFindByEmail() {
         final String email1 = "user@vitamui.com";
         final String email2 = "user@vitam.fr";
         final String customer1 = "customerId1";
@@ -91,7 +91,7 @@ public class UserRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testCountByProfileGroupId() {
+    void testCountByProfileGroupId() {
         final String email1 = "user@vitamui.com";
         final String email2 = "user@vitam.fr";
         final String profileToCount = "profileToCount";
@@ -107,7 +107,7 @@ public class UserRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testCheckExistUser() {
+    void testCheckExistUser() {
         final String email = "user@vitamui.com";
         final User userVitamUI = IamServerUtilsTest.buildUser("1", email, "profileToCount");
         repository.save(userVitamUI);
@@ -135,7 +135,7 @@ public class UserRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testFindByCustomerIdAndSubrogeable() {
+    void testFindByCustomerIdAndSubrogeable() {
         final String email = "user@vitamui.com";
         final User userVitamUI = IamServerUtilsTest.buildUser("1", email, "profileToCount");
         userVitamUI.setSubrogeable(true);
@@ -192,7 +192,7 @@ public class UserRepositoryTest extends AbstractMongoTests {
     }
 
     @Test
-    public void testGetPaginatedValues() {
+    void testGetPaginatedValues() {
         final String email = "user@vitamui.com";
         final User userVitamUI = IamServerUtilsTest.buildUser("1", email, "profileToCount");
         userVitamUI.setSubrogeable(true);

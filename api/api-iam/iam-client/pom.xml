@@ -19,6 +19,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
+        <jackson-databind-nullable.version>0.2.9</jackson-databind-nullable.version>
     </properties>
 
     <build>
@@ -46,53 +47,92 @@
                             <generateApiTests>false</generateApiTests>
                             <modelPackage>fr.gouv.vitamui.iam.openapiclient.domain</modelPackage>
                             <invokerPackage>fr.gouv.vitamui.iam.openapiclient.invoker</invokerPackage>
-                            <library>resttemplate</library> <!-- ou autre: okhttp-gson, webclient, retrofit2 -->
+                            <library>restclient</library> <!-- ou autre: okhttp-gson, webclient, retrofit2 -->
                             <removeOperationIdPrefix>true</removeOperationIdPrefix>
                             <configOptions>
                                 <dateLibrary>java8</dateLibrary>
                                 <useJakartaEe>true</useJakartaEe>
                                 <useAbstractionForFiles>true</useAbstractionForFiles>
+                                <useSpringBoot4>true</useSpringBoot4>
                             </configOptions>
                             <importMappings>
                                 <importMapping>UserDto=fr.gouv.vitamui.commons.api.domain.UserDto</importMapping>
-                                <importMapping>SubrogationDto=fr.gouv.vitamui.iam.common.dto.SubrogationDto</importMapping>
-                                <importMapping>ApplicationDto=fr.gouv.vitamui.commons.api.domain.ApplicationDto</importMapping>
-                                <importMapping>AuthUserDto=fr.gouv.vitamui.commons.security.client.dto.AuthUserDto</importMapping>
+                                <importMapping>SubrogationDto=fr.gouv.vitamui.iam.common.dto.SubrogationDto
+                                </importMapping>
+                                <importMapping>ApplicationDto=fr.gouv.vitamui.commons.api.domain.ApplicationDto
+                                </importMapping>
+                                <importMapping>AuthUserDto=fr.gouv.vitamui.commons.security.client.dto.AuthUserDto
+                                </importMapping>
                                 <importMapping>CustomerDto=fr.gouv.vitamui.iam.common.dto.CustomerDto</importMapping>
-                                <importMapping>CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData</importMapping>
-                                <importMapping>ExternalParamProfileDto=fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto</importMapping>
+                                <importMapping>
+                                    CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData
+                                </importMapping>
+                                <importMapping>
+                                    ExternalParamProfileDto=fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto
+                                </importMapping>
                                 <importMapping>GroupDto=fr.gouv.vitamui.commons.api.domain.GroupDto</importMapping>
-                                <importMapping>IdentityProviderDto=fr.gouv.vitamui.iam.common.dto.IdentityProviderDto</importMapping>
-                                <importMapping>LogbookLifeCycleResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto</importMapping>
-                                <importMapping>LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto</importMapping>
-                                <importMapping>LoginRequestDto=fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto</importMapping>
+                                <importMapping>IdentityProviderDto=fr.gouv.vitamui.iam.common.dto.IdentityProviderDto
+                                </importMapping>
+                                <importMapping>
+                                    LogbookLifeCycleResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto
+                                </importMapping>
+                                <importMapping>
+                                    LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto
+                                </importMapping>
+                                <importMapping>LoginRequestDto=fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto
+                                </importMapping>
                                 <importMapping>OwnerDto=fr.gouv.vitamui.commons.api.domain.OwnerDto</importMapping>
                                 <importMapping>ProfileDto=fr.gouv.vitamui.commons.api.domain.ProfileDto</importMapping>
                                 <importMapping>TenantDto=fr.gouv.vitamui.commons.api.domain.TenantDto</importMapping>
-                                <importMapping>UserInfoDto=fr.gouv.vitamui.commons.api.domain.UserInfoDto</importMapping>
+                                <importMapping>UserInfoDto=fr.gouv.vitamui.commons.api.domain.UserInfoDto
+                                </importMapping>
                                 <importMapping>AddressDto=fr.gouv.vitamui.commons.api.domain.AddressDto</importMapping>
                                 <importMapping>Role=fr.gouv.vitamui.commons.api.domain.Role</importMapping>
-                                <importMapping>ParameterDto=fr.gouv.vitamui.commons.api.domain.ParameterDto</importMapping>
-                                <importMapping>LogbookOperationDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto</importMapping>
-                                <importMapping>LogbookLifecycleDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifecycleDto</importMapping>
-                                <importMapping>LogbookEventDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto</importMapping>
-                                <importMapping>TenantInformationDto=fr.gouv.vitamui.commons.api.domain.TenantInformationDto</importMapping>
-                                <importMapping>BasicCustomerDto=fr.gouv.vitamui.commons.security.client.dto.BasicCustomerDto</importMapping>
-                                <importMapping>GraphicIdentityDto=fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto</importMapping>
+                                <importMapping>ParameterDto=fr.gouv.vitamui.commons.api.domain.ParameterDto
+                                </importMapping>
+                                <importMapping>
+                                    LogbookOperationDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto
+                                </importMapping>
+                                <importMapping>
+                                    LogbookLifecycleDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifecycleDto
+                                </importMapping>
+                                <importMapping>LogbookEventDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto
+                                </importMapping>
+                                <importMapping>
+                                    TenantInformationDto=fr.gouv.vitamui.commons.api.domain.TenantInformationDto
+                                </importMapping>
+                                <importMapping>
+                                    BasicCustomerDto=fr.gouv.vitamui.commons.security.client.dto.BasicCustomerDto
+                                </importMapping>
+                                <importMapping>
+                                    GraphicIdentityDto=fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto
+                                </importMapping>
                             </importMappings>
                             <typeMappings>
                                 <typeMapping>UserDto=fr.gouv.vitamui.commons.api.domain.UserDto</typeMapping>
                                 <typeMapping>SubrogationDto=fr.gouv.vitamui.iam.common.dto.SubrogationDto</typeMapping>
-                                <typeMapping>ApplicationDto=fr.gouv.vitamui.commons.api.domain.ApplicationDto</typeMapping>
-                                <typeMapping>AuthUserDto=fr.gouv.vitamui.commons.security.client.dto.AuthUserDto</typeMapping>
+                                <typeMapping>ApplicationDto=fr.gouv.vitamui.commons.api.domain.ApplicationDto
+                                </typeMapping>
+                                <typeMapping>AuthUserDto=fr.gouv.vitamui.commons.security.client.dto.AuthUserDto
+                                </typeMapping>
                                 <typeMapping>CustomerDto=fr.gouv.vitamui.iam.common.dto.CustomerDto</typeMapping>
-                                <typeMapping>CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData</typeMapping>
-                                <typeMapping>ExternalParamProfileDto=fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto</typeMapping>
+                                <typeMapping>
+                                    CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData
+                                </typeMapping>
+                                <typeMapping>
+                                    ExternalParamProfileDto=fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto
+                                </typeMapping>
                                 <typeMapping>GroupDto=fr.gouv.vitamui.commons.api.domain.GroupDto</typeMapping>
-                                <typeMapping>IdentityProviderDto=fr.gouv.vitamui.iam.common.dto.IdentityProviderDto</typeMapping>
-                                <typeMapping>LogbookLifeCycleResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto</typeMapping>
-                                <typeMapping>LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto</typeMapping>
-                                <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto</typeMapping>
+                                <typeMapping>IdentityProviderDto=fr.gouv.vitamui.iam.common.dto.IdentityProviderDto
+                                </typeMapping>
+                                <typeMapping>
+                                    LogbookLifeCycleResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto
+                                </typeMapping>
+                                <typeMapping>
+                                    LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto
+                                </typeMapping>
+                                <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto
+                                </typeMapping>
                                 <typeMapping>OwnerDto=fr.gouv.vitamui.commons.api.domain.OwnerDto</typeMapping>
                                 <typeMapping>ProfileDto=fr.gouv.vitamui.commons.api.domain.ProfileDto</typeMapping>
                                 <typeMapping>SubrogationDto=fr.gouv.vitamui.iam.common.dto.SubrogationDto</typeMapping>
@@ -101,12 +141,23 @@
                                 <typeMapping>AddressDto=fr.gouv.vitamui.commons.api.domain.AddressDto</typeMapping>
                                 <typeMapping>Role=fr.gouv.vitamui.commons.api.domain.Role</typeMapping>
                                 <typeMapping>ParameterDto=fr.gouv.vitamui.commons.api.domain.ParameterDto</typeMapping>
-                                <typeMapping>LogbookOperationDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto</typeMapping>
-                                <typeMapping>LogbookLifecycleDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifecycleDto</typeMapping>
-                                <typeMapping>LogbookEventDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto</typeMapping>
-                                <typeMapping>TenantInformationDto=fr.gouv.vitamui.commons.api.domain.TenantInformationDto</typeMapping>
-                                <typeMapping>BasicCustomerDto=fr.gouv.vitamui.commons.security.client.dto.BasicCustomerDto</typeMapping>
-                                <typeMapping>GraphicIdentityDto=fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto</typeMapping>
+                                <typeMapping>
+                                    LogbookOperationDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto
+                                </typeMapping>
+                                <typeMapping>
+                                    LogbookLifecycleDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifecycleDto
+                                </typeMapping>
+                                <typeMapping>LogbookEventDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookEventDto
+                                </typeMapping>
+                                <typeMapping>
+                                    TenantInformationDto=fr.gouv.vitamui.commons.api.domain.TenantInformationDto
+                                </typeMapping>
+                                <typeMapping>
+                                    BasicCustomerDto=fr.gouv.vitamui.commons.security.client.dto.BasicCustomerDto
+                                </typeMapping>
+                                <typeMapping>
+                                    GraphicIdentityDto=fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto
+                                </typeMapping>
                             </typeMappings>
                         </configuration>
                     </execution>
@@ -160,7 +211,7 @@
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
-            <version>0.2.6</version>
+            <version>${jackson-databind-nullable.version}</version>
         </dependency>
     </dependencies>
 

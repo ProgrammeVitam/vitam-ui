@@ -47,6 +47,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -81,6 +82,7 @@ class ExportDipServiceTest {
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         exportDipService = new ExportDipService(
             archiveSearchService,
             exportDipV2Service,

@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class VitamUIUtilsTest {
 
     @Test
-    public void testEmailValidator() {
+    void testEmailValidator() {
         final String badFormat = "te.com";
         Assertions.assertFalse(VitamUIUtils.isValidEmail(badFormat), "Bad emails format");
         final String goodFormat = "test@test.com";
@@ -24,7 +24,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void testRandomByte() throws IOException {
+    void testRandomByte() throws IOException {
         final byte[] data = VitamUIUtils.getRandom(2);
 
         Assertions.assertNotNull(data, "Byte[] data is null.");
@@ -32,7 +32,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void testRandomEmptyByte() throws IOException {
+    void testRandomEmptyByte() throws IOException {
         final byte[] data = VitamUIUtils.getRandom(0);
 
         Assertions.assertNotNull(data, "Byte[] data is null.");
@@ -40,7 +40,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void testConvertStringToDate() throws IOException {
+    void testConvertStringToDate() throws IOException {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
         Date date = VitamUIUtils.convertStringToDate("2020-01-01");
 
@@ -75,7 +75,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void givenUsingTheJdk_whenUnmodifiableListIsCreated_thenNotModifiable() {
+    void givenUsingTheJdk_whenUnmodifiableListIsCreated_thenNotModifiable() {
         assertThrows(UnsupportedOperationException.class, () -> {
             List<String> list = VitamUIUtils.listOf("one", "two", "three");
             list.add("four");
@@ -83,7 +83,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenApplicationNameIsNull_thenIllegalArgumentException() {
+    void generateApplicationId_whenApplicationNameIsNull_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -99,7 +99,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenApplicationNameIsEmpty_thenIllegalArgumentException() {
+    void generateApplicationId_whenApplicationNameIsEmpty_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -108,7 +108,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenUserIdentifiernNameIsEmpty_thenIllegalArgumentException() {
+    void generateApplicationId_whenUserIdentifiernNameIsEmpty_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -117,7 +117,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenUserIdentifiernNameIsNull_thenIllegalArgumentException() {
+    void generateApplicationId_whenUserIdentifiernNameIsNull_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -133,7 +133,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenCustomerIdentifiernIsEmpty_thenIllegalArgumentException() {
+    void generateApplicationId_whenCustomerIdentifiernIsEmpty_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () -> VitamUIUtils.generateApplicationId("", "applicationName", "userIdentifier", "", "", "x-request-id")
@@ -141,7 +141,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenCustomerIdentifiernIsNull_thenIllegalArgumentException() {
+    void generateApplicationId_whenCustomerIdentifiernIsNull_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () -> VitamUIUtils.generateApplicationId("", "applicationName", "userIdentifier", "", null, "x-request-id")
@@ -149,7 +149,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenRequestIdIsEmpty_thenIllegalArgumentException() {
+    void generateApplicationId_whenRequestIdIsEmpty_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -165,7 +165,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void generateApplicationId_whenRequestIdIsNull_thenIllegalArgumentException() {
+    void generateApplicationId_whenRequestIdIsNull_thenIllegalArgumentException() {
         assertThrows(
             IllegalArgumentException.class,
             () ->
@@ -181,7 +181,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void testSecureHeadersLogging() throws IOException {
+    void testSecureHeadersLogging() throws IOException {
         HttpHeaders headers = new HttpHeaders();
 
         headers.add("host", "172.18.102.247:8008");
@@ -197,7 +197,7 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void convertSizeToKiloByteByteCountSI() throws IOException {
+    void convertSizeToKiloByteByteCountSI() throws IOException {
         assertEquals("624 go", VitamUIUtils.convertSizeToGigaByte(670_014_898_176L));
         assertEquals("0 go", VitamUIUtils.convertSizeToGigaByte(0L));
         assertEquals("0.000001 go", VitamUIUtils.convertSizeToGigaByte(1_000L));

@@ -39,14 +39,17 @@ import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
 import fr.gouv.vitamui.referential.server.service.managementcontract.converter.ManagementContractConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ManagementContractConverterTest {
 
     private final ManagementContractConverter managementContractConverter = new ManagementContractConverter();

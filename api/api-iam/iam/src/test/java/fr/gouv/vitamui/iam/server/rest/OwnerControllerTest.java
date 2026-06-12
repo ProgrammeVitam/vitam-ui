@@ -15,10 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests the {@link OwnerController}.
- *
- *
  */
-public final class OwnerControllerTest {
+final class OwnerControllerTest {
 
     private AutoCloseable mocks;
 
@@ -36,7 +34,7 @@ public final class OwnerControllerTest {
     private void prepareServices() {}
 
     @Test
-    public void testUpdateFailsAsDtoIdAndPathIdAreDifferent() throws Exception {
+    void testUpdateFailsAsDtoIdAndPathIdAreDifferent() throws Exception {
         prepareServices();
 
         try {
@@ -48,7 +46,7 @@ public final class OwnerControllerTest {
     }
 
     @Test
-    public void testCannotDelete() {
+    void testCannotDelete() {
         assertThrows(UnsupportedOperationException.class, () -> {
             prepareServices();
             controller.delete("Id");

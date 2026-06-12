@@ -13,21 +13,19 @@ import java.io.IOException;
 
 /**
  * VITAMUI DTO.
- *
- *
  */
 public class QueryDtoTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QueryDto.class);
 
     @Test
-    public void testToString() {
+    void testToString() {
         QueryDto criteria = new QueryDto();
         criteria.addCriterion(new Criterion("lastName", "nole", CriterionOperator.EQUALS));
     }
 
     @Test
-    public void testSerialization() throws JsonProcessingException {
+    void testSerialization() throws JsonProcessingException {
         QueryDto criteria = new QueryDto();
         String exceptedQueryString =
             "{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"lastname\",\"value\":\"nole\",\"operator\":\"EQUALSIGNORECASE\"},{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
@@ -41,7 +39,7 @@ public class QueryDtoTest {
     }
 
     @Test
-    public void testDeserialization() throws JsonParseException, JsonMappingException, IOException {
+    void testDeserialization() throws JsonParseException, JsonMappingException, IOException {
         String queryAsJson =
             "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"}]}";
         QueryDto query = JsonUtils.fromJson(queryAsJson, QueryDto.class);
@@ -54,7 +52,7 @@ public class QueryDtoTest {
     }
 
     @Test
-    public void testDeserializationWithSubquery() throws JsonParseException, JsonMappingException, IOException {
+    void testDeserializationWithSubquery() throws JsonParseException, JsonMappingException, IOException {
         String queryAsJson =
             "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"},{\"queryOperator\":\"NOR\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
         QueryDto query = JsonUtils.fromJson(queryAsJson, QueryDto.class);

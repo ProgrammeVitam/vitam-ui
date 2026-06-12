@@ -8,7 +8,7 @@ import java.io.IOException;
 public class VitamUIStringUtilsTest {
 
     @Test
-    public void TestIsBoolean() throws IOException {
+    void TestIsBoolean() throws IOException {
         Assertions.assertTrue(VitamUIStringUtils.isBoolean("y"));
         Assertions.assertTrue(VitamUIStringUtils.isBoolean("true"));
         Assertions.assertTrue(VitamUIStringUtils.isBoolean("false"));

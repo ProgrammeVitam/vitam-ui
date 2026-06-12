@@ -62,7 +62,10 @@ import java.util.Optional;
 import static fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest.CUSTOMER_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -164,7 +167,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByTokenNoTokenInDatabase() {
+    void testGetUserByTokenNoTokenInDatabase() {
         assertThrows(NotFoundException.class, () -> {
             Mockito.when(securityService.userIsRootLevel()).thenReturn(true);
             userService.findUserById(TOKEN_VALUE);
@@ -172,7 +175,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByToken() {
+    void testGetUserByToken() {
         when(securityService.getLevel()).thenReturn("DSI");
         when(securityService.userIsRootLevel()).thenReturn(true);
         when(groupService.getMany(GROUP_ID)).thenReturn(Arrays.asList(buildGroupDto()));
@@ -199,7 +202,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUserSuccessWhenEmailMultipleCase() {
+    void testUpdateUserSuccessWhenEmailMultipleCase() {
         final String emailInputToTest = "TESt@vitamui.com";
         final String userEmailInDb = emailInputToTest.toLowerCase();
         final User user = IamServerUtilsTest.buildUser(USER_ID, userEmailInDb, "profileGroupId");
@@ -239,7 +242,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUser() {
+    void testUpdateUser() {
         final String emailToTest = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
 
@@ -278,7 +281,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testGetUsersGenericByCustomer() {
+    void testGetUsersGenericByCustomer() {
         final String customerId = "customerId";
         when(
             userRepository.getPaginatedValues(
@@ -316,7 +319,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testGetResultsUsersGenericByCustomer() {
+    void testGetResultsUsersGenericByCustomer() {
         final String customerId = "customerId";
         when(
             userRepository.getPaginatedValues(
@@ -369,7 +372,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testGetUsersGenericByCustomerNotSubreogable() {
+    void testGetUsersGenericByCustomerNotSubreogable() {
         when(
             userRepository.getPaginatedValues(
                 ArgumentMatchers.any(),
@@ -415,7 +418,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testAddMoreRestrictions() {
+    void testAddMoreRestrictions() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.setLevel(LEVEL);
 
@@ -435,7 +438,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testAddMoreRestrictionsAdminUser() {
+    void testAddMoreRestrictionsAdminUser() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.setLevel(ApiIamConstants.ADMIN_LEVEL);
 
@@ -455,7 +458,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testDisableUser() {
+    void testDisableUser() {
         final String emailToTest = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
         final User userUpdated = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
@@ -498,7 +501,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void beforePatch_whenUserWasNotBlocked_thenIllegalArgumentException() {
+    void beforePatch_whenUserWasNotBlocked_thenIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> {
             final User user = IamServerUtilsTest.buildUser(USER_ID, "test@vitamui.com", "profileGroupId");
 
@@ -513,7 +516,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void beforePatch_whenUserWasBlocked_thenIllegalArgumentException() {
+    void beforePatch_whenUserWasBlocked_thenIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> {
             final String emailToTest = "test@vitamui.com";
             final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
@@ -560,7 +563,7 @@ public final class UserServiceTest {
      * An email should be sent to the user in order to change his password.
      */
     @Test
-    public void testDisableThenEnableUser() {
+    void testDisableThenEnableUser() {
         final String emailToTest = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, emailToTest, "profileGroupId");
         user.setStatus(UserStatusEnum.DISABLED);
@@ -605,7 +608,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void getLevels_whenProfilesExist_returnsLevels() {
+    void getLevels_whenProfilesExist_returnsLevels() {
         final Optional<String> criteria = Optional.empty();
         final List<Document> mappedResults = new ArrayList<>();
         final Document document = new Document("level", Arrays.asList("DEV", "TEST"));
@@ -622,7 +625,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void getLevels_whenNoProfile_returnsEmptyList() {
+    void getLevels_whenNoProfile_returnsEmptyList() {
         final Optional<String> criteria = Optional.empty();
         final List<Document> mappedResults = new ArrayList<>();
         final Document rawResults = new Document();
@@ -635,7 +638,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUserWithInvalidEmailFormat() {
+    void testUpdateUserWithInvalidEmailFormat() {
         final String email = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, email, "profileGroupId");
 
@@ -739,7 +742,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUserWithValidEmailFormat() {
+    void testUpdateUserWithValidEmailFormat() {
         final String email = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, email, "profileGroupId");
 
@@ -791,7 +794,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUserWithInvalidPhoneNumberFormat() {
+    void testUpdateUserWithInvalidPhoneNumberFormat() {
         final String email = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, email, "profileGroupId");
 
@@ -885,7 +888,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void testUpdateUserWithValidPhoneNumberFormat() {
+    void testUpdateUserWithValidPhoneNumberFormat() {
         final String email = "test@vitamui.com";
         final User user = IamServerUtilsTest.buildUser(USER_ID, email, "profileGroupId");
 
@@ -954,7 +957,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void patchNotAllowedAnalyticsFieldShouldThrowAnException() {
+    void patchNotAllowedAnalyticsFieldShouldThrowAnException() {
         final Throwable thrown = catchThrowable(() -> userService.patchAnalytics(Map.of("notAllowedField", "test")));
 
         assertThat(thrown)
@@ -965,7 +968,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void patchAnalyticsWithEmptyPayloadShouldThrowAnException() {
+    void patchAnalyticsWithEmptyPayloadShouldThrowAnException() {
         final Throwable thrown = catchThrowable(() -> userService.patchAnalytics(Map.of()));
 
         assertThat(thrown)
@@ -976,7 +979,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void patchApplicationAnalyticsNonExistentUserShouldThrowAnException() {
+    void patchApplicationAnalyticsNonExistentUserShouldThrowAnException() {
         userService = spy(userService);
         final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
         when(userService.getMe()).thenReturn(authUserDto);
@@ -993,7 +996,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void patchApplicationAnalyticsWithoutPermissionShouldThrowAnException() {
+    void patchApplicationAnalyticsWithoutPermissionShouldThrowAnException() {
         userService = spy(userService);
         final AuthUserDto authUserDto = IamServerUtilsTest.buildAuthUserDto();
         when(userService.getMe()).thenReturn(authUserDto);
@@ -1015,7 +1018,7 @@ public final class UserServiceTest {
     }
 
     @Test
-    public void patchApplicationAnalyticsOk() {
+    void patchApplicationAnalyticsOk() {
         final String applicationId = "PROFILES_APP";
         final ApplicationDto application = new ApplicationDto();
         application.setIdentifier(applicationId);

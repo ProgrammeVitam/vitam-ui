@@ -69,7 +69,7 @@ public class ExternalParametersServiceTest extends AbstractLogbookIntegrationTes
     }
 
     @Test
-    public void testGetOne() {
+    void testGetOne() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.getProfileGroup().getProfiles().get(0).setApplicationName(Application.EXTERNAL_PARAMS.toString());
         user.getProfileGroup().getProfiles().get(0).setExternalParamId(ANY_EXTERNAL_PARAM_ID);

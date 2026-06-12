@@ -50,6 +50,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -91,6 +92,7 @@ class TransferVitamOperationsServiceTest {
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         transferVitamOperationsService = new TransferVitamOperationsService(
             transferAcknowledgmentService,
             archiveSearchService,

@@ -39,7 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class ExternalParamProfileServiceTest {
+class ExternalParamProfileServiceTest {
 
     private ExternalParamProfileService externalParamProfileService;
 
@@ -82,7 +82,7 @@ public class ExternalParamProfileServiceTest {
     }
 
     @Test
-    public void testCreateProfileUser() {
+    void testCreateProfileUser() {
         // Givens
         final ProfileDto profileDto = DtoFactory.buildProfileDto(
             "User",

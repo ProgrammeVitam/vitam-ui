@@ -38,7 +38,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -47,8 +47,8 @@ import java.util.function.Supplier;
 @Slf4j
 public class IamApiClient extends ApiClient {
 
-    public IamApiClient(RestTemplate restTemplate) {
-        super(restTemplate);
+    public IamApiClient(RestClient restClient) {
+        super(restClient);
     }
 
     @Override
@@ -137,6 +137,34 @@ public class IamApiClient extends ApiClient {
         String value = valueSupplier.get();
         if (value != null) {
             headers.set(headerName, value);
+        }
+    }
+
+    @Override
+    protected void addHeadersToRequest(HttpHeaders headers, RestClient.RequestBodySpec requestBuilder) {
+        try {
+            java.util.Set<java.util.Map.Entry<String, java.util.List<String>>> entries;
+            try {
+                java.lang.reflect.Method headerSetMethod = HttpHeaders.class.getMethod("headerSet");
+                entries = (java.util.Set<java.util.Map.Entry<String, java.util.List<String>>>) headerSetMethod.invoke(
+                    headers
+                );
+            } catch (NoSuchMethodException e) {
+                java.lang.reflect.Method entrySetMethod = HttpHeaders.class.getMethod("entrySet");
+                entries = (java.util.Set<java.util.Map.Entry<String, java.util.List<String>>>) entrySetMethod.invoke(
+                    headers
+                );
+            }
+            for (java.util.Map.Entry<String, java.util.List<String>> entry : entries) {
+                java.util.List<String> values = entry.getValue();
+                for (String value : values) {
+                    if (value != null) {
+                        requestBuilder.header(entry.getKey(), value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to add headers to request", e);
         }
     }
 }

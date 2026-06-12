@@ -61,7 +61,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class OntologyCommonServiceTest {
+class OntologyCommonServiceTest {
 
     @Mock
     private AdminExternalClient adminExternalClient;
@@ -75,7 +75,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void findOntologyById_should_return_ontologies_when_vitamclient_ok() throws VitamClientException {
+    void findOntologyById_should_return_ontologies_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "0";
 
@@ -89,7 +89,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void findOntologyById_should_return_vitamClientException_when_vitamClient_400() throws VitamClientException {
+    void findOntologyById_should_return_vitamClientException_when_vitamClient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String identifier = "1";
 
@@ -103,7 +103,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void findOntologyById_should_return_vitamClientException_when_vitamClient_throws_vitamClientException()
+    void findOntologyById_should_return_vitamClientException_when_vitamClient_throws_vitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String identifier = "1";
@@ -118,7 +118,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void findOntologies_should_return_ontologies_when_vitamclient_ok() throws VitamClientException {
+    void findOntologies_should_return_ontologies_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
@@ -132,7 +132,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void findOntologies_should_return_vitamClientException_when_vitamClient_400() throws VitamClientException {
+    void findOntologies_should_return_vitamClientException_when_vitamClient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         JsonNode jsonNode = JsonHandler.createObjectNode();
 
@@ -146,7 +146,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void findOntologies_should_return_vitamClientException_when_vitamClient_throws_vitamClientException()
+    void findOntologies_should_return_vitamClientException_when_vitamClient_throws_vitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(2);
         JsonNode jsonNode = JsonHandler.createObjectNode();
@@ -161,7 +161,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void importOntologies_should_return_ok_when_vitamclient_ok()
+    void importOntologies_should_return_ok_when_vitamclient_ok()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         List<OntologyModel> ontologies = new ArrayList<>();
@@ -185,7 +185,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void importOntologies_should_return_ok_when_vitamclient_400()
+    void importOntologies_should_return_ok_when_vitamclient_400()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         List<OntologyModel> ontologies = new ArrayList<>();
@@ -204,7 +204,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void importOntologies_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
+    void importOntologies_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         List<OntologyModel> ontologies = new ArrayList<>();
@@ -223,7 +223,7 @@ public class OntologyCommonServiceTest {
     }
 
     @Test
-    public void importOntologies_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
+    void importOntologies_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
         throws InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(0);
         List<OntologyModel> ontologies = new ArrayList<>();

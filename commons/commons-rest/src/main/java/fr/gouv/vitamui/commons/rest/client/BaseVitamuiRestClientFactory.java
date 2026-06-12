@@ -49,6 +49,7 @@ import org.apache.hc.client5.http.HttpRoute;
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.CredentialsStore;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -59,14 +60,14 @@ import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -83,41 +84,35 @@ import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A rest client factory to create each domain specific REST client. The http connection is configured by the
  * RestClientConfiguration object. The factory implements a connection pool configured by the HttpPoolConfiguration
  * object and handles SSL via x509 certificates.
- *
- *
  */
 
-public class BaseRestClientFactory implements RestClientFactory {
+public class BaseVitamuiRestClientFactory implements VitamuiRestClientFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseRestClientFactory.class);
-
-    private final RestTemplate restTemplate;
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseVitamuiRestClientFactory.class);
 
     private final String baseUrl;
+    private final RestClient restClient;
 
     protected int connectTimeout = 500000;
-
     protected int connectionRequestTimeout = 500000;
-
     protected int socketTimeout = 500000;
 
-    public BaseRestClientFactory(
+    public BaseVitamuiRestClientFactory(
         final RestClientConfiguration restClientConfiguration,
-        final RestTemplateBuilder restTemplateBuilder
+        final RestClient.Builder restClientBuilder
     ) {
-        this(restClientConfiguration, null, restTemplateBuilder);
+        this(restClientConfiguration, null, restClientBuilder);
     }
 
-    public BaseRestClientFactory(
+    public BaseVitamuiRestClientFactory(
         final RestClientConfiguration restClientConfig,
         final HttpPoolConfiguration httpPoolConfig,
-        final RestTemplateBuilder restTemplateBuilder
+        final RestClient.Builder restClientBuilder
     ) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
 
@@ -128,7 +123,6 @@ public class BaseRestClientFactory implements RestClientFactory {
         restClientConfig.getServerPort();
 
         HttpPoolConfiguration myPoolConfig = httpPoolConfig;
-        // configure the pool from the restClientConfig if the value of poolMaxTotal is positive
         if (restClientConfig.getPoolMaxTotal() >= 0) {
             myPoolConfig = new HttpPoolConfiguration();
             myPoolConfig.setMaxTotal(restClientConfig.getPoolMaxTotal());
@@ -150,19 +144,17 @@ public class BaseRestClientFactory implements RestClientFactory {
         }
 
         final var httpClient = httpClientBuilder.build();
-        restTemplate = restTemplateBuilder.errorHandler(new ErrorHandler()).build();
-        restTemplate.setRequestFactory(
-            new BufferingClientHttpRequestFactory(
-                new CustomHttpComponentsClientHttpRequestFactory(httpClient, UUID.randomUUID().toString())
-            )
+        final var requestFactory = new BufferingClientHttpRequestFactory(
+            new CustomHttpComponentsClientHttpRequestFactory(httpClient, UUID.randomUUID().toString())
         );
+
+        this.restClient = restClientBuilder
+            .baseUrl(baseUrl)
+            .requestFactory(requestFactory)
+            .defaultStatusHandler(new ErrorHandler())
+            .build();
     }
 
-    /**
-     * Add proxy configuration to httpClientBuilder
-     * @param httpClientBuilder
-     * @param proxyProperties
-     */
     private void addProxy(final HttpClientBuilder httpClientBuilder, final @NotNull ProxyProperties proxyProperties) {
         ParameterChecker.checkParameter("Proxy properties must not be null", proxyProperties);
 
@@ -177,16 +169,9 @@ public class BaseRestClientFactory implements RestClientFactory {
         addCredentialsIfNeeded(httpClientBuilder, proxy, username, proxyProperties.getPassword());
     }
 
-    /**
-     * Used for attached proxy's credential
-     * @param httpClientBuilder
-     * @param proxy
-     * @param username
-     * @param password
-     */
     private void addCredentialsIfNeeded(
         final HttpClientBuilder httpClientBuilder,
-        HttpHost proxy,
+        final HttpHost proxy,
         final String username,
         final String password
     ) {
@@ -194,17 +179,12 @@ public class BaseRestClientFactory implements RestClientFactory {
 
         CredentialsStore credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
-            new AuthScope(proxy.getHostName(), proxy.getPort()),
+            new AuthScope(proxy),
             new UsernamePasswordCredentials(username, password.toCharArray())
         );
         httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
     }
 
-    /*
-     * Create an SSLContext that uses client.p12 as the client certificate
-     * and the truststore.jks as the trust material (trusted CA certificates).
-     * Then create SSLConnectionSocketFactory to register with the HTTPS protocol.
-     */
     private Registry<ConnectionSocketFactory> buildRegistry(final SSLConfiguration sslConfiguration) {
         if (sslConfiguration == null) {
             throw new ApplicationServerException(
@@ -215,7 +195,6 @@ public class BaseRestClientFactory implements RestClientFactory {
         final SSLConfiguration.CertificateStoreConfiguration ks = sslConfiguration.getKeystore();
         final SSLConfiguration.CertificateStoreConfiguration ts = sslConfiguration.getTruststore();
 
-        SSLContext sslContext = null;
         try {
             final SSLContextBuilder sslContextBuilder = SSLContextBuilder.create();
 
@@ -224,11 +203,17 @@ public class BaseRestClientFactory implements RestClientFactory {
                 sslContextBuilder.loadKeyMaterial(keyStore, ks.getKeyPassword().toCharArray());
             }
 
-            sslContext = sslContextBuilder
+            final SSLContext sslContext = sslContextBuilder
                 .loadTrustMaterial(new File(ts.getKeyPath()), ts.getKeyPassword().toCharArray())
                 .setProtocol("TLS")
                 .setSecureRandom(new java.security.SecureRandom())
                 .build();
+
+            final HostnameVerifier hostnameVerifier = sslConfiguration.isHostnameVerification()
+                ? null
+                : TrustAllHostnameVerifier.INSTANCE;
+            final SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+            return RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslFactory).build();
         } catch (
             NoSuchAlgorithmException
             | KeyManagementException
@@ -239,15 +224,8 @@ public class BaseRestClientFactory implements RestClientFactory {
         ) {
             LOGGER.error("Unable to build the Registry<ConnectionSocketFactory>.", e);
             LOGGER.error("KeyPath: " + sslConfiguration.getKeystore().getKeyPath());
-
             throw new ApplicationServerException(e);
         }
-
-        final HostnameVerifier hostnameVerifier = sslConfiguration.isHostnameVerification()
-            ? null
-            : TrustAllHostnameVerifier.INSTANCE;
-        final SSLConnectionSocketFactory sslFactory = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
-        return RegistryBuilder.<ConnectionSocketFactory>create().register("https", sslFactory).build();
     }
 
     private KeyStore loadPkcs(final String type, final String filename, final char[] password)
@@ -260,28 +238,27 @@ public class BaseRestClientFactory implements RestClientFactory {
         return keyStore;
     }
 
-    /*
-     * Create a ClientConnectionPoolManager that maintains a pool of HttpClientConnections and is able to service connection
-     * requests from multiple execution threads. Connections are pooled on a per route basis. A request for a route which
-     * already the manager has persistent connections for available in the pool will be services by leasing a connection
-     * from the pool rather than creating a brand new connection.
-     */
     private PoolingHttpClientConnectionManager buildConnectionManager(
         final HttpPoolConfiguration poolConfig,
         final Registry<ConnectionSocketFactory> socketFactoryRegistry
     ) {
+        final ConnectionConfig connectionConfig = ConnectionConfig.custom()
+            .setConnectTimeout(Timeout.ofMilliseconds(connectTimeout))
+            .setSocketTimeout(Timeout.ofMilliseconds(socketTimeout))
+            .build();
+
         final PoolingHttpClientConnectionManager connectionManager = (socketFactoryRegistry != null)
             ? new PoolingHttpClientConnectionManager(socketFactoryRegistry)
             : new PoolingHttpClientConnectionManager();
 
+        connectionManager.setDefaultConnectionConfig(connectionConfig);
+
         if (poolConfig != null) {
             connectionManager.setMaxTotal(poolConfig.getMaxTotal());
-            // Default max per route is used in case it's not set for a specific route
             connectionManager.setDefaultMaxPerRoute(poolConfig.getMaxPerRoute());
 
             for (final HttpPoolConfiguration.HostConfiguration hostConfig : poolConfig.getHostConfigurations()) {
                 final HttpHost host = new HttpHost(hostConfig.getScheme(), hostConfig.getHost(), hostConfig.getPort());
-                // Max per route for a specific hosts route
                 connectionManager.setMaxPerRoute(new HttpRoute(host), hostConfig.getMaxPerRoute());
             }
         }
@@ -290,15 +267,10 @@ public class BaseRestClientFactory implements RestClientFactory {
 
     private RequestConfig buildRequestConfig() {
         return RequestConfig.custom()
-            .setConnectionRequestTimeout(connectionRequestTimeout, TimeUnit.MILLISECONDS)
-            .setConnectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
-            .setResponseTimeout(socketTimeout, TimeUnit.MILLISECONDS)
+            .setConnectionRequestTimeout(Timeout.ofMilliseconds(connectionRequestTimeout))
+            .setConnectTimeout(Timeout.ofMilliseconds(connectTimeout))
+            .setResponseTimeout(Timeout.ofMilliseconds(socketTimeout))
             .build();
-    }
-
-    @Override
-    public RestTemplate getRestTemplate() {
-        return restTemplate;
     }
 
     @Override
@@ -306,7 +278,16 @@ public class BaseRestClientFactory implements RestClientFactory {
         return baseUrl;
     }
 
+    @Override
+    public RestClient getRestClient() {
+        return restClient;
+    }
+
     public void setRestClientInterceptor(final List<ClientHttpRequestInterceptor> interceptors) {
-        restTemplate.setInterceptors(interceptors);
+        // VitamuiRestClient is immutable — interceptors must be set at build time
+        // This method should be removed and interceptors passed via VitamuiRestClient.Builder instead
+        throw new UnsupportedOperationException(
+            "VitamuiRestClient is immutable. Pass interceptors via VitamuiRestClient.Builder at construction time."
+        );
     }
 }

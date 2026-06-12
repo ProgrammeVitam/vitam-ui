@@ -18,7 +18,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +31,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ExternalReferentialServiceTest {
 
     private static final int CURRENT_TENANT = 2;
@@ -54,7 +57,7 @@ class ExternalReferentialServiceTest {
     }
 
     @Test
-    public void testGetExternalReferential() {
+    void testGetExternalReferential() {
         // Given
         doReturn(
             List.of(
@@ -79,7 +82,7 @@ class ExternalReferentialServiceTest {
     }
 
     @Test
-    public void testListAgencies() throws VitamClientException {
+    void testListAgencies() throws VitamClientException {
         // Given
         AgenciesModel agency1 = new AgenciesModel();
         agency1.setIdentifier("identifier1");
@@ -115,7 +118,7 @@ class ExternalReferentialServiceTest {
     }
 
     @Test
-    public void testListIngestContracts() throws VitamClientException {
+    void testListIngestContracts() throws VitamClientException {
         // Given
         IngestContractModel ingestContract1 = new IngestContractModel();
         ingestContract1.setIdentifier("identifier1");
@@ -162,7 +165,7 @@ class ExternalReferentialServiceTest {
     }
 
     @Test
-    public void testListArchiveProfiles() throws VitamClientException {
+    void testListArchiveProfiles() throws VitamClientException {
         // Given
         ProfileModel profileModel1 = new ProfileModel();
         profileModel1.setIdentifier("identifier1");

@@ -13,14 +13,14 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class GroupConverterTest {
+class GroupConverterTest {
 
     private final ProfileRepository profileRepository = Mockito.mock(ProfileRepository.class);
 
     private final GroupConverter groupConverter = new GroupConverter(profileRepository);
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         Group group = new Group();
         group.setCustomerId("customerId");
         group.setDescription("description");
@@ -36,7 +36,7 @@ public class GroupConverterTest {
     }
 
     @Test
-    public void testConvertDtoToEntity() {
+    void testConvertDtoToEntity() {
         GroupDto groupDto = new GroupDto();
         groupDto.setCustomerId("customerID");
         groupDto.setDescription("description");
@@ -51,7 +51,7 @@ public class GroupConverterTest {
     }
 
     @Test
-    public void testConvertToLogbook() throws InvalidParseOperationException {
+    void testConvertToLogbook() throws InvalidParseOperationException {
         GroupDto groupDto = new GroupDto();
         groupDto.setCustomerId("customerID");
         groupDto.setDescription("description");

@@ -70,9 +70,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -89,8 +91,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-public class IngestContractServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class IngestContractServiceTest {
 
     @Mock
     private IngestContractCommonService ingestContractCommonService;
@@ -126,7 +129,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -138,7 +141,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -150,7 +153,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -165,7 +168,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(
@@ -176,7 +179,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(
@@ -187,7 +190,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
@@ -199,7 +202,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void findAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
@@ -211,7 +214,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void findAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void findAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
 
@@ -223,7 +226,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void findAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void findAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         JsonNode query = JsonHandler.createObjectNode();
@@ -238,7 +241,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok() {
+    void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
@@ -251,7 +254,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void check_should_throw_BadRequestException_when_vitamclient_throws_BadRequestException() {
+    void check_should_throw_BadRequestException_when_vitamclient_throws_BadRequestException() {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
@@ -266,7 +269,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void check_should_throw_UnavailableServiceException_when_vitamclient_throws_UnavailableServiceException() {
+    void check_should_throw_UnavailableServiceException_when_vitamclient_throws_UnavailableServiceException() {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
@@ -281,7 +284,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
+    void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
         IngestContractDto ingestContractDto = new IngestContractDto();
@@ -294,7 +297,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok()
+    void create_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
@@ -312,7 +315,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_400()
+    void create_should_return_ok_when_vitamclient_400()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
@@ -330,7 +333,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
@@ -350,7 +353,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
@@ -370,7 +373,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException {
         VitamContext vitamContext = new VitamContext(1);
         vitamContext.setApplicationSessionId("1");
@@ -390,7 +393,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "identifier";
 
@@ -404,7 +407,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "identifier";
 
@@ -418,7 +421,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findHistoryByIdentifier_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(1);
         String id = "identifier";
@@ -433,8 +436,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void import_should_return_ok()
-        throws IOException, InvalidParseOperationException, AccessExternalClientException {
+    void import_should_return_ok() throws IOException, InvalidParseOperationException, AccessExternalClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         String fileName = "import_ingest_contracts_valid.csv";
@@ -460,7 +462,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void import_should_throws_BadRequestException_when_sending_to_vitam()
+    void import_should_throws_BadRequestException_when_sending_to_vitam()
         throws IOException, InvalidParseOperationException, AccessExternalClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
@@ -495,7 +497,7 @@ public class IngestContractServiceTest {
     }
 
     @Test
-    public void export_should_return_ok() throws VitamClientException {
+    void export_should_return_ok() throws VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
 

@@ -74,7 +74,7 @@ import java.io.OutputStreamWriter;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
-public class ManifestValidatorTest {
+class ManifestValidatorTest {
 
     @TempDir
     public File tempFolder;
@@ -87,7 +87,7 @@ public class ManifestValidatorTest {
     }
 
     @Test
-    public void testManifestOK() throws Exception {
+    void testManifestOK() throws Exception {
         Assertions.assertTrue(
             manifestValidator.checkFileRNG(
                 PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"),
@@ -97,7 +97,7 @@ public class ManifestValidatorTest {
     }
 
     @Test
-    public void testManifestNOK() throws Exception {
+    void testManifestNOK() throws Exception {
         Assertions.assertFalse(
             manifestValidator.checkFileRNG(
                 PropertiesUtils.getResourceAsStream("manifests/manifestNOK.xml"),
@@ -114,7 +114,7 @@ public class ManifestValidatorTest {
      * @throws JAXBException
      */
     @Test
-    public void testManifestAgainstGeneratedRNG() throws IOException, JAXBException {
+    void testManifestAgainstGeneratedRNG() throws IOException, JAXBException {
         InputStream jsonInputStream = getClass().getClassLoader().getResourceAsStream("manifests/jsonProfile.json");
         ObjectMapper objectMapper = new ObjectMapper();
         ElementProperties jsonMap = objectMapper.readValue(jsonInputStream, ElementProperties.class);

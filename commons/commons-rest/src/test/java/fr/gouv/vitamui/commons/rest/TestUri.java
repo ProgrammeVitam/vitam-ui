@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,8 +17,8 @@ public class TestUri {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TestUri.class);
 
-    public static void main(final String[] args) throws IOException {
-        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://localhost");
+    public static void main(final String[] args) throws IOException, URISyntaxException {
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromUri(new URI("http://localhost"));
 
         builder.queryParam("test", OffsetDateTime.now().toString());
 

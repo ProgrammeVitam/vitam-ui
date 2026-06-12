@@ -45,17 +45,15 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.event.EventListener;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.awt.*;
 
-@SpringBootApplication(
+@SpringBootApplication
+/*  deleted and replaced by securityFilterChain bean to disable security(
     exclude = {
         org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
         org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class,
     }
-)
+)*/
 public class ApiPastisStandaloneApplication extends SpringBootServletInitializer {
 
     private final PastisConfiguration pastisConfiguration;
@@ -74,7 +72,13 @@ public class ApiPastisStandaloneApplication extends SpringBootServletInitializer
     }
 
     @EventListener(ApplicationReadyEvent.class)
-    public void openBrowserAfterStartup() throws IOException, URISyntaxException {
-        Desktop.getDesktop().browse(new URI(pastisConfiguration.url));
+    public void openBrowserAfterStartup() {
+        if (!java.awt.GraphicsEnvironment.isHeadless() && java.awt.Desktop.isDesktopSupported()) {
+            try {
+                java.awt.Desktop.getDesktop().browse(new java.net.URI(pastisConfiguration.url));
+            } catch (Exception e) {
+                // Ignore error when opening browser
+            }
+        }
     }
 }

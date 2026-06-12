@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ApplicationServiceTest {
+class ApplicationServiceTest {
 
     private ApplicationService applicationService;
 
@@ -60,7 +60,7 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    public void testGetAllFilteredByUser() {
+    void testGetAllFilteredByUser() {
         final Application app = IamServerUtilsTest.buildApplication();
         final List<Application> apps = Arrays.asList(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
@@ -73,7 +73,7 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    public void testGetAllFilteredByUserShouldFilteredForUser() {
+    void testGetAllFilteredByUserShouldFilteredForUser() {
         final Application app = IamServerUtilsTest.buildApplication();
         final Application app2 = IamServerUtilsTest.buildApplication("id2", "url2");
         final List<Application> apps = Arrays.asList(app, app2);
@@ -87,7 +87,7 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    public void testGetAllFilteredByUserForNullUserThenThrowException() {
+    void testGetAllFilteredByUserForNullUserThenThrowException() {
         final Application app = IamServerUtilsTest.buildApplication();
         final List<Application> apps = List.of(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);
@@ -101,7 +101,7 @@ public class ApplicationServiceTest {
     }
 
     @Test
-    public void testGetAllFilteredByUserForUserWithoutPermission() {
+    void testGetAllFilteredByUserForUserWithoutPermission() {
         final Application app = IamServerUtilsTest.buildApplication();
         final List<Application> apps = List.of(app);
         when(applicationRepository.findAll(any(Query.class))).thenReturn(apps);

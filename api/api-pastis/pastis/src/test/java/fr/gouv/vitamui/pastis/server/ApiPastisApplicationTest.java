@@ -48,13 +48,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("dev")
-public class ApiPastisApplicationTest {
+class ApiPastisApplicationTest {
 
     @Autowired
     private Environment env;
 
     @Test
-    public void testContextLoads() {
+    void testContextLoads() {
         assertThat(env).isNotNull();
     }
 }

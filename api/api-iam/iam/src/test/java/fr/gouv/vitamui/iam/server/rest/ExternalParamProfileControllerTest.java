@@ -10,11 +10,11 @@ import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @WebMvcTest(controllers = { ExternalParamProfileController.class })
-public class ExternalParamProfileControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
+class ExternalParamProfileControllerTest extends ApiIamControllerTest<ExternalParamProfileDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParamProfileControllerTest.class);
 
@@ -25,19 +25,19 @@ public class ExternalParamProfileControllerTest extends ApiIamControllerTest<Ext
     private ExternalParamProfileService externalParamProfileService;
 
     @Test
-    public void testCreateExternalParamProfile() {
+    void testCreateExternalParamProfile() {
         LOGGER.debug("testCreateExternalParamProfile");
         super.testCreateEntity();
     }
 
     @Test
-    public void testPatchExternalParamProfile() {
+    void testPatchExternalParamProfile() {
         LOGGER.debug("testPatchProfile");
         super.testPatchEntity();
     }
 
     @Test
-    public void testGetPaginatedExternalParamProfile() {
+    void testGetPaginatedExternalParamProfile() {
         LOGGER.debug("testGetPaginatedExternalParamProfile");
         super.testGetPaginatedEntities();
     }

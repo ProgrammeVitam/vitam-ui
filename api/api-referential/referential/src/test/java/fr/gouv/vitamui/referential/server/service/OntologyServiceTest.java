@@ -67,7 +67,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,8 +83,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-public class OntologyServiceTest {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class OntologyServiceTest {
 
     @Mock
     private OntologyCommonService ontologyCommonService;
@@ -110,7 +113,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -122,7 +125,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getOne_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -134,7 +137,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void getOne_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -149,7 +152,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(ontologyCommonService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
@@ -160,7 +163,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void getAll_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
         when(ontologyCommonService.findOntologies(any(VitamContext.class), any(ObjectNode.class))).thenReturn(
@@ -171,7 +174,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
+    void getAll_should_throw_InternalServerException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
@@ -183,7 +186,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_ok() {
+    void check_should_return_ok_when_vitamclient_ok() {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
@@ -195,7 +198,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void check_should_throw_BadRequestException_when_vitamclient_throws_BadRequestException() {
+    void check_should_throw_BadRequestException_when_vitamclient_throws_BadRequestException() {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
@@ -207,7 +210,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void check_should_throw_UnavailableServiceException_when_vitamclient_throws_UnavailableServiceException() {
+    void check_should_throw_UnavailableServiceException_when_vitamclient_throws_UnavailableServiceException() {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
@@ -221,7 +224,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void check_should_return_ok_when_vitamclient_throws_ConflictException() {
+    void check_should_return_ok_when_vitamclient_throws_ConflictException() {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
 
@@ -233,7 +236,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void create_should_return_ok_when_vitamclient_ok()
+    void create_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
@@ -251,7 +254,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void create_should_return_400_when_vitamclient_return_400()
+    void create_should_return_400_when_vitamclient_return_400()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
@@ -271,7 +274,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
@@ -291,7 +294,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
@@ -311,7 +314,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void create_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         OntologyDto ontologyDto = new OntologyDto();
@@ -331,7 +334,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void delete_should_return_ok_when_vitamclient_ok()
+    void delete_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -348,7 +351,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_exception_when_vitamclient_400()
+    void delete_should_throw_exception_when_vitamclient_400()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -367,7 +370,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -386,7 +389,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -405,7 +408,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
+    void delete_should_throw_InternalServerException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -424,7 +427,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void updateOntology_should_return_ok_when_vitamclient_ok()
+    void updateOntology_should_return_ok_when_vitamclient_ok()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -441,7 +444,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void updateOntology_should_throw_exception_when_vitamclient_400()
+    void updateOntology_should_throw_exception_when_vitamclient_400()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -458,7 +461,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void updateOntology_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
+    void updateOntology_should_throw_AccessExternalClientException_when_vitamclient_throws_AccessExternalClientException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -477,7 +480,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void updateOntology_should_throw_IOException_when_vitamclient_throws_IOException()
+    void updateOntology_should_throw_IOException_when_vitamclient_throws_IOException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -496,7 +499,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void updateOntology_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
+    void updateOntology_should_throw_InvalidParseOperationException_when_vitamclient_throws_InvalidParseOperationException()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
@@ -515,7 +518,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void updateOntology_should_return_ok_when_some_fields_are_modifyed()
+    void updateOntology_should_return_ok_when_some_fields_are_modifyed()
         throws AccessExternalClientException, IOException, InvalidParseOperationException, VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
 
@@ -585,7 +588,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_ok() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -599,7 +602,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
+    void findHistoryByIdentifier_should_return_ok_when_vitamclient_400() throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
@@ -613,7 +616,7 @@ public class OntologyServiceTest {
     }
 
     @Test
-    public void findHistoryByIdentifier_should_throws_VitamClientException_when_vitamclient_throws_VitamClientException()
+    void findHistoryByIdentifier_should_throws_VitamClientException_when_vitamclient_throws_VitamClientException()
         throws VitamClientException {
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";

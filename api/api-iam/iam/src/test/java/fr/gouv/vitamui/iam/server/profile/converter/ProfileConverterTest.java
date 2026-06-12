@@ -13,12 +13,12 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProfileConverterTest {
+class ProfileConverterTest {
 
     private final ProfileConverter profileConverter = new ProfileConverter();
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         Profile profile = new Profile();
         profile.setApplicationName("applicationName");
         profile.setCustomerId("customerId");
@@ -51,7 +51,7 @@ public class ProfileConverterTest {
     }
 
     @Test
-    public void testConvertToToEntity() {
+    void testConvertToToEntity() {
         ProfileDto profile = new ProfileDto();
         profile.setApplicationName("applicationName");
         profile.setCustomerId("customerId");
@@ -71,7 +71,7 @@ public class ProfileConverterTest {
     }
 
     @Test
-    public void testConvertToLogbook() throws InvalidParseOperationException {
+    void testConvertToLogbook() throws InvalidParseOperationException {
         ProfileDto profile = new ProfileDto();
         profile.setApplicationName("applicationName");
         profile.setCustomerId("customerId");

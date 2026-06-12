@@ -44,7 +44,7 @@ class SchemaModelToSchemaElementDtoConverterTest {
     private final SchemaModelToSchemaElementDtoConverter converter = new SchemaModelToSchemaElementDtoConverter();
 
     @Test
-    public void shouldDecorateWithDataType() {
+    void shouldDecorateWithDataType() {
         final String DATE_TYPE_KEY = "DataType";
         final SchemaResponse schemaResponse = new SchemaResponse();
         schemaResponse.setPath("Invoice");
@@ -97,7 +97,7 @@ class SchemaModelToSchemaElementDtoConverterTest {
     }
 
     @Test
-    public void avoid_apiPath_null() {
+    void avoid_apiPath_null() {
         final SchemaResponse schemaResponse = new SchemaResponse();
         schemaResponse.setPath("Invoice");
         schemaResponse.setStringSize(null);
@@ -121,7 +121,7 @@ class SchemaModelToSchemaElementDtoConverterTest {
     }
 
     @Test
-    public void handle_collection_null() {
+    void handle_collection_null() {
         final SchemaResponse schemaResponse = new SchemaResponse();
         schemaResponse.setPath("Invoice");
         schemaResponse.setStringSize(null);

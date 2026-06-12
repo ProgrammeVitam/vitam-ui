@@ -45,14 +45,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
  * Test {@link CustomTokenValidator}.
  */
-public class CustomTokenValidatorTest {
+class CustomTokenValidatorTest {
 
     private static final String CLIENT_ID = "clientId";
     private static final String CLIENT_SECRET = "123456789012345678901234567890ab";
@@ -89,7 +91,7 @@ public class CustomTokenValidatorTest {
     }
 
     @Test
-    public void testRegularValidation() throws Exception {
+    void testRegularValidation() throws Exception {
         final String idToken = generator.generate(claims);
 
         final IDTokenClaimsSet claimsSet = validator.validateIdToken(SignedJWT.parse(idToken), nonce);
@@ -97,7 +99,7 @@ public class CustomTokenValidatorTest {
     }
 
     @Test
-    public void testAgentConnectValidation() throws Exception {
+    void testAgentConnectValidation() throws Exception {
         when(configuration.getCustomParam("acr_values")).thenReturn("eidas1");
         claims.put("acr", "eidas1");
         final String idToken = generator.generate(claims);
@@ -107,7 +109,7 @@ public class CustomTokenValidatorTest {
     }
 
     @Test
-    public void testAgentConnectValidationFailure() throws Exception {
+    void testAgentConnectValidationFailure() throws Exception {
         when(configuration.getCustomParam("acr_values")).thenReturn("eidas1");
         final String idToken = generator.generate(claims);
 

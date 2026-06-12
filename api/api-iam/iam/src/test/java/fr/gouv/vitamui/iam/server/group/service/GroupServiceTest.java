@@ -54,7 +54,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-public class GroupServiceTest {
+class GroupServiceTest {
 
     private GroupService groupService;
 
@@ -101,7 +101,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testGetAll() {
+    void testGetAll() {
         final Group group = IamServerUtilsTest.buildGroup();
         final List<Group> groups = Arrays.asList(group);
         when(groupRepository.findAll(any(Query.class))).thenReturn(groups);
@@ -116,7 +116,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testGetPaginatedValues() {
+    void testGetPaginatedValues() {
         final Group group = IamServerUtilsTest.buildGroup();
 
         final PaginatedValuesDto<Group> data = new PaginatedValuesDto<>(Arrays.asList(group), 0, 5, false);
@@ -149,7 +149,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testProcessPatch() {
+    void testProcessPatch() {
         final Group entity = buildGroup();
         final Group other = IamServerUtilsTest.buildGroup();
 
@@ -165,7 +165,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testBeforePatchStatusFailed() {
+    void testBeforePatchStatusFailed() {
         assertThrows(IllegalArgumentException.class, () -> {
             final Map<String, Object> partialDto = new HashMap<>();
             partialDto.put("id", "id");
@@ -188,7 +188,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testProcessPatchStatus() {
+    void testProcessPatchStatus() {
         final Group group = buildGroup();
 
         final Map<String, Object> partialDto = new HashMap<>();
@@ -206,7 +206,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testBeforePatchFailed() {
+    void testBeforePatchFailed() {
         assertThrows(IllegalArgumentException.class, () -> {
             final Map<String, Object> partialDto = new HashMap<>();
             partialDto.put("name", "name");
@@ -218,7 +218,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testBeforePatchSuccess() {
+    void testBeforePatchSuccess() {
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("id", "id");
         partialDto.put("customerId", "customerId");
@@ -239,7 +239,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testInternalConvertFromEntityToDto() {
+    void testInternalConvertFromEntityToDto() {
         final Tenant tenant1 = new Tenant();
         tenant1.setName("Tenant1");
 
@@ -276,7 +276,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testAddMoreRestrictions() {
+    void testAddMoreRestrictions() {
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.setLevel(LEVEL);
 
@@ -296,7 +296,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void testAddMoreRestrictionsAdminUser() {
+    void testAddMoreRestrictionsAdminUser() {
         wireInternalSecurityServerCalls();
 
         List<CriteriaDefinition> criteriaList = new ArrayList<>();
@@ -330,7 +330,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void getLevels_whenProfilesExist_returnsLevels() {
+    void getLevels_whenProfilesExist_returnsLevels() {
         Optional<String> criteria = Optional.empty();
         List<Document> mappedResults = new ArrayList<>();
         Document document = new Document("level", Arrays.asList("DEV", "TEST"));
@@ -347,7 +347,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void getLevels_whenNoProfile_returnsEmptyList() {
+    void getLevels_whenNoProfile_returnsEmptyList() {
         Optional<String> criteria = Optional.empty();
         List<Document> mappedResults = new ArrayList<>();
         Document rawResults = new Document();
@@ -360,7 +360,7 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void checkUnitsExist_whenGroupIsCreated_thenCheckAllUnits() {
+    void checkUnitsExist_whenGroupIsCreated_thenCheckAllUnits() {
         Set<String> newUnits = Set.of("units1", "units2");
         final ArgumentCaptor<List<CriteriaDefinition>> criteriaCaptor = ArgumentCaptor.forClass(List.class);
 
@@ -374,14 +374,14 @@ public class GroupServiceTest {
     }
 
     @Test
-    public void checkUnitsExist_whenGroupIsCreatedWithZeroUnits_thenCheckZeroUnits() {
+    void checkUnitsExist_whenGroupIsCreatedWithZeroUnits_thenCheckZeroUnits() {
         groupService.checkUnitsExist(null, null, "customerId", "");
 
         Mockito.verify(groupRepository, times(0)).exists(ArgumentMatchers.any(List.class));
     }
 
     @Test
-    public void checkUnitsExist_whenGroupIsPatched_thenCheckOnlyNewUnits() {
+    void checkUnitsExist_whenGroupIsPatched_thenCheckOnlyNewUnits() {
         Set<String> newUnits = Set.of("units1", "units2");
         Set<String> oldUnits = Set.of("units2");
         final ArgumentCaptor<List<CriteriaDefinition>> criteriaCaptor = ArgumentCaptor.forClass(List.class);

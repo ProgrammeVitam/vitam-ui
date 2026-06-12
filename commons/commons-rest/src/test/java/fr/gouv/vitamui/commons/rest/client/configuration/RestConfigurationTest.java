@@ -32,27 +32,27 @@ public class RestConfigurationTest {
     HttpPoolConfiguration httpPoolConfiguration;
 
     @Test
-    public void testRestConfiguration() {
+    void testRestConfiguration() {
         assertTrue(restClientConfiguration1 == applicationConfiguration.getRestClientConfiguration1());
         assertTrue(restClientConfiguration2 == applicationConfiguration.getRestClientConfiguration2());
     }
 
     @Test
-    public void testRestConfiguration1() {
+    void testRestConfiguration1() {
         assertTrue(restClientConfiguration1.getServerHost().equals("restapp1.service.consul"));
         assertTrue(restClientConfiguration1.getServerPort() == 12345678);
         assertTrue(restClientConfiguration1.isSecure());
     }
 
     @Test
-    public void testRestConfiguration2() {
+    void testRestConfiguration2() {
         assertTrue(restClientConfiguration2.getServerHost().equals("restapp2.service.consul"));
         assertTrue(restClientConfiguration2.getServerPort() == 87654321);
         assertTrue(!restClientConfiguration2.isSecure());
     }
 
     @Test
-    public void testSslConfiguration() {
+    void testSslConfiguration() {
         SSLConfiguration sslConfig = restClientConfiguration1.getSslConfiguration();
         assertNotNull(sslConfig);
         assertTrue(sslConfig.isHostnameVerification());
@@ -69,7 +69,7 @@ public class RestConfigurationTest {
     }
 
     @Test
-    public void testProxyProperties() {
+    void testProxyProperties() {
         ProxyProperties proxyProperties = restClientConfiguration1.getProxy();
         assertThat(proxyProperties).isNotNull();
         assertThat(proxyProperties.isEnabled()).isTrue();
@@ -82,7 +82,7 @@ public class RestConfigurationTest {
     }
 
     @Test
-    public void testHttpHostConfiguration() {
+    void testHttpHostConfiguration() {
         assertNotNull(httpPoolConfiguration);
         assertTrue(httpPoolConfiguration.getMaxTotal() == 500);
         assertTrue(httpPoolConfiguration.getMaxPerRoute() == 50);

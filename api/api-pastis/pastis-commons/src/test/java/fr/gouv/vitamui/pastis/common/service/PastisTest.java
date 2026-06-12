@@ -59,7 +59,7 @@ import java.net.URISyntaxException;
 
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "/application-test.yml")
-public class PastisTest {
+class PastisTest {
 
     public PastisMarshaller pastisMarshaller = new PastisMarshaller();
 
@@ -70,12 +70,12 @@ public class PastisTest {
     private String jsonFileName;
 
     @Test
-    public void testIfRngIsPresent() throws FileNotFoundException {
+    void testIfRngIsPresent() throws FileNotFoundException {
         InputStream os = getClass().getClassLoader().getResourceAsStream(this.rngFileName);
     }
 
     @Test
-    public void testIfRngCanBeGenerated() throws IOException, JAXBException {
+    void testIfRngCanBeGenerated() throws IOException, JAXBException {
         // Map a json from file to ElementProperties object
         InputStream jsonInputStream = getClass().getClassLoader().getResourceAsStream(jsonFileName);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -87,7 +87,7 @@ public class PastisTest {
     }
 
     @Test
-    public void testIfJSONCanBeGenerated() throws IOException, JAXBException, URISyntaxException, SAXException {
+    void testIfJSONCanBeGenerated() throws IOException, JAXBException, URISyntaxException, SAXException {
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetJsonTree getJson = new PastisGetJsonTree();
 

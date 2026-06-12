@@ -44,9 +44,9 @@ import lombok.ToString;
 import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.net.URI;
@@ -60,20 +60,47 @@ import java.util.List;
  */
 @EqualsAndHashCode
 @ToString
-public abstract class BaseClient<C extends HttpContext> implements RestClient {
+public abstract class BaseClientVitamui<C extends HttpContext> implements VitamuiRestClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientVitamui.class);
 
     protected String baseUrl;
 
-    public BaseClient(final String baseUrl) {
+    public BaseClientVitamui(final String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    protected MultiValueMap<String, String> buildHeaders(final HttpContext context) {
-        final MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+    protected HttpHeaders buildHeaders(final HttpContext context) {
         Assert.notNull(context, "The call context cannot be null");
-        buildHeaders((HttpContext) context, headers);
+        HttpHeaders headers = new HttpHeaders();
+        final Integer tenantIdentifier = context.getTenantIdentifier();
+        final String userToken = context.getUserToken();
+        final String applicationId = context.getApplicationId();
+        final String identity = context.getIdentity();
+        final String requestId = context.getRequestId();
+        final String accessContractId = context.getAccessContract();
+        headers.set(CommonConstants.X_ORIGIN_HEADER_NAME, CommonConstants.X_ORIGIN_HEADER_INTERNAL);
+        if (tenantIdentifier != null) {
+            headers.put(
+                CommonConstants.X_TENANT_ID_HEADER,
+                Collections.singletonList(String.valueOf(tenantIdentifier))
+            );
+        }
+        if (userToken != null) {
+            headers.put(CommonConstants.X_USER_TOKEN_HEADER, Collections.singletonList(userToken));
+        }
+        if (applicationId != null) {
+            headers.put(CommonConstants.X_APPLICATION_ID_HEADER, Collections.singletonList(applicationId));
+        }
+        if (identity != null) {
+            headers.put(CommonConstants.X_IDENTITY_HEADER, Collections.singletonList(identity));
+        }
+        if (requestId != null) {
+            headers.put(CommonConstants.X_REQUEST_ID_HEADER, Collections.singletonList(requestId));
+        }
+        if (accessContractId != null) {
+            headers.put(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER, Collections.singletonList(accessContractId));
+        }
         return headers;
     }
 
@@ -138,6 +165,7 @@ public abstract class BaseClient<C extends HttpContext> implements RestClient {
 
     /**
      * Method for get UriBuilder from Url
+     *
      * @return
      */
     protected URIBuilder getUriBuilderFromUrl() {
@@ -150,6 +178,7 @@ public abstract class BaseClient<C extends HttpContext> implements RestClient {
 
     /**
      * Method allowing to generate an URI builder.
+     *
      * @param url Url to reach.
      * @return The linked builder.
      */
@@ -163,6 +192,7 @@ public abstract class BaseClient<C extends HttpContext> implements RestClient {
 
     /**
      * Method for get UriBuilder from Url
+     *
      * @return
      */
     protected URIBuilder getUriBuilderFromPath(final String path) {

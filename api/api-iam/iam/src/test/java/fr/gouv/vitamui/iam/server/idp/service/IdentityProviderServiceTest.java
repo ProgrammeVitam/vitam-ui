@@ -37,11 +37,9 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link IdentityProviderService}.
- *
- *
  */
 
-public class IdentityProviderServiceTest {
+class IdentityProviderServiceTest {
 
     private AutoCloseable mocks;
 
@@ -96,7 +94,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreateOK() {
+    void testCreateOK() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -106,7 +104,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreatedFailsAsIdIsProvided() {
+    void testCreatedFailsAsIdIsProvided() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -118,7 +116,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsCustomerDoesNotExist() {
+    void testCreateFailsAsCustomerDoesNotExist() {
         prepareServices();
         when(customerRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -139,7 +137,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsTechnicalNameIsNotEmpty() {
+    void testCreateFailsAsTechnicalNameIsNotEmpty() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -158,7 +156,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsDuplicatePatterns() {
+    void testCreateFailsAsDuplicatePatterns() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -180,7 +178,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreateFailsAsSetReadonlyIsTrue() throws Exception {
+    void testCreateFailsAsSetReadonlyIsTrue() throws Exception {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -198,7 +196,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testCreatedFailsAsInternalAndAutoProvisioningEnabledAreTrue() {
+    void testCreatedFailsAsInternalAndAutoProvisioningEnabledAreTrue() {
         // Prepare
         prepareServices();
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -216,7 +214,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateOK() {
+    void testUpdateOK() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -227,7 +225,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsIdentityProviderIsDoesNotExist() {
+    void testUpdateFailsAsIdentityProviderIsDoesNotExist() {
         prepareServices();
         when(identityProviderRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -242,7 +240,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsCustomerDoesNotExist() {
+    void testUpdateFailsAsCustomerDoesNotExist() {
         prepareServices();
         when(customerRepository.findById(any())).thenReturn(Optional.empty());
 
@@ -265,7 +263,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsSetReadonlyIsTrue() {
+    void testUpdateFailsAsSetReadonlyIsTrue() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -284,7 +282,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsIsReadonlyIsTrue() {
+    void testUpdateFailsAsIsReadonlyIsTrue() {
         final IdentityProvider idp = buildIdentityProvider();
         idp.setReadonly(true);
 
@@ -303,7 +301,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsTechnicalNameIsEmpty() {
+    void testUpdateFailsAsTechnicalNameIsEmpty() {
         prepareServices();
 
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -320,7 +318,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testUpdateFailsAsInternalAndAutoUpdateUsersAreTrue() {
+    void testUpdateFailsAsInternalAndAutoUpdateUsersAreTrue() {
         // Prepare
         prepareServices();
         final IdentityProviderDto dto = buildIdentityProviderDto();
@@ -338,7 +336,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testProcessPatch() {
+    void testProcessPatch() {
         prepareServices();
 
         final IdentityProvider idp = buildIdentityProvider();
@@ -386,7 +384,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testProcessPatchPatternsMultiple() {
+    void testProcessPatchPatternsMultiple() {
         final IdentityProvider entity = new IdentityProvider();
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("patterns", Arrays.asList("vitamui.com", "vitamui.com"));
@@ -398,7 +396,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testGetAvailableDomain() {
+    void testGetAvailableDomain() {
         final List<IdentityProvider> idp = Arrays.asList(
             buildIdp(".*@vitamui.com", ".*@total.com"),
             buildIdp(".*@edf.fr", ".*@orange.com")
@@ -416,7 +414,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testProcessPatchKesyStore() {
+    void testProcessPatchKesyStore() {
         final IdentityProvider entity = new IdentityProvider();
         entity.setInternal(false);
         final Map<String, Object> partialDto = new HashMap<>();
@@ -426,7 +424,7 @@ public class IdentityProviderServiceTest {
     }
 
     @Test
-    public void testProcessPatchIdpMetadata() {
+    void testProcessPatchIdpMetadata() {
         final IdentityProvider entity = new IdentityProvider();
         entity.setInternal(false);
         final Map<String, Object> partialDto = new HashMap<>();
