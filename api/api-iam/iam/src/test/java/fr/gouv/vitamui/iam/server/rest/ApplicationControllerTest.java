@@ -53,7 +53,7 @@ public final class ApplicationControllerTest extends ApiIamControllerTest<Applic
         when(applicationService.getAll(any(), any())).thenReturn(apps);
 
         try {
-            applicationController.getAll(Optional.empty(), Optional.empty());
+            applicationController.getAll(Optional.empty());
         } catch (final IllegalArgumentException e) {
             assertEquals("The DTO identifier must match the path identifier for update.", e.getMessage());
         }

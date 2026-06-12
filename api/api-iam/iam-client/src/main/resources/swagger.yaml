@@ -2634,12 +2634,6 @@ paths:
                   schema:
                       type: string
                       example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
             responses:
                 "200":
                     description: OK
@@ -2650,6 +2644,23 @@ paths:
                                 example: null
                                 items:
                                     $ref: "#/components/schemas/ApplicationDto"
+                            example: null
+    /iam/v1/applications/listNames:
+        get:
+            tags:
+                - Applications
+            summary: Return all application names
+            operationId: applications_listNames
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/IdentifierNameDto"
                             example: null
     /iam/v1/applications/{identifier}/externalid:
         get:
@@ -2671,34 +2682,6 @@ paths:
                         '*/*':
                             schema:
                                 type: boolean
-                                example: null
-                            example: null
-    /iam/v1/applications/filtered:
-        get:
-            tags:
-                - Applications
-            summary: Return config about applications and categories
-            operationId: applications_getApplicationsFromUi
-            parameters:
-                - name: filterApp
-                  in: query
-                  required: false
-                  schema:
-                      type: boolean
-                      example: null
-                      default: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        '*/*':
-                            schema:
-                                type: object
-                                additionalProperties:
-                                    type: array
-                                    example: null
-                                    items:
-                                        $ref: "#/components/schemas/ApplicationDto"
                                 example: null
                             example: null
     /autotest:
@@ -4314,6 +4297,23 @@ components:
                     example: null
                 target:
                     maxLength: 25
+                    minLength: 0
+                    type: string
+                    example: null
+            example: null
+        IdentifierNameDto:
+            required:
+                - identifier
+                - name
+            type: object
+            properties:
+                identifier:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                    example: null
+                name:
+                    maxLength: 50
                     minLength: 0
                     type: string
                     example: null

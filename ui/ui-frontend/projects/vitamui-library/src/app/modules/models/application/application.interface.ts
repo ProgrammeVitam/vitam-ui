@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Id } from '../id.interface';
-import { Category } from './category.interface';
 
 export interface Application extends Id {
   identifier: string;
@@ -50,9 +49,4 @@ export interface Application extends Id {
   hasCustomerList: boolean;
   hasTenantList: boolean;
   target: string;
-}
-
-export interface ApplicationInfo {
-  APPLICATION_CONFIGURATION: Application[];
-  CATEGORY_CONFIGURATION: Category[];
 }
