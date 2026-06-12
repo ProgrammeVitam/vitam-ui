@@ -104,41 +104,38 @@ const expectedProfiles = [
   },
 ];
 
-const expectedApp = {
-  APPLICATION_CONFIGURATION: [
-    {
-      id: 'CUSTOMERS_APP',
-      identifier: 'CUSTOMERS_APP',
-      name: 'Organisations',
-      url: '',
-    },
-    {
-      id: 'ARCHIVE_APP',
-      identifier: 'ARCHIVE_APP',
-      name: 'Archives',
-      url: '',
-    },
-    {
-      id: 'USERS_APP',
-      identifier: 'USERS_APP',
-      name: 'Utilisateurs',
-      url: '',
-    },
-    {
-      id: 'GROUPS_APP',
-      identifier: 'GROUPS_APP',
-      name: 'Groupes de profils',
-      url: '',
-    },
-    {
-      id: 'PROFILES_APP',
-      identifier: 'PROFILES_APP',
-      name: 'Profils APP Utilisateurs',
-      url: '',
-    },
-  ],
-  CATEGORY_CONFIGURATION: {},
-};
+const expectedApp = [
+  {
+    id: 'CUSTOMERS_APP',
+    identifier: 'CUSTOMERS_APP',
+    name: 'Organisations',
+    url: '',
+  },
+  {
+    id: 'ARCHIVE_APP',
+    identifier: 'ARCHIVE_APP',
+    name: 'Archives',
+    url: '',
+  },
+  {
+    id: 'USERS_APP',
+    identifier: 'USERS_APP',
+    name: 'Utilisateurs',
+    url: '',
+  },
+  {
+    id: 'GROUPS_APP',
+    identifier: 'GROUPS_APP',
+    name: 'Groupes de profils',
+    url: '',
+  },
+  {
+    id: 'PROFILES_APP',
+    identifier: 'PROFILES_APP',
+    name: 'Profils APP Utilisateurs',
+    url: '',
+  },
+];
 
 @Component({
   template: ` <app-profiles-form [(ngModel)]="profiles" level=""></app-profiles-form> `,
@@ -169,7 +166,7 @@ describe('ProfilesFormComponent', () => {
       declarations: [ProfilesFormComponent, TesthostComponent],
       providers: [
         { provide: ProfileService, useValue: { list: () => of(expectedProfiles) } },
-        { provide: ApplicationApiService, useValue: { getAllByParams: () => of(expectedApp) } },
+        { provide: ApplicationApiService, useValue: { listNames: () => of(expectedApp) } },
         { provide: ApplicationService, useValue: { list: () => of(expectedApp), buildApplications: () => expectedApp } },
       ],
       schemas: [NO_ERRORS_SCHEMA],

@@ -40,8 +40,7 @@ package fr.gouv.vitamui.iam.server.rest;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
-import fr.gouv.vitamui.commons.api.utils.EnumUtils;
-import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
+import fr.gouv.vitamui.commons.api.domain.IdentifierNameDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.application.service.ApplicationService;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -60,7 +59,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -90,31 +88,27 @@ public class ApplicationController {
      * Get All applications filtered by user privileges
      *
      * @param criteria
-     * @param embedded
      * @return all Applications matching user privileges
      */
     @GetMapping
     @Operation(operationId = "applications_getAll", summary = "Return all applications matching user privileges")
     public List<ApplicationDto> getAll(
-        @Parameter(description = "Criteria to filter the applications") final Optional<String> criteria,
-        @RequestParam final Optional<String> embedded
+        @Parameter(description = "Criteria to filter the applications") final Optional<String> criteria
     ) {
         SanityChecker.sanitizeCriteria(criteria);
-        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
-        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
-        return applicationService.getAll(criteria, embedded);
+        LOGGER.debug("Get all with criteria={}", criteria);
+        return applicationService.getAllFilteredByUser(criteria);
     }
 
-    @GetMapping("/filtered")
-    @Operation(
-        operationId = "applications_getApplicationsFromUi",
-        summary = "Return config about applications and categories"
-    )
-    public Map<String, List<ApplicationDto>> getApplicationsFromUi(
-        @RequestParam(defaultValue = "true") final boolean filterApp
-    ) {
-        LOGGER.debug("getApplications");
-        return applicationService.getApplications(filterApp);
+    /**
+     * Get All application names
+     *
+     * @return all application names
+     */
+    @GetMapping(path = "/listNames")
+    @Operation(operationId = "applications_listNames", summary = "Return all application names")
+    public List<IdentifierNameDto> listNames() {
+        return applicationService.listNames();
     }
 
     /**
