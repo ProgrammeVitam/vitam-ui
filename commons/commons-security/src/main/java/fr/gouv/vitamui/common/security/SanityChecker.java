@@ -446,7 +446,7 @@ public class SanityChecker {
                     checkJsonSanity(value);
                 } else if (value.isTextual()) {
                     checkHtmlPattern(value.textValue());
-                    checkSanityTags(value.textValue(), getLimitParamSize());
+                    checkSanityTags(value.textValue(), getLimitFieldSize());
                 } else {
                     validateJSONField(value);
                 }
