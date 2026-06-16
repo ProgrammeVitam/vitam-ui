@@ -221,7 +221,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
     if (Object.keys(consistentData).length > 0) {
       if (this.type === ManagementRuleType.APPRAISAL && consistentData.ruleEliminationIdentifier) {
         this.managementRuleCriteriaService.addFromParams({
-          [ELIMINATION_TECHNICAL_ID]:
+          [ELIMINATION_TECHNICAL_ID + this.config.ruleTypeSuffix]:
             formData.ruleEliminationIdentifier && formData.ruleEliminationIdentifier !== '' ? formData.ruleEliminationIdentifier : null,
         });
         this.criteriaForm.controls.ruleEliminationIdentifier?.reset(undefined, { emitEvent: false });
