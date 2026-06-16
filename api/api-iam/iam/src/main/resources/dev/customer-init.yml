@@ -426,6 +426,25 @@ customer-init:
         - ROLE_GET_ONTOLOGIES
         - ROLE_GET_SCHEMAS
 
+    - name: Profil pour la gestion des scénarios et des griffons
+      description: Profil pour la gestion du référentiel des scénarios de préservation et la gestion du référentiel des griffons
+      app-name: PRESERVATION_APP
+      level:
+      roles:
+        - ROLE_GET_PRESERVATION_SCENARIOS
+        - ROLE_UPDATE_PRESERVATION_SCENARIOS
+        - ROLE_GET_GRIFFINS
+        - ROLE_UPDATE_GRIFFINS
+
+    - name: Profil pour la consultation des griffons et gestion des scénarios
+      description: Profil pour la consultation du référentiel des griffons et la gestion du référentiel des scénarios de préservation
+      app-name: PRESERVATION_APP
+      level:
+      roles:
+        - ROLE_GET_PRESERVATION_SCENARIOS
+        - ROLE_UPDATE_PRESERVATION_SCENARIOS
+        - ROLE_GET_GRIFFINS
+
   #- name: profileName
   #  description: desc
   #  level: 1

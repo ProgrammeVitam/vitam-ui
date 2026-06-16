@@ -614,6 +614,11 @@
       "SUCCESS_LINK_TEXT": "Consulter le journal des opérations"
     }
   },
+  "PRESERVATION": {
+    "HOME": {
+      "TITLE": "Référentiel des griffons et des scénarios de préservation"
+    }
+  },
   "RULES_APP": {
     "HOME": {
       "TITLE": "Référentiel des règles de gestion",

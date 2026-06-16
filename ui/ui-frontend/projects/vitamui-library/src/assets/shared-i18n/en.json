@@ -314,6 +314,10 @@
       "NAME": "Ontology",
       "TOOLTIP": "Consult and manage internal and external ontology vocabularies"
     },
+    "PRESERVATION_APP": {
+      "NAME": "Griffins and preservation scenarios",
+      "TOOLTIP": "Consult and manage griffins and preservation scenarios"
+    },
     "AUDIT_APP": {
       "NAME": "Audits",
       "TOOLTIP": "Set up and launch audits"

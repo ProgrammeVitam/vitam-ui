@@ -614,6 +614,11 @@
       "SUCCESS_LINK_TEXT": "Go to logbook operation"
     }
   },
+  "PRESERVATION": {
+    "HOME": {
+      "TITLE": "Griffins and preservation scenarios repository"
+    }
+  },
   "RULES_APP": {
     "HOME": {
       "TITLE": "Management rules repository",

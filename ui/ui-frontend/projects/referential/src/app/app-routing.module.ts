@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
 import { AppComponent } from './app.component';
+import { PreservationComponent } from './preservation/preservation.component';
 
 const routes: Routes = [
   {
@@ -125,6 +126,17 @@ const routes: Routes = [
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'ONTOLOGY_APP' },
+  },
+  // =====================================================
+  //                    PRESERVATION
+  // =====================================================
+  {
+    path: 'preservation',
+    component: PreservationComponent,
+    loadChildren: () => import('./preservation/preservation.routing-module').then((m) => m.PreservationRoutingModule),
+    canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
+    data: { appId: 'PRESERVATION_APP' },
   },
   // =====================================================
   //                    AUDITS
