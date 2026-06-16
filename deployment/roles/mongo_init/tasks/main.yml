@@ -72,9 +72,41 @@
 
   - name: Compute list of eligible files
     delegate_to: localhost
+    vars:
+      # Extract the version string safely (e.g., "5.0.4" or "5")
+      version_raw: "{{ item.split('/')[0] | replace('v', '') }}"
+      version_parts: "{{ version_raw.split('.') }}"
+
+      # Extract parts, defaulting to 0, and pad them to 3 digits (e.g., "005")
+      major: "{{ '%03d' | format(version_parts[0] | default(0) | int) }}"
+      minor: "{{ '%03d' | format(version_parts[1] | default(0) | int) }}"
+      patch: "{{ '%03d' | format(version_parts[2] | default(0) | int) }}"
     set_fact:
-      mongod_eligible_files : "{{ (mongod_eligible_files| default([])) + [ {'name': item, 'version': item | regex_replace('^(.+)/(.+)$', '\\1') ,'finalname': 'vitamui_' + item | regex_replace('/', '_') | basename | regex_replace('\\.j2$')} ] }}"
-    loop: "{{ mongod_files | difference(mongod_excluded_files| default([])) | sort }}" # Difference filter documentation states 'Items in the resulting list are returned in arbitrary order'. This is a workaround
+      mongod_eligible_files: >-
+        {{
+          mongod_eligible_files | default([]) + [ {
+            'name': item,
+            'version': item.split('/')[0],
+            'version_key': major + '.' + minor + '.' + patch,
+            'finalname': 'vitamui_' + (item | replace('/', '_') | regex_replace('\.j2$'))
+          } ]
+        }}
+    loop: "{{ mongod_files | difference(mongod_excluded_files | default([])) }}"
+
+  - name: Find duplicate finalnames
+    set_fact:
+      duplicate_finalnames: "{{ (duplicate_finalnames | default([])) + [item] }}"
+    delegate_to: localhost
+    loop: "{{ mongod_eligible_files | map(attribute='finalname') | list }}"
+    when:
+      - (mongod_eligible_files | map(attribute='finalname') | select('eq', item) | list | length > 1)
+      - item not in (duplicate_finalnames | default([]))
+
+  - name: Check for duplicate finalnames in mongod_eligible_files
+    fail:
+      msg: "Duplicate finalnames detected: {{ duplicate_finalnames }}. This will cause files to be overwritten."
+    delegate_to: localhost
+    when: duplicate_finalnames | default([]) | length > 0
 
   - name: Prepare query to get already executed scripts from versioning.changelog
     set_fact:
@@ -106,9 +138,9 @@
     with_items: "{{ mongod_eligible_files }}"
     when: item.finalname not in (executed_scripts_list | default([]))
 
-  - name: Replace eligible files with filtered list sorted by finalname
+  - name: Sort eligible files by finalname and version
     set_fact:
-      mongod_eligible_files: "{{ mongod_eligible_files_filtered | sort(attribute='finalname') }}"
+      mongod_eligible_files_sorted: "{{ mongod_eligible_files_filtered | sort(attribute='finalname') | sort(attribute='version_key') }}"
 
   # We generate scripts and upload on remote host
   - name: Compute and copy script files
@@ -118,12 +150,12 @@
       owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
       group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
       mode: 0755
-    loop: "{{ mongod_eligible_files | unique }}"
+    loop: "{{ mongod_eligible_files_sorted }}"
 
   - name: Prepare file
     include_tasks: prepare_script.yml
     when: mongodb.versioning is defined and mongodb.versioning.enable
-    loop: "{{ mongod_eligible_files | unique }}"
+    loop: "{{ mongod_eligible_files_sorted }}"
     loop_control:
       loop_var: mongo_file
 
