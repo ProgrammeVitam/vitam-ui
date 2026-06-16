@@ -34,18 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { BASE_URL } from '../../injection-tokens';
+import { Observable } from 'rxjs';
+import { CreatePreservationScenario, PreservationScenario } from './preservation-scenario.type';
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
-
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+@Injectable({
+  providedIn: 'root',
 })
-export class PreservationComponent {}
+export class PreservationScenariosApiService {
+  protected http: HttpClient;
+  protected readonly apiUrl: string;
+
+  constructor() {
+    this.http = inject(HttpClient);
+    this.apiUrl = `${inject(BASE_URL)}/preservation-scenarios`;
+  }
+
+  public getAll(): Observable<PreservationScenario[]> {
+    return this.http.get<PreservationScenario[]>(this.apiUrl);
+  }
+
+  public put(PreservationScenarios: PreservationScenario[]) {
+    return this.http.put<void>(this.apiUrl, PreservationScenarios);
+  }
+
+  public create(PreservationScenario: CreatePreservationScenario) {
+    return this.http.post<PreservationScenario>(this.apiUrl, PreservationScenario);
+  }
+
+  public update(PreservationScenario: PreservationScenario) {
+    return this.http.post<PreservationScenario>(this.apiUrl, PreservationScenario);
+  }
+
+  public delete(PreservationScenario: PreservationScenario) {
+    return this.http.delete<void>(this.apiUrl, { body: PreservationScenario });
+  }
+}

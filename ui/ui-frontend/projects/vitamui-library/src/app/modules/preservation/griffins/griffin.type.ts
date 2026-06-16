@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+export interface CreateGriffin {
+  Identifier: string;
+  Name: string;
+  Description: string;
+  ExecutableName: string;
+  ExecutableVersion: string;
+  CreationDate: Date;
+  LastUpdate: Date;
+}
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
-
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
-})
-export class PreservationComponent {}
+export interface Griffin extends CreateGriffin {
+  '#id': string;
+  '#tenant': number;
+  '#version': number;
+}

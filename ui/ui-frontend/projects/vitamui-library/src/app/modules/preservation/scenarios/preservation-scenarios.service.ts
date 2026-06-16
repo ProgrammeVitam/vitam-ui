@@ -34,18 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
+import { CreatePreservationScenario, PreservationScenario } from './preservation-scenario.type';
+import { inject, Injectable } from '@angular/core';
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
-
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+@Injectable({
+  providedIn: 'root',
 })
-export class PreservationComponent {}
+export class PreservationScenariosService {
+  private api: PreservationScenariosApiService;
+
+  constructor() {
+    this.api = inject(PreservationScenariosApiService);
+  }
+
+  public list() {
+    return this.api.getAll();
+  }
+
+  public put(griffins: PreservationScenario[]) {
+    return this.api.put(griffins);
+  }
+
+  public create(griffin: CreatePreservationScenario) {
+    return this.api.create(griffin);
+  }
+
+  public update(griffin: PreservationScenario) {
+    return this.api.update(griffin);
+  }
+
+  public delete(griffin: PreservationScenario) {
+    return this.api.delete(griffin);
+  }
+}

@@ -34,18 +34,58 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Griffin, GriffinsService, VitamUICommonModule, Direction } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
+import { factorOf, sortByKey } from '../sorting';
 
 @Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+  selector: 'app-griffins',
+  templateUrl: './griffins.component.html',
+  styleUrls: ['./griffins.component.scss'],
+  imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
-export class PreservationComponent {}
+export class GriffinsComponent implements OnInit {
+  private griffinsService = inject(GriffinsService);
+
+  readonly griffins = signal<Griffin[]>([]);
+  readonly loading = signal(false);
+  readonly selectedGriffin = signal<Griffin>(null);
+
+  readonly nameKey: keyof Griffin = 'Name';
+  readonly identifierKey: keyof Griffin = 'Identifier';
+  readonly creationDateKey: keyof Griffin = 'CreationDate';
+
+  orderByKey: keyof Griffin = 'Identifier';
+  direction = Direction.ASCENDANT;
+
+  ngOnInit() {
+    this.loadGriffins();
+  }
+
+  loadGriffins() {
+    this.loading.set(true);
+
+    this.griffinsService.list().subscribe({
+      next: (griffins) => {
+        this.griffins.set(griffins);
+        this.sort();
+      },
+      complete: () => this.loading.set(false),
+      error: () => this.loading.set(false),
+    });
+  }
+
+  sort() {
+    const key = this.orderByKey;
+    const factor = factorOf(this.direction);
+
+    this.griffins.set([...this.griffins()].sort(sortByKey(key, factor)));
+  }
+
+  isSelected(griffin: Griffin) {
+    return this.selectedGriffin() ? this.selectedGriffin()['#id'] === griffin['#id'] : false;
+  }
+}

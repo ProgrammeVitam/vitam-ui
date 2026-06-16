@@ -381,6 +381,20 @@ public class ServicesData {
     public static final String ROLE_DELETE_SCHEMAS = DELETE_ROLE_PREFIX + SERVICE_SCHEMAS;
     public static final String ROLE_IMPORT_SCHEMAS = IMPORT_ROLE_PREFIX + SERVICE_SCHEMAS;
 
+    //------------------------------------ GRIFFINS -----------------------------------------
+
+    public static final String SERVICE_GRIFFINS = "GRIFFINS";
+
+    public static final String ROLE_GET_GRIFFINS = GET_ROLE_PREFIX + SERVICE_GRIFFINS;
+    public static final String ROLE_UPDATE_GRIFFINS = UPDATE_ROLE_PREFIX + SERVICE_GRIFFINS;
+
+    //------------------------------------ PRESERVATION_SCENARIOS ----------------------------------
+
+    public static final String SERVICE_PRESERVATION_SCENARIOS = "PRESERVATION_SCENARIOS";
+
+    public static final String ROLE_GET_PRESERVATION_SCENARIOS = GET_ROLE_PREFIX + SERVICE_PRESERVATION_SCENARIOS;
+    public static final String ROLE_UPDATE_PRESERVATION_SCENARIOS = UPDATE_ROLE_PREFIX + SERVICE_PRESERVATION_SCENARIOS;
+
     //------------------------------------- OPERATIONS --------------------------------------------
 
     public static final String SERVICE_OPERATIONS = "OPERATIONS";

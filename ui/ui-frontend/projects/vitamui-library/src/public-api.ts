@@ -216,3 +216,7 @@ export * from './lib/models/management-rule-shared-data-service.interface';
 
 export * from './lib/components/management-rule-search/management-rule-search.component';
 export * from './lib/components/management-rule-search/management-rule-search.config';
+export * from './app/modules/preservation/griffins/griffin.type';
+export * from './app/modules/preservation/griffins/griffins.service';
+export * from './app/modules/preservation/scenarios/preservation-scenario.type';
+export * from './app/modules/preservation/scenarios/preservation-scenarios.service';

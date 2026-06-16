@@ -34,18 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { GriffinsApiService } from './griffins-api.service';
+import { CreateGriffin, Griffin } from './griffin.type';
+import { inject, Injectable } from '@angular/core';
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
-
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+@Injectable({
+  providedIn: 'root',
 })
-export class PreservationComponent {}
+export class GriffinsService {
+  private api: GriffinsApiService;
+
+  constructor() {
+    this.api = inject(GriffinsApiService);
+  }
+
+  public list() {
+    return this.api.getAll();
+  }
+
+  public put(griffins: Griffin[]) {
+    return this.api.put(griffins);
+  }
+
+  public create(griffin: CreateGriffin) {
+    return this.api.create(griffin);
+  }
+
+  public update(griffin: Griffin) {
+    return this.api.update(griffin);
+  }
+
+  public delete(griffin: Griffin) {
+    return this.api.delete(griffin);
+  }
+}

@@ -182,6 +182,8 @@ spring:
                   /referential-api/static/**,
                   /referential-api/rules/**,
                   /referential-api/rule/**,
+                  /referential-api/griffins/**,
+                  /referential-api/preservation-scenarios/**,
 
                   /archive-search-api/security-profile/**,
                   /archive-search-api/ontology/**,

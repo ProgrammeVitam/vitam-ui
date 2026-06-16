@@ -1,0 +1,64 @@
+<table>
+  <thead>
+    <tr>
+      <th>
+        <span>
+          {{ 'PRESERVATION.GRIFFIN.TABLE.HEADER.IDENTIFIER' | translate }}
+          <vitamui-order-by-button
+            [orderByKey]="identifierKey"
+            [(direction)]="direction"
+            [(orderBy)]="orderByKey"
+            (orderChange)="sort()"
+          ></vitamui-order-by-button>
+        </span>
+      </th>
+
+      <th>
+        <span>
+          {{ 'PRESERVATION.GRIFFIN.TABLE.HEADER.NAME' | translate }}
+          <vitamui-order-by-button
+            [orderByKey]="nameKey"
+            [(direction)]="direction"
+            [(orderBy)]="orderByKey"
+            (orderChange)="sort()"
+          ></vitamui-order-by-button>
+        </span>
+      </th>
+
+      <th>
+        <span class="no-wrap">
+          {{ 'PRESERVATION.GRIFFIN.TABLE.HEADER.CREATION_DATE' | translate }}
+          <vitamui-order-by-button
+            [orderByKey]="creationDateKey"
+            [(direction)]="direction"
+            [(orderBy)]="orderByKey"
+            (orderChange)="sort()"
+          ></vitamui-order-by-button>
+        </span>
+      </th>
+
+      <th>
+        <!-- Actions column -->
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (griffin of griffins(); track griffin['#id']) {
+      <tr class="clickable" [class.selected]="isSelected(griffin)" (click)="selectedGriffin.set(griffin)">
+        <td>{{ griffin.Identifier }}</td>
+        <td>{{ griffin.Name }}</td>
+        <td>{{ griffin.CreationDate | dateTime: 'dd/MM/yyyy' | empty }}</td>
+        <td class="delete-button"></td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (loading()) {
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+  </div>
+} @else if (griffins().length === 0) {
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
+}

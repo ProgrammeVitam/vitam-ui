@@ -34,18 +34,59 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+export interface CreatePreservationScenario {
+  Identifier: string;
+  Name: string;
+  Description: string;
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
+  CreationDate: Date;
+  LastUpdateDate: Date;
 
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
-})
-export class PreservationComponent {}
+  ActionList: ActionType[];
+
+  GriffinByFormat: GriffinByFormat[];
+
+  DefaultGriffin: DefaultGriffin;
+
+  TransformationRules: string;
+}
+
+export interface PreservationScenario extends CreatePreservationScenario {
+  '#id': string;
+  '#tenant': number;
+  '#version': number;
+}
+
+export interface GriffinByFormat {
+  FormatList: string[];
+  GriffinIdentifier: string;
+  Timeout: number;
+  MaxSize: number;
+  Debug: boolean;
+  ActionDetail: ActionDetail[];
+}
+
+export interface DefaultGriffin {
+  GriffinIdentifier: string;
+  Timeout: number;
+  MaxSize: number;
+  Debug: boolean;
+  ActionDetail: ActionDetail[];
+}
+
+export interface ActionValues {
+  Extension: string;
+  Args: string[];
+  FilteredExtractedObjectGroupData: string[];
+  FilteredExtractedUnitData: string[];
+}
+
+export enum ActionType {
+  GENERATE = 'GENERATE',
+  EXTRACT = 'EXTRACT',
+}
+
+export interface ActionDetail {
+  Type: ActionType;
+  Values: ActionValues;
+}

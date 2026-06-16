@@ -34,18 +34,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PreservationScenario, PreservationScenariosService, VitamUICommonModule, Direction } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
+import { factorOf, sortByKey } from '../sorting';
 
 @Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+  selector: 'app-preservation-scenarios',
+  templateUrl: './preservation-scenarios.component.html',
+  imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
-export class PreservationComponent {}
+export class PreservationScenariosComponent implements OnInit {
+  private preservationScenariosService = inject(PreservationScenariosService);
+
+  readonly preservationScenarios = signal<PreservationScenario[]>([]);
+  readonly loading = signal(false);
+  readonly selectedPreservationScenario = signal<PreservationScenario>(null);
+
+  readonly nameKey: keyof PreservationScenario = 'Name';
+  readonly identifierKey: keyof PreservationScenario = 'Identifier';
+  readonly creationDateKey: keyof PreservationScenario = 'CreationDate';
+
+  orderByKey: keyof PreservationScenario = 'Identifier';
+  direction = Direction.ASCENDANT;
+
+  ngOnInit() {
+    this.loadPreservationScenarios();
+  }
+
+  loadPreservationScenarios() {
+    this.loading.set(true);
+
+    this.preservationScenariosService.list().subscribe({
+      next: (preservationScenarios) => {
+        this.preservationScenarios.set(preservationScenarios);
+        this.sort();
+      },
+      complete: () => this.loading.set(false),
+      error: () => this.loading.set(false),
+    });
+  }
+
+  sort() {
+    const key = this.orderByKey;
+    const factor = factorOf(this.direction);
+
+    this.preservationScenarios.set([...this.preservationScenarios()].sort(sortByKey(key, factor)));
+  }
+}

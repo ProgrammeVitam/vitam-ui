@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { PreservationScenariosComponent } from '../scenarios/preservation-scenarios.component';
+import { GriffinsComponent } from '../griffins/griffins.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+  selector: 'app-preservation-tab',
+  templateUrl: './preservation-tab.component.html',
+  imports: [MatTabsModule, PreservationScenariosComponent, GriffinsComponent, TranslatePipe],
+  styleUrls: ['./preservation-tab.component.scss'],
 })
-export class PreservationComponent {}
+export class PreservationTabComponent {
+  tabIndex = 0;
+}

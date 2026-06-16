@@ -34,18 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Direction } from 'vitamui-library';
+/**
+ * Sort by key
+ * @param key to sort on.
+ * @param factor 1 asc sort, -1 desc sort
+ */
+export const sortByKey =
+  <T>(key: keyof T, factor: 1 | -1) =>
+  (a: T, b: T) => {
+    const av = a[key];
+    const bv = b[key];
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
+    const normalize = (v: any) => (v instanceof Date ? v.getTime() : v);
 
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
-})
-export class PreservationComponent {}
+    const A = normalize(av);
+    const B = normalize(bv);
+
+    let result: number;
+
+    if (typeof A === 'string' && typeof B === 'string') {
+      result = A.localeCompare(B);
+    } else if (typeof A === 'number' && typeof B === 'number') {
+      result = A - B;
+    } else {
+      result = String(A).localeCompare(String(B));
+    }
+
+    return result * factor;
+  };
+
+export const factorOf = (direction: Direction) => {
+  return direction === Direction.DESCENDANT ? -1 : 1;
+};

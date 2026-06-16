@@ -614,11 +614,6 @@
       "SUCCESS_LINK_TEXT": "Go to logbook operation"
     }
   },
-  "PRESERVATION": {
-    "HOME": {
-      "TITLE": "Griffins and preservation scenarios repository"
-    }
-  },
   "RULES_APP": {
     "HOME": {
       "TITLE": "Management rules repository",
@@ -1157,5 +1152,30 @@
     "INVALID_DSL_REQUEST_FORMAT": "Invalid request format",
     "VIEW_THE_OPERATIONS_LOG": "View the operations log",
     "SUCCESSFUL_UPDATE": "The update was successful !"
+  },
+  "PRESERVATION": {
+    "HOME": {
+      "TITLE": "Griffins and preservation scenarios repository"
+    },
+    "GRIFFIN": {
+      "TITLE": "Griffins",
+      "TABLE": {
+        "HEADER": {
+          "IDENTIFIER": "Identifier",
+          "NAME": "Name",
+          "CREATION_DATE": "Creation date"
+        }
+      }
+    },
+    "SCENARIO": {
+      "TITLE": "Preservation scenarios",
+      "TABLE": {
+        "HEADER": {
+          "IDENTIFIER": "Identifier",
+          "NAME": "Name",
+          "CREATION_DATE": "Creation date"
+        }
+      }
+    }
   }
 }
