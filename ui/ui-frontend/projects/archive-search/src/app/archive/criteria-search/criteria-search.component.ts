@@ -38,10 +38,12 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import {
   CriteriaSearchCriteria,
   CriteriaValue,
+  ORIGIN_WAITING_RECALCULATE,
   QueryParamsService,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
   TranslateWithOptionalTypeSuffixPipe,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -72,11 +74,14 @@ export class CriteriaSearchComponent {
     const builder = this.queryParamsService.builder();
     criteriaValues.forEach((criteriaValue) => {
       //fixme manage navigation
-      let value =
-        criteriaValue.id === 'VIRTUAL'
-          ? criteriaValue.value + '/' + criteriaValue.virtualNodeRealParentId + '/' + criteriaValue.virtualNodeRealParentTitle
-          : criteriaValue.value;
-      builder.removeQueryParam(criteriaValue.id, value);
+      const queryParamKey = criteriaValue.id === WAITING_RECALCULATE ? ORIGIN_WAITING_RECALCULATE : criteriaValue.id;
+      const value =
+        criteriaValue.id === WAITING_RECALCULATE
+          ? ORIGIN_WAITING_RECALCULATE
+          : criteriaValue.id === 'VIRTUAL'
+            ? criteriaValue.value + '/' + criteriaValue.virtualNodeRealParentId + '/' + criteriaValue.virtualNodeRealParentTitle
+            : criteriaValue.value;
+      builder.removeQueryParam(queryParamKey, value);
       this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey, valueElt: criteriaValue });
     });
     builder.navigate();
