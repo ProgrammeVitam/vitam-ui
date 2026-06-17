@@ -4,38 +4,21 @@
 
 ### Tools
 
-* Install JDK version >= 17
+* Install JDK 21
 * Install Maven
-  * Run [this script](https://github.com/ProgrammeVitam/vitam/blob/b1b7bb6e8ee83e9e747a9849b457824af650cd16/vitam-conf-dev/scripts/maven-setup-chapelle-edition.sh) to set it up
+  * Run [this script](https://github.com/ProgrammeVitam/vitam/blob/b1b7bb6e8ee83e9e747anc-dev/scripts/maven-setup-chapelle-edition.sh) to set it up
 * Install Git
 * Install Node.js and npm (with nvm)
   * Configure default registry: `npm config set registry https://registry.npmjs.org/`
-* Python version 2.7 + pip for Python 2
+* Python version 3.9+
 * Install Ansible (see [Ansible](#Ansible))
 
-### Ansible
+## Ansible
 
-Current version of VitamUI depends on Ansible version 2.7.0 in order to run installation scripts.
+VitamUI is recommended for Ansible 2.14 and Python 3.9+, but remains functional with Ansible 2.9 and Python 3.8.
 
-#### With VirtualEnv
-
-In order not to interfere with more recent Ansible version, deploy a Python VirtualEnv in which you install Ansible 2.7.0:
-
-* Check that VirtualEnv executable is installed: `apt-get install python-virtualenv`
-* In a directory of your choice, create the virtual environment: `virtualenv --python=python2.7 vitamUI-ansible`
-* Activate the environment: `source vitamUI-ansible/bin/activate`
-
-#### Without VirtualEnv
-
-* First remove older versions of Ansible before re-installing it: `pip uninstall ansible`.
-* Si une version d'ansible a été installée via `apt-get install`, il est nécessaire de la désinstaller : `apt-get remove ansible`
-
-#### Common steps
-
-* Install Ansible 2.7.0: `pip install ansible==2.7.0`
-* Check the version of ansible: `ansible --version`
-
-Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redémarrage soit nécessaire
+To automatically set up a Python VirtualEnv with the appropriate Ansible version, you can use the provided script:
+`./scripts/setup_ansible_venv.sh`
 
 ## Configuration
 
@@ -58,7 +41,7 @@ Il est possible que l'ajout du lien vers ansible dans le PATH et/ou qu'un redém
 `/bin/sh: 1: /usr/bin/python: not found`
 
 => Create symlink, for instance:
-`sudo ln -s /usr/bin/python2.7 /usr/bin/python`
+`sudo ln -s /usr/bin/python3 /usr/bin/python`
 
 ## PKI generation
 
