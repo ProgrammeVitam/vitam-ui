@@ -43,6 +43,7 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
@@ -94,6 +95,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
         VitamAccessConfig.class,
         VitamAdministrationConfig.class,
         ConverterConfig.class,
+        Jackson2CompatibilityConfig.class,
     }
 )
 public class ApiReferentialServerConfig extends AbstractContextConfiguration {

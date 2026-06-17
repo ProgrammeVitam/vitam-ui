@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
@@ -81,6 +82,7 @@ import org.springframework.web.client.RestClient;
         VitamAdministrationConfig.class,
         MongoDbConfig.class,
         ConverterConfig.class,
+        Jackson2CompatibilityConfig.class,
     }
 )
 public class ApiArchiveServerConfig extends AbstractContextConfiguration {

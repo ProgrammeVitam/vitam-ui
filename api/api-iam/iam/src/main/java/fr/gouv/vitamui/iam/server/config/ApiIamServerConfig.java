@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -135,6 +136,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
         VitamAccessConfig.class,
         VitamAdministrationConfig.class,
         ConverterConfig.class,
+        Jackson2CompatibilityConfig.class,
     }
 )
 @EnableConfigurationProperties({ PasswordConfiguration.class })
