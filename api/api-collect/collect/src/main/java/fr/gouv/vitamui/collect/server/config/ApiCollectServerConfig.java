@@ -36,6 +36,7 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -64,6 +65,7 @@ import org.springframework.web.client.RestClient;
         VitamAccessConfig.class,
         VitamCollectConfig.class,
         VitamAdministrationConfig.class,
+        Jackson2CompatibilityConfig.class,
     }
 )
 public class ApiCollectServerConfig extends AbstractContextConfiguration {

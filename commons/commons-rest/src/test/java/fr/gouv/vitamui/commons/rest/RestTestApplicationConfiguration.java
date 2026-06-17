@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.commons.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -33,5 +34,10 @@ public class RestTestApplicationConfiguration {
     @ConfigurationProperties("rest-client2")
     public RestClientConfiguration getRestClientConfiguration2() {
         return new RestClientConfiguration();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }
