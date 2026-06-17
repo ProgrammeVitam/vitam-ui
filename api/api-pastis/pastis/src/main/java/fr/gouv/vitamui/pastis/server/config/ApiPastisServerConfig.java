@@ -44,8 +44,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
+import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
+import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
@@ -57,21 +60,33 @@ import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
+import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestClient;
 
-import java.util.Arrays;
-
 @Configuration
-@Import({ RestExceptionHandler.class, HttpMessageConvertersAutoConfiguration.class, VitamAccessConfig.class })
+@Import(
+    {
+        RestExceptionHandler.class,
+        HttpMessageConvertersAutoConfiguration.class,
+        WebSecurityConfig.class,
+        VitamAccessConfig.class,
+    }
+)
 public class ApiPastisServerConfig extends AbstractContextConfiguration {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
+    }
 
     @Bean
     public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
@@ -112,13 +127,10 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public IamApiClientsFactoryVitamui iamApiClientsFactory(
-        final ApiPastisApplicationProperties apiArchiveExternalApplicationProperties,
+        final ApiPastisApplicationProperties apiPastisApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new IamApiClientsFactoryVitamui(
-            apiArchiveExternalApplicationProperties.getIamClient(),
-            restClientBuilder
-        );
+        return new IamApiClientsFactoryVitamui(apiPastisApplicationProperties.getIamClient(), restClientBuilder);
     }
 
     @Bean
@@ -127,24 +139,21 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
+    public CustomersApi customersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+        return iamApiClientsFactory.getCustomersApi();
     }
 
     @Bean
-    public MappingJackson2HttpMessageConverter customizedJacksonMessageConverter(ObjectMapper objectMapper) {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(objectMapper);
-        converter.setSupportedMediaTypes(
-            Arrays.asList(
-                MediaType.APPLICATION_JSON,
-                new MediaType("application", "*+json"),
-                MediaType.APPLICATION_OCTET_STREAM
-            )
-        );
-        return converter;
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+        return iamApiClientsFactory.getExternalParametersApi();
+    }
+
+    @Bean
+    public ConfigurationService configurationService(
+        final AdminExternalClient adminExternalClient,
+        final ObjectMapper objectMapper
+    ) {
+        return new ConfigurationService(adminExternalClient, objectMapper);
     }
 
     @Bean
