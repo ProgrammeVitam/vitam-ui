@@ -46,6 +46,8 @@ import {
   SearchCriteriaValue,
   ORIGIN_HAS_AT_LEAST_ONE,
   ORIGIN_INHERITE_AT_LEAST_ONE,
+  ORIGIN_WAITING_RECALCULATE,
+  WAITING_RECALCULATE,
 } from '../../../../app/modules';
 import { QueryParamsService } from '../../../../app/modules/url/query-params.service';
 import { SearchCriteriaService } from '../../../../app/modules/models/criteria/search-criteria.service';
@@ -91,6 +93,11 @@ export class ManagementRuleCriteriaService {
       )
       .subscribe((searchCriteria: Map<string, CriteriaSearchCriteria>) => {
         const filteredCriterias = new Map([...searchCriteria.entries()].filter(([key]) => keysList.includes(key)));
+        const hasWaitingRecalculateCriteria = searchCriteria.has(WAITING_RECALCULATE);
+
+        if (hasWaitingRecalculateCriteria) {
+          additionalCriteria.set(ORIGIN_WAITING_RECALCULATE, true);
+        }
 
         if (filteredCriterias && filteredCriterias.size > 0) {
           filteredCriterias.forEach((value: CriteriaSearchCriteria) => {
