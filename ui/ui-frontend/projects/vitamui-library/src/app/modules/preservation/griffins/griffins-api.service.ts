@@ -34,18 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { BASE_URL } from '../../injection-tokens';
+import { Observable } from 'rxjs';
+import { CreateGriffin, Griffin } from './griffin.type';
 
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
-
-@Component({
-  selector: 'app-preservation',
-  templateUrl: './preservation.component.html',
-  styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+@Injectable({
+  providedIn: 'root',
 })
-export class PreservationComponent {}
+export class GriffinsApiService {
+  protected http: HttpClient;
+  protected readonly apiUrl: string;
+
+  constructor() {
+    this.http = inject(HttpClient);
+    this.apiUrl = `${inject(BASE_URL)}/griffins`;
+  }
+
+  public getAll(): Observable<Griffin[]> {
+    return this.http.get<Griffin[]>(this.apiUrl);
+  }
+
+  public put(griffins: Griffin[]) {
+    return this.http.put<void>(this.apiUrl, griffins);
+  }
+
+  public create(griffin: CreateGriffin) {
+    return this.http.post<Griffin>(this.apiUrl, griffin);
+  }
+
+  public update(griffin: Griffin) {
+    return this.http.post<Griffin>(this.apiUrl, griffin);
+  }
+
+  public delete(griffin: Griffin) {
+    return this.http.delete<void>(this.apiUrl, { body: griffin });
+  }
+}

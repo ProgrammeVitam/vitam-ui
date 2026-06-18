@@ -120,6 +120,10 @@ public abstract class RestApi {
 
     public static final String UPDATE_PROFILE_FILE = "/updateProfileFile";
 
+    public static final String GRIFFINS_PATH = PREFIX + "/griffins";
+
+    public static final String PRESERVATION_SCENARIOS_PATH = PREFIX + "/preservation-scenarios";
+
     private RestApi() {
         // do nothing
     }

@@ -614,11 +614,6 @@
       "SUCCESS_LINK_TEXT": "Consulter le journal des opérations"
     }
   },
-  "PRESERVATION": {
-    "HOME": {
-      "TITLE": "Référentiel des griffons et des scénarios de préservation"
-    }
-  },
   "RULES_APP": {
     "HOME": {
       "TITLE": "Référentiel des règles de gestion",
@@ -1157,5 +1152,30 @@
     "INVALID_DSL_REQUEST_FORMAT": "Format de la requête invalide",
     "VIEW_THE_OPERATIONS_LOG": "Consulter le journal des opérations",
     "SUCCESSFUL_UPDATE": "La mise à jour a été réalisée avec succès !"
+  },
+  "PRESERVATION": {
+    "HOME": {
+      "TITLE": "Référentiel des griffons et des scénarios de préservation"
+    },
+    "GRIFFIN": {
+      "TITLE": "Griffons",
+      "TABLE": {
+        "HEADER": {
+          "IDENTIFIER": "Identifiant",
+          "NAME": "Nom",
+          "CREATION_DATE": "Date de création"
+        }
+      }
+    },
+    "SCENARIO": {
+      "TITLE": "Scénarios de préservation",
+      "TABLE": {
+        "HEADER": {
+          "IDENTIFIER": "Identifiant",
+          "NAME": "Nom",
+          "CREATION_DATE": "Date de création"
+        }
+      }
+    }
   }
 }

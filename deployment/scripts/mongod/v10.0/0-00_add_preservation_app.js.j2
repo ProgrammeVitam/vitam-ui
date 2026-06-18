@@ -26,7 +26,7 @@ var profiles = {
         "enabled": true,
         "readonly": true,
         "customerId": tenant.customerId,
-        "roles": adminRoles
+        "roles": adminRoles.map(role => ({ name: role }))
     }),
 
     user: (tenant, nextProfileId) => ({
@@ -40,7 +40,7 @@ var profiles = {
         "enabled": true,
         "readonly": true,
         "customerId": tenant.customerId,
-        "roles": userRoles
+        "roles": userRoles.map(role => ({ name: role }))
     })
 };
 
@@ -123,6 +123,18 @@ dbIam.sequences.updateOne(
 db.groups.updateOne(
 	{
 		"_id": "admin_group"
+	},
+	{
+		$addToSet: {"profileIds": "system_preservation" }
+	},
+	{
+		"upsert": false
+	}
+);
+
+db.groups.updateOne(
+	{
+		"_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
 	},
 	{
 		$addToSet: {"profileIds": "system_preservation" }
