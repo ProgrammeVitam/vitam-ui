@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subject, merge, timer, Subscription } from 'rxjs';
+import { merge, Subject, Subscription, timer } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Event, PageRequest } from 'vitamui-library';
+import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'vitamui-library';
 import { AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 
@@ -113,7 +113,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
 
   searchAuditOrdered() {
     const query: any = this.buildCriteriaFromSearch();
-    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT, JSON.stringify(query)));
+    this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query)));
   }
 
   emitOrderChange() {
