@@ -38,11 +38,12 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { EMPTY, Subject } from 'rxjs';
-import { map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { EMPTY, forkJoin, of, Subject } from 'rxjs';
+import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
   AccessContractService,
   AccessionRegisterSummary,
+  AgencyService,
   ConfirmDialogService,
   ExternalParameters,
   ExternalParametersService,
@@ -98,7 +99,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   public startDateControl = new FormControl('');
   public endDateControl = new FormControl('');
   public accessContractId: string = null;
-  public accessionRegisterSummaries: AccessionRegisterSummary[];
   public producerServicesOptions: Option[] = [];
   public producerServicesMultiSelectOptions: VitamuiSelectOptions;
   public isDisabledButton = false;
@@ -119,6 +119,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private confirmDialogService: ConfirmDialogService,
     private auditService: AuditService,
+    private agencyService: AgencyService,
     private startupService: StartupService,
     protected accessContractService: AccessContractService,
     private auditCreateValidator: AuditCreateValidators,
@@ -147,15 +148,11 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
     this.externalParameterService
       .getUserExternalParameters()
-      .pipe(switchMap((params: Map<string, string>) => this.extractAccesContractIdAndGetAccessionRegisterSummaries(params)))
+      .pipe(switchMap((params: Map<string, string>) => this.loadAccessContractAndProducerServicesOptions(params)))
       .pipe(take(1))
-      .subscribe((accessContractAndRegisterSummary) => {
-        this.accessContractId = accessContractAndRegisterSummary.accessContractId;
-        this.accessionRegisterSummaries = accessContractAndRegisterSummary.accessionRegisterSummaries;
-        this.producerServicesOptions = this.accessionRegisterSummaries.map((summary) => ({
-          key: summary.originatingAgency,
-          label: summary.originatingAgency,
-        }));
+      .subscribe(({ accessContractId, producerServicesOptions }) => {
+        this.accessContractId = accessContractId;
+        this.producerServicesOptions = producerServicesOptions;
         this.producerServicesMultiSelectOptions = {
           options: this.producerServicesOptions,
           customSorting: this.sortAlphabetically,
@@ -278,16 +275,22 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     return this.form.controls.startDate.hasValidator(Validators.required);
   }
 
-  private extractAccesContractIdAndGetAccessionRegisterSummaries(params: Map<string, string>) {
+  private loadAccessContractAndProducerServicesOptions(params: Map<string, string>) {
     const accessContractId = params.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
     if (!accessContractId || accessContractId.length < 1) {
       this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       return EMPTY;
     }
 
-    return this.auditService
-      .getAllAccessionRegister(accessContractId)
-      .pipe(map((accessionRegisterSummaries) => ({ accessContractId, accessionRegisterSummaries })));
+    return forkJoin({
+      accessionRegisterSummaries: this.auditService.getAllAccessionRegister(accessContractId),
+      originatingAgenciesOptions: this.agencyService.getOriginatingAgenciesAsOptions().pipe(catchError(() => of([]))),
+    }).pipe(
+      map(({ accessionRegisterSummaries, originatingAgenciesOptions }) => ({
+        accessContractId,
+        producerServicesOptions: this.buildProducerServicesOptions({ accessionRegisterSummaries, originatingAgenciesOptions }),
+      })),
+    );
   }
 
   private changeDefaultOnActionSelection(auditActions: AuditAction): void {
@@ -495,5 +498,20 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
           this.dialogRef.close({ success: false, action: 'none' });
         },
       );
+  }
+
+  private buildProducerServicesOptions({
+    accessionRegisterSummaries,
+    originatingAgenciesOptions,
+  }: {
+    accessionRegisterSummaries: AccessionRegisterSummary[];
+    originatingAgenciesOptions: Option[];
+  }): Option[] {
+    const originatingAgencyLabelById = new Map(originatingAgenciesOptions.map((option) => [option.key, option.label]));
+
+    return accessionRegisterSummaries.map((summary) => ({
+      key: summary.originatingAgency,
+      label: originatingAgencyLabelById.get(summary.originatingAgency) || summary.originatingAgency,
+    }));
   }
 }
