@@ -27,9 +27,9 @@
 
       <th>
         <span class="no-wrap">
-          {{ 'PRESERVATION.SCENARIO.TABLE.HEADER.CREATION_DATE' | translate }}
+          {{ 'PRESERVATION.SCENARIO.TABLE.HEADER.POSSIBLE_ACTIONS' | translate }}
           <vitamui-order-by-button
-            [orderByKey]="creationDateKey"
+            [orderByKey]="nameKey"
             [(direction)]="direction"
             [(orderBy)]="orderByKey"
             (orderChange)="sort()"
@@ -38,7 +38,15 @@
       </th>
 
       <th>
-        <!-- Actions column -->
+        <span class="no-wrap">
+          {{ 'PRESERVATION.SCENARIO.TABLE.HEADER.CREATION_DATE' | translate }}
+          <vitamui-order-by-button
+            [orderByKey]="creationDateKey"
+            [(direction)]="direction"
+            [(orderBy)]="orderByKey"
+            (orderChange)="sort()"
+          ></vitamui-order-by-button>
+        </span>
       </th>
     </tr>
   </thead>
@@ -52,8 +60,8 @@
       >
         <td>{{ preservationScenario.Identifier }}</td>
         <td>{{ preservationScenario.Name }}</td>
+        <td>{{ formatPossibleActions(preservationScenario.ActionList) }}</td>
         <td>{{ preservationScenario.CreationDate | dateTime: 'dd/MM/yyyy' | empty }}</td>
-        <td class="delete-button"></td>
       </tr>
     }
   </tbody>

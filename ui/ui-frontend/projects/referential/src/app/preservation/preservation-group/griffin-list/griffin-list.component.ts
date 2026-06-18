@@ -34,22 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Griffin, GriffinsService, VitamUICommonModule, Direction } from 'vitamui-library';
+import { Direction, Griffin, GriffinsService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
-import { factorOf, sortByKey } from '../sorting';
+import { factorOf, sortByKey } from '../../sorting';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+const FILTER_DEBOUNCE_TIME_MS = 400;
 
 @Component({
-  selector: 'app-griffins',
-  templateUrl: './griffins.component.html',
-  styleUrls: ['./griffins.component.scss'],
+  selector: 'app-griffin-list',
+  templateUrl: './griffin-list.component.html',
+  styleUrls: ['./griffin-list.component.scss'],
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
-export class GriffinsComponent implements OnInit {
-  private griffinsService = inject(GriffinsService);
+export class GriffinListComponent implements OnInit {
+  private readonly griffinsService = inject(GriffinsService);
+  private readonly destroyRef = inject(DestroyRef);
 
+  private readonly allGriffins = signal<Griffin[]>([]);
   readonly griffins = signal<Griffin[]>([]);
   readonly loading = signal(false);
   readonly selectedGriffin = signal<Griffin>(null);
@@ -61,28 +68,45 @@ export class GriffinsComponent implements OnInit {
   orderByKey: keyof Griffin = 'Identifier';
   direction = Direction.ASCENDANT;
 
-  ngOnInit() {
-    this.loadGriffins();
+  private _searchText: string;
+  private readonly searchChange = new Subject<string>();
+
+  @Input()
+  set searchText(value: string) {
+    this._searchText = value ?? '';
+    this.searchChange.next(this._searchText);
   }
 
-  loadGriffins() {
-    this.loading.set(true);
+  constructor() {
+    this.searchChange.pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), takeUntilDestroyed()).subscribe(() => this.applyFilterAndSort());
+  }
 
-    this.griffinsService.list().subscribe({
-      next: (griffins) => {
-        this.griffins.set(griffins);
-        this.sort();
-      },
-      complete: () => this.loading.set(false),
-      error: () => this.loading.set(false),
-    });
+  ngOnInit() {
+    this.loading.set(true);
+    this.griffinsService
+      .list()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (griffins) => {
+          this.allGriffins.set(griffins);
+          this.applyFilterAndSort();
+        },
+        complete: () => this.loading.set(false),
+        error: () => this.loading.set(false),
+      });
   }
 
   sort() {
-    const key = this.orderByKey;
-    const factor = factorOf(this.direction);
+    this.applyFilterAndSort();
+  }
 
-    this.griffins.set([...this.griffins()].sort(sortByKey(key, factor)));
+  private applyFilterAndSort() {
+    const text = this._searchText.toLowerCase();
+    const filtered = text
+      ? this.allGriffins().filter((g) => g.Identifier.toLowerCase().includes(text) || g.Name.toLowerCase().includes(text))
+      : [...this.allGriffins()];
+
+    this.griffins.set(filtered.sort(sortByKey(this.orderByKey, factorOf(this.direction))));
   }
 
   isSelected(griffin: Griffin) {

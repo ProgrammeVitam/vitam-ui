@@ -40,12 +40,18 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VitamUICommonModule } from 'vitamui-library';
-import { PreservationTabComponent } from './preservation-tab/preservation-tab.component';
+import { PreservationGroupComponent } from './preservation-group/preservation-group.component';
 
 @Component({
   selector: 'app-preservation',
   templateUrl: './preservation.component.html',
   styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationTabComponent],
+  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationGroupComponent],
 })
-export class PreservationComponent {}
+export class PreservationComponent {
+  search = '';
+
+  onSearchSubmit(search: string) {
+    this.search = search.trim() || '';
+  }
+}

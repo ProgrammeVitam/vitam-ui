@@ -34,18 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PreservationScenariosComponent } from '../scenarios/preservation-scenarios.component';
-import { GriffinsComponent } from '../griffins/griffins.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PreservationScenarioListComponent } from './preservation-scenario-list/preservation-scenario-list.component';
+import { GriffinListComponent } from './griffin-list/griffin-list.component';
 
 @Component({
-  selector: 'app-preservation-tab',
-  templateUrl: './preservation-tab.component.html',
-  imports: [MatTabsModule, PreservationScenariosComponent, GriffinsComponent, TranslatePipe],
-  styleUrls: ['./preservation-tab.component.scss'],
+  selector: 'app-preservation-group',
+  templateUrl: './preservation-group.component.html',
+  imports: [MatTabsModule, PreservationScenarioListComponent, GriffinListComponent, TranslatePipe],
+  styleUrls: ['./preservation-group.component.scss'],
 })
-export class PreservationTabComponent {
+export class PreservationGroupComponent {
+  @Input() searchText: string;
+
   tabIndex = 0;
 }

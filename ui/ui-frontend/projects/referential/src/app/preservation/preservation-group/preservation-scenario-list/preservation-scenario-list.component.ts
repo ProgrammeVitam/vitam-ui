@@ -34,21 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PreservationScenario, PreservationScenariosService, VitamUICommonModule, Direction } from 'vitamui-library';
-import { TranslatePipe } from '@ngx-translate/core';
-import { factorOf, sortByKey } from '../sorting';
+import { Direction, PreservationScenario, PreservationScenariosService, VitamUICommonModule } from 'vitamui-library';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { factorOf, sortByKey } from '../../sorting';
+import { Subject } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs/operators';
+import { ActionType } from '../../../../../../vitamui-library/src/app/modules/preservation/scenarios/preservation-scenario.type';
+
+const FILTER_DEBOUNCE_TIME_MS = 400;
+const ACTION_TYPE_KEY = 'PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.';
 
 @Component({
-  selector: 'app-preservation-scenarios',
-  templateUrl: './preservation-scenarios.component.html',
+  selector: 'app-preservation-scenario-list',
+  templateUrl: './preservation-scenario-list.component.html',
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
-export class PreservationScenariosComponent implements OnInit {
-  private preservationScenariosService = inject(PreservationScenariosService);
+export class PreservationScenarioListComponent implements OnInit {
+  private translateService = inject(TranslateService);
+  private readonly preservationScenariosService = inject(PreservationScenariosService);
+  private readonly destroyRef = inject(DestroyRef);
 
+  private readonly allScenarios = signal<PreservationScenario[]>([]);
   readonly preservationScenarios = signal<PreservationScenario[]>([]);
   readonly loading = signal(false);
   readonly selectedPreservationScenario = signal<PreservationScenario>(null);
@@ -60,27 +70,48 @@ export class PreservationScenariosComponent implements OnInit {
   orderByKey: keyof PreservationScenario = 'Identifier';
   direction = Direction.ASCENDANT;
 
-  ngOnInit() {
-    this.loadPreservationScenarios();
+  private _searchText: string;
+  private readonly searchChange = new Subject<string>();
+
+  @Input()
+  set searchText(value: string) {
+    this._searchText = value ?? '';
+    this.searchChange.next(this._searchText);
   }
 
-  loadPreservationScenarios() {
-    this.loading.set(true);
+  constructor() {
+    this.searchChange.pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), takeUntilDestroyed()).subscribe(() => this.applyFilterAndSort());
+  }
 
-    this.preservationScenariosService.list().subscribe({
-      next: (preservationScenarios) => {
-        this.preservationScenarios.set(preservationScenarios);
-        this.sort();
-      },
-      complete: () => this.loading.set(false),
-      error: () => this.loading.set(false),
-    });
+  ngOnInit() {
+    this.loading.set(true);
+    this.preservationScenariosService
+      .list()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (scenarios) => {
+          this.allScenarios.set(scenarios);
+          this.applyFilterAndSort();
+        },
+        complete: () => this.loading.set(false),
+        error: () => this.loading.set(false),
+      });
   }
 
   sort() {
-    const key = this.orderByKey;
-    const factor = factorOf(this.direction);
+    this.applyFilterAndSort();
+  }
 
-    this.preservationScenarios.set([...this.preservationScenarios()].sort(sortByKey(key, factor)));
+  formatPossibleActions(possibleActions: ActionType[]) {
+    return possibleActions.map((pa) => this.translateService.instant(ACTION_TYPE_KEY.concat(pa))).join(', ');
+  }
+
+  private applyFilterAndSort() {
+    const text = this._searchText.toLowerCase();
+    const filtered = text
+      ? this.allScenarios().filter((ps) => ps.Identifier.toLowerCase().includes(text) || ps.Name.toLowerCase().includes(text))
+      : [...this.allScenarios()];
+
+    this.preservationScenarios.set(filtered.sort(sortByKey(this.orderByKey, factorOf(this.direction))));
   }
 }

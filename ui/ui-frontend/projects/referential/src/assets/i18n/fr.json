@@ -1155,7 +1155,8 @@
   },
   "PRESERVATION": {
     "HOME": {
-      "TITLE": "Référentiel des griffons et des scénarios de préservation"
+      "TITLE": "Référentiel des griffons et des scénarios de préservation",
+      "SEARCH_PLACEHOLDER": "Nom, identifiant"
     },
     "GRIFFIN": {
       "TITLE": "Griffons",
@@ -1173,6 +1174,14 @@
         "HEADER": {
           "IDENTIFIER": "Identifiant",
           "NAME": "Nom",
+          "POSSIBLE_ACTIONS": "Actions possibles",
+          "ACTIONS": {
+            "GENERATE": "Conversion",
+            "IDENTIFY": "Identification",
+            "VALIDATION": "Validation",
+            "EXTRACT": "Extraction de métadonnées techniques",
+            "EXTRACT_AU": "Extraction de métadonnées descriptives"
+          },
           "CREATION_DATE": "Date de création"
         }
       }

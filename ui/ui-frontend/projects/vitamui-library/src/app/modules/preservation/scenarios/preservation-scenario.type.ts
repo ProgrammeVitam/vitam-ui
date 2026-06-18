@@ -83,7 +83,10 @@ export interface ActionValues {
 
 export enum ActionType {
   GENERATE = 'GENERATE',
+  IDENTIFY = 'IDENTIFY',
+  VALIDATION = 'VALIDATION',
   EXTRACT = 'EXTRACT',
+  EXTRACT_AU = 'EXTRACT_AU',
 }
 
 export interface ActionDetail {
