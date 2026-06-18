@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, HostListener, inject, OnInit, viewChild } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
 import { IngestList } from '../core/common/ingest-list';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -52,125 +52,104 @@ import { IngestListComponent } from './ingest-list/ingest-list.component';
   styleUrls: ['./ingest.component.scss'],
   standalone: false,
 })
-export class IngestComponent extends SidenavPage<any> implements OnInit {
-  IngestType = IngestType;
-  search: string;
-  uploadError = false;
-  tenantIdentifier: string;
+export class IngestComponent extends SidenavPage<LogbookOperation> implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly dialog = inject(MatDialog);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly uploadSipService = inject(UploadService);
+
+  readonly searchBar = viewChild.required(SearchBarComponent);
+  readonly ingestListComponent = viewChild.required(IngestListComponent);
+
+  readonly IngestType = IngestType;
+
+  search = '';
+  tenantIdentifier = '';
   guard = true;
-  connectedUserInfo: AdminUserProfile;
-  dateRangeFilterForm: FormGroup;
-  inProgress = false;
-  filters: any = {};
+  connectedUserInfo!: AdminUserProfile;
+  dateRangeFilterForm!: ReturnType<typeof this.buildDateRangeForm>;
+  filters: { startDate?: Date; endDate?: Date } = {};
   ingestList: IngestList = new IngestList();
-  ingestThatHasChanged: LogbookOperation = null;
+  ingestThatHasChanged: LogbookOperation | null = null;
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(IngestListComponent, { static: true }) ingestListComponent: IngestListComponent;
-
-  @ViewChild('inputFile') inputFile: ElementRef;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    globalEventService: GlobalEventService,
-    public dialog: MatDialog,
-    private formBuilder: FormBuilder,
-    private uploadSipService: UploadService,
-  ) {
+  constructor() {
+    const globalEventService = inject(GlobalEventService);
+    const route = inject(ActivatedRoute);
     super(route, globalEventService);
-
-    route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
-    });
-
-    this.dateRangeFilterForm = this.formBuilder.group({
-      startDate: null,
-      endDate: null,
-    });
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters.startDate = value;
-      this.ingestListComponent.filters = this.filters;
-    });
-    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
-      if (value) {
-        value.setDate(value.getDate());
-      }
-      this.filters.endDate = value;
-      this.ingestListComponent.filters = this.filters;
-      this.ingestListComponent.direction = Direction.DESCENDANT;
-    });
   }
 
-  onSearchSubmit(search: string) {
-    this.search = search || '';
-  }
-
-  clearDate(date: 'startDate' | 'endDate') {
-    if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
-      this.filters.startDate = null;
-    } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
-      this.filters.endDate = null;
-    } else {
-      console.error('clearDate() error: unknown date ' + date);
-    }
-  }
-
-  resetFilters() {
-    this.dateRangeFilterForm.reset();
-    this.searchBar.reset();
+  ngOnInit(): void {
+    this.initTenantFromRoute();
+    this.initDateRangeForm();
+    this.subscribeToUploadStatus();
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
+  onBeforeUnload(event: BeforeUnloadEvent): string | undefined {
     if (this.ingestList.wipNumber > 0) {
       event.preventDefault();
-      console.log('ingest wip = ', this.ingestList.wipNumber);
-      event.returnValue = 'Unsaved changes';
-      console.log('before check');
-      return 'Vous avez des ingests en cours de téléchargement. Êtes-vous sûr de vouloir quitter la page ?';
+      const message = 'Vous avez des ingests en cours de téléchargement. Êtes-vous sûr de vouloir quitter la page ?';
+      event.returnValue = message;
+      return message;
     }
+    return undefined;
   }
 
-  ngOnInit() {
-    this.uploadSipService.filesStatus().subscribe((ingestList) => {
-      this.ingestList = ingestList;
-    });
+  onSearchSubmit(search: string): void {
+    this.search = search ?? '';
   }
 
-  showIngest(item: Event) {
-    this.openPanel(item);
-  }
-
-  openImportSipDialog(type: IngestType) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-
-    dialogConfig.data = {
-      tenantIdentifier: this.tenantIdentifier,
-      givenContextId: type,
+  openImportSipDialog(type: IngestType): void {
+    const dialogConfig = {
+      disableClose: false,
+      data: {
+        tenantIdentifier: this.tenantIdentifier,
+        givenContextId: type,
+      },
     };
 
-    const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-      }
-    });
+    this.dialog.open(UploadComponent, dialogConfig).afterClosed().subscribe();
   }
 
-  changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
-  }
-
-  refresh() {
-    this.ingestListComponent.direction = Direction.DESCENDANT;
-    this.ingestListComponent.emitOrderChange();
+  refresh(): void {
+    const list = this.ingestListComponent();
+    list.direction = Direction.DESCENDANT;
+    list.emitOrderChange();
   }
 
   ingestChangedStatus(ingest: LogbookOperation): void {
     this.ingestThatHasChanged = ingest;
+  }
+
+  private initTenantFromRoute(): void {
+    this.route.params.subscribe((params) => {
+      this.tenantIdentifier = params['tenantIdentifier'] ?? '';
+    });
+  }
+
+  private initDateRangeForm(): void {
+    this.dateRangeFilterForm = this.buildDateRangeForm();
+
+    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
+      this.filters = { ...this.filters, startDate: value };
+    });
+
+    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
+      this.filters = { ...this.filters, endDate: value };
+      this.ingestListComponent().direction = Direction.DESCENDANT;
+    });
+  }
+
+  private buildDateRangeForm() {
+    return this.formBuilder.group({
+      startDate: null as Date | null,
+      endDate: null as Date | null,
+    });
+  }
+
+  private subscribeToUploadStatus(): void {
+    this.uploadSipService.filesStatus().subscribe((ingestList) => {
+      this.ingestList = ingestList;
+    });
   }
 }
