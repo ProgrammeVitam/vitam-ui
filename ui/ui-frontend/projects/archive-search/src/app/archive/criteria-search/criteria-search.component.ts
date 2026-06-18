@@ -38,10 +38,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   CriteriaSearchCriteria,
   CriteriaValue,
+  ORIGIN_WAITING_RECALCULATE,
   QueryParamsService,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
   TranslateWithOptionalTypeSuffixPipe,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
@@ -73,7 +75,9 @@ export class CriteriaSearchComponent {
   private removeCriteriaList(criteriaValues: CriteriaValue[]) {
     const builder = this.queryParamsService.builder();
     criteriaValues.forEach((criteriaValue) => {
-      builder.removeQueryParam(criteriaValue.id, criteriaValue.value);
+      const queryParamKey = criteriaValue.id === WAITING_RECALCULATE ? ORIGIN_WAITING_RECALCULATE : criteriaValue.id;
+      const value = criteriaValue.id === WAITING_RECALCULATE ? ORIGIN_WAITING_RECALCULATE : criteriaValue.value;
+      builder.removeQueryParam(queryParamKey, value);
       this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey, valueElt: criteriaValue });
     });
     builder.navigate();
