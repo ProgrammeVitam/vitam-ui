@@ -1,18 +1,25 @@
 package fr.gouv.vitamui.commons.rest.config;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Regression test documenting the failure that {@link Jackson2CompatibilityConfig} was introduced to fix.
@@ -48,6 +55,13 @@ class Jackson2CompatibilityConfigRegressionTest {
         public String echo(@RequestBody final JsonNode body) {
             return body.path("key").asText();
         }
+
+        @GetMapping(value = "/test/jsonNodeReturn", produces = MediaType.APPLICATION_JSON_VALUE)
+        public JsonNode jsonNodeReturn() {
+            final ObjectNode node = JsonNodeFactory.instance.objectNode();
+            node.put("key", "value");
+            return node;
+        }
     }
 
     @Test
@@ -64,5 +78,17 @@ class Jackson2CompatibilityConfigRegressionTest {
         )
             .hasMessageContaining("Type definition error")
             .hasMessageContaining("com.fasterxml.jackson.databind.JsonNode");
+    }
+
+    @Test
+    void whenOnlyJackson3ConverterPresent_thenJsonNodeSerializationReturnsMetadataInsteadOfData() throws Exception {
+        // Sans Jackson2JsonNodeHttpMessageConverter (canWrite actif), le converter Jackson 3 par défaut
+        // traite le JsonNode Jackson 2 (abstrait pour lui) comme un POJO classique et sérialise ses
+        // getters isXxx()/nodeType au lieu du contenu JSON réel.
+        final MvcResult result = mockMvc.perform(get("/test/jsonNodeReturn")).andExpect(status().isOk()).andReturn();
+
+        final String body = result.getResponse().getContentAsString();
+
+        assertThat(body).contains("\"nodeType\"").doesNotContain("\"key\":\"value\"");
     }
 }

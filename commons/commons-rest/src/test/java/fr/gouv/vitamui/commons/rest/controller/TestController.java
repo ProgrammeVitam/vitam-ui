@@ -1,6 +1,8 @@
 package fr.gouv.vitamui.commons.rest.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
@@ -97,6 +99,8 @@ public class TestController {
     public static final String REQUEST_TIMEOUT_ERROR = "/test/requestTimeOutException";
 
     public static final String JACKSON2_JSON_NODE = "/test/jackson2JsonNode";
+
+    public static final String JACKSON2_JSON_NODE_RETURN = "/test/jackson2JsonNodeReturn";
 
     @PostMapping(value = VITAMUI_EXCEPTION, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String vitamuiException(@RequestBody final VitamUIDto name) {
@@ -259,6 +263,13 @@ public class TestController {
     @PostMapping(value = JACKSON2_JSON_NODE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String jackson2JsonNode(@RequestBody final JsonNode body) {
         return body.path("key").asText();
+    }
+
+    @GetMapping(value = JACKSON2_JSON_NODE_RETURN, produces = MediaType.APPLICATION_JSON_VALUE)
+    public JsonNode jackson2JsonNodeReturn() {
+        final ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("key", "value");
+        return node;
     }
 
     @Override

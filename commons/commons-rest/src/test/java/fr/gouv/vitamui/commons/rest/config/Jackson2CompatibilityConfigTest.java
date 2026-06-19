@@ -64,4 +64,22 @@ class Jackson2CompatibilityConfigTest {
         final List<HttpMessageConverter<?>> converters = handlerAdapter.getMessageConverters();
         assertThat(converters).isNotEmpty().first().isInstanceOf(Jackson2JsonNodeHttpMessageConverter.class);
     }
+
+    @Test
+    void whenJackson2CompatibilityConfigActive_thenJsonNodeSerializationSucceeds() {
+        restTestClient
+            .get()
+            .uri(TestController.JACKSON2_JSON_NODE_RETURN)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.OK)
+            .expectBody()
+            .jsonPath("$.key")
+            .isEqualTo("value")
+            // Garde-fou explicite contre une régression vers le bug des flags
+            .jsonPath("$.nodeType")
+            .doesNotExist()
+            .jsonPath("$.object")
+            .doesNotExist();
+    }
 }

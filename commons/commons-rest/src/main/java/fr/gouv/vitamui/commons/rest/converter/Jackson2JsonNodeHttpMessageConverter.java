@@ -78,6 +78,6 @@ public class Jackson2JsonNodeHttpMessageConverter extends AbstractHttpMessageCon
 
     @Override
     protected boolean canWrite(final MediaType mediaType) {
-        return false;
+        return super.canWrite(mediaType);
     }
 }
