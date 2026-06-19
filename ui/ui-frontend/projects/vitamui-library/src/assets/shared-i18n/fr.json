@@ -3977,6 +3977,7 @@
         "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
         "RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
+        "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Identifiant technique de l'analyse d'élimination",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
         "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Sort final",

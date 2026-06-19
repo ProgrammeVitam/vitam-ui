@@ -66,7 +66,6 @@ import {
   ELIMINATION_TECHNICAL_ID,
   INTERVAL_DATE_DUA,
   END_DATE_DUA,
-  ELIM_TECH_ID_DUA,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
@@ -353,8 +352,8 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   isEmpty(formData: any): boolean {
     if (formData.appraisalRuleEliminationIdentifier) {
       this.addCriteria(
-        ELIMINATION_TECHNICAL_ID,
-        { id: ELIM_TECH_ID_DUA, value: formData.appraisalRuleEliminationIdentifier.trim() },
+        ELIMINATION_TECHNICAL_ID + RULE_TYPE_SUFFIX,
+        { id: ELIMINATION_TECHNICAL_ID + RULE_TYPE_SUFFIX, value: formData.appraisalRuleEliminationIdentifier.trim() },
         formData.appraisalRuleEliminationIdentifier.trim(),
         true,
         CriteriaOperator.EQ,
