@@ -48,11 +48,14 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class RuleApiService extends PaginatedHttpClient<Rule> {
+  private readonly baseUrl: string;
+
   constructor() {
     const http = inject(HttpClient);
     const baseUrl = inject(BASE_URL);
 
     super(http, baseUrl + '/rules');
+    this.baseUrl = baseUrl;
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
@@ -93,5 +96,12 @@ export class RuleApiService extends PaginatedHttpClient<Rule> {
 
   export(headers?: HttpHeaders): Observable<any> {
     return super.getHttp().get(super.getApiUrl() + '/export', { headers, responseType: 'text' });
+  }
+
+  prepareSignedExport(headers?: HttpHeaders): Observable<string> {
+    return super
+      .getHttp()
+      .post(super.getApiUrl() + '/export/signed-url', null, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
   }
 }

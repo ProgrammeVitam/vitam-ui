@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -45,6 +46,8 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -56,6 +59,7 @@ import fr.gouv.vitamui.iam.server.user.service.ConnectionHistoryService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +68,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -78,6 +85,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -96,10 +107,18 @@ import java.util.Optional;
 public class UserController implements CrudController<UserDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final String USER_EXPORT_RESOURCE = "user-export";
+    private static final String SIGNED_DOWNLOAD_EXPORT_ENDPOINT = "/signed-download/export";
+    private static final String SIGNED_DOWNLOAD_USER_EXPORT_PATH = "/users" + SIGNED_DOWNLOAD_EXPORT_ENDPOINT;
+    private static final String CRITERIA_PARAMETER = "criteria";
+    private static final DateTimeFormatter EXPORT_FILE_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(
+        "yyyy-MM-dd'T'HH_mm_ss"
+    );
 
     private final UserService userService;
     private final ConnectionHistoryService connectionHistoryService;
     private final SecurityService securityService;
+    private final SignedDownloadTokenService signedDownloadTokenService;
 
     @Operation(operationId = "users_exportUsers", summary = "Export users to xlsx file")
     @Secured(ServicesData.ROLE_GET_USERS)
@@ -107,6 +126,48 @@ public class UserController implements CrudController<UserDto> {
     public Resource exportUsers(@RequestParam(required = false) final Optional<String> criteria) {
         LOGGER.debug("Export all users to xlsx file");
         return userService.exportUsers(criteria);
+    }
+
+    @Operation(operationId = "users_prepareSignedExportUsers", summary = "Prepare signed export users to xlsx file")
+    @Secured(ServicesData.ROLE_GET_USERS)
+    @GetMapping(CommonConstants.PATH_EXPORT + "/signed-url")
+    public String prepareSignedExportUsers(@RequestParam(required = false) final Optional<String> criteria) {
+        LOGGER.debug("Prepare signed export all users to xlsx file");
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(USER_EXPORT_RESOURCE);
+        userService
+            .buildAuthorizedUsersExportCriteria(criteria)
+            .ifPresent(authorizedCriteria -> claims.setParameters(Map.of(CRITERIA_PARAMETER, authorizedCriteria)));
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_USER_EXPORT_PATH);
+    }
+
+    @Operation(operationId = "users_signedExportUsers", summary = "Signed export users to xlsx file")
+    @GetMapping(value = SIGNED_DOWNLOAD_EXPORT_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedExportUsers(@RequestParam final String token, final HttpServletResponse response)
+        throws IOException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        LOGGER.debug("Signed export all users to xlsx file");
+
+        DownloadClaims claims = signedDownloadTokenService.validate(token, USER_EXPORT_RESOURCE);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+        Resource resource = userService.exportUsersByAuthorizedCriteria(
+            Optional.ofNullable(claims.getParameters().get(CRITERIA_PARAMETER)),
+            vitamContext
+        );
+
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(buildUserExportFileName(), StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
     }
 
     @Operation(operationId = "users_getAllPaginated", summary = "Get all users, paginated")
@@ -257,5 +318,9 @@ public class UserController implements CrudController<UserDto> {
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch analytics with {}", partialDto);
         return userService.patchAnalytics(partialDto);
+    }
+
+    private String buildUserExportFileName() {
+        return "export-utilisateurs-%s.xlsx".formatted(EXPORT_FILE_DATE_TIME_FORMATTER.format(LocalDateTime.now()));
     }
 }

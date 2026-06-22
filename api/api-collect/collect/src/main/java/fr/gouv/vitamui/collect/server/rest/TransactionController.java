@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -40,6 +41,9 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,6 +68,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+import java.util.Map;
+import java.util.Objects;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.DOWNLOAD_SIP_PATH;
@@ -87,9 +93,15 @@ public class TransactionController {
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private static final String TRANSACTION_ID = "The transaction id {} ";
+    private static final String COLLECT_TRANSACTION_SIP_DOWNLOAD_RESOURCE = "collect-transaction-sip-download";
+    private static final String SIGNED_DOWNLOAD_SIP_ENDPOINT = "/signed-download/sip";
+    private static final String SIGNED_DOWNLOAD_TRANSACTION_SIP_PATH =
+        RestApi.TRANSACTIONS + SIGNED_DOWNLOAD_SIP_ENDPOINT;
+    private static final String ID_PARAMETER = "id";
 
     private final TransactionService transactionService;
     private final ExternalParametersService externalParametersService;
+    private final SignedDownloadTokenService signedDownloadTokenService;
 
     @Secured(ServicesData.ROLE_SEND_TRANSACTIONS)
     @PutMapping(CommonConstants.PATH_ID + SEND_PATH)
@@ -217,5 +229,39 @@ public class TransactionController {
             id,
             externalParametersService.buildVitamContextFromExternalParam()
         );
+    }
+
+    @Operation(summary = "Prepare signed URL to download SIP transaction as a zip file")
+    @Secured(ServicesData.ROLE_DOWNLOAD_SIP_TRANSACTIONS)
+    @PostMapping(CommonConstants.PATH_ID + DOWNLOAD_SIP_PATH + "/signed-url")
+    public String prepareSignedDownloadSipTransaction(final @PathVariable("id") String id)
+        throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Prepare signed download SIP transaction with id: {}", id);
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(COLLECT_TRANSACTION_SIP_DOWNLOAD_RESOURCE);
+        claims.setParameters(Map.of(ID_PARAMETER, id));
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_TRANSACTION_SIP_PATH);
+    }
+
+    @Operation(summary = "Download SIP transaction as a zip file from a signed URL")
+    @GetMapping(value = SIGNED_DOWNLOAD_SIP_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Mono<ResponseEntity<Resource>> signedDownloadSipTransaction(@RequestParam final String token)
+        throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, COLLECT_TRANSACTION_SIP_DOWNLOAD_RESOURCE);
+        String id = claims.getParameters().get(ID_PARAMETER);
+        if (Objects.isNull(id)) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        SanityChecker.checkSecureParameter(id);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId())
+            .setAccessContract(claims.getAccessContractId())
+            .setApplicationSessionId(claims.getApplicationSessionId());
+        return transactionService.downloadSipTransaction(id, vitamContext);
     }
 }

@@ -53,6 +53,12 @@ referential:
         - archiving-system-id: local
           tenantIds: [2, 3, 4]
 
+download:
+  signed-url:
+    secret: test_download_signed_url_secret
+    ttl-seconds: 60
+    clock-skew-seconds: 5
+
 swagger:
   layer: api-external
 

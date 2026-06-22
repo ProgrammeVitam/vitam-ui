@@ -139,4 +139,8 @@ export class IngestContractService extends SearchService<IngestContract> {
   public exportIngestContracts(): Observable<HttpResponse<Blob>> {
     return this.ingestContractApi.exportIngestContracts();
   }
+
+  public prepareSignedExportIngestContracts(): Observable<string> {
+    return this.ingestContractApi.prepareSignedExportIngestContracts(this.headers);
+  }
 }

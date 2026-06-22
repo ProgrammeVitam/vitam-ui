@@ -101,6 +101,12 @@ opentracing:
 
 tmp_folder_path : {{ vitamui_struct.tmp_folder_path | default(vitamui_defaults.folder.root_path + '/tmp') }}/{{ vitamui_struct.vitamui_component }}
 
+download:
+  signed-url:
+    secret: {{ vitamui_struct.download.signed_url.secret | default(vitamui_defaults.services.download.signed_url.secret) }}
+    ttl-seconds: {{ vitamui_struct.download.signed_url.ttl_seconds | default(default_download.signed_url.ttl_seconds) }}
+    clock-skew-seconds: {{ vitamui_struct.download.signed_url.clock_skew_seconds | default(default_download.signed_url.clock_skew_seconds) }}
+
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:

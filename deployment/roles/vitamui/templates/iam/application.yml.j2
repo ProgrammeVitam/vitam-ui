@@ -121,6 +121,12 @@ cas.reset.password.url: {{ vitamui.cas_server.base_url | default('/cas') }}{{ vi
 cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 cas_secret_token: {{ vitamui.cas_server.secret_token }}
 
+download:
+  signed-url:
+    secret: {{ vitamui_struct.download.signed_url.secret | default(vitamui_defaults.services.download.signed_url.secret) }}
+    ttl-seconds: {{ vitamui_struct.download.signed_url.ttl_seconds | default(default_download.signed_url.ttl_seconds) }}
+    clock-skew-seconds: {{ vitamui_struct.download.signed_url.clock_skew_seconds | default(default_download.signed_url.clock_skew_seconds) }}
+
 login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure | default(5) }}
 login.attempts.time.interval: {{ vitamui_struct.login_interval|default(20) }}
 

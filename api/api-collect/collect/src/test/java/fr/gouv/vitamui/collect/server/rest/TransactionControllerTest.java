@@ -42,17 +42,18 @@ import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -76,12 +77,18 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
     @Mock
     private ExternalParametersService externalParametersService;
 
+    @MockitoBean
+    private SignedDownloadTokenService signedDownloadTokenService;
+
     private TransactionController transactionController;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        transactionController = new TransactionController(transactionService, externalParametersService);
+        transactionController = new TransactionController(
+            transactionService,
+            externalParametersService,
+            signedDownloadTokenService
+        );
     }
 
     @Override

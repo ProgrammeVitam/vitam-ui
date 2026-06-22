@@ -442,7 +442,8 @@
       "SINGULAR": "sur {{ total }} (1 élément non téléchargeable)",
       "PLURAL": "sur {{ total }} ({{ count }} éléments non téléchargeables)"
     },
-    "FILE_GENERATION": "Génération du fichier"
+    "FILE_GENERATION": "Génération du fichier",
+    "STARTED_MESSAGE": "Votre téléchargement a commencé. Vous pouvez suivre sa progression dans la barre de téléchargement de votre navigateur."
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Êtes-vous sûr de vouloir effectuer cette modification ?"

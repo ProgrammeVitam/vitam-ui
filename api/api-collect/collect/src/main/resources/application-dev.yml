@@ -39,6 +39,12 @@ management:
     address: localhost
     port: 8190
 
+download:
+  signed-url:
+    secret: tokdownload_ie6UZsEcHIWrfv2x
+    ttl-seconds: 60
+    clock-skew-seconds: 5
+
 collect:
   security-client:
     server-host: localhost

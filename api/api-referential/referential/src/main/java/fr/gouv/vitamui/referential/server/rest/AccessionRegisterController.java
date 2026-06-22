@@ -36,30 +36,48 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.accessionregister.AccessionRegisterService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -67,11 +85,28 @@ import java.util.Optional;
 public class AccessionRegisterController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessionRegisterController.class);
+    private static final String ACCESSION_REGISTER_EXPORT_RESOURCE = "accession-register-export";
+    private static final String SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT = "/signed-download/export-csv";
+    private static final String SIGNED_DOWNLOAD_ACCESSION_REGISTER_EXPORT_PATH =
+        "/accession-register" + RestApi.DETAILS + SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT;
+    private static final String QUERY_PARAMETER = "query";
+    private static final String EXPORT_ACCESSION_REGISTERS_FILE_NAME = "export-accession-registers.csv";
 
     private final AccessionRegisterService accessionRegisterService;
+    private final ObjectMapper objectMapper;
+    private final SecurityService securityService;
+    private final SignedDownloadTokenService signedDownloadTokenService;
 
-    public AccessionRegisterController(AccessionRegisterService accessionRegisterService) {
+    public AccessionRegisterController(
+        AccessionRegisterService accessionRegisterService,
+        ObjectMapper objectMapper,
+        SecurityService securityService,
+        SignedDownloadTokenService signedDownloadTokenService
+    ) {
         this.accessionRegisterService = accessionRegisterService;
+        this.objectMapper = objectMapper;
+        this.securityService = securityService;
+        this.signedDownloadTokenService = signedDownloadTokenService;
     }
 
     @GetMapping("/summary")
@@ -114,5 +149,79 @@ public class AccessionRegisterController {
         SanityChecker.sanitizeCriteria(query);
         LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
         return accessionRegisterService.exportCsvArchiveUnitsByCriteria(query);
+    }
+
+    @PostMapping(RestApi.DETAILS_EXPORT_CSV + "/signed-url")
+    @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
+    public String prepareSignedExportCsvArchiveUnitsByCriteria(
+        @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        final @RequestBody AccessionRegisterSearchDto query
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The query and access contract are mandatory parameters: ",
+            query,
+            accessContractId
+        );
+        SanityChecker.sanitizeCriteria(query);
+        SanityChecker.checkSecureParameter(accessContractId);
+        LOGGER.info("Prepare signed export to csv search archive Units By Criteria {} ", query);
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(ACCESSION_REGISTER_EXPORT_RESOURCE);
+        claims.setTenantId(tenantId);
+        claims.setAccessContractId(accessContractId);
+        claims.setParameters(Map.of(QUERY_PARAMETER, serializeQuery(query)));
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_ACCESSION_REGISTER_EXPORT_PATH);
+    }
+
+    @GetMapping(
+        value = RestApi.DETAILS + SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT,
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
+    )
+    public void signedExportCsvArchiveUnitsByCriteria(
+        @RequestParam final String token,
+        final HttpServletResponse response
+    ) throws IOException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, ACCESSION_REGISTER_EXPORT_RESOURCE);
+        String serializedQuery = claims.getParameters().get(QUERY_PARAMETER);
+        if (Objects.isNull(serializedQuery)) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        AccessionRegisterSearchDto query = deserializeQuery(serializedQuery);
+        SanityChecker.sanitizeCriteria(query);
+
+        VitamContext vitamContext = new VitamContext(claims.getTenantId())
+            .setAccessContract(claims.getAccessContractId())
+            .setApplicationSessionId(claims.getApplicationSessionId());
+        Resource resource = accessionRegisterService.exportToCsvAccessionRegister(query, vitamContext);
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(EXPORT_ACCESSION_REGISTERS_FILE_NAME, StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
+    }
+
+    private String serializeQuery(AccessionRegisterSearchDto query) {
+        try {
+            return objectMapper.writeValueAsString(query);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestException("Unable to serialize accession register export query", e);
+        }
+    }
+
+    private AccessionRegisterSearchDto deserializeQuery(String query) {
+        try {
+            return objectMapper.readValue(query, AccessionRegisterSearchDto.class);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestException("Unable to deserialize accession register export query", e);
+        }
     }
 }

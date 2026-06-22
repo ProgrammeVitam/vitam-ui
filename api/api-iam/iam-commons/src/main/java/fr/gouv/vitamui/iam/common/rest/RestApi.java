@@ -45,6 +45,8 @@ public abstract class RestApi {
 
     public static final String AUTOTEST_URL = "/autotest";
 
+    public static final String IAM_API_PATH = "/iam/v1";
+
     public static final String V1_CUSTOMERS_URL = "/iam/v1/customers";
 
     public static final String V1_TENANTS_URL = "/iam/v1/tenants";

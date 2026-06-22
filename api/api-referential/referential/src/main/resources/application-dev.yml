@@ -80,6 +80,12 @@ referential:
         # - archiving-system-id: MyExternalEnv
         #   tenantIds: [0, 1]
 
+download:
+  signed-url:
+    secret: changeit_download_signed_url_secret
+    ttl-seconds: 60
+    clock-skew-seconds: 5
+
 # Jaeger
 opentracing:
   jaeger:

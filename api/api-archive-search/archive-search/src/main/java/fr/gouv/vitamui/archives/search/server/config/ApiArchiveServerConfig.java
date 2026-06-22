@@ -44,6 +44,7 @@ import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchUnitServiceIm
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.api.converter.JsonPatchDtoToUpdateMultiQueryConverter;
 import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -66,6 +67,7 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -135,6 +137,33 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     @Bean
     public SecurityService securityService() {
         return new SecurityService();
+    }
+
+    @Bean
+    public SignedDownloadTokenService signedDownloadTokenService(
+        ObjectMapper objectMapper,
+        SecurityService securityService,
+        ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
+        @Value("${download.signed-url.secret}") String secret,
+        @Value("${download.signed-url.ttl-seconds:60}") long ttlSeconds,
+        @Value("${download.signed-url.clock-skew-seconds:5}") long clockSkewSeconds
+    ) {
+        return new SignedDownloadTokenService(objectMapper, secret, ttlSeconds, clockSkewSeconds, claims -> {
+            if (claims.getSubject() == null) {
+                claims.setSubject(securityService.getUser().getId());
+            }
+            if (claims.getTenantId() == null) {
+                claims.setTenantId(securityService.getTenantIdentifier());
+            }
+            if (claims.getAccessContractId() == null) {
+                claims.setAccessContractId(
+                    archiveSearchExternalParametersService.retrieveAccessContractFromExternalParam()
+                );
+            }
+            if (claims.getApplicationSessionId() == null) {
+                claims.setApplicationSessionId(securityService.getApplicationId());
+            }
+        });
     }
 
     @Bean

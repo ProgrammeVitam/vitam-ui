@@ -144,6 +144,7 @@ public abstract class ApiWebSecurityConfig {
             "/v3/api-docs.yaml",
             "/v3/api-docs/**",
             "/webjars/**",
+            "/v1/*/*/*/signed-download/*",
         };
     }
 

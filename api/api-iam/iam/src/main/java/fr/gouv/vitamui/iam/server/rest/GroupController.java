@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -45,6 +46,8 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -54,9 +57,12 @@ import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.server.group.service.GroupExportService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
@@ -65,6 +71,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -78,6 +87,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -97,14 +108,28 @@ public class GroupController implements CrudController<GroupDto> {
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupController.class);
 
     protected static final String LEVEL_KEY = "level";
+    private static final String PROFILE_GROUP_EXPORT_RESOURCE = "profile-group-export";
+    private static final String SIGNED_DOWNLOAD_EXPORT_ENDPOINT = "/signed-download/export";
+    private static final String SIGNED_DOWNLOAD_PROFILE_GROUP_EXPORT_PATH = "/groups" + SIGNED_DOWNLOAD_EXPORT_ENDPOINT;
+    private static final String GROUP_CRITERIA_PARAMETER = "groupCriteria";
+    private static final String PROFILE_CRITERIA_PARAMETER = "profileCriteria";
 
     private final GroupService groupService;
+    private final ProfileService profileService;
     private final SecurityService securityService;
+    private final SignedDownloadTokenService signedDownloadTokenService;
 
     @Autowired
-    public GroupController(final GroupService groupService, SecurityService securityService) {
+    public GroupController(
+        final GroupService groupService,
+        final ProfileService profileService,
+        SecurityService securityService,
+        SignedDownloadTokenService signedDownloadTokenService
+    ) {
         this.groupService = groupService;
+        this.profileService = profileService;
         this.securityService = securityService;
+        this.signedDownloadTokenService = signedDownloadTokenService;
     }
 
     @GetMapping
@@ -245,5 +270,57 @@ public class GroupController implements CrudController<GroupDto> {
     public Resource exportProfileGroups() {
         LOGGER.debug("Export all profile groups to xlsx file");
         return groupService.exportProfileGroups(Optional.empty());
+    }
+
+    @GetMapping(CommonConstants.PATH_EXPORT + "/signed-url")
+    @Operation(
+        operationId = "groups_prepareSignedExportProfileGroups",
+        summary = "Prepare signed export all profile groups to xlsx file"
+    )
+    @Secured(ServicesData.ROLE_GET_GROUPS)
+    public String prepareSignedExportProfileGroups() {
+        LOGGER.debug("Prepare signed export all profile groups to xlsx file");
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(PROFILE_GROUP_EXPORT_RESOURCE);
+        groupService
+            .buildAuthorizedProfileGroupsExportCriteria(Optional.empty())
+            .ifPresent(groupCriteria -> claims.getParameters().put(GROUP_CRITERIA_PARAMETER, groupCriteria));
+        profileService
+            .buildAuthorizedProfilesExportCriteria(Optional.empty())
+            .ifPresent(profileCriteria -> claims.getParameters().put(PROFILE_CRITERIA_PARAMETER, profileCriteria));
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_PROFILE_GROUP_EXPORT_PATH);
+    }
+
+    @GetMapping(value = SIGNED_DOWNLOAD_EXPORT_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Operation(
+        operationId = "groups_signedExportProfileGroups",
+        summary = "Signed export all profile groups to xlsx file"
+    )
+    public void signedExportProfileGroups(@RequestParam final String token, final HttpServletResponse response)
+        throws IOException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        LOGGER.debug("Signed export all profile groups to xlsx file");
+
+        DownloadClaims claims = signedDownloadTokenService.validate(token, PROFILE_GROUP_EXPORT_RESOURCE);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+        Resource resource = groupService.exportProfileGroupsByAuthorizedCriteria(
+            Optional.ofNullable(claims.getParameters().get(GROUP_CRITERIA_PARAMETER)),
+            Optional.ofNullable(claims.getParameters().get(PROFILE_CRITERIA_PARAMETER)),
+            vitamContext
+        );
+
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(GroupExportService.getFilename(), StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
     }
 }

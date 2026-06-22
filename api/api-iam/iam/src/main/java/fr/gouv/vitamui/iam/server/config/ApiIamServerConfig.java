@@ -42,6 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -113,6 +114,7 @@ import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -158,6 +160,30 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @Bean
     public PasswordValidator passwordValidator() {
         return new PasswordValidator();
+    }
+
+    @Bean
+    public SignedDownloadTokenService signedDownloadTokenService(
+        ObjectMapper objectMapper,
+        SecurityService securityService,
+        @Value("${download.signed-url.secret}") String secret,
+        @Value("${download.signed-url.ttl-seconds:60}") long ttlSeconds,
+        @Value("${download.signed-url.clock-skew-seconds:5}") long clockSkewSeconds
+    ) {
+        return new SignedDownloadTokenService(objectMapper, secret, ttlSeconds, clockSkewSeconds, claims -> {
+            if (claims.getSubject() == null) {
+                claims.setSubject(securityService.getUser().getId());
+            }
+            if (claims.getTenantId() == null) {
+                claims.setTenantId(securityService.getTenantIdentifier());
+            }
+            if (claims.getAccessContractId() == null) {
+                claims.setAccessContractId(securityService.getHttpContext().getAccessContract());
+            }
+            if (claims.getApplicationSessionId() == null) {
+                claims.setApplicationSessionId(securityService.getApplicationId());
+            }
+        });
     }
 
     @Autowired

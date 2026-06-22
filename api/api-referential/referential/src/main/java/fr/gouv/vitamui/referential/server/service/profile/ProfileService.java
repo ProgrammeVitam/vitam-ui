@@ -388,6 +388,11 @@ public class ProfileService extends AbstractService {
     public ResponseEntity<Resource> download(String id)
         throws AccessExternalNotFoundException, AccessExternalClientException {
         VitamContext vitamContext = buildVitamContext();
+        return download(id, vitamContext);
+    }
+
+    public ResponseEntity<Resource> download(String id, VitamContext vitamContext)
+        throws AccessExternalNotFoundException, AccessExternalClientException {
         Response response = this.download(vitamContext, id);
 
         Object entity = response.getEntity();

@@ -681,6 +681,31 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         final List<GroupDto> groupsDto = this.getAll(criteriaJsonString, Optional.of("ALL"));
         final List<ProfileDto> profilesDto = profileService.getAll(criteriaJsonString, Optional.empty());
 
+        return exportProfileGroups(groupsDto, profilesDto, getVitamContext());
+    }
+
+    public Optional<String> buildAuthorizedProfileGroupsExportCriteria(final Optional<String> criteriaJsonString) {
+        return checkAuthorization(criteriaJsonString);
+    }
+
+    public Resource exportProfileGroupsByAuthorizedCriteria(
+        final Optional<String> groupCriteriaJsonString,
+        final Optional<String> profileCriteriaJsonString,
+        final VitamContext vitamContext
+    ) {
+        final List<GroupDto> groupsDto = getAllByAuthorizedCriteria(groupCriteriaJsonString, Optional.of("ALL"));
+        final List<ProfileDto> profilesDto = profileService.getAllByAuthorizedProfilesExportCriteria(
+            profileCriteriaJsonString
+        );
+
+        return exportProfileGroups(groupsDto, profilesDto, vitamContext);
+    }
+
+    private Resource exportProfileGroups(
+        final List<GroupDto> groupsDto,
+        final List<ProfileDto> profilesDto,
+        final VitamContext vitamContext
+    ) {
         if (CollectionUtils.isEmpty(groupsDto)) {
             throw new UnexpectedDataException("Profile groups list is empty");
         }
@@ -688,11 +713,18 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         return groupExportService.exportProfileGroups(
             groupsDto,
             profilesDto,
-            loadGroupHistoryGroupedByEventType(groupsDto)
+            loadGroupHistoryGroupedByEventType(groupsDto, vitamContext)
         );
     }
 
     private Map<String, List<LogbookEventDto>> loadGroupHistoryGroupedByEventType(List<GroupDto> groupsDto) {
+        return loadGroupHistoryGroupedByEventType(groupsDto, getVitamContext());
+    }
+
+    private Map<String, List<LogbookEventDto>> loadGroupHistoryGroupedByEventType(
+        List<GroupDto> groupsDto,
+        VitamContext vitamContext
+    ) {
         if (CollectionUtils.isEmpty(groupsDto)) {
             return Map.of();
         }
@@ -704,7 +736,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
             .collect(Collectors.toList());
         var types = List.of(EXT_VITAMUI_CREATE_GROUP.name(), EXT_VITAMUI_UPDATE_GROUP.name());
 
-        var operationRequest = logbookService.findEvents(groupsIds, MongoDbCollections.GROUPS, getVitamContext());
+        var operationRequest = logbookService.findEvents(groupsIds, MongoDbCollections.GROUPS, vitamContext);
 
         return VitamRestUtils.responseMapping(operationRequest.toJsonNode(), LogbookOperationsCommonResponseDto.class)
             .getResults()

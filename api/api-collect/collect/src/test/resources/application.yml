@@ -12,3 +12,9 @@ spring:
       enabled: false
       config:
         enabled: false
+
+download:
+  signed-url:
+    secret: tokdownload_ie6UZsEcHIWrfv2x
+    ttl-seconds: 60
+    clock-skew-seconds: 5

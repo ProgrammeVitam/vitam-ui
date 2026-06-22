@@ -45,6 +45,7 @@ import { SnackBarComponent } from './snack-bar.component';
 import { SnackBarAppButton, SnackBarUrlButton, SnackBarData } from './snack-bar.interface';
 
 const DEFAULT_DURATION = 10_000;
+const DOWNLOAD_STARTED_MESSAGE = 'DOWNLOAD.STARTED_MESSAGE';
 
 @Injectable({
   providedIn: 'root',
@@ -82,6 +83,14 @@ export class SnackBarService {
     }
 
     return this.matSnackBar.openFromComponent(component, { duration, data });
+  }
+
+  public startDownload(url: string): void {
+    this.open({
+      message: DOWNLOAD_STARTED_MESSAGE,
+      icon: 'vitamui-icon vitamui-icon-telecharger',
+    });
+    window.location.href = url;
   }
 
   /**

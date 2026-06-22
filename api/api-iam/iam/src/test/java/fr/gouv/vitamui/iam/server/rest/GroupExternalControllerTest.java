@@ -4,9 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -28,6 +30,12 @@ class GroupExternalControllerTest extends ApiIamControllerTest<GroupDto> {
 
     @MockitoBean
     private GroupService service;
+
+    @MockitoBean
+    private ProfileService profileService;
+
+    @MockitoBean
+    private SignedDownloadTokenService signedDownloadTokenService;
 
     private GroupController mockedController = MvcUriComponentsBuilder.on(GroupController.class);
 

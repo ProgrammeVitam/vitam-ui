@@ -142,18 +142,9 @@ export class RuleService extends SearchService<Rule> {
   export(): void {
     this.snackBarService.open({ message: `${keySnackbar}EXPORT_IN_PROGRESS` });
 
-    this.ruleApiService.export().subscribe(
+    this.ruleApiService.prepareSignedExport().subscribe(
       (response) => {
-        const a = document.createElement('a');
-        document.body.appendChild(a);
-        a.style.display = 'none';
-
-        const blob = new Blob([response], { type: 'octet/stream' });
-        const url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = 'rules.csv';
-        a.click();
-        window.URL.revokeObjectURL(url);
+        this.snackBarService.startDownload(response);
       },
       (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
     );

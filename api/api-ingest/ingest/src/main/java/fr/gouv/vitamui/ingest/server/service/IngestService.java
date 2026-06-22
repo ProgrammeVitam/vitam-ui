@@ -276,13 +276,28 @@ public class IngestService {
         try {
             LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
             VitamContext vitamContext = ingestExternalParametersService.buildVitamContextFromExternalParam();
-            AuthUserDto me = usersApi.getMe();
-            if (me == null || StringUtils.isEmpty(me.getCustomerId())) {
-                throw new IngestFileGenerationException(
-                    "Could not retrieve current user or his customer id to generate the document"
-                );
-            }
-            CustomerDto myCustomer = customersApi.getMyCustomer();
+            CustomerDto myCustomer = getMyCustomer();
+            return generateODTReport(vitamContext, id, myCustomer);
+        } catch (IngestFileGenerationException e) {
+            LOGGER.error("Error with generating Report : {} ", e.getMessage());
+            throw e;
+        }
+    }
+
+    public CustomerDto getMyCustomer() throws IngestFileGenerationException {
+        AuthUserDto me = usersApi.getMe();
+        if (me == null || StringUtils.isEmpty(me.getCustomerId())) {
+            throw new IngestFileGenerationException(
+                "Could not retrieve current user or his customer id to generate the document"
+            );
+        }
+        return customersApi.getMyCustomer();
+    }
+
+    public byte[] generateODTReport(final VitamContext vitamContext, final String id, final CustomerDto myCustomer)
+        throws IngestFileGenerationException {
+        try {
+            LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
             Resource customerLogo = null;
             Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
             Document manifest = ingestGeneratorODTFile.convertStringToXMLDocument(

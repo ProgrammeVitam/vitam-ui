@@ -75,6 +75,12 @@ cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname=
 cas.tenant.identifier: -1
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
+download:
+  signed-url:
+    secret: tokdownload_ie6UZsEcHIWrfv2x
+    ttl-seconds: 60
+    clock-skew-seconds: 5
+
 login:
   url: http://dev.vitamui.com:8080/cas/login
   attempts:

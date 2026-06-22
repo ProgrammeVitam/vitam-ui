@@ -34,19 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import {
   AdminUserProfile,
   AuthService,
   Customer,
   DEFAULT_PAGE_SIZE,
   Direction,
-  DownloadUtils,
   GlobalEventService,
   Group,
   PageRequest,
@@ -122,28 +121,19 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     this.exportLoading = true;
     this.downloadSnackBarService.openDownloadBar();
 
-    const request: Subscription = this.userService.export().subscribe(
-      (response: HttpResponse<Blob>) => {
-        const fileName = 'export-utilisateurs-' + this.buildExportDateTime() + '.xlsx';
-        DownloadUtils.loadFromBlob(response, response.body.type, fileName);
-        this.downloadSnackBarService.close();
-        this.exportLoading = false;
-
-        this.snackBarService.open({ message: 'SHARED.SNACKBAR.USER_EXPORT_SUCCESS' });
-      },
-      () => {
-        this.downloadSnackBarService.close();
-        this.exportLoading = false;
-      },
-    );
+    const request: Subscription = this.userService
+      .prepareSignedExport()
+      .pipe(
+        finalize(() => {
+          this.downloadSnackBarService.close();
+          this.exportLoading = false;
+        }),
+      )
+      .subscribe({
+        next: (url) => this.snackBarService.startDownload(url),
+      });
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());
-  }
-
-  private buildExportDateTime(): string {
-    const localTime = new Date().toLocaleTimeString().replace(':', '_');
-    const dateISOStr = new Date().toISOString();
-    return dateISOStr.substring(0, dateISOStr.indexOf('T') + 1) + localTime;
   }
 
   private refreshList() {

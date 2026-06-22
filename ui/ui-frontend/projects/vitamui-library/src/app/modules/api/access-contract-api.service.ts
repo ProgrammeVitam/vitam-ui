@@ -100,4 +100,10 @@ export class AccessContractApiService extends PaginatedHttpClient<AccessContract
       responseType: 'blob',
     });
   }
+
+  public prepareSignedExportAccessContracts(headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(super.getApiUrl() + '/export-csv/signed-url', {}, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
+  }
 }

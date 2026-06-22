@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, LOCALE_ID, inject } from '@angular/core';
-import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
@@ -147,17 +146,11 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto) {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
-    return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
-      (file) => {
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
-        element.download = 'export-archive-units.csv';
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+    return this.archiveApiService.prepareSignedExportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe({
+      next: (url) => {
+        this.snackBarService.startDownload(url);
       },
-      (errors: HttpErrorResponse) => {
+      error: (errors: HttpErrorResponse) => {
         if (errors.status === 413) {
           console.log('Please update filter to reduce size of response' + errors.message);
 
@@ -167,7 +160,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
           });
         }
       },
-    );
+    });
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto): Observable<PagedResult> {
@@ -187,18 +180,8 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   downloadObjectFromUnit(unitId: string, qualifier?: string, version?: number) {
-    return this.archiveApiService.downloadObjectFromUnit(unitId, qualifier, version).subscribe((resp: HttpResponse<Blob>) => {
-      let fileName = null;
-      // extract filename from content-disposition header
-      const contentDispositionHeader = resp.headers.get('content-disposition');
-      if (contentDispositionHeader !== null) {
-        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        const matches = filenameRegex.exec(contentDispositionHeader);
-        if (matches != null && matches[1]) {
-          fileName = matches[1].replace(/['"]/g, '');
-        }
-      }
-      saveAs(resp.body, fileName);
+    return this.archiveApiService.prepareSignedDownloadObjectFromUnit(unitId, qualifier, version).subscribe((url) => {
+      this.snackBarService.startDownload(url);
     });
   }
 
@@ -265,20 +248,6 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
     return this.accessContractService.get(accessContract);
-  }
-
-  downloadFile(url: string): Promise<void> {
-    return new Promise((resolve) => {
-      window.addEventListener('focus', window_focus, false);
-
-      function window_focus() {
-        window.removeEventListener('focus', window_focus, false);
-        URL.revokeObjectURL(url);
-        resolve();
-      }
-
-      location.href = url;
-    });
   }
 
   buildArchiveUnitPath(archiveUnit: Unit): Observable<{

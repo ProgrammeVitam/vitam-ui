@@ -75,11 +75,11 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { DownloadUtils, GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
+import { GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
-import moment, { now } from 'moment';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-group',
@@ -135,33 +135,21 @@ export class GroupComponent extends SidenavPage<Group> {
     this.exportButtonDisabled = true;
     this.downloadSnackBarService.openDownloadBar();
 
-    let exportSub = this.groupService.export().subscribe(
-      (response) => {
-        const filename = this.getFileName(response.headers.get('Content-Disposition'));
-        DownloadUtils.loadFromBlob(response, response.body.type, filename);
-        this.downloadSnackBarService.close();
-        this.snackBarService.open({ message: 'SHARED.SNACKBAR.GROUP_EXPORT_SUCCESS' });
-        this.exportButtonDisabled = false;
-      },
-      () => {
-        this.downloadSnackBarService.close();
-        this.exportButtonDisabled = false;
-      },
-    );
+    const exportSub = this.groupService
+      .prepareSignedExport()
+      .pipe(
+        finalize(() => {
+          this.downloadSnackBarService.close();
+          this.exportButtonDisabled = false;
+        }),
+      )
+      .subscribe({
+        next: (url) => this.snackBarService.startDownload(url),
+      });
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => {
       this.exportButtonDisabled = false;
       exportSub.unsubscribe();
     });
-  }
-
-  private getFileName(contentDispositionHeader: string): string {
-    const match = contentDispositionHeader?.match(/filename=(.+);?/);
-    if (match?.length > 1) {
-      return match[1];
-    }
-
-    const timestamps = moment(now()).format('YYYY-MM-DDTHH_mm_ss');
-    return `lexport-groupes-${timestamps}.xlsx`;
   }
 }

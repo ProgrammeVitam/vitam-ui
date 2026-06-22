@@ -37,18 +37,21 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OperationApiService extends PaginatedHttpClient<Event> {
+  private readonly baseUrl: string;
+
   constructor() {
     const http = inject(HttpClient);
     const baseUrl = inject(BASE_URL);
 
     super(http, baseUrl + '/operation');
+    this.baseUrl = baseUrl;
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
@@ -76,8 +79,13 @@ export class OperationApiService extends PaginatedHttpClient<Event> {
     return super.getHttp().post(this.apiUrl + '/timestamp', timestamp);
   }
 
-  downloadOperation(id: string, type: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/${id}/download/${type}`, { responseType: 'blob', headers });
+  prepareSignedDownloadOperation(id: string, type: string, headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/${id}/download/${type}/signed-url`, null, {
+        headers,
+        responseType: 'text',
+      })
+      .pipe(map((url) => this.baseUrl + url));
   }
 
   runAudit(audit: any, headers?: HttpHeaders): Observable<any> {
@@ -90,5 +98,11 @@ export class OperationApiService extends PaginatedHttpClient<Event> {
 
   downloadProbativeValue(id: string, headers?: HttpHeaders): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/probativeValue/${id}`, { responseType: 'blob', headers });
+  }
+
+  prepareSignedDownloadProbativeValue(id: string, headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/probativeValue/${id}/signed-url`, null, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
   }
 }

@@ -588,6 +588,14 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         super.addDataAccessRestrictions(criteria);
     }
 
+    public Optional<String> buildAuthorizedProfilesExportCriteria(final Optional<String> criteria) {
+        return checkAuthorization(criteria);
+    }
+
+    public List<ProfileDto> getAllByAuthorizedProfilesExportCriteria(final Optional<String> criteria) {
+        return getAllByAuthorizedCriteria(criteria);
+    }
+
     @Override
     protected void addRestriction(final String key, final QueryDto query) {
         switch (key) {

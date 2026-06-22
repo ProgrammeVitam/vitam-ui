@@ -37,7 +37,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { SearchService, VitamuiHttpHeaders } from 'vitamui-library';
+import { SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestApiService } from '../core/api/ingest-api.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 
@@ -46,6 +46,7 @@ import { LogbookOperation } from '../models/logbook-event.interface';
 })
 export class IngestService extends SearchService<any> {
   private ingestApiService: IngestApiService;
+  private snackBarService = inject(SnackBarService);
 
   constructor() {
     const ingestApiService = inject(IngestApiService);
@@ -71,14 +72,8 @@ export class IngestService extends SearchService<any> {
   }
 
   downloadODTReport(id: string) {
-    return this.ingestApiService.downloadODTReport(id).subscribe((file) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(file);
-      element.download = 'Bordereau-' + id + '.odt';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
+    return this.ingestApiService.prepareSignedDownloadODTReport(id).subscribe((url) => {
+      this.snackBarService.startDownload(url);
     });
   }
 }

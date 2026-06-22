@@ -350,16 +350,18 @@ public class RuleService extends AbstractService {
         return check(vitamContext, ruleDto);
     }
 
-    public ResponseEntity<Resource> export() {
-        VitamContext vitamContext = buildVitamContext();
-
+    public Resource exportResource(VitamContext vitamContext) {
         Response response = this.export(vitamContext);
         Object entity = response.getEntity();
         if (entity instanceof InputStream stream) {
-            Resource resource = new InputStreamResource(stream);
-            return new ResponseEntity<>(resource, HttpStatus.OK);
+            return new InputStreamResource(stream);
         }
         return null;
+    }
+
+    public ResponseEntity<Resource> export() {
+        VitamContext vitamContext = buildVitamContext();
+        return new ResponseEntity<>(exportResource(vitamContext), HttpStatus.OK);
     }
 
     public List<HistoryEventDto> findHistoryById(final String id) throws VitamClientException {

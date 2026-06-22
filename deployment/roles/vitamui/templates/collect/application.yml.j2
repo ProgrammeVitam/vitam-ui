@@ -23,6 +23,12 @@ spring:
       max-file-size: -1
       max-request-size: -1
 
+download:
+  signed-url:
+    secret: {{ vitamui_struct.download.signed_url.secret | default(vitamui_defaults.services.download.signed_url.secret) }}
+    ttl-seconds: {{ vitamui_struct.download.signed_url.ttl_seconds | default(default_download.signed_url.ttl_seconds) }}
+    clock-skew-seconds: {{ vitamui_struct.download.signed_url.clock_skew_seconds | default(default_download.signed_url.clock_skew_seconds) }}
+
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:

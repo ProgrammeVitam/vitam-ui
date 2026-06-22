@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import {
   ApiUnitObject,
   ArchiveUnit,
@@ -101,15 +101,18 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
     });
   }
 
-  downloadObjectFromUnit(unitId: string, qualifier?: string, version?: number): Observable<HttpResponse<Blob>> {
-    let url = `${this.apiUrl}/downloadobjectfromunit/${unitId}?`;
+  prepareSignedExportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/export-csv-search/signed-url`, criteriaDto, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
+  }
+
+  prepareSignedDownloadObjectFromUnit(unitId: string, qualifier?: string, version?: number): Observable<string> {
+    let url = `${this.apiUrl}/downloadobjectfromunit/${unitId}/signed-url?`;
     if (qualifier && version) {
       url += `&usage=${qualifier}&version=${version}`;
     }
-    return this.http.get(url, {
-      observe: 'response',
-      responseType: 'blob',
-    });
+    return this.http.get(url, { responseType: 'text' }).pipe(map((signedUrl) => this.baseUrl + signedUrl));
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<Unit> {

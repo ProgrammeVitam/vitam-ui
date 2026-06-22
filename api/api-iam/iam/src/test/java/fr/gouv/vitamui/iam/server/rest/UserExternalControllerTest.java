@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
@@ -37,6 +38,9 @@ class UserExternalControllerTest extends ApiIamControllerTest<UserDto> {
 
     @MockitoBean
     private ConnectionHistoryService connectionHistoryService;
+
+    @MockitoBean
+    private SignedDownloadTokenService signedDownloadTokenService;
 
     private final UserController userController = MvcUriComponentsBuilder.on(UserController.class);
 

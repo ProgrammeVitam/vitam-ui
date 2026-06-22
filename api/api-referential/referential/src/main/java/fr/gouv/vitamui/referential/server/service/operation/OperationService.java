@@ -92,7 +92,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -424,18 +423,6 @@ public class OperationService extends AbstractService {
         return this.findHistoryByIdentifier(vitamContext, id);
     }
 
-    public ResponseEntity<Resource> export(String id, ReportType type) {
-        VitamContext vitamContext = buildVitamContext();
-
-        Response response = this.export(vitamContext, id, type);
-        Object entity = response.getEntity();
-        if (entity instanceof InputStream stream) {
-            Resource resource = new InputStreamResource(stream);
-            return new ResponseEntity<>(resource, HttpStatus.OK);
-        }
-        return null;
-    }
-
     public JsonNode checkTraceabilityOperation(String id) {
         VitamContext vitamContext = buildVitamContext();
         return this.checkTraceabilityOperation(vitamContext, id);
@@ -449,13 +436,17 @@ public class OperationService extends AbstractService {
 
     public ResponseEntity<Resource> exportProbativeValue(String operationId) throws PreconditionFailedException {
         VitamContext vitamContext = buildVitamContext();
+        return new ResponseEntity<>(exportProbativeValue(vitamContext, operationId), HttpStatus.OK);
+    }
+
+    public Resource exportProbativeValue(VitamContext vitamContext, String operationId)
+        throws PreconditionFailedException {
         String tempFolder = "/tmp/" + operationId + ".zip";
         File zip = new File(tempFolder);
         try {
             FileOutputStream zipOutputStream = new FileOutputStream(zip);
             probativeValueService.exportReport(vitamContext, operationId, "/tmp", zipOutputStream);
-            Resource resource = new InputStreamResource(new FileInputStream(zip.getAbsoluteFile()));
-            return new ResponseEntity<>(resource, HttpStatus.OK);
+            return new InputStreamResource(new FileInputStream(zip.getAbsoluteFile()));
         } catch (FileNotFoundException e) {
             throw new InternalServerException("Error while generating probative value ZIP", e);
         }

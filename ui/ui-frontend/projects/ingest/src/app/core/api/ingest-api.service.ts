@@ -37,7 +37,7 @@
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
 
@@ -45,11 +45,14 @@ import { IngestType } from '../common/ingest-type.enum';
   providedIn: 'root',
 })
 export class IngestApiService extends PaginatedHttpClient<any> {
+  baseUrl: string;
+
   constructor() {
     const http = inject(HttpClient);
     const baseUrl = inject(BASE_URL);
 
     super(http, baseUrl + '/ingest');
+    this.baseUrl = baseUrl;
   }
 
   upload(req: HttpRequest<any>): Observable<any> {
@@ -74,6 +77,12 @@ export class IngestApiService extends PaginatedHttpClient<any> {
 
   downloadODTReport(id: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/odtreport/${id}`, { responseType: 'blob' });
+  }
+
+  prepareSignedDownloadODTReport(id: string): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/odtreport/${id}/signed-url`, null, { responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
   }
 
   uploadStreaming(

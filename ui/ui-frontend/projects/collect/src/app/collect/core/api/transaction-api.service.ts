@@ -37,7 +37,7 @@
 
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   ApiUnitObject,
   BASE_URL,
@@ -99,6 +99,12 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
     });
   }
 
+  prepareSignedDownloadSipTransaction(id: string): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/${encodeURIComponent(id)}/downloadSip/signed-url`, null, { responseType: 'text' })
+      .pipe(map((signedUrl) => this.baseUrl + signedUrl));
+  }
+
   updateUnitsMetadataByCsvFile(transactionId: string, file: Blob, headers: HttpHeaders): Observable<VitamError> {
     return this.http.put<VitamError>(`${this.apiUrl}/${transactionId}/update-units-metadata`, file, {
       responseType: 'json',
@@ -116,11 +122,17 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
     return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${transactionId}/search`, criteriaDto, { headers });
   }
 
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, transactionId: string, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}/archive-units/${transactionId}/export-csv-search`, criteriaDto, {
-      responseType: 'blob',
-      headers,
-    });
+  prepareSignedExportCsvSearchArchiveUnitsByCriteria(
+    criteriaDto: SearchCriteriaDto,
+    transactionId: string,
+    headers?: HttpHeaders,
+  ): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/archive-units/${encodeURIComponent(transactionId)}/export-csv-search/signed-url`, criteriaDto, {
+        responseType: 'text',
+        headers,
+      })
+      .pipe(map((signedUrl) => this.baseUrl + signedUrl));
   }
 
   // Get the technical group object of a unit
