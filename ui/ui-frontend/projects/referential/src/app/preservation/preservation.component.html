@@ -4,9 +4,13 @@
       <vitamui-title-breadcrumb>
         <h5>{{ 'PRESERVATION.HOME.TITLE' | translate }}</h5>
       </vitamui-title-breadcrumb>
+      <vitamui-banner
+        [searchbarPlaceholder]="'PRESERVATION.HOME.SEARCH_PLACEHOLDER' | translate"
+        (search)="onSearchSubmit($event)"
+      ></vitamui-banner>
     </div>
     <div class="vitamui-content">
-      <app-preservation-tab></app-preservation-tab>
+      <app-preservation-group [searchText]="search"></app-preservation-group>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

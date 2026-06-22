@@ -1155,7 +1155,8 @@
   },
   "PRESERVATION": {
     "HOME": {
-      "TITLE": "Griffins and preservation scenarios repository"
+      "TITLE": "Griffins and preservation scenarios repository",
+      "SEARCH_PLACEHOLDER": "Name, identifier"
     },
     "GRIFFIN": {
       "TITLE": "Griffins",
@@ -1173,6 +1174,14 @@
         "HEADER": {
           "IDENTIFIER": "Identifier",
           "NAME": "Name",
+          "POSSIBLE_ACTIONS": "Possible actions",
+          "ACTIONS": {
+            "GENERATE": "Conversion",
+            "IDENTIFY": "Identification",
+            "VALIDATION": "Validation",
+            "EXTRACT": "Technical metadatas extraction",
+            "EXTRACT_AU": "Descriptive metadatas extraction"
+          },
           "CREATION_DATE": "Creation date"
         }
       }
