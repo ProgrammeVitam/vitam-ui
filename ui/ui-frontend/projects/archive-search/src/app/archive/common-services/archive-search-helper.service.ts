@@ -268,43 +268,41 @@ export class ArchiveSearchHelperService {
   ) {
     if (searchCriterias && searchCriterias.size > 0) {
       if (valueElt && valueElt.id === WAITING_RECALCULATE) {
-        valueElt.id = ORIGIN_WAITING_RECALCULATE;
-        valueElt.value = ORIGIN_WAITING_RECALCULATE;
+        const waitingRecalculateValueElt = { id: ORIGIN_WAITING_RECALCULATE, value: ORIGIN_WAITING_RECALCULATE };
         if (emit === true) {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
             keyElt,
-            valueElt,
+            valueElt: waitingRecalculateValueElt,
             action: 'REMOVE',
           });
 
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
             keyElt,
-            valueElt,
+            valueElt: waitingRecalculateValueElt,
             action: 'REMOVE',
           });
 
           this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
             keyElt,
-            valueElt,
+            valueElt: waitingRecalculateValueElt,
             action: 'REMOVE',
           });
           this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
             keyElt,
-            valueElt,
+            valueElt: waitingRecalculateValueElt,
             action: 'REMOVE',
           });
           this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
             keyElt,
-            valueElt,
+            valueElt: waitingRecalculateValueElt,
             action: 'REMOVE',
           });
         }
-        valueElt.id = WAITING_RECALCULATE;
       }
       if (valueElt && valueElt.id === ORIGIN_WAITING_RECALCULATE) {
         this.removeCriteria(
           WAITING_RECALCULATE,
-          { id: WAITING_RECALCULATE, value: valueElt.value },
+          { id: WAITING_RECALCULATE, value: 'true' },
           emit,
           searchCriteriaKeys,
           searchCriterias,
@@ -377,9 +375,11 @@ export class ArchiveSearchHelperService {
             emit === true &&
             [SearchCriteriaTypeEnum.FIELDS, SearchCriteriaTypeEnum.NODES, ALL_ARCHIVE_UNIT_TYPES].includes(val.category)
           ) {
+            const valueEltToRemove =
+              key === WAITING_RECALCULATE ? { id: ORIGIN_WAITING_RECALCULATE, value: ORIGIN_WAITING_RECALCULATE } : valueElt;
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
-              valueElt,
+              valueElt: valueEltToRemove,
               action: 'REMOVE',
             });
           }
