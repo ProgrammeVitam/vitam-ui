@@ -38,8 +38,7 @@
         <micrometer.version>1.12.1</micrometer.version>
         <swagger.version>2.2.2</swagger.version>
         <font-awesome.version>6.5.1</font-awesome.version>
-        <jquery.ui.version>1.14.1</jquery.ui.version>
-        <jquery-ui.version>1.13.2</jquery-ui.version>
+        <jquery-ui.version>1.14.2</jquery-ui.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <commons-io.version>2.15.1</commons-io.version>
         <inspektr.version>1.8.20.GA</inspektr.version>
