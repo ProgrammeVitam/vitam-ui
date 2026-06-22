@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent, SnackBarService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
@@ -62,6 +62,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   private pastisConfig = inject(PastisConfiguration);
   private profileService = inject(ProfileService);
   private route = inject(ActivatedRoute);
+  private snackBarService = inject(SnackBarService);
 
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
@@ -159,10 +160,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
 
   downloadProfile(inputProfile: ProfileDescription) {
     if (inputProfile.type === ProfileType.PA) {
-      this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe((dataFile) => {
-        if (dataFile) {
-          this.downloadFile(dataFile, inputProfile.type, inputProfile);
-        }
+      this.profileService.prepareSignedDownloadProfilePaVitam(inputProfile.identifier).subscribe((url) => {
+        this.snackBarService.startDownload(url);
       });
     } else if (inputProfile.type === ProfileType.PUA) {
       // Send the retrieved JSON data to profile service

@@ -160,4 +160,8 @@ export class AccessContractService extends SearchService<AccessContract> {
   public exportAccessContracts(): Observable<HttpResponse<Blob>> {
     return this.accessContractApi.exportAccessContracts();
   }
+
+  public prepareSignedExportAccessContracts(): Observable<string> {
+    return this.accessContractApi.prepareSignedExportAccessContracts(this.headers);
+  }
 }

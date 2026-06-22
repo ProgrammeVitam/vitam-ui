@@ -75,6 +75,8 @@ public final class RestUtils {
 
     public static final String CONTENT_DISPOSITION = "Content-Disposition";
 
+    public static final String REFERRER_POLICY = "Referrer-Policy";
+
     public static final String FORM_DATA = "form-data";
 
     public static final String NAME = "name";

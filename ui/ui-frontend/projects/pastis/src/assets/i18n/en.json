@@ -442,7 +442,8 @@
       "SINGULAR": "on {{ total }} (1 element not downloaded)",
       "PLURAL": "on {{ total }} ({{ count }} elements not downloaded)"
     },
-    "FILE_GENERATION": "File generation"
+    "FILE_GENERATION": "File generation",
+    "STARTED_MESSAGE": "Your download has started. You can follow its progress in your browser download bar."
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Are you sure you want to make this change?"

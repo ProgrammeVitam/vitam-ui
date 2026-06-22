@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
@@ -46,13 +47,17 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.agency.AgencyService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
@@ -61,7 +66,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -78,6 +86,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -93,9 +103,25 @@ public class AgencyController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AgencyController.class);
 
     public static final String MANDATORY_IDENTIFIER = "Identifier is mandatory : ";
+    private static final String AGENCY_EXPORT_RESOURCE = "agency-export";
+    private static final String SIGNED_DOWNLOAD_EXPORT_ENDPOINT = "/signed-download/export";
+    private static final String SIGNED_DOWNLOAD_AGENCY_EXPORT_PATH = "/agency" + SIGNED_DOWNLOAD_EXPORT_ENDPOINT;
+    private static final String EXPORT_AGENCIES_FILE_NAME = "agencies.csv";
+
+    private AgencyService agencyService;
+    private SecurityService securityService;
+    private SignedDownloadTokenService signedDownloadTokenService;
 
     @Autowired
-    private AgencyService agencyService;
+    public AgencyController(
+        final AgencyService agencyService,
+        final SecurityService securityService,
+        final SignedDownloadTokenService signedDownloadTokenService
+    ) {
+        this.agencyService = agencyService;
+        this.securityService = securityService;
+        this.signedDownloadTokenService = signedDownloadTokenService;
+    }
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_AGENCIES)
@@ -205,6 +231,38 @@ public class AgencyController {
     public ResponseEntity<Resource> export() {
         LOGGER.debug("export agencies");
         return agencyService.export();
+    }
+
+    @Secured(ServicesData.ROLE_EXPORT_AGENCIES)
+    @PostMapping(CommonConstants.PATH_EXPORT + "/signed-url")
+    public String prepareSignedExport(@RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId) {
+        LOGGER.debug("Prepare signed agencies export URL");
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(AGENCY_EXPORT_RESOURCE);
+        claims.setTenantId(tenantId);
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_AGENCY_EXPORT_PATH);
+    }
+
+    @GetMapping(value = SIGNED_DOWNLOAD_EXPORT_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedExport(@RequestParam final String token, final HttpServletResponse response) throws IOException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, AGENCY_EXPORT_RESOURCE);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+
+        Resource resource = agencyService.exportResource(vitamContext);
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(EXPORT_AGENCIES_FILE_NAME, StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
     }
 
     /***

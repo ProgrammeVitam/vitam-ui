@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
@@ -57,5 +57,23 @@ describe('OperationApiService', () => {
   it('should be created', () => {
     const service: OperationApiService = TestBed.inject(OperationApiService);
     expect(service).toBeTruthy();
+  });
+
+  it('should prepare a gateway signed download URL', () => {
+    const service: OperationApiService = TestBed.inject(OperationApiService);
+    const httpTestingController: HttpTestingController = TestBed.inject(HttpTestingController);
+    let signedUrl: string;
+
+    service.prepareSignedDownloadOperation('operation-id', 'TRACEABILITY').subscribe((response) => {
+      signedUrl = response;
+    });
+
+    const req = httpTestingController.expectOne('/fake-api/operation/operation-id/download/TRACEABILITY/signed-url');
+    expect(req.request.method).toBe('POST');
+
+    req.flush('/operation/operation-id/signed-download/TRACEABILITY?token=abc');
+
+    expect(signedUrl).toBe('/fake-api/operation/operation-id/signed-download/TRACEABILITY?token=abc');
+    httpTestingController.verify();
   });
 });

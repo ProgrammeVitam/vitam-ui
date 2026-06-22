@@ -303,15 +303,35 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     public Resource exportUsers(final Optional<String> criteria) {
+        return exportUsers(criteria, securityService.buildVitamContext(securityService.getTenantIdentifier()), true);
+    }
+
+    public Optional<String> buildAuthorizedUsersExportCriteria(final Optional<String> criteria) {
+        return checkAuthorization(criteria);
+    }
+
+    public Resource exportUsersByAuthorizedCriteria(final Optional<String> criteria, final VitamContext vitamContext) {
+        return exportUsers(criteria, vitamContext, false);
+    }
+
+    private Resource exportUsers(
+        final Optional<String> criteria,
+        final VitamContext vitamContext,
+        final boolean applyAuthorization
+    ) {
         try (final var xlsOutputStream = new ByteArrayOutputStream()) {
             final List<UserDto> usersDto = this.getAll(criteria);
             final List<String> userIds = usersDto.stream().map(UserDto::getIdentifier).collect(Collectors.toList());
             final List<String> userInfoIds = usersDto.stream().map(UserDto::getUserInfoId).collect(Collectors.toList());
             final List<String> userGroupIds = usersDto.stream().map(UserDto::getGroupId).collect(Collectors.toList());
 
-            final LogbookOperationsCommonResponseDto userOperations = getUserOperations(getIdentifiers(usersDto));
+            final LogbookOperationsCommonResponseDto userOperations = getUserOperations(
+                getIdentifiers(usersDto),
+                vitamContext
+            );
             final LogbookOperationsCommonResponseDto userInfoOperations = getUserInfoOperations(
-                getIdentifiers(usersDto)
+                getIdentifiers(usersDto),
+                vitamContext
             );
 
             final List<LogbookEventDto> userEvents = mapToEvents(userOperations, userInfoOperations);
@@ -365,8 +385,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             .collect(Collectors.toList());
     }
 
-    private LogbookOperationsCommonResponseDto getUserOperations(List<String> userIdentifiers) {
-        VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+    private LogbookOperationsCommonResponseDto getUserOperations(
+        List<String> userIdentifiers,
+        VitamContext vitamContext
+    ) {
         ObjectNode usersQuery = logbookService.buildQuery(userIdentifiers, MongoDbCollections.USERS);
 
         try {
@@ -383,8 +405,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         }
     }
 
-    private LogbookOperationsCommonResponseDto getUserInfoOperations(List<String> userIdentifiers) {
-        VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+    private LogbookOperationsCommonResponseDto getUserInfoOperations(
+        List<String> userIdentifiers,
+        VitamContext vitamContext
+    ) {
         ObjectNode userInfoQuery = logbookService.buildQuery(userIdentifiers, MongoDbCollections.USER_INFOS);
 
         try {

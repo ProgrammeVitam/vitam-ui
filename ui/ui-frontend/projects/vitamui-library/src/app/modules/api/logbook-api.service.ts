@@ -51,6 +51,8 @@ const USER_INDEX = 3;
 const SUBROGATOR_INDEX = 4;
 const API_CONTEXT_INDEX = 2;
 
+export type LogbookDownloadType = 'report' | 'batchreport' | 'object' | 'dip' | 'transfersip' | 'atr' | 'manifest';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -175,16 +177,10 @@ export class LogbookApiService implements PaginatedApi<IEvent> {
     return this.http.get(this.apiUrl + '/operations/' + id + '/download/atr', { headers, observe: 'response', responseType: 'blob' });
   }
 
-  downloadReport(id: string, downloadType: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
-    return this.http.get(this.apiUrl + '/operations/' + id + '/download/' + downloadType, {
-      headers,
-      observe: 'response',
-      responseType: 'blob',
-    });
-  }
-
-  getDownloadReportUrl(id: string, downloadType: string): string {
-    return `${this.apiUrl}/operations/${id}/download/${downloadType}`;
+  prepareSignedDownload(id: string, downloadType: LogbookDownloadType, headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/operations/${id}/download/${downloadType}/signed-url`, null, { headers, responseType: 'text' })
+      .pipe(map((url) => `${this.baseUrl}${url}`));
   }
 
   getAllPaginated(pageRequest: PageRequest, _?: string, headers?: HttpHeaders): Observable<PaginatedResponse<IEvent>> {

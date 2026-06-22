@@ -112,17 +112,11 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContract);
 
-    return this.accessionRegisterApiService.exportAccessionRegisterCsv(criteria, headers).subscribe(
-      (file) => {
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
-        element.download = 'export-accession-registers.csv';
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+    return this.accessionRegisterApiService.prepareSignedExportAccessionRegisterCsv(criteria, headers).subscribe({
+      next: (response) => {
+        this.snackBarService.startDownload(response);
       },
-      (errors: HttpErrorResponse) => {
+      error: (errors: HttpErrorResponse) => {
         if (errors.status === 413) {
           console.log('Please update filter to reduce size of response' + errors.message);
 
@@ -135,7 +129,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
           });
         }
       },
-    );
+    });
   }
 
   private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {

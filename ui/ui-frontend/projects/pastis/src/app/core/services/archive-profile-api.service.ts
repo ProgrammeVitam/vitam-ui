@@ -49,6 +49,7 @@ const HTTP_STATUS_OK = 200;
 })
 export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
   private pastisConfig = inject(PastisConfiguration);
+  baseUrl: string;
 
   // @ts-ignore
   constructor() {
@@ -57,6 +58,7 @@ export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
 
     // console.log('passage dans service archive API');
     super(http, baseUrl);
+    this.baseUrl = baseUrl;
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
@@ -69,6 +71,13 @@ export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
 
   download(id: string, headers?: HttpHeaders): Observable<Blob> {
     return super.getHttp().get(super.getApiUrl() + this.pastisConfig.downloadProfile + '/' + id, { responseType: 'blob', headers });
+  }
+
+  prepareSignedDownload(id: string, headers?: HttpHeaders): Observable<string> {
+    return super
+      .getHttp()
+      .get(`${super.getApiUrl()}${this.pastisConfig.downloadProfile}/${id}/signed-url`, { responseType: 'text', headers })
+      .pipe(map((signedUrl) => `${this.baseUrl}${signedUrl}`));
   }
 
   uploadProfileArchivageFile(id: string, profile: FormData, headers: HttpHeaders = new HttpHeaders()): Observable<any> {

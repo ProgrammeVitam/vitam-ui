@@ -37,17 +37,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AccessionRegisterDetail, BASE_URL, PaginatedHttpClient } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccessionRegisterDetailApiService extends PaginatedHttpClient<AccessionRegisterDetail> {
+  private readonly baseUrl: string;
+
   constructor() {
     const http = inject(HttpClient);
     const baseUrl = inject(BASE_URL);
 
     super(http, baseUrl + '/accession-register/details');
+    this.baseUrl = baseUrl;
   }
 
   exportAccessionRegisterCsv(criteria: any, headers?: HttpHeaders): Observable<Blob> {
@@ -55,5 +59,11 @@ export class AccessionRegisterDetailApiService extends PaginatedHttpClient<Acces
       responseType: 'blob',
       headers,
     });
+  }
+
+  prepareSignedExportAccessionRegisterCsv(criteria: any, headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(`${this.apiUrl}/export-csv/signed-url`, criteria, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
   }
 }

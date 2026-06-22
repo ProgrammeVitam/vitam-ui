@@ -37,7 +37,6 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { saveAs } from 'file-saver-es';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
@@ -134,7 +133,7 @@ export class TransactionsService extends SearchService<Transaction> {
 
   downloadSipTransaction(id: string) {
     return this.transactionApiService
-      .downloadSipTransaction(id)
+      .prepareSignedDownloadSipTransaction(id)
       .pipe(
         catchError((error) => {
           this.snackBarService.open({
@@ -144,26 +143,8 @@ export class TransactionsService extends SearchService<Transaction> {
           throw error;
         }),
       )
-      .subscribe((resp) => {
-        let fileName = null;
-        // extract filename from content-disposition header
-        const contentDispositionHeader = resp.headers.get('content-disposition');
-        if (contentDispositionHeader !== null) {
-          const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-          const matches = filenameRegex.exec(contentDispositionHeader);
-          if (matches != null && matches[1]) {
-            fileName = matches[1].replace(/['"]/g, '');
-          }
-        }
-        // If no filename is found, use a default name
-        if (!fileName) {
-          fileName = `transaction_${id}.zip`;
-        }
-        saveAs(resp.body, fileName);
-        this.snackBarService.open({
-          message: 'COLLECT.PROJECT_TRANSACTION_PREVIEW.TRANSACTION_SIP_DOWNLOAD',
-          duration: 10_000,
-        });
+      .subscribe((signedUrl) => {
+        this.snackBarService.startDownload(signedUrl);
       });
   }
 

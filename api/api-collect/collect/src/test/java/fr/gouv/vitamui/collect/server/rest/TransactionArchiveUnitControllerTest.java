@@ -30,6 +30,7 @@
 package fr.gouv.vitamui.collect.server.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -39,6 +40,7 @@ import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
 import fr.gouv.vitamui.collect.server.service.TransactionArchiveUnitService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
@@ -79,6 +81,9 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
     @Mock
     private ExternalParametersService externalParametersService;
 
+    @Mock
+    private SignedDownloadTokenService signedDownloadTokenService;
+
     private TransactionArchiveUnitController transactionArchiveUnitController;
 
     @BeforeEach
@@ -87,7 +92,9 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
         transactionArchiveUnitController = new TransactionArchiveUnitController(
             transactionArchiveUnitService,
             externalParametersService,
-            securityService
+            securityService,
+            new ObjectMapper(),
+            signedDownloadTokenService
         );
     }
 

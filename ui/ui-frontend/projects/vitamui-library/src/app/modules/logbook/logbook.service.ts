@@ -39,6 +39,7 @@ import { Injectable, inject } from '@angular/core';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
+import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { Logger } from '../logger/logger';
 import { IEvent } from '../models';
 import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
@@ -50,6 +51,7 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 export class LogbookService {
   private logger = inject(Logger);
   private logbookApi = inject(LogbookApiService);
+  private snackBarService = inject(SnackBarService);
 
   protected extractEvents(response: { $results: IEvent[] }): IEvent[] {
     if (response && response.$results) {
@@ -235,26 +237,14 @@ export class LogbookService {
   }
 
   downloadManifest(id: string) {
-    this.logbookApi.downloadManifest(id).subscribe((response) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(response.body);
-      element.download = id + '-manifest.xml';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
+    this.logbookApi.prepareSignedDownload(id, 'manifest').subscribe((response) => {
+      this.snackBarService.startDownload(response);
     });
   }
 
   downloadATR(id: string) {
-    this.logbookApi.downloadAtr(id).subscribe((response) => {
-      const element = document.createElement('a');
-      element.href = window.URL.createObjectURL(response.body);
-      element.download = id + '-atr.xml';
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
+    this.logbookApi.prepareSignedDownload(id, 'atr').subscribe((response) => {
+      this.snackBarService.startDownload(response);
     });
   }
 }

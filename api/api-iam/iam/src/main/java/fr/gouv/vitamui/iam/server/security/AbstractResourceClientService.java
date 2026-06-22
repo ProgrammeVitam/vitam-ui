@@ -328,6 +328,14 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends B
         return super.getAll(checkAuthorization(criteria), embedded);
     }
 
+    protected List<E> getAllByAuthorizedCriteria(final Optional<String> criteria) {
+        return convertIterableToList(getRepository().findAll(getQuerySecured(criteria)));
+    }
+
+    protected List<E> getAllByAuthorizedCriteria(final Optional<String> criteria, final Optional<String> embedded) {
+        return super.getAll(criteria, embedded);
+    }
+
     public boolean checkExist(final String criteria) {
         return super.checkExist(checkAuthorization(Optional.ofNullable(criteria)).get());
     }

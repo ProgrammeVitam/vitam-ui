@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpClient, HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import {
   BASE_URL,
   PageRequest,
@@ -102,15 +102,13 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
 
   // Manage Object Groups
 
-  downloadObjectFromUnit(unitId: string, objectId: string, qualifier?: string, version?: number): Observable<HttpResponse<Blob>> {
-    let url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?objectId=${objectId}`;
+  prepareSignedDownloadObjectFromUnit(unitId: string, objectId: string, qualifier?: string, version?: number): Observable<string> {
+    const url = `${this.apiUrl}/object-groups/downloadobjectfromunit/${encodeURIComponent(unitId)}/signed-url`;
+    let params = new HttpParams().set('objectId', objectId);
     if (qualifier && version) {
-      url += `&usage=${qualifier}&version=${version}`;
+      params = params.set('usage', qualifier).set('version', version);
     }
-    return this.http.get(url, {
-      observe: 'response',
-      responseType: 'blob',
-    });
+    return this.http.post(url, null, { params, responseType: 'text' }).pipe(map((signedUrl) => this.baseUrl + signedUrl));
   }
 
   public deletebyId(projectId: string) {

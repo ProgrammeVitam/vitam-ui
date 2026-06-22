@@ -47,6 +47,7 @@ import {
   FileTypes,
   GlobalEventService,
   SidenavPage,
+  SnackBarService,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -55,7 +56,7 @@ import { firstValueFrom, Subscription } from 'rxjs';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
-import { shareReplay } from 'rxjs/operators';
+import { finalize, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-access',
@@ -71,6 +72,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   private applicationService = inject(ApplicationService);
   private translateService = inject(TranslateService);
   private downloadSnackBarService = inject(DownloadSnackBarService);
+  private snackBarService = inject(SnackBarService);
 
   public search = '';
   public tenantIdentifier: number;
@@ -142,13 +144,12 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
 
   public export(): void {
     this.downloadSnackBarService.openDownloadBar();
-    const request: Subscription = this.accessContractService.exportAccessContracts().subscribe(
-      (response: HttpResponse<Blob>) => {
-        DownloadUtils.loadFromBlob(response, response.body.type, 'Exported_access_contracts.csv');
-        this.downloadSnackBarService.close();
-      },
-      () => this.downloadSnackBarService.close(),
-    );
+    const request: Subscription = this.accessContractService
+      .prepareSignedExportAccessContracts()
+      .pipe(finalize(() => this.downloadSnackBarService.close()))
+      .subscribe({
+        next: (url) => this.snackBarService.startDownload(url),
+      });
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => request.unsubscribe());
   }

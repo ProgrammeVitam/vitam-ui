@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -45,12 +46,16 @@ import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.accesscontract.AccessContractService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,7 +64,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -75,6 +83,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -88,8 +98,26 @@ public class AccessContractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractController.class);
 
-    @Autowired
+    private static final String ACCESS_CONTRACT_EXPORT_RESOURCE = "access-contract-export";
+    private static final String SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT = "/signed-download/export-csv";
+    private static final String SIGNED_DOWNLOAD_ACCESS_CONTRACT_EXPORT_PATH =
+        "/accesscontracts" + SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT;
+    private static final String EXPORT_ACCESS_CONTRACTS_FILE_NAME = "Exported_access_contracts.csv";
+
     private AccessContractService accessContractService;
+    private SecurityService securityService;
+    private SignedDownloadTokenService signedDownloadTokenService;
+
+    @Autowired
+    public AccessContractController(
+        final AccessContractService accessContractService,
+        final SecurityService securityService,
+        final SignedDownloadTokenService signedDownloadTokenService
+    ) {
+        this.accessContractService = accessContractService;
+        this.securityService = securityService;
+        this.signedDownloadTokenService = signedDownloadTokenService;
+    }
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
@@ -183,6 +211,42 @@ public class AccessContractController {
     public ResponseEntity<Resource> exportAccessContracts() {
         LOGGER.debug("export all access contract to csv file");
         return accessContractService.exportAccessContracts();
+    }
+
+    @Operation(summary = "Prepare signed access contracts export URL")
+    @PostMapping(path = RestApi.EXPORT_CSV + "/signed-url")
+    @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
+    public String prepareSignedExportAccessContracts(
+        @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId
+    ) {
+        LOGGER.debug("Prepare signed access contracts export URL");
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(ACCESS_CONTRACT_EXPORT_RESOURCE);
+        claims.setTenantId(tenantId);
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_ACCESS_CONTRACT_EXPORT_PATH);
+    }
+
+    @GetMapping(value = SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedExportAccessContracts(@RequestParam final String token, final HttpServletResponse response)
+        throws IOException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, ACCESS_CONTRACT_EXPORT_RESOURCE);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+
+        Resource resource = accessContractService.exportAccessContracts(vitamContext);
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(EXPORT_ACCESS_CONTRACTS_FILE_NAME, StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
     }
 
     /***

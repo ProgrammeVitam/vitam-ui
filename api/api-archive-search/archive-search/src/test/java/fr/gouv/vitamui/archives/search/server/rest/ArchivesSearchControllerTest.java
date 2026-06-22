@@ -26,6 +26,7 @@
 
 package fr.gouv.vitamui.archives.search.server.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
@@ -34,13 +35,16 @@ import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchEliminationService;
+import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchExternalParametersService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchMgtRulesService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchService;
+import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchThresholdService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchUnitExportCsvService;
 import fr.gouv.vitamui.archives.search.server.service.ExportDipService;
 import fr.gouv.vitamui.archives.search.server.service.TransferVitamOperationsService;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
@@ -107,6 +111,18 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
     @MockitoBean
     private ArchiveSearchUnitExportCsvService archiveSearchUnitExportCsvService;
 
+    @MockitoBean
+    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+
+    @MockitoBean
+    private ArchiveSearchThresholdService archiveSearchThresholdService;
+
+    @MockitoBean
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private SignedDownloadTokenService signedDownloadTokenService;
+
     @Test
     void testArchiveController() {
         assertNotNull(archiveSearchMgtRulesService);
@@ -122,7 +138,10 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
             exportDipService,
             transferVitamOperationsService,
             archiveSearchEliminationService,
-            archiveSearchMgtRulesService
+            archiveSearchMgtRulesService,
+            archiveSearchThresholdService,
+            objectMapper,
+            signedDownloadTokenService
         );
     }
 

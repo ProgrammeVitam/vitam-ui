@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -44,6 +44,7 @@ import {
   Direction,
   Event,
   LogbookApiService,
+  LogbookDownloadType,
   PageRequest,
   SearchService,
   VitamuiHttpHeaders,
@@ -101,45 +102,42 @@ export class AuditService extends SearchService<Event> {
 
   download(id: string, eventType: string, accessContractId: string) {
     const headers: HttpHeaders = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
-    let downloadObservable: Observable<HttpResponse<Blob> | Blob>;
-    let fileName: string;
-    let downloadType: string;
+    let downloadType: LogbookDownloadType;
 
     if (eventType === 'EXPORT_PROBATIVE_VALUE' || eventType === 'RECTIFICATION_AUDIT') {
-      fileName = id + '.json';
       downloadType = 'report';
-      downloadObservable = this.logbookApiService.downloadReport(id, downloadType, headers);
+      this.launchSignedDownload(id, downloadType, headers);
     } else if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT') {
-      fileName = id + '.jsonl';
       downloadType = 'batchreport';
-      downloadObservable = this.logbookApiService.downloadReport(id, downloadType, headers);
+      this.launchSignedDownload(id, downloadType, headers);
     } else {
-      fileName = id + '.json';
-      downloadType = 'AUDIT';
-      downloadObservable = this.operationApiService.downloadOperation(id, downloadType, headers);
+      this.launchSignedOperationDownload(id, 'AUDIT', headers);
     }
+  }
 
-    downloadObservable.subscribe(
-      (response) => {
-        const element = document.createElement('a');
-
-        let blob: Blob;
-        if (response instanceof HttpResponse) {
-          blob = new Blob([response.body], { type: 'octet/stream' });
-        } else {
-          blob = response;
-        }
-        const url = window.URL.createObjectURL(blob);
-        element.href = url;
-
-        element.download = fileName;
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+  private launchSignedDownload(id: string, downloadType: LogbookDownloadType, headers: HttpHeaders) {
+    this.logbookApiService.prepareSignedDownload(id, downloadType, headers).subscribe({
+      next: (response) => {
+        this.snackBarService.startDownload(response);
       },
-      (error) => this.snackBarService.open({ message: error.error.message, translate: false }),
-    );
+      error: (error) => this.openDownloadError(error),
+    });
+  }
+
+  private launchSignedOperationDownload(id: string, downloadType: string, headers: HttpHeaders) {
+    this.operationApiService.prepareSignedDownloadOperation(id, downloadType, headers).subscribe({
+      next: (response) => {
+        this.snackBarService.startDownload(response);
+      },
+      error: (error) => this.openDownloadError(error),
+    });
+  }
+
+  private openDownloadError(error: any) {
+    this.snackBarService.open({
+      message: error?.error?.message ?? 'SNACKBAR.DOWNLOAD_ERROR',
+      translate: !error?.error?.message,
+    });
   }
 
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegisterSummary[]> {

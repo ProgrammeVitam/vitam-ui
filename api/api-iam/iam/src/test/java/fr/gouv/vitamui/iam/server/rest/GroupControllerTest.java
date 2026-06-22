@@ -4,6 +4,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.rest.CrudControllerTest;
@@ -81,6 +82,9 @@ public final class GroupControllerTest implements CrudControllerTest {
     @Mock
     private GroupConverter groupConverter;
 
+    @Mock
+    private SignedDownloadTokenService signedDownloadTokenService;
+
     @BeforeEach
     public void setup() {
         mocks = MockitoAnnotations.openMocks(this);
@@ -101,7 +105,7 @@ public final class GroupControllerTest implements CrudControllerTest {
             null
         );
 
-        controller = new GroupController(groupService, securityService);
+        controller = new GroupController(groupService, profileService, securityService, signedDownloadTokenService);
     }
 
     protected void prepareServices() {

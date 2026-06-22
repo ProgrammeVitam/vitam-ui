@@ -4,6 +4,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.rest.CrudControllerTest;
@@ -95,10 +96,18 @@ public final class UserControllerTest implements CrudControllerTest {
     @Mock
     private ConnectionHistoryService connectionHistoryService;
 
+    @Mock
+    private SignedDownloadTokenService signedDownloadTokenService;
+
     @BeforeEach
     public void setup() {
         mocks = MockitoAnnotations.openMocks(this);
-        userController = new UserController(userService, connectionHistoryService, securityService);
+        userController = new UserController(
+            userService,
+            connectionHistoryService,
+            securityService,
+            signedDownloadTokenService
+        );
         Mockito.when(userConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(userConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
 
@@ -407,7 +416,12 @@ public final class UserControllerTest implements CrudControllerTest {
         UserDto userDto = buildUserDto();
         UserService userService1 = Mockito.mock(UserService.class);
         when(userService1.patchAnalytics(any())).thenReturn(userDto);
-        userController = new UserController(userService1, connectionHistoryService, securityService);
+        userController = new UserController(
+            userService1,
+            connectionHistoryService,
+            securityService,
+            signedDownloadTokenService
+        );
         Map<String, Object> partialDto = Map.of(APPLICATION_ID, "SUBROGATIONS_APP");
 
         UserDto result = userController.patchAnalytics(partialDto);

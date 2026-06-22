@@ -304,14 +304,16 @@ public class AgencyService extends AbstractService {
 
     public ResponseEntity<Resource> export() {
         final VitamContext vitamContext = this.buildVitamContext();
+        return new ResponseEntity<>(exportResource(vitamContext), HttpStatus.OK);
+    }
 
+    public Resource exportResource(VitamContext vitamContext) {
         Response response = this.export(vitamContext);
         Object entity = response.getEntity();
 
         if (entity instanceof InputStream stream) {
             var mergedBomCsvInputStream = new SequenceInputStream(new ByteArrayInputStream(ExportCSVUtils.BOM), stream);
-            Resource resource = new InputStreamResource(mergedBomCsvInputStream);
-            return new ResponseEntity<>(resource, HttpStatus.OK);
+            return new InputStreamResource(mergedBomCsvInputStream);
         }
         return null;
     }

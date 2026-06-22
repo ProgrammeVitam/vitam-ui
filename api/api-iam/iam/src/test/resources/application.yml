@@ -44,6 +44,12 @@ cas.reset.password.url: /extras/resetPassword?username={username}&firstname={fir
 cas.tenant.identifier: -1
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
+download:
+  signed-url:
+    secret: tokdownload_ie6UZsEcHIWrfv2x
+    ttl-seconds: 60
+    clock-skew-seconds: 5
+
 address:
   max-street-length: 250
 

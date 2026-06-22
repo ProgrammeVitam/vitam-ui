@@ -38,9 +38,11 @@
 package fr.gouv.vitamui.iam.server.security;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.security.config.ApiWebSecurityConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -61,5 +63,10 @@ public class WebSecurityConfig extends ApiWebSecurityConfig {
         Environment env
     ) {
         super(apiAuthenticationProvider, restExceptionHandler, securityService, env);
+    }
+
+    @Override
+    protected String[] getAuthList() {
+        return ArrayUtils.addAll(super.getAuthList(), RestApi.IAM_API_PATH + "/*/signed-download/*");
     }
 }

@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
@@ -48,6 +49,9 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -82,6 +86,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -91,9 +96,16 @@ import java.util.Optional;
 public class ProfileController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
+    private static final String PROFILE_DOWNLOAD_RESOURCE = "profile-download";
+    private static final String SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT = "/signed-download/download";
+    private static final String SIGNED_DOWNLOAD_PROFILE_PATH = RestApi.PROFILE + SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT;
+    private static final String ID_PARAMETER = "id";
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private SignedDownloadTokenService signedDownloadTokenService;
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
@@ -143,6 +155,39 @@ public class ProfileController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("download profile with id :{}", id);
         return profileService.download(id);
+    }
+
+    @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID + "/signed-url")
+    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
+    public String prepareSignedDownload(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Prepare signed download profile with id :{}", id);
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(PROFILE_DOWNLOAD_RESOURCE);
+        claims.setParameters(Map.of(ID_PARAMETER, id));
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_PROFILE_PATH);
+    }
+
+    @GetMapping(SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT)
+    public ResponseEntity<Resource> signedDownload(@RequestParam final String token)
+        throws InvalidParseOperationException, PreconditionFailedException, AccessExternalNotFoundException, AccessExternalClientException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, PROFILE_DOWNLOAD_RESOURCE);
+        String id = claims.getParameters().get(ID_PARAMETER);
+        if (Objects.isNull(id)) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        SanityChecker.checkSecureParameter(id);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId())
+            .setAccessContract(claims.getAccessContractId())
+            .setApplicationSessionId(claims.getApplicationSessionId());
+        LOGGER.debug("Signed download profile with id :{}", id);
+        return profileService.download(id, vitamContext);
     }
 
     /**

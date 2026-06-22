@@ -42,6 +42,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
@@ -76,6 +77,7 @@ import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractCommo
 import fr.gouv.vitamui.referential.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
 import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -141,6 +143,30 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     @Bean
     public SecurityService securityService() {
         return new SecurityService();
+    }
+
+    @Bean
+    public SignedDownloadTokenService signedDownloadTokenService(
+        ObjectMapper objectMapper,
+        SecurityService securityService,
+        @Value("${download.signed-url.secret}") String secret,
+        @Value("${download.signed-url.ttl-seconds:60}") long ttlSeconds,
+        @Value("${download.signed-url.clock-skew-seconds:5}") long clockSkewSeconds
+    ) {
+        return new SignedDownloadTokenService(objectMapper, secret, ttlSeconds, clockSkewSeconds, claims -> {
+            if (claims.getSubject() == null) {
+                claims.setSubject(securityService.getUser().getId());
+            }
+            if (claims.getTenantId() == null) {
+                claims.setTenantId(securityService.getTenantIdentifier());
+            }
+            if (claims.getAccessContractId() == null) {
+                claims.setAccessContractId(securityService.getHttpContext().getAccessContract());
+            }
+            if (claims.getApplicationSessionId() == null) {
+                claims.setApplicationSessionId(securityService.getApplicationId());
+            }
+        });
     }
 
     @Bean

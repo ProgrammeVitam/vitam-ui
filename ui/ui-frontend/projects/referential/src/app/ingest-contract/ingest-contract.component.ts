@@ -46,6 +46,7 @@ import {
   Role,
   SecurityService,
   SidenavPage,
+  SnackBarService,
 } from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { firstValueFrom, Observable, Subscription } from 'rxjs';
@@ -72,6 +73,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   private translateService = inject(TranslateService);
   private downloadSnackBarService = inject(DownloadSnackBarService);
   private ingestContractService = inject(IngestContractService);
+  private snackBarService = inject(SnackBarService);
 
   @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;
 
@@ -177,9 +179,9 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
 
   public export(): void {
     this.downloadSnackBarService.openDownloadBar();
-    const request: Subscription = this.ingestContractService.exportIngestContracts().subscribe(
-      (response: HttpResponse<Blob>) => {
-        DownloadUtils.loadFromBlob(response, response.body.type, 'Exported_ingest_contracts.csv');
+    const request: Subscription = this.ingestContractService.prepareSignedExportIngestContracts().subscribe(
+      (url) => {
+        this.snackBarService.startDownload(url);
         this.downloadSnackBarService.close();
       },
       () => this.downloadSnackBarService.close(),

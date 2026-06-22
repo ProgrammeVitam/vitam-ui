@@ -26,7 +26,10 @@
 
 package fr.gouv.vitamui.archives.search.server.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
@@ -38,6 +41,7 @@ import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchEliminationService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchMgtRulesService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchService;
+import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchThresholdService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchUnitExportCsvService;
 import fr.gouv.vitamui.archives.search.server.service.ExportDipService;
 import fr.gouv.vitamui.archives.search.server.service.TransferVitamOperationsService;
@@ -45,17 +49,24 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -71,8 +82,10 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * UI Archive-Search External controller
@@ -87,6 +100,19 @@ public class ArchivesSearchController {
 
     private static final String MANDATORY_QUERY = "The query is a mandatory parameter: ";
     private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+    private static final String ARCHIVE_UNIT_EXPORT_RESOURCE = "archive-unit-export";
+    private static final String ARCHIVE_OBJECT_DOWNLOAD_RESOURCE = "archive-object-download";
+    private static final String SIGNED_DOWNLOAD_OBJECT_ENDPOINT = "/signed-download/object";
+    private static final String SIGNED_DOWNLOAD_ARCHIVE_OBJECT_PATH =
+        "/archive-search" + SIGNED_DOWNLOAD_OBJECT_ENDPOINT;
+    private static final String SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT = "/signed-download/export-csv-search";
+    private static final String SIGNED_DOWNLOAD_ARCHIVE_UNIT_EXPORT_PATH =
+        "/archive-search" + SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT;
+    private static final String QUERY_PARAMETER = "query";
+    private static final String ID_PARAMETER = "id";
+    private static final String USAGE_PARAMETER = "usage";
+    private static final String VERSION_PARAMETER = "version";
+    private static final String EXPORT_ARCHIVE_UNITS_FILE_NAME = "export-archive-units.csv";
 
     private final ArchiveSearchService archiveSearchService;
     private final ArchiveSearchUnitExportCsvService archiveSearchUnitExportCsvService;
@@ -94,6 +120,9 @@ public class ArchivesSearchController {
     private final TransferVitamOperationsService transferVitamOperationsService;
     private final ArchiveSearchEliminationService archiveSearchEliminationService;
     private final ArchiveSearchMgtRulesService archiveSearchMgtRulesService;
+    private final ArchiveSearchThresholdService archiveSearchThresholdService;
+    private final ObjectMapper objectMapper;
+    private final SignedDownloadTokenService signedDownloadTokenService;
 
     public ArchivesSearchController(
         ArchiveSearchService archiveSearchService,
@@ -101,7 +130,10 @@ public class ArchivesSearchController {
         ExportDipService exportDipService,
         TransferVitamOperationsService transferVitamOperationsService,
         ArchiveSearchEliminationService archiveSearchEliminationService,
-        ArchiveSearchMgtRulesService archiveSearchMgtRulesService
+        ArchiveSearchMgtRulesService archiveSearchMgtRulesService,
+        ArchiveSearchThresholdService archiveSearchThresholdService,
+        ObjectMapper objectMapper,
+        SignedDownloadTokenService signedDownloadTokenService
     ) {
         this.archiveSearchService = archiveSearchService;
         this.archiveSearchUnitExportCsvService = archiveSearchUnitExportCsvService;
@@ -109,6 +141,9 @@ public class ArchivesSearchController {
         this.transferVitamOperationsService = transferVitamOperationsService;
         this.archiveSearchEliminationService = archiveSearchEliminationService;
         this.archiveSearchMgtRulesService = archiveSearchMgtRulesService;
+        this.archiveSearchThresholdService = archiveSearchThresholdService;
+        this.objectMapper = objectMapper;
+        this.signedDownloadTokenService = signedDownloadTokenService;
     }
 
     @PostMapping(RestApi.SEARCH_PATH)
@@ -143,6 +178,53 @@ public class ArchivesSearchController {
         return archiveSearchService.downloadObjectFromUnit(id, usage, version);
     }
 
+    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "/signed-url")
+    @Secured(ServicesData.ARCHIVE_SEARCH_ROLE_GET_ARCHIVE_BINARY)
+    public String prepareSignedDownloadObjectFromUnit(
+        final @PathVariable("id") String id,
+        final @RequestParam(value = "usage", required = false) String usage,
+        final @RequestParam(value = "version", required = false) Integer version
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Prepare signed download Archive Unit Object with id {} ", id);
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(ARCHIVE_OBJECT_DOWNLOAD_RESOURCE);
+        claims.setParameters(
+            Map.of(
+                ID_PARAMETER,
+                id,
+                USAGE_PARAMETER,
+                Objects.toString(usage, ""),
+                VERSION_PARAMETER,
+                Objects.toString(version, "")
+            )
+        );
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_ARCHIVE_OBJECT_PATH);
+    }
+
+    @GetMapping(value = SIGNED_DOWNLOAD_OBJECT_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Mono<ResponseEntity<Resource>> signedDownloadObjectFromUnit(@RequestParam final String token)
+        throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, ARCHIVE_OBJECT_DOWNLOAD_RESOURCE);
+        String id = claims.getParameters().get(ID_PARAMETER);
+        if (Objects.isNull(id)) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        SanityChecker.checkSecureParameter(id);
+        String usage = emptyToNull(claims.getParameters().get(USAGE_PARAMETER));
+        Integer version = parseVersion(emptyToNull(claims.getParameters().get(VERSION_PARAMETER)));
+
+        VitamContext vitamContext = new VitamContext(claims.getTenantId())
+            .setAccessContract(claims.getAccessContractId())
+            .setApplicationSessionId(claims.getApplicationSessionId());
+        return archiveSearchService.downloadObjectFromUnit(id, usage, version, vitamContext);
+    }
+
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public ResultsDto findUnitById(final @PathVariable("id") String id)
@@ -171,6 +253,55 @@ public class ArchivesSearchController {
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
         return archiveSearchUnitExportCsvService.exportToCsvSearchArchiveUnitsByCriteria(query);
+    }
+
+    @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH + "/signed-url")
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
+    public String prepareSignedExportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
+        throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_QUERY, query);
+        SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Prepare signed export to csv search archive Units By Criteria {} ", query);
+        archiveSearchThresholdService.retrieveProfilThresholds().ifPresent(query::setThreshold);
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(ARCHIVE_UNIT_EXPORT_RESOURCE);
+        claims.setParameters(Map.of(QUERY_PARAMETER, serializeQuery(query)));
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_ARCHIVE_UNIT_EXPORT_PATH);
+    }
+
+    @GetMapping(value = SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedExportCsvArchiveUnitsByCriteria(
+        @RequestParam final String token,
+        final HttpServletResponse response
+    ) throws IOException, PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, ARCHIVE_UNIT_EXPORT_RESOURCE);
+        String serializedQuery = claims.getParameters().get(QUERY_PARAMETER);
+        if (Objects.isNull(serializedQuery)) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        SearchCriteriaDto query = deserializeQuery(serializedQuery);
+        SanityChecker.sanitizeCriteria(query);
+
+        VitamContext vitamContext = new VitamContext(claims.getTenantId())
+            .setAccessContract(claims.getAccessContractId())
+            .setApplicationSessionId(claims.getApplicationSessionId());
+        Resource resource = archiveSearchUnitExportCsvService.exportToCsvSearchArchiveUnitsByCriteria(
+            query,
+            vitamContext
+        );
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(EXPORT_ARCHIVE_UNITS_FILE_NAME, StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
     }
 
     @PostMapping(RestApi.EXPORT_DIP)
@@ -319,5 +450,36 @@ public class ArchivesSearchController {
         throws VitamClientException {
         LOGGER.debug("Check operation IDs existence for {} IDs", operationIds.size());
         return archiveSearchService.checkOperationIdsExistence(operationIds);
+    }
+
+    private String serializeQuery(SearchCriteriaDto query) {
+        try {
+            return objectMapper.writeValueAsString(query);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestException("Unable to serialize archive units export query", e);
+        }
+    }
+
+    private SearchCriteriaDto deserializeQuery(String query) {
+        try {
+            return objectMapper.readValue(query, SearchCriteriaDto.class);
+        } catch (JsonProcessingException e) {
+            throw new BadRequestException("Unable to deserialize archive units export query", e);
+        }
+    }
+
+    private String emptyToNull(String value) {
+        return value == null || value.isBlank() ? null : value;
+    }
+
+    private Integer parseVersion(String version) {
+        if (version == null) {
+            return null;
+        }
+        try {
+            return Integer.valueOf(version);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("Invalid signed download URL", e);
+        }
     }
 }

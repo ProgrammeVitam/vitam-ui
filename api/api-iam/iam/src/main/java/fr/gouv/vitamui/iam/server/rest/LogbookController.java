@@ -46,6 +46,8 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -61,6 +63,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
@@ -74,9 +77,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * UI logbook controller.
@@ -93,23 +100,43 @@ public class LogbookController {
 
     private final LogbookService logbookService;
 
-    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+    private final TenantService tenantService;
 
+    private final SignedDownloadTokenService signedDownloadTokenService;
+
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
     private static final String DOWNLOAD_TYPE_DIP = "dip";
     private static final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
     private static final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
     private static final String DOWNLOAD_TYPE_OBJECT = "object";
-
-    private final TenantService tenantService;
+    private static final String DOWNLOAD_TYPE_REPORT = "report";
+    private static final String LOGBOOK_REPORT_RESOURCE = "logbook-report";
+    private static final String LOGBOOK_ATR_RESOURCE = "logbook-atr";
+    private static final String LOGBOOK_MANIFEST_RESOURCE = "logbook-manifest";
+    private static final String SIGNED_DOWNLOAD_REPORT_PATH =
+        CommonConstants.LOGBOOK_OPERATIONS_PATH + "/{id}/signed-download/{downloadType}";
+    private static final String SIGNED_DOWNLOAD_ATR_PATH =
+        CommonConstants.LOGBOOK_OPERATIONS_PATH + "/{id}/signed-download/atr";
+    private static final String SIGNED_DOWNLOAD_MANIFEST_PATH =
+        CommonConstants.LOGBOOK_OPERATIONS_PATH + "/{id}/signed-download/manifest";
+    private static final Set<String> ALLOWED_DOWNLOAD_TYPES = Set.of(
+        DOWNLOAD_TYPE_DIP,
+        DOWNLOAD_TYPE_TRANSFER_SIP,
+        DOWNLOAD_TYPE_BATCH_REPORT,
+        DOWNLOAD_TYPE_OBJECT,
+        DOWNLOAD_TYPE_REPORT
+    );
 
     public LogbookController(
         final LogbookService logbookService,
         final SecurityService securityService,
-        final TenantService tenantService
+        final TenantService tenantService,
+        final SignedDownloadTokenService signedDownloadTokenService
     ) {
         this.logbookService = logbookService;
         this.securityService = securityService;
         this.tenantService = tenantService;
+        this.signedDownloadTokenService = signedDownloadTokenService;
     }
 
     @Operation(operationId = "logbooks_findOperations", summary = "Get log book operation by json select")
@@ -248,19 +275,182 @@ public class LogbookController {
         @PathVariable final String downloadType,
         final HttpServletResponse response
     ) throws VitamClientException, IOException, PreconditionFailedException {
-        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        ParameterChecker.checkParameter(
+            "The identifier, the accessContract, and downloadType are mandatory parameters: ",
+            id,
+            accessContractId,
+            downloadType
+        );
         SanityChecker.checkSecureParameter(id, downloadType, accessContractId);
+        checkDownloadType(downloadType);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
         LOGGER.debug("Access Contract {} ", accessContractId);
-        ParameterChecker.checkParameter(
-            "The identifier, the accessContract, and Id are mandatory parameters: ",
-            id,
-            accessContractId
-        );
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         try (Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext)) {
             String fileName = getDownloadReportFileName(id, downloadType);
-            response.setHeader(RestUtils.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+            response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(fileName));
+            VitamRestUtils.writeFileResponse(vitamResponse, response);
+        }
+    }
+
+    @Operation(operationId = "logbooks_prepareSignedDownloadReport", summary = "Prepare a signed report download URL")
+    @PostMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH + "/signed-url")
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public String prepareSignedDownloadReport(
+        @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @PathVariable final String id,
+        @PathVariable final String downloadType
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "The identifier, the accessContract, and downloadType are mandatory parameters: ",
+            id,
+            accessContractId,
+            downloadType
+        );
+        SanityChecker.checkSecureParameter(id, downloadType, accessContractId);
+        checkDownloadType(downloadType);
+
+        DownloadClaims claims = buildDownloadClaims(tenantId, LOGBOOK_REPORT_RESOURCE);
+        claims.setAccessContractId(accessContractId);
+        claims.setParameters(Map.of("id", id, "downloadType", downloadType));
+
+        SignedDownloadTokenService.SignedDownloadToken signedToken = signedDownloadTokenService.generate(claims);
+        String url = UriComponentsBuilder.fromPath(SIGNED_DOWNLOAD_REPORT_PATH)
+            .queryParam("token", signedToken.value())
+            .buildAndExpand(id, downloadType)
+            .toUriString();
+
+        return url;
+    }
+
+    @Operation(operationId = "logbooks_prepareSignedDownloadAtr", summary = "Prepare a signed ATR download URL")
+    @PostMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH + "/signed-url")
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public String prepareSignedDownloadAtr(
+        @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @PathVariable final String id
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+
+        DownloadClaims claims = buildDownloadClaims(tenantId, LOGBOOK_ATR_RESOURCE);
+        claims.setParameters(Map.of("id", id));
+
+        SignedDownloadTokenService.SignedDownloadToken signedToken = signedDownloadTokenService.generate(claims);
+        String url = UriComponentsBuilder.fromPath(SIGNED_DOWNLOAD_ATR_PATH)
+            .queryParam("token", signedToken.value())
+            .buildAndExpand(id)
+            .toUriString();
+
+        return url;
+    }
+
+    @Operation(
+        operationId = "logbooks_prepareSignedDownloadManifest",
+        summary = "Prepare a signed manifest download URL"
+    )
+    @PostMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH + "/signed-url")
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @ResponseStatus(HttpStatus.OK)
+    public String prepareSignedDownloadManifest(
+        @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @PathVariable final String id
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+
+        DownloadClaims claims = buildDownloadClaims(tenantId, LOGBOOK_MANIFEST_RESOURCE);
+        claims.setParameters(Map.of("id", id));
+
+        SignedDownloadTokenService.SignedDownloadToken signedToken = signedDownloadTokenService.generate(claims);
+        String url = UriComponentsBuilder.fromPath(SIGNED_DOWNLOAD_MANIFEST_PATH)
+            .queryParam("token", signedToken.value())
+            .buildAndExpand(id)
+            .toUriString();
+
+        return url;
+    }
+
+    @Operation(operationId = "logbooks_signedDownloadReport", summary = "Download the report file using a signed URL")
+    @GetMapping(value = SIGNED_DOWNLOAD_REPORT_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedDownloadReport(
+        @PathVariable final String id,
+        @PathVariable final String downloadType,
+        @RequestParam final String token,
+        final HttpServletResponse response
+    ) throws VitamClientException, IOException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id, downloadType);
+        checkDownloadType(downloadType);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, LOGBOOK_REPORT_RESOURCE);
+        if (
+            !Objects.equals(id, claims.getParameters().get("id")) ||
+            !Objects.equals(downloadType, claims.getParameters().get("downloadType"))
+        ) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        final VitamContext vitamContext = new VitamContext(claims.getTenantId())
+            .setAccessContract(claims.getAccessContractId())
+            .setApplicationSessionId(claims.getApplicationSessionId());
+        try (Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext)) {
+            String fileName = getDownloadReportFileName(id, downloadType);
+            response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(fileName));
+            response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+            VitamRestUtils.writeFileResponse(vitamResponse, response);
+        }
+    }
+
+    @Operation(operationId = "logbooks_signedDownloadAtr", summary = "Download the ATR file using a signed URL")
+    @GetMapping(value = SIGNED_DOWNLOAD_ATR_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedDownloadAtr(
+        @PathVariable final String id,
+        @RequestParam final String token,
+        final HttpServletResponse response
+    ) throws IOException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, LOGBOOK_ATR_RESOURCE);
+        if (!Objects.equals(id, claims.getParameters().get("id"))) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        final VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+        try (Response vitamResponse = logbookService.downloadAtr(id, vitamContext)) {
+            response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(id + "-atr.xml"));
+            response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+            VitamRestUtils.writeFileResponse(vitamResponse, response);
+        }
+    }
+
+    @Operation(
+        operationId = "logbooks_signedDownloadManifest",
+        summary = "Download the manifest file using a signed URL"
+    )
+    @GetMapping(value = SIGNED_DOWNLOAD_MANIFEST_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedDownloadManifest(
+        @PathVariable final String id,
+        @RequestParam final String token,
+        final HttpServletResponse response
+    ) throws IOException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, LOGBOOK_MANIFEST_RESOURCE);
+        if (!Objects.equals(id, claims.getParameters().get("id"))) {
+            throw new BadRequestException("Invalid signed download URL");
+        }
+
+        final VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+        try (Response vitamResponse = logbookService.downloadManifest(id, vitamContext)) {
+            response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(id + "-manifest.xml"));
+            response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
             VitamRestUtils.writeFileResponse(vitamResponse, response);
         }
     }
@@ -283,5 +473,22 @@ public class LogbookController {
                 break;
         }
         return fileName;
+    }
+
+    private static void checkDownloadType(String downloadType) {
+        if (!ALLOWED_DOWNLOAD_TYPES.contains(downloadType)) {
+            throw new BadRequestException("Invalid download type");
+        }
+    }
+
+    private static String buildAttachmentContentDisposition(String fileName) {
+        return ContentDisposition.attachment().filename(fileName, StandardCharsets.UTF_8).build().toString();
+    }
+
+    private DownloadClaims buildDownloadClaims(Integer tenantId, String resource) {
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(resource);
+        claims.setTenantId(tenantId);
+        return claims;
     }
 }

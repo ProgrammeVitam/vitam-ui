@@ -48,11 +48,14 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class AgencyApiService extends PaginatedHttpClient<Agency> {
+  baseUrl: string;
+
   constructor() {
     const http = inject(HttpClient);
     const baseUrl = inject(BASE_URL);
 
     super(http, baseUrl + '/agency');
+    this.baseUrl = baseUrl;
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
@@ -91,5 +94,12 @@ export class AgencyApiService extends PaginatedHttpClient<Agency> {
       observe: 'response',
       responseType: 'blob',
     });
+  }
+
+  prepareSignedExport(headers?: HttpHeaders): Observable<string> {
+    return super
+      .getHttp()
+      .post(super.getApiUrl() + '/export/signed-url', {}, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
   }
 }

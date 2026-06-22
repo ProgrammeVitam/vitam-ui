@@ -34,24 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
-  DownloadUtils,
   IEvent,
   LogbookApiService,
+  LogbookDownloadType,
   LogbookOperationReportState,
   SearchService,
   SnackBarService,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 
-const DOWNLOAD_TYPE_TRANSFER_SIP = 'transfersip';
-const DOWNLOAD_TYPE_DIP = 'dip';
-const DOWNLOAD_TYPE_BATCH_REPORT = 'batchreport';
-const DOWNLOAD_TYPE_REPORT = 'report';
-const DOWNLOAD_TYPE_OBJECT = 'object';
+const DOWNLOAD_TYPE_TRANSFER_SIP: LogbookDownloadType = 'transfersip';
+const DOWNLOAD_TYPE_DIP: LogbookDownloadType = 'dip';
+const DOWNLOAD_TYPE_BATCH_REPORT: LogbookDownloadType = 'batchreport';
+const DOWNLOAD_TYPE_REPORT: LogbookDownloadType = 'report';
+const DOWNLOAD_TYPE_OBJECT: LogbookDownloadType = 'object';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +59,6 @@ const DOWNLOAD_TYPE_OBJECT = 'object';
 export class LogbookDownloadService extends SearchService<IEvent> {
   private logbookApiService: LogbookApiService;
   private snackBarService = inject(SnackBarService);
-  private http = inject(HttpClient);
 
   logbookOperationsReloaded = new Subject<IEvent[]>();
 
@@ -117,7 +116,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     }
   }
 
-  getDownloadType(eventTypeProc: string, eventType: string): string {
+  getDownloadType(eventTypeProc: string, eventType: string): LogbookDownloadType | null {
     switch (eventTypeProc) {
       case 'AUDIT':
         if (eventType === 'EXPORT_PROBATIVE_VALUE' || eventType === 'RECTIFICATION_AUDIT') {
@@ -181,18 +180,20 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     const eventType = event.type.toUpperCase();
     const downloadType = this.getDownloadType(eventTypeProc, eventType);
     if (downloadType) {
-      const downloadUrl = this.logbookApiService.getDownloadReportUrl(id, downloadType);
-      this.getFileByUrl(downloadUrl, accessContractId).subscribe((response: any) =>
-        DownloadUtils.loadFromBlob(response, response.body.type),
-      );
+      const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
+      this.logbookApiService.prepareSignedDownload(id, downloadType, headers).subscribe({
+        next: (response) => {
+          this.snackBarService.startDownload(response);
+        },
+        error: (error) =>
+          this.snackBarService.open({
+            message: error?.error?.message ?? 'SNACKBAR.DOWNLOAD_ERROR',
+            translate: !error?.error?.message,
+          }),
+      });
     } else {
       this.snackBarService.open({ message: 'SNACKBAR.DOWNLOAD_NOT_ALLOWED' });
     }
-  }
-
-  private getFileByUrl(url: string, accessContractId: string): Observable<HttpResponse<Blob>> {
-    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
-    return this.http.get(url, { headers, observe: 'response', responseType: 'blob' });
   }
 
   private isOperationInProgress(event: IEvent): boolean {

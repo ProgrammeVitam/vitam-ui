@@ -36,7 +36,7 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { download, Event, SearchService, VitamuiHttpHeaders } from 'vitamui-library';
+import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 
@@ -45,6 +45,7 @@ import { OperationApiService } from '../core/api/operation-api.service';
 })
 export class SecurisationService extends SearchService<Event> {
   private operationApiService: OperationApiService;
+  private snackBarService = inject(SnackBarService);
 
   constructor() {
     const operationApiService = inject(OperationApiService);
@@ -56,9 +57,17 @@ export class SecurisationService extends SearchService<Event> {
 
   download(id: string, accessContractId: string) {
     this.operationApiService
-      .downloadOperation(id, 'TRACEABILITY', new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId))
-      .subscribe((blob) => {
-        download(blob, 'report.zip');
+      .prepareSignedDownloadOperation(id, 'TRACEABILITY', new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId))
+      .subscribe({
+        next: (response) => {
+          this.snackBarService.startDownload(response);
+        },
+        error: (error) => {
+          this.snackBarService.open({
+            message: error?.error?.message ?? 'SNACKBAR.DOWNLOAD_ERROR',
+            translate: !error?.error?.message,
+          });
+        },
       });
   }
 

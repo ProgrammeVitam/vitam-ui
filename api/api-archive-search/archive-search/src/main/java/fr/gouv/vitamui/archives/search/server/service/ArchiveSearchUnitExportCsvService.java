@@ -133,7 +133,13 @@ public class ArchiveSearchUnitExportCsvService {
         VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(searchQuery::setThreshold);
+        return exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
+    }
 
+    public Resource exportToCsvSearchArchiveUnitsByCriteria(
+        final SearchCriteriaDto searchQuery,
+        VitamContext vitamContext
+    ) throws VitamClientException {
         LOGGER.info("Calling exportToCsvSearchArchiveUnitsByCriteria with query {} ", searchQuery);
         Locale locale = Locale.FRENCH;
         if (

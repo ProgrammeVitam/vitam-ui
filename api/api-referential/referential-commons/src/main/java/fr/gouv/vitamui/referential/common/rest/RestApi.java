@@ -41,7 +41,7 @@ package fr.gouv.vitamui.referential.common.rest;
  */
 public abstract class RestApi {
 
-    private static final String PREFIX = "/referential/v1";
+    public static final String REFERENTIAL_API_PATH = "/referential/v1";
 
     public static final String ARCHIVAL_PROFILE = "/archival-profile";
 
@@ -53,31 +53,31 @@ public abstract class RestApi {
 
     public static final String PATH_REFERENTIAL_ID = "/{identifier:.+}";
 
-    public static final String ACCESS_CONTRACTS_URL = PREFIX + "/accesscontracts";
+    public static final String ACCESS_CONTRACTS_URL = REFERENTIAL_API_PATH + "/accesscontracts";
 
-    public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
+    public static final String INGEST_CONTRACTS_URL = REFERENTIAL_API_PATH + "/ingestcontract";
 
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/management-contract";
+    public static final String MANAGEMENT_CONTRACTS_URL = REFERENTIAL_API_PATH + "/management-contract";
 
-    public static final String AGENCIES_URL = PREFIX + "/agency";
+    public static final String AGENCIES_URL = REFERENTIAL_API_PATH + "/agency";
 
-    public static final String FILE_FORMATS_URL = PREFIX + "/fileformats";
+    public static final String FILE_FORMATS_URL = REFERENTIAL_API_PATH + "/fileformats";
 
-    public static final String CONTEXTS_URL = PREFIX + "/context";
+    public static final String CONTEXTS_URL = REFERENTIAL_API_PATH + "/context";
 
-    public static final String SECURITY_PROFILES_URL = PREFIX + "/security-profile";
+    public static final String SECURITY_PROFILES_URL = REFERENTIAL_API_PATH + "/security-profile";
 
-    public static final String ONTOLOGIES_URL = PREFIX + "/ontology";
+    public static final String ONTOLOGIES_URL = REFERENTIAL_API_PATH + "/ontology";
 
-    public static final String OPERATIONS_URL = PREFIX + "/operations";
+    public static final String OPERATIONS_URL = REFERENTIAL_API_PATH + "/operations";
 
-    public static final String RULES_URL = PREFIX + "/rules";
+    public static final String RULES_URL = REFERENTIAL_API_PATH + "/rules";
 
-    public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
+    public static final String ACCESSION_REGISTER_URL = REFERENTIAL_API_PATH + "/accession-register";
 
-    public static final String PROFILES_URL = PREFIX + PROFILE;
+    public static final String PROFILES_URL = REFERENTIAL_API_PATH + PROFILE;
 
-    public static final String EXTERNAL_REFERENTIAL_URL = PREFIX + "/external-referential/";
+    public static final String EXTERNAL_REFERENTIAL_URL = REFERENTIAL_API_PATH + "/external-referential/";
 
     public static final String CONFIG_PATH = "/config";
     public static final String AGENCIES_PATH = "/agencies";
@@ -92,11 +92,12 @@ public abstract class RestApi {
 
     public static final String FILING_PLAN_PATH = "/filingplan";
 
-    public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH = PREFIX + "/logbook-management-operation";
+    public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH =
+        REFERENTIAL_API_PATH + "/logbook-management-operation";
 
     public static final String OPERATIONS_PATH = "/operations";
 
-    public static final String ARCHIVAL_PROFILE_URL = PREFIX + ARCHIVAL_PROFILE;
+    public static final String ARCHIVAL_PROFILE_URL = REFERENTIAL_API_PATH + ARCHIVAL_PROFILE;
 
     public static final String DETAILS = "/details";
 
@@ -120,9 +121,9 @@ public abstract class RestApi {
 
     public static final String UPDATE_PROFILE_FILE = "/updateProfileFile";
 
-    public static final String GRIFFINS_PATH = PREFIX + "/griffins";
+    public static final String GRIFFINS_PATH = REFERENTIAL_API_PATH + "/griffins";
 
-    public static final String PRESERVATION_SCENARIOS_PATH = PREFIX + "/preservation-scenarios";
+    public static final String PRESERVATION_SCENARIOS_PATH = REFERENTIAL_API_PATH + "/preservation-scenarios";
 
     private RestApi() {
         // do nothing

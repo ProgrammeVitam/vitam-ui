@@ -97,4 +97,10 @@ export class IngestContractApiService extends PaginatedHttpClient<IngestContract
       responseType: 'blob',
     });
   }
+
+  public prepareSignedExportIngestContracts(headers?: HttpHeaders): Observable<string> {
+    return this.http
+      .post(super.getApiUrl() + '/export-csv/signed-url', {}, { headers, responseType: 'text' })
+      .pipe(map((url) => this.baseUrl + url));
+  }
 }

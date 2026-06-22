@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpErrorResponse, HttpEvent, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable, LOCALE_ID, TemplateRef, inject } from '@angular/core';
-import { saveAs } from 'file-saver-es';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
 import {
@@ -174,30 +173,9 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   }
 
   downloadObjectFromUnit(unitId: string, objectId: string, qualifier?: string, version?: number) {
-    return this.projectsApiService.downloadObjectFromUnit(unitId, objectId, qualifier, version).subscribe((resp: HttpResponse<Blob>) => {
-      let fileName = null;
-      // extract filename from content-disposition header
-      const contentDispositionHeader = resp.headers.get('content-disposition');
-      if (contentDispositionHeader !== null) {
-        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        const matches = filenameRegex.exec(contentDispositionHeader);
-        if (matches != null && matches[1]) {
-          fileName = matches[1].replace(/['"]/g, '');
-        }
-      }
-      saveAs(resp.body, fileName);
+    return this.projectsApiService.prepareSignedDownloadObjectFromUnit(unitId, objectId, qualifier, version).subscribe((signedUrl) => {
+      this.snackBarService.startDownload(signedUrl);
     });
-  }
-
-  downloadFile(url: string) {
-    window.addEventListener('focus', window_focus, false);
-
-    function window_focus() {
-      window.removeEventListener('focus', window_focus, false);
-      URL.revokeObjectURL(url);
-    }
-
-    location.href = url;
   }
 
   validateTransaction(id: string) {
@@ -223,17 +201,11 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
-    return this.transactionApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe(
-      (file) => {
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
-        element.download = 'export-archive-units.csv';
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+    return this.transactionApiService.prepareSignedExportCsvSearchArchiveUnitsByCriteria(criteriaDto, projectId, headers).subscribe({
+      next: (signedUrl) => {
+        this.snackBarService.startDownload(signedUrl);
       },
-      (errors: HttpErrorResponse) => {
+      error: (errors: HttpErrorResponse) => {
         if (errors.status === 413) {
           console.log('Please update filter to reduce size of response' + errors.message);
 
@@ -243,7 +215,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
           });
         }
       },
-    );
+    });
   }
 
   //TODO(refacto): use filing-plan service loadTree ?

@@ -63,7 +63,7 @@ public class ExternalParametersService {
      *
      * @return access contract throws IllegalArgumentException
      */
-    private @Nonnull String retrieveAccessContractFromExternalParam() {
+    public @Nonnull String retrieveAccessContractFromExternalParam() {
         Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");

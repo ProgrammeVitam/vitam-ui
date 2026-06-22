@@ -36,8 +36,10 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.accessionregister.AccessionRegisterService;
@@ -59,6 +61,12 @@ class AccessionRegisterControllerTest extends ApiReferentialControllerTest<Acces
 
     @MockitoBean
     private AccessionRegisterService detailExternalService;
+
+    @MockitoBean
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private SignedDownloadTokenService signedDownloadTokenService;
 
     @Test
     void should_call_the_corresponding_service_once_when_paginated_api_is_called() throws Exception {

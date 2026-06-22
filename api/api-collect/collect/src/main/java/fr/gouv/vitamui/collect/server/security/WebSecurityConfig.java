@@ -27,9 +27,11 @@
 
 package fr.gouv.vitamui.collect.server.security;
 
+import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.security.config.ApiWebSecurityConfig;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -51,5 +53,15 @@ public class WebSecurityConfig extends ApiWebSecurityConfig {
         Environment env
     ) {
         super(apiAuthenticationProvider, restExceptionHandler, securityService, env);
+    }
+
+    @Override
+    protected String[] getAuthList() {
+        return ArrayUtils.addAll(
+            super.getAuthList(),
+            RestApi.COLLECT_PATH + "/*/signed-download/*",
+            RestApi.COLLECT_PATH + "/*/*/signed-download/*",
+            RestApi.COLLECT_PATH + "/*/*/*/signed-download/*"
+        );
     }
 }

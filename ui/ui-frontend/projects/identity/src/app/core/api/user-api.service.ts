@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { BASE_URL, CriteriaSearchQuery, PaginatedHttpClient, User } from 'vitamui-library';
 
@@ -44,11 +45,14 @@ import { BASE_URL, CriteriaSearchQuery, PaginatedHttpClient, User } from 'vitamu
   providedIn: 'root',
 })
 export class UserApiService extends PaginatedHttpClient<User> {
+  baseUrl: string;
+
   constructor() {
     const http = inject(HttpClient);
     const baseUrl = inject(BASE_URL);
 
     super(http, baseUrl + '/users');
+    this.baseUrl = baseUrl;
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {
@@ -80,7 +84,7 @@ export class UserApiService extends PaginatedHttpClient<User> {
     return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
   }
 
-  export(): Observable<HttpResponse<Blob>> {
-    return this.http.get(this.apiUrl + '/export', { observe: 'response', responseType: 'blob' });
+  prepareSignedExport(): Observable<string> {
+    return this.http.get(`${this.apiUrl}/export/signed-url`, { responseType: 'text' }).pipe(map((signedUrl) => this.baseUrl + signedUrl));
   }
 }

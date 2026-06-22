@@ -22,3 +22,12 @@ vitamui:
   cas_server:
     # Secret internal token for CAS to vitam-ui communication
     secret_token: changeit_cas_secret_token
+
+# Shared default used by every service exposing signed download URLs.
+# Can be overridden per service under vitamui.<service>.download.signed_url.secret if needed.
+vitamui_defaults:
+  services:
+    download:
+      signed_url:
+        # Secret dedicated to signed download URLs
+        secret: changeit_download_signed_url_secret

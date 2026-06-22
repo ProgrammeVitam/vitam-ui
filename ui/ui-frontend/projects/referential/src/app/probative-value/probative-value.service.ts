@@ -82,18 +82,12 @@ export class ProbativeValueService extends SearchService<Event> {
     );
   }
 
-  export(id: string, accessContractId: string): Observable<Blob> {
+  export(id: string, accessContractId: string): Observable<string> {
     return this.operationApiService
-      .downloadProbativeValue(id, new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId))
+      .prepareSignedDownloadProbativeValue(id, new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId))
       .pipe(
-        tap((blob) => {
-          const element = document.createElement('a');
-          element.href = window.URL.createObjectURL(blob);
-          element.download = id + '.zip';
-          element.style.visibility = 'hidden';
-          document.body.appendChild(element);
-          element.click();
-          document.body.removeChild(element);
+        tap((response) => {
+          this.snackBarService.startDownload(response);
         }),
       );
   }

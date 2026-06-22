@@ -320,8 +320,12 @@ public class ArchiveSearchService {
     }
 
     public ResultsDto findObjectById(String id) throws VitamClientException {
+        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        return findObjectById(id, vitamContext);
+    }
+
+    public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
-            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
             LOGGER.debug("Get Object Group");
             String re = StringUtils.chop(
                 unitCommonService
@@ -348,8 +352,12 @@ public class ArchiveSearchService {
      * @param vitamContext
      * @throws VitamClientException
      */
-    public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
-        throws VitamClientException {
+    private Response downloadObjectStreamFromUnit(
+        String id,
+        String usage,
+        Integer version,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
         LOGGER.debug("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
         return unitCommonService.getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
@@ -503,9 +511,23 @@ public class ArchiveSearchService {
 
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version)
         throws VitamClientException {
+        return downloadObjectFromUnit(
+            id,
+            usage,
+            version,
+            archiveSearchExternalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(
+        String id,
+        String usage,
+        Integer version,
+        VitamContext vitamContext
+    ) throws VitamClientException {
         // Logic moved here from ui-archive-search
         String fileName = null;
-        ResultsDto got = findObjectById(id);
+        ResultsDto got = findObjectById(id, vitamContext);
         if (nonNull(got)) {
             QualifiersDto qualifier;
             if (isEmpty(usage)) {
@@ -543,12 +565,7 @@ public class ArchiveSearchService {
         }
 
         return ArchiveSearchUtils.convertResponseToMono(
-            this.downloadObjectFromUnit(
-                    id,
-                    usage,
-                    version,
-                    archiveSearchExternalParametersService.buildVitamContextFromExternalParam()
-                ),
+            this.downloadObjectStreamFromUnit(id, usage, version, vitamContext),
             fileName
         );
     }

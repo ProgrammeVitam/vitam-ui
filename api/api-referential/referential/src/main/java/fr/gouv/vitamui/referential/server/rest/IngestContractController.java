@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -43,12 +44,16 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.download.DownloadClaims;
+import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
+import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.ingestcontract.IngestContractService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,7 +62,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
@@ -73,7 +81,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -87,8 +97,26 @@ public class IngestContractController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractController.class);
 
-    @Autowired
+    private static final String INGEST_CONTRACT_EXPORT_RESOURCE = "ingest-contract-export";
+    private static final String SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT = "/signed-download/export-csv";
+    private static final String SIGNED_DOWNLOAD_INGEST_CONTRACT_EXPORT_PATH =
+        "/ingestcontract" + SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT;
+    private static final String EXPORT_INGEST_CONTRACTS_FILE_NAME = "Exported_ingest_contracts.csv";
+
     private IngestContractService ingestContractService;
+    private SecurityService securityService;
+    private SignedDownloadTokenService signedDownloadTokenService;
+
+    @Autowired
+    public IngestContractController(
+        final IngestContractService ingestContractService,
+        final SecurityService securityService,
+        final SignedDownloadTokenService signedDownloadTokenService
+    ) {
+        this.ingestContractService = ingestContractService;
+        this.securityService = securityService;
+        this.signedDownloadTokenService = signedDownloadTokenService;
+    }
 
     @GetMapping
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
@@ -203,5 +231,41 @@ public class IngestContractController {
     public ResponseEntity<Resource> exportIngestContracts() {
         LOGGER.debug("export all ingest contracts to csv file");
         return ingestContractService.exportIngestContracts();
+    }
+
+    @Operation(summary = "Prepare signed ingest contracts export URL")
+    @PostMapping(path = RestApi.EXPORT_CSV + "/signed-url")
+    @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)
+    public String prepareSignedExportIngestContracts(
+        @RequestHeader(CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId
+    ) {
+        LOGGER.debug("Prepare signed ingest contracts export URL");
+
+        DownloadClaims claims = new DownloadClaims();
+        claims.setResource(INGEST_CONTRACT_EXPORT_RESOURCE);
+        claims.setTenantId(tenantId);
+
+        return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_INGEST_CONTRACT_EXPORT_PATH);
+    }
+
+    @GetMapping(value = SIGNED_DOWNLOAD_EXPORT_CSV_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedExportIngestContracts(@RequestParam final String token, final HttpServletResponse response)
+        throws IOException {
+        ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
+        DownloadClaims claims = signedDownloadTokenService.validate(token, INGEST_CONTRACT_EXPORT_RESOURCE);
+        VitamContext vitamContext = new VitamContext(claims.getTenantId()).setApplicationSessionId(
+            claims.getApplicationSessionId()
+        );
+
+        Resource resource = ingestContractService.exportIngestContracts(vitamContext);
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment()
+                .filename(EXPORT_INGEST_CONTRACTS_FILE_NAME, StandardCharsets.UTF_8)
+                .build()
+                .toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        response.getOutputStream().write(resource.getContentAsByteArray());
     }
 }
