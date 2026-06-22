@@ -914,7 +914,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           val.values.forEach((value) => {
             this.removeCriteria(key, value.value, true);
             const keyToRemove = key === WAITING_RECALCULATE ? ORIGIN_WAITING_RECALCULATE : value.value.id;
-            builder.removeQueryParam(keyToRemove, value.value.value);
+            const valueToRemove = key === WAITING_RECALCULATE ? ORIGIN_WAITING_RECALCULATE : value.value.value;
+            builder.removeQueryParam(keyToRemove, valueToRemove);
             builder.navigate();
           });
         }
@@ -935,6 +936,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   mapSearchCriteriaHistory() {
     let searchCriteriaHistoryObject: SearchCriteriaHistory;
     const criteriaListObject: SearchCriteriaEltements[] = [];
+    const selectedRuleCategory = this.additionalSearchCriteriaCategories[this.additionalSearchCriteriaCategoryIndex - 1]?.name;
+    const waitingRecalculateCategory = selectedRuleCategory || this.additionalSearchCriteriaCategories[0]?.name;
     this.searchCriterias.forEach((criteria: CriteriaSearchCriteria) => {
       const strValues: CriteriaValue[] = [];
       criteria.values.forEach((elt) => {
@@ -943,7 +946,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       criteriaListObject.push({
         criteria: criteria.key,
         values: strValues,
-        category: SearchCriteriaTypeEnum[criteria.category],
+        category:
+          criteria.key === WAITING_RECALCULATE && waitingRecalculateCategory
+            ? waitingRecalculateCategory
+            : SearchCriteriaTypeEnum[criteria.category],
         operator: criteria.operator,
         keyTranslated: criteria.keyTranslated,
         valueTranslated: criteria.valueTranslated,
@@ -1174,20 +1180,28 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     storedSearchCriteriaHistory.searchCriteriaList.forEach((criteria: SearchCriteriaEltements) => {
       this.fillTreeNodeAsSearchCriteriaHistory(criteria);
 
-      const category = criteria.category as SearchCriteriaTypeEnum;
-      const isRuleCategory = Object.keys(SearchCriteriaTypeEnum)
-        .filter((key) => key.includes('RULE'))
-        .includes(category);
+      const categoryName = typeof criteria.category === 'string' ? criteria.category : SearchCriteriaTypeEnum[criteria.category];
+      const category = SearchCriteriaTypeEnum[categoryName as keyof typeof SearchCriteriaTypeEnum] as SearchCriteriaTypeEnum;
+      const isRuleCategory = categoryName.includes('RULE');
 
       if (isRuleCategory) {
-        this.addCriteriaCategory(category);
+        this.addCriteriaCategory(categoryName);
       }
 
       criteria.values.forEach((value) => {
+        const isWaitingRecalculateCriteria =
+          criteria.criteria === WAITING_RECALCULATE ||
+          criteria.criteria === ORIGIN_WAITING_RECALCULATE ||
+          value.id === ORIGIN_WAITING_RECALCULATE;
+        const criteriaKey = isWaitingRecalculateCriteria ? ORIGIN_WAITING_RECALCULATE : criteria.criteria;
+        const valueToRestore = isWaitingRecalculateCriteria
+          ? { ...value, id: ORIGIN_WAITING_RECALCULATE, value: ORIGIN_WAITING_RECALCULATE }
+          : value;
+
         this.addCriteria(
-          criteria.criteria,
-          value,
-          value.value,
+          criteriaKey,
+          valueToRestore,
+          valueToRestore.value,
           criteria.keyTranslated,
           criteria.operator,
           category,
@@ -1197,9 +1211,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         );
 
         criteriaToAddToUrl.push({
-          keyElt: criteria.criteria,
-          valueElt: value,
-          labelElt: value.value,
+          keyElt: criteriaKey,
+          valueElt: valueToRestore,
+          labelElt: valueToRestore.value,
           keyTranslated: criteria.keyTranslated,
           operator: criteria.operator,
           category,
