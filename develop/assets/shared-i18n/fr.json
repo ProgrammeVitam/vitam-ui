@@ -474,7 +474,8 @@
       "SINGULAR": "sur {{ total }} (1 élément non téléchargeable)",
       "PLURAL": "sur {{ total }} ({{ count }} éléments non téléchargeables)"
     },
-    "DOWNLOAD_FILE": "Téléchargement en cours"
+    "DOWNLOAD_FILE": "Téléchargement en cours",
+    "STARTED_MESSAGE": "Votre téléchargement a commencé. Vous pouvez suivre sa progression dans la barre de téléchargement de votre navigateur."
   },
   "EDITABLE_SELECT": {
     "CONFIM_UPDATE": "Êtes-vous sûr de vouloir effectuer cette modification ?"
