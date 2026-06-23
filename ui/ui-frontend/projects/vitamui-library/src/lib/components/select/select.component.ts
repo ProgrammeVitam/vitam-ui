@@ -72,7 +72,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatOption, MatOptionModule, MatOptionSelectionChange, MatPseudoCheckboxModule } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { PipesModule } from '../../../app/modules/pipes/pipes.module';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { normalizeString } from '../../utils/string.util';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -127,7 +127,6 @@ export interface VitamuiSelectOptions {
 export class SelectComponent extends AbstractFormInputDirective implements AfterViewInit, AfterViewChecked {
   private cd = inject(ChangeDetectorRef);
   readonly sd = inject(ScrollDispatcher);
-  private translateService = inject(TranslateService);
 
   @Input() placeholder: string;
   @Input() searchBarPlaceHolder: string;
@@ -218,7 +217,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
   private optionsResource: Resource<VitamuiSelectOptions | any[]>;
 
-  @Input() selectAllLabel = this.translateService.instant('SELECT.SELECT_ALL');
+  @Input() selectAllLabel = 'SELECT.SELECT_ALL';
   @Input() allSelectedLabel?: string;
   loading: Signal<boolean> = computed(() => (this.optionsResource ? this.optionsResource.isLoading() : false));
 
