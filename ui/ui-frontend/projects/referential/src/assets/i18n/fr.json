@@ -993,7 +993,7 @@
     "HOME": {
       "TITLE": "Relevés de valeur probante",
       "GENERATE_VALUE": "Générer un relevé",
-      "SEARCH_PLACEHOLDER": "Identifiant de relevé, identifiant d'UA...",
+      "SEARCH_PLACEHOLDER": "Identifiant de relevé...",
       "START_DATE": "Date de début",
       "END_DATE": "Date de fin",
       "ELECTRONICALLY_SIGNED_DOCUMENT": "Document signé électroniquement",
