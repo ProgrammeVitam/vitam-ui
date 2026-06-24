@@ -123,6 +123,7 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   @HostListener('focus')
   show() {
     clearTimeout(this.#hideTimeoutId);
+    clearTimeout(this.#showTimeoutId);
 
     if (!this.disabled && this.text) {
       this.openToolTip();
