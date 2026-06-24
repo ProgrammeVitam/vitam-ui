@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.mapstruct.ap.internal.util.Strings;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -113,7 +112,7 @@ public final class ProfileGroupExport implements LineDto {
     }
 
     private String parseDateToFormat(String date) {
-        if (Strings.isEmpty(date)) {
+        if (date == null || date.isBlank()) {
             return "";
         }
         var frDate = LocalDateTime.parse(date).plusHours(1);
