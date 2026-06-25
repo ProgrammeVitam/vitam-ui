@@ -989,7 +989,7 @@
     "HOME": {
       "TITLE": "Reports of probative value",
       "GENERATE_VALUE": "Generate statement",
-      "SEARCH_PLACEHOLDER": "Statement ID, UA ID...",
+      "SEARCH_PLACEHOLDER": "Statement ID...",
       "START_DATE": "Start date",
       "END_DATE": "End date",
       "ELECTRONICALLY_SIGNED_DOCUMENT": "Electronically signed document",
