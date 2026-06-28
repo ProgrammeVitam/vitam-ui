@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.cas.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -51,6 +50,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import tools.jackson.databind.JsonNode;
 
 import java.io.FileNotFoundException;
 import java.time.OffsetDateTime;

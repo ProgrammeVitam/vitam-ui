@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -51,6 +48,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -169,7 +169,7 @@ public final class VitamUIUtils {
     }
 
     public static <T> T convertObjectFromJson(final String json, final Class<T> cls)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         return new ObjectMapper().readValue(json, cls);
     }
 

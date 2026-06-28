@@ -1,9 +1,5 @@
 package fr.gouv.vitamui.referential.common.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.referential.common.dto.AgencyCSVDto;
@@ -11,6 +7,10 @@ import fr.gouv.vitamui.referential.common.dto.AgencyDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.csv.CsvMapper;
+import tools.jackson.dataformat.csv.CsvSchema;
 
 import java.io.StringWriter;
 import java.util.List;

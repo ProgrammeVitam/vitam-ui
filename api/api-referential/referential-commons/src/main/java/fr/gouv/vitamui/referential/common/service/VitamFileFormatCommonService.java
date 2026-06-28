@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
@@ -68,6 +64,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -353,7 +353,7 @@ public class VitamFileFormatCommonService {
                     "Can't create file format, a format with the same puid already exist in Vitam"
                 );
             }
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             throw new UnexpectedDataException(
                 "Can't create access contracts, Error while parsing Vitam response : " + e.getMessage()
             );

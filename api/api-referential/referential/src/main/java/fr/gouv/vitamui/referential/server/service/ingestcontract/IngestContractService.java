@@ -36,13 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.ingestcontract;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.enums.CSVReaderNullFieldIndicator;
@@ -85,6 +78,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -152,7 +152,7 @@ public class IngestContractService extends AbstractService {
             } else {
                 return converter.convertVitamToDto(ingestContractResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Ingest Contrat", e);
         }
     }
@@ -171,7 +171,7 @@ public class IngestContractService extends AbstractService {
             );
 
             return converter.convertVitamsToDtos(ingestContractResponseDto.getResults());
-        } catch (JsonProcessingException | VitamClientException e) {
+        } catch (JacksonException | VitamClientException e) {
             throw new InternalServerException("Unable to get Ingest Contrats", e);
         }
     }
@@ -219,7 +219,7 @@ public class IngestContractService extends AbstractService {
             LOGGER.debug("VITAM DTO: {}", ingestContractResponseDto);
 
             return ingestContractResponseDto;
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to find Ingest Contrats", e);
         }
     }

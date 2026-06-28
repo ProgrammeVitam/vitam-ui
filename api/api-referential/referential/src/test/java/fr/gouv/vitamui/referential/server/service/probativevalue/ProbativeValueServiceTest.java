@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.probativevalue;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -57,6 +52,11 @@ import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -96,7 +96,7 @@ class ProbativeValueServiceTest {
 
     @Test
     void shoudl_generate_report_on_probativereport()
-        throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
+        throws StreamReadException, DatabindException, VitamClientException, IOException, InvalidParseOperationException {
         File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
             buildVitamProbativeReport("data/provative_report_WARNING.json")
@@ -130,7 +130,7 @@ class ProbativeValueServiceTest {
 
     @Test
     void shoudl_generate_report_on_probativereport_multiple_entries()
-        throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
+        throws StreamReadException, DatabindException, VitamClientException, IOException, InvalidParseOperationException {
         File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
             buildVitamProbativeReport("data/provative_report_WARNING_multiple_entries.json")
@@ -173,7 +173,7 @@ class ProbativeValueServiceTest {
 
     @Test
     void shoudl_generate_report_on_probativereport_ko()
-        throws JsonParseException, JsonMappingException, VitamClientException, IOException, InvalidParseOperationException {
+        throws StreamReadException, DatabindException, VitamClientException, IOException, InvalidParseOperationException {
         File workspace = newFolder(this.folder, "junit");
         when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(
             buildVitamProbativeReport("data/provative_report_KO.json")
@@ -206,7 +206,7 @@ class ProbativeValueServiceTest {
     }
 
     private InputStream buildVitamProbativeReport(String filename)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ProbativeValueServiceTest.class.getClassLoader().getResourceAsStream(filename);
@@ -214,7 +214,7 @@ class ProbativeValueServiceTest {
     }
 
     private VitamUISearchResponseDto buildVitamUISearchResponseDto(String filename)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ProbativeValueServiceTest.class.getClassLoader().getResourceAsStream(filename);
@@ -222,7 +222,7 @@ class ProbativeValueServiceTest {
     }
 
     private RequestResponse<JsonNode> buildGotMetadataResponse(String filename)
-        throws JsonParseException, JsonMappingException, IOException, InvalidParseOperationException {
+        throws StreamReadException, DatabindException, IOException, InvalidParseOperationException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ProbativeValueServiceTest.class.getClassLoader().getResourceAsStream(filename);

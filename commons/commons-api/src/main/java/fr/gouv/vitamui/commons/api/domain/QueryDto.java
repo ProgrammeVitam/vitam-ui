@@ -38,7 +38,6 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.commons.api.deserializer.CriterionAndQueryDtoDeserializer;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import lombok.EqualsAndHashCode;
@@ -46,6 +45,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.Collection;

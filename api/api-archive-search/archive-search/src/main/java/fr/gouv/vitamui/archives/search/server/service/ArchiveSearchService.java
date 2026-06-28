@@ -39,11 +39,6 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
@@ -101,6 +96,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -226,7 +226,7 @@ public class ArchiveSearchService {
         ArchiveUnitsDto archiveUnitsDto,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    ) throws InvalidCreateOperationException, VitamClientException, JacksonException {
         try {
             archiveUnitsDto
                 .getArchives()
@@ -247,7 +247,7 @@ public class ArchiveSearchService {
     }
 
     private ArchiveUnitsDto decorateAndMapResponse(JsonNode vitamResponse, VitamContext vitamContext)
-        throws JsonProcessingException, VitamClientException {
+        throws JacksonException, VitamClientException {
         final VitamUISearchResponseDto archivesOriginResponse = objectMapper.treeToValue(
             vitamResponse,
             VitamUISearchResponseDto.class
@@ -295,7 +295,7 @@ public class ArchiveSearchService {
                 archiveSearchExternalParametersService.buildVitamContextFromExternalParam()
             );
             return objectMapper.treeToValue(archiveUnits, VitamUISearchResponseDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Error parsing query ", e);
         }
     }
@@ -313,7 +313,7 @@ public class ArchiveSearchService {
                     .substring(1)
             );
             return objectMapper.readValue(re, ResultsDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Can not get the archive unit {} ", e);
             throw new VitamClientException("Unable to find the UA", e);
         }
@@ -337,7 +337,7 @@ public class ArchiveSearchService {
             );
             LOGGER.debug("Object received: {}" + re);
             return objectMapper.readValue(re, ResultsDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Can not get the object group {} ", e);
             throw new InternalServerException("Unable to find the ObjectGroup", e);
         }
@@ -370,7 +370,7 @@ public class ArchiveSearchService {
         return mapRequestToDslQuery(searchQuery);
     }
 
-    public JsonNode createQueryForHoldingFillingUnit() {
+    public com.fasterxml.jackson.databind.JsonNode createQueryForHoldingFillingUnit() {
         try {
             final SelectMultiQuery select = new SelectMultiQuery();
             final Query query = in(
@@ -379,9 +379,9 @@ public class ArchiveSearchService {
                 UnitTypeEnum.FILING_UNIT.getValue()
             );
             select.addQueries(query);
-            ObjectNode orderFilter = JsonHandler.createObjectNode();
+            com.fasterxml.jackson.databind.node.ObjectNode orderFilter = JsonHandler.createObjectNode();
             orderFilter.put(TITLE_FIELD, 1);
-            ObjectNode filter = JsonHandler.createObjectNode();
+            com.fasterxml.jackson.databind.node.ObjectNode filter = JsonHandler.createObjectNode();
             filter.set("$orderby", orderFilter);
             select.setFilter(filter);
             select.addUsedProjection(FILING_PLAN_PROJECTION);
@@ -436,7 +436,7 @@ public class ArchiveSearchService {
         ArchiveUnitsDto archiveUnitsDto = decorateAndMapResponse(vitamResponse, vitamContext);
         if (
             Objects.nonNull(archiveUnitsDto.getArchives()) &&
-            !CollectionUtils.isEmpty(archiveUnitsDto.getArchives().getResults())
+                !CollectionUtils.isEmpty(archiveUnitsDto.getArchives().getResults())
         ) {
             response = archiveUnitsDto.getArchives().getResults().get(0);
         }
@@ -457,7 +457,7 @@ public class ArchiveSearchService {
         ArrayNode array = JsonHandler.createArrayNode();
         ((ObjectNode) dslQuery).putPOJO(ACTION, reclassificationCriteriaDto.getAction());
         Arrays.stream(
-            new String[] { DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS, DSL_QUERY_THRESHOLD }
+            new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS, DSL_QUERY_THRESHOLD}
         ).forEach(((ObjectNode) dslQuery)::remove);
         array.add(dslQuery);
         LOGGER.debug("Reclassification query : {}", array);
@@ -486,7 +486,7 @@ public class ArchiveSearchService {
         );
         try {
             return objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Response not in good format {}", e);
             throw new VitamClientException("Unable to find the UA", e);
         }
@@ -503,7 +503,7 @@ public class ArchiveSearchService {
         );
         try {
             return objectMapper.readValue(response.toString(), PersistentIdentifierResponseDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Response not in good format {}", e);
             throw new VitamClientException("Unable to find the GOT", e);
         }
@@ -577,14 +577,17 @@ public class ArchiveSearchService {
         if (ReassignmentMode.BY_ID.equals(reassignRequestDto.getReassignMode())) {
             validateNoHoldingUnits(reassignRequestDto.getSearchCriteria()); // validate no holding units
         } else if (ReassignmentMode.BY_OPI.equals(reassignRequestDto.getReassignMode())) {
-            validateEntryOperationReassignment(reassignRequestDto.getSearchCriteria()); // validate that operations have INGEST type
+            validateEntryOperationReassignment(
+                reassignRequestDto.getSearchCriteria()); // validate that operations have INGEST type
         }
 
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(reassignRequestDto.getSearchCriteria()::setThreshold);
         VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
-        JsonNode dslQuery = prepareDslQuery(reassignRequestDto.getSearchCriteria(), vitamContext);
-        JsonNode reassignmentDsl = buildReassignmentDsl(
+        com.fasterxml.jackson.databind.JsonNode dslQuery =
+            prepareDslQuery(reassignRequestDto.getSearchCriteria(), vitamContext);
+
+        com.fasterxml.jackson.databind.JsonNode reassignmentDsl = buildReassignmentDsl(
             dslQuery,
             reassignRequestDto.getSearchCriteria().getThreshold()
         );
@@ -619,8 +622,9 @@ public class ArchiveSearchService {
         return operationIds.stream().collect(Collectors.toMap(id -> id, existingOperationIds::contains));
     }
 
-    private JsonNode buildReassignmentDsl(JsonNode searchDsl, Long threshold) {
-        ObjectNode reassignmentDsl = JsonHandler.createObjectNode();
+    private com.fasterxml.jackson.databind.JsonNode buildReassignmentDsl(
+        com.fasterxml.jackson.databind.JsonNode searchDsl, Long threshold) {
+        com.fasterxml.jackson.databind.node.ObjectNode reassignmentDsl = JsonHandler.createObjectNode();
         reassignmentDsl.set(
             BuilderToken.GLOBAL.ROOTS.exactToken(),
             searchDsl.get(BuilderToken.GLOBAL.ROOTS.exactToken())
@@ -632,7 +636,7 @@ public class ArchiveSearchService {
         if (threshold != null) {
             reassignmentDsl.set(
                 BuilderToken.GLOBAL.THRESOLD.exactToken(),
-                objectMapper.convertValue(threshold, JsonNode.class)
+                objectMapper.convertValue(threshold, com.fasterxml.jackson.databind.JsonNode.class)
             );
         }
         return reassignmentDsl;
@@ -685,7 +689,7 @@ public class ArchiveSearchService {
             if (searchResponse.getHits() != null && searchResponse.getHits().getTotal() > 0) {
                 throw new BadRequestException("INVALID_ARCHIVAL_UNIT_TYPE");
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new VitamClientException("Error while validating holding units", e);
         }
     }
@@ -770,7 +774,7 @@ public class ArchiveSearchService {
                         }
                     });
             }
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new VitamClientException("Error while validating originating agencies", e);
         }
     }

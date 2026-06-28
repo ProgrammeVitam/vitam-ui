@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.idp.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -9,6 +8,7 @@ import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.SpMetadataGenerator;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Arrays;
 import java.util.List;

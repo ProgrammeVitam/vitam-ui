@@ -38,8 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -105,6 +103,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -248,7 +248,7 @@ public class PastisService {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(notice);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new TechnicalException("Problems during conversion objectMapper to string", e);
         }
     }

@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.external.client.DefaultClient;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.stream.StreamUtils;
@@ -61,6 +58,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -229,7 +229,7 @@ public class VitamRestUtils {
         Assert.notNull(response, "The server response cannot be null");
         final int responseStatus = response.getStatus();
         if (!isStatusAccepted(responseStatus, acceptedStatus)) {
-            final JsonNode jsonResponse = response.toJsonNode();
+            final JsonNode jsonResponse = fr.gouv.vitamui.commons.vitam.api.util.VitamResponseHandler.toJackson3(response.toJsonNode());
             LOGGER.debug("Vitam error: body:\n{}", jsonResponse);
             final String message = "status: %d, message: %s".formatted(responseStatus, jsonResponse.get("message"));
             final String description = "description: %s ".formatted(jsonResponse.get("description"));
@@ -272,7 +272,7 @@ public class VitamRestUtils {
     public static <T> T responseMapping(final JsonNode json, final Class<T> clazz) {
         try {
             return JsonUtils.treeToValue(json, clazz, false);
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }

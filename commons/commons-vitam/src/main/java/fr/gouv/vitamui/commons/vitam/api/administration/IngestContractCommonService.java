@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -45,6 +44,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.IngestContractModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import tools.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.io.InputStream;

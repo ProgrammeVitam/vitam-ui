@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.accessionregister;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -36,6 +35,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
+import tools.jackson.databind.JsonNode;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

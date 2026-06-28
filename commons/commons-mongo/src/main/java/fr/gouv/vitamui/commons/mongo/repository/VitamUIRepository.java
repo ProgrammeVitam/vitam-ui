@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.commons.mongo.repository;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mongodb.client.result.UpdateResult;
 import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
@@ -52,6 +50,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -113,7 +113,7 @@ public interface VitamUIRepository<T extends BaseIdDocument, I extends Serializa
         final Integer size,
         final Optional<String> orderBy,
         final Optional<DirectionDto> direction
-    ) throws JsonParseException, JsonMappingException, IOException;
+    ) throws StreamReadException, DatabindException, IOException;
 
     List<T> findAll(Query query);
 

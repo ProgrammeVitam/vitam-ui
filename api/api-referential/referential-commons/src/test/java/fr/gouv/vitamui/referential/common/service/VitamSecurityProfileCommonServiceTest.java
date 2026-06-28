@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -56,6 +52,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.InputStream;
 
@@ -147,7 +147,7 @@ class VitamSecurityProfileCommonServiceTest {
     }
 
     @Test
-    void deleteSecurityProfile_should_throw_JsonProcessingException_when_vitamclient_400()
+    void deleteSecurityProfile_should_throw_JacksonException_when_vitamclient_400()
         throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         VitamContext vitamSecurityProfile = new VitamContext(0);
         String id = "1";

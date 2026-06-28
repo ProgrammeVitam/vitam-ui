@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.LocalDateUtil;
@@ -62,6 +57,11 @@ import fr.gouv.vitamui.referential.common.dto.IngestContractResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -285,7 +285,7 @@ public class IngestContractCommonService {
                 LOGGER.error(msg);
                 throw new ConflictException(msg);
             }
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             final String msg = "Can't create ingest contracts, Error while parsing Vitam response : " + e.getMessage();
             LOGGER.error(msg);
             throw new UnexpectedDataException(msg);

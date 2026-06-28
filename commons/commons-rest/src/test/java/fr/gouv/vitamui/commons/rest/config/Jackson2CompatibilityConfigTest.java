@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * <p>Verifies, in a real Spring Boot 4 context, that importing {@code Jackson2CompatibilityConfig}:
  * <ol>
- *   <li>Allows a controller with {@code @RequestBody com.fasterxml.jackson.databind.JsonNode} to
+ *   <li>Allows a controller with {@code @RequestBody tools.jackson.databind.JsonNode} to
  *       deserialize a JSON body without error (the default Jackson 3 converter alone cannot do
  *       this — see {@link Jackson2CompatibilityConfigRegressionTest}).</li>
  *   <li>Places {@link Jackson2JsonNodeHttpMessageConverter} ahead of the default Jackson 3

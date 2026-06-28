@@ -37,12 +37,12 @@
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.referential.common.export.probativevalue.deserializer.JsonNodeAsStringDeserializer;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 @Getter
 @Setter

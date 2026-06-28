@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -34,6 +33,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.export.transfer.TransferRequest;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.hc.core5.http.HttpStatus;
+import tools.jackson.databind.JsonNode;
 
 public class TransferRequestService {
 

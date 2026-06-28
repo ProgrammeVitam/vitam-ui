@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.iam.server.tenant.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
@@ -69,6 +66,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -225,7 +225,7 @@ public class InitVitamTenantService {
     private Optional<IngestContractDto> retrieveIngestContractByName(
         final VitamContext vitamContext,
         final String Name
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         final RequestResponse<IngestContractModel> requestResponse = ingestContractCommonService.findIngestContracts(
             vitamContext,
             new Select().getFinalSelect()
@@ -297,7 +297,7 @@ public class InitVitamTenantService {
     private Optional<AccessContractModel> retrieveAccessContractByName(
         final VitamContext vitamContext,
         final String Name
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         final RequestResponse<AccessContractModel> requestResponse = accessContractCommonService.findAccessContracts(
             vitamContext,
             new Select().getFinalSelect()

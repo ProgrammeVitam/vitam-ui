@@ -36,13 +36,13 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 import fr.gouv.vitamui.referential.common.export.probativevalue.dto.ProbativeReportDto;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class ProbativeReportDtoTest {
 
     @Test
-    void testProbativeReportDtoFromJsonWARNING() throws JsonParseException, JsonMappingException, IOException {
+    void testProbativeReportDtoFromJsonWARNING() throws StreamReadException, DatabindException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =
@@ -67,7 +67,7 @@ class ProbativeReportDtoTest {
     }
 
     @Test
-    void testProbativeReportDtoFromJsonKO() throws JsonParseException, JsonMappingException, IOException {
+    void testProbativeReportDtoFromJsonKO() throws StreamReadException, DatabindException, IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream =

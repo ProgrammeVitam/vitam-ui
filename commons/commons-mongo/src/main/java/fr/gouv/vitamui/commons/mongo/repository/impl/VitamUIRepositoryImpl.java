@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.commons.mongo.repository.impl;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.mongodb.client.result.UpdateResult;
 import fr.gouv.vitamui.commons.api.domain.AggregationRequestOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -73,6 +71,8 @@ import org.springframework.data.mongodb.repository.query.MongoEntityInformation;
 import org.springframework.data.mongodb.repository.support.SimpleMongoRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -160,8 +160,8 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
     /**
      * {@inheritDoc}
      * @throws IOException
-     * @throws JsonMappingException
-     * @throws JsonParseException
+     * @throws DatabindException
+     * @throws StreamReadException
      */
     @Override
     @SuppressWarnings({ "rawtypes" })
@@ -174,7 +174,7 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
         final Integer size,
         final Optional<String> orderBy,
         final Optional<DirectionDto> direction
-    ) throws JsonParseException, JsonMappingException, IOException {
+    ) throws StreamReadException, DatabindException, IOException {
         // collectionName, fieldName are mandatory in order to get the paginated nested values
         Assert.isTrue(StringUtils.isNotEmpty(collectionName), "CollectionName should be provided.");
         Assert.isTrue(StringUtils.isNotEmpty(fieldName), "FiledName should be provided.");

@@ -37,7 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
 import fr.gouv.vitamui.pastis.common.util.PastisSAX2Handler;
@@ -51,6 +50,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

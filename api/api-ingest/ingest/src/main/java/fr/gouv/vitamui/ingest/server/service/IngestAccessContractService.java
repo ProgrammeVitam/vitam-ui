@@ -38,8 +38,6 @@
  */
 package fr.gouv.vitamui.ingest.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -53,6 +51,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Optional;
 
@@ -91,7 +91,7 @@ public class IngestAccessContractService {
                     AccessContractConverter.convertVitamToDto(accessContractResponseDto.getResults().get(0))
                 );
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Access Contrat", e);
         }
     }

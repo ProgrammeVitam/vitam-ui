@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.rule;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -73,6 +69,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,7 +122,7 @@ public class RuleService extends AbstractService {
             } else {
                 return converter.convertVitamToDto(ruleResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException exception) {
+        } catch (VitamClientException | JacksonException exception) {
             LOGGER.error("Unable to get rule", exception);
             throw new InternalServerException("Unable to get rule", exception);
         }
@@ -139,7 +139,7 @@ public class RuleService extends AbstractService {
                 RuleNodeResponseDto.class
             );
             return converter.convertVitamsToDtos(ruleResponseDto.getResults());
-        } catch (VitamClientException | JsonProcessingException exception) {
+        } catch (VitamClientException | JacksonException exception) {
             LOGGER.error("Unable to find management rules", exception);
             throw new InternalServerException("Unable to find management rules", exception);
         }
@@ -191,7 +191,7 @@ public class RuleService extends AbstractService {
             LOGGER.debug("Formats: {}", ruleResponseDto);
 
             return ruleResponseDto;
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             LOGGER.error("Unable to find rules", e);
             throw new InternalServerException("Unable to find rules", e);
         }

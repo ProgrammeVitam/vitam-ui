@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
@@ -167,7 +166,7 @@ public class MetadataSearchCriteriaUtilsTest {
 
         // When
         SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(searchQuery);
-        JsonNode facetNode = selectMultiQuery.getFinalSelect().get("$facets");
+        com.fasterxml.jackson.databind.JsonNode facetNode = selectMultiQuery.getFinalSelect().get("$facets");
         // Then
         Assertions.assertEquals(
             "[{\"$name\":\"some_facet\",\"$terms\":{\"$field\":\"some_field\",\"$size\":10,\"$order\":\"ASC\"}}]",

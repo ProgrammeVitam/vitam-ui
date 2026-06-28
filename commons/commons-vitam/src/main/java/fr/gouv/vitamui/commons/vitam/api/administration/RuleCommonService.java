@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -53,6 +49,10 @@ import fr.gouv.vitam.common.model.administration.FileRulesModel;
 import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.util.Optional;
@@ -81,7 +81,7 @@ public class RuleCommonService {
     }
 
     public Optional<Long> findRulesDurationByRuleId(final VitamContext vitamContext, final String ruleId)
-        throws VitamClientException, InvalidCreateOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidCreateOperationException, JacksonException {
         final Select select = new Select();
         select.setQuery(QueryHelper.eq("RuleId", ruleId));
         RequestResponse<FileRulesModel> rulesVitamResponse = this.findRules(vitamContext, select.getFinalSelect());

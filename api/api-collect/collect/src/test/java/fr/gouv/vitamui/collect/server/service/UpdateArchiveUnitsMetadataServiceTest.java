@@ -29,9 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.error.VitamErrorDetails;
@@ -48,6 +45,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.util.List;
@@ -67,7 +67,7 @@ class UpdateArchiveUnitsMetadataServiceTest {
 
     @Test
     void updateCollectArchiveUnits_should_pass_when_Vitam_Return_Ok()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
         String resultDto =
@@ -111,7 +111,7 @@ class UpdateArchiveUnitsMetadataServiceTest {
 
     @Test
     void updateCollectArchiveUnits_should_not_pass_when_Vitam_throw_exception()
-        throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
+        throws VitamClientException, JacksonException, InvalidParseOperationException {
         // Given
         VitamContext vitamContext = new VitamContext(1);
         VitamClientException exception = new VitamClientException("error message");

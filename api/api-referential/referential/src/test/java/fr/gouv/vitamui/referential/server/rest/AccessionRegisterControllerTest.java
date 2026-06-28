@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
@@ -49,6 +48,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;

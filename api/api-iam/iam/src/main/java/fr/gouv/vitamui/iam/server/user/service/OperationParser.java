@@ -1,12 +1,12 @@
 package fr.gouv.vitamui.iam.server.user.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -58,7 +58,7 @@ public class OperationParser {
                         translateService.translate(removePrefix(s.getValue(), prefix))
                 )
                 .collect(Collectors.joining(","));
-        } catch (JsonProcessingException | IllegalArgumentException e) {
+        } catch (JacksonException | IllegalArgumentException e) {
             throw new InternalServerException("cannot parse operation %s".formatted(json), e);
         }
     }

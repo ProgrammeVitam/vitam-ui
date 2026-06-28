@@ -36,10 +36,10 @@
  */
 package fr.gouv.vitamui.referential.common.export.probativevalue.serializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.apache.commons.lang3.RegExUtils;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializerProvider;
+import tools.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.IOException;
 

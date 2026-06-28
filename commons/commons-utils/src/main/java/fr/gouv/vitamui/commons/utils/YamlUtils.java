@@ -36,9 +36,8 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -67,7 +66,7 @@ public final class YamlUtils {
             throw new FileNotFoundException(ARGUMENTS_MUST_BE_NON_NULL);
         }
         try (final FileReader yamlFileReader = new FileReader(yamlFile)) {
-            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            final YAMLMapper mapper = YAMLMapper.builder().build();
             return clasz.cast(mapper.readValue(yamlFileReader, clasz));
         } catch (final RuntimeException e) {
             throw new IOException(e);
@@ -87,7 +86,7 @@ public final class YamlUtils {
             throw new FileNotFoundException(ARGUMENTS_MUST_BE_NON_NULL);
         }
         try (final FileReader yamlFileReader = new FileReader(yamlFile)) {
-            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            final YAMLMapper mapper = YAMLMapper.builder().build();
             return mapper.readValue(yamlFileReader, typeReference);
         } catch (final RuntimeException e) {
             throw new IOException(e);
@@ -106,7 +105,7 @@ public final class YamlUtils {
         if (yamlInputStream == null || clasz == null) {
             throw new FileNotFoundException(ARGUMENTS_MUST_BE_NON_NULL);
         }
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        final YAMLMapper mapper = YAMLMapper.builder().build();
         try {
             return clasz.cast(mapper.readValue(yamlInputStream, clasz));
         } catch (final RuntimeException e) {
@@ -139,7 +138,7 @@ public final class YamlUtils {
      */
     public static final void writeYaml(File destination, Object config) throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(destination)) {
-            final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            final YAMLMapper mapper = YAMLMapper.builder().build();
             mapper.writeValue(outputStream, config);
         }
     }

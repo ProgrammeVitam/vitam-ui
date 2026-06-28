@@ -36,12 +36,6 @@
  */
 package fr.gouv.vitamui.commons.logbook.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
@@ -55,6 +49,12 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.datatype.jdk8.Jdk8Module;
+import tools.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -128,7 +128,7 @@ public class LogbookUtils {
      * @return the status of the last operation's event if the operation is completed, or STARTED if the operation is still running
      */
     public static StatusCode getLogbookOperationStatus(final RequestResponse<LogbookOperation> response)
-        throws JsonProcessingException {
+        throws JacksonException {
         final LogbookOperationsCommonResponseDto logbookOperationsCommonResponseDto = objectMapper.treeToValue(
             response.toJsonNode(),
             LogbookOperationsCommonResponseDto.class

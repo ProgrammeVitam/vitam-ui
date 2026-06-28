@@ -37,10 +37,10 @@
 package fr.gouv.vitamui.referential.common.export.probativevalue.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import tools.jackson.databind.JsonNode;
 
 @Getter
 @Setter

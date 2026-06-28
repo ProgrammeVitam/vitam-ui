@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -57,6 +55,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
@@ -99,7 +99,7 @@ public class UnitController {
 
     @Secured(ServicesData.ROLE_GET_FILLING_PLAN_ACCESS)
     @GetMapping(RestApi.FILING_PLAN_PATH)
-    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JsonProcessingException {
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JacksonException {
         return unitService.getFilingAndHoldingUnits();
     }
 }

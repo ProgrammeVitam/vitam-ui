@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
@@ -88,10 +87,8 @@ public class VitamAdministrationConfig extends VitamClientConfig {
     }
 
     @Bean
-    public VitamProfileCommonService getVitamProfileService(
-        final AdminExternalClient adminClient,
-        ObjectMapper objectMapper
+    public VitamProfileCommonService getVitamProfileService(final AdminExternalClient adminClient
     ) {
-        return new VitamProfileCommonService(adminClient, objectMapper);
+        return new VitamProfileCommonService(adminClient);
     }
 }

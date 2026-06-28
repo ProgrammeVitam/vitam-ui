@@ -39,7 +39,6 @@
 
 package fr.gouv.vitamui.archives.search.common.dsl;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -47,6 +46,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.databind.JsonNode;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

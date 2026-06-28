@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.externalParameters.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
@@ -9,6 +8,7 @@ import fr.gouv.vitamui.iam.server.common.domain.Parameter;
 import fr.gouv.vitamui.iam.server.externalParameters.domain.ExternalParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.List;

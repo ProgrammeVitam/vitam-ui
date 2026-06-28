@@ -37,7 +37,6 @@
 
 package fr.gouv.vitamui.iam.server.idp.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.converter.Converter;
@@ -75,6 +74,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;

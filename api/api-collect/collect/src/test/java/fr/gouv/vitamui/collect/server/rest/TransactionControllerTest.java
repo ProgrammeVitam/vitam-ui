@@ -29,9 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.error.VitamErrorDetails;
@@ -54,6 +51,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -137,7 +137,7 @@ class TransactionControllerTest extends ApiCollectControllerTest<IdDto> {
 
     @Test
     void testUpdateUnitsMetadataThenReturnVitamOperationDetails()
-        throws PreconditionFailedException, JsonProcessingException, InvalidParseOperationException, VitamClientException {
+        throws PreconditionFailedException, JacksonException, InvalidParseOperationException, VitamClientException {
         // Given
         String fileName = "FileName";
         String transactionId = "transactionId";

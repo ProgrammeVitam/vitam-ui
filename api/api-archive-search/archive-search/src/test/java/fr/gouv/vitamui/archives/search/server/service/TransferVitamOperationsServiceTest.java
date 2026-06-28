@@ -29,9 +29,6 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -53,6 +50,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -182,7 +182,7 @@ class TransferVitamOperationsServiceTest {
         return resultStringBuilder.toString();
     }
 
-    private JsonNode newJsonNode(String json) throws JsonProcessingException {
+    private JsonNode newJsonNode(String json) throws JacksonException {
         return new ObjectMapper().readTree(json);
     }
 

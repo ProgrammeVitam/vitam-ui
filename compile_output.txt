@@ -1,0 +1,86 @@
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective settings
+[WARNING] Unrecognised tag: 'configuration' (position: START_TAG seen ...</mirrors>\n<configuration>... @47:16)  @ /home/benaissa/.m2/settings.xml, line 47, column 16
+[WARNING] 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< fr.gouv.vitamui.commons:commons-api >-----------------
+[INFO] Building VITAMUI Commons Api 10.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from vitam-local: https://nexus.dev.programmevitam.fr/repository/maven-central/fr/gouv/vitam/common-public/10.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata fr.gouv.vitam:common-public:10.0.0-SNAPSHOT/maven-metadata.xml from/to vitam-local (https://nexus.dev.programmevitam.fr/repository/maven-central/): authentication failed for https://nexus.dev.programmevitam.fr/repository/maven-central/fr/gouv/vitam/common-public/10.0.0-SNAPSHOT/maven-metadata.xml, status: 401 Unauthorized
+[WARNING] fr.gouv.vitam:common-public:10.0.0-SNAPSHOT/maven-metadata.xmlfailed to transfer from https://nexus.dev.programmevitam.fr/repository/maven-central/ during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of vitam-local has elapsed or updates are forced. Original error: Could not transfer metadata fr.gouv.vitam:common-public:10.0.0-SNAPSHOT/maven-metadata.xml from/to vitam-local (https://nexus.dev.programmevitam.fr/repository/maven-central/): authentication failed for https://nexus.dev.programmevitam.fr/repository/maven-central/fr/gouv/vitam/common-public/10.0.0-SNAPSHOT/maven-metadata.xml, status: 401 Unauthorized
+[INFO] 
+[INFO] --- maven-clean-plugin:3.5.0:clean (default-clean) @ commons-api ---
+[INFO] Deleting /opt/work/workspace/vitam/vitam-ui/commons/commons-api/target
+[INFO] 
+[INFO] --- directory-maven-plugin:0.1:highest-basedir (directories) @ commons-api ---
+[INFO] Highest basedir set to: /opt/work/workspace/vitam/vitam-ui
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.13:prepare-agent (default-prepare-agent) @ commons-api ---
+[INFO] argLine set to -javaagent:/home/benaissa/.m2/repository/org/jacoco/org.jacoco.agent/0.8.13/org.jacoco.agent-0.8.13-runtime.jar=destfile=/opt/work/workspace/vitam/vitam-ui/commons/commons-api/target/jacoco.exec
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ commons-api ---
+[INFO] skip non existing resourceDirectory /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/resources
+[INFO] skip non existing resourceDirectory /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.14.0:compile (default-compile) @ commons-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 156 source files with javac [debug parameters release 21] to target/classes
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/domain/AccessContractDto.java:[49] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[WARNING] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/domain/UserInfoDto.java:[50] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[INFO] 2 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/converter/AccessContractConverter.java:[78,68] error: incompatible types: com.fasterxml.jackson.databind.node.ObjectNode cannot be converted to tools.jackson.databind.node.ObjectNode
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/converter/UpdateMultiQueriesToBulkCommandDto.java:[50,20] error: incompatible types: inference variable T has incompatible bounds
+    equality constraints: tools.jackson.databind.node.ObjectNode
+    lower bounds: com.fasterxml.jackson.databind.node.ObjectNode
+  where T is a type-variable:
+    T extends Object declared in method <T>toList()
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/deserializer/CriterionAndQueryDtoDeserializer.java:[69,18] error: deserialize(JsonParser,DeserializationContext) in CriterionAndQueryDtoDeserializer cannot override deserialize(JsonParser,DeserializationContext) in ValueDeserializer
+  overridden method does not throw IOException
+  where T is a type-variable:
+    T extends Object declared in class ValueDeserializer
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/deserializer/CriterionAndQueryDtoDeserializer.java:[71,25] error: cannot find symbol
+  symbol:   method getCodec()
+  location: variable p of type JsonParser
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/dsl/VitamQueryHelper.java:[241,36] error: incompatible types: ObjectNode cannot be converted to JsonNode
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/utils/MetadataSearchCriteriaUtils.java:[206,46] error: incompatible types: ObjectNode cannot be converted to JsonNode
+[INFO] 6 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.986 s
+[INFO] Finished at: 2026-06-25T19:48:36+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.0:compile (default-compile) on project commons-api: Compilation failure: Compilation failure: 
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/converter/AccessContractConverter.java:[78,68] error: incompatible types: com.fasterxml.jackson.databind.node.ObjectNode cannot be converted to tools.jackson.databind.node.ObjectNode
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/converter/UpdateMultiQueriesToBulkCommandDto.java:[50,20] error: incompatible types: inference variable T has incompatible bounds
+[ERROR]     equality constraints: tools.jackson.databind.node.ObjectNode
+[ERROR]     lower bounds: com.fasterxml.jackson.databind.node.ObjectNode
+[ERROR]   where T is a type-variable:
+[ERROR]     T extends Object declared in method <T>toList()
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/deserializer/CriterionAndQueryDtoDeserializer.java:[69,18] error: deserialize(JsonParser,DeserializationContext) in CriterionAndQueryDtoDeserializer cannot override deserialize(JsonParser,DeserializationContext) in ValueDeserializer
+[ERROR]   overridden method does not throw IOException
+[ERROR]   where T is a type-variable:
+[ERROR]     T extends Object declared in class ValueDeserializer
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/deserializer/CriterionAndQueryDtoDeserializer.java:[71,25] error: cannot find symbol
+[ERROR]   symbol:   method getCodec()
+[ERROR]   location: variable p of type JsonParser
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/dsl/VitamQueryHelper.java:[241,36] error: incompatible types: ObjectNode cannot be converted to JsonNode
+[ERROR] /opt/work/workspace/vitam/vitam-ui/commons/commons-api/src/main/java/fr/gouv/vitamui/commons/api/utils/MetadataSearchCriteriaUtils.java:[206,46] error: incompatible types: ObjectNode cannot be converted to JsonNode
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

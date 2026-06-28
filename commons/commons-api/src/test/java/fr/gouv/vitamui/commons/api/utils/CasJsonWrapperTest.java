@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.io.IOException;
 import java.util.ArrayList;

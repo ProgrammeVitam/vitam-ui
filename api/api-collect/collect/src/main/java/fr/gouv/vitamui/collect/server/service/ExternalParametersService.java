@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -41,6 +40,7 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -81,7 +81,7 @@ public class ExternalParametersService {
         return parameterAccessContract.getValue();
     }
 
-    public @Nullable AccessContractModel retrieveAccessContract() throws VitamClientException, JsonProcessingException {
+    public @Nullable AccessContractModel retrieveAccessContract() throws VitamClientException, JacksonException {
         final RequestResponse<AccessContractModel> response = accessContractCommonService.findAccessContractById(
             buildVitamContextFromExternalParam(),
             retrieveAccessContractFromExternalParam()

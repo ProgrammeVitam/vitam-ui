@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -18,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
@@ -46,7 +46,7 @@ public class RuleCommonServiceTest {
 
     @Test
     void testfindRulesDurationByRuleId()
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException {
+        throws VitamClientException, JacksonException, InvalidCreateOperationException {
         // Prepare
         final var fileRule = buildFileRuleModel(RuleMeasurementEnum.YEAR);
         final var requestResponseOk = new RequestResponseOK<FileRulesModel>().addResult(fileRule);
@@ -65,7 +65,7 @@ public class RuleCommonServiceTest {
 
     @Test
     void testfindRulesDurationByRuleId_with_rule_duration_in_months()
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException {
+        throws VitamClientException, JacksonException, InvalidCreateOperationException {
         // Prepare
         final var fileRule = buildFileRuleModel(RuleMeasurementEnum.MONTH);
         final var requestResponseOk = new RequestResponseOK<FileRulesModel>().addResult(fileRule);

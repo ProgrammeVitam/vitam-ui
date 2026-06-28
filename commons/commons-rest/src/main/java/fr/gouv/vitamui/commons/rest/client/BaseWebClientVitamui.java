@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.converter.VitamUIErrorConverter;
 import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import lombok.ToString;
@@ -92,9 +90,7 @@ public abstract class BaseWebClientVitamui<C extends HttpContext> extends BaseCl
                     // Added FAIL_ON_UNKNOWN_PROPERTIES:false to prevent error "UnrecognizedPropertyException: Unrecognized field"
                     // TODO check where the property "path" comes from
                     try {
-                        error = new ObjectMapper()
-                            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                            .readValue(serviceException, VitamUIError.class);
+                        error = fr.gouv.vitamui.commons.utils.JsonUtils.fromJson(serviceException, VitamUIError.class);
                         error.setStatus(response.statusCode().value());
                     } catch (final IOException e) {
                         LOGGER.error("Error when retrieving exception {}", e);

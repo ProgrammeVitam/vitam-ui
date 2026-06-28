@@ -27,17 +27,16 @@
 
 package fr.gouv.vitamui.commons.security;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,7 +55,7 @@ public class SanityCheckerTest {
     void givenJsonWhenValueIsTooBigORContainXMLTag()
         throws InvalidParseOperationException, PreconditionFailedException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.checkJsonSanity(json)).isInstanceOf(PreconditionFailedException.class);
     }
@@ -64,7 +63,7 @@ public class SanityCheckerTest {
     @Test
     void givenJsonWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.checkJsonAll(json)).isInstanceOf(InvalidParseOperationException.class);
     }
@@ -72,7 +71,7 @@ public class SanityCheckerTest {
     @Test
     void givenJsonStringWhenValueIsTooBigORContainXMLTagUsingAll() throws InvalidParseOperationException, IOException {
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.checkJsonAll(json.toString())).isInstanceOf(
             InvalidParseOperationException.class
@@ -84,7 +83,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithProjectionRootsFieldsKeys = "probative_action_json_with_fields_projection_roots_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithProjectionRootsFieldsKeys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -96,7 +95,7 @@ public class SanityCheckerTest {
         try {
             SanityChecker.setLimitJsonSize(100);
             final File file = PropertiesUtils.findFile(TEST_GOOD_JSON);
-            final JsonNode json = JsonHandler.getFromFile(file);
+            final JsonNode json = getJsonNode(file);
             try {
                 SanityChecker.checkJsonAll(json);
             } catch (final InvalidParseOperationException ignored) {}
@@ -121,7 +120,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
         final String TEST_GOOD_JSON_CRITERIA = "good_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_GOOD_JSON_CRITERIA);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThatCode(() -> SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).doesNotThrowAnyException();
     }
 
@@ -129,7 +128,7 @@ public class SanityCheckerTest {
     void givenCriteriaWhenBadSanityThenReturnException() throws FileNotFoundException, InvalidParseOperationException {
         final String TEST_BAD_JSON_CRITERIA = "bad_criteria.json";
         final File file = PropertiesUtils.findFile(TEST_BAD_JSON_CRITERIA);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThatThrownBy(() -> SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).isInstanceOf(
             InvalidSanitizeCriteriaException.class
         );
@@ -225,7 +224,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithActionPullAddKeys = "reclassification_action_json_with_action_add_pull_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithActionPullAddKeys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -240,7 +239,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithInOrQueryKeys = "audit_action_json_with_in_or_query_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithInOrQueryKeys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -249,7 +248,7 @@ public class SanityCheckerTest {
     void sanitizeJson_should_not_fail_with_keys_$exists() throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithExistsKey = "audit_action_json_with_exists_key.json";
         final File file = PropertiesUtils.findFile(jsonWithExistsKey);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -264,7 +263,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
         final String JSON_WITH_LONG_KEY = "json_with_long_key.json";
         final File file = PropertiesUtils.findFile(JSON_WITH_LONG_KEY);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThatCode(() -> SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).doesNotThrowAnyException();
     }
 
@@ -273,7 +272,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithOffsetEqKeys = "logbook_operations_with_equal_offset_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithOffsetEqKeys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -283,7 +282,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithLimitOrderByKeys = "logbook_operations_with_limit_orderby_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithLimitOrderByKeys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -293,7 +292,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithGteAndLteKeys = "logbook_operations_with_gte_and_lte_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithGteAndLteKeys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -303,7 +302,7 @@ public class SanityCheckerTest {
         throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithIngestComplexe_Keys = "ingest_search_complexe_key.json";
         final File file = PropertiesUtils.findFile(jsonWithIngestComplexe_Keys);
-        final JsonNode json = JsonHandler.getFromFile(file);
+        final JsonNode json = getJsonNode(file);
         assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).doesNotThrowAnyException();
     }
@@ -315,5 +314,13 @@ public class SanityCheckerTest {
         JsonNode jsonNode = JsonUtils.toJsonNode(json);
 
         SanityChecker.checkJsonAll(jsonNode);
+    }
+
+    private JsonNode getJsonNode(File file) {
+        try {
+            return JsonUtils.readTree(java.nio.file.Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -26,9 +26,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.accessionregister;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
@@ -72,6 +69,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -127,7 +127,7 @@ public class AccessionRegisterService extends AbstractService {
                 AccessionRegisterSummaryResponseDto.class
             );
             return AccessionRegisterConverter.toSummaryDtos(accessionRegisterSymbolicResponseDto.getResults());
-        } catch (JsonProcessingException | VitamClientException e) {
+        } catch (JacksonException | VitamClientException e) {
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
         }
     }
@@ -155,7 +155,7 @@ public class AccessionRegisterService extends AbstractService {
                 orderBy,
                 direction
             );
-        } catch (JsonProcessingException | InvalidParseOperationException | InvalidCreateOperationException ioe) {
+        } catch (JacksonException | InvalidParseOperationException | InvalidCreateOperationException ioe) {
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", ioe);
         }
         //Fetching data from vitam
@@ -362,7 +362,7 @@ public class AccessionRegisterService extends AbstractService {
             );
         } catch (VitamClientException e) {
             throw new InternalServerException("Can't fetch data from VITAM", e);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InternalServerException("Can't process Json Parsing", e);
         }
         return results;
@@ -378,7 +378,7 @@ public class AccessionRegisterService extends AbstractService {
                 agencyQuery
             );
             agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InternalServerException("Error parsing query", e);
         } catch (VitamClientException e) {
             throw new InternalServerException("Error fetching agencies from vitam", e);

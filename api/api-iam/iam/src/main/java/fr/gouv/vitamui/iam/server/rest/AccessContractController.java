@@ -37,8 +37,6 @@
 
 package fr.gouv.vitamui.iam.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -60,6 +58,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -110,7 +110,7 @@ public class AccessContractController {
             );
 
             return convertVitamsToDtos(accessContractResponseDto.getResults());
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Access Contrats", e);
         }
     }
@@ -141,7 +141,7 @@ public class AccessContractController {
                 return null;
             }
             return convertVitamToDto(accessContractResponseDto.getResults().get(0));
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Access Contrat", e);
         }
     }

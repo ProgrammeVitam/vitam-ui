@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -52,6 +50,8 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class ConfigurationService {
                 throw new VitamClientException("No configuration found");
             }
             return results.get(0);
-        } catch (JsonProcessingException e1) {
+        } catch (JacksonException e1) {
             throw new BadRequestException("Error parsing response ", e1);
         } catch (VitamClientException e) {
             throw new InternalServerException("Unable to find vitam public configuration", e);

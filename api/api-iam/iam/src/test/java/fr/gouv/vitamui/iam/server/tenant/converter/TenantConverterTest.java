@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.tenant.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -11,6 +10,7 @@ import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Optional;
 

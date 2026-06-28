@@ -16,15 +16,14 @@
  */
 package fr.gouv.vitamui.commons.api.download;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.Clock;
@@ -111,7 +110,7 @@ public class SignedDownloadTokenService {
             String payload = encodeJson(claims);
             String content = header + "." + payload;
             return new SignedDownloadToken(content + "." + sign(content), claims.getExpiresAt());
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new IllegalStateException("Unable to serialize signed download token", e);
         }
     }
@@ -147,12 +146,12 @@ public class SignedDownloadTokenService {
                 throw new UnAuthorizedException("Invalid signed download token resource");
             }
             return claims;
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (JacksonException | IllegalArgumentException e) {
             throw new UnAuthorizedException("Invalid signed download token payload");
         }
     }
 
-    private String encodeJson(Object value) throws JsonProcessingException {
+    private String encodeJson(Object value) throws JacksonException {
         return BASE64_URL_ENCODER.encodeToString(objectMapper.writeValueAsBytes(value));
     }
 

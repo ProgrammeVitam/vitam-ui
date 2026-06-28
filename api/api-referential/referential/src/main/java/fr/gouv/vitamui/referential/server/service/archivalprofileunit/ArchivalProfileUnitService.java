@@ -1,11 +1,5 @@
 package fr.gouv.vitamui.referential.server.service.archivalprofileunit;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -36,6 +30,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class ArchivalProfileUnitService extends AbstractService {
             } else {
                 return converter.convertVitamToDto(archivalProfileUnitResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Archival Unit Profile", e);
         }
     }
@@ -118,7 +118,7 @@ public class ArchivalProfileUnitService extends AbstractService {
             return converter.convertVitamsToDtos(archivalProfileUnitResponseDto.getResults());
         } catch (InvalidParseOperationException | InvalidCreateOperationException e) {
             throw new InternalServerException("Unable to find archival profiles with criteria", e);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to find archival unit Profiles", e);
         }
     }
@@ -185,7 +185,7 @@ public class ArchivalProfileUnitService extends AbstractService {
             LOGGER.debug("Archival Unit Profiles: {}", archivalProfileUnitResponseDto);
 
             return archivalProfileUnitResponseDto;
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to find archival unit Profiles", e);
         }
     }
@@ -248,7 +248,7 @@ public class ArchivalProfileUnitService extends AbstractService {
                 ArchiveUnitProfileModel.class
             );
             return converter.convertVitamToDto(archivalUnitProfileVitamDto);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InternalServerException(intentionErrorMessage, e);
         }
     }
@@ -318,7 +318,7 @@ public class ArchivalProfileUnitService extends AbstractService {
         final ArchiveUnitProfileModel archivalProfileVitamDto;
         try {
             archivalProfileVitamDto = objectMapper.treeToValue(firstNode, ArchiveUnitProfileModel.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InternalServerException(intentionErrorMessage, e);
         }
         return converter.convertVitamToDto(archivalProfileVitamDto);

@@ -29,9 +29,6 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -50,6 +47,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 import java.util.Set;
@@ -137,7 +137,7 @@ class ExportDipServiceTest {
         );
     }
 
-    private JsonNode newJsonNode(String json) throws JsonProcessingException {
+    private JsonNode newJsonNode(String json) throws JacksonException {
         return new ObjectMapper().readTree(json);
     }
 

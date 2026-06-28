@@ -36,11 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.util;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.vitam.api.dto.CollectionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
@@ -48,6 +43,11 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import org.apache.commons.lang3.StringUtils;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class VitamResponseHandler {
     private VitamResponseHandler() {}
 
     public static VitamUISearchResponseDto extractSearchResponse(JsonNode jsonResponse)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         return extractResponse(jsonResponse, VitamUISearchResponseDto.class);
     }
 
@@ -76,11 +76,43 @@ public class VitamResponseHandler {
     }
 
     public static <T> T extractResponse(JsonNode jsonResponse, Class<T> clazz)
-        throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        throws StreamReadException, DatabindException, IOException {
+        return fr.gouv.vitamui.commons.utils.JsonUtils.treeToValue(jsonResponse, clazz);
+    }
 
-        return objectMapper.treeToValue(jsonResponse, clazz);
+    @SuppressWarnings("unchecked")
+    public static <T> fr.gouv.vitam.common.model.RequestResponse<T> convertResponse(fr.gouv.vitam.common.model.RequestResponse<?> original) {
+        if (original == null) {
+            return null;
+        }
+        try {
+            String json = fr.gouv.vitam.common.json.JsonHandler.writeAsString(original);
+            return (fr.gouv.vitam.common.model.RequestResponse<T>) fr.gouv.vitamui.commons.utils.JsonUtils.fromJson(json, fr.gouv.vitam.common.model.RequestResponse.class);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot convert RequestResponse", e);
+        }
+    }
+
+    public static com.fasterxml.jackson.databind.JsonNode toJackson2(tools.jackson.databind.JsonNode jsonNode) {
+        if (jsonNode == null) {
+            return null;
+        }
+        try {
+            return fr.gouv.vitam.common.json.JsonHandler.getFromString(jsonNode.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting JsonNode to Jackson 2", e);
+        }
+    }
+
+    public static tools.jackson.databind.JsonNode toJackson3(com.fasterxml.jackson.databind.JsonNode jsonNode) {
+        if (jsonNode == null) {
+            return null;
+        }
+        try {
+            return fr.gouv.vitamui.commons.utils.JsonUtils.readTree(jsonNode.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting JsonNode to Jackson 3", e);
+        }
     }
 
     public static FacetResultsDto extractAutoCompletionResponse(

@@ -36,13 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.context;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.IntNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.api.AdminCollections;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -71,6 +64,13 @@ import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.IntNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,7 +122,7 @@ public class ContextService extends AbstractService {
             } else {
                 return converter.convertVitamToDto(contextResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Context", e);
         }
     }
@@ -138,7 +138,7 @@ public class ContextService extends AbstractService {
             );
 
             return converter.convertVitamsToDtos(contextResponseDto.getResults());
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Contexts", e);
         }
     }
@@ -192,7 +192,7 @@ public class ContextService extends AbstractService {
             );
 
             return objectMapper.treeToValue(requestResponse.toJsonNode(), ContextResponseDto.class);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Can't find contexts", e);
         }
     }
@@ -290,7 +290,7 @@ public class ContextService extends AbstractService {
                 ContextModel.class
             );
             return converter.convertVitamToDto(contextVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
+        } catch (InvalidParseOperationException | AccessExternalClientException | JacksonException e) {
             throw new InternalServerException("Can't patch the context", e);
         }
     }

@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
@@ -73,6 +70,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 import java.util.Set;
@@ -236,7 +236,7 @@ public class LogbookService {
                         eventTypesFilter.stream().anyMatch(et -> e.getOutDetail().contains(et))
                 )
                 .collect(Collectors.toList());
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }

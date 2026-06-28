@@ -29,10 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
 import fr.gouv.vitam.common.LocalDateUtil;
@@ -94,6 +90,10 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -184,8 +184,7 @@ public class TransactionArchiveUnitService {
         String transactionId,
         SearchCriteriaDto searchQuery,
         VitamContext vitamContext
-    )
-        throws VitamClientException, JsonProcessingException, InvalidParseOperationException, InvalidCreateOperationException {
+    ) throws VitamClientException, JacksonException, InvalidParseOperationException, InvalidCreateOperationException {
         LOGGER.debug("get units by query {}", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         SelectMultiQuery searchQuerySelectMultiQuery = isEmpty(searchQuery.getCriteriaList())
@@ -247,7 +246,7 @@ public class TransactionArchiveUnitService {
                 collectService.findUnitById(id, vitamContext).toJsonNode().get(RESULTS).toString().substring(1)
             );
             return objectMapper.readValue(re, ResultsDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Can not get the archive unit {} ", e);
             throw new VitamClientException("Unable to find the UA", e);
         }
@@ -323,7 +322,7 @@ public class TransactionArchiveUnitService {
         SearchCriteriaDto searchQuery,
         ArchiveUnitsDto archiveUnitsDto,
         VitamContext vitamContext
-    ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    ) throws InvalidCreateOperationException, VitamClientException, JacksonException {
         if (searchQuery.isComputeMgtRulesFacets()) {
             List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
             if (CollectionUtils.isEmpty(facetResults)) {
@@ -340,7 +339,7 @@ public class TransactionArchiveUnitService {
         String transactionId,
         List<SearchCriteriaEltDto> initialArchiveUnitsCriteriaList,
         final VitamContext vitamContext
-    ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    ) throws InvalidCreateOperationException, VitamClientException, JacksonException {
         LOGGER.debug("Start finding facets for computed rules  ");
 
         List<FacetResultsDto> globalRulesFacets = new ArrayList<>();
@@ -407,8 +406,7 @@ public class TransactionArchiveUnitService {
         List<SearchCriteriaEltDto> indexedCriteriaList,
         ArchiveSearchConsts.CriteriaCategory category,
         VitamContext vitamContext
-    )
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException, InvalidParseOperationException {
+    ) throws VitamClientException, JacksonException, InvalidCreateOperationException, InvalidParseOperationException {
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>(indexedCriteriaList);
 
         criteriaListFacet.add(
@@ -438,8 +436,7 @@ public class TransactionArchiveUnitService {
         String transactionId,
         List<SearchCriteriaEltDto> criteriaList,
         VitamContext vitamContext
-    )
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException, InvalidParseOperationException {
+    ) throws VitamClientException, JacksonException, InvalidCreateOperationException, InvalidParseOperationException {
         SearchCriteriaDto facetSearchQuery = new SearchCriteriaDto();
         facetSearchQuery.setCriteriaList(criteriaList);
         facetSearchQuery.setFieldsList(List.of(TITLE_FIELD));
@@ -456,8 +453,7 @@ public class TransactionArchiveUnitService {
         List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList,
         ArchiveSearchConsts.CriteriaCategory category,
         VitamContext vitamContext
-    )
-        throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    ) throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException, JacksonException {
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>(indexedArchiveUnitsCriteriaList);
 
         criteriaList.add(
@@ -576,8 +572,7 @@ public class TransactionArchiveUnitService {
         ArchiveSearchConsts.CriteriaCategory category,
         List<FacetResultsDto> indexedRulesFacets,
         VitamContext vitamContext
-    )
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException, InvalidParseOperationException {
+    ) throws VitamClientException, JacksonException, InvalidCreateOperationException, InvalidParseOperationException {
         FacetResultsDto finalActionIndexedFacet = new FacetResultsDto();
         if (APPRAISAL_RULE.equals(category)) {
             List<FacetBucketDto> finalActionBuckets = computeFinalActionFacetsForComputedAppraisalRules(
@@ -610,8 +605,7 @@ public class TransactionArchiveUnitService {
         List<FacetResultsDto> indexedRulesFacets,
         ArchiveSearchConsts.CriteriaCategory category,
         VitamContext vitamContext
-    )
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException, InvalidParseOperationException {
+    ) throws VitamClientException, JacksonException, InvalidCreateOperationException, InvalidParseOperationException {
         Map<String, Long> finalActionCountMap = new HashMap<>();
         finalActionCountMap.put(FINAL_ACTION_KEEP_FIELD_VALUE, 0l);
         finalActionCountMap.put(FINAL_ACTION_DESTROY_FIELD_VALUE, 0l);
@@ -666,8 +660,7 @@ public class TransactionArchiveUnitService {
         String value,
         ArchiveSearchConsts.CriteriaCategory category,
         VitamContext vitamContext
-    )
-        throws VitamClientException, JsonProcessingException, InvalidCreateOperationException, InvalidParseOperationException {
+    ) throws VitamClientException, JacksonException, InvalidCreateOperationException, InvalidParseOperationException {
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>();
         criteriaListFacet.addAll(initialCriteriaList);
         SearchCriteriaDto countSearchQuery = new SearchCriteriaDto();
@@ -823,7 +816,7 @@ public class TransactionArchiveUnitService {
                 collectService.getObjectById(vitamContext, objectId).toJsonNode().get(RESULTS).toString().substring(1)
             );
             return objectMapper.readValue(resultStringValue, ResultsDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Can not get the object group {} ", e);
             throw new InternalServerException("Unable to find the ObjectGroup", e);
         }
@@ -930,7 +923,7 @@ public class TransactionArchiveUnitService {
                 agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
             } catch (InvalidCreateOperationException e) {
                 throw new VitamClientException("Unable to find the agencies ", e);
-            } catch (InvalidParseOperationException | JsonProcessingException e1) {
+            } catch (InvalidParseOperationException | JacksonException e1) {
                 throw new BadRequestException("Error parsing query ", e1);
             }
         }
@@ -1127,7 +1120,7 @@ public class TransactionArchiveUnitService {
                 rules = objectMapper.treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
             } catch (InvalidCreateOperationException e) {
                 throw new VitamClientException("Unable to find the rules ", e);
-            } catch (JsonProcessingException e1) {
+            } catch (JacksonException e1) {
                 throw new BadRequestException("Error parsing query ", e1);
             }
         }

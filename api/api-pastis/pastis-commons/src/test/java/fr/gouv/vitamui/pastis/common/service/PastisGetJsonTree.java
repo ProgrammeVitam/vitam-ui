@@ -1,8 +1,5 @@
 package fr.gouv.vitamui.pastis.common.service;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
@@ -13,6 +10,9 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JsonGenerationException;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -64,8 +64,8 @@ public class PastisGetJsonTree {
             jsonString = mapper.writeValueAsString(eparent);
         } catch (JsonGenerationException e1) {
             LOGGER.debug("JsonGenerationException", e1);
-        } catch (JsonMappingException e1) {
-            LOGGER.debug("JsonMappingException", e1);
+        } catch (DatabindException e1) {
+            LOGGER.debug("DatabindException", e1);
         } catch (IOException e1) {
             LOGGER.debug("IOException", e1);
         }

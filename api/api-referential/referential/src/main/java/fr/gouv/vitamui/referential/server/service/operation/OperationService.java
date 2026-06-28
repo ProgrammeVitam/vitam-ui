@@ -37,12 +37,6 @@
 package fr.gouv.vitamui.referential.server.service.operation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -86,6 +80,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -196,7 +196,7 @@ public class OperationService extends AbstractService {
             );
 
             return logbookOperationsResponseDto;
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to find LogbookOperations", e);
         }
     }
@@ -314,10 +314,10 @@ public class OperationService extends AbstractService {
         } catch (InvalidCreateOperationException e) {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
-        } catch (JsonMappingException e) {
+        } catch (DatabindException e) {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error(e.getMessage());
             throw new BadRequestException(e.getMessage());
         }

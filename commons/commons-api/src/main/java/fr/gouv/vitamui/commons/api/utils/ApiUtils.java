@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
@@ -53,6 +50,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.ResourceUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -143,7 +143,7 @@ public final class ApiUtils {
     public static String toJson(final Object object) {
         try {
             return JsonUtils.toJson(object);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InvalidFormatException(e.getMessage(), e);
         }
     }
@@ -151,7 +151,7 @@ public final class ApiUtils {
     public static <T> T treeToValue(final JsonNode json, final Class<T> clazz) {
         try {
             return JsonUtils.treeToValue(json, clazz);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InvalidFormatException(e.getMessage(), e);
         }
     }

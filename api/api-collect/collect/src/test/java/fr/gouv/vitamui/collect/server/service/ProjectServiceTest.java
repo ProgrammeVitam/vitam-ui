@@ -29,11 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
@@ -63,6 +58,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -99,7 +99,7 @@ class ProjectServiceTest {
     private static final String PROJECT_ID = "PROJECT_ID_FOR_LIFE";
 
     @Test
-    void shouldCreateProjectWithSuccess() throws VitamClientException, JsonProcessingException {
+    void shouldCreateProjectWithSuccess() throws VitamClientException, JacksonException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -133,7 +133,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenCreateProject() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenCreateProject() throws VitamClientException, JacksonException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
@@ -154,7 +154,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldCreateTransactiontWithSuccess() throws VitamClientException, JsonProcessingException {
+    void shouldCreateTransactiontWithSuccess() throws VitamClientException, JacksonException {
         // GIVEN
         final TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
         RequestResponseOK<TransactionDto> responseFromVitam = new RequestResponseOK<>();
@@ -185,7 +185,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenCreateTransaction() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenCreateTransaction() throws VitamClientException, JacksonException {
         // GIVEN
         final TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
         RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
@@ -212,7 +212,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldGetAllPaginatedProjectsWithoutCriteria() throws VitamClientException, JsonProcessingException {
+    void shouldGetAllPaginatedProjectsWithoutCriteria() throws VitamClientException, JacksonException {
         // GIVEN
         final List<ProjectDto> projects = factory.manufacturePojo(ArrayList.class, ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -245,7 +245,7 @@ class ProjectServiceTest {
 
     @Test
     void shouldGetAllPaginatedProjectsWithCriteria()
-        throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
+        throws VitamClientException, JacksonException, InvalidParseOperationException {
         // GIVEN
         final List<ProjectDto> projects = factory.manufacturePojo(ArrayList.class, ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -276,7 +276,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenGetAllPaginatedProjects() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenGetAllPaginatedProjects() throws VitamClientException, JacksonException {
         // GIVEN
         Mockito.when(externalParametersService.retrieveAccessContract()).thenThrow(VitamClientException.class);
 
@@ -317,7 +317,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenStreamUpload() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenStreamUpload() throws VitamClientException, JacksonException {
         // GIVEN
         VitamClientException exception = new VitamClientException("error message");
         List<VitamErrorDetails> errorDetailsList = List.of(new VitamErrorDetails("ERROR_KEY", null));
@@ -361,7 +361,7 @@ class ProjectServiceTest {
 
     @Test
     void shouldUpdateProjectDescriptionWithSuccess()
-        throws VitamClientException, JsonProcessingException, InvocationTargetException, IllegalAccessException {
+        throws VitamClientException, JacksonException, InvocationTargetException, IllegalAccessException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -398,7 +398,7 @@ class ProjectServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUpdateProject()
-        throws VitamClientException, JsonProcessingException, InvocationTargetException, IllegalAccessException {
+        throws VitamClientException, JacksonException, InvocationTargetException, IllegalAccessException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
@@ -426,7 +426,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldGetProjectByIdWithSuccess() throws VitamClientException, JsonProcessingException {
+    void shouldGetProjectByIdWithSuccess() throws VitamClientException, JacksonException {
         // GIVEN
         final ProjectDto projectDto = factory.manufacturePojo(ProjectDto.class);
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
@@ -453,7 +453,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenGetProjectById() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenGetProjectById() throws VitamClientException, JacksonException {
         // GIVEN
         RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
             @Override
@@ -472,7 +472,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldDeleteProjectWithSuccess() throws VitamClientException, JsonProcessingException {
+    void shouldDeleteProjectWithSuccess() throws VitamClientException, JacksonException {
         // GIVEN
         RequestResponseOK<ProjectDto> responseFromVitam = new RequestResponseOK<>();
         responseFromVitam.setHttpCode(200);
@@ -487,7 +487,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenDeleteProject() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenDeleteProject() throws VitamClientException, JacksonException {
         // GIVEN
         Mockito.when(collectService.deleteProjectById(vitamContext, PROJECT_ID)).thenThrow(VitamClientException.class);
 
@@ -496,7 +496,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldGetAllPaginatedTransactions() throws VitamClientException, JsonProcessingException {
+    void shouldGetAllPaginatedTransactions() throws VitamClientException, JacksonException {
         // GIVEN
         final List<TransactionDto> transactionDtos = factory.manufacturePojo(ArrayList.class, TransactionDto.class);
         RequestResponseOK<TransactionDto> responseFromVitam = new RequestResponseOK<>();
@@ -527,7 +527,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenGetTransactionsPaginated() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenGetTransactionsPaginated() throws VitamClientException, JacksonException {
         // GIVEN
         RequestResponse<ProjectDto> responseFromVitam = new RequestResponse<>() {
             @Override
@@ -556,7 +556,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldGetLastTransactionByProjectIdWithSuccess() throws VitamClientException, JsonProcessingException {
+    void shouldGetLastTransactionByProjectIdWithSuccess() throws VitamClientException, JacksonException {
         // GIVEN
         final List<TransactionDto> transactionDtos = factory.manufacturePojo(ArrayList.class, TransactionDto.class);
         RequestResponseOK<TransactionDto> responseFromVitam = new RequestResponseOK<>();
@@ -585,7 +585,7 @@ class ProjectServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenGetLastTransactionByProjectId() throws VitamClientException, JsonProcessingException {
+    void shouldThrowExceptionWhenGetLastTransactionByProjectId() throws VitamClientException, JacksonException {
         // GIVEN
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         projectService = new ProjectService(collectService, objectMapper, externalParametersService);

@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -46,6 +45,7 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.JsonNode;
 
 public class VitamUIAccessContractCommonService {
 

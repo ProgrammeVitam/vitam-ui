@@ -37,16 +37,17 @@
 
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.utils.VitamJacksonMapper;
 import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.JsonNode;
 
 /**
  * Service de lancement des workflows d'élimination d'analyse et d'action
@@ -65,25 +66,28 @@ public class EliminationService {
 
     /**
      * Starts the elimination analysis of the units by dsl query.
+     *
      * @param vitamContext The vitam context
      * @param eliminationRequestBody The DSL query used to select units to which elimination analysis would be launched
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> startEliminationAnalysis(
+    public JsonNode startEliminationAnalysis(
         final VitamContext vitamContext,
         final EliminationRequestBody eliminationRequestBody
     ) throws VitamClientException {
-        final RequestResponse<JsonNode> response = accessExternalClient.startEliminationAnalysis(
-            vitamContext,
-            eliminationRequestBody
-        );
+        final RequestResponse<com.fasterxml.jackson.databind.JsonNode> response =
+            accessExternalClient.startEliminationAnalysis(
+                vitamContext,
+                eliminationRequestBody
+            );
         VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
-        return response;
+        return VitamJacksonMapper.mapToJackson3(response.toJsonNode());
     }
 
     /**
      * Starts the elimination action of the units by dsl query.
+     *
      * @param vitamContext The vitam context
      * @param eliminationRequestBody The DSL query used to select units to which elimination action would be launched
      * @return

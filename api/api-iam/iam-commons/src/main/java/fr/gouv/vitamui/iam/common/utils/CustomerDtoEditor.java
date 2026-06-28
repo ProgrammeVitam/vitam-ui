@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.iam.common.utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import org.springframework.util.StringUtils;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;

@@ -27,9 +27,9 @@
 
 package fr.gouv.vitamui.archives.search.common.dto;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.archives.search.common.model.OperationId;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

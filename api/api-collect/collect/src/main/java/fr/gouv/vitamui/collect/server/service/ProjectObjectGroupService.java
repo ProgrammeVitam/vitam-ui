@@ -29,8 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -52,6 +50,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 
@@ -147,7 +147,7 @@ public class ProjectObjectGroupService {
                 collectService.getObjectById(vitamContext, id).toJsonNode().get(RESULTS).toString().substring(1)
             );
             return objectMapper.readValue(resultStringValue, ResultsDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.error("Can not get the object group", e);
             throw new InternalServerException("Unable to find the ObjectGroup", e);
         }

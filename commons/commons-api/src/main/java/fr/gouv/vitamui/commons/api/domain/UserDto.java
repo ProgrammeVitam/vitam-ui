@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
@@ -47,6 +46,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serial;
 import java.time.OffsetDateTime;

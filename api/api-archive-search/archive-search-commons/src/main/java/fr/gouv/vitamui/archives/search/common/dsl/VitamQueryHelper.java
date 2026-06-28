@@ -25,7 +25,6 @@
  */
 package fr.gouv.vitamui.archives.search.common.dsl;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -39,6 +38,7 @@ import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts.CriteriaOperators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;

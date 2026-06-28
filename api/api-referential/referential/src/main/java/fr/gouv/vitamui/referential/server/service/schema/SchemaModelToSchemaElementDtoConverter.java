@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.server.service.schema;
 
-import com.fasterxml.jackson.databind.util.StdConverter;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitam.common.model.administration.schema.SchemaStringSizeType;
 import fr.gouv.vitam.common.model.administration.schema.SchemaType;
@@ -35,6 +34,7 @@ import fr.gouv.vitamui.referential.common.dto.SchemaElementDto;
 import fr.gouv.vitamui.referential.common.model.Cardinality;
 import fr.gouv.vitamui.referential.common.model.Collection;
 import fr.gouv.vitamui.referential.common.model.DataType;
+import tools.jackson.databind.util.StdConverter;
 
 import java.util.Objects;
 import java.util.Optional;

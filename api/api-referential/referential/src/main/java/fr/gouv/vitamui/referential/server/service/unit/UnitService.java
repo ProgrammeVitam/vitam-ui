@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.unit;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -59,6 +56,9 @@ import fr.gouv.vitamui.referential.server.service.service.ExternalParametersServ
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Optional;
 
@@ -152,7 +152,7 @@ public class UnitService extends AbstractService {
         final JsonNode response = unitCommonService.findUnitById(id, vitamContext).toJsonNode();
         try {
             return objectMapper.treeToValue(response, VitamUISearchResponseDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InternalServerException("Error while parsing Vitam response", e);
         }
     }
@@ -165,7 +165,7 @@ public class UnitService extends AbstractService {
         return this.findObjectMetadataById(id, dsl, buildVitamContext());
     }
 
-    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JsonProcessingException {
+    public VitamUISearchResponseDto getFilingAndHoldingUnits() throws VitamClientException, JacksonException {
         final JsonNode fillingOrHoldingQuery = this.createQueryForFillingOrHoldingUnit();
         final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         return objectMapper.treeToValue(

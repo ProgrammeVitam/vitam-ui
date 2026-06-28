@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -72,6 +70,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -212,7 +212,7 @@ public class AccessionRegisterController {
     private String serializeQuery(AccessionRegisterSearchDto query) {
         try {
             return objectMapper.writeValueAsString(query);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Unable to serialize accession register export query", e);
         }
     }
@@ -220,7 +220,7 @@ public class AccessionRegisterController {
     private AccessionRegisterSearchDto deserializeQuery(String query) {
         try {
             return objectMapper.readValue(query, AccessionRegisterSearchDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Unable to deserialize accession register export query", e);
         }
     }

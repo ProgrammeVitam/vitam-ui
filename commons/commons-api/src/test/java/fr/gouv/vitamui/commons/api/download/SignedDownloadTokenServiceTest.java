@@ -16,9 +16,9 @@
  */
 package fr.gouv.vitamui.commons.api.download;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.Clock;
 import java.time.Instant;

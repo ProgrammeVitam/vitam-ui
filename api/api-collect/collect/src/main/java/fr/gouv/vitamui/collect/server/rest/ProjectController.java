@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.collect.server.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.common.dto.UploadSipResult;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -65,6 +64,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.databind.JsonNode;
 
 import java.io.InputStream;
 import java.util.Optional;

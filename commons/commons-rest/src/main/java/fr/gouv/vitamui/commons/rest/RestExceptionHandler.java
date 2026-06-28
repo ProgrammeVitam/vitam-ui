@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
@@ -77,6 +76,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -128,7 +128,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         // write exception data to response
         final OutputStream out = response.getOutputStream();
-        final com.fasterxml.jackson.databind.ObjectMapper mapper = new ObjectMapper();
+        final tools.jackson.databind.ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(out, apiErrors);
         out.flush();
     }

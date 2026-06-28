@@ -36,17 +36,17 @@
  */
 package fr.gouv.vitamui.commons.utils;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.List;
@@ -60,19 +60,22 @@ public class JsonUtils {
     private static final ObjectMapper mapperWithNonNullFields;
 
     static {
-        // Jackson 3: findAndRegisterModules() auto-registers JavaTimeModule,
+        // Jackson 3: findAndAddModules() auto-registers JavaTimeModule,
         // Jdk8Module is merged into Jackson core — no longer needed separately
 
-        mapper = new ObjectMapper();
-        mapper.findAndRegisterModules();
+        mapper = JsonMapper.builder().findAndAddModules().build();
 
-        mapperDontFailOnUnknowProperties = new ObjectMapper();
-        mapperDontFailOnUnknowProperties.findAndRegisterModules();
-        mapperDontFailOnUnknowProperties.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapperDontFailOnUnknowProperties = JsonMapper.builder()
+            .findAndAddModules()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
-        mapperWithNonNullFields = new ObjectMapper();
-        mapperWithNonNullFields.findAndRegisterModules();
-        mapperWithNonNullFields.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapperWithNonNullFields = JsonMapper.builder()
+            .findAndAddModules()
+            .changeDefaultPropertyInclusion(
+                incl -> incl.withValueInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
+            )
+            .build();
     }
 
     /**
@@ -80,9 +83,9 @@ public class JsonUtils {
      *
      * @param object : the object to convert
      * @return
-     * @throws JsonProcessingException
+     * @throws JacksonException
      */
-    public static String toJson(final Object object) throws JsonProcessingException {
+    public static String toJson(final Object object) throws JacksonException {
         return mapper.writeValueAsString(object);
     }
 
@@ -114,12 +117,12 @@ public class JsonUtils {
      * @param fromValue
      * @param clazz
      * @return
-     * @throws JsonParseException
-     * @throws JsonMappingException
+     * @throws StreamReadException
+     * @throws DatabindException
      * @throws IOException
      */
     public static <T> List<T> convertValueList(final Object fromValue, final Class<T> clazz)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         final JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, clazz);
 
         return mapper.convertValue(fromValue, type);
@@ -132,12 +135,12 @@ public class JsonUtils {
      * @param json
      * @param type
      * @return
-     * @throws JsonParseException
-     * @throws JsonMappingException
+     * @throws StreamReadException
+     * @throws DatabindException
      * @throws IOException
      */
     public static <T> T fromJson(final String json, final TypeReference<T> type)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         return mapper.readValue(json, type);
     }
 
@@ -147,12 +150,12 @@ public class JsonUtils {
      * @param json
      * @param clazz
      * @return
-     * @throws JsonParseException
-     * @throws JsonMappingException
+     * @throws StreamReadException
+     * @throws DatabindException
      * @throws IOException
      */
     public static <T> T fromJson(final String json, final Class<T> clazz)
-        throws JsonParseException, JsonMappingException, IOException {
+        throws StreamReadException, DatabindException, IOException {
         return mapper.readValue(json, clazz);
     }
 
@@ -164,12 +167,12 @@ public class JsonUtils {
         return mapper.readTree(content);
     }
 
-    public static <T> T treeToValue(final JsonNode json, final Class<T> clazz) throws JsonProcessingException {
+    public static <T> T treeToValue(final JsonNode json, final Class<T> clazz) throws JacksonException {
         return mapper.treeToValue(json, clazz);
     }
 
     public static <T> T treeToValue(final JsonNode json, final Class<T> clazz, final boolean failOnMissingProperties)
-        throws JsonProcessingException {
+        throws JacksonException {
         ObjectMapper mapperToUse = mapper;
         if (!failOnMissingProperties) {
             mapperToUse = mapperDontFailOnUnknowProperties;

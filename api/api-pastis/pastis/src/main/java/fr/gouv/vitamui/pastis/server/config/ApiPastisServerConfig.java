@@ -38,9 +38,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -68,6 +66,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.client.RestClient;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @Configuration
 @Import(
@@ -80,11 +81,19 @@ import org.springframework.web.client.RestClient;
 )
 public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
+    //    @Bean
+    //    public ObjectMapper objectMapper() {
+    //        ObjectMapper objectMapper = new ObjectMapper();
+    //        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    //        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    //        return objectMapper;
+    //    }
+
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).build();
+
         return objectMapper;
     }
 
@@ -172,10 +181,8 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public VitamProfileCommonService getVitamProfileService(
-        final AdminExternalClient adminClient,
-        ObjectMapper objectMapper
+    public VitamProfileCommonService getVitamProfileService(final AdminExternalClient adminClient
     ) {
-        return new VitamProfileCommonService(adminClient, objectMapper);
+        return new VitamProfileCommonService(adminClient);
     }
 }

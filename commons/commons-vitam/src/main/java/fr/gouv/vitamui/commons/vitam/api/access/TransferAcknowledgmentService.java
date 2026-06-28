@@ -29,7 +29,6 @@
 
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -38,6 +37,7 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.JsonNode;
 
 import java.io.InputStream;
 

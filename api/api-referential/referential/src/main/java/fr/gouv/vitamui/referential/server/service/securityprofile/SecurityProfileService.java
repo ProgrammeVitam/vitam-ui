@@ -36,12 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.securityprofile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.api.AdminCollections;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -69,6 +63,12 @@ import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,7 +118,7 @@ public class SecurityProfileService extends AbstractService {
             } else {
                 return converter.convertVitamToDto(securityProfileResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Security Profile", e);
         }
     }
@@ -137,7 +137,7 @@ public class SecurityProfileService extends AbstractService {
             );
 
             return converter.convertVitamsToDtos(securityProfileResponseDto.getResults());
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Security Profiles", e);
         }
     }
@@ -179,7 +179,7 @@ public class SecurityProfileService extends AbstractService {
             LOGGER.info("All Security Profiles EvIdAppSession : {} ", vitamSecurityProfile.getApplicationSessionId());
             requestResponse = vitamSecurityProfileCommonService.findSecurityProfiles(vitamSecurityProfile, query);
             return objectMapper.treeToValue(requestResponse.toJsonNode(), SecurityProfileResponseDto.class);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Can't find security profiles", e);
         }
     }
@@ -272,7 +272,7 @@ public class SecurityProfileService extends AbstractService {
                 SecurityProfileModel.class
             );
             return converter.convertVitamToDto(securityProfileVitamDto);
-        } catch (JsonProcessingException | VitamClientException e) {
+        } catch (JacksonException | VitamClientException e) {
             throw new InternalServerException("Can't patch security profile", e);
         }
     }

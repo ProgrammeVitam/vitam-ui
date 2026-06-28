@@ -36,11 +36,11 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import lombok.Getter;
 import lombok.Setter;
+import tools.jackson.core.JacksonException;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -74,7 +74,7 @@ public class CasJsonWrapper implements Serializable {
     public String toString() {
         try {
             return JsonUtils.toJson(data);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new ApplicationServerException(e.getMessage(), e);
         }
     }

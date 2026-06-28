@@ -29,12 +29,12 @@
 
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -72,7 +72,7 @@ public class OntologyServiceReader {
         }
         try {
             ontologyDtoList = objectMapper.readValue(resultStringBuilder.toString(), new TypeReference<>() {});
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             LOGGER.error("Can not parse the ontologies file {}", ontologiesFilePath);
             return Collections.emptyList();
         }
@@ -106,7 +106,7 @@ public class OntologyServiceReader {
         }
         try {
             internalOntologyDtoList = objectMapper.readValue(resultStringBuilder.toString(), new TypeReference<>() {});
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             LOGGER.error("Can not parse the internal ontology fields list file : {}", exception);
             return Collections.emptyList();
         }

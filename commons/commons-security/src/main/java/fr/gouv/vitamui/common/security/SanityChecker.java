@@ -26,8 +26,6 @@
  */
 package fr.gouv.vitamui.common.security;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.google.json.JsonSanitizer;
 import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -43,6 +41,8 @@ import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.IntrusionException;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.esapi.reference.DefaultValidator;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ArrayNode;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -202,7 +202,11 @@ public class SanityChecker {
             throw new InvalidParseOperationException(JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK, e);
         }
         checkJsonFileSize(json);
-        checkJsonSanity(JsonHandler.getFromString(json));
+        try {
+            checkJsonSanity(JsonUtils.readTree(json));
+        } catch (Exception e) {
+            throw new InvalidParseOperationException(JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK, e);
+        }
     }
 
     /**
@@ -422,7 +426,7 @@ public class SanityChecker {
                 checkJsonSanity(element);
             }
         } else {
-            final Iterator<Map.Entry<String, JsonNode>> fields = json.fields();
+            final Iterator<Map.Entry<String, JsonNode>> fields = json.properties().iterator();
             while (fields.hasNext()) {
                 final Map.Entry<String, JsonNode> entry = fields.next();
                 final String key = entry.getKey();

@@ -39,9 +39,6 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -61,6 +58,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -188,7 +188,7 @@ public class ArchiveSearchAgenciesService {
                 agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
             } catch (InvalidCreateOperationException e) {
                 throw new VitamClientException("Unable to find the agencies ", e);
-            } catch (InvalidParseOperationException | JsonProcessingException e1) {
+            } catch (InvalidParseOperationException | JacksonException e1) {
                 throw new BadRequestException("Error parsing query ", e1);
             }
         }

@@ -33,9 +33,7 @@
         <gson.version>2.14.0</gson.version>
         <hibernate.validatior.version>8.0.3.Final</hibernate.validatior.version>
         <istack-commons-runtime.version>4.2.0</istack-commons-runtime.version>
-        <jackson2.version>2.21.3</jackson2.version>
-        <jackson3.version>3.1.0</jackson3.version>
-        <jackson2-annotation.version>2.21</jackson2-annotation.version>
+        <jackson3.version>3.0.0</jackson3.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
         <jakarta.el.version>6.0.1</jakarta.el.version>
         <jakarta.mail.version>2.1.5</jakarta.mail.version>
@@ -602,35 +600,16 @@
                 <version>${jackson3.version}</version>
             </dependency>
 
-            <!-- Jackson 2 — KEEP for legacy libs that have no Jackson 3 port yet:
-                        jackson-dataformat-yaml,
-                        jackson-databind-nullable, jackson-module-afterburner. -->
+            <!-- Jackson 3 dataformats -->
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson2-annotation.version}</version>
-            </dependency>
-
-            <!-- Jackson 2 dataformats — no Jackson 3 equivalent exists yet -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <groupId>tools.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson2.version}</version>
+                <version>${jackson3.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <groupId>tools.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-csv</artifactId>
-                <version>${jackson2.version}</version>
+                <version>${jackson3.version}</version>
             </dependency>
 
             <dependency>

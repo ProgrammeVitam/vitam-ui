@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.iam.server.tenant.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -28,6 +26,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -129,7 +129,7 @@ class InitVitamTenantServiceTest {
 
     @Test
     void initTenantSucceedAsAccessAndIngestContractAlreadyExist()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException {
         TenantDto tenantDto = new TenantDto();
         tenantDto.setIdentifier(10);
 

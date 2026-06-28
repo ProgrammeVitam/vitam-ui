@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.server.logbook.service;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
@@ -81,6 +80,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.util.Arrays;

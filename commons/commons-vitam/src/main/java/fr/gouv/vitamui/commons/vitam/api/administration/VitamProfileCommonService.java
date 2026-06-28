@@ -38,8 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalNotFoundException;
@@ -49,11 +47,14 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.utils.VitamJacksonMapper;
 import jakarta.ws.rs.core.Response;
 import jakarta.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -67,11 +68,8 @@ public class VitamProfileCommonService {
 
     private final AdminExternalClient adminExternalClient;
 
-    private ObjectMapper objectMapper;
-
-    public VitamProfileCommonService(AdminExternalClient adminExternalClient, ObjectMapper objectMapper) {
+    public VitamProfileCommonService(AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
-        this.objectMapper = objectMapper;
     }
 
     /**
@@ -85,7 +83,9 @@ public class VitamProfileCommonService {
     public RequestResponse<ProfileModel> findArchivalProfiles(final VitamContext vitamContext, final JsonNode select)
         throws VitamClientException {
         LOGGER.info("Archival Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        final RequestResponse<ProfileModel> response = adminExternalClient.findProfiles(vitamContext, select);
+
+        final RequestResponse<ProfileModel> response = adminExternalClient.findProfiles(vitamContext,
+            VitamJacksonMapper.mapToJackson2(select));
         VitamRestUtils.checkResponse(response);
         return response;
     }
@@ -153,7 +153,7 @@ public class VitamProfileCommonService {
         throws AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         LOGGER.info("Update Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        return adminExternalClient.updateProfile(vitamContext, id, jsonNode);
+        return adminExternalClient.updateProfile(vitamContext, id, VitamJacksonMapper.mapToJackson2(jsonNode));
     }
 
     /**
@@ -169,7 +169,8 @@ public class VitamProfileCommonService {
      * @throws JAXBException
      */
     public RequestResponse<?> create(final VitamContext vitamContext, ProfileModel newArchivalProfile)
-        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
+        throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException,
+        JAXBException {
         LOGGER.info("Create Archival Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         final List<ProfileModel> profileModelNewList = new ArrayList<>();
         profileModelNewList.add(newArchivalProfile);
@@ -179,7 +180,7 @@ public class VitamProfileCommonService {
     public RequestResponse<?> importArchivalProfiles(
         final VitamContext vitamContext,
         final List<ProfileModel> archivalProfileModels
-    ) throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
+    ) throws InvalidParseOperationException, AccessExternalClientException, IOException {
         try (ByteArrayInputStream byteArrayInputStream = serializeArchivalProfiles(archivalProfileModels)) {
             return adminExternalClient.createProfiles(vitamContext, byteArrayInputStream);
         }

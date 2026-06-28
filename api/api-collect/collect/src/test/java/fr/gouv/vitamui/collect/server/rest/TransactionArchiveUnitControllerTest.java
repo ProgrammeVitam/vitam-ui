@@ -29,8 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -58,6 +56,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
 
     @Test
     void test_searchArchiveUnitsByCriteria_with_invalid_criteria_should_return_ko()
-        throws InvalidCreateOperationException, VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws InvalidCreateOperationException, VitamClientException, InvalidParseOperationException, JacksonException {
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
         nodeCriteria.setCriteria("NODES");
@@ -145,7 +145,7 @@ class TransactionArchiveUnitControllerTest extends ApiCollectControllerTest<IdDt
 
     @Test
     void test_searchArchiveUnitsByCriteria_with_valid_criteria_should_return_ok()
-        throws InvalidParseOperationException, PreconditionFailedException, InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+        throws InvalidParseOperationException, PreconditionFailedException, InvalidCreateOperationException, VitamClientException, JacksonException {
         SearchCriteriaDto query = new SearchCriteriaDto();
         VitamUIArchiveUnitResponseDto expectedResponse = new VitamUIArchiveUnitResponseDto();
         Mockito.when(

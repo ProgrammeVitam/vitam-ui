@@ -1,13 +1,13 @@
 package fr.gouv.vitamui.commons.api.domain;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
 
 import java.io.IOException;
 
@@ -25,7 +25,7 @@ public class QueryDtoTest {
     }
 
     @Test
-    void testSerialization() throws JsonProcessingException {
+    void testSerialization() throws JacksonException {
         QueryDto criteria = new QueryDto();
         String exceptedQueryString =
             "{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"lastname\",\"value\":\"nole\",\"operator\":\"EQUALSIGNORECASE\"},{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
@@ -35,11 +35,15 @@ public class QueryDtoTest {
         criteria.addQuery(subQuery);
         LOGGER.debug(JsonUtils.toJson(criteria));
         String queryAsString = JsonUtils.toJson(criteria);
-        Assertions.assertThat(queryAsString).isEqualTo(exceptedQueryString);
+        try {
+            Assertions.assertThat(JsonUtils.readTree(queryAsString)).isEqualTo(JsonUtils.readTree(exceptedQueryString));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
-    void testDeserialization() throws JsonParseException, JsonMappingException, IOException {
+    void testDeserialization() throws StreamReadException, DatabindException, IOException {
         String queryAsJson =
             "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"}]}";
         QueryDto query = JsonUtils.fromJson(queryAsJson, QueryDto.class);
@@ -52,7 +56,7 @@ public class QueryDtoTest {
     }
 
     @Test
-    void testDeserializationWithSubquery() throws JsonParseException, JsonMappingException, IOException {
+    void testDeserializationWithSubquery() throws StreamReadException, DatabindException, IOException {
         String queryAsJson =
             "{\"queryOperator\":\"OR\",\"criteria\":[{\"key\":\"lastName\",\"value\":\"nole\",\"operator\":\"EQUALS\"},{\"queryOperator\":\"NOR\",\"criteria\":[{\"key\":\"firstname\",\"value\":\"Pierre\",\"operator\":\"EQUALS\"}]}]}";
         QueryDto query = JsonUtils.fromJson(queryAsJson, QueryDto.class);

@@ -1,9 +1,6 @@
 package fr.gouv.vitamui.referential.server.service.operation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -19,6 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.FileNotFoundException;
 import java.util.Optional;
@@ -73,7 +73,7 @@ class OperationCommonServiceTest {
     }
 
     @Test
-    void updateAuditDslQuery_should_handle_dsl_types() throws JsonProcessingException, FileNotFoundException {
+    void updateAuditDslQuery_should_handle_dsl_types() throws JacksonException, FileNotFoundException {
         VitamContext vitamContext = new VitamContext(1);
         // AuditType ko
         auditCreateOptions.setAuditType("fakeAuditType");
@@ -107,7 +107,7 @@ class OperationCommonServiceTest {
     }
 
     @Test
-    void updateAuditDslQuery_should_handle_dsl_attributes() throws JsonProcessingException, FileNotFoundException {
+    void updateAuditDslQuery_should_handle_dsl_attributes() throws JacksonException, FileNotFoundException {
         VitamContext vitamContext = new VitamContext(1);
         // check that dsl should not include projection
         auditCreateOptions.setAuditType("dsl");

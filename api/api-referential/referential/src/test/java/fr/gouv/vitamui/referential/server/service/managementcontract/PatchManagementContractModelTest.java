@@ -27,8 +27,6 @@
 
 package fr.gouv.vitamui.referential.server.service.managementcontract;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.DataObjectVersionType;
 import fr.gouv.vitam.common.model.administration.ManagementContractModel;
@@ -39,6 +37,8 @@ import fr.gouv.vitam.common.model.administration.StorageDetailModel;
 import fr.gouv.vitam.common.model.administration.VersionRetentionPolicyModel;
 import fr.gouv.vitam.common.model.administration.VersionUsageModel;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ class PatchManagementContractModelTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void testPatchManagementContractModel() throws JsonProcessingException {
+    void testPatchManagementContractModel() throws JacksonException {
         ManagementContractModel managementContractModel = new ManagementContractModel();
         managementContractModel.setId("aefqaaaaaeecgkwkabam4aml6kss4saaaaaq");
         managementContractModel.setTenant(1);

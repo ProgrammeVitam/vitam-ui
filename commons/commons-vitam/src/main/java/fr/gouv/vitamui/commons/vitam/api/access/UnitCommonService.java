@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -59,6 +57,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.core5.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -383,16 +383,18 @@ public class UnitCommonService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse<JsonNode> reclassification(final VitamContext vitamContext, final JsonNode dslQuery)
+    public RequestResponse<com.fasterxml.jackson.databind.JsonNode> reclassification(final VitamContext vitamContext,
+        final com.fasterxml.jackson.databind.JsonNode dslQuery)
         throws VitamClientException {
-        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.reclassification(vitamContext, dslQuery);
+        final RequestResponse<com.fasterxml.jackson.databind.JsonNode> jsonResponse =
+            accessExternalClient.reclassification(vitamContext, dslQuery);
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }
 
-    public RequestResponse<JsonNode> reassignment(
+    public RequestResponse<com.fasterxml.jackson.databind.JsonNode> reassignment(
         final VitamContext vitamContext,
-        final JsonNode dslQuery,
+        final com.fasterxml.jackson.databind.JsonNode dslQuery,
         final String sourceOriginatingAgency,
         final String targetOriginatingAgency,
         final boolean propagateToObjectGroups
@@ -405,10 +407,11 @@ public class UnitCommonService {
                 propagateToObjectGroups
             );
 
-        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.launchOriginatingAgencyReassignment(
-            vitamContext,
-            originatingAgencyReassignmentRequest
-        );
+        final RequestResponse<com.fasterxml.jackson.databind.JsonNode> jsonResponse =
+            accessExternalClient.launchOriginatingAgencyReassignment(
+                vitamContext,
+                originatingAgencyReassignmentRequest
+            );
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }

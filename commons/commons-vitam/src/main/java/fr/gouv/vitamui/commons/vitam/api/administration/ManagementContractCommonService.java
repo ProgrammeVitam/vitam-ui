@@ -27,10 +27,6 @@
 
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -50,6 +46,10 @@ import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -238,7 +238,7 @@ public class ManagementContractCommonService {
                 LOGGER.error(msg);
                 throw new ConflictException(msg);
             }
-        } catch (final JsonProcessingException exception) {
+        } catch (final JacksonException exception) {
             final String msg =
                 "Can't create management contracts, Error while parsing Vitam response : " + exception.getMessage();
             LOGGER.error(msg);

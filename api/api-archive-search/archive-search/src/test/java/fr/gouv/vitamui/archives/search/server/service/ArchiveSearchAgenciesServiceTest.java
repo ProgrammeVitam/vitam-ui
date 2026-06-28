@@ -26,9 +26,6 @@
  */
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
@@ -49,6 +46,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ class ArchiveSearchAgenciesServiceTest {
 
     @Test
     void testMapArgenciesCodesWhenSearchByAgenciesNamesWhenCodesIncluded()
-        throws VitamClientException, JsonProcessingException {
+        throws VitamClientException, JacksonException {
         // Given
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
@@ -116,7 +116,7 @@ class ArchiveSearchAgenciesServiceTest {
 
     @Test
     void testMapArgenciesCodesWhenSearchByAgenciesNamesWhenCodesNotIncluded()
-        throws VitamClientException, JsonProcessingException {
+        throws VitamClientException, JacksonException {
         // Given
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
@@ -150,7 +150,7 @@ class ArchiveSearchAgenciesServiceTest {
         Assertions.assertThat(agencyIds.get(0).getValues()).hasSize(3);
     }
 
-    private AgencyResponseDto getResponseAgencies() throws JsonProcessingException {
+    private AgencyResponseDto getResponseAgencies() throws JacksonException {
         // Configure the mapper
         ObjectMapper objectMapper1 = new ObjectMapper();
         objectMapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

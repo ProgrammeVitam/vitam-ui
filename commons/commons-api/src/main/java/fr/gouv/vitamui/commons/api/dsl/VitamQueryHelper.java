@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.commons.api.dsl;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -40,6 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -238,6 +238,12 @@ public class VitamQueryHelper {
         }
 
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
-        return select.getFinalSelect();
+        try {
+            return (tools.jackson.databind.JsonNode) fr.gouv.vitamui.commons.utils.JsonUtils.readTree(
+                fr.gouv.vitam.common.json.JsonHandler.writeAsString(select.getFinalSelect())
+            );
+        } catch (Exception e) {
+            throw new InvalidCreateOperationException("Error parsing query", e);
+        }
     }
 }

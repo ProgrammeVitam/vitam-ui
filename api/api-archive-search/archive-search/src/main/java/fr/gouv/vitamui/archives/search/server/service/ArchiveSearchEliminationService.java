@@ -39,9 +39,6 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -50,10 +47,13 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import fr.gouv.vitamui.commons.vitam.utils.VitamJacksonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,15 +104,17 @@ public class ArchiveSearchEliminationService {
             vitamContext,
             eliminationRequestBody
         );
-        return jsonNodeRequestResponse.toJsonNode();
+        return VitamJacksonMapper.mapToJackson3(jsonNodeRequestResponse.toJsonNode());
     }
 
-    public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet, Long threshold) {
-        ObjectNode query = JsonHandler.createObjectNode();
+    public EliminationRequestBody getEliminationRequestBody(com.fasterxml.jackson.databind.JsonNode updateSet,
+        Long threshold) {
+        com.fasterxml.jackson.databind.node.ObjectNode query = JsonHandler.createObjectNode();
         query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
         query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
         if (threshold != null) {
-            query.set(BuilderToken.GLOBAL.THRESOLD.exactToken(), objectMapper.convertValue(threshold, JsonNode.class));
+            query.set(BuilderToken.GLOBAL.THRESOLD.exactToken(),
+                objectMapper.convertValue(threshold, com.fasterxml.jackson.databind.JsonNode.class));
         }
         EliminationRequestBody requestBody = new EliminationRequestBody();
         requestBody.setDate(new SimpleDateFormat(ONLY_DATE_FORMAT).format(new Date()));
@@ -133,11 +135,9 @@ public class ArchiveSearchEliminationService {
             "Elimination analysis final query {} ",
             JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest())
         );
-        RequestResponse<JsonNode> jsonNodeRequestResponse = eliminationService.startEliminationAnalysis(
+        return eliminationService.startEliminationAnalysis(
             vitamContext,
             eliminationRequestBody
         );
-
-        return jsonNodeRequestResponse.toJsonNode();
     }
 }

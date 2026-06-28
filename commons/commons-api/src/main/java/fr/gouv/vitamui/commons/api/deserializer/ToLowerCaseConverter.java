@@ -1,6 +1,6 @@
 package fr.gouv.vitamui.commons.api.deserializer;
 
-import com.fasterxml.jackson.databind.util.StdConverter;
+import tools.jackson.databind.util.StdConverter;
 
 public class ToLowerCaseConverter extends StdConverter<String, String> {
 

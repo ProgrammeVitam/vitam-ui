@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.server.service.preservation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -40,6 +39,7 @@ import fr.gouv.vitamui.referential.common.dto.preservation.scenario.Preservation
 import fr.gouv.vitamui.referential.server.security.TenantQueryService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

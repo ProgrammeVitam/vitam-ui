@@ -39,9 +39,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.PuaData;
 import fr.gouv.vitamui.pastis.common.dto.pua.PuaMetadataDetails;
@@ -53,6 +50,9 @@ import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.module.afterburner.AfterburnerModule;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -619,7 +619,7 @@ public class PuaPastisValidator {
      * @param requiredChildren
      * @param grandChild
      * @param node
-     * @throws JsonProcessingException
+     * @throws JacksonException
      */
     private void childrenContainsGrandChildName(
         JSONObject grandChildrenOfRule,
@@ -627,7 +627,7 @@ public class PuaPastisValidator {
         List<String> requiredChildren,
         ElementProperties grandChild,
         SedaNode node
-    ) throws JsonProcessingException {
+    ) throws JacksonException {
         PuaMetadataDetails childOfRuleDetails = new PuaMetadataDetails();
         getMetaDataFromSeda(grandChild, childOfRuleDetails, node);
         if (grandChild.getCardinality().startsWith(CARDINALITY_1)) requiredChildren.add(grandChild.getName());
@@ -929,7 +929,7 @@ public class PuaPastisValidator {
         JSONObject json,
         ElementProperties el,
         PuaMetadataDetails puaMetadataDetails
-    ) throws JsonProcessingException {
+    ) throws JacksonException {
         json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
     }
 

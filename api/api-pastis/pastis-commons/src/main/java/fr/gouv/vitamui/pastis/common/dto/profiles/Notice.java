@@ -40,10 +40,6 @@ package fr.gouv.vitamui.pastis.common.dto.profiles;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import fr.gouv.vitam.common.model.administration.ArchiveUnitProfileStatus;
 import fr.gouv.vitam.common.model.administration.ProfileFormat;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
@@ -52,6 +48,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.core.io.Resource;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.module.afterburner.AfterburnerModule;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -164,7 +164,7 @@ public class Notice extends IdDto {
         return tokens[1].equals("rng") ? ProfileType.PA : ProfileType.PUA;
     }
 
-    public String serialiseString() throws JsonProcessingException {
+    public String serialiseString() throws JacksonException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new AfterburnerModule());
         return mapper.writeValueAsString(this);

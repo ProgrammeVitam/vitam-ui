@@ -26,9 +26,6 @@
 
 package fr.gouv.vitamui.archives.search.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
@@ -79,6 +76,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -455,7 +455,7 @@ public class ArchivesSearchController {
     private String serializeQuery(SearchCriteriaDto query) {
         try {
             return objectMapper.writeValueAsString(query);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Unable to serialize archive units export query", e);
         }
     }
@@ -463,7 +463,7 @@ public class ArchivesSearchController {
     private SearchCriteriaDto deserializeQuery(String query) {
         try {
             return objectMapper.readValue(query, SearchCriteriaDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Unable to deserialize archive units export query", e);
         }
     }

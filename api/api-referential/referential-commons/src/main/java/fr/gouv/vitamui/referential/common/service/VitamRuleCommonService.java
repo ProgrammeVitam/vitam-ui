@@ -36,14 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
@@ -74,6 +66,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.dataformat.csv.CsvMapper;
+import tools.jackson.dataformat.csv.CsvSchema;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -263,7 +263,7 @@ public class VitamRuleCommonService {
      * @return true if the rule exists in VITAM
      * @throws BadRequestException when the requested rule is null
      * @throws ConflictException when the requested rule does not exist in VITAM
-     * @throws JsonProcessingException
+     * @throws JacksonException
      * @throws UnavailableServiceException
      * @throws PreconditionFailedException when we are not authorized to make the check
      */
@@ -300,7 +300,7 @@ public class VitamRuleCommonService {
      *
      * @param checkRule the ruleDto to be tested
      * @param existingRules the list of existing rules in Vitam
-     * @throws JsonProcessingException
+     * @throws JacksonException
      * @throws ConflictException when the rule does not exists in VITAM
      */
     private void verifyRuleExistence(final RuleDto checkRule, final RequestResponse<FileRulesModel> existingRules) {
@@ -346,7 +346,7 @@ public class VitamRuleCommonService {
                     );
                 }
             }
-        } catch (final JsonProcessingException exception) {
+        } catch (final JacksonException exception) {
             LOGGER.error("Can't find the requested rule, Error while parsing Vitam response : ", exception);
             throw new UnexpectedDataException("Can't create rule, Error while parsing Vitam response : " + exception);
         }

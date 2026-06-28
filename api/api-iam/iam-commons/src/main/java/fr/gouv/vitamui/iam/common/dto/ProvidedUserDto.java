@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.common.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fr.gouv.vitamui.commons.api.deserializer.ToLowerCaseConverter;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import jakarta.validation.constraints.Email;
@@ -10,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 @Getter
 @Setter

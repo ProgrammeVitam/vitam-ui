@@ -38,8 +38,6 @@
  */
 package fr.gouv.vitamui.ingest.server.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
@@ -77,6 +75,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -222,7 +222,7 @@ public class IngestController {
     private String serializeCustomer(CustomerDto customer) {
         try {
             return objectMapper.writeValueAsString(customer);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Unable to serialize customer", e);
         }
     }
@@ -230,7 +230,7 @@ public class IngestController {
     private CustomerDto deserializeCustomer(String customer) {
         try {
             return objectMapper.readValue(customer, CustomerDto.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new BadRequestException("Unable to deserialize customer", e);
         }
     }

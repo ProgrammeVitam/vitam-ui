@@ -37,10 +37,7 @@
 
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -56,9 +53,15 @@ import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.utils.VitamJacksonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -66,16 +69,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class AccessContractCommonService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AccessContractCommonService.class);
 
     private final AdminExternalClient adminExternalClient;
+    private final JsonMapper jsonMapperJackson3;
 
     public AccessContractCommonService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
+        this.jsonMapperJackson3 = JsonMapper.builder()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+            .build();
+
     }
 
     public RequestResponse<AccessContractModel> findAccessContracts(
@@ -84,7 +91,7 @@ public class AccessContractCommonService {
     ) throws VitamClientException {
         final RequestResponse<AccessContractModel> response = adminExternalClient.findAccessContracts(
             vitamContext,
-            select
+            VitamJacksonMapper.mapToJackson2(select)
         );
         VitamRestUtils.checkResponse(response);
         return response;
@@ -131,7 +138,6 @@ public class AccessContractCommonService {
      * check if all conditions are Ok to create an access contract in the tenant
      *
      * @param accessContracts : access Contracts to verify existence
-     * @return the tenant where the access contract will be created
      */
     public void checkAbilityToCreateAccessContractInVitam(
         final VitamContext vitamContext,
@@ -143,13 +149,14 @@ public class AccessContractCommonService {
             throw new BadRequestException(msg);
         }
         try {
-            final JsonNode select = new Select().getFinalSelect();
-            final RequestResponse<AccessContractModel> response = findAccessContracts(vitamContext, select);
+            final ObjectNode selectNode = new Select().getFinalSelect();
+            final JsonNode selectNodeJackson3 = VitamJacksonMapper.mapToJackson3(selectNode);
+            final RequestResponse<AccessContractModel> response = findAccessContracts(vitamContext, selectNodeJackson3);
             if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
                 final String msg =
                     "Can't create access contracts for the tenant : " +
-                    vitamContext.getTenantId() +
-                    " not found in Vitam";
+                        vitamContext.getTenantId() +
+                        " not found in Vitam";
                 LOGGER.error(msg);
                 throw new PreconditionFailedException(msg);
             } else if (response.getStatus() != HttpStatus.OK.value()) {
@@ -178,18 +185,16 @@ public class AccessContractCommonService {
         final RequestResponse<AccessContractModel> response
     ) {
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final AccessContractResponseDto accessContractResponseDto = objectMapper.treeToValue(
-                response.toJsonNode(),
-                AccessContractResponseDto.class
-            );
+
+            JsonNode accessContractNode = VitamJacksonMapper.mapToJackson3(response.toJsonNode());
+            final AccessContractResponseDto accessContractResponseDto =
+                jsonMapperJackson3.treeToValue(accessContractNode, AccessContractResponseDto.class);
+
             final List<String> accessContractsNames = accessContracts
                 .stream()
                 .map(AccessContractModel::getName)
                 .filter(Objects::nonNull)
-                .map(String::strip)
-                .collect(Collectors.toList());
+                .map(String::strip).toList();
             boolean alreadyCreated = accessContractResponseDto
                 .getResults()
                 .stream()
@@ -205,7 +210,7 @@ public class AccessContractCommonService {
                 .map(AccessContractModel::getIdentifier)
                 .filter(Objects::nonNull)
                 .map(String::strip)
-                .collect(Collectors.toList());
+                .toList();
             alreadyCreated = accessContractResponseDto
                 .getResults()
                 .stream()
@@ -216,7 +221,7 @@ public class AccessContractCommonService {
                 LOGGER.error(msg);
                 throw new ConflictException(msg);
             }
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             final String msg = "Can't create access contracts, Error while parsing Vitam response : " + e.getMessage();
             LOGGER.error(msg);
             throw new UnexpectedDataException(msg);

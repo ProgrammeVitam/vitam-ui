@@ -27,23 +27,23 @@
 
 package fr.gouv.vitamui.archives.search.common.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
 import fr.gouv.vitamui.commons.api.dtos.PatchOperation;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MultiJsonPatchDtoTest {
 
     @Test
-    void testJsonPatchSerializationDeserialization() throws JsonProcessingException {
+    void testJsonPatchSerializationDeserialization() throws JacksonException {
         // Création d'un exemple de MultiJsonPatchDto
         ObjectMapper objectMapper = new ObjectMapper();
         JsonPatch jsonPatch = new JsonPatch();
@@ -78,7 +78,7 @@ class MultiJsonPatchDtoTest {
     }
 
     @Test
-    void testMultiJsonPatchWithAddInstruction() throws JsonProcessingException {
+    void testMultiJsonPatchWithAddInstruction() throws JacksonException {
         // Création d'un exemple de MultiJsonPatchDto avec une instruction ADD
         MultiJsonPatchDto multiJsonPatchDto = new MultiJsonPatchDto();
         JsonPatch jsonPatch = new JsonPatch();

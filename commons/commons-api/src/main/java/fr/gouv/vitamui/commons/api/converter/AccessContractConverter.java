@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.commons.api.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,7 @@ public class AccessContractConverter {
     }
 
     public JsonNode convertToUpperCaseFields(Map<String, Object> partialDto) {
-        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
+        ObjectNode propertiesToUpdate = fr.gouv.vitamui.commons.utils.JsonUtils.createObjectNode();
         partialDto.forEach((fieldName, value) -> propertiesToUpdate.putPOJO(StringUtils.capitalize(fieldName), value));
         return propertiesToUpdate;
     }

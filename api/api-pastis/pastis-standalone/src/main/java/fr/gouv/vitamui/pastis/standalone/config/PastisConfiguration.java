@@ -38,7 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.standalone.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
@@ -54,6 +53,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.ModelAndView;
+import tools.jackson.databind.ObjectMapper;
 
 import static java.util.Collections.emptyMap;
 import static org.springframework.http.HttpStatus.NOT_FOUND;

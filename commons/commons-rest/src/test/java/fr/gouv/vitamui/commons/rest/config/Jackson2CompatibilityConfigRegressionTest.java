@@ -1,8 +1,5 @@
 package fr.gouv.vitamui.commons.rest.config;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -14,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * <p>When only the default Spring Boot 4 Jackson 3 converter
  * ({@link JacksonJsonHttpMessageConverter}, backed by {@code tools.jackson.databind.JsonMapper})
  * is active, it cannot instantiate the abstract Jackson 2 type
- * {@code com.fasterxml.jackson.databind.JsonNode}. Spring MVC raises an
+ * {@code tools.jackson.databind.JsonNode}. Spring MVC raises an
  * {@code HttpMessageConversionException} with "Type definition error" on any endpoint
  * declaring {@code @RequestBody JsonNode}.
  *
@@ -68,7 +68,7 @@ class Jackson2CompatibilityConfigRegressionTest {
     void whenOnlyJackson3ConverterPresent_thenJsonNodeDeserializationFails() {
         // Without Jackson2JsonNodeHttpMessageConverter, the Jackson 3 converter (JacksonJsonHttpMessageConverter)
         // raises HttpMessageConversionException because it cannot construct the abstract Jackson 2 type
-        // com.fasterxml.jackson.databind.JsonNode. The exception propagates out of MockMvc since
+        // tools.jackson.databind.JsonNode. The exception propagates out of MockMvc since
         // DefaultHandlerExceptionResolver does not handle HttpMessageConversionException.
         assertThatThrownBy(
             () ->
@@ -77,7 +77,7 @@ class Jackson2CompatibilityConfigRegressionTest {
                 )
         )
             .hasMessageContaining("Type definition error")
-            .hasMessageContaining("com.fasterxml.jackson.databind.JsonNode");
+            .hasMessageContaining("tools.jackson.databind.JsonNode");
     }
 
     @Test

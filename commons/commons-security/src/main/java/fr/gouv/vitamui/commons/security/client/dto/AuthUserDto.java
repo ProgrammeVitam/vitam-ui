@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.commons.security.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.AnalyticsDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -52,6 +51,7 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tools.jackson.core.type.TypeReference;
 
 import java.io.IOException;
 import java.io.Serial;

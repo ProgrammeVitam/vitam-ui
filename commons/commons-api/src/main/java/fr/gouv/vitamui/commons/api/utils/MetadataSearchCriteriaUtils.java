@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
@@ -48,6 +47,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
+import tools.jackson.databind.JsonNode;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -203,7 +203,13 @@ public final class MetadataSearchCriteriaUtils {
 
     public static JsonNode mapRequestToDslQuery(SearchCriteriaDto searchQuery) throws VitamClientException {
         SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
-        return selectMultiQuery.getFinalSelect();
+        try {
+            return (tools.jackson.databind.JsonNode) fr.gouv.vitamui.commons.utils.JsonUtils.readTree(
+                fr.gouv.vitam.common.json.JsonHandler.writeAsString(selectMultiQuery.getFinalSelect())
+            );
+        } catch (Exception e) {
+            throw new VitamClientException("Error mapping query", e);
+        }
     }
 
     /**

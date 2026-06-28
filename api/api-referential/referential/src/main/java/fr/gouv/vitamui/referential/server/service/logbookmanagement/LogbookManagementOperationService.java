@@ -27,9 +27,6 @@
 
 package fr.gouv.vitamui.referential.server.service.logbookmanagement;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ProcessQuery;
@@ -44,6 +41,9 @@ import org.apache.commons.lang3.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class LogbookManagementOperationService extends AbstractService {
@@ -67,7 +67,7 @@ public class LogbookManagementOperationService extends AbstractService {
     }
 
     public ProcessDetailDto searchOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery)
-        throws VitamClientException, JsonProcessingException {
+        throws VitamClientException, JacksonException {
         LOGGER.info("Get Operations Details with processQuery = {}", processQuery);
         if (processQuery.getStartDateMax() == null) {
             processQuery.setStartDateMax(START_MAX_DATE);
@@ -94,7 +94,7 @@ public class LogbookManagementOperationService extends AbstractService {
         VitamContext vitamContext,
         String actionId,
         String operationId
-    ) throws VitamClientException, JsonProcessingException, InterruptedException {
+    ) throws VitamClientException, JacksonException, InterruptedException {
         ProcessDetailDto operation;
         LOGGER.info("Update operation Id= {} with the action Id= {}", operationId, actionId);
         if (!EnumUtils.isValidEnum(OperationActionStatus.class, actionId)) {
@@ -113,7 +113,7 @@ public class LogbookManagementOperationService extends AbstractService {
         VitamContext vitamContext,
         String operationId,
         boolean stepCancellable
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         ProcessDetailDto operation;
         LOGGER.info("Cancel the operation Id=  {}", operationId);
         vitamOperationCommonService.cancelOperationProcessExecution(vitamContext, operationId, stepCancellable);
@@ -127,7 +127,7 @@ public class LogbookManagementOperationService extends AbstractService {
         VitamContext vitamContext = buildVitamContext();
         try {
             return this.searchOperationsDetails(vitamContext, processQuery);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             //TODO renam InternalServerException
             throw new InternalServerException("Unable to search operation details", e);
         }
@@ -137,7 +137,7 @@ public class LogbookManagementOperationService extends AbstractService {
         VitamContext vitamContext = buildVitamContext();
         try {
             return this.updateOperationActionProcess(vitamContext, actionId, operationId);
-        } catch (VitamClientException | JsonProcessingException | InterruptedException e) {
+        } catch (VitamClientException | JacksonException | InterruptedException e) {
             throw new InternalServerException("Unable to update operation action process", e);
         }
     }
@@ -146,7 +146,7 @@ public class LogbookManagementOperationService extends AbstractService {
         VitamContext vitamContext = buildVitamContext();
         try {
             return this.cancelOperationProcessExecution(vitamContext, operationId, stepCancellable);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to cancel operation process execution", e);
         }
     }

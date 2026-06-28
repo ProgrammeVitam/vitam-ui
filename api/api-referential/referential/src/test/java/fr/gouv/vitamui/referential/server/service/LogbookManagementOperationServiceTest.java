@@ -27,8 +27,6 @@
 
 package fr.gouv.vitamui.referential.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ItemStatus;
@@ -48,6 +46,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
@@ -83,7 +83,7 @@ class LogbookManagementOperationServiceTest {
 
     @Test
     void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct()
-        throws VitamClientException, JsonProcessingException { // Given
+        throws VitamClientException, JacksonException { // Given
         VitamContext vitamContext = new VitamContext(0);
         OperationActionStatus replay = OperationActionStatus.REPLAY;
         String operationId = "id";

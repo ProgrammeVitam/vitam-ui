@@ -28,12 +28,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.managementcontract.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -66,6 +60,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -128,7 +128,7 @@ public class ManagementContractService extends AbstractService {
             return converter.convertVitamListMgtContractToVitamUIMgtContractDtos(
                 managementContractResponseDto.getResults()
             );
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             LOGGER.error(MANAGEMENT_CONTRACT_NOT_FOUND + e.getMessage());
             throw new InternalServerException(MANAGEMENT_CONTRACT_NOT_FOUND, e);
         }
@@ -147,7 +147,7 @@ public class ManagementContractService extends AbstractService {
             return managementContractResponseDto.getResults().isEmpty()
                 ? null
                 : converter.convertVitamMgtContractToVitamUiDto(managementContractResponseDto.getResults().get(0));
-        } catch (VitamClientException | JsonProcessingException exception) {
+        } catch (VitamClientException | JacksonException exception) {
             LOGGER.error("Unable to get Management Contract");
             throw new InternalServerException("Unable to get Management Contract", exception);
         }
@@ -241,7 +241,7 @@ public class ManagementContractService extends AbstractService {
     }
 
     public ManagementContractDto patch(VitamContext vitamContext, final ManagementContractDto managementContractDto)
-        throws AccessExternalClientException, InvalidParseOperationException, JsonProcessingException {
+        throws AccessExternalClientException, InvalidParseOperationException, JacksonException {
         final String identifier = managementContractDto.getIdentifier();
         final ManagementContractModel managementContractModel = managementContractDtoToModelConverter.convert(
             managementContractDto
@@ -337,7 +337,7 @@ public class ManagementContractService extends AbstractService {
         try {
             ManagementContractDto dto = objectMapper.convertValue(partialDto, ManagementContractDto.class);
             return this.patch(vitamContext, dto);
-        } catch (AccessExternalClientException | InvalidParseOperationException | JsonProcessingException e) {
+        } catch (AccessExternalClientException | InvalidParseOperationException | JacksonException e) {
             LOGGER.error("Unable to patch management contract: {}", e.getMessage());
             throw new InternalServerException("Unable to patch management contract", e);
         }

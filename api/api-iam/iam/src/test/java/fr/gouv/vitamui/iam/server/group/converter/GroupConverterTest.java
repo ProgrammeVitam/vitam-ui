@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.iam.server.group.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -8,6 +7,7 @@ import fr.gouv.vitamui.iam.server.group.domain.Group;
 import fr.gouv.vitamui.iam.server.profile.dao.ProfileRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import tools.jackson.databind.JsonNode;
 
 import java.util.Arrays;
 

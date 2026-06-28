@@ -1,6 +1,5 @@
 package fr.gouv.vitamui.referential.server.service.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -23,6 +22,7 @@ import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -398,7 +398,7 @@ public class ImportCSVUtils {
     public static String errorToJson(ErrorImportFile errorImportFile) {
         try {
             return JsonUtils.toJson(errorImportFile);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InternalServerException(
                 "The object " + errorImportFile + " could not have been parsed into a JSON String"
             );

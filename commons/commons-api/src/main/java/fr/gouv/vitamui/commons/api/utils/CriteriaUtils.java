@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -46,6 +45,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.core.JacksonException;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -152,7 +152,7 @@ public final class CriteriaUtils {
                             .map(key -> key.replaceFirst(keyWithPoint, ""))
                             .collect(Collectors.toList());
                         checkContainsAuthorizedKeys(elemMatchQuery, elemAllowedKeys);
-                    } catch (final JsonProcessingException e) {
+                    } catch (final JacksonException e) {
                         throw new InvalidFormatException(e.getMessage(), e);
                     }
                     return;
@@ -177,7 +177,7 @@ public final class CriteriaUtils {
     public static String toJson(final QueryDto criteria) {
         try {
             return JsonUtils.toJson(criteria);
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             throw new InvalidFormatException(e.getMessage(), e);
         }
     }

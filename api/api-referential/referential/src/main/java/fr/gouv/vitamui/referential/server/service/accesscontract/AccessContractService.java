@@ -36,12 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.accesscontract;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -88,6 +82,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -163,7 +163,7 @@ public class AccessContractService extends AbstractService {
             } else {
                 return AccessContractConverter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Access Contract", e);
         }
     }
@@ -187,7 +187,7 @@ public class AccessContractService extends AbstractService {
             );
 
             return AccessContractConverter.convertVitamsToDtos(accessContractResponseDto.getResults());
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get Access Contracts", e);
         }
     }
@@ -242,7 +242,7 @@ public class AccessContractService extends AbstractService {
             LOGGER.debug("List of Access Contract EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = accessContractCommonService.findAccessContracts(vitamContext, query);
             return objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Can't find access contracts", e);
         }
     }

@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.referential.server.service.fileformat;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.api.AdminCollections;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -68,6 +64,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -120,7 +120,7 @@ public class FileFormatService extends AbstractService {
             } else {
                 return converter.convertVitamToDto(fileFormatResponseDto.getResults().get(0));
             }
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to get FileFormat", e);
         }
     }
@@ -137,7 +137,7 @@ public class FileFormatService extends AbstractService {
                 FileFormatResponseDto.class
             );
             return converter.convertVitamsToDtos(fileFormatResponseDto.getResults());
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to find fileFormats", e);
         }
     }
@@ -188,7 +188,7 @@ public class FileFormatService extends AbstractService {
             LOGGER.debug("Formats: {}", fileFormatResponseDto);
 
             return fileFormatResponseDto;
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new InternalServerException("Unable to find fileFormats", e);
         }
     }

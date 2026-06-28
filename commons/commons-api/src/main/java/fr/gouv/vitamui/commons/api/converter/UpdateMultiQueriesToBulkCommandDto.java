@@ -27,11 +27,11 @@
 
 package fr.gouv.vitamui.commons.api.converter;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.database.builder.request.multiple.UpdateMultiQuery;
 import fr.gouv.vitamui.commons.api.dtos.BulkCommandDto;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 import java.util.Set;
@@ -47,6 +47,15 @@ public class UpdateMultiQueriesToBulkCommandDto implements Converter<Set<UpdateM
             .map(UpdateMultiQuery::getFinalUpdate)
             .peek(objectNode -> objectNode.remove("$roots"))
             .peek(objectNode -> objectNode.remove("$filter"))
+            .map(objectNode -> {
+                try {
+                    return (tools.jackson.databind.node.ObjectNode) fr.gouv.vitamui.commons.utils.JsonUtils.readTree(
+                        fr.gouv.vitam.common.json.JsonHandler.writeAsString(objectNode)
+                    );
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            })
             .collect(Collectors.toList());
         return new BulkCommandDto(finalUpdateMultiQueries);
     }

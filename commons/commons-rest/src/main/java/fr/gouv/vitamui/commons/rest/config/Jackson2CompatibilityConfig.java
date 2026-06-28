@@ -26,15 +26,15 @@
  */
 package fr.gouv.vitamui.commons.rest.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.converter.Jackson2JsonNodeHttpMessageConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverters;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Registers {@link Jackson2JsonNodeHttpMessageConverter} ahead of the default Jackson 3 converter so that
- * {@code @RequestBody com.fasterxml.jackson.databind.JsonNode} parameters keep working under Spring Boot 4.
+ * {@code @RequestBody tools.jackson.databind.JsonNode} parameters keep working under Spring Boot 4.
  * <p>
  * Must be wired with {@link org.springframework.context.annotation.Import} in each microservice's server
  * config, since this class lives outside every application's base package and is therefore not picked up by

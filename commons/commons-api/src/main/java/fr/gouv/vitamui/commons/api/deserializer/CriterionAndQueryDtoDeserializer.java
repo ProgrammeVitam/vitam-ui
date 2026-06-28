@@ -36,18 +36,17 @@
  */
 package fr.gouv.vitamui.commons.api.deserializer;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
-import java.io.IOException;
 import java.io.Serial;
 
 public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
@@ -55,7 +54,7 @@ public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CriterionAndQueryDtoDeserializer.class);
 
     public CriterionAndQueryDtoDeserializer() {
-        this(null);
+        this(Object.class);
     }
 
     public CriterionAndQueryDtoDeserializer(Class<?> vc) {
@@ -66,27 +65,28 @@ public class CriterionAndQueryDtoDeserializer extends StdDeserializer<Object> {
     private static final long serialVersionUID = 1052745550909875288L;
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
         Object result = null;
-        JsonNode node = p.getCodec().readTree(p);
+        JsonNode node = ctxt.readTree(p);
 
-        // TODO refactor with a list of allowed types [Criterion.class, QueryDto.class]
-        try {
-            result = JsonUtils.treeToValue(node, Criterion.class);
-        } catch (IOException e) {
-            LOGGER.debug("Node is not a " + Criterion.class, e);
-        }
-
-        if (result == null) {
+        if (node.has("key") || node.has("value") || node.has("operator")) {
+            try {
+                result = JsonUtils.treeToValue(node, Criterion.class);
+            } catch (Exception e) {
+                LOGGER.debug("Node is not a " + Criterion.class, e);
+            }
+        } else if (node.has("queryOperator") || node.has("criteria")) {
             try {
                 result = JsonUtils.treeToValue(node, QueryDto.class);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 LOGGER.debug("Node is not a " + QueryDto.class, e);
             }
         }
 
         if (result == null || node.isNull()) {
-            throw new IOException("Parsing error : node should be of type Criterion or Query : invalid node : " + node);
+            throw new IllegalArgumentException(
+                "Parsing error : node should be of type Criterion or Query : invalid node : " + node
+            );
         }
 
         return result;

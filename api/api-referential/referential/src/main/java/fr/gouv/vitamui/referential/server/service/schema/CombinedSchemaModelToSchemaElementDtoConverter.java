@@ -27,7 +27,6 @@
 
 package fr.gouv.vitamui.referential.server.service.schema;
 
-import com.fasterxml.jackson.databind.util.StdConverter;
 import fr.gouv.vitam.common.model.administration.CombinedSchemaModel;
 import fr.gouv.vitam.common.model.administration.schema.SchemaStringSizeType;
 import fr.gouv.vitamui.referential.common.dto.ControlDto;
@@ -38,6 +37,7 @@ import fr.gouv.vitamui.referential.common.model.ControlType;
 import fr.gouv.vitamui.referential.common.model.DataType;
 import fr.gouv.vitamui.referential.common.model.EffectiveCardinality;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.util.StdConverter;
 
 import java.util.Objects;
 import java.util.Optional;

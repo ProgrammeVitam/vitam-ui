@@ -1,12 +1,12 @@
 package fr.gouv.vitamui.commons.api.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitamui.commons.api.domain.AccessContractDto;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.util.List;
 import java.util.Map;

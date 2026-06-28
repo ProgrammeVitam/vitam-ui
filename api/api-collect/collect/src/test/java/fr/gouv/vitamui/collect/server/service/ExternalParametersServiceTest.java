@@ -29,7 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -46,6 +45,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JacksonException;
 
 import java.util.Map;
 
@@ -101,7 +101,7 @@ public class ExternalParametersServiceTest {
     }
 
     @Test
-    void shouldRetrieveTheRightAccessContractWhenDefined() throws VitamClientException, JsonProcessingException {
+    void shouldRetrieveTheRightAccessContractWhenDefined() throws VitamClientException, JacksonException {
         Map<String, String> myExternalParameter = Map.of(
             ExternalParametersService.PARAM_ACCESS_CONTRACT_NAME,
             SOME_ACCESS_CONTRACT

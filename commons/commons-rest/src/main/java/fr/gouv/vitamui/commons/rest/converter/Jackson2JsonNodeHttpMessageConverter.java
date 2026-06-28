@@ -26,20 +26,20 @@
  */
 package fr.gouv.vitamui.commons.rest.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Allows Jackson 2 / Jackson 3 coexistence for {@code @RequestBody com.fasterxml.jackson.databind.JsonNode}
+ * Allows Jackson 2 / Jackson 3 coexistence for {@code @RequestBody tools.jackson.databind.JsonNode}
  * parameters. Spring Boot 4 registers a Jackson 3 ({@code tools.jackson}) converter by default, which cannot
  * instantiate the abstract Jackson 2 {@link JsonNode} type. This converter reads the raw request body and parses
  * it explicitly with a Jackson 2 {@link ObjectMapper}.

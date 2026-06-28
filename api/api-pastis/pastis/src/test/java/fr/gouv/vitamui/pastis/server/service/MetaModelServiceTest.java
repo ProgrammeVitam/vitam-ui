@@ -38,7 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.server.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.model.administration.schema.SchemaResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileVersion;
@@ -51,6 +50,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.skyscreamer.jsonassert.JSONCompareMode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.commons.logbook.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.GlobalDataRest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
@@ -12,6 +10,8 @@ import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public class LogbookUtilsTest {
     }
 
     @Test
-    void testGetLogbookOperationStatus_whenParentOperationCompleted() throws JsonProcessingException {
+    void testGetLogbookOperationStatus_whenParentOperationCompleted() throws JacksonException {
         // Given
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvId("1");
@@ -47,7 +47,7 @@ public class LogbookUtilsTest {
     }
 
     @Test
-    void testGetLogbookOperationStatus_whenChildOperationCompleted() throws JsonProcessingException {
+    void testGetLogbookOperationStatus_whenChildOperationCompleted() throws JacksonException {
         // Given
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvId("0");
@@ -74,7 +74,7 @@ public class LogbookUtilsTest {
     }
 
     @Test
-    void testGetLogbookOperationStatus_whenChildOperationNotParentType() throws JsonProcessingException {
+    void testGetLogbookOperationStatus_whenChildOperationNotParentType() throws JacksonException {
         // Given
         final LogbookOperation operation = new LogbookOperation();
         operation.setEvId("0");

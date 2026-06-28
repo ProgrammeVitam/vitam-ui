@@ -39,9 +39,6 @@
 
 package fr.gouv.vitamui.archives.search.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.facet.RangeFacetValue;
@@ -64,6 +61,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -137,8 +137,7 @@ public class ArchiveSearchFacetsService {
         CriteriaCategory category,
         boolean trackTotalHits,
         VitamContext vitamContext
-    )
-        throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    ) throws InvalidParseOperationException, InvalidCreateOperationException, VitamClientException, JacksonException {
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>(searchQuery.getCriteriaList());
         criteriaList.add(
             new SearchCriteriaEltDto(
@@ -234,7 +233,7 @@ public class ArchiveSearchFacetsService {
         CriteriaCategory category,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         Map<String, Long> finalActionCountMap = new HashMap<>();
         finalActionCountMap.put(FINAL_ACTION_KEEP_FIELD_VALUE, 0l);
         finalActionCountMap.put(FINAL_ACTION_DESTROY_FIELD_VALUE, 0l);
@@ -289,7 +288,7 @@ public class ArchiveSearchFacetsService {
         List<FacetResultsDto> indexedRulesFacets,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         FacetResultsDto finalActionIndexedFacet = new FacetResultsDto();
         if (APPRAISAL_RULE.equals(category)) {
             List<FacetBucketDto> finalActionBuckets = computeFinalActionFacetsForComputedAppraisalRules(
@@ -321,7 +320,7 @@ public class ArchiveSearchFacetsService {
         SearchCriteriaDto searchQuery,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
+    ) throws InvalidCreateOperationException, VitamClientException, JacksonException {
         List<FacetResultsDto> facetResults = new ArrayList<>();
         if (searchQuery.isComputeMgtRulesFacets()) {
             try {
@@ -362,7 +361,7 @@ public class ArchiveSearchFacetsService {
         CriteriaCategory category,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>(searchQuery.getCriteriaList());
 
         criteriaListFacet.add(
@@ -402,7 +401,7 @@ public class ArchiveSearchFacetsService {
         List<SearchCriteriaEltDto> criteriaList,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         SearchCriteriaDto facetSearchQuery = new SearchCriteriaDto();
         facetSearchQuery.setCriteriaList(criteriaList);
         facetSearchQuery.setSize(1);
@@ -423,7 +422,7 @@ public class ArchiveSearchFacetsService {
         CriteriaCategory category,
         boolean trackTotalHits,
         VitamContext vitamContext
-    ) throws VitamClientException, JsonProcessingException {
+    ) throws VitamClientException, JacksonException {
         List<SearchCriteriaEltDto> criteriaListFacet = new ArrayList<>();
         criteriaListFacet.addAll(initialCriteriaList);
         SearchCriteriaDto countSearchQuery = new SearchCriteriaDto();

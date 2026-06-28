@@ -40,11 +40,11 @@ package fr.gouv.vitamui.pastis.common.dto.pua;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import lombok.Data;
 import org.json.JSONObject;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.module.afterburner.AfterburnerModule;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class PuaMetadataDetails {
 
     String pattern;
 
-    public String serialiseString() throws JsonProcessingException {
+    public String serialiseString() throws JacksonException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new AfterburnerModule());
         String result = mapper.writeValueAsString(this);

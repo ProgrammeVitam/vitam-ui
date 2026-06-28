@@ -29,9 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionValidationMode;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -56,6 +53,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -175,7 +175,7 @@ class TransactionServiceTest {
 
     @Test
     void shouldGetTransactionByIdWithSuccess()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException {
         // GIVEN
         TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
@@ -211,7 +211,7 @@ class TransactionServiceTest {
 
     @Test
     void shouldUpdateTransactionWithSuccess()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException {
         // GIVEN
         TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
@@ -273,7 +273,7 @@ class TransactionServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUpdateArchiveUnitsFromFile()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException, JSONException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException, JSONException {
         // GIVEN
         List<VitamErrorDetails> errorDetail = List.of(new VitamErrorDetails("ERROR_KEY", null));
         RequestResponseOK<JsonNode> fakeResponse = new RequestResponseOK<>();
@@ -313,7 +313,7 @@ class TransactionServiceTest {
 
     @Test
     void shouldDownloadSipTransactionWithSuccess()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException {
         // GIVEN
         Response mockResponse = Response.ok().build();
         TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);
@@ -340,7 +340,7 @@ class TransactionServiceTest {
 
     @Test
     void shouldReturnResponseWhenDownloadSipTransaction()
-        throws VitamClientException, InvalidParseOperationException, JsonProcessingException {
+        throws VitamClientException, InvalidParseOperationException, JacksonException {
         // GIVEN
         Response mockResponse = Response.status(Response.Status.ACCEPTED).build();
         TransactionDto transactionDto = factory.manufacturePojo(TransactionDto.class);

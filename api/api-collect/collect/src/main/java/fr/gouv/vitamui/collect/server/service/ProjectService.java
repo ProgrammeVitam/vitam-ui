@@ -29,10 +29,6 @@
 
 package fr.gouv.vitamui.collect.server.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
@@ -67,6 +63,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -213,7 +213,7 @@ public class ProjectService {
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT, e);
             throw new InternalServerException(UNABLE_TO_RETRIEVE_PROJECT, e);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE, e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
@@ -432,7 +432,7 @@ public class ProjectService {
                 return null;
             }
             return collectTransactionDtos.get(collectTransactionDtos.size() - 1);
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException | JacksonException e) {
             throw new VitamClientException("Unable to find transactions by project : ", e);
         }
     }

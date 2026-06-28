@@ -1,7 +1,5 @@
 package fr.gouv.vitamui.commons.mongo.dao;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.mongo.domain.Address;
@@ -16,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import tools.jackson.core.exc.StreamReadException;
+import tools.jackson.databind.DatabindException;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -40,7 +40,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    void testBuildPaginatedNestedValues() throws JsonParseException, JsonMappingException, IOException {
+    void testBuildPaginatedNestedValues() throws StreamReadException, DatabindException, IOException {
         initializeData();
         final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
             Address.class,
@@ -76,7 +76,7 @@ public class PersonRepositoryPaginatedNestedObjectsTests extends AbstractMongoTe
     }
 
     @Test
-    void testBuildPaginatedNestedValuesWithOrder() throws JsonParseException, JsonMappingException, IOException {
+    void testBuildPaginatedNestedValuesWithOrder() throws StreamReadException, DatabindException, IOException {
         initializeData();
         final PaginatedValuesDto<Address> addresses = repository.getPaginatedNestedValues(
             Address.class,
