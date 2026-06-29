@@ -80,6 +80,11 @@ export enum ImportType {
   SIP = 'SIP',
 }
 
+export enum AttachmentMode {
+  TREE = 'TREE',
+  GUID = 'GUID',
+}
+
 export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 @Component({
@@ -117,11 +122,13 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   Workflow = Workflow;
   FilingPlanMode = FilingPlanMode;
   FlowType = FlowType;
+  FixedAttachmentMode = AttachmentMode;
   // http calls
   isLoading: boolean;
 
   selectedWorkflow: Workflow = Workflow.MANUAL;
   selectedFlowType: FlowType = FlowType.FIX;
+  fixedAttachmentMode: AttachmentMode = AttachmentMode.TREE;
   stepIndex = 0;
 
   projectForm: FormGroup;
@@ -254,6 +261,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.selectedFlowType = value;
   }
 
+  setFixedAttachmentMode(value: AttachmentMode) {
+    this.fixedAttachmentMode = value;
+    // Reset the unused control to keep only one source of attachment position
+    if (value === AttachmentMode.TREE) {
+      this.projectForm.get('unitUp')?.setValue(null);
+    } else {
+      this.linkParentIdControl.setValue({ included: [], excluded: [] });
+    }
+  }
+
   getSchemaElementDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
@@ -317,6 +334,17 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     return this.projectForm.controls.rulesParams.invalid;
   }
 
+  get defaultAttachmentEnabled(): boolean {
+    return this.projectForm.get('defaultAttachmentEnabled')?.value === true;
+  }
+
+  onDefaultAttachmentToggle(): void {
+    if (!this.defaultAttachmentEnabled) {
+      this.linkParentIdControl.setValue({ included: [], excluded: [] });
+      this.projectForm.get('unitUp')?.setValue(null);
+    }
+  }
+
   /*** Step 5 : Téléchargements ***/
   close() {
     this.dialogRef.close(true);
@@ -341,6 +369,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       legalStatus: [null],
       // for unitUp :
       linkParentIdControl: [{ included: [], excluded: [] }],
+      // toggle for the default fixed attachment position (key/value rules flow)
+      defaultAttachmentEnabled: [false],
       // for unitUps :
       rulesParams: this.formBuilder.array([], Validators.required),
       comment: [null],
@@ -378,28 +408,44 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
-      project.unitUp =
-        this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant
-          ? this.linkParentIdControl.value.included[0]
-          : this.projectForm.value.unitUp;
+      project.unitUp = this.resolveFixedUnitUp();
     } else {
       project.unitUps = this.convertRuleParamsToMetadata();
+      // Default fixed attachment position applied when no rule matches
+      if (this.defaultAttachmentEnabled) {
+        project.unitUp = this.resolveFixedUnitUp();
+      }
     }
     return project as Project;
   }
 
+  private resolveFixedUnitUp(): string {
+    return this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
+      ? this.linkParentIdControl.value.included[0]
+      : this.projectForm.value.unitUp;
+  }
+
   private convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
-    return this.rulesParams.controls.map((ruleParamControl: FormGroup) => {
-      const ruleParam = ruleParamControl.value;
-      const metadataKey = ruleParam.ontologyList.ApiField;
-      const metadataValue = ruleParam.metadataValue;
-      return {
-        metadataKey: metadataKey,
-        metadataValue: metadataValue,
-        unitUp:
-          this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
-      };
-    });
+    return (
+      this.rulesParams.controls
+        // Only keep fully filled rules (incomplete ones are allowed when a default attachment is set)
+        .filter((ruleParamControl: FormGroup) => ruleParamControl.valid && ruleParamControl.value.ontologyList)
+        .map((ruleParamControl: FormGroup) => {
+          const ruleParam = ruleParamControl.value;
+          const metadataKey = ruleParam.ontologyList.ApiField;
+          const metadataValue = ruleParam.metadataValue;
+          return {
+            metadataKey: metadataKey,
+            metadataValue: metadataValue,
+            unitUp:
+              this.connectedToArchivingSystem &&
+              this.connectedToLocalEasWithCurrentTenant &&
+              ruleParam.attachmentMode === AttachmentMode.TREE
+                ? ruleParam.unitUp.included[0]
+                : ruleParam.unitUp,
+          };
+        })
+    );
   }
 
   get rulesParams(): FormArray<FormGroup> {
@@ -418,6 +464,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     const newRuleParamForm = this.formBuilder.group({
       ontologyList: ontologyListControl,
       metadataValue: metadataValueControl,
+      // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
+      attachmentMode: [AttachmentMode.TREE],
       // When not connected to local EAS (different tenant or SAE), unitUp is a simple string
       unitUp:
         this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant
@@ -426,6 +474,19 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     });
 
     this.rulesParams.push(newRuleParamForm);
+  }
+
+  setRuleAttachmentMode(ruleParamForm: FormGroup, mode: AttachmentMode) {
+    ruleParamForm.get('attachmentMode')?.setValue(mode);
+    const unitUpControl = ruleParamForm.get('unitUp');
+    if (mode === AttachmentMode.TREE) {
+      unitUpControl?.setValue({ included: [], excluded: [] });
+      unitUpControl?.setValidators(oneIncludedNodeRequired());
+    } else {
+      unitUpControl?.setValue('');
+      unitUpControl?.setValidators(Validators.required);
+    }
+    unitUpControl?.updateValueAndValidity();
   }
 
   deleteRuleParam(index: number) {

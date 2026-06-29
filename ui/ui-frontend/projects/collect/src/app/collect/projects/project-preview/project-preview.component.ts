@@ -95,9 +95,10 @@ import {
   VitamUICommonModule,
   VitamUILibraryModule,
   SnackBarService,
+  TenantSelectionService,
   Workflow,
 } from 'vitamui-library';
-import { LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
+import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
 
 @Component({
   selector: 'app-project-preview',
@@ -133,6 +134,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   private renderer = inject(Renderer2);
   private schemaService = inject(SchemaService);
   private externalReferentialService = inject(ExternalReferentialService);
+  private tenantSelectionService = inject(TenantSelectionService);
 
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
@@ -148,6 +150,10 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   checkEditConfigurationRole = new Observable<boolean>();
 
   protected readonly FilingPlanMode = FilingPlanMode;
+  protected readonly FixedAttachmentMode = AttachmentMode;
+
+  // Attachment position mode (Arbres & Plans tree vs free GUID input) for the fixed/default position
+  fixedAttachmentMode: AttachmentMode = AttachmentMode.TREE;
 
   form: FormGroup;
 
@@ -288,7 +294,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       this.showNormalPanel();
       this.configForm();
       this.initForm();
-      if (!project.unitUp && project.unitUps) {
+      // Build the rules FormArray whenever the project carries rules, even if it also has a default attachment position
+      if (project.unitUps?.length) {
         this.initRuleParams(project);
       }
     });
@@ -338,11 +345,17 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
           metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
         });
 
+        // Restore the saved position: tree selection if the GUID is a node of the filing plan, free GUID input otherwise
+        const attachmentMode = this.resolveAttachmentMode(metadataUnitUp.unitUp);
+        const useTree = this.connectedToLocalEasWithCurrentTenant && attachmentMode === AttachmentMode.TREE;
+
         this.unitUps.push(
           this.formBuilder.group({
             ontologyList: ontologyListControl,
             metadataValue: metadataValueControl,
-            unitUp: this.project().connectedToArchivingSystem
+            // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
+            attachmentMode: [attachmentMode],
+            unitUp: useTree
               ? [
                   {
                     included: metadataUnitUp.unitUp ? [metadataUnitUp.unitUp] : [],
@@ -350,11 +363,19 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
                   },
                   oneIncludedNodeRequired(),
                 ]
-              : this.formBuilder.control(metadataUnitUp.unitUp),
+              : this.formBuilder.control(metadataUnitUp.unitUp, this.connectedToLocalEasWithCurrentTenant ? Validators.required : null),
           }),
         );
       });
     });
+  }
+
+  /** Determines whether a saved attachment position was picked in the filing plan (tree) or typed as a free GUID. */
+  private resolveAttachmentMode(unitId: string): AttachmentMode {
+    if (!this.connectedToLocalEasWithCurrentTenant || !unitId) {
+      return AttachmentMode.TREE;
+    }
+    return this.units?.some((unit) => unit['#id'] === unitId) ? AttachmentMode.TREE : AttachmentMode.GUID;
   }
 
   get unitUps(): FormArray<FormGroup> {
@@ -382,7 +403,9 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     const newRuleParamForm = this.formBuilder.group({
       ontologyList: ontologyListControl,
       metadataValue: metadataValueControl,
-      unitUp: this.project().connectedToArchivingSystem
+      // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
+      attachmentMode: [AttachmentMode.TREE],
+      unitUp: this.connectedToLocalEasWithCurrentTenant
         ? [
             {
               included: [],
@@ -445,9 +468,86 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       legalStatus: [null],
       unitUp: [null],
       unitUps: this.formBuilder.array([], this.project().unitUps?.length ? Validators.required : null),
+      // toggle for the default fixed attachment position (key/value rules flow)
+      defaultAttachmentEnabled: [false],
       automaticIngest: [],
       transformationRules: [],
     });
+  }
+
+  get connectedToLocalEasWithCurrentTenant(): boolean {
+    const currentTenantId = this.tenantSelectionService.getSelectedTenant()?.identifier;
+    return (
+      this.project().connectedToArchivingSystem &&
+      this.project().archivingSystemId === LOCAL_ARCHIVING_SYSTEM_ID &&
+      this.project().archivingSystemTenant === currentTenantId
+    );
+  }
+
+  get defaultAttachmentEnabled(): boolean {
+    return this.form?.get('defaultAttachmentEnabled')?.value === true;
+  }
+
+  onDefaultAttachmentToggle(): void {
+    if (!this.defaultAttachmentEnabled) {
+      this.fixedAttachmentMode = AttachmentMode.TREE;
+      this.form.get('unitUp')?.setValue(this.connectedToLocalEasWithCurrentTenant ? { included: [], excluded: [] } : null);
+    }
+    this.form.markAsDirty();
+  }
+
+  setFixedAttachmentMode(value: AttachmentMode): void {
+    this.fixedAttachmentMode = value;
+    // The single unitUp control holds either a tree selection ({ included, excluded }) or a free GUID string
+    this.form.get('unitUp')?.setValue(value === AttachmentMode.TREE ? { included: [], excluded: [] } : '');
+    this.form.markAsDirty();
+  }
+
+  setRuleAttachmentMode(ruleParamForm: FormGroup, mode: AttachmentMode): void {
+    ruleParamForm.get('attachmentMode')?.setValue(mode);
+    const unitUpControl = ruleParamForm.get('unitUp');
+    if (mode === AttachmentMode.TREE) {
+      unitUpControl?.setValue({ included: [], excluded: [] });
+      unitUpControl?.setValidators(oneIncludedNodeRequired());
+    } else {
+      unitUpControl?.setValue('');
+      unitUpControl?.setValidators(Validators.required);
+    }
+    unitUpControl?.updateValueAndValidity();
+    this.form.markAsDirty();
+  }
+
+  getNodeTitle(selectedNode?: { unitUp?: { included?: string[] } | string }): string {
+    const unitUp = selectedNode?.unitUp;
+    const vitamId = typeof unitUp === 'string' ? unitUp : unitUp?.included?.[0];
+    if (!vitamId) return '';
+    const name = this.getUnitName(vitamId);
+    return name ? ` : ${name}` : ` : ${vitamId}`;
+  }
+
+  /** Mirrors create-project's step validation: rules valid OR a default attachment position filled. */
+  attachmentStepInvalid(): boolean {
+    if (!this.project().unitUps?.length) {
+      // Fixed attachment flow: the position is optional
+      return false;
+    }
+    const rulesValid = this.unitUps.valid;
+    const defaultFilled = this.defaultAttachmentEnabled && !this.defaultAttachmentPositionIsEmpty();
+    return !(rulesValid || defaultFilled);
+  }
+
+  private defaultAttachmentPositionIsEmpty(): boolean {
+    if (this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE) {
+      return !this.form.get('unitUp')?.value?.included?.length;
+    }
+    return !this.form.get('unitUp')?.value;
+  }
+
+  private resolveFixedUnitUp(): string {
+    const value = this.form.value.unitUp;
+    return this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
+      ? (value?.included?.[0] ?? null)
+      : value || null;
   }
 
   isModified(): boolean {
@@ -478,12 +578,17 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       this.form.get('archiveProfile').setValue(this.project().archiveProfile);
       this.form.get('acquisitionInformation').setValue(this.project().acquisitionInformation);
       this.form.get('legalStatus').setValue(this.project().legalStatus);
+      // Restore the saved position mode: tree if the GUID is a node of the filing plan, free GUID input otherwise
+      this.fixedAttachmentMode = this.resolveAttachmentMode(this.project().unitUp);
+      // A rules-flow project may also carry a fixed default attachment position (project.unitUp)
+      const hasRules = !!this.project().unitUps?.length;
+      this.form.get('defaultAttachmentEnabled').setValue(hasRules && !!this.project().unitUp);
       this.form
         .get('unitUp')
         .setValue(
-          this.project().connectedToArchivingSystem
+          this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
             ? { included: this.project().unitUp ? [this.project().unitUp] : [], excluded: [] }
-            : this.project().unitUp,
+            : (this.project().unitUp ?? null),
         );
       this.form.get('automaticIngest').setValue(this.project().automaticIngest);
       this.form.get('transformationRules').setValue(this.project().transformationRules);
@@ -543,6 +648,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   async updateProject(updateTransactions: boolean) {
+    const isRulesFlow = !!this.project().unitUps?.length;
     const projectToUpdate = {
       ...this.form.value,
       id: this.project().id,
@@ -552,24 +658,24 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       archivingSystemId: this.project().archivingSystemId,
       archivingSystemTenant: this.project().archivingSystemTenant,
       connectedToArchivingSystem: this.project().connectedToArchivingSystem,
-      unitUp: this.form.value.unitUp
-        ? (this.form.value.unitUp.included ? this.form.value.unitUp.included[0] : this.form.value.unitUp) || null
-        : null,
-      unitUps: this.form.value.unitUps?.map(
-        (ruleParam: {
-          ontologyList: { ApiField: string };
-          metadataValue: string;
-          unitUp: {
-            included: string[];
-          };
-        }) => {
-          return {
-            metadataKey: ruleParam.ontologyList.ApiField,
-            metadataValue: ruleParam.metadataValue,
-            unitUp: this.project().connectedToArchivingSystem ? ruleParam.unitUp.included[0] : ruleParam.unitUp,
-          };
-        },
-      ),
+      // Fixed flow: the position; rules flow: the optional default attachment position
+      unitUp: isRulesFlow ? (this.defaultAttachmentEnabled ? this.resolveFixedUnitUp() : null) : this.resolveFixedUnitUp(),
+      unitUps: isRulesFlow
+        ? this.unitUps.controls
+            // Only keep fully filled rules (incomplete ones are allowed when a default attachment is set)
+            .filter((ruleParamControl: FormGroup) => ruleParamControl.valid && ruleParamControl.value.ontologyList)
+            .map((ruleParamControl: FormGroup) => {
+              const ruleParam = ruleParamControl.value;
+              return {
+                metadataKey: ruleParam.ontologyList.ApiField,
+                metadataValue: ruleParam.metadataValue,
+                unitUp:
+                  this.connectedToLocalEasWithCurrentTenant && ruleParam.attachmentMode === AttachmentMode.TREE
+                    ? ruleParam.unitUp.included[0]
+                    : ruleParam.unitUp,
+              };
+            })
+        : [],
     };
 
     // Retrieve the correct update function depending on the tab that has been edited
