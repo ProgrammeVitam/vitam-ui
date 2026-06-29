@@ -62,7 +62,9 @@ import {
   SecurityService,
   UnitType,
   VitamuiRoles,
+  VitamTenantConfigService,
 } from 'vitamui-library';
+import { tenantConfigServiceMock } from 'vitamui-library/testing';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';
@@ -219,6 +221,10 @@ describe('ArchiveSearchComponent', () => {
         { provide: SearchCriteriaService, useValue: searchCriteriaServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
+        {
+          provide: VitamTenantConfigService,
+          useValue: tenantConfigServiceMock,
+        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
@@ -237,14 +243,6 @@ describe('ArchiveSearchComponent', () => {
 
     it('Component should be created', () => {
       expect(component).toBeTruthy();
-    });
-
-    it('should have the corrects values', () => {
-      expect(component.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD).toEqual(100000);
-      expect(component.DEFAULT_DIP_EXPORT_THRESHOLD).toEqual(100000);
-      expect(component.DEFAULT_ELIMINATION_THRESHOLD).toEqual(10000);
-      expect(component.DEFAULT_TRANSFER_THRESHOLD).toEqual(100000);
-      expect(component.DEFAULT_UPDATE_MGT_RULES_THRESHOLD).toEqual(100000);
     });
 
     it('should be true', () => {

@@ -51,6 +51,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   VitamuiSelectOptions,
+  VitamTenantConfigService,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -95,6 +96,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   private managementRulesValidatorService = inject(ManagementRulesValidatorService);
   private translateService = inject(TranslateService);
   private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
 
@@ -413,8 +415,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
           next: (data) => {
             this.itemsWithSameRule = data.totalResults.toString();
             if (
-              data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ||
-              this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+              this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
             ) {
               this.itemsToUpdate = this.resultNumberToShow;
             } else {

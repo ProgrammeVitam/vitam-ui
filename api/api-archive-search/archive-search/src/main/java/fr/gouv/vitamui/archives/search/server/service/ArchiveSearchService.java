@@ -88,6 +88,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VersionsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import jakarta.ws.rs.core.Response;
 import lombok.Getter;
@@ -168,7 +169,7 @@ public class ArchiveSearchService {
     private final ArchiveSearchFacetsService archiveSearchFacetsService;
     private final PersistentIdentifierService persistentIdentifierService;
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
     private final SecurityService securityService;
     private final LogbookService logbookService;
 
@@ -181,7 +182,7 @@ public class ArchiveSearchService {
         final ArchiveSearchFacetsService archiveSearchFacetsService,
         final PersistentIdentifierService persistentIdentifierService,
         final ArchiveSearchThresholdService archiveSearchThresholdService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
+        ExternalParametersService externalParametersService,
         SecurityService securityService,
         LogbookService logbookService
     ) {
@@ -192,7 +193,7 @@ public class ArchiveSearchService {
         this.archiveSearchFacetsService = archiveSearchFacetsService;
         this.persistentIdentifierService = persistentIdentifierService;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
         this.securityService = securityService;
         this.logbookService = logbookService;
     }
@@ -202,7 +203,7 @@ public class ArchiveSearchService {
         try {
             Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
             thresholdOpt.ifPresent(searchQuery::setThreshold);
-            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
 
             LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
             archiveSearchAgenciesService.mapAgenciesNameToCodes(searchQuery, vitamContext);
@@ -292,7 +293,7 @@ public class ArchiveSearchService {
             final JsonNode fillingHoldingQuery = createQueryForHoldingFillingUnit();
             JsonNode archiveUnits = searchArchiveUnits(
                 fillingHoldingQuery,
-                archiveSearchExternalParametersService.buildVitamContextFromExternalParam()
+                externalParametersService.buildVitamContextFromExternalParam()
             );
             return objectMapper.treeToValue(archiveUnits, VitamUISearchResponseDto.class);
         } catch (JsonProcessingException e) {
@@ -302,7 +303,7 @@ public class ArchiveSearchService {
 
     public ResultsDto findArchiveUnitById(String id) throws VitamClientException {
         try {
-            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
             LOGGER.debug("Archive Unit Id : {}", id);
             String re = StringUtils.chop(
                 unitCommonService
@@ -320,7 +321,7 @@ public class ArchiveSearchService {
     }
 
     public ResultsDto findObjectById(String id) throws VitamClientException {
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         return findObjectById(id, vitamContext);
     }
 
@@ -396,7 +397,7 @@ public class ArchiveSearchService {
 
     public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto) throws VitamClientException {
         LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
         ObjectNode dslRequest = (ObjectNode) jsonNode;
         RulesUpdateCommonService.deleteAttributesFromObjectNode(
@@ -428,7 +429,7 @@ public class ArchiveSearchService {
         LOGGER.debug("calling select Units With Inherited Rules by criteria {} ", searchQuery.toString());
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(searchQuery::setThreshold);
-        final VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         archiveSearchAgenciesService.mapAgenciesNameToCodes(searchQuery, vitamContext);
         JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
         RulesUpdateCommonService.deleteAttributesFromObjectNode((ObjectNode) dslQuery, DSL_QUERY_FACETS);
@@ -452,7 +453,7 @@ public class ArchiveSearchService {
 
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(aLong -> reclassificationCriteriaDto.getSearchCriteriaDto().setThreshold(aLong));
-        final VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         JsonNode dslQuery = mapRequestToDslQuery(reclassificationCriteriaDto.getSearchCriteriaDto());
         ArrayNode array = JsonHandler.createArrayNode();
         ((ObjectNode) dslQuery).putPOJO(ACTION, reclassificationCriteriaDto.getAction());
@@ -479,7 +480,7 @@ public class ArchiveSearchService {
     public PersistentIdentifierResponseDto findUnitsByPersistentIdentifier(String identifier)
         throws VitamClientException {
         LOGGER.debug("Persistent identifier : {}", identifier);
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         RequestResponse<JsonNode> response = persistentIdentifierService.findUnitsByPersistentIdentifier(
             identifier,
             vitamContext
@@ -496,7 +497,7 @@ public class ArchiveSearchService {
         throws VitamClientException {
         LOGGER.debug("Persistent identifier : {}", identifier);
 
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         RequestResponse<JsonNode> response = persistentIdentifierService.findObjectsByPersistentIdentifier(
             identifier,
             vitamContext
@@ -515,7 +516,7 @@ public class ArchiveSearchService {
             id,
             usage,
             version,
-            archiveSearchExternalParametersService.buildVitamContextFromExternalParam()
+            externalParametersService.buildVitamContextFromExternalParam()
         );
     }
 
@@ -582,7 +583,7 @@ public class ArchiveSearchService {
 
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(reassignRequestDto.getSearchCriteria()::setThreshold);
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         JsonNode dslQuery = prepareDslQuery(reassignRequestDto.getSearchCriteria(), vitamContext);
         JsonNode reassignmentDsl = buildReassignmentDsl(
             dslQuery,
@@ -672,7 +673,7 @@ public class ArchiveSearchService {
             searchCriteriaCopy.getCriteriaList().add(holdingUnitCriteria);
 
             // Build and execute query
-            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
             JsonNode dslQuery = mapRequestToDslQuery(searchCriteriaCopy);
             JsonNode response = searchArchiveUnits(dslQuery, vitamContext);
 
@@ -708,7 +709,7 @@ public class ArchiveSearchService {
     private List<LogbookOperationDto> retrieveOperationsInformation(List<String> operationIds)
         throws VitamClientException {
         try {
-            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
 
             // Convert to Set to remove duplicates and optimize query
             Set<String> uniqueOperationIds = new HashSet<>(operationIds);
@@ -735,7 +736,7 @@ public class ArchiveSearchService {
 
     private void validateSingleOriginatingAgency(SearchCriteriaDto searchCriteria) throws VitamClientException {
         try {
-            VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
             // Add facet for originating agency
             List<TermsFacet> facets = new ArrayList<>();
             TermsFacet originatingAgencyFacet = new TermsFacet(

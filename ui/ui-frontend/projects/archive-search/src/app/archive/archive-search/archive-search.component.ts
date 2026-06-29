@@ -101,6 +101,7 @@ import {
   VALID_COMPUTED_INHERITED_RULES_FACET,
   VitamuiRoles,
   WAITING_RECALCULATE,
+  VitamTenantConfigService,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -158,19 +159,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private reassignmentDialogService = inject(ReassignmentDialogService);
   protected configService = inject(ConfigService);
   private securityService = inject(SecurityService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   readonly UnitType = UnitType;
   readonly ReassignmentMode = ReassignmentMode;
-
-  DEFAULT_RESULT_THRESHOLD = 10_000;
-  DEFAULT_ELIMINATION_THRESHOLD = 10_000;
-  DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100_000;
-  DEFAULT_DIP_EXPORT_THRESHOLD = 100_000;
-  DEFAULT_TRANSFER_THRESHOLD = 100_000;
-  DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100_000;
-  RECLASSIFICATION_THRESHOLD = 10_000;
-  DEFAULT_PUA_UPDATE_THRESHOLD = 100_000;
-  DEFAULT_ORIGINATING_AGENCY_REASSIGNMENT_THRESHOLD = 100_000;
 
   search$: Observable<number>;
 
@@ -229,7 +221,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   additionalSearchCriteriaCategories: SearchCriteriaCategory[];
 
   subscriptions: Subscription = new Subscription();
-  showConfirmBigNumberOfResultsSuscription: Subscription;
   transferAcknowledgmentDialogSub: Subscription;
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
@@ -438,6 +429,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   ngOnInit() {
+    this.vitamConfigurationService.load().subscribe();
+
     this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
       this.accessContractId = ac.identifier;
       this.accessContractAllowUpdating = ac.writingPermission;
@@ -705,7 +698,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
-        this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
+        this.waitingToGetFixedCount = this.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
         if (this.isAllChecked) {
           this.selectedItemCount = this.totalResults - this.itemNotSelected;
         }
@@ -953,7 +946,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-    this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     this.transferAcknowledgmentDialogSub?.unsubscribe();
     this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
   }
@@ -1112,9 +1104,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   launchReclassification() {
     this.search$.subscribe((totalHits) => {
+      const { reclassificationThreshold } = this.vitamConfigurationService.tenantConfig();
       if (
-        (this.isAllChecked && totalHits - this.itemNotSelected > this.RECLASSIFICATION_THRESHOLD) ||
-        this.selectedItemCount > this.RECLASSIFICATION_THRESHOLD
+        (this.isAllChecked && totalHits - this.itemNotSelected > reclassificationThreshold) ||
+        this.selectedItemCount > reclassificationThreshold
       ) {
         const dialogToOpen = this.reclassificationAlerteMessageDialog;
         const dialogRef = this.dialog.open(dialogToOpen);
@@ -1203,7 +1196,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
             this.selectedItemCount,
             this.tenantIdentifier,
           ),
-        this.DEFAULT_ORIGINATING_AGENCY_REASSIGNMENT_THRESHOLD,
+        this.vitamConfigurationService.tenantConfig()?.originatingAgencyReassignmentThreshold,
       );
     } else {
       this.reassignmentDialogService.launchEntryOperationReassignmentModal(this.tenantIdentifier, this.accessContractId);
@@ -1289,9 +1282,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.tenantIdentifier,
           this.currentPage,
           this.confirmSecondActionBigNumberOfResultsActionDialog,
-          this.showConfirmBigNumberOfResultsSuscription,
         ),
-      this.DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD,
+      this.vitamConfigurationService.tenantConfig()?.eliminationAnalysisThreshold,
     );
   }
 
@@ -1330,7 +1322,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
                   this.confirmSecondActionBigNumberOfResultsActionDialog,
                   true,
                 ),
-              this.DEFAULT_ELIMINATION_THRESHOLD,
+              this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
             );
           }
         }),
@@ -1361,7 +1353,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
                   this.confirmSecondActionBigNumberOfResultsActionDialog,
                   false,
                 ),
-              this.DEFAULT_ELIMINATION_THRESHOLD,
+              this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
             );
           } else {
             const dialogConfig = new MatDialogConfig();
@@ -1392,7 +1384,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.isAllChecked,
           this.confirmSecondActionBigNumberOfResultsActionDialog,
         ),
-      this.DEFAULT_DIP_EXPORT_THRESHOLD,
+      this.vitamConfigurationService.tenantConfig()?.dipExportThreshold,
     );
   }
 
@@ -1409,7 +1401,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.isAllChecked,
           this.confirmSecondActionBigNumberOfResultsActionDialog,
         ),
-      this.DEFAULT_TRANSFER_THRESHOLD,
+      this.vitamConfigurationService.tenantConfig()?.transferThreshold,
     );
   }
 
@@ -1428,7 +1420,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.launchSelectionContainsHoldingUnitAlertMessageDialog,
           this.confirmSecondActionBigNumberOfResultsActionDialog,
         ),
-      this.DEFAULT_UPDATE_MGT_RULES_THRESHOLD,
+      this.vitamConfigurationService.tenantConfig()?.updateMgtRulesThreshold,
     );
   }
 
@@ -1441,7 +1433,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           listOfUACriteriaSearch: this.listOfUACriteriaSearch,
         },
       });
-    }, this.DEFAULT_PUA_UPDATE_THRESHOLD);
+    }, this.vitamConfigurationService.tenantConfig()?.puaUpdateThreshold);
   }
 
   showAcknowledgmentTransferForm() {

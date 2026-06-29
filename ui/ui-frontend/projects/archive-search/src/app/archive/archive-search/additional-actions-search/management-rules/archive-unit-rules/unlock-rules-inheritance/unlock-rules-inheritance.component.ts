@@ -53,6 +53,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   VitamuiSelectOptions,
+  VitamTenantConfigService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
@@ -78,6 +79,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   private translateService = inject(TranslateService);
   private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
   private ruleService = inject(RuleService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
@@ -274,9 +276,9 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
         .subscribe((data) => {
           this.itemsWithSameRule = data.totalResults.toString();
           this.itemsToNotUpdate =
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
                 : (this.selectedItem - data.totalResults).toString();
 

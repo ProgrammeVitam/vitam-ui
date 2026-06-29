@@ -38,7 +38,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Colors, FacetDetails, RuleFacets } from 'vitamui-library';
+import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 
@@ -52,6 +52,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
   private facetsService = inject(ArchiveFacetsService);
   private translateService = inject(TranslateService);
   private datePipe = inject(DatePipe);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Input()
   disseminationRuleFacets: RuleFacets;
@@ -85,7 +86,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
 
   getFacetTextByExactCountFlag(count: number, exactCount: boolean): string {
     let facetContentValue = count.toString();
-    if (!exactCount && this.totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER) {
+    if (!exactCount && this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
     }
     return facetContentValue;
@@ -168,7 +169,8 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
       let notComputedCount = '';
       if (
         !this.exactCount &&
-        (this.totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER || computedCount >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER)
+        (this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+          computedCount >= this.vitamConfigurationService.tenantConfig()?.resultThreshold)
       ) {
         notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
       } else {

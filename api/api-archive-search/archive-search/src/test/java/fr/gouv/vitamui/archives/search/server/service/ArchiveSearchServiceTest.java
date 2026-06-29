@@ -63,6 +63,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -106,7 +107,7 @@ class ArchiveSearchServiceTest {
     private ArchiveSearchRulesService archiveSearchRulesService;
 
     @MockitoBean(name = "externalParametersService")
-    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
@@ -147,11 +148,11 @@ class ArchiveSearchServiceTest {
             archiveSearchFacetsService,
             persistentIdentifierService,
             archiveSearchThresholdService,
-            archiveSearchExternalParametersService,
+            externalParametersService,
             securityService,
             logbookService
         );
-        doReturn(defaultVitamContext).when(archiveSearchExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(defaultVitamContext).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     @Test

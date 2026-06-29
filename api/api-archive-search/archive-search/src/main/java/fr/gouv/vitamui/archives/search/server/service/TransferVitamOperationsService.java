@@ -47,6 +47,7 @@ import fr.gouv.vitam.common.model.export.transfer.TransferRequest;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -66,20 +67,20 @@ public class TransferVitamOperationsService {
 
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
 
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
 
     public TransferVitamOperationsService(
         final TransferAcknowledgmentService transferAcknowledgmentService,
         final @Lazy ArchiveSearchService archiveSearchService,
         final TransferRequestService transferRequestService,
         ArchiveSearchThresholdService archiveSearchThresholdService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService
+        ExternalParametersService externalParametersService
     ) {
         this.transferAcknowledgmentService = transferAcknowledgmentService;
         this.archiveSearchService = archiveSearchService;
         this.transferRequestService = transferRequestService;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
     }
 
     private JsonNode sendTransferRequest(final VitamContext vitamContext, TransferRequest transferRequest)
@@ -106,7 +107,7 @@ public class TransferVitamOperationsService {
 
     public String transferRequest(final TransferRequestDto transferRequestDto) throws VitamClientException {
         LOGGER.debug("Transfer request: {} ", transferRequestDto.toString());
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(aLong -> transferRequestDto.getSearchCriteria().setThreshold(aLong));
 
@@ -121,7 +122,7 @@ public class TransferVitamOperationsService {
 
     public String transferAcknowledgment(InputStream atrInputStream) throws VitamClientException {
         LOGGER.debug("Transfer Acknowledgment Operation");
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         JsonNode transferAcknowledgmentResponse = transferAcknowledgmentService
             .transferAcknowledgment(vitamContext, atrInputStream)
             .toJsonNode();

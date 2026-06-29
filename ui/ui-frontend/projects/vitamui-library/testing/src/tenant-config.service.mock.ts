@@ -34,6 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './vitamui-common-test.module';
-export * from './helpers';
-export * from './tenant-config.service.mock';
+// testing/tenant-config.service.mock.ts
+import { signal } from '@angular/core';
+import { of } from 'rxjs';
+
+export const tenantConfigServiceMock = {
+  load: () => of(),
+  tenantConfig: signal({
+    tenantId: 1,
+    adminTenant: true,
+    indexInheritedRulesWithApiV2Output: false,
+    indexInheritedRulesWithRulesId: true,
+    externalReferentialIdentifiers: [],
+    virtualPaths: [],
+
+    distributionThreshold: 100_000,
+    eliminationAnalysisThreshold: 100_000,
+    eliminationActionThreshold: 100_000,
+    computedInheritedRulesThreshold: 100_000,
+
+    classificationLevel: {},
+
+    resultThreshold: 100_000,
+    reclassificationThreshold: 100_000,
+
+    dipExportThreshold: 100_000,
+    transferThreshold: 100_000,
+    updateMgtRulesThreshold: 100_000,
+    puaUpdateThreshold: 100_000,
+    originatingAgencyReassignmentThreshold: 100_000,
+
+    deletionThreshold: 100_000,
+  }),
+};

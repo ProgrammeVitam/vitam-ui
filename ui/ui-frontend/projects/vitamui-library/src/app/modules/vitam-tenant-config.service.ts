@@ -34,6 +34,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './vitamui-common-test.module';
-export * from './helpers';
-export * from './tenant-config.service.mock';
+import { inject, Injectable, signal, computed } from '@angular/core';
+import { Logger } from './logger/logger';
+import { ConfigurationsApiService, TenantConfiguration } from './services';
+import { lastValueFrom, Observable, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class VitamTenantConfigService {
+  private readonly logger = inject(Logger);
+  private readonly configurationsApi = inject(ConfigurationsApiService);
+
+  private readonly _tenantConfig = signal<TenantConfiguration | null>(null);
+  private readonly _lastLoaded = signal<number | null>(null);
+
+  private readonly TTL_MS = 60_000;
+
+  readonly tenantConfig = this._tenantConfig.asReadonly();
+  readonly isLoaded = computed(() => this._tenantConfig() !== null);
+
+  loadAsPromise(): Promise<TenantConfiguration | null> {
+    return lastValueFrom(this.load());
+  }
+
+  load(): Observable<TenantConfiguration | null> {
+    if (this.isCacheValid()) {
+      return of(this._tenantConfig());
+    }
+
+    return this.configurationsApi.getConfiguration().pipe(
+      tap((config) => {
+        this._tenantConfig.set(config);
+        this._lastLoaded.set(Date.now());
+      }),
+      catchError((error) => {
+        this.logger.error(this, error);
+        return of(null);
+      }),
+    );
+  }
+
+  get(): TenantConfiguration | null {
+    return this._tenantConfig();
+  }
+
+  private isCacheValid(): boolean {
+    const lastLoaded = this._lastLoaded();
+    return lastLoaded !== null && Date.now() - lastLoaded < this.TTL_MS;
+  }
+}

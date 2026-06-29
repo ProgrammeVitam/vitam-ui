@@ -51,10 +51,10 @@ import {
   SearchCriteriaEltDto,
   SelectComponent,
   SnackBarService,
+  VitamTenantConfigService,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
-import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { RuleTypeEnum } from '../../../models/rule-type-enum';
 import {
   ActionsRules,
@@ -84,6 +84,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   private logger = inject(Logger);
   private ruleService = inject(RuleService);
   private snackBarService = inject(SnackBarService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
@@ -540,7 +541,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
         this.selectedItem = response;
         this.resultNumberToShow = this.translate.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
-        this.selectedItemToShow = response === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ? this.resultNumberToShow : response.toString();
+        this.selectedItemToShow =
+          response === this.vitamConfigurationService.tenantConfig()?.resultThreshold ? this.resultNumberToShow : response.toString();
       }),
     );
   }

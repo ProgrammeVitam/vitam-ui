@@ -37,10 +37,10 @@
 
 package fr.gouv.vitamui.archives.search.server.rest;
 
-import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchExternalParametersService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,14 +61,14 @@ public class ConfigurationsController {
 
     static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationsController.class);
     private final ConfigurationService configurationService;
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
 
     public ConfigurationsController(
         ConfigurationService configurationService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService
+        ExternalParametersService externalParametersService
     ) {
         this.configurationService = configurationService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
     }
 
     @GetMapping(CommonConstants.PATH_VIRTUAL_PATH_FIELDS)
@@ -76,7 +76,7 @@ public class ConfigurationsController {
     public List<String> getVirtualPathsFields() {
         LOGGER.debug("Retrieve Vitam virtual paths fields list  ");
         return configurationService.getVirtualPathPathAvailableTenantsIds(
-            archiveSearchExternalParametersService.buildVitamContextFromExternalParam()
+            externalParametersService.buildVitamContextFromExternalParam()
         );
     }
 }

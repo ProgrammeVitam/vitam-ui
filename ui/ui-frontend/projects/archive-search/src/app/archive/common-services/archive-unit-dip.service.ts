@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, TemplateRef, inject } from '@angular/core';
+import { inject, Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-import { SearchCriteriaEltDto } from 'vitamui-library';
+import { VitamTenantConfigService, SearchCriteriaEltDto } from 'vitamui-library';
 import { DipRequestCreateComponent } from '../archive-search/additional-actions-search/dip-request-create/dip-request-create.component';
 import { TransferRequestModalComponent } from '../archive-search/additional-actions-search/transfer-request-modal/transfer-request-modal.component';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 
-const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArchiveUnitDipService {
+  private vitamConfigurationService = inject(VitamTenantConfigService);
   private translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
@@ -63,15 +63,11 @@ export class ArchiveUnitDipService {
     isAllchecked: boolean,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
-    if (!isAllchecked && itemSelected < DEFAULT_RESULT_THRESHOLD) {
+    if (!isAllchecked && itemSelected < this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       this.launchExportDIP(listOfUACriteriaSearch, selectedItemCountKnown, accessContract, tenantIdentifier, itemSelected, currentPage);
     } else {
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
-        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-      );
-
-      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+      this.dialog
+        .open(confirmSecondActionBigNumberOfResultsActionDialog)
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
@@ -122,7 +118,7 @@ export class ArchiveUnitDipService {
     isAllchecked: boolean,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
   ) {
-    if (!isAllchecked && itemSelected < DEFAULT_RESULT_THRESHOLD) {
+    if (!isAllchecked && itemSelected < this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       this.launchTransferRequest(
         listOfUACriteriaSearch,
         selectedItemCountKnown,

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -87,6 +87,7 @@ import {
   SidenavPage,
   SnackBarService,
   STORAGE_RULE,
+  VitamTenantConfigService,
   TermsFacet,
   toManagementRuleType,
   Transaction,
@@ -139,12 +140,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   private ruleService = inject(RuleService);
   private snackBarService = inject(SnackBarService);
   private transactionService = inject(TransactionsService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
   private sipImportTrackingService = inject(SipImportTrackingService);
 
   readonly UnitType = UnitType;
-
-  DEFAULT_DELETION_THRESHOLD = 10_000;
-  RECLASSIFICATION_THRESHOLD = 10_000;
 
   accessContract: string;
 
@@ -191,7 +190,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   totalResults = 0;
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
-  DEFAULT_RESULT_THRESHOLD = 10000;
   searchHasResults = false;
   pageNumbers = 0;
   canLoadMore = false;
@@ -354,6 +352,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.searchCriteriaKeys = [];
     this.searchCriterias = new Map();
 
+    this.vitamConfigurationService.load().subscribe();
+
     this.transaction$ = this.route.params.pipe(
       tap((params) => (this.tenantIdentifier = params.tenantIdentifier)),
       mergeMap((params) => {
@@ -426,8 +426,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     );
 
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const threshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
-      this.bulkOperationsThreshold = threshold;
+      this.bulkOperationsThreshold = Number(parameters.get(ExternalParameters.PARAM_BULK_OPERATIONS_THRESHOLD) || -1);
     });
 
     this.rulesToExport$ = this.ruleService
@@ -493,9 +492,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   launchReclassification() {
     this.search$.subscribe((totalHits) => {
+      const { reclassificationThreshold } = this.vitamConfigurationService.tenantConfig();
+
       if (
-        (this.isAllChecked && totalHits - this.itemNotSelected > this.RECLASSIFICATION_THRESHOLD) ||
-        this.itemSelected > this.RECLASSIFICATION_THRESHOLD
+        (this.isAllChecked && totalHits - this.itemNotSelected > reclassificationThreshold) ||
+        this.itemSelected > reclassificationThreshold
       ) {
         const dialogToOpen = this.reclassificationAlerteMessageDialog;
         const dialogRef = this.dialog.open(dialogToOpen);
@@ -670,7 +671,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
-        this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
+        this.waitingToGetFixedCount = this.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
         if (this.isAllChecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
@@ -1102,10 +1103,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   async launchDeletionModal() {
     this.search$.subscribe((totalHits) => {
-      if (
-        (this.isAllChecked && totalHits - this.itemNotSelected > this.DEFAULT_DELETION_THRESHOLD) ||
-        this.itemSelected > this.DEFAULT_DELETION_THRESHOLD
-      ) {
+      const { deletionThreshold } = this.vitamConfigurationService.tenantConfig();
+
+      if ((this.isAllChecked && totalHits - this.itemNotSelected > deletionThreshold) || this.itemSelected > deletionThreshold) {
         const dialogToOpen = this.deletionAlerteMessageDialog;
         const dialogRef = this.dialog.open(dialogToOpen);
         this.subscriptions.add(
@@ -1124,7 +1124,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
               this.currentPage,
               this.confirmSecondActionBigNumberOfResultsActionDialog,
             ),
-          this.DEFAULT_DELETION_THRESHOLD,
+          this.vitamConfigurationService.tenantConfig()?.deletionThreshold,
         );
       }
     });

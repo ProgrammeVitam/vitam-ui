@@ -41,10 +41,9 @@ import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaEltDto } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaEltDto, VitamTenantConfigService } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
-import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
@@ -61,6 +60,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   private translateService = inject(TranslateService);
   private dialog = inject(MatDialog);
   private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Input()
   ruleCategory: string;
@@ -177,9 +177,9 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
         .subscribe((data) => {
           this.itemsCategoryToUnlock = data.totalResults.toString();
           this.itemsToNotUpdate =
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
                 : (this.selectedItem - data.totalResults).toString();
           this.isLoading = false;

@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -54,6 +55,7 @@ import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
+import fr.gouv.vitamui.iam.security.config.ExternalParametersCommonConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
@@ -98,6 +100,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
         VitamAdministrationConfig.class,
         ConverterConfig.class,
         Jackson2CompatibilityConfig.class,
+        ExternalParametersCommonConfig.class,
     }
 )
 public class ApiReferentialServerConfig extends AbstractContextConfiguration {
@@ -315,5 +318,13 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     @Bean
     public ImportSchemaCommonService importSchemaCommonService(final AdminExternalClient adminExternalClient) {
         return new ImportSchemaCommonService(adminExternalClient);
+    }
+
+    @Bean
+    public ConfigurationService configurationService(
+        final AdminExternalClient adminExternalClient,
+        final ObjectMapper objectMapper
+    ) {
+        return new ConfigurationService(adminExternalClient, objectMapper);
     }
 }

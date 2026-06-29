@@ -57,6 +57,7 @@ import fr.gouv.vitamui.commons.api.dtos.BulkCommandDto;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -73,20 +74,20 @@ public class ArchiveSearchUnitServiceImpl implements ArchiveUnitService {
     private static final Logger log = LoggerFactory.getLogger(ArchiveSearchUnitServiceImpl.class);
     private final AccessExternalClient accessExternalClient;
     private final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter;
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
     private final JsonPatchDtoToUpdateMultiQueryConverter jsonPatchDtoToUpdateMultiQueryConverter;
     private final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto;
 
     public ArchiveSearchUnitServiceImpl(
         final AccessExternalClient accessExternalClient,
         final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter,
-        final ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
+        final ExternalParametersService externalParametersService,
         final JsonPatchDtoToUpdateMultiQueryConverter jsonPatchDtoToUpdateMultiQueryConverter,
         final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto
     ) {
         this.accessExternalClient = accessExternalClient;
         this.updateArchiveUnitDtoToUpdateMultiQueryConverter = updateArchiveUnitDtoToUpdateMultiQueryConverter;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
         this.jsonPatchDtoToUpdateMultiQueryConverter = jsonPatchDtoToUpdateMultiQueryConverter;
         this.updateMultiQueriesToBulkCommandDto = updateMultiQueriesToBulkCommandDto;
     }
@@ -129,7 +130,7 @@ public class ArchiveSearchUnitServiceImpl implements ArchiveUnitService {
     }
 
     private OperationIdDto send(Set<UpdateMultiQuery> updateMultiQueries) {
-        final VitamContext context = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        final VitamContext context = externalParametersService.buildVitamContextFromExternalParam();
         final BulkCommandDto bulkCommandDto = updateMultiQueriesToBulkCommandDto.convert(updateMultiQueries);
         try {
             final RequestResponse<JsonNode> payload = accessExternalClient.bulkAtomicUpdateUnits(

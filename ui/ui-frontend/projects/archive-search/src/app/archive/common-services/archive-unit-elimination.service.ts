@@ -34,22 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, TemplateRef, inject } from '@angular/core';
+import { inject, Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { ApplicationId, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
+import { ApplicationId, VitamTenantConfigService, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 
-const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArchiveUnitEliminationService {
+  private vitamConfigurationService = inject(VitamTenantConfigService);
   private archiveService = inject(ArchiveService);
   private translateService = inject(TranslateService);
   dialog = inject(MatDialog);
@@ -62,22 +61,18 @@ export class ArchiveUnitEliminationService {
     tenantIdentifier: number,
     currentPage: number,
     confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>,
-    showConfirmBigNumberOfResultsSuscription: Subscription,
   ) {
-    if (selectedItemCountKnown && itemSelected < DEFAULT_RESULT_THRESHOLD) {
+    if (selectedItemCountKnown && itemSelected < this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
     } else {
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
-      const showConfirmBigNumberOfResultsSuscription = this.dialog.open(dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen);
-
-      showConfirmBigNumberOfResultsSuscription
+      this.dialog
+        .open(confirmSecondActionBigNumberOfResultsActionDialog)
         .afterClosed()
         .pipe(filter((result) => !!result))
         .subscribe(() => {
           this.launchEliminationAnalysis(listOfUACriteriaSearch, tenantIdentifier, currentPage);
         });
     }
-    showConfirmBigNumberOfResultsSuscription?.unsubscribe();
   }
 
   private launchEliminationAnalysis(listOfUACriteriaSearch: SearchCriteriaEltDto[], tenantIdentifier: number, currentPage: number) {

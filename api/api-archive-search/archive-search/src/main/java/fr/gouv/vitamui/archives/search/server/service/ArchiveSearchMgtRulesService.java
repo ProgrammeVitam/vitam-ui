@@ -58,6 +58,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -82,7 +83,7 @@ public class ArchiveSearchMgtRulesService {
     private final AccessContractCommonService accessContractCommonService;
 
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
 
     private final UnitCommonService unitCommonService;
 
@@ -93,7 +94,7 @@ public class ArchiveSearchMgtRulesService {
         final UnitCommonService unitCommonService,
         final ObjectMapper objectMapper,
         ArchiveSearchThresholdService archiveSearchThresholdService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService
+        ExternalParametersService externalParametersService
     ) {
         this.archiveSearchService = archiveSearchService;
         this.objectMapper = objectMapper;
@@ -101,7 +102,7 @@ public class ArchiveSearchMgtRulesService {
         this.accessContractCommonService = accessContractCommonService;
         this.unitCommonService = unitCommonService;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
     }
 
     public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto)
@@ -111,7 +112,7 @@ public class ArchiveSearchMgtRulesService {
             ruleSearchCriteriaDto.getSearchCriteriaDto().toString(),
             ruleSearchCriteriaDto.getRuleActions()
         );
-        final VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        final VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(aLong -> ruleSearchCriteriaDto.getSearchCriteriaDto().setThreshold(aLong));
         boolean hasAccessContractWritePermission = checkAccessContractWritePermission(vitamContext);
