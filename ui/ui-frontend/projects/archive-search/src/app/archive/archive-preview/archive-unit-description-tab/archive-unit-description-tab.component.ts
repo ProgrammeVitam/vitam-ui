@@ -34,7 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  computed,
+  inject,
+  input,
+  Input,
+} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -67,7 +80,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   private snackBarService = inject(SnackBarService);
   private translateService = inject(TranslateService);
 
-  @Input() archiveUnit: ArchiveUnit;
+  archiveUnit = input<ArchiveUnit>();
   @Input() editMode = false;
   @Output() editModeChange = new EventEmitter<boolean>();
 
@@ -78,13 +91,21 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   editObject: EditObject;
   canSave = false;
 
+  archiveUnitWithAgencyLabel = computed(() => {
+    const unit = this.archiveUnit();
+    const identifier = unit?.['#originating_agency'];
+    const name = unit?.originating_agencyName;
+    if (!identifier || !name) return unit;
+    return { ...unit, '#originating_agency': `${identifier} - ${name}` };
+  });
+
   private readonly subscriptions = new Subscription();
   private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
 
   private notifyFormInvalidityOrContinue: UnaryFunction<Observable<unknown>, Observable<boolean>> = pipe(
     map(() => {
       // Skip validation check when haven't archive unit profile.
-      if (!this.archiveUnit.ArchiveUnitProfile) return true;
+      if (!this.archiveUnit()?.ArchiveUnitProfile) return true;
       // Skip error collect when haven't invalid fields.
       if (this.archiveUnitEditor.editObject$.value.control.valid) return true;
 
@@ -294,7 +315,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
       duration: 100_000,
     });
 
-    this.patchUnit(this.archiveUnit, this.archiveUnitEditor.getJsonPatch().jsonPatch);
+    this.patchUnit(this.archiveUnit(), this.archiveUnitEditor.getJsonPatch().jsonPatch);
 
     this.backToDisplayMode();
   }

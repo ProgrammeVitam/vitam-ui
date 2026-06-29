@@ -46,8 +46,9 @@ import {
 } from '../../../models/logbook-event.interface';
 
 import { ApplicationId, ApplicationService } from 'vitamui-library';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, ReplaySubject, of } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { IngestReferentialService } from '../../../core/service/ingest-referential.service';
 
 @Component({
   selector: 'app-ingest-information-tab',
@@ -57,14 +58,35 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class IngestInformationTabComponent implements OnChanges {
   private applicationService = inject(ApplicationService);
+  private ingestReferentialService = inject(IngestReferentialService);
 
   @Input() ingest: LogbookOperation;
   evDetDataDeflated: EvDetDataDeflateJson;
   agIdExtDeflated: AgIdExtDeflateJson;
 
+  private readonly resolve$ = new ReplaySubject<Parameters<IngestReferentialService['resolveNames']>[0]>(1);
+
+  readonly referentialNames$ = this.resolve$.pipe(
+    switchMap((params) => this.ingestReferentialService.resolveNames(params).pipe(startWith({}))),
+  );
+
+  constructor() {}
+
   ngOnChanges() {
     this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest);
     this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest);
+    const params = {
+      originatingAgency: this.agIdExtDeflated?.originatingAgency,
+      submissionAgency: this.agIdExtDeflated?.submissionAgency,
+      archivalAgreement: this.evDetDataDeflated?.ArchivalAgreement,
+      archivalProfile: this.evDetDataDeflated?.ArchivalProfile,
+    };
+    this.resolve$.next(params);
+  }
+
+  formatReferentialValue(identifier?: string, name?: string): string | undefined {
+    if (!identifier) return undefined;
+    return name ? `${identifier} - ${name}` : identifier;
   }
 
   hasEvent(): boolean {

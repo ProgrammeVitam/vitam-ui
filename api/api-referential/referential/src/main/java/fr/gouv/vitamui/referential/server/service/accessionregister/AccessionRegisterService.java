@@ -45,6 +45,8 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitam.common.model.administration.IngestContractModel;
+import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -53,6 +55,7 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterCsv;
@@ -63,7 +66,10 @@ import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ExportAccessionRegisterResultParam;
+import fr.gouv.vitamui.referential.common.dto.IngestContractResponseDto;
+import fr.gouv.vitamui.referential.common.dto.ProfileResponseDto;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterCommonService;
+import fr.gouv.vitamui.referential.common.service.IngestContractCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -103,11 +109,17 @@ public class AccessionRegisterService extends AbstractService {
 
     private final AccessionRegisterCommonService accessionRegisterCommonService;
 
+    private final IngestContractCommonService ingestContractCommonService;
+
+    private final VitamProfileCommonService vitamProfileCommonService;
+
     public AccessionRegisterService(
         ObjectMapper objectMapper,
         AdminExternalClient adminExternalClient,
         AgencyCommonService agencyCommonService,
         AccessionRegisterCommonService accessionRegisterCommonService,
+        IngestContractCommonService ingestContractCommonService,
+        VitamProfileCommonService vitamProfileCommonService,
         SecurityService securityService
     ) {
         super(securityService);
@@ -115,6 +127,8 @@ public class AccessionRegisterService extends AbstractService {
         this.agencyCommonService = agencyCommonService;
         this.adminExternalClient = adminExternalClient;
         this.accessionRegisterCommonService = accessionRegisterCommonService;
+        this.ingestContractCommonService = ingestContractCommonService;
+        this.vitamProfileCommonService = vitamProfileCommonService;
     }
 
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
@@ -162,8 +176,10 @@ public class AccessionRegisterService extends AbstractService {
         AccessionRegisterDetailResponseDto results = fetchingAllPaginatedDataFromVitam(vitamContext, query);
         LOGGER.debug("Fetched accession register data : {} ", results);
 
-        //Fetch agencies to complete return Dto 'originatingAgencyLabel' property
+        //Fetch referential data to enrich Dto labels (agency, ingest contract, archival profile)
         Map<String, String> agenciesMap = findAgencies(vitamContext, results);
+        Map<String, String> ingestContractsMap = findIngestContracts(vitamContext, results);
+        Map<String, String> archivalProfilesMap = findArchivalProfiles(vitamContext, results);
 
         HitsDto hits = results.getHits();
         Integer resultSize = 0;
@@ -178,6 +194,8 @@ public class AccessionRegisterService extends AbstractService {
         valuesDto.forEach(value -> {
             value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency()));
             value.setSubmissionAgencyLabel(agenciesMap.get(value.getSubmissionAgency()));
+            value.setArchivalAgreementLabel(ingestContractsMap.get(value.getArchivalAgreement()));
+            value.setArchivalProfileLabel(archivalProfilesMap.get(value.getArchivalProfile()));
         });
         AccessionRegisterStatsDto statsDto = buildStatisticData(results);
         return new PaginatedValuesDto<>(
@@ -411,13 +429,90 @@ public class AccessionRegisterService extends AbstractService {
             );
         }
 
-        final Select select = new Select();
+        return buildIdentifierNameProjectionQuery(distinctOriginatingAgencies);
+    }
 
-        select.setQuery(QueryHelper.in("Identifier", distinctOriginatingAgencies.toArray(new String[0])));
+    private Map<String, String> findIngestContracts(
+        VitamContext vitamContext,
+        AccessionRegisterDetailResponseDto results
+    ) {
+        try {
+            RequestResponse<IngestContractModel> requestResponse = ingestContractCommonService.findIngestContracts(
+                vitamContext,
+                buildArchivalAgreementProjectionQuery(results)
+            );
+            List<IngestContractModel> contracts = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), IngestContractResponseDto.class)
+                .getResults();
+            return contracts
+                .stream()
+                .collect(Collectors.toMap(IngestContractModel::getIdentifier, IngestContractModel::getName));
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Error parsing ingest contracts", e);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Error fetching ingest contracts from vitam", e);
+        } catch (InvalidCreateOperationException e) {
+            throw new InternalServerException("Invalid Select vitam query for ingest contracts", e);
+        }
+    }
+
+    private JsonNode buildArchivalAgreementProjectionQuery(AccessionRegisterDetailResponseDto results)
+        throws InvalidCreateOperationException {
+        List<String> identifiers = results != null
+            ? results
+                .getResults()
+                .stream()
+                .map(AccessionRegisterDetailModel::getArchivalAgreement)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList())
+            : List.of();
+        return buildIdentifierNameProjectionQuery(identifiers);
+    }
+
+    private Map<String, String> findArchivalProfiles(
+        VitamContext vitamContext,
+        AccessionRegisterDetailResponseDto results
+    ) {
+        try {
+            RequestResponse<ProfileModel> requestResponse = vitamProfileCommonService.findArchivalProfiles(
+                vitamContext,
+                buildArchivalProfileProjectionQuery(results)
+            );
+            List<ProfileModel> profiles = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), ProfileResponseDto.class)
+                .getResults();
+            return profiles.stream().collect(Collectors.toMap(ProfileModel::getIdentifier, ProfileModel::getName));
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Error parsing archival profiles", e);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Error fetching archival profiles from vitam", e);
+        } catch (InvalidCreateOperationException e) {
+            throw new InternalServerException("Invalid Select vitam query for archival profiles", e);
+        }
+    }
+
+    private JsonNode buildArchivalProfileProjectionQuery(AccessionRegisterDetailResponseDto results)
+        throws InvalidCreateOperationException {
+        List<String> identifiers = results != null
+            ? results
+                .getResults()
+                .stream()
+                .map(AccessionRegisterDetailModel::getArchivalProfile)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList()
+            : List.of();
+        return buildIdentifierNameProjectionQuery(identifiers);
+    }
+
+    private JsonNode buildIdentifierNameProjectionQuery(List<String> identifiers)
+        throws InvalidCreateOperationException {
+        final Select select = new Select();
+        select.setQuery(QueryHelper.in("Identifier", identifiers.toArray(new String[0])));
         Map<String, Integer> projection = new HashMap<>();
         projection.put("Identifier", 1);
         projection.put("Name", 1);
-
         QueryProjection queryProjection = new QueryProjection();
         queryProjection.setFields(projection);
         try {
@@ -425,7 +520,7 @@ public class AccessionRegisterService extends AbstractService {
         } catch (InvalidParseOperationException e) {
             throw new InvalidCreateOperationException("Invalid vitam query", e);
         }
-        LOGGER.debug("agencies query: {}", select.getFinalSelect());
+        LOGGER.debug("identifier/name projection query: {}", select.getFinalSelect());
         return select.getFinalSelect();
     }
 

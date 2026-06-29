@@ -207,7 +207,11 @@ spring:
                   /collect-api/external-referential/config,
                   /collect-api/external-referential/agencies,
                   /collect-api/external-referential/ingestcontracts,
-                  /collect-api/external-referential/profiles
+                  /collect-api/external-referential/profiles,
+
+                  /ingest-api/agency/**,
+                  /ingest-api/ingestcontract/**,
+                  /ingest-api/profile/**
 
               filters:
                 - RewritePath=/referential-api/fileformat(?<segment>.*),/referential/v1/fileformats$\{segment}
@@ -237,6 +241,9 @@ spring:
                 - RewritePath=/collect-api/search/filingplan(?<segment>.*),/units/filingplan$\{segment}
                 - RewritePath=/collect-api/external-referential/(?<segment>.*),/referential/v1/external-referential/$\{segment}
                 - RewritePath=/collect-api(?<segment>.*),/referential/v1$\{segment}
+
+                # Ingest Referential API
+                - RewritePath=/ingest-api(?<segment>.*),/referential/v1$\{segment}
 
             - id: archive-search-service
               uri: https://localhost:8089 # URL ARCHIVE-SEARCH

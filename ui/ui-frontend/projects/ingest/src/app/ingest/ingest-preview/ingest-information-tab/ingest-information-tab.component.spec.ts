@@ -41,6 +41,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { IngestInformationTabComponent } from './ingest-information-tab.component';
 import { of } from 'rxjs';
+import { IngestReferentialService } from '../../../core/service/ingest-referential.service';
 
 describe('IngestInformationTabComponent', () => {
   let component: IngestInformationTabComponent;
@@ -50,7 +51,10 @@ describe('IngestInformationTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestInformationTabComponent],
       imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
-      providers: [{ provide: ApplicationService, useValue: { getUrl$: () => of('') } }],
+      providers: [
+        { provide: ApplicationService, useValue: { getUrl$: () => of('') } },
+        { provide: IngestReferentialService, useValue: { resolveNames: () => of({}) } },
+      ],
     })
       .overrideTemplate(IngestInformationTabComponent, '<div></div>')
       .compileComponents();

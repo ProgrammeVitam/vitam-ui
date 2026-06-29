@@ -58,6 +58,10 @@ public class AccessionRegisterDetailDto extends AccessionRegisterDto {
 
     private String archivalAgreement;
 
+    private String archivalAgreementLabel;
+
+    private String archivalProfileLabel;
+
     private String startDate;
 
     private String endDate;
