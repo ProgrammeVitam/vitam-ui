@@ -3975,6 +3975,7 @@
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier",
+        "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Elimination analysis operation Identifier",
         "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
         "RULE_TITLE_APPRAISAL_RULE": "Rule title DUA",
         "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
