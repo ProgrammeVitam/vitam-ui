@@ -69,7 +69,6 @@ import {
   TITLE_DUA,
   INTERVAL_DATE_DUA,
   END_DATE_DUA,
-  ELIM_TECH_ID_DUA,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -419,7 +418,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       } else if (formData.appraisalRuleEliminationIdentifier) {
         this.addCriteria(
           ELIMINATION_TECHNICAL_ID + RULE_TYPE_SUFFIX,
-          { id: ELIM_TECH_ID_DUA, value: formData.appraisalRuleEliminationIdentifier.trim() },
+          { id: ELIMINATION_TECHNICAL_ID + RULE_TYPE_SUFFIX, value: formData.appraisalRuleEliminationIdentifier.trim() },
           formData.appraisalRuleEliminationIdentifier.trim(),
           true,
           CriteriaOperator.EQ,
