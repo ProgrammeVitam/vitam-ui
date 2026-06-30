@@ -157,7 +157,7 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
 
   private createOverlayRef() {
     const position = VITAMUI_TOOL_TIP_POSITIONS[this.vitamuiTooltipPosition];
-    const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]);
+    const positionStrategy = this.overlayPositionBuilder.flexibleConnectedTo(this.elementRef).withPositions([position]).withPush(false);
     this.#overlayRef = this.overlay.create({
       positionStrategy,
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
