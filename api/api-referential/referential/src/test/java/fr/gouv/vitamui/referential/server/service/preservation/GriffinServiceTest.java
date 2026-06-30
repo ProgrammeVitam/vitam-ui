@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,7 +64,12 @@ class GriffinServiceTest {
     @BeforeEach
     void setUp() {
         service = spy(
-            new GriffinService(mock(SecurityService.class), mock(AdminExternalClient.class), new ObjectMapper())
+            new GriffinService(
+                mock(SecurityService.class),
+                mock(AdminExternalClient.class),
+                new ObjectMapper(),
+                mock(LogbookService.class)
+            )
         );
     }
 

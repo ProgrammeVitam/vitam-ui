@@ -1128,6 +1128,8 @@
     "ONTOLOGY_CREATED": "L'ontologie a bien été créée",
     "ONTOLOGY_UPDATED": "L'ontologie a bien été mis à jour",
     "ONTOLOGY_DELETED": "L'ontologie a bien été supprimé",
+    "GRIFFIN_UPDATE_SUCCESS": "Le griffon a bien été mis à jour",
+    "GRIFFIN_UPDATE_FAIL": "Échec de la mise à jour du griffon",
     "VOCABULARY_DELETED": "Le vocabulaire a été supprimé avec succès",
     "VOCABULARY_DELETION_FAILED": "Le vocabulaire n'a pas pu être supprimé. Veuillez consulter le détail dans le journal des opérations",
     "AUDIT_RUN": "L'audit \"{{type}}\" a bien été lancé",
@@ -1163,6 +1165,21 @@
     "HOME": {
       "TITLE": "Référentiel des griffons et des scénarios de préservation",
       "SEARCH_PLACEHOLDER": "Nom, identifiant"
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Informations",
+        "IDENTIFIER": "Identifiant",
+        "NAME": "Nom",
+        "EXECUTABLE_NAME": "Nom de l'exécutable",
+        "VERSION": "Version",
+        "DESCRIPTION": "Description",
+        "CREATION_DATE": "Date de création",
+        "MODIFICATION_DATE": "Date de modification"
+      },
+      "HISTORY": {
+        "TITLE": "Historique"
+      }
     },
     "GRIFFIN": {
       "TITLE": "Griffons",

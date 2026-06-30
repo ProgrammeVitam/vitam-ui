@@ -1,8 +1,8 @@
 <mat-tab-group [(selectedIndex)]="tabIndex" class="vitamui-tab-group">
   <mat-tab [label]="'PRESERVATION.SCENARIO.TITLE' | translate">
-    <app-preservation-scenario-list [searchText]="searchText"></app-preservation-scenario-list>
+    <app-preservation-scenario-list [searchText]="searchText()"></app-preservation-scenario-list>
   </mat-tab>
   <mat-tab [label]="'PRESERVATION.GRIFFIN.TITLE' | translate">
-    <app-griffin-list [searchText]="searchText"></app-griffin-list>
+    <app-griffin-list (griffinClick)="selectElement.emit($event)" [searchText]="searchText()"></app-griffin-list>
   </mat-tab>
 </mat-tab-group>

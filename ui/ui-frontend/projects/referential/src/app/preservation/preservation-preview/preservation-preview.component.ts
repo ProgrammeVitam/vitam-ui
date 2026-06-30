@@ -34,22 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, input, output } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
+
+import { Component, effect, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
+import { Griffin, GriffinsService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { GriffinInformationTabComponent } from './griffin-information-tab/griffin-information-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { PreservationScenarioListComponent } from './preservation-scenario-list/preservation-scenario-list.component';
-import { GriffinListComponent } from './griffin-list/griffin-list.component';
-import { Griffin } from 'vitamui-library';
 
 @Component({
-  selector: 'app-preservation-group',
-  templateUrl: './preservation-group.component.html',
-  imports: [MatTabsModule, PreservationScenarioListComponent, GriffinListComponent, TranslatePipe],
-  styleUrls: ['./preservation-group.component.scss'],
+  selector: 'app-preservation-preview',
+  templateUrl: './preservation-preview.component.html',
+  imports: [VitamUICommonModule, VitamUILibraryModule, MatTab, MatTabGroup, GriffinInformationTabComponent, TranslatePipe],
 })
-export class PreservationGroupComponent {
-  searchText = input<string>('');
-  selectElement = output<Griffin>();
+export class PreservationPreviewComponent {
+  previewClose = output();
 
-  tabIndex = 0;
+  private griffinService = inject(GriffinsService);
+
+  selectedElement = input.required<Griffin>();
+  editableElement = signal<Griffin | null>(null);
+  tabUpdated: boolean[] = [false, false];
+
+  title: string;
+
+  infoTab = viewChild<ElementRef<HTMLElement>>('infoTab');
+
+  constructor() {
+    effect(() => {
+      this.editableElement.set(this.selectedElement());
+    });
+  }
+
+  updateGriffin(griffin: Griffin) {
+    this.editableElement.set(griffin);
+  }
+
+  emitClose() {
+    this.previewClose.emit();
+    this.tabUpdated = [false, false];
+    this.griffinService.selectedId$.next(null);
+  }
 }

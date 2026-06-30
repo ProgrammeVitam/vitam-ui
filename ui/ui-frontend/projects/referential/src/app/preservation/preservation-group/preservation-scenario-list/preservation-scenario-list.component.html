@@ -57,11 +57,7 @@
 
   <tbody>
     @for (preservationScenario of preservationScenarios(); track preservationScenario.Identifier) {
-      <tr
-        class="clickable"
-        [class.selected]="selectedPreservationScenario()?.Identifier === preservationScenario.Identifier"
-        (click)="selectedPreservationScenario.set(preservationScenario)"
-      >
+      <tr class="clickable" [class.selected]="selectedPreservationScenario()?.Identifier === preservationScenario.Identifier">
         <td>{{ preservationScenario.Identifier }}</td>
         <td>{{ preservationScenario.Name }}</td>
         <td>{{ formatPossibleActions(preservationScenario.ActionList) }}</td>

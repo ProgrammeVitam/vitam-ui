@@ -37,7 +37,7 @@
 import { GriffinsApiService } from './griffins-api.service';
 import { CreateGriffin, Griffin } from './griffin.type';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -47,6 +47,7 @@ export class GriffinsService {
   private api: GriffinsApiService;
 
   private refresh$ = new BehaviorSubject<void>(undefined);
+  selectedId$ = new Subject<string>();
 
   constructor() {
     this.api = inject(GriffinsApiService);

@@ -142,7 +142,7 @@ class GriffinControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         Griffin griffin = buildGriffin("id-1");
-        doNothing().when(griffinService).update(griffin);
+        when(griffinService.update(griffin)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
 
         // When / Then
         assertThatCode(() -> griffinController.updateGriffin(griffin)).doesNotThrowAnyException();

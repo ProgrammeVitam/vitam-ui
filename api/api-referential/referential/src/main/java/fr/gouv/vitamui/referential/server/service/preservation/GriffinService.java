@@ -30,12 +30,18 @@ package fr.gouv.vitamui.referential.server.service.preservation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.preservation.GriffinModel;
 import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import org.springframework.http.ResponseEntity;
@@ -55,14 +61,18 @@ public class GriffinService extends AbstractService {
     private final AdminExternalClient adminExternalClient;
     private final ObjectMapper objectMapper;
 
+    private LogbookService logbookService;
+
     public GriffinService(
         SecurityService securityService,
         AdminExternalClient adminExternalClient,
-        ObjectMapper objectMapper
+        ObjectMapper objectMapper,
+        LogbookService logbookService
     ) {
         super(securityService);
         this.adminExternalClient = adminExternalClient;
         this.objectMapper = objectMapper;
+        this.logbookService = logbookService;
     }
 
     public List<Griffin> getAll() throws VitamClientException {
@@ -86,7 +96,8 @@ public class GriffinService extends AbstractService {
         );
     }
 
-    public void update(Griffin griffin) throws VitamClientException, AccessExternalClientException, IOException {
+    public ResponseEntity<OperationIdDto> update(Griffin griffin)
+        throws VitamClientException, AccessExternalClientException, IOException {
         List<Griffin> nextGriffins = getAll()
             .stream()
             .map(currentGriffin -> {
@@ -97,7 +108,7 @@ public class GriffinService extends AbstractService {
             })
             .toList();
 
-        this.put(nextGriffins);
+        return this.put(nextGriffins);
     }
 
     public void delete(Griffin griffin) throws VitamClientException, AccessExternalClientException, IOException {
@@ -113,5 +124,23 @@ public class GriffinService extends AbstractService {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         objectMapper.writeValue(out, griffins);
         return new ByteArrayInputStream(out.toByteArray());
+    }
+
+    public List<HistoryEventDto> findHistoryById(String id) throws VitamClientException {
+        VitamContext vitamContext = buildVitamContext();
+
+        return this.findHistoryByIdentifier(vitamContext, id);
+    }
+
+    public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamContext, final String id)
+        throws VitamClientException {
+        try {
+            return logbookService.toHistoryEvents(
+                logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id), vitamContext),
+                List.of("STP_IMPORT_GRIFFIN")
+            );
+        } catch (InvalidCreateOperationException e) {
+            throw new InternalServerException("Unable to fetch history", e);
+        }
     }
 }

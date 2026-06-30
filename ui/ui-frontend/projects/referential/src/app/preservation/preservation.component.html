@@ -1,4 +1,10 @@
-<mat-sidenav-container>
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    @if (openedItem) {
+      <app-preservation-preview (previewClose)="closePanel()" [selectedElement]="openedItem"></app-preservation-preview>
+    }
+  </mat-sidenav>
+
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-title-breadcrumb>
@@ -22,7 +28,7 @@
       </vitamui-banner>
     </div>
     <div class="vitamui-content">
-      <app-preservation-group [searchText]="search"></app-preservation-group>
+      <app-preservation-group (selectElement)="showGriffin($event)" [searchText]="search"></app-preservation-group>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

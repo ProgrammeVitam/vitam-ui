@@ -37,31 +37,47 @@
 
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatMenuItem } from '@angular/material/menu';
+import { MatMenuItem, MatMenuModule } from '@angular/material/menu';
 import {
   ApplicationId,
   download,
+  Griffin,
   GriffinsService,
   PreservationScenariosService,
   Role,
   SecurityService,
+  SidenavPage,
   VitamUICommonModule,
+  VitamUILibraryModule,
 } from 'vitamui-library';
 import { PreservationGroupComponent } from './preservation-group/preservation-group.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImportScenarioDialogComponent } from './import-scenario-dialog/import-scenario-dialog.component';
 import { ImportGriffinDialogComponent } from './import-griffin-dialog/import-griffin-dialog.component';
 import { take } from 'rxjs/operators';
-import { TranslatePipe } from '@ngx-translate/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PreservationPreviewComponent } from './preservation-preview/preservation-preview.component';
 
 @Component({
   selector: 'app-preservation',
   templateUrl: './preservation.component.html',
   styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, VitamUICommonModule, PreservationGroupComponent, MatMenuItem, TranslatePipe],
+  imports: [
+    CommonModule,
+    PreservationPreviewComponent,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    TranslatePipe,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    PreservationGroupComponent,
+    MatMenuItem,
+  ],
 })
-export class PreservationComponent {
+export class PreservationComponent extends SidenavPage<Griffin> {
   search = '';
 
   private readonly preservationScenariosService = inject(PreservationScenariosService);
@@ -108,5 +124,9 @@ export class PreservationComponent {
         const blob = new Blob([JSON.stringify(griffinsToExport, null, 2)], { type: 'octet/stream' });
         download(blob, 'griffins.json');
       });
+  }
+
+  showGriffin(item: Griffin) {
+    this.openPanel(item);
   }
 }
