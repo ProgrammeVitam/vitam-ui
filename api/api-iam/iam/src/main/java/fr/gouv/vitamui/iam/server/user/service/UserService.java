@@ -320,7 +320,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final boolean applyAuthorization
     ) {
         try (final var xlsOutputStream = new ByteArrayOutputStream()) {
-            final List<UserDto> usersDto = this.getAll(criteria);
+            final List<UserDto> usersDto = applyAuthorization
+                ? this.getAll(criteria)
+                : this.getAllByAuthorizedCriteria(criteria);
             final List<String> userIds = usersDto.stream().map(UserDto::getIdentifier).collect(Collectors.toList());
             final List<String> userInfoIds = usersDto.stream().map(UserDto::getUserInfoId).collect(Collectors.toList());
             final List<String> userGroupIds = usersDto.stream().map(UserDto::getGroupId).collect(Collectors.toList());
