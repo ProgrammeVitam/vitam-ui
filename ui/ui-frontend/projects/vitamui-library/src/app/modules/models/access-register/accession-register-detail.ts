@@ -47,6 +47,8 @@ export interface AccessionRegisterDetail extends Id {
   submissionAgency: string;
   submissionAgencyLabel: string;
   archivalAgreement: string;
+  archivalAgreementLabel?: string;
+  archivalProfileLabel?: string;
   startDate: string;
   endDate: string;
   lastUpdate: string;

@@ -20,26 +20,36 @@
         [label]="'INGEST_DETAIL.END_DATE' | translate"
         [value]="ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy'"
       ></vitamui-common-data>
-      <vitamui-common-data
-        class="col-6"
-        [label]="'INGEST_DETAIL.PRODUCT_SERVICE' | translate"
-        [value]="agIdExtDeflated?.originatingAgency"
-      ></vitamui-common-data>
-      <vitamui-common-data
-        class="col-6"
-        [label]="'INGEST_DETAIL.VERSATILE_SERVICE' | translate"
-        [value]="agIdExtDeflated?.submissionAgency"
-      ></vitamui-common-data>
-      <vitamui-common-data
-        class="col-6"
-        [label]="'INGEST_DETAIL.ENTRY_CONTRACT' | translate"
-        [value]="evDetDataDeflated?.ArchivalAgreement"
-      ></vitamui-common-data>
-      <vitamui-common-data
-        class="col-6"
-        [label]="'INGEST_DETAIL.ARCHIVING_PROFIL' | translate"
-        [value]="evDetDataDeflated?.ArchivalProfile"
-      ></vitamui-common-data>
+      @if (referentialNames$ | async; as names) {
+        <vitamui-common-data
+          class="col-12"
+          [label]="'INGEST_DETAIL.PRODUCT_SERVICE' | translate"
+          [value]="formatReferentialValue(agIdExtDeflated?.originatingAgency, names?.originatingAgencyName)"
+          [valueCss]="'text-ellipsis'"
+          [valueTooltip]="names?.originatingAgencyName"
+        ></vitamui-common-data>
+        <vitamui-common-data
+          class="col-12"
+          [label]="'INGEST_DETAIL.VERSATILE_SERVICE' | translate"
+          [value]="formatReferentialValue(agIdExtDeflated?.submissionAgency, names?.submissionAgencyName)"
+          [valueCss]="'text-ellipsis'"
+          [valueTooltip]="names?.submissionAgencyName"
+        ></vitamui-common-data>
+        <vitamui-common-data
+          class="col-12"
+          [label]="'INGEST_DETAIL.ENTRY_CONTRACT' | translate"
+          [value]="formatReferentialValue(evDetDataDeflated?.ArchivalAgreement, names?.archivalAgreementName)"
+          [valueCss]="'text-ellipsis'"
+          [valueTooltip]="names?.archivalAgreementName"
+        ></vitamui-common-data>
+        <vitamui-common-data
+          class="col-12"
+          [label]="'INGEST_DETAIL.ARCHIVING_PROFIL' | translate"
+          [value]="formatReferentialValue(evDetDataDeflated?.ArchivalProfile, names?.archivalProfileName)"
+          [valueCss]="'text-ellipsis'"
+          [valueTooltip]="names?.archivalProfileName"
+        ></vitamui-common-data>
+      }
     </div>
     <vitamui-common-data [label]="'INGEST_DETAIL.STATUS' | translate" [value]="evDetDataDeflated?.LegalStatus"></vitamui-common-data>
     <vitamui-common-data

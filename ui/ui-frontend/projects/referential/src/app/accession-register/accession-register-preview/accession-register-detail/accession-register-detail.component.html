@@ -6,22 +6,27 @@
       [value]="accessionRegisterDetail.endDate | date: 'dd/MM/yyyy'"
     />
     <vitamui-common-data
-      [valueTooltip]="accessionRegisterDetail.originatingAgencyLabel"
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ORIGINATING_AGENCY' | translate"
-      [value]="accessionRegisterDetail.originatingAgency"
+      [value]="formatReferentialValue(accessionRegisterDetail.originatingAgency, accessionRegisterDetail.originatingAgencyLabel)"
+      [valueCss]="'text-ellipsis'"
+      [valueTooltip]="accessionRegisterDetail.originatingAgencyLabel"
     />
   </div>
   <div class="row p-0">
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_AGREEMENT' | translate"
-      [value]="accessionRegisterDetail.archivalAgreement"
+      [value]="formatReferentialValue(accessionRegisterDetail.archivalAgreement, accessionRegisterDetail.archivalAgreementLabel)"
+      [valueCss]="'text-ellipsis'"
+      [valueTooltip]="accessionRegisterDetail.archivalAgreementLabel"
     />
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_PROFILE' | translate"
-      [value]="accessionRegisterDetail.archivalProfile"
+      [value]="formatReferentialValue(accessionRegisterDetail.archivalProfile, accessionRegisterDetail.archivalProfileLabel)"
+      [valueCss]="'text-ellipsis'"
+      [valueTooltip]="accessionRegisterDetail.archivalProfileLabel"
     />
   </div>
 
@@ -46,10 +51,11 @@
       [value]="accessionRegisterDetail.legalStatus"
     />
     <vitamui-common-data
-      [valueTooltip]="accessionRegisterDetail.submissionAgencyLabel"
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.SUBMISSION_AGENCY' | translate"
-      [value]="accessionRegisterDetail.submissionAgency"
+      [value]="formatReferentialValue(accessionRegisterDetail.submissionAgency, accessionRegisterDetail.submissionAgencyLabel)"
+      [valueCss]="'text-ellipsis'"
+      [valueTooltip]="accessionRegisterDetail.submissionAgencyLabel"
     />
   </div>
   <div class="row p-0">

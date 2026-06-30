@@ -73,6 +73,11 @@ export class AccessionRegisterDetailComponent implements OnInit {
     this.hasLongComment = !(!comment || comment.length < 1 || comment.join('').length < this.longCommentSize);
   }
 
+  formatReferentialValue(identifier?: string, name?: string): string | undefined {
+    if (!identifier) return undefined;
+    return name ? `${identifier} - ${name}` : identifier;
+  }
+
   onClicShowMoreOrLessOfComment() {
     this.showFullComment = !this.showFullComment;
   }

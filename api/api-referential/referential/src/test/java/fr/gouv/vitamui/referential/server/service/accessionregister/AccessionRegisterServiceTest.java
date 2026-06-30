@@ -50,10 +50,14 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitam.common.model.administration.IngestContractModel;
+import fr.gouv.vitam.common.model.administration.profile.ProfileModel;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterCommonService;
+import fr.gouv.vitamui.referential.common.service.IngestContractCommonService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -88,6 +92,12 @@ class AccessionRegisterServiceTest {
     private AccessionRegisterCommonService accessionRegisterCommonService;
 
     @Mock
+    private IngestContractCommonService ingestContractCommonService;
+
+    @Mock
+    private VitamProfileCommonService vitamProfileCommonService;
+
+    @Mock
     private SecurityService securityService;
 
     @Mock
@@ -104,6 +114,8 @@ class AccessionRegisterServiceTest {
             adminExternalClient,
             agencyCommonService,
             accessionRegisterCommonService,
+            ingestContractCommonService,
+            vitamProfileCommonService,
             securityService
         );
 
@@ -132,6 +144,12 @@ class AccessionRegisterServiceTest {
         doReturn(buildResponseFrom("data/agencies-mocked.json", AgenciesModel.class))
             .when(agencyCommonService)
             .findAgencies(any(VitamContext.class), any(JsonNode.class));
+        doReturn(new RequestResponseOK<IngestContractModel>())
+            .when(ingestContractCommonService)
+            .findIngestContracts(any(VitamContext.class), any(JsonNode.class));
+        doReturn(new RequestResponseOK<ProfileModel>())
+            .when(vitamProfileCommonService)
+            .findArchivalProfiles(any(VitamContext.class), any(JsonNode.class));
 
         //When
         accessionRegisterService.getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);

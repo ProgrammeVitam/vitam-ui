@@ -86,6 +86,13 @@ export interface AgIdExtDeflateJson {
   submissionAgency?: string;
 }
 
+export interface IngestReferentialNames {
+  originatingAgencyName?: string;
+  submissionAgencyName?: string;
+  archivalAgreementName?: string;
+  archivalProfileName?: string;
+}
+
 export function ingestStatus(ingest: LogbookOperation): IngestStatus {
   if (!ingestHasEvents(ingest)) {
     return ingest.outcome as IngestStatus;

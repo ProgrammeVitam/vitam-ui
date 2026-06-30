@@ -1,5 +1,5 @@
 @if (!editMode) {
-  <vitamui-common-archive-unit-viewer [data]="archiveUnit"></vitamui-common-archive-unit-viewer>
+  <vitamui-common-archive-unit-viewer [data]="archiveUnitWithAgencyLabel()"></vitamui-common-archive-unit-viewer>
 }
 
 @if (editMode) {
@@ -12,7 +12,7 @@
         {{ 'COMMON.UNDO' | translate }}
       </button>
     </vitamui-common-editor-banner>
-    <vitamui-common-archive-unit-editor [data]="archiveUnit"></vitamui-common-archive-unit-editor>
+    <vitamui-common-archive-unit-editor [data]="archiveUnitWithAgencyLabel()"></vitamui-common-archive-unit-editor>
   </div>
 }
 
