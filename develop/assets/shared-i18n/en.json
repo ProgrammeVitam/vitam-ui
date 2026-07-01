@@ -5140,6 +5140,9 @@
         "RULES": {
           "TITLE": "Attachment rules parameters"
         },
+        "DEFAULT": {
+          "TITLE": "Default attachment"
+        },
         "NO_EXISTANT_ATTACHMENT": "No attachment"
       },
       "CONFIGURATION": {
