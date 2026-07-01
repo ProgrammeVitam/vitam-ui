@@ -5140,6 +5140,9 @@
         "RULES": {
           "TITLE": "Paramétrage des règles de rattachement"
         },
+        "DEFAULT": {
+          "TITLE": "Rattachement par défaut"
+        },
         "NO_EXISTANT_ATTACHMENT": "Aucun rattachement"
       },
       "CONFIGURATION": {
