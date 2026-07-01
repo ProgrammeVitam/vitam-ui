@@ -1,5 +1,7 @@
 package fr.gouv.vitamui.commons.rest.controller;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -101,6 +103,8 @@ public class TestController {
     public static final String JACKSON2_JSON_NODE = "/test/jackson2JsonNode";
 
     public static final String JACKSON2_JSON_NODE_RETURN = "/test/jackson2JsonNodeReturn";
+
+    public static final String JACKSON2_JSON_NODE_PROPERTY = "/test/jackson2JsonNodeProperty";
 
     @PostMapping(value = VITAMUI_EXCEPTION, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String vitamuiException(@RequestBody final VitamUIDto name) {
@@ -270,6 +274,18 @@ public class TestController {
         final ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("key", "value");
         return node;
+    }
+
+    @PostMapping(value = JACKSON2_JSON_NODE_PROPERTY, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String jackson2JsonNodeProperty(@RequestBody final Jackson2JsonNodeContainer body) {
+        return body.jsonNode().path("key").asText();
+    }
+
+    public record Jackson2JsonNodeContainer(JsonNode jsonNode) {
+        @JsonCreator
+        public Jackson2JsonNodeContainer(@JsonProperty("jsonNode") final JsonNode jsonNode) {
+            this.jsonNode = jsonNode;
+        }
     }
 
     @Override
