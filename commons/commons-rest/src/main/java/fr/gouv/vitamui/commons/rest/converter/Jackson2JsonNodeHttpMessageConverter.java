@@ -36,20 +36,18 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.lang.reflect.Field;
 
 /**
  * Allows Jackson 2 / Jackson 3 coexistence for {@code @RequestBody com.fasterxml.jackson.databind.JsonNode}
- * parameters. Spring Boot 4 registers a Jackson 3 ({@code tools.jackson}) converter by default, which cannot
- * instantiate the abstract Jackson 2 {@link JsonNode} type. This converter reads the raw request body and parses
- * it explicitly with a Jackson 2 {@link ObjectMapper}.
+ * parameters and DTOs containing a Jackson 2 {@link JsonNode}. Spring Boot 4 registers a Jackson 3
+ * ({@code tools.jackson}) converter by default, which cannot instantiate the abstract Jackson 2 type.
  * <p>
- * Only handles reading: {@link #canWrite(MediaType)} always returns {@code false} so response serialization is
- * left to the default (Jackson 3) converter.
+ * The converter deliberately declines unrelated types so that they remain handled by the default Jackson 3 converter.
  * <p>
  * To remove once the controllers, their services and the Vitam SDK are migrated to Jackson 3.
  */
-public class Jackson2JsonNodeHttpMessageConverter extends AbstractHttpMessageConverter<JsonNode> {
+public class Jackson2JsonNodeHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
 
     private final ObjectMapper jackson2Mapper;
 
@@ -60,24 +58,41 @@ public class Jackson2JsonNodeHttpMessageConverter extends AbstractHttpMessageCon
 
     @Override
     protected boolean supports(final Class<?> clazz) {
-        return JsonNode.class.isAssignableFrom(clazz);
+        return requiresJackson2(clazz);
     }
 
     @Override
-    protected JsonNode readInternal(final Class<? extends JsonNode> clazz, final HttpInputMessage inputMessage)
+    protected Object readInternal(final Class<?> clazz, final HttpInputMessage inputMessage)
         throws IOException, HttpMessageNotReadableException {
-        final String body = new String(inputMessage.getBody().readAllBytes(), StandardCharsets.UTF_8);
-        return jackson2Mapper.readTree(body);
+        return jackson2Mapper.readValue(inputMessage.getBody(), clazz);
     }
 
     @Override
-    protected void writeInternal(final JsonNode jsonNode, final HttpOutputMessage outputMessage)
+    protected void writeInternal(final Object value, final HttpOutputMessage outputMessage)
         throws IOException, HttpMessageNotWritableException {
-        outputMessage.getBody().write(jackson2Mapper.writeValueAsBytes(jsonNode));
+        jackson2Mapper.writeValue(outputMessage.getBody(), value);
     }
 
     @Override
-    protected boolean canWrite(final MediaType mediaType) {
-        return super.canWrite(mediaType);
+    public boolean canWrite(final Class<?> clazz, final MediaType mediaType) {
+        return JsonNode.class.isAssignableFrom(clazz) && super.canWrite(clazz, mediaType);
+    }
+
+    private static boolean requiresJackson2(final Class<?> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+        if (JsonNode.class.isAssignableFrom(clazz)) {
+            return true;
+        }
+
+        for (Class<?> current = clazz; current != null && current != Object.class; current = current.getSuperclass()) {
+            for (Field field : current.getDeclaredFields()) {
+                if (JsonNode.class.isAssignableFrom(field.getType())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

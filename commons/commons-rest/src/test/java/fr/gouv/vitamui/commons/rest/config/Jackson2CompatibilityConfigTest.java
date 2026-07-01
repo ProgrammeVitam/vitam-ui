@@ -60,6 +60,20 @@ class Jackson2CompatibilityConfigTest {
     }
 
     @Test
+    void whenJackson2CompatibilityConfigActive_thenNestedJsonNodeDeserializationSucceeds() {
+        restTestClient
+            .post()
+            .uri(TestController.JACKSON2_JSON_NODE_PROPERTY)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body("{\"jsonNode\": {\"key\": \"value\"}}")
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.OK)
+            .expectBody(String.class)
+            .isEqualTo("value");
+    }
+
+    @Test
     void whenJackson2CompatibilityConfigActive_thenJackson2ConverterIsFirstInList() {
         final List<HttpMessageConverter<?>> converters = handlerAdapter.getMessageConverters();
         assertThat(converters).isNotEmpty().first().isInstanceOf(Jackson2JsonNodeHttpMessageConverter.class);
