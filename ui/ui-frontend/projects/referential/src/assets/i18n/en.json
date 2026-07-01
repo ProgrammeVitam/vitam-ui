@@ -1154,6 +1154,10 @@
     "SUCCESSFUL_UPDATE": "The update was successful !"
   },
   "PRESERVATION": {
+    "ACTION": {
+      "IMPORT_SCENARIOS": "Import preservation scenarios repository",
+      "EXPORT_SCENARIOS": "Export scenarios repository"
+    },
     "HOME": {
       "TITLE": "Griffins and preservation scenarios repository",
       "SEARCH_PLACEHOLDER": "Name, identifier"
@@ -1184,6 +1188,12 @@
           },
           "CREATION_DATE": "Creation date"
         }
+      },
+      "IMPORT_DIALOG": {
+        "SUBHEAD": "Import a preservation scenarios repository",
+        "TITLE": "Loading of a json file",
+        "SNACKBAR_SUCCESS": "JSON import is successful",
+        "SNACKBAR_ERROR": "JSON import is in error"
       }
     }
   }

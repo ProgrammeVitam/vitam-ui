@@ -60,6 +60,7 @@ import {
   EditObject,
   JsonPatch,
   Logger,
+  OperationId,
   SpinnerOverlayService,
   SnackBarService,
 } from 'vitamui-library';
@@ -133,7 +134,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
     filter((isValid) => isValid),
   );
 
-  private updateArchiveUnit: UnaryFunction<Observable<unknown>, Observable<{ operationId: String }>> = pipe(
+  private updateArchiveUnit: UnaryFunction<Observable<unknown>, Observable<OperationId>> = pipe(
     map(() => this.archiveUnitEditor.getJsonPatch()),
     tap(() => this.spinnerOverlayService.open()),
     switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
@@ -297,7 +298,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
     );
   }
 
-  private handleUpdateSuccess({ operationId }: { operationId: String }): void {
+  private handleUpdateSuccess({ operationId }: OperationId): void {
     const tenantId = this.route.snapshot.params.tenantIdentifier;
 
     if (!operationId) return this.logger.error(this, 'Operation id is mandatory to build logbook operation link');

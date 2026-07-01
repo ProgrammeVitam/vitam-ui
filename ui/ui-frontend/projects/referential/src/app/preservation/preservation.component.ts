@@ -35,23 +35,40 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { VitamUICommonModule } from 'vitamui-library';
+import { MatMenuItem } from '@angular/material/menu';
+import { download, PreservationScenariosService, VitamUICommonModule } from 'vitamui-library';
 import { PreservationGroupComponent } from './preservation-group/preservation-group.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ImportScenarioDialogComponent } from './import-scenario-dialog/import-scenario-dialog.component';
 
 @Component({
   selector: 'app-preservation',
   templateUrl: './preservation.component.html',
   styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationGroupComponent],
+  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationGroupComponent, MatMenuItem],
 })
 export class PreservationComponent {
   search = '';
 
+  private readonly preservationScenariosService = inject(PreservationScenariosService);
+  private readonly dialog = inject(MatDialog);
+
   onSearchSubmit(search: string) {
-    this.search = search.trim() || '';
+    this.search = search?.trim() || '';
+  }
+
+  protected importScenarios() {
+    this.dialog.open(ImportScenarioDialogComponent);
+  }
+
+  protected exportScenarios() {
+    this.preservationScenariosService.list().subscribe((scenarios) => {
+      const blob = new Blob([JSON.stringify(scenarios, null, 2)], { type: 'octet/stream' });
+      download(blob, 'scenarios.json');
+    });
   }
 }

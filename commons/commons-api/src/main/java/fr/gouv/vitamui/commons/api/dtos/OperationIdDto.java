@@ -25,15 +25,20 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.dto;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import fr.gouv.vitamui.collect.common.model.OperationId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.Accessors;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
 public class OperationIdDto {
 
-    private OperationId operationId;
+    @NonNull
+    private String operationId;
 }

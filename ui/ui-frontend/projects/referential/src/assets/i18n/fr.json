@@ -1154,6 +1154,10 @@
     "SUCCESSFUL_UPDATE": "La mise à jour a été réalisée avec succès !"
   },
   "PRESERVATION": {
+    "ACTION": {
+      "IMPORT_SCENARIOS": "Importer le référentiel des scénarios de préservation",
+      "EXPORT_SCENARIOS": "Exporter le référentiel des scénarios"
+    },
     "HOME": {
       "TITLE": "Référentiel des griffons et des scénarios de préservation",
       "SEARCH_PLACEHOLDER": "Nom, identifiant"
@@ -1184,6 +1188,12 @@
           },
           "CREATION_DATE": "Date de création"
         }
+      },
+      "IMPORT_DIALOG": {
+        "SUBHEAD": "Importer un référentiel de scénarios",
+        "TITLE": "Chargement d’un fichier json",
+        "SNACKBAR_SUCCESS": "L'import du json est un succès",
+        "SNACKBAR_ERROR": "L'import du json est en erreur"
       }
     }
   }

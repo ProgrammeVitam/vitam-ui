@@ -45,6 +45,7 @@ import {
   IOntology,
   JsonPatchDto,
   MultiJsonPatchDto,
+  OperationId,
   PageRequest,
   PaginatedHttpClient,
   PaginatedResponse,
@@ -219,13 +220,8 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnits(
-    archiveUnits: ArchiveUnit[],
-    headers?: HttpHeaders,
-  ): Observable<{
-    operationId: String;
-  }> {
-    return this.http.patch<{ operationId: String }>(`${this.baseUrl}/archive-units`, archiveUnits, { headers });
+  asyncPartialUpdateArchiveUnits(archiveUnits: ArchiveUnit[], headers?: HttpHeaders): Observable<OperationId> {
+    return this.http.patch<OperationId>(`${this.baseUrl}/archive-units`, archiveUnits, { headers });
   }
 
   /**
@@ -235,15 +231,8 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnitByCommands(
-    jsonPatchDto: JsonPatchDto,
-    headers?: HttpHeaders,
-  ): Observable<{
-    operationId: String;
-  }> {
-    return this.http.patch<{
-      operationId: String;
-    }>(`${this.baseUrl}/archive-units/update/single`, jsonPatchDto, { headers });
+  asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto: JsonPatchDto, headers?: HttpHeaders): Observable<OperationId> {
+    return this.http.patch<OperationId>(`${this.baseUrl}/archive-units/update/single`, jsonPatchDto, { headers });
   }
 
   /**
@@ -254,9 +243,7 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
    * @returns a wrapped operation id.
    */
   asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto, headers?: HttpHeaders) {
-    return this.http.patch<{
-      operationId: String;
-    }>(`${this.baseUrl}/archive-units/update/multiple`, multiJsonPatchDto, { headers });
+    return this.http.patch<OperationId>(`${this.baseUrl}/archive-units/update/multiple`, multiJsonPatchDto, { headers });
   }
 
   /**

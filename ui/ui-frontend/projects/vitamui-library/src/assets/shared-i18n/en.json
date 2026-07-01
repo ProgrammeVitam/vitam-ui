@@ -42,7 +42,8 @@
       "NO_HISTORY": "No history",
       "OPERATIONS": "Logbook"
     },
-    "COPY": "Copy"
+    "COPY": "Copy",
+    "IMPORT": "Import"
   },
   "CONFIRM_DIALOG": {
     "DELETE_TITLE": "Delete {{objectType}}",
@@ -6132,7 +6133,8 @@
     "filesHaveInvalidExtension": "Some files have invalid extensions: <ul>{{files}}</ul>",
     "duplicatedFile": "Duplicated file",
     "duplicatedDirectory": "Duplicated directory",
-    "directoryForbidden": "Directories are not authorized"
+    "directoryForbidden": "Directories are not authorized",
+    "invalidJson": "Invalid JSON"
   },
   "ACCESS_CONTRACT": {
     "HOME": {

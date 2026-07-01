@@ -30,6 +30,7 @@ package fr.gouv.vitamui.referential.server.rest;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.referential.common.dto.preservation.scenario.ActionType;
 import fr.gouv.vitamui.referential.common.dto.preservation.scenario.PreservationScenario;
 import fr.gouv.vitamui.referential.server.service.preservation.PreservationScenarioService;
@@ -38,6 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -123,7 +125,7 @@ class PreservationScenarioControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         List<PreservationScenario> scenarios = List.of(buildScenario("id-1"), buildScenario("id-2"));
-        doNothing().when(preservationScenarioService).put(scenarios);
+        when(preservationScenarioService.put(scenarios)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
 
         // When / Then
         assertThatCode(

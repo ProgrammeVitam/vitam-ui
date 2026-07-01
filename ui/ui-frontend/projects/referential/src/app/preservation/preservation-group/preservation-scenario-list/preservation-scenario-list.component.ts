@@ -37,13 +37,12 @@
 import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Direction, PreservationScenario, PreservationScenariosService, VitamUICommonModule } from 'vitamui-library';
+import { ActionType, Direction, PreservationScenario, PreservationScenariosService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { factorOf, sortByKey } from '../../sorting';
 import { Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs/operators';
-import { ActionType } from '../../../../../../vitamui-library/src/app/modules/preservation/scenarios/preservation-scenario.type';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ACTION_TYPE_KEY = 'PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.';
@@ -90,10 +89,10 @@ export class PreservationScenarioListComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (scenarios) => {
+          this.loading.set(false);
           this.allScenarios.set(scenarios);
           this.applyFilterAndSort();
         },
-        complete: () => this.loading.set(false),
         error: () => this.loading.set(false),
       });
   }
