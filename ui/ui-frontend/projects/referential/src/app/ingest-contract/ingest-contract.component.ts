@@ -59,6 +59,8 @@ import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.com
 import { IngestContractService } from './ingest-contract.service';
 import { HttpResponse } from '@angular/common/http';
 
+const IMPORT_FILE_MODEL_NAME = 'Import_ingest_contract_template.csv';
+
 @Component({
   selector: 'app-ingest-contract',
   templateUrl: './ingest-contract.component.html',
@@ -170,11 +172,10 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   }
 
   public downloadModel(): void {
-    this.ingestContractService
-      .downloadImportFileModel()
-      .subscribe((response: HttpResponse<Blob>) =>
-        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_ingest_contract_template.csv'),
-      );
+    this.ingestContractService.downloadImportFileModel().subscribe((response: HttpResponse<Blob>) => {
+      DownloadUtils.loadFromBlob(response, response.body.type, IMPORT_FILE_MODEL_NAME);
+      this.snackBarService.notifyDownloadStarted();
+    });
   }
 
   public export(): void {

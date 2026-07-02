@@ -374,6 +374,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         link.download = filename;
         // this is necessary as link.click() does not work on the latest firefox
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        this.snackBarService.notifyDownloadStarted();
         setTimeout(() => {
           // For Firefox it is necessary to delay revoking the ObjectURL
           window.URL.revokeObjectURL(href);
