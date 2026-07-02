@@ -886,6 +886,23 @@ public class TransactionArchiveUnitService {
         return archiveUnit;
     }
 
+    /**
+     * Check the results size limit before generating a signed download URL, so that the
+     * {@link RequestEntityTooLargeException} (HTTP 413) is raised on the request the client
+     * subscribes to instead of during the browser navigation to the signed URL.
+     */
+    public void checkExportCsvSizeLimit(
+        String transactionId,
+        final SearchCriteriaDto searchQuery,
+        final VitamContext vitamContext
+    ) throws VitamClientException {
+        try {
+            checkSizeLimit(transactionId, vitamContext, searchQuery);
+        } catch (IOException | InvalidParseOperationException | InvalidCreateOperationException e) {
+            throw new BadRequestException("Can't parse criteria as Vitam query", e);
+        }
+    }
+
     private void checkSizeLimit(String transactionId, VitamContext vitamContext, SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException, InvalidCreateOperationException, InvalidParseOperationException {
         SearchCriteriaDto searchQueryCounting = new SearchCriteriaDto();
