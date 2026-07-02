@@ -93,7 +93,7 @@ pipeline {
                 sh 'sudo apt install -y build-essential make ruby ruby-dev rubygems jq'
                 sh 'sudo timedatectl set-timezone Europe/Paris'
                 sh 'sudo gem install fpm'
-                nvm('v22.22.0') { // We're installing correct Node version through NVM then update the path to make it available. Do NOT wrap your code in `nvm('...') {}` as it would override the whole PATH and then break tools (jdk, maven) configurations
+                nvm('v26.4.0') { // We're installing correct Node version through NVM then update the path to make it available. Do NOT wrap your code in `nvm('...') {}` as it would override the whole PATH and then break tools (jdk, maven) configurations
                     script {
                         nvmPath = sh(script: 'dirname $(which node)', returnStdout: true).trim()
                         env.PATH = "${nvmPath}:${env.PATH}"
