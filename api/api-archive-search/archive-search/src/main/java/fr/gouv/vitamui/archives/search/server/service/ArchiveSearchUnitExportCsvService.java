@@ -277,6 +277,20 @@ public class ArchiveSearchUnitExportCsvService {
     }
 
     /**
+     * Check the results size limit before generating a signed download URL, so that the
+     * {@link RequestEntityTooLargeException} (HTTP 413) is raised on the request the client
+     * subscribes to instead of during the browser navigation to the signed URL.
+     */
+    public void checkExportCsvSizeLimit(final SearchCriteriaDto searchQuery) throws VitamClientException {
+        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        try {
+            checkSizeLimit(vitamContext, searchQuery);
+        } catch (IOException e) {
+            throw new BadRequestException("Can't parse criteria as Vitam query", e);
+        }
+    }
+
+    /**
      * check limit of results limit
      *
      * @param vitamContext

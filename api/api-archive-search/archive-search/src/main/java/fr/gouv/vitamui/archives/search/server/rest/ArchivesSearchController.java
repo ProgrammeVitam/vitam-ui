@@ -258,11 +258,14 @@ public class ArchivesSearchController {
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH + "/signed-url")
     @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
     public String prepareSignedExportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
-        throws PreconditionFailedException {
+        throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Prepare signed export to csv search archive Units By Criteria {} ", query);
         archiveSearchThresholdService.retrieveProfilThresholds().ifPresent(query::setThreshold);
+        // Check the results size limit here so the 413 is returned on this request (the one the
+        // client subscribes to) and the limit-reached snackbar can be displayed.
+        archiveSearchUnitExportCsvService.checkExportCsvSizeLimit(query);
 
         DownloadClaims claims = new DownloadClaims();
         claims.setResource(ARCHIVE_UNIT_EXPORT_RESOURCE);

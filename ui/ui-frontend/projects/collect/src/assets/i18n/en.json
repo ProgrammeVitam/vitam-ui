@@ -1,5 +1,8 @@
 {
   "COLLECT": {
+    "EXPORT_CSV": {
+      "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10,000 results, please update your filters."
+    },
     "ADD_UNITS": {
       "ACTION_TITLE": "Add archival units",
       "TITLE": "Add archival units to the upload project",

@@ -162,11 +162,18 @@ public class TransactionArchiveUnitController {
     public String prepareSignedExportCsvArchiveUnitsByCriteria(
         final @PathVariable("transactionId") String transactionId,
         final @RequestBody SearchCriteriaDto query
-    ) throws PreconditionFailedException {
+    ) throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter(MANDATORY_QUERY, query);
         SanityChecker.checkSecureParameter(transactionId);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.debug("Prepare signed export to csv search archive Units By Criteria {} ", query);
+        // Check the results size limit here so the 413 is returned on this request (the one the
+        // client subscribes to) and the limit-reached snackbar can be displayed.
+        transactionArchiveUnitService.checkExportCsvSizeLimit(
+            transactionId,
+            query,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
 
         DownloadClaims claims = new DownloadClaims();
         claims.setResource(COLLECT_TRANSACTION_ARCHIVE_UNIT_EXPORT_RESOURCE);
