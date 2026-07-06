@@ -55,7 +55,7 @@ export function provideI18n(): Provider[] {
       provide: MissingTranslationHandler,
       useClass: VitamuiMissingTranslationHandler,
     },
-    defaultLanguage: 'fr',
+    fallbackLang: 'fr',
     loader: {
       provide: TranslateLoader,
       useFactory: httpLoaderFactory,
