@@ -48,6 +48,7 @@ import {
   Transaction,
   Unit,
 } from 'vitamui-library';
+import { OperationStatus } from '../../models/operation-status.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -84,6 +85,10 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
 
   abortTransaction(id: string) {
     return this.http.put<Transaction>(this.apiUrl + '/' + id + '/abort', {});
+  }
+
+  getOperationStatus(operationId: string): Observable<OperationStatus> {
+    return this.http.get<OperationStatus>(`${this.apiUrl}/operations/${encodeURIComponent(operationId)}/status`);
   }
 
   downloadSipTransaction(id: string) {

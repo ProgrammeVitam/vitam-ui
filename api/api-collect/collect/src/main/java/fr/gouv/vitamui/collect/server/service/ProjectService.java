@@ -36,6 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.UploadSipResult;
 import fr.gouv.vitam.collect.external.external.exception.CollectExternalClientInvalidRequestException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -234,10 +235,14 @@ public class ProjectService {
         }
     }
 
-    public void streamingUploadSip(InputStream inputStream, String transactionId, VitamContext vitamContext) {
+    public RequestResponse<UploadSipResult> streamingUploadSip(
+        InputStream inputStream,
+        String transactionId,
+        VitamContext vitamContext
+    ) {
         LOGGER.debug("TransactionId: {}", transactionId);
         try {
-            collectService.uploadSipToTransaction(vitamContext, transactionId, inputStream);
+            return collectService.uploadSipToTransaction(vitamContext, transactionId, inputStream);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
             throw new BadRequestException(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
