@@ -85,11 +85,15 @@ export class SnackBarService {
     return this.matSnackBar.openFromComponent(component, { duration, data });
   }
 
-  public startDownload(url: string): void {
+  public notifyDownloadStarted(): void {
     this.open({
       message: DOWNLOAD_STARTED_MESSAGE,
       icon: 'vitamui-icon vitamui-icon-telecharger',
     });
+  }
+
+  public startDownload(url: string): void {
+    this.notifyDownloadStarted();
     window.location.href = url;
   }
 

@@ -58,6 +58,8 @@ import { AccessContractCreateComponent } from './access-contract-create/access-c
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { finalize, shareReplay } from 'rxjs/operators';
 
+const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
+
 @Component({
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
@@ -155,11 +157,10 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   }
 
   public downloadModel(): void {
-    this.accessContractService
-      .downloadImportAccessContractFileModel()
-      .subscribe((response: HttpResponse<Blob>) =>
-        DownloadUtils.loadFromBlob(response, response.body.type, 'Import_access_contrat_template.csv'),
-      );
+    this.accessContractService.downloadImportAccessContractFileModel().subscribe((response: HttpResponse<Blob>) => {
+      DownloadUtils.loadFromBlob(response, response.body.type, IMPORT_FILE_MODEL_NAME);
+      this.snackBarService.notifyDownloadStarted();
+    });
   }
 
   public onSearchSubmit(search: string) {
