@@ -71,7 +71,12 @@
             <button mat-menu-item [disabled]="isNotOpen$ | async" (click)="openAddUnitsForm()">
               {{ 'COLLECT.ADD_UNITS.ACTION_TITLE' | translate }}
             </button>
-            <button mat-menu-item (click)="validateTransaction()" [disabled]="!hasCloseTransactionRole || (isNotOpen$ | async)">
+            <button
+              mat-menu-item
+              (click)="validateTransaction()"
+              [disabled]="!hasCloseTransactionRole || (isNotOpen$ | async) || sipImportInProgress()"
+              [vitamuiTooltip]="sipImportInProgress() ? ('COLLECT.SIP_IMPORT_IN_PROGRESS' | translate) : null"
+            >
               {{ 'COLLECT.VALIDATE_ACTION' | translate }}
             </button>
             <button mat-menu-item (click)="sendTransaction()" [disabled]="!canSend(transaction)">

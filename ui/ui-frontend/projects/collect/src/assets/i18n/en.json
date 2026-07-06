@@ -276,6 +276,7 @@
     "TRANSACTION_ABORTED": "The ingest request of the project has been aborted",
     "TRANSACTION_REOPENED": "The ingest request of the project has been reopened",
     "BATCH_ERROR_RECORDED": "Errors recorded",
+    "SIP_IMPORT_IN_PROGRESS": "SIP import in progress, validation will be available once the import is complete",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "go to list transactions",

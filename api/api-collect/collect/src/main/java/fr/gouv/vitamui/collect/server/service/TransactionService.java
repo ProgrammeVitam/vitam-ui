@@ -39,13 +39,18 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.ItemStatus;
+import fr.gouv.vitam.common.model.ProcessState;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.StatusCode;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
+import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +91,7 @@ public class TransactionService {
     private static final String ACTION = "$action";
 
     private final CollectService collectService;
+    private final VitamOperationCommonService vitamOperationCommonService;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -158,6 +164,32 @@ public class TransactionService {
         } catch (VitamClientException | InvalidParseOperationException e) {
             throw new VitamClientException("Unable to find transaction : ", e);
         }
+    }
+
+    /**
+     * Get the current status of a Vitam operation (workflow) linked to a transaction, e.g. a SIP import.
+     * When the operation is unknown to the processing engine (already purged after completion), it is
+     * reported as COMPLETED so callers never stay blocked on a finished workflow.
+     */
+    public CollectOperationStatusDto getOperationStatus(String operationId, VitamContext vitamContext)
+        throws VitamClientException {
+        RequestResponse<ItemStatus> requestResponse = vitamOperationCommonService.getOperationDetailsById(
+            vitamContext,
+            operationId
+        );
+        if (!requestResponse.isOk()) {
+            LOGGER.warn(
+                "Operation {} not found in the processing engine (http code {}), considering it completed",
+                operationId,
+                requestResponse.getHttpCode()
+            );
+            return new CollectOperationStatusDto(ProcessState.COMPLETED.name(), StatusCode.UNKNOWN.name());
+        }
+        ItemStatus itemStatus = ((RequestResponseOK<ItemStatus>) requestResponse).getFirstResult();
+        return new CollectOperationStatusDto(
+            itemStatus.getGlobalState() != null ? itemStatus.getGlobalState().name() : null,
+            itemStatus.getGlobalStatus() != null ? itemStatus.getGlobalStatus().name() : null
+        );
     }
 
     public CollectTransactionDto updateTransaction(

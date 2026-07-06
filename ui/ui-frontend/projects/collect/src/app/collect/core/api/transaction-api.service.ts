@@ -49,6 +49,7 @@ import {
   Unit,
   VitamError,
 } from 'vitamui-library';
+import { OperationStatus } from '../../models/operation-status.interface';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 
 @Injectable({
@@ -87,6 +88,10 @@ export class TransactionApiService extends PaginatedHttpClient<Transaction> {
 
   abortTransaction(id: string) {
     return this.http.put<Transaction>(this.apiUrl + '/' + id + '/abort', {});
+  }
+
+  getOperationStatus(operationId: string): Observable<OperationStatus> {
+    return this.http.get<OperationStatus>(`${this.apiUrl}/operations/${encodeURIComponent(operationId)}/status`);
   }
 
   downloadSipTransaction(id: string) {
