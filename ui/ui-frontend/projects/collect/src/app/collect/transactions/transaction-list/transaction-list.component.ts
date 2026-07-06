@@ -50,6 +50,7 @@ import {
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { ProjectsService } from '../../projects/projects.service';
+import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
@@ -69,6 +70,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   private startupService = inject(StartupService);
   private snackBarService = inject(SnackBarService);
   private dialog = inject(MatDialog);
+  private sipImportTrackingService = inject(SipImportTrackingService);
 
   direction = Direction.DESCENDANT;
   orderBy = 'archivalAgreement';
@@ -212,6 +214,14 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
 
   transactionIsOpen(transaction: Transaction): boolean {
     return TransactionStatus.OPEN === transaction.status;
+  }
+
+  sipImportInProgress(transaction: Transaction): boolean {
+    return this.sipImportTrackingService.isSipImportInProgress(transaction.id);
+  }
+
+  transactionIsValidatable(transaction: Transaction): boolean {
+    return this.transactionIsOpen(transaction) && !this.sipImportInProgress(transaction);
   }
 
   transactionIsEditable(transaction: Transaction): boolean {

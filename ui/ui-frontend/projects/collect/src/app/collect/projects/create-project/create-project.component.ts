@@ -44,6 +44,7 @@ import { last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
+import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import {
   ExternalReferentialService,
@@ -110,6 +111,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   private tenantSelectionService = inject(TenantSelectionService);
   private transactionsService = inject(TransactionsService);
   private archiveCollectService = inject(ArchiveCollectService);
+  private sipImportTrackingService = inject(SipImportTrackingService);
   private logger = inject(Logger);
   private cdr = inject(ChangeDetectorRef);
   private translationService = inject(TranslateService);
@@ -579,6 +581,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       .subscribe({
         next: (_result) => {
           this.dialogRef.close(true);
+          if (this.importType === ImportType.SIP) {
+            // The response body of a SIP upload is the id of the import workflow operation:
+            // track it to prevent validating the transaction before the workflow is over
+            this.sipImportTrackingService.trackSipImport(transactionId, _result.body);
+            this.snackBarService.open({
+              message: 'COLLECT.UPLOAD.TERMINATED',
+              duration: 10_000,
+            });
+            return;
+          }
           let vitamError: VitamError = JSON.parse(_result.body);
           if (vitamError.httpCode === HttpStatusCode.Ok) {
             this.snackBarService.open({

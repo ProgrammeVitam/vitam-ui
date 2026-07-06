@@ -104,6 +104,7 @@ import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TransactionsService } from '../transactions/transactions.service';
+import { SipImportTrackingService } from '../shared/sip-import-tracking.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
 import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
@@ -138,6 +139,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   private ruleService = inject(RuleService);
   private snackBarService = inject(SnackBarService);
   private transactionService = inject(TransactionsService);
+  private sipImportTrackingService = inject(SipImportTrackingService);
 
   readonly UnitType = UnitType;
 
@@ -1301,6 +1303,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isAllChecked,
       this.isIndeterminate,
     );
+  }
+
+  sipImportInProgress(): boolean {
+    return !!this.transaction && this.sipImportTrackingService.isSipImportInProgress(this.transaction.id);
   }
 
   validateTransaction() {
