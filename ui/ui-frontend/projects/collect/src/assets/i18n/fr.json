@@ -284,6 +284,7 @@
     "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonnée",
     "TRANSACTION_REOPENED": "La demande de versement du projet a été bien rouverte",
     "BATCH_ERROR_RECORDED": "Erreurs enregistrées",
+    "SIP_IMPORT_IN_PROGRESS": "Import du SIP en cours, la validation sera possible une fois l'import terminé",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "Accéder à la liste des versements du projet",
