@@ -10,16 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check PR title
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
-            const commitPattern = /#[0-9]{4,5}/;
+            // Validation pattern breakdown:
+            // ^(?:CP V[0-9]+\.[0-9]+ - )?  -> (Optional) "CP V" followed by version, space, hyphen, space
+            // (?:Story|Bug)                 -> (Required) Must be exactly "Story" or "Bug"
+            //  #[0-9]{4,5}                  -> (Required) Space followed by # and a 4 or 5-digit Tuleap ID
+            // : .+                          -> (Required) Colon, space, and the commit message
+            const prTitlePattern = /^(?:CP V[0-9]+\.[0-9]+ - )?(?:Story|Bug) #[0-9]{4,5}: .+/;
 
-            const pullRequest = context.payload.pull_request;
+            const prTitle = context.payload.pull_request.title;
+            console.log(`Checking PR title: "${prTitle}"`);
 
-            // Check the pull request title
-            const prTitle = pullRequest.title;
-            console.log(`Checking PR title: ${prTitle}`);
-            if (!commitPattern.test(prTitle)) {
-              core.setFailed(`Invalid PR title. PR title must include a Tuleap ticket number (e.g., #12345). Title: "${prTitle}"`);
+            if (!prTitlePattern.test(prTitle)) {
+              core.setFailed(
+                `❌ The PR title does not comply with the project conventions.\n\n` +
+                `Expected formats:\n` +
+                `  • Standard: "Story #12345: My commit message in english"\n` +
+                `  • Backport: "CP V8.1 - Bug #12345: My commit message in english"\n\n` +
+                `Received title: "${prTitle}"`
+              );
             }
