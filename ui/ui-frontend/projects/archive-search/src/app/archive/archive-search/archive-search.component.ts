@@ -161,6 +161,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private securityService = inject(SecurityService);
   private vitamConfigurationService = inject(VitamTenantConfigService);
 
+  // Bug #16446: Title sort chevron shown only when Title is not in NON_SORTABLE_FIELDS
+  private nonSortableFields: string[] = this.configService.config?.NON_SORTABLE_FIELDS?.['Unit'] ?? [];
+
   readonly UnitType = UnitType;
   readonly ReassignmentMode = ReassignmentMode;
 
@@ -520,6 +523,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  // Bug #16446: hide the server-side sort chevron for fields configured as non-sortable (analyzed ES fields).
+  isSortableField(field: string): boolean {
+    return !this.nonSortableFields.includes(field);
   }
 
   removeCriteriaEvent(criteriaToRemove: any) {
