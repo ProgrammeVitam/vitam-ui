@@ -30,8 +30,8 @@ package fr.gouv.vitamui.referential.server.rest;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.administration.ActionTypePreservation;
 import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
-import fr.gouv.vitamui.referential.common.dto.preservation.scenario.ActionType;
 import fr.gouv.vitamui.referential.common.dto.preservation.scenario.PreservationScenario;
 import fr.gouv.vitamui.referential.server.service.preservation.PreservationScenarioService;
 import org.junit.jupiter.api.BeforeEach;
@@ -269,7 +269,7 @@ class PreservationScenarioControllerTest {
             null,
             null,
             null,
-            List.of(ActionType.GENERATE),
+            List.of(ActionTypePreservation.GENERATE),
             null,
             null,
             null

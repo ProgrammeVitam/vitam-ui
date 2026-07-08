@@ -28,5 +28,9 @@
 package fr.gouv.vitamui.referential.common.dto.preservation.scenario;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitam.common.model.administration.ActionTypePreservation;
 
-public record ActionDetail(@JsonProperty("Type") ActionType type, @JsonProperty("Values") ActionValues values) {}
+public record ActionDetail(
+    @JsonProperty("Type") ActionTypePreservation type,
+    @JsonProperty("Values") ActionValues values
+) {}

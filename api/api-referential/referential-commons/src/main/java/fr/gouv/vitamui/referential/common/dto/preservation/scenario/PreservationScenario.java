@@ -29,6 +29,7 @@ package fr.gouv.vitamui.referential.common.dto.preservation.scenario;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitam.common.model.administration.ActionTypePreservation;
 import fr.gouv.vitamui.referential.common.security.TenantAware;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public record PreservationScenario(
     @JsonProperty("CreationDate") String creationDate,
     @JsonProperty("LastUpdate") String lastUpdateDate,
 
-    @JsonProperty("ActionList") List<ActionType> actionList,
+    @JsonProperty("ActionList") List<ActionTypePreservation> actionList,
 
     @JsonProperty("GriffinByFormat") List<GriffinByFormat> griffinByFormat,
 

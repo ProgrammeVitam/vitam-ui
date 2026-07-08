@@ -1182,7 +1182,7 @@
           "ACTIONS": {
             "GENERATE": "Conversion",
             "IDENTIFY": "Identification",
-            "VALIDATION": "Validation",
+            "ANALYSE": "Validation",
             "EXTRACT": "Extraction de métadonnées techniques",
             "EXTRACT_AU": "Extraction de métadonnées descriptives"
           },
