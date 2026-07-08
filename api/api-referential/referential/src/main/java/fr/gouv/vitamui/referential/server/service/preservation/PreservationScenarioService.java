@@ -102,7 +102,7 @@ public class PreservationScenarioService extends AbstractService {
         List<PreservationScenario> nextScenarios = getAll()
             .stream()
             .map(currentScenario -> {
-                if (currentScenario.id().equals(scenario.id())) {
+                if (currentScenario.identifier().equals(scenario.identifier())) {
                     return scenario;
                 }
                 return currentScenario;
@@ -116,7 +116,7 @@ public class PreservationScenarioService extends AbstractService {
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         List<PreservationScenario> nextScenarios = getAll()
             .stream()
-            .filter(currentScenario -> currentScenario.id().equals(scenario.id()))
+            .filter(currentScenario -> currentScenario.identifier().equals(scenario.identifier()))
             .toList();
 
         this.put(nextScenarios);

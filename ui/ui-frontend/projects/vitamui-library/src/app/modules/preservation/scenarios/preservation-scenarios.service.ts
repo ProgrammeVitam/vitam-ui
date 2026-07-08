@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
-import { CreatePreservationScenario, PreservationScenario } from './preservation-scenario.type';
+import { PreservationScenario } from './preservation-scenario.type';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, switchMap, tap } from 'rxjs';
 
@@ -59,7 +59,7 @@ export class PreservationScenariosService {
     return this.api.put(preservationScenarios).pipe(tap(() => this.refresh$.next()));
   }
 
-  public create(preservationScenario: CreatePreservationScenario) {
+  public create(preservationScenario: PreservationScenario) {
     return this.api.create(preservationScenario).pipe(tap(() => this.refresh$.next()));
   }
 

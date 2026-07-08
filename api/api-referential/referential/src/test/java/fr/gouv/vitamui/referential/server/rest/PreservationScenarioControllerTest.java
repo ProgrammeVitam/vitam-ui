@@ -261,12 +261,8 @@ class PreservationScenarioControllerTest {
 
     private PreservationScenario buildScenario(String id) {
         return new PreservationScenario(
-            id,
-            0,
-            1,
             "IDENTIFIER_" + id,
             "Scenario " + id,
-            null,
             null,
             null,
             List.of(ActionTypePreservation.GENERATE),

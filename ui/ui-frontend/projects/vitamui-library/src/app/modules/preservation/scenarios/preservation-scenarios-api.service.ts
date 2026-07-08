@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '../../injection-tokens';
 import { Observable } from 'rxjs';
-import { CreatePreservationScenario, PreservationScenario } from './preservation-scenario.type';
+import { PreservationScenario } from './preservation-scenario.type';
 import { OperationId } from '../../../../lib/models/operation-id';
 import { addSkipErrorNotificationHeader } from '../../utils';
 
@@ -62,7 +62,7 @@ export class PreservationScenariosApiService {
     return this.http.put<OperationId>(this.apiUrl, preservationScenarios, { headers: addSkipErrorNotificationHeader(new HttpHeaders()) });
   }
 
-  public create(preservationScenario: CreatePreservationScenario) {
+  public create(preservationScenario: PreservationScenario) {
     return this.http.post<PreservationScenario>(this.apiUrl, preservationScenario);
   }
 

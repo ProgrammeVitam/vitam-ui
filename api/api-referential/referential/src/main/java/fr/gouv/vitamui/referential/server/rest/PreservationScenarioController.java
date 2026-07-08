@@ -32,7 +32,6 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.referential.common.dto.preservation.scenario.PreservationScenario;
-import fr.gouv.vitamui.referential.server.security.TenantScope;
 import fr.gouv.vitamui.referential.server.service.preservation.PreservationScenarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +70,6 @@ public class PreservationScenarioController {
     }
 
     @PutMapping
-    @TenantScope
     @Secured(ROLE_UPDATE_PRESERVATION_SCENARIOS)
     public ResponseEntity<OperationIdDto> putPreservationScenarios(@RequestBody List<PreservationScenario> scenarios)
         throws AccessExternalClientException, VitamClientException, IOException {
@@ -79,7 +77,6 @@ public class PreservationScenarioController {
     }
 
     @PostMapping
-    @TenantScope
     @Secured(ROLE_UPDATE_PRESERVATION_SCENARIOS)
     public void updatePreservationScenario(@RequestBody PreservationScenario scenario)
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
@@ -87,7 +84,6 @@ public class PreservationScenarioController {
     }
 
     @DeleteMapping
-    @TenantScope
     @Secured(ROLE_UPDATE_PRESERVATION_SCENARIOS)
     public void deletePreservationScenario(@RequestBody PreservationScenario scenario)
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {

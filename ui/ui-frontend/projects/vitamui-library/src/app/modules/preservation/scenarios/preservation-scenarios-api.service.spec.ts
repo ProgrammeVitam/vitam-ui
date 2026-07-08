@@ -40,7 +40,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
 import { BASE_URL } from '../../injection-tokens';
-import { CreatePreservationScenario, PreservationScenario } from './preservation-scenario.type';
+import { PreservationScenario } from './preservation-scenario.type';
 
 describe('PreservationScenariosApiService', () => {
   let service: PreservationScenariosApiService;
@@ -50,14 +50,10 @@ describe('PreservationScenariosApiService', () => {
   const endpoint = `${baseUrl}/preservation-scenarios`;
 
   const mockScenario: PreservationScenario = {
-    '#id': '1',
-    '#tenant': 1,
-    '#version': 1,
     Identifier: 'ID-123',
     Name: 'Scenario 1',
     Description: 'Description 1',
     CreationDate: new Date(),
-    LastUpdateDate: new Date(),
     ActionList: [],
     GriffinByFormat: [],
     DefaultGriffin: {
@@ -117,7 +113,7 @@ describe('PreservationScenariosApiService', () => {
   });
 
   it('create should send POST request', () => {
-    const newScenario: CreatePreservationScenario = {
+    const newScenario: PreservationScenario = {
       ...mockScenario,
       Identifier: 'NEW',
     };

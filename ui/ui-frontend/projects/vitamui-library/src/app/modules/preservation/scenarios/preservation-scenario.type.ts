@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface CreatePreservationScenario {
+export interface PreservationScenario {
   Identifier: string;
   Name: string;
   Description: string;
 
   CreationDate: Date;
-  LastUpdateDate: Date;
 
   ActionList: ActionType[];
 
@@ -49,12 +48,6 @@ export interface CreatePreservationScenario {
   DefaultGriffin: DefaultGriffin;
 
   TransformationRules: string;
-}
-
-export interface PreservationScenario extends CreatePreservationScenario {
-  '#id': string;
-  '#tenant': number;
-  '#version': number;
 }
 
 export interface GriffinByFormat {
