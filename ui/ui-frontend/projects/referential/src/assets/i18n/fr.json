@@ -1155,7 +1155,7 @@
   },
   "PRESERVATION": {
     "ACTION": {
-      "IMPORT_SCENARIOS": "Importer le référentiel des scénarios de préservation",
+      "IMPORT_SCENARIOS": "Importer des scénarios de préservation",
       "EXPORT_SCENARIOS": "Exporter le référentiel des scénarios"
     },
     "HOME": {

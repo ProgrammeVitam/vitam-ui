@@ -1155,7 +1155,7 @@
   },
   "PRESERVATION": {
     "ACTION": {
-      "IMPORT_SCENARIOS": "Import preservation scenarios repository",
+      "IMPORT_SCENARIOS": "Import preservation scenarios",
       "EXPORT_SCENARIOS": "Export scenarios repository"
     },
     "HOME": {
