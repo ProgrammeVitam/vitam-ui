@@ -210,8 +210,12 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     const step2Values = this.formGroups[1].getRawValue();
     const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] =
       step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
+    const transferRequestParameters = {
+      ...step1Values,
+      relatedTransferReference: step1Values.relatedTransferReference ? [step1Values.relatedTransferReference] : [],
+    };
     const transferRequestDto: TransferRequestDto = {
-      transferRequestParameters: step1Values,
+      transferRequestParameters,
       searchCriteria: this.data.searchCriteria,
       dataObjectVersionsPatterns: usages.reduce(
         (acc: TransferRequestDto['dataObjectVersionsPatterns'], uv) => {
