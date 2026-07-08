@@ -227,8 +227,11 @@ export class FilingPlanComponent implements ControlValueAccessor, OnInit {
       }
     }
 
-    // FIXME is this really needed ?
-    this.onChange(this.selectedNodes);
+    this.onChange({
+      included: [...this.selectedNodes.included],
+      excluded: [...this.selectedNodes.excluded],
+    });
+    this.onTouched();
   }
 
   private areAllParentsUnchecked(parents: Node[]): boolean {
