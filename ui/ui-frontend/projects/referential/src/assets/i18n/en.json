@@ -1156,7 +1156,9 @@
   "PRESERVATION": {
     "ACTION": {
       "IMPORT_SCENARIOS": "Import preservation scenarios",
-      "EXPORT_SCENARIOS": "Export scenarios repository"
+      "EXPORT_SCENARIOS": "Export scenarios repository",
+      "IMPORT_GRIFFINS": "Import a griffins referential",
+      "EXPORT_GRIFFINS": "Export griffins referential"
     },
     "HOME": {
       "TITLE": "Griffins and preservation scenarios repository",
@@ -1178,6 +1180,12 @@
       "SNACKBAR": {
         "DELETE_REQUEST_ACCEPTED": "The deletion request has been taken into account",
         "DELETE_FAILED": "The griffin could not be deleted. Please check the details in the operations logbook"
+      },
+      "IMPORT_DIALOG": {
+        "SUBHEAD": "Import a griffins repository",
+        "TITLE": "Loading of a json file",
+        "SNACKBAR_SUCCESS": "JSON import is successful",
+        "SNACKBAR_ERROR": "JSON import is in error"
       }
     },
     "SCENARIO": {

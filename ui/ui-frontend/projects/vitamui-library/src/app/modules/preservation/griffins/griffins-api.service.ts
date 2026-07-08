@@ -34,11 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL } from '../../injection-tokens';
 import { Observable } from 'rxjs';
 import { CreateGriffin, Griffin } from './griffin.type';
+import { OperationId } from '../../../../lib/models/operation-id';
+import { addSkipErrorNotificationHeader } from '../../utils';
 
 @Injectable({
   providedIn: 'root',
@@ -57,7 +59,7 @@ export class GriffinsApiService {
   }
 
   public put(griffins: Griffin[]) {
-    return this.http.put<void>(this.apiUrl, griffins);
+    return this.http.put<OperationId>(this.apiUrl, griffins, { headers: addSkipErrorNotificationHeader(new HttpHeaders()) });
   }
 
   public create(griffin: CreateGriffin) {

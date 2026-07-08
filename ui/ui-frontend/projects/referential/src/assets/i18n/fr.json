@@ -1156,7 +1156,9 @@
   "PRESERVATION": {
     "ACTION": {
       "IMPORT_SCENARIOS": "Importer des scénarios de préservation",
-      "EXPORT_SCENARIOS": "Exporter le référentiel des scénarios"
+      "EXPORT_SCENARIOS": "Exporter le référentiel des scénarios",
+      "IMPORT_GRIFFINS": "Importer un référentiel de griffons",
+      "EXPORT_GRIFFINS": "Exporter le référentiel des griffons"
     },
     "HOME": {
       "TITLE": "Référentiel des griffons et des scénarios de préservation",
@@ -1178,6 +1180,12 @@
       "SNACKBAR": {
         "DELETE_REQUEST_ACCEPTED": "La demande de suppression a bien été prise en compte",
         "DELETE_FAILED": "Le griffon n'a pas pu être supprimé. Veuillez consulter le détail dans le journal des opérations"
+      },
+      "IMPORT_DIALOG": {
+        "SUBHEAD": "Importer un référentiel de griffons",
+        "TITLE": "Chargement d’un fichier json",
+        "SNACKBAR_SUCCESS": "L'import du json est un succès",
+        "SNACKBAR_ERROR": "L'import du json est en erreur"
       }
     },
     "SCENARIO": {

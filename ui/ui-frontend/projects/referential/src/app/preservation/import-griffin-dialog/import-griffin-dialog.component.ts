@@ -35,48 +35,57 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { PreservationComponent } from './preservation.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { BASE_URL, LoggerModule, SecurityService, VitamUICommonModule } from 'vitamui-library';
+import { Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
-import { EMPTY } from 'rxjs';
+import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  DialogHeaderComponent,
+  FileSelectorComponent,
+  FileSelectorValidators,
+  GriffinsService,
+  readFileContent,
+  SnackBarService,
+} from 'vitamui-library';
+import { HttpErrorResponse } from '@angular/common/http';
 
-describe('PreservationComponent', () => {
-  let component: PreservationComponent;
-  let fixture: ComponentFixture<PreservationComponent>;
+@Component({
+  templateUrl: './import-griffin-dialog.component.html',
+  imports: [
+    DialogHeaderComponent,
+    TranslateModule,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    FileSelectorComponent,
+    ReactiveFormsModule,
+  ],
+})
+export class ImportGriffinDialogComponent {
+  protected files = new FormControl([], Validators.required);
 
-  const securityServiceMock = {
-    hasRole: vi.fn().mockReturnValue(true),
-  };
+  private readonly griffinsService = inject(GriffinsService);
+  private readonly snackBarService = inject(SnackBarService);
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PreservationComponent, LoggerModule.forRoot(), TranslateModule.forRoot(), VitamUICommonModule],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: ActivatedRoute, useValue: { snapshot: { data: EMPTY } } },
-        {
-          provide: SecurityService,
-          useValue: securityServiceMock,
-        },
-      ],
-    }).compileComponents();
+  protected async import() {
+    const griffins = JSON.parse(await readFileContent(this.files.value[0]));
+    this.griffinsService.put(griffins).subscribe({
+      next: (operationId) => {
+        this.snackBarService.open(
+          this.snackBarService.buildSnackBarForOperationsLog(
+            'PRESERVATION.GRIFFIN.IMPORT_DIALOG.SNACKBAR_SUCCESS',
+            operationId.operationId,
+          ),
+        );
+      },
+      error: (error: HttpErrorResponse) => {
+        const operationId = error.error?.operationId;
+        this.snackBarService.open(
+          this.snackBarService.buildSnackBarForOperationsLog('PRESERVATION.GRIFFIN.IMPORT_DIALOG.SNACKBAR_ERROR', operationId),
+        );
+      },
+    });
+  }
 
-    fixture = TestBed.createComponent(PreservationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  jsonValidator = FileSelectorValidators.jsonValidator;
+}

@@ -36,14 +36,12 @@
  */
 import { Component, inject } from '@angular/core';
 import {
-  ApplicationId,
   DialogHeaderComponent,
   FileSelectorComponent,
   FileSelectorValidators,
   PreservationScenariosService,
   readFileContent,
   SnackBarService,
-  TenantSelectionService,
 } from 'vitamui-library';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
@@ -67,37 +65,23 @@ export class ImportScenarioDialogComponent {
 
   private readonly preservationScenariosService = inject(PreservationScenariosService);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   protected async import() {
     const preservationScenarios = JSON.parse(await readFileContent(this.files.value[0]));
     this.preservationScenariosService.put(preservationScenarios).subscribe({
       next: (operationId) => {
-        this.snackBarService.open({
-          message: 'PRESERVATION.SCENARIO.IMPORT_DIALOG.SNACKBAR_SUCCESS',
-          buttons: [
-            {
-              appId: ApplicationId.LOGBOOK_OPERATION_APP,
-              path: `/tenant/${this.tenantSelectionService.getSelectedTenant().identifier}?guid=${operationId.operationId}`,
-              label: 'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
-            },
-          ],
-        });
+        this.snackBarService.open(
+          this.snackBarService.buildSnackBarForOperationsLog(
+            'PRESERVATION.SCENARIO.IMPORT_DIALOG.SNACKBAR_SUCCESS',
+            operationId.operationId,
+          ),
+        );
       },
       error: (error: HttpErrorResponse) => {
         const operationId = error.error?.operationId;
-        this.snackBarService.open({
-          message: 'PRESERVATION.SCENARIO.IMPORT_DIALOG.SNACKBAR_ERROR',
-          buttons: operationId
-            ? [
-                {
-                  appId: ApplicationId.LOGBOOK_OPERATION_APP,
-                  path: `/tenant/${this.tenantSelectionService.getSelectedTenant().identifier}?guid=${operationId}`,
-                  label: 'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
-                },
-              ]
-            : undefined,
-        });
+        this.snackBarService.open(
+          this.snackBarService.buildSnackBarForOperationsLog('PRESERVATION.SCENARIO.IMPORT_DIALOG.SNACKBAR_ERROR', operationId),
+        );
       },
     });
   }

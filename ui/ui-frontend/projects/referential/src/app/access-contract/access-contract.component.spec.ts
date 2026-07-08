@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AccessContractService, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AccessContractService, ApplicationService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -93,6 +93,7 @@ describe('AccessContractComponent', () => {
         MatDialogModule,
       ],
       providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },

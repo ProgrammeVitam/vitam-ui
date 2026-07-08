@@ -35,14 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentType } from '@angular/cdk/portal';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { ApplicationService } from '../../application.service';
 import { Application } from '../../models/application/application.interface';
 import { SnackBarComponent } from './snack-bar.component';
-import { SnackBarAppButton, SnackBarUrlButton, SnackBarData } from './snack-bar.interface';
+import { SnackBarAppButton, SnackBarData, SnackBarUrlButton } from './snack-bar.interface';
+import { ApplicationId } from '../../application-id.enum';
+import { TenantSelectionService } from '../../tenant-selection.service';
 
 const DEFAULT_DURATION = 10_000;
 const DOWNLOAD_STARTED_MESSAGE = 'DOWNLOAD.STARTED_MESSAGE';
@@ -54,6 +56,7 @@ export class SnackBarService {
   private matSnackBar = inject(MatSnackBar);
   private applicationService = inject(ApplicationService);
   private translateService = inject(TranslateService);
+  private tenantSelectionService = inject(TenantSelectionService);
 
   public async open(data: SnackBarData<SnackBarUrlButton | SnackBarAppButton>): Promise<MatSnackBarRef<SnackBarComponent>> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);
@@ -106,5 +109,20 @@ export class SnackBarService {
     }
 
     return message;
+  }
+
+  public buildSnackBarForOperationsLog(message: string, operationId: string) {
+    return {
+      message,
+      buttons: operationId
+        ? [
+            {
+              appId: ApplicationId.LOGBOOK_OPERATION_APP,
+              path: `/tenant/${this.tenantSelectionService.getSelectedTenant().identifier}?guid=${operationId}`,
+              label: 'SNACKBAR.VIEW_THE_OPERATIONS_LOG',
+            },
+          ]
+        : [],
+    };
   }
 }

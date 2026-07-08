@@ -40,10 +40,20 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuItem } from '@angular/material/menu';
-import { download, PreservationScenariosService, VitamUICommonModule } from 'vitamui-library';
+import {
+  ApplicationId,
+  download,
+  GriffinsService,
+  PreservationScenariosService,
+  Role,
+  SecurityService,
+  VitamUICommonModule,
+} from 'vitamui-library';
 import { PreservationGroupComponent } from './preservation-group/preservation-group.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ImportScenarioDialogComponent } from './import-scenario-dialog/import-scenario-dialog.component';
+import { ImportGriffinDialogComponent } from './import-griffin-dialog/import-griffin-dialog.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-preservation',
@@ -55,7 +65,11 @@ export class PreservationComponent {
   search = '';
 
   private readonly preservationScenariosService = inject(PreservationScenariosService);
+  private readonly griffinsService = inject(GriffinsService);
+  private readonly securityService = inject(SecurityService);
   private readonly dialog = inject(MatDialog);
+
+  readonly hasUpdateRole = this.securityService.hasRole(ApplicationId.PRESERVATION_APP, Role.ROLE_UPDATE_GRIFFINS);
 
   onSearchSubmit(search: string) {
     this.search = search?.trim() || '';
@@ -66,9 +80,33 @@ export class PreservationComponent {
   }
 
   protected exportScenarios() {
-    this.preservationScenariosService.list().subscribe((scenarios) => {
-      const blob = new Blob([JSON.stringify(scenarios, null, 2)], { type: 'octet/stream' });
-      download(blob, 'scenarios.json');
-    });
+    this.preservationScenariosService
+      .list()
+      .pipe(take(1))
+      .subscribe((scenarios) => {
+        const blob = new Blob([JSON.stringify(scenarios, null, 2)], { type: 'octet/stream' });
+        download(blob, 'scenarios.json');
+      });
+  }
+
+  protected importGriffins() {
+    this.dialog.open(ImportGriffinDialogComponent);
+  }
+
+  protected exportGriffins() {
+    this.griffinsService
+      .list()
+      .pipe(take(1))
+      .subscribe((griffins) => {
+        const griffinsToExport = griffins.map(({ Identifier, Name, ExecutableName, ExecutableVersion, Description }) => ({
+          Identifier,
+          Name,
+          ExecutableName,
+          ExecutableVersion,
+          Description,
+        }));
+        const blob = new Blob([JSON.stringify(griffinsToExport, null, 2)], { type: 'octet/stream' });
+        download(blob, 'griffins.json');
+      });
   }
 }

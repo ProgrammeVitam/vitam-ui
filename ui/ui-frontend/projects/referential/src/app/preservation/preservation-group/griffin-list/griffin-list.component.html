@@ -45,7 +45,7 @@
 
   <tbody>
     @for (griffin of griffins(); track griffin['#id']) {
-      <tr class="clickable" [class.selected]="isSelected(griffin)" (click)="selectedGriffin.set(griffin)">
+      <tr class="clickable" [class.selected]="selectedGriffin()?.Identifier === griffin.Identifier" (click)="selectedGriffin.set(griffin)">
         <td>{{ griffin.Identifier }}</td>
         <td>{{ griffin.Name }}</td>
         <td>{{ griffin.CreationDate | dateTime: 'dd/MM/yyyy' | empty }}</td>

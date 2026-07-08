@@ -165,10 +165,10 @@ export class GriffinListComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (griffins) => {
+          this.loading.set(false);
           this.allGriffins.set(griffins);
           this.applyFilterAndSort();
         },
-        complete: () => this.loading.set(false),
         error: () => this.loading.set(false),
       });
   }

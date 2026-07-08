@@ -29,10 +29,12 @@ package fr.gouv.vitamui.referential.server.rest;
 
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import fr.gouv.vitamui.referential.server.security.RequireAdminTenant;
 import fr.gouv.vitamui.referential.server.service.preservation.GriffinService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,9 +71,9 @@ public class GriffinController {
     @PutMapping
     @RequireAdminTenant
     @Secured(ROLE_UPDATE_GRIFFINS)
-    public void putGriffins(@RequestBody List<Griffin> griffins)
+    public ResponseEntity<OperationIdDto> putGriffins(@RequestBody List<Griffin> griffins)
         throws AccessExternalClientException, VitamClientException, IOException {
-        this.griffinService.put(griffins);
+        return this.griffinService.put(griffins);
     }
 
     @PostMapping

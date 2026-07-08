@@ -36,13 +36,13 @@ import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -71,7 +71,7 @@ class GriffinServiceTest {
     void delete_should_reimport_every_griffin_except_the_deleted_one()
         throws VitamClientException, AccessExternalClientException, IOException {
         doReturn(List.of(GRIFFIN_1, GRIFFIN_2, GRIFFIN_3)).when(service).getAll();
-        doNothing().when(service).put(anyList());
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
 
         service.delete(GRIFFIN_2);
 
@@ -84,7 +84,7 @@ class GriffinServiceTest {
     void delete_should_reimport_the_whole_referential_when_the_griffin_is_unknown()
         throws VitamClientException, AccessExternalClientException, IOException {
         doReturn(List.of(GRIFFIN_1, GRIFFIN_2)).when(service).getAll();
-        doNothing().when(service).put(anyList());
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
 
         service.delete(griffin("unknown-id", "GRI-999999"));
 
@@ -97,7 +97,7 @@ class GriffinServiceTest {
     void delete_should_reimport_an_empty_referential_when_the_last_griffin_is_deleted()
         throws VitamClientException, AccessExternalClientException, IOException {
         doReturn(List.of(GRIFFIN_1)).when(service).getAll();
-        doNothing().when(service).put(anyList());
+        doReturn(ResponseEntity.accepted().build()).when(service).put(anyList());
 
         service.delete(GRIFFIN_1);
 

@@ -29,6 +29,7 @@ package fr.gouv.vitamui.referential.server.rest;
 
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import fr.gouv.vitamui.referential.server.service.preservation.GriffinService;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
@@ -104,7 +106,7 @@ class GriffinControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         List<Griffin> griffins = List.of(buildGriffin("id-1"), buildGriffin("id-2"));
-        doNothing().when(griffinService).put(griffins);
+        when(griffinService.put(griffins)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
 
         // When / Then
         assertThatCode(() -> griffinController.putGriffins(griffins)).doesNotThrowAnyException();
