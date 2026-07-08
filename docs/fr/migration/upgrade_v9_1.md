@@ -85,6 +85,20 @@ my-vitam-prometheus-server
 
 Le déploiement de la configuration s'effectue à l'aide du playbook: `ansible-vitamui-extra/vitamui_extra.yml --tags prometheus`
 
+### Neutralisation du tri sur les champs de métadonnées analysés
+
+Le tri côté serveur sur certains champs de métadonnées analysés, tel que `Unit.Title`, peut provoquer l'expiration des recherches sur les tenants volumineux (champ Elasticsearch de type texte/fielddata). Un mécanisme de blocage du tri par champ est désormais disponible, piloté par configuration Ansible.
+
+Par défaut, le tri reste activé sur l'ensemble des champs : la variable `query_non_sortable_fields` n'étant déclarée dans aucun fichier de `group_vars`, aucune action n'est requise pour conserver ce comportement.
+
+Pour le désactiver sur un ou plusieurs champs, par exemple en cas d'expiration de recherche constatée, une action est nécessaire : déclarer la variable globalement via `vitamui_defaults.services.query_non_sortable_fields` ou par composant via `vitamui.<composant>.query_non_sortable_fields` :
+
+```yaml
+vitamui_defaults:
+  services:
+    query_non_sortable_fields: { 'Unit': ['Title'] }
+```
+
 ---
 
 ## Procédures à exécuter AVANT la montée de version

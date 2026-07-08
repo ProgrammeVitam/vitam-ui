@@ -103,6 +103,9 @@ opentracing:
 
 ontologies_file_path: {{ vitamui_folder_data }}/external_ontology_fields.json
 
+query:
+  non-sortable-fields: {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}
+
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:

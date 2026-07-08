@@ -97,6 +97,7 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SecurityService,
+  StartupService,
   STORAGE_RULE,
   TermsFacet,
   toManagementRuleType,
@@ -143,6 +144,8 @@ const NON_TREE_UNIT_TYPES = [ARCHIVE_UNIT_FILING_UNIT, ARCHIVE_UNIT_WITH_OBJECTS
   ],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
+  private nonSortableFields: string[];
+
   readonly UnitType = UnitType;
   readonly ReassignmentMode = ReassignmentMode;
 
@@ -269,7 +272,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private reassignmentDialogService: ReassignmentDialogService,
     protected configService: ConfigService,
     private securityService: SecurityService,
+    private startupService: StartupService,
   ) {
+    this.nonSortableFields = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
+
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
         this.bulkOperationsThreshold = bulkOperationsThreshold;
@@ -532,6 +538,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  isSortableField(field: string): boolean {
+    return !this.nonSortableFields.includes(field);
   }
 
   removeCriteriaEvent(criteriaToRemove: any) {
