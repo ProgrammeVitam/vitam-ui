@@ -42,7 +42,8 @@
       "NO_HISTORY": "Aucun historique",
       "OPERATIONS": "Journal des opérations"
     },
-    "COPY": "Copier"
+    "COPY": "Copier",
+    "IMPORT": "Importer"
   },
   "CONFIRM_DIALOG": {
     "DELETE_TITLE": "Suppression {{objectType}}",
@@ -6135,7 +6136,8 @@
     "filesHaveInvalidExtension": "Des fichiers ont des extensions non autorisées : <ul>{{files}}</ul>",
     "duplicatedFile": "Fichier dupliqué",
     "duplicatedDirectory": "Dossier dupliqué",
-    "directoryForbidden": "Les dossiers ne sont pas autorisés"
+    "directoryForbidden": "Les dossiers ne sont pas autorisés",
+    "invalidJson": "JSON invalide"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
