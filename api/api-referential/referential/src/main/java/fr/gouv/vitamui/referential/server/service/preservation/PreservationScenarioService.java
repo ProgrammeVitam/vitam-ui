@@ -116,7 +116,7 @@ public class PreservationScenarioService extends AbstractService {
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         List<PreservationScenario> nextScenarios = getAll()
             .stream()
-            .filter(currentScenario -> currentScenario.identifier().equals(scenario.identifier()))
+            .filter(currentScenario -> !currentScenario.identifier().equals(scenario.identifier()))
             .toList();
 
         this.put(nextScenarios);

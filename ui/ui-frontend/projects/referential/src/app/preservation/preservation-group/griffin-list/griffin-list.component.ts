@@ -36,12 +36,24 @@
  */
 import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Direction, Griffin, GriffinsService, VitamUICommonModule } from 'vitamui-library';
-import { TranslatePipe } from '@ngx-translate/core';
+import {
+  ApplicationId,
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+  Direction,
+  Griffin,
+  GriffinsService,
+  SnackBarService,
+  StartupService,
+  TenantSelectionService,
+  VitamUICommonModule,
+} from 'vitamui-library';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { factorOf, sortByKey } from '../../sorting';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -55,6 +67,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 export class GriffinListComponent implements OnInit {
   private readonly griffinsService = inject(GriffinsService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly matDialog = inject(MatDialog);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly startupService = inject(StartupService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly translateService = inject(TranslateService);
+
+  private readonly vitamAdminTenant = +this.startupService.getConfigStringValue('VITAM_ADMIN_TENANT');
 
   private readonly allGriffins = signal<Griffin[]>([]);
   readonly griffins = signal<Griffin[]>([]);
@@ -82,6 +101,64 @@ export class GriffinListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadGriffins();
+  }
+
+  sort() {
+    this.applyFilterAndSort();
+  }
+
+  canDelete(): boolean {
+    return this.tenantSelectionService.getSelectedTenant()?.identifier === this.vitamAdminTenant;
+  }
+
+  deleteGriffinDialog(griffin: Griffin) {
+    this.matDialog
+      .open<ConfirmDialogComponent, ConfirmDialogData>(ConfirmDialogComponent, {
+        panelClass: 'small',
+        data: {
+          title: 'PRESERVATION.GRIFFIN.DELETE_DIALOG.TITLE',
+          // `message` is rendered as-is by ConfirmDialogComponent, without the translate pipe.
+          message: this.translateService.instant('PRESERVATION.GRIFFIN.DELETE_DIALOG.MESSAGE'),
+          confirmLabel: 'COMMON.CONFIRM',
+          cancelLabel: 'COMMON.CANCEL',
+        },
+      })
+      .afterClosed()
+      .pipe(
+        filter((confirmed) => !!confirmed),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.deleteGriffin(griffin));
+  }
+
+  private deleteGriffin(griffin: Griffin) {
+    this.griffinsService
+      .delete(griffin)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.snackBarService.open({
+            message: 'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_REQUEST_ACCEPTED',
+            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
+          });
+
+          if (this.isSelected(griffin)) {
+            this.selectedGriffin.set(null);
+          }
+
+          this.loadGriffins();
+        },
+        error: () => {
+          this.snackBarService.open({
+            message: 'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_FAILED',
+            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
+          });
+        },
+      });
+  }
+
+  private loadGriffins() {
     this.loading.set(true);
     this.griffinsService
       .list()
@@ -94,10 +171,6 @@ export class GriffinListComponent implements OnInit {
         complete: () => this.loading.set(false),
         error: () => this.loading.set(false),
       });
-  }
-
-  sort() {
-    this.applyFilterAndSort();
   }
 
   private applyFilterAndSort() {
