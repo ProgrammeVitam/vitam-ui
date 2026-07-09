@@ -47,12 +47,11 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
+import { Direction, InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadService } from '../core/common/upload.service';
-import { IngestListComponent } from './ingest-list/ingest-list.component';
 import { IngestService } from './ingest.service';
 
 @Component({
@@ -107,10 +106,22 @@ describe('IngestComponent test:', () => {
     }).compileComponents();
   });
 
+  let ingestListStub: any;
+
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestComponent);
     component = fixture.componentInstance;
-    component.ingestListComponent = TestBed.createComponent(IngestListStubComponent).componentInstance as IngestListComponent;
+    ingestListStub = TestBed.createComponent(IngestListStubComponent).componentInstance;
+    Object.defineProperty(component, 'ingestListComponent', {
+      writable: true,
+      configurable: true,
+      value: () => ingestListStub,
+    });
+    Object.defineProperty(component, 'searchBar', {
+      writable: true,
+      configurable: true,
+      value: () => ({}),
+    });
     fixture.detectChanges();
   });
 
@@ -130,5 +141,28 @@ describe('IngestComponent test:', () => {
     component.openImportSipDialog(IngestType.DEFAULT_WORKFLOW);
     expect(matDialogSpy.open.calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalled();
+  });
+
+  it('should update search term on search submit', () => {
+    component.onSearchSubmit('my search');
+    expect(component.search).toBe('my search');
+  });
+
+  it('should update filters when start date and end date change', () => {
+    const startDate = new Date('2026-01-01');
+    const endDate = new Date('2026-01-10');
+    component.dateRangeFilterForm.controls.startDate.setValue(startDate);
+    expect(component.filters.startDate).toEqual(startDate);
+
+    component.dateRangeFilterForm.controls.endDate.setValue(endDate);
+    expect(component.filters.endDate).toEqual(endDate);
+    expect(ingestListStub.direction).toBe(Direction.DESCENDANT);
+  });
+
+  it('should refresh ingest list', () => {
+    const emitOrderChangeSpy = spyOn(ingestListStub, 'emitOrderChange');
+    component.refresh();
+    expect(ingestListStub.direction).toBe(Direction.DESCENDANT);
+    expect(emitOrderChangeSpy).toHaveBeenCalled();
   });
 });
