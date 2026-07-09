@@ -74,7 +74,7 @@ jobs:
           experimental: '{ "conflict_resolution": "draft_commit_conflicts" }'
           add_labels: 'Cherry-Pick'
           copy_all_reviewers: true
-          copy_labels_pattern: '*'
+          copy_labels_pattern: '.*'
           copy_milestone: true
           pull_description: 'Voir #${pull_number}'
           pull_title: 'CP V${{ matrix.target.version }} - ${pull_title}'
