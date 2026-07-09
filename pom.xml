@@ -75,10 +75,6 @@
 
         <vitam.version>10.0.0-SNAPSHOT</vitam.version>
 
-        <!-- Web Pack -->
-        <node.version>v22.22.0</node.version>
-        <npm.version>10.9.4</npm.version>
-
         <!--Spring dependencies version override-->
         <!-- override it to fix CVE-2025-48924 -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
@@ -99,7 +95,6 @@
         <maven.failsafe.plugin.version>3.1.2</maven.failsafe.plugin.version>
         <maven.filtering.plugin.version>3.4.0</maven.filtering.plugin.version>
         <maven.spotbugs.plugin.version>4.0.4</maven.spotbugs.plugin.version>
-        <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
         <maven.jacoco.plugin.version>0.8.13</maven.jacoco.plugin.version>
         <maven.jaxb2.plugin.version>3.3.0</maven.jaxb2.plugin.version>
         <maven.lombok.plugin.version>1.18.30</maven.lombok.plugin.version>
