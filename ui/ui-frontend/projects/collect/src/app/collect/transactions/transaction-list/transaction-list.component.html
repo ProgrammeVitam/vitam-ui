@@ -72,6 +72,9 @@
               @if (shouldShowBatchError(transaction)) {
                 <div class="text normal danger">{{ 'COLLECT.BATCH_ERROR_RECORDED' | translate }}</div>
               }
+              @if (sipImportInProgress(transaction)) {
+                <div class="text normal">{{ 'COLLECT.SIP_IMPORT_IN_PROGRESS' | translate }}</div>
+              }
             </td>
             <td>
               <div class="hgap-2 justify-content-end">
@@ -91,7 +94,7 @@
                   </button>
                   <button
                     mat-menu-item
-                    [disabled]="!transactionIsOpen(transaction) || !hasCloseTransactionRole"
+                    [disabled]="!transactionIsValidatable(transaction) || !hasCloseTransactionRole"
                     (click)="validateTransaction(transaction)"
                   >
                     {{ 'COLLECT.VALIDATE_ACTION' | translate }}

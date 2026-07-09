@@ -55,6 +55,7 @@ import {
   StartupService,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
+import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
@@ -97,6 +98,7 @@ export class AddUnitsComponent implements OnInit {
     private dialog: MatDialog,
     private addUnitsDialogRef: MatDialogRef<AddUnitsComponent>,
     private archiveCollectService: ArchiveCollectService,
+    private sipImportTrackingService: SipImportTrackingService,
   ) {}
 
   ngOnInit() {
@@ -212,7 +214,9 @@ export class AddUnitsComponent implements OnInit {
 
   private handleUploadSuccess(operationId: string | null): void {
     if (operationId) {
-      // For SIP imports with operation ID
+      // For SIP imports with operation ID: track the import workflow to prevent
+      // validating the transaction before it is over
+      this.sipImportTrackingService.trackSipImport(this.data.transaction.id, operationId);
       const tenantId = this.startupService.getTenantIdentifier();
       this.snackBarService.open({
         message: 'COLLECT.MODAL.IMPORT_SIP_ARCHIVES_PACKAGE_WITH_SUCCESS',
