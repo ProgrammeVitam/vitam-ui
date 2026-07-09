@@ -160,7 +160,15 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
 
   onBlur() {
     this.onTouched();
-    if (this.displayedValue !== this.control.value) this.control.setValue(this.displayedValue);
+    if (this.displayedValue !== (this.outputType === 'Date' ? this.formatDateToString(this.control.value) : this.control.value)) {
+      const parsed = DateTime.fromFormat(this.displayedValue, this.selectedFormat());
+
+      if (parsed.isValid) {
+        this.changeValue(parsed.toJSDate());
+      } else {
+        this.changeValue(null);
+      }
+    }
   }
 
   onTextChange(value: string) {

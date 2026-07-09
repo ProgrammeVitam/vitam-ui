@@ -48,14 +48,14 @@
             <vitamui-datepicker
               [label]="'INGEST_ACTION.START_DATE' | translate"
               formControlName="startDate"
-              [max]="dateRangeFilterForm.get('endDate').value"
+              [max]="dateRangeFilterForm.controls.endDate.value"
               outputType="Date"
               format="dd/MM/yyyy"
             ></vitamui-datepicker>
             <vitamui-datepicker
               [label]="'INGEST_ACTION.END_DATE' | translate"
               formControlName="endDate"
-              [min]="dateRangeFilterForm.get('startDate').value"
+              [min]="dateRangeFilterForm.controls.startDate.value"
               outputType="Date"
               format="dd/MM/yyyy"
             ></vitamui-datepicker>
@@ -71,7 +71,7 @@
     <div class="vitamui-content">
       <h5 class="mt-0 mb-4">{{ 'INGEST_LIST.TABLE_NAME' | translate }}</h5>
       <app-ingest-list
-        (ingestClick)="showIngest($event)"
+        (ingestClick)="openPanel($event)"
         [ingestThatHasChanged]="ingestThatHasChanged"
         [searchText]="search"
         [filters]="filters"
