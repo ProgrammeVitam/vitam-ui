@@ -47,17 +47,16 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.archives.search.common.dto.OperationIdDto;
 import fr.gouv.vitamui.archives.search.common.dto.UpdateArchiveUnitDto;
 import fr.gouv.vitamui.archives.search.common.dto.converter.UpdateArchiveUnitDtoToUpdateMultiQueryConverter;
 import fr.gouv.vitamui.archives.search.common.exception.ArchiveUnitUpdateException;
-import fr.gouv.vitamui.archives.search.common.model.OperationId;
 import fr.gouv.vitamui.archives.search.common.service.ArchiveUnitService;
 import fr.gouv.vitamui.commons.api.converter.JsonPatchDtoToUpdateMultiQueryConverter;
 import fr.gouv.vitamui.commons.api.converter.UpdateMultiQueriesToBulkCommandDto;
 import fr.gouv.vitamui.commons.api.dtos.BulkCommandDto;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -137,8 +136,7 @@ public class ArchiveSearchUnitServiceImpl implements ArchiveUnitService {
                 context,
                 JsonHandler.toJsonNode(bulkCommandDto)
             );
-            final OperationId operationId = new OperationId(payload.getHeaderString(X_REQUEST_ID_HEADER));
-            final OperationIdDto operationIdDto = new OperationIdDto().setOperationId(operationId);
+            final OperationIdDto operationIdDto = new OperationIdDto(payload.getHeaderString(X_REQUEST_ID_HEADER));
             log.info("Operation started: {}", operationIdDto);
             return operationIdDto;
         } catch (VitamClientException | InvalidParseOperationException e) {

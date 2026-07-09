@@ -38,7 +38,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArchiveUnitApiService } from './archive-unit-api.service';
-import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto } from 'vitamui-library';
+import { ArchiveUnit, JsonPatchDto, MultiJsonPatchDto, OperationId } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -55,11 +55,7 @@ export class ArchiveUnitService {
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnits(
-    transactionId: string,
-    archiveUnits: ArchiveUnit[],
-    headers?: HttpHeaders,
-  ): Observable<{ operationId: String }> {
+  asyncPartialUpdateArchiveUnits(transactionId: string, archiveUnits: ArchiveUnit[], headers?: HttpHeaders): Observable<OperationId> {
     return this.archiveUnitApiService.asyncPartialUpdateArchiveUnits(transactionId, archiveUnits, headers);
   }
 
@@ -75,7 +71,7 @@ export class ArchiveUnitService {
     transactionId: string,
     jsonPatchDto: JsonPatchDto,
     headers?: HttpHeaders,
-  ): Observable<{ operationId: String }> {
+  ): Observable<OperationId> {
     return this.archiveUnitApiService.asyncPartialUpdateArchiveUnitByCommands(transactionId, jsonPatchDto, headers);
   }
 

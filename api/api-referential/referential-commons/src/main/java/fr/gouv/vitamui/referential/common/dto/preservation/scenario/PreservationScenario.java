@@ -29,29 +29,23 @@ package fr.gouv.vitamui.referential.common.dto.preservation.scenario;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.gouv.vitamui.referential.common.security.TenantAware;
+import fr.gouv.vitam.common.model.administration.ActionTypePreservation;
 
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record PreservationScenario(
-    @JsonProperty("#id") String id,
-    @JsonProperty("#tenant") Integer tenant,
-    @JsonProperty("#version") Integer version,
-
     @JsonProperty("Identifier") String identifier,
     @JsonProperty("Name") String name,
     @JsonProperty("Description") String description,
 
     @JsonProperty("CreationDate") String creationDate,
-    @JsonProperty("LastUpdate") String lastUpdateDate,
 
-    @JsonProperty("ActionList") List<ActionType> actionList,
+    @JsonProperty("ActionList") List<ActionTypePreservation> actionList,
 
     @JsonProperty("GriffinByFormat") List<GriffinByFormat> griffinByFormat,
 
     @JsonProperty("DefaultGriffin") DefaultGriffin defaultGriffin,
 
     @JsonProperty("TransformationRules") String transformationRules
-)
-    implements TenantAware {}
+) {}

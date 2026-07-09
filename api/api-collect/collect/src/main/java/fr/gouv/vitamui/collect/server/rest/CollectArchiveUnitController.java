@@ -27,13 +27,13 @@
 
 package fr.gouv.vitamui.collect.server.rest;
 
-import fr.gouv.vitamui.collect.common.dto.OperationIdDto;
 import fr.gouv.vitamui.collect.common.dto.UpdateArchiveUnitDto;
 import fr.gouv.vitamui.collect.common.service.ArchiveUnitService;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
 import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
 import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;

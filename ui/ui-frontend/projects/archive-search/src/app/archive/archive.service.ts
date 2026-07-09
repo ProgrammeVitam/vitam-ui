@@ -52,6 +52,7 @@ import {
   IOntology,
   JsonPatchDto,
   MultiJsonPatchDto,
+  OperationId,
   PagedResult,
   SearchArchiveUnitsInterface,
   SearchCriteriaDto,
@@ -380,15 +381,15 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     return this.archiveApiService.getInternalOntologiesList();
   }
 
-  asyncPartialUpdateArchiveUnits(archiveUnits: ArchiveUnit[]): Observable<{ operationId: String }> {
+  asyncPartialUpdateArchiveUnits(archiveUnits: ArchiveUnit[]): Observable<OperationId> {
     return this.archiveApiService.asyncPartialUpdateArchiveUnits(archiveUnits);
   }
 
-  asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto: JsonPatchDto): Observable<{ operationId: String }> {
+  asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto: JsonPatchDto): Observable<OperationId> {
     return this.archiveApiService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto);
   }
 
-  asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto): Observable<{ operationId: String }> {
+  asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto: MultiJsonPatchDto): Observable<OperationId> {
     return this.archiveApiService.asyncPartialUpdateArchiveUnitsByCommands(multiJsonPatchDto);
   }
 

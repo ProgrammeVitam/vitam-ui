@@ -40,7 +40,7 @@ import { vi } from 'vitest';
 
 import { PreservationScenariosService } from './preservation-scenarios.service';
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
-import { PreservationScenario, CreatePreservationScenario } from './preservation-scenario.type';
+import { PreservationScenario } from './preservation-scenario.type';
 
 describe('PreservationScenariosService', () => {
   let service: PreservationScenariosService;
@@ -60,7 +60,6 @@ describe('PreservationScenariosService', () => {
     Name: 'Scenario 1',
     Description: 'Description 1',
     CreationDate: new Date(),
-    LastUpdateDate: new Date(),
     ActionList: [],
     GriffinByFormat: [],
     DefaultGriffin: {
@@ -127,7 +126,7 @@ describe('PreservationScenariosService', () => {
       const newScenario = {
         ...mockScenario,
         Identifier: 'NEW',
-      } as CreatePreservationScenario;
+      } as PreservationScenario;
 
       apiSpy.create.mockReturnValue(of(mockScenario));
 

@@ -37,7 +37,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ArchiveUnit, BASE_URL, BaseHttpClient, JsonPatchDto, MultiJsonPatchDto, Ontology } from 'vitamui-library';
+import { ArchiveUnit, BASE_URL, BaseHttpClient, JsonPatchDto, MultiJsonPatchDto, Ontology, OperationId } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -59,12 +59,8 @@ export class ArchiveUnitApiService extends BaseHttpClient<Ontology> {
    * @param headers optionnal headers.
    * @returns a wrapped operation id.
    */
-  asyncPartialUpdateArchiveUnits(
-    transactionId: string,
-    archiveUnits: ArchiveUnit[],
-    headers?: HttpHeaders,
-  ): Observable<{ operationId: String }> {
-    return this.http.patch<{ operationId: String }>(`${this.apiUrl}/archive-units/${transactionId}`, archiveUnits, { headers });
+  asyncPartialUpdateArchiveUnits(transactionId: string, archiveUnits: ArchiveUnit[], headers?: HttpHeaders): Observable<OperationId> {
+    return this.http.patch<OperationId>(`${this.apiUrl}/archive-units/${transactionId}`, archiveUnits, { headers });
   }
 
   /**
@@ -79,8 +75,8 @@ export class ArchiveUnitApiService extends BaseHttpClient<Ontology> {
     transactionId: string,
     jsonPatchDto: JsonPatchDto,
     headers?: HttpHeaders,
-  ): Observable<{ operationId: String }> {
-    return this.http.patch<{ operationId: String }>(`${this.apiUrl}/archive-units/${transactionId}/update/single`, jsonPatchDto, {
+  ): Observable<OperationId> {
+    return this.http.patch<OperationId>(`${this.apiUrl}/archive-units/${transactionId}/update/single`, jsonPatchDto, {
       headers,
     });
   }
@@ -94,7 +90,7 @@ export class ArchiveUnitApiService extends BaseHttpClient<Ontology> {
    * @returns a wrapped operation id.
    */
   asyncPartialUpdateArchiveUnitsByCommands(transactionId: string, multiJsonPatchDto: MultiJsonPatchDto, headers?: HttpHeaders) {
-    return this.http.patch<{ operationId: String }>(`${this.apiUrl}/archive-units/${transactionId}/update/multiple`, multiJsonPatchDto, {
+    return this.http.patch<OperationId>(`${this.apiUrl}/archive-units/${transactionId}/update/multiple`, multiJsonPatchDto, {
       headers,
     });
   }

@@ -25,8 +25,20 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.referential.common.security;
+package fr.gouv.vitamui.commons.api.dtos;
 
-public interface TenantAware {
-    Integer tenant();
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.experimental.Accessors;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+public class OperationIdDto {
+
+    @NonNull
+    private String operationId;
 }

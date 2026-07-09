@@ -25,15 +25,31 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.dto;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import fr.gouv.vitamui.collect.common.model.OperationId;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
 
-@Data
-@Accessors(chain = true)
-public class OperationIdDto {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    private OperationId operationId;
+class OperationIdDtoTest {
+
+    @Test
+    void testSerializationDeserialization() throws Exception {
+        // Création d'un objet OperationIdDto
+        OperationIdDto originalDto = new OperationIdDto("1");
+
+        // Conversion de l'objet en JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writeValueAsString(originalDto);
+
+        // Vérification de la sérialisation
+        assertEquals("{\"operationId\":\"1\"}", jsonString);
+
+        // Conversion du JSON en objet OperationIdDto
+        OperationIdDto deserializedDto = objectMapper.readValue(jsonString, OperationIdDto.class);
+
+        // Vérification de la désérialisation
+        assertEquals("1", deserializedDto.getOperationId());
+    }
 }

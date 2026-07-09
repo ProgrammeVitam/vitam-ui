@@ -35,10 +35,12 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.preservation.PreservationScenarioModel;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.preservation.scenario.PreservationScenario;
 import fr.gouv.vitamui.referential.server.security.TenantQueryService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -46,6 +48,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_REQUEST_ID_HEADER;
 
 @Service
 public class PreservationScenarioService extends AbstractService {
@@ -81,12 +85,15 @@ public class PreservationScenarioService extends AbstractService {
             .toList();
     }
 
-    public void put(List<PreservationScenario> scenarios)
+    public ResponseEntity<OperationIdDto> put(List<PreservationScenario> scenarios)
         throws VitamClientException, IOException, AccessExternalClientException {
-        adminExternalClient.importPreservationScenario(
+        var response = adminExternalClient.importPreservationScenario(
             buildVitamContext(),
             toInputStream(scenarios),
             "update_scenarios.json"
+        );
+        return ResponseEntity.status(response.getStatus()).body(
+            new OperationIdDto(response.getHeaderString(X_REQUEST_ID_HEADER))
         );
     }
 
@@ -95,7 +102,7 @@ public class PreservationScenarioService extends AbstractService {
         List<PreservationScenario> nextScenarios = getAll()
             .stream()
             .map(currentScenario -> {
-                if (currentScenario.id().equals(scenario.id())) {
+                if (currentScenario.identifier().equals(scenario.identifier())) {
                     return scenario;
                 }
                 return currentScenario;
@@ -109,7 +116,7 @@ public class PreservationScenarioService extends AbstractService {
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         List<PreservationScenario> nextScenarios = getAll()
             .stream()
-            .filter(currentScenario -> currentScenario.id().equals(scenario.id()))
+            .filter(currentScenario -> currentScenario.identifier().equals(scenario.identifier()))
             .toList();
 
         this.put(nextScenarios);

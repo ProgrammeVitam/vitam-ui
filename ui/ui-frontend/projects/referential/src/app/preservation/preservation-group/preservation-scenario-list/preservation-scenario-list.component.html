@@ -52,10 +52,10 @@
   </thead>
 
   <tbody>
-    @for (preservationScenario of preservationScenarios(); track preservationScenario['#id']) {
+    @for (preservationScenario of preservationScenarios(); track preservationScenario.Identifier) {
       <tr
         class="clickable"
-        [class.selected]="selectedPreservationScenario()?.['#id'] === preservationScenario['#id']"
+        [class.selected]="selectedPreservationScenario()?.Identifier === preservationScenario.Identifier"
         (click)="selectedPreservationScenario.set(preservationScenario)"
       >
         <td>{{ preservationScenario.Identifier }}</td>

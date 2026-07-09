@@ -84,6 +84,7 @@ export * from './lib/models/file-types.enum';
 export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';
+export * from './lib/models/operation-id';
 export * from './lib/models/precise-date-query.interface';
 export * from './lib/models/rule';
 export * from './lib/models/search-criteria.interface';
@@ -126,6 +127,7 @@ export * from './app/modules/components/common-tooltip/common-tooltip.component'
 export * from './app/modules/components/common-tooltip/tooltip.directive';
 export * from './app/modules/components/common-tooltip/common-tooltip.module';
 export * from './app/modules/components/file-selector/file-selector.component';
+export * from './app/modules/components/file-selector/file-selector-validators';
 export * from './app/modules/components/footer/footer.component';
 export * from './app/modules/components/header/header.component';
 export * from './app/modules/components/header/header.module';

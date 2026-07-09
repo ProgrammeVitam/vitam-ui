@@ -34,43 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { BASE_URL } from '../../injection-tokens';
-import { Observable } from 'rxjs';
-import { PreservationScenario } from './preservation-scenario.type';
-import { OperationId } from '../../../../lib/models/operation-id';
-import { addSkipErrorNotificationHeader } from '../../utils';
+import { FileValidationErrors, readFileContent } from './file-selector.component';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class PreservationScenariosApiService {
-  protected http: HttpClient;
-  protected readonly apiUrl: string;
-
-  constructor() {
-    this.http = inject(HttpClient);
-    this.apiUrl = `${inject(BASE_URL)}/preservation-scenarios`;
-  }
-
-  public getAll(): Observable<PreservationScenario[]> {
-    return this.http.get<PreservationScenario[]>(this.apiUrl);
-  }
-
-  public put(preservationScenarios: PreservationScenario[]) {
-    return this.http.put<OperationId>(this.apiUrl, preservationScenarios, { headers: addSkipErrorNotificationHeader(new HttpHeaders()) });
-  }
-
-  public create(preservationScenario: PreservationScenario) {
-    return this.http.post<PreservationScenario>(this.apiUrl, preservationScenario);
-  }
-
-  public update(preservationScenario: PreservationScenario) {
-    return this.http.post<PreservationScenario>(this.apiUrl, preservationScenario);
-  }
-
-  public delete(preservationScenario: PreservationScenario) {
-    return this.http.delete<void>(this.apiUrl, { body: preservationScenario });
-  }
-}
+export const FileSelectorValidators = {
+  jsonValidator: async (file: File): Promise<FileValidationErrors> => {
+    if (!file.name.endsWith('.json')) return null;
+    const content = await readFileContent(file);
+    try {
+      JSON.parse(content);
+    } catch (error) {
+      console.warn(`Invalid JSON:`, error);
+      return {
+        fileErrors: { invalidJson: true },
+        controlErrors: { invalidFiles: true },
+      };
+    }
+    console.debug(`Valid JSON`);
+    return null;
+  },
+};

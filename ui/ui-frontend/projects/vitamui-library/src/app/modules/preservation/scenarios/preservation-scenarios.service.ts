@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
-import { CreatePreservationScenario, PreservationScenario } from './preservation-scenario.type';
+import { PreservationScenario } from './preservation-scenario.type';
 import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -44,27 +45,29 @@ import { inject, Injectable } from '@angular/core';
 export class PreservationScenariosService {
   private api: PreservationScenariosApiService;
 
+  private refresh$ = new BehaviorSubject<void>(undefined);
+
   constructor() {
     this.api = inject(PreservationScenariosApiService);
   }
 
   public list() {
-    return this.api.getAll();
+    return this.refresh$.pipe(switchMap(() => this.api.getAll()));
   }
 
-  public put(griffins: PreservationScenario[]) {
-    return this.api.put(griffins);
+  public put(preservationScenarios: PreservationScenario[]) {
+    return this.api.put(preservationScenarios).pipe(tap(() => this.refresh$.next()));
   }
 
-  public create(griffin: CreatePreservationScenario) {
-    return this.api.create(griffin);
+  public create(preservationScenario: PreservationScenario) {
+    return this.api.create(preservationScenario).pipe(tap(() => this.refresh$.next()));
   }
 
-  public update(griffin: PreservationScenario) {
-    return this.api.update(griffin);
+  public update(preservationScenario: PreservationScenario) {
+    return this.api.update(preservationScenario).pipe(tap(() => this.refresh$.next()));
   }
 
-  public delete(griffin: PreservationScenario) {
-    return this.api.delete(griffin);
+  public delete(preservationScenario: PreservationScenario) {
+    return this.api.delete(preservationScenario).pipe(tap(() => this.refresh$.next()));
   }
 }
