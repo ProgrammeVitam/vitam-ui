@@ -1,0 +1,80 @@
+name: Auto Backport
+on:
+  pull_request_target:
+    types: [closed, labeled]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  # --- JOB 1: Dynamic Matrix Generation ---
+  setup-matrix:
+    name: Setup Backport Matrix
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Generate Matrix
+        id: set-matrix
+        env:
+          EVENT_ACTION: ${{ github.event.action }}
+          TRIGGER_LABEL: ${{ github.event.label.name }}
+          ALL_LABELS: ${{ toJson(github.event.pull_request.labels) }}
+        run: |
+          python3 -c '
+          import json, os, re
+          action = os.environ.get("EVENT_ACTION")
+          matrix = []
+
+          def add_target(label_name):
+              # Target labels like "CP V9.1" or "CP V9.2"
+              if re.match(r"^CP V\d+\.\d+$", label_name):
+                  version = label_name.replace("CP V", "")
+                  # Dynamically map the version "9.1" to the actual git branch "master_9.1.x"
+                  branch = f"master_{version}.x"
+                  matrix.append({"branch": branch, "version": version})
+
+          # Case 1: A single label was manually added after the PR was merged
+          if action == "labeled":
+              trigger_label = os.environ.get("TRIGGER_LABEL", "")
+              add_target(trigger_label)
+
+          # Case 2: The PR was just merged, process all existing labels at once
+          elif action == "closed":
+              labels = json.loads(os.environ.get("ALL_LABELS", "[]"))
+              for l in labels:
+                  add_target(l.get("name", ""))
+
+          # Export the final matrix as a JSON string
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"matrix={json.dumps(matrix)}\n")
+          '
+
+  # --- JOB 2: Parallel Backport Execution ---
+  backport:
+    name: Backport to ${{ matrix.target.branch }}
+    needs: setup-matrix
+    runs-on: ubuntu-latest
+    if: ${{ needs.setup-matrix.outputs.matrix != '[]' && needs.setup-matrix.outputs.matrix != '' }}
+    strategy:
+      matrix:
+        target: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
+      fail-fast: false # Prevents a failure on branch 9.1 from canceling branch 9.2
+    steps:
+      - name: Backport Action
+        uses: korthout/backport-action@v4.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # We disable label_pattern
+          label_pattern: ''
+          # We explicitly provide the branch name here, bypassing 'label_pattern' entirely
+          target_branches: ${{ matrix.target.branch }}
+          experimental: '{ "conflict_resolution": "draft_commit_conflicts" }'
+          add_labels: 'Cherry-Pick'
+          copy_all_reviewers: true
+          copy_labels_pattern: '*'
+          copy_milestone: true
+          pull_description: 'Voir #${pull_number}'
+          pull_title: 'CP V${{ matrix.target.version }} - ${pull_title}'
