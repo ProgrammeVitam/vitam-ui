@@ -41,6 +41,7 @@ import { Direction, InfiniteScrollTable, SnackBarService, StartupService, Transa
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { ProjectsService } from '../../projects/projects.service';
+import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -68,6 +69,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     private router: Router,
     private startupService: StartupService,
     private snackBarService: SnackBarService,
+    private sipImportTrackingService: SipImportTrackingService,
   ) {
     super(transactionService);
   }
@@ -175,6 +177,14 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
 
   transactionIsOpen(transaction: Transaction): boolean {
     return TransactionStatus.OPEN === transaction.status;
+  }
+
+  sipImportInProgress(transaction: Transaction): boolean {
+    return this.sipImportTrackingService.isSipImportInProgress(transaction.id);
+  }
+
+  transactionIsValidatable(transaction: Transaction): boolean {
+    return this.transactionIsOpen(transaction) && !this.sipImportInProgress(transaction);
   }
 
   transactionIsEditable(transaction: Transaction): boolean {

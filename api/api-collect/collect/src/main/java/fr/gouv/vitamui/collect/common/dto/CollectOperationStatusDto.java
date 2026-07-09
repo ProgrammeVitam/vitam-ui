@@ -25,40 +25,23 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.rest;
+package fr.gouv.vitamui.collect.common.dto;
 
-import lombok.experimental.UtilityClass;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@UtilityClass
-public class RestApi {
+/**
+ * Status of a Vitam operation (workflow) related to a transaction, e.g. a SIP import.
+ * globalState: PAUSE | RUNNING | COMPLETED
+ * globalStatus: UNKNOWN | STARTED | ALREADY_EXECUTED | OK | WARNING | KO | FATAL
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CollectOperationStatusDto {
 
-    public static final String COLLECT_PATH = "/collect-api/v1";
-    public static final String ARCHIVE_UNITS = "/archive-units";
-    public static final String PROJECTS = "/projects";
-    public static final String CONFIGURATIONS = "/configurations";
+    private String globalState;
 
-    public static final String TRANSACTIONS = "/transactions";
-
-    public static final String OBJECT_GROUPS = "/object-groups";
-    public static final String STREAM_UPLOAD_PATH = "/upload";
-
-    public static final String UPDATE_UNITS_METADATA_PATH = "/update-units-metadata";
-    public static final String SEARCH = "/search";
-    public static final String SEND_PATH = "/send";
-
-    public static final String REOPEN_PATH = "/reopen";
-
-    public static final String ABORT_PATH = "/abort";
-    public static final String VALIDATE_PATH = "/validate";
-    public static final String OPERATION_STATUS_PATH = "/operations/{operationId}/status";
-    public static final String DOWNLOAD_SIP_PATH = "/downloadSip";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
-    public static final String COLLECT_CONFIGURATIONS_PATH = COLLECT_PATH + CONFIGURATIONS;
-
-    public static final String COLLECT_ARCHIVE_UNITS = COLLECT_PATH + ARCHIVE_UNITS;
-
-    public static final String COLLECT_TRANSACTION_PATH = COLLECT_PATH + TRANSACTIONS;
-    public static final String COLLECT_TRANSACTION_ARCHIVE_UNITS_PATH = COLLECT_PATH + TRANSACTIONS;
-    public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
+    private String globalStatus;
 }

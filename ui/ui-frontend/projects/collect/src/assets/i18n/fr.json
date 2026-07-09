@@ -165,6 +165,7 @@
     "VALIDATE_TRANSACTION_VALIDATED": "La demande de versement du projet a été bien validée",
     "TRANSACTION_ABORTED": "La demande de versement du projet a été bien abandonnée",
     "TRANSACTION_REOPENED": "La demande de versement du projet a été bien rouverte",
+    "SIP_IMPORT_IN_PROGRESS": "Import du SIP en cours, la validation sera possible une fois l'import terminé",
     "PROJECT_TRANSACTION_PREVIEW": {
       "ACTIONS": {
         "SHOW_TRANSACTIONS": "Accéder à la liste des versements du projet",

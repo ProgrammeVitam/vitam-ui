@@ -44,6 +44,7 @@ import { last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
+import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { HttpEventType } from '@angular/common/http';
 import {
   ExternalReferentialService,
@@ -153,6 +154,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     private tenantSelectionService: TenantSelectionService,
     private transactionsService: TransactionsService,
     private archiveCollectService: ArchiveCollectService,
+    private sipImportTrackingService: SipImportTrackingService,
     private logger: Logger,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService,
@@ -508,6 +510,11 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
       )
       .subscribe({
         next: (_result) => {
+          if (this.importType === ImportType.SIP) {
+            // The response body of a SIP upload is the id of the import workflow operation:
+            // track it to prevent validating the transaction before the workflow is over
+            this.sipImportTrackingService.trackSipImport(transactionId, _result.body);
+          }
           this.snackBarService.open({
             message: 'COLLECT.UPLOAD.TERMINATED',
             duration: 10_000,

@@ -28,6 +28,7 @@ package fr.gouv.vitamui.collect.server.rest;
 
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
+import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
@@ -62,6 +63,7 @@ import java.io.InputStream;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ABORT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.DOWNLOAD_SIP_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.OPERATION_STATUS_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.REOPEN_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEND_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.UPDATE_UNITS_METADATA_PATH;
@@ -136,6 +138,20 @@ public class TransactionController {
         LOGGER.debug("Find the Transactions with project Id {}", id);
         return transactionService.getTransactionById(
             id,
+            externalParametersService.buildVitamContextFromExternalParam()
+        );
+    }
+
+    @Operation(summary = "Get the status of an operation (workflow) linked to a transaction, e.g. a SIP import")
+    @Secured(ServicesData.ROLE_GET_TRANSACTIONS)
+    @GetMapping(OPERATION_STATUS_PATH)
+    public CollectOperationStatusDto getOperationStatus(final @PathVariable("operationId") String operationId)
+        throws PreconditionFailedException, VitamClientException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, operationId);
+        SanityChecker.checkSecureParameter(operationId);
+        LOGGER.debug("Get status of operation {}", operationId);
+        return transactionService.getOperationStatus(
+            operationId,
             externalParametersService.buildVitamContextFromExternalParam()
         );
     }

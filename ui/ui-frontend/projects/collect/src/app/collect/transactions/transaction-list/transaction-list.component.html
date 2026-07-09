@@ -67,7 +67,12 @@
             </td>
             <td>{{ transaction.messageIdentifier }}</td>
             <td>{{ transaction.id }}</td>
-            <td>{{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}</td>
+            <td>
+              {{ 'COLLECT.PROJECT_TRANSACTION_PREVIEW.STATUS.' + transaction.status | translate }}
+              @if (sipImportInProgress(transaction)) {
+                <div class="text normal">{{ 'COLLECT.SIP_IMPORT_IN_PROGRESS' | translate }}</div>
+              }
+            </td>
             <td>
               <div class="hgap-2 justify-content-end">
                 @if (transactionIsDownloadable(transaction)) {
@@ -86,7 +91,7 @@
                   </button>
                   <button
                     mat-menu-item
-                    [disabled]="!transactionIsOpen(transaction) || !hasCloseTransactionRole"
+                    [disabled]="!transactionIsValidatable(transaction) || !hasCloseTransactionRole"
                     (click)="validateTransaction(transaction)"
                   >
                     {{ 'COLLECT.VALIDATE_ACTION' | translate }}

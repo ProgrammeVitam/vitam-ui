@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.common.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.common.dto.ProjectDto;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
+import fr.gouv.vitam.collect.common.dto.UploadSipResult;
 import fr.gouv.vitam.collect.external.client.CollectExternalClient;
 import fr.gouv.vitam.collect.external.external.exception.CollectExternalClientException;
 import fr.gouv.vitam.common.CharsetUtils;
@@ -263,13 +264,13 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public RequestResponse uploadSipToTransaction(
+    public RequestResponse<UploadSipResult> uploadSipToTransaction(
         final VitamContext vitamContext,
         final String transactionId,
         final InputStream inputStream
     ) throws VitamClientException {
         LOGGER.debug("upload SIP by transaction id : {}", transactionId);
-        final RequestResponse result = collectExternalClient.uploadSipToTransaction(
+        final RequestResponse<UploadSipResult> result = collectExternalClient.uploadSipToTransaction(
             vitamContext,
             transactionId,
             inputStream

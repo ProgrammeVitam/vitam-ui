@@ -98,6 +98,7 @@ import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TransactionsService } from '../transactions/transactions.service';
+import { SipImportTrackingService } from '../shared/sip-import-tracking.service';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -225,6 +226,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private ruleService: RuleService,
     private snackBarService: SnackBarService,
     private transactionService: TransactionsService,
+    private sipImportTrackingService: SipImportTrackingService,
   ) {
     super(route, globalEventService);
 
@@ -1270,6 +1272,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.isAllChecked,
       this.isIndeterminate,
     );
+  }
+
+  sipImportInProgress(): boolean {
+    return !!this.transaction && this.sipImportTrackingService.isSipImportInProgress(this.transaction.id);
   }
 
   validateTransaction() {

@@ -34,14 +34,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.ItemStatus;
+import fr.gouv.vitam.common.model.ProcessState;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.StatusCode;
+import fr.gouv.vitamui.collect.common.dto.CollectOperationStatusDto;
 import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.exception.RequestTimeOutException;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationCommonService;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
@@ -75,6 +81,9 @@ class TransactionServiceTest {
 
     @Mock
     CollectService collectService;
+
+    @Mock
+    VitamOperationCommonService vitamOperationCommonService;
 
     final PodamFactory factory = new PodamFactoryImpl();
     final VitamContext vitamContext = new VitamContext(1);
@@ -359,5 +368,56 @@ class TransactionServiceTest {
             () -> transactionService.downloadSipTransaction(TRANSACTION_ID, vitamContext)
         );
         // The test still works because the exception is thrown before the Mono is created
+    }
+
+    @Test
+    void shouldReturnRunningStatusWhenOperationIsRunning() throws VitamClientException {
+        // GIVEN
+        final String operationId = "OPERATION_ID";
+        ItemStatus itemStatus = new ItemStatus(operationId);
+        itemStatus.setGlobalState(ProcessState.RUNNING);
+        RequestResponseOK<ItemStatus> requestResponse = new RequestResponseOK<>();
+        requestResponse.setHttpCode(200);
+        requestResponse.addResult(itemStatus);
+        when(vitamOperationCommonService.getOperationDetailsById(vitamContext, operationId)).thenReturn(
+            requestResponse
+        );
+
+        // WHEN
+        CollectOperationStatusDto status = transactionService.getOperationStatus(operationId, vitamContext);
+
+        // THEN
+        assertEquals(ProcessState.RUNNING.name(), status.getGlobalState());
+    }
+
+    @Test
+    void shouldReturnCompletedStatusWhenOperationIsUnknown() throws VitamClientException {
+        // GIVEN
+        final String operationId = "OPERATION_ID";
+        VitamError<ItemStatus> vitamError = new VitamError<>("NOT_FOUND");
+        vitamError.setHttpCode(404);
+        when(vitamOperationCommonService.getOperationDetailsById(vitamContext, operationId)).thenReturn(vitamError);
+
+        // WHEN
+        CollectOperationStatusDto status = transactionService.getOperationStatus(operationId, vitamContext);
+
+        // THEN
+        assertEquals(ProcessState.COMPLETED.name(), status.getGlobalState());
+        assertEquals(StatusCode.UNKNOWN.name(), status.getGlobalStatus());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenGetOperationStatusFails() throws VitamClientException {
+        // GIVEN
+        final String operationId = "OPERATION_ID";
+        when(vitamOperationCommonService.getOperationDetailsById(vitamContext, operationId)).thenThrow(
+            VitamClientException.class
+        );
+
+        // THEN
+        assertThrows(
+            VitamClientException.class,
+            () -> transactionService.getOperationStatus(operationId, vitamContext)
+        );
     }
 }
