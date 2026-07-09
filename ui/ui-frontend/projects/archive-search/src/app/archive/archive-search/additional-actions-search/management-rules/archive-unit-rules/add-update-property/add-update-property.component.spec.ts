@@ -265,11 +265,12 @@ describe('AddUpdatePropertyComponent', () => {
     ];
 
     // When
-    component.onChangeValue();
+    component.onChangeValue('Keep');
 
     // Then
     expect(component.ruleActions).toBeDefined();
     expect(component.showText).toBeFalsy();
+    expect(component.isConfirmButtonDisabled).toBeFalsy();
     expect(component.ruleActions.length).toBe(5);
     expect(
       component.ruleActions.find(
