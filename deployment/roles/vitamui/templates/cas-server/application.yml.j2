@@ -7,7 +7,7 @@ spring:
         serviceName: vitamui-{{ vitamui_struct.vitamui_component }}
         preferIpAddress: true
         ipAddress: ${server.address}
-        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
+        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health/consul
         tags: {{ consul_tags }}
 
 spring.application.name: cas-server
