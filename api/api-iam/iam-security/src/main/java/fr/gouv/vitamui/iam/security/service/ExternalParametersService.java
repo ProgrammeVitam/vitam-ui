@@ -1,35 +1,37 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
- *
- * contact.vitam@culture.gouv.fr
- *
- * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
- * high volumetry securely and efficiently.
- *
- * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
- * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
- *
- * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
- * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
- * successive licensors have only limited liability.
- *
- * In this respect, the user's attention is drawn to the risks associated with loading, using, modifying and/or
- * developing or reproducing the software by the user in light of its specific status of free software, that may mean
- * that it is complicated to manipulate, and that also therefore means that it is reserved for developers and
- * experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the
- * software's suitability as regards their requirements in conditions enabling the security of their systems and/or data
- * to be ensured and, more generally, to use and operate it in the same conditions as regards security.
- *
- * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
- * accept its terms.
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+ * and the signatories of the "VITAM - Accord du Contributeur" agreement.
+ * contact@programmevitam.fr
+ * This software is a computer program whose purpose is to implement
+ * implement a digital archiving front-office system for the secure and
+ * efficient high volumetry VITAM solution.
+ * This software is governed by the CeCILL-C license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL-C
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
-package fr.gouv.vitamui.referential.server.service.service;
+package fr.gouv.vitamui.iam.security.service;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
-import fr.gouv.vitamui.iam.security.service.SecurityService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,18 +41,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * The service to retrieve profile thresholds.
- */
 @Service
 public class ExternalParametersService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExternalParametersService.class);
-    public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
-    public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    private final ExternalParametersApi externalParametersApi;
-    private final SecurityService securityService;
+    public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
+    public static final String PARAM_BULK_OPERATIONS_THRESHOLD_NAME = "PARAM_BULK_OPERATIONS_THRESHOLD";
+
+    protected final ExternalParametersApi externalParametersApi;
+    protected final SecurityService securityService;
 
     public ExternalParametersService(
         final ExternalParametersApi externalParametersApi,
@@ -60,19 +60,13 @@ public class ExternalParametersService {
         this.securityService = securityService;
     }
 
-    /**
-     * Service to return the access contract defined on profile using external
-     * parameters
-     *
-     * @return access contract throws IllegalArgumentException
-     */
     public String retrieveAccessContractFromExternalParam() {
-        final Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
+        Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
         if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
             throw new IllegalArgumentException("No external profile defined for access contract defined");
         }
 
-        final Map.Entry<String, String> parameterAccessContract = myExternalParameter
+        Map.Entry<String, String> parameterAccessContract = myExternalParameter
             .entrySet()
             .stream()
             .filter(entry -> PARAM_ACCESS_CONTRACT_NAME.equals(entry.getKey()))
@@ -84,26 +78,16 @@ public class ExternalParametersService {
         return parameterAccessContract.getValue();
     }
 
-    /**
-     * This function create a VitamContext
-     *
-     * @return
-     */
     public VitamContext buildVitamContextFromExternalParam() {
         return new VitamContext(securityService.getTenantIdentifier())
             .setAccessContract(retrieveAccessContractFromExternalParam())
             .setApplicationSessionId(securityService.getApplicationId());
     }
 
-    /**
-     * Service to return the threshold defined on profil using external parameters
-     *
-     * @return Optional of threshold otherwise Optional.empty
-     */
     public Optional<Long> retrieveProfilThreshold() {
         Optional<Long> thresholdOpt = Optional.empty();
         Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
-        if (CollectionUtils.isNotEmpty(myExternalParameter.entrySet())) {
+        if (myExternalParameter != null && CollectionUtils.isNotEmpty(myExternalParameter.entrySet())) {
             Map.Entry<String, String> parameterThreshold = myExternalParameter
                 .entrySet()
                 .stream()
@@ -112,8 +96,7 @@ public class ExternalParametersService {
                 .orElse(null);
             if (parameterThreshold != null && parameterThreshold.getValue() != null) {
                 try {
-                    Long thresholdValue = Long.valueOf(parameterThreshold.getValue());
-                    thresholdOpt = Optional.of(thresholdValue);
+                    thresholdOpt = Optional.of(Long.valueOf(parameterThreshold.getValue()));
                 } catch (NumberFormatException nfe) {
                     LOGGER.error(
                         "external parameter of bulk threshold contains wrong integer value {}, it will not be used ",

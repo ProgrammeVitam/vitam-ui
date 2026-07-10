@@ -59,8 +59,9 @@ import {
   Transaction,
   TransactionStatus,
   UnitType,
+  VitamTenantConfigService,
 } from 'vitamui-library';
-
+import { tenantConfigServiceMock } from 'vitamui-library/testing';
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 import { ArchiveSearchHelperService } from './archive-search-criteria/services/archive-search-helper.service';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
@@ -71,7 +72,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
-import { MatCheckboxChange } from '@angular/material/checkbox';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -187,6 +187,10 @@ describe('ArchiveSearchCollectComponent', () => {
         { provide: Router, useValue: routerSpy },
         { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
         { provide: environment, useValue: environment },
+        {
+          provide: VitamTenantConfigService,
+          useValue: tenantConfigServiceMock,
+        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

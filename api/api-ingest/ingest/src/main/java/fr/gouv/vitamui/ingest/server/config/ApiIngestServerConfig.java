@@ -49,15 +49,16 @@ import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
+import fr.gouv.vitamui.iam.security.config.ExternalParametersCommonConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.ingest.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.ingest.server.service.IngestAccessContractService;
-import fr.gouv.vitamui.ingest.server.service.IngestExternalParametersService;
 import fr.gouv.vitamui.ingest.server.service.IngestGeneratorODTFile;
 import fr.gouv.vitamui.ingest.server.service.IngestService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
@@ -78,6 +79,7 @@ import org.springframework.web.client.RestClient;
         VitamAccessConfig.class,
         VitamIngestConfig.class,
         VitamAdministrationConfig.class,
+        ExternalParametersCommonConfig.class,
     }
 )
 public class ApiIngestServerConfig extends AbstractContextConfiguration {
@@ -126,7 +128,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     public SignedDownloadTokenService signedDownloadTokenService(
         ObjectMapper objectMapper,
         SecurityService securityService,
-        IngestExternalParametersService ingestExternalParametersService,
+        ExternalParametersService externalParametersService,
         @Value("${download.signed-url.secret}") String secret,
         @Value("${download.signed-url.ttl-seconds:60}") long ttlSeconds,
         @Value("${download.signed-url.clock-skew-seconds:5}") long clockSkewSeconds
@@ -139,7 +141,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
                 claims.setTenantId(securityService.getTenantIdentifier());
             }
             if (claims.getAccessContractId() == null) {
-                claims.setAccessContractId(ingestExternalParametersService.retrieveAccessContractFromExternalParam());
+                claims.setAccessContractId(externalParametersService.retrieveAccessContractFromExternalParam());
             }
             if (claims.getApplicationSessionId() == null) {
                 claims.setApplicationSessionId(securityService.getApplicationId());
@@ -155,7 +157,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
         final IngestExternalClient ingestExternalClient,
         final CustomersApi customersApi,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
-        final IngestExternalParametersService ingestExternalParametersService,
+        final ExternalParametersService externalParametersService,
         final IngestAccessContractService ingestAccessContractService,
         final UsersApi usersApi
     ) {
@@ -167,7 +169,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
             customersApi,
             usersApi,
             ingestGeneratorODTFile,
-            ingestExternalParametersService,
+            externalParametersService,
             ingestAccessContractService
         );
     }

@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum ArchiveSearchConstsEnum {
-  RESULTS_MAX_NUMBER = 10000,
   UPDATE_DEBOUNCE_TIME = 200,
   BIG_RESULTS_FACETS_DEFAULT_TEXT = '-',
 }

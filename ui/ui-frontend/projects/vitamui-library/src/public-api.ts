@@ -209,6 +209,7 @@ export * from './app/modules/agencies/agency-api.service';
 export * from './app/modules/agencies/agency.service';
 export * from './app/modules/archive-unit-profiles/archive-unit-profiles.service';
 export * from './app/modules/config.service';
+export * from './app/modules/vitam-tenant-config.service';
 export * from './app/modules/models/app.configuration.interface';
 export * from './app/modules/url/query-params.service';
 export * from './app/modules/date/date.service';

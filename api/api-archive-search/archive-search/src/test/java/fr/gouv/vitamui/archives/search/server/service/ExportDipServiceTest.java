@@ -40,6 +40,7 @@ import fr.gouv.vitam.common.model.dip.QualifierVersion;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,7 +73,7 @@ class ExportDipServiceTest {
     private ArchiveSearchService archiveSearchService;
 
     @MockitoBean(name = "externalParametersService")
-    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
@@ -87,9 +88,9 @@ class ExportDipServiceTest {
             archiveSearchService,
             exportDipV2Service,
             archiveSearchThresholdService,
-            archiveSearchExternalParametersService
+            externalParametersService
         );
-        doReturn(new VitamContext(1)).when(archiveSearchExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(new VitamContext(1)).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     @Test
@@ -99,7 +100,7 @@ class ExportDipServiceTest {
             BINARY_MASTER,
             Set.of(FIRST)
         );
-        doReturn(new VitamContext(1)).when(archiveSearchExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(new VitamContext(1)).when(externalParametersService).buildVitamContextFromExternalParam();
         final ExportDipCriteriaDto exportDipCriteriaDto = newExportDipCriteriaDto(
             true,
             "2.2",

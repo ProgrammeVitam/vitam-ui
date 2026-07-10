@@ -57,12 +57,6 @@ export class UpdateUnitManagementRuleService {
   private translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
-  DEFAULT_ELIMINATION_ANALYSIS_THRESHOLD = 100000;
-  DEFAULT_DIP_EXPORT_THRESHOLD = 100000;
-  DEFAULT_ELIMINATION_THRESHOLD = 10000;
-  DEFAULT_TRANSFER_THRESHOLD = 100000;
-  DEFAULT_UPDATE_MGT_RULES_THRESHOLD = 100000;
-
   goToUpdateManagementRule(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     criteriaSearchList: SearchCriteriaEltDto[],

@@ -39,8 +39,10 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { Observable, of } from 'rxjs';
-import { ArchiveUnit, PagedResult } from '../../../app/modules';
+import { ArchiveUnit, BASE_URL, LoggerModule, PagedResult } from '../../../app/modules';
 import { BaseReclassificationDialogService } from './reclassification-dialog.service';
+import { VitamTenantConfigService } from '../../../app/modules/vitam-tenant-config.service';
+import { tenantConfigServiceMock } from '../../../../testing/src';
 
 const fakeArchiveUnits = (count: number): ArchiveUnit[] => {
   return [...Array(count).keys()].map((n): ArchiveUnit => ({ '#id': `${n}`, '#unitups': [] }));
@@ -62,10 +64,16 @@ describe('ReclassificationDialogService', () => {
     };
 
     TestBed.configureTestingModule({
+      imports: [LoggerModule.forRoot()],
       providers: [
         BaseReclassificationDialogService,
         { provide: ReclassificationService, useValue: reclassificationServiceSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        {
+          provide: VitamTenantConfigService,
+          useValue: tenantConfigServiceMock,
+        },
       ],
     });
 

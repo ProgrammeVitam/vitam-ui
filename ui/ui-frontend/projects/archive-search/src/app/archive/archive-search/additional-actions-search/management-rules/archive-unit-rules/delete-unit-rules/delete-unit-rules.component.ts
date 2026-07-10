@@ -52,6 +52,7 @@ import {
   SearchCriteriaEltDto,
   VitamuiSelectOptions,
   diff,
+  VitamTenantConfigService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -77,6 +78,7 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   private translateService = inject(TranslateService);
   private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
   private ruleService = inject(RuleService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
@@ -274,10 +276,10 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
         .subscribe((data) => {
           this.itemsWithSameRule = data.totalResults.toString();
           this.itemsToNotUpdate =
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
               : (this.itemsToNotUpdate =
-                  this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+                  this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                     ? this.resultNumberToShow
                     : (this.selectedItem - data.totalResults).toString());
           this.isLoading = false;

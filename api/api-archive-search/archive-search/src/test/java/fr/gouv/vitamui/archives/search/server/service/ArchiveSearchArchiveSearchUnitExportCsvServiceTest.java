@@ -58,6 +58,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
@@ -105,7 +106,7 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
     private ArchiveSearchService archiveSearchService;
 
     @MockitoBean(name = "externalParametersService")
-    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
@@ -160,11 +161,11 @@ public class ArchiveSearchArchiveSearchUnitExportCsvServiceTest {
             archiveSearchService,
             archiveSearchAgenciesService,
             archiveSearchThresholdService,
-            archiveSearchExternalParametersService,
+            externalParametersService,
             objectMapper
         );
 
-        doReturn(new VitamContext(1)).when(archiveSearchExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(new VitamContext(1)).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     private RequestResponse<JsonNode> buildUnitMetadataResponse(String filename)

@@ -36,6 +36,6 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
+import fr.gouv.vitamui.commons.api.domain.configuration.VitamConfigurationDto;
 
 public class VitamConfigurationResponseDto extends AbstractVitamUIResponseDto<VitamConfigurationDto> {}

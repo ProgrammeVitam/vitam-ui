@@ -48,6 +48,7 @@ import fr.gouv.vitam.common.model.export.dip.DipExportType;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -69,19 +70,19 @@ public class ExportDipService {
 
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
 
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
 
     public ExportDipService(
         final @Lazy ArchiveSearchService archiveSearchService,
         final ExportDipV2Service exportDipV2Service,
         ArchiveSearchThresholdService archiveSearchThresholdService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService
+        ExternalParametersService externalParametersService
     ) {
         this.archiveSearchService = archiveSearchService;
 
         this.exportDipV2Service = exportDipV2Service;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
     }
 
     private JsonNode exportDIP(final VitamContext vitamContext, DipRequest dipRequest) throws VitamClientException {
@@ -112,7 +113,7 @@ public class ExportDipService {
 
     public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto) throws VitamClientException {
         LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto.toString());
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(aLong -> exportDipCriteriaDto.getExportDIPSearchCriteria().setThreshold(aLong));
 

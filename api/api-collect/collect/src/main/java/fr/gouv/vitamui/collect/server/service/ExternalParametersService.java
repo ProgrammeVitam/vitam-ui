@@ -28,7 +28,6 @@
 package fr.gouv.vitamui.collect.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -36,49 +35,27 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.Objects;
-
 /**
  * The service to retrieve profile thresholds.
+ * Extends the common ExternalParametersService from iam-security with
+ * collect-specific logic to retrieve the full AccessContractModel.
  */
 @Service
-@RequiredArgsConstructor
-public class ExternalParametersService {
+public class ExternalParametersService extends fr.gouv.vitamui.iam.security.service.ExternalParametersService {
 
-    public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
-
-    private final ExternalParametersApi externalParametersApi;
-    private final SecurityService securityService;
     private final AccessContractCommonService accessContractCommonService;
 
-    /**
-     * Service to return the access contract defined on profil using external parameters
-     *
-     * @return access contract throws IllegalArgumentException
-     */
-    public @Nonnull String retrieveAccessContractFromExternalParam() {
-        Map<String, String> myExternalParameter = externalParametersApi.getMyExternalParameters();
-        if (myExternalParameter == null || CollectionUtils.isEmpty(myExternalParameter.entrySet())) {
-            throw new IllegalArgumentException("No external profile defined for access contract defined");
-        }
-
-        Map.Entry<String, String> parameterAccessContract = myExternalParameter
-            .entrySet()
-            .stream()
-            .filter(entry -> PARAM_ACCESS_CONTRACT_NAME.equals(entry.getKey()))
-            .findFirst()
-            .orElse(null);
-        if (Objects.isNull(parameterAccessContract) || Objects.isNull(parameterAccessContract.getValue())) {
-            throw new IllegalArgumentException("No access contract defined");
-        }
-        return parameterAccessContract.getValue();
+    public ExternalParametersService(
+        final ExternalParametersApi externalParametersApi,
+        final SecurityService securityService,
+        final AccessContractCommonService accessContractCommonService
+    ) {
+        super(externalParametersApi, securityService);
+        this.accessContractCommonService = accessContractCommonService;
     }
 
     public @Nullable AccessContractModel retrieveAccessContract() throws VitamClientException, JsonProcessingException {
@@ -93,16 +70,5 @@ public class ExternalParametersService {
             )
             ? (AccessContractModel) ((RequestResponseOK<?>) response).getResults().get(0)
             : null;
-    }
-
-    /**
-     * This function create a VitamContext
-     *
-     * @return
-     */
-    public VitamContext buildVitamContextFromExternalParam() {
-        return new VitamContext(securityService.getTenantIdentifier())
-            .setAccessContract(retrieveAccessContractFromExternalParam())
-            .setApplicationSessionId(securityService.getApplicationId());
     }
 }

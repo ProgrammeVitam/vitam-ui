@@ -39,7 +39,6 @@ import fr.gouv.vitamui.archives.search.server.searchcriteria.converter.SearchCri
 import fr.gouv.vitamui.archives.search.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archives.search.server.searchcriteria.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.archives.search.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchExternalParametersService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchUnitServiceImpl;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.api.converter.JsonPatchDtoToUpdateMultiQueryConverter;
@@ -59,9 +58,11 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
 import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
+import fr.gouv.vitamui.iam.security.config.ExternalParametersCommonConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
@@ -85,6 +86,7 @@ import org.springframework.web.client.RestClient;
         MongoDbConfig.class,
         ConverterConfig.class,
         Jackson2CompatibilityConfig.class,
+        ExternalParametersCommonConfig.class,
     }
 )
 public class ApiArchiveServerConfig extends AbstractContextConfiguration {
@@ -143,7 +145,7 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     public SignedDownloadTokenService signedDownloadTokenService(
         ObjectMapper objectMapper,
         SecurityService securityService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
+        ExternalParametersService externalParametersService,
         @Value("${download.signed-url.secret}") String secret,
         @Value("${download.signed-url.ttl-seconds:60}") long ttlSeconds,
         @Value("${download.signed-url.clock-skew-seconds:5}") long clockSkewSeconds
@@ -156,9 +158,7 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
                 claims.setTenantId(securityService.getTenantIdentifier());
             }
             if (claims.getAccessContractId() == null) {
-                claims.setAccessContractId(
-                    archiveSearchExternalParametersService.retrieveAccessContractFromExternalParam()
-                );
+                claims.setAccessContractId(externalParametersService.retrieveAccessContractFromExternalParam());
             }
             if (claims.getApplicationSessionId() == null) {
                 claims.setApplicationSessionId(securityService.getApplicationId());
@@ -230,7 +230,7 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     public ArchiveUnitService archiveUnitService(
         final AccessExternalClient accessExternalClient,
         final UpdateArchiveUnitDtoToUpdateMultiQueryConverter updateArchiveUnitDtoToUpdateMultiQueryConverter,
-        final ArchiveSearchExternalParametersService externalParametersService,
+        final ExternalParametersService externalParametersService,
         final JsonPatchDtoToUpdateMultiQueryConverter jsonPatchDtoToUpdateMultiQueryConverter,
         final UpdateMultiQueriesToBulkCommandDto updateMultiQueriesToBulkCommandDto
     ) {

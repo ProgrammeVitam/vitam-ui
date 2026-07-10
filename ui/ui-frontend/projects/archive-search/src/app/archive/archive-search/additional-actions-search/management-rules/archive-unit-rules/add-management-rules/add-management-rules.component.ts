@@ -51,6 +51,7 @@ import {
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   VitamuiSelectOptions,
+  VitamTenantConfigService,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -78,6 +79,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   private managementRulesValidatorService = inject(ManagementRulesValidatorService);
   private translateService = inject(TranslateService);
   private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();
@@ -232,9 +234,9 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
           this.itemsWithSameRule = data.totalResults.toString();
 
           this.itemsToUpdate =
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
                 : (this.selectedItem - data.totalResults).toString();
 
@@ -288,7 +290,9 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
       } else {
         this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe((data) => {
           this.itemsWithSameRuleAndDate =
-            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ? this.resultNumberToShow : data.totalResults.toString();
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+              ? this.resultNumberToShow
+              : data.totalResults.toString();
         });
         this.isWarningLoading = false;
       }

@@ -43,6 +43,7 @@ import fr.gouv.vitam.common.model.export.transfer.TransferRequest;
 import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -82,7 +83,7 @@ class TransferVitamOperationsServiceTest {
     private ArchiveSearchService archiveSearchService;
 
     @MockitoBean(name = "externalParametersService")
-    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
@@ -98,9 +99,9 @@ class TransferVitamOperationsServiceTest {
             archiveSearchService,
             transferRequestService,
             archiveSearchThresholdService,
-            archiveSearchExternalParametersService
+            externalParametersService
         );
-        doReturn(new VitamContext(1)).when(archiveSearchExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(new VitamContext(1)).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     @Test

@@ -43,7 +43,11 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.configuration.PublicConfiguration;
-import fr.gouv.vitamui.commons.api.domain.VitamConfigurationDto;
+import fr.gouv.vitamui.commons.api.domain.configuration.PlatformConfiguration;
+import fr.gouv.vitamui.commons.api.domain.configuration.PlatformConfigurationConverter;
+import fr.gouv.vitamui.commons.api.domain.configuration.TenantConfiguration;
+import fr.gouv.vitamui.commons.api.domain.configuration.TenantId;
+import fr.gouv.vitamui.commons.api.domain.configuration.VitamConfigurationDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamConfigurationResponseDto;
@@ -107,5 +111,13 @@ public class ConfigurationService {
             fields = virtualPathsConfigurationByTenant.getOrDefault(vitamContext.getTenantId(), List.of());
         }
         return fields;
+    }
+
+    public PlatformConfiguration getPlatformConfiguration() {
+        return PlatformConfigurationConverter.from(this.getVitamPublicConfigurations());
+    }
+
+    public TenantConfiguration getTenantConfiguration(TenantId tenantId) {
+        return this.getPlatformConfiguration().getTenantConfiguration(tenantId);
     }
 }

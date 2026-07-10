@@ -36,7 +36,7 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ResultFacet, ResultFacetList } from 'vitamui-library';
+import { ResultFacet, ResultFacetList, LoggerModule, BASE_URL } from 'vitamui-library';
 import { ArchiveFacetsService } from './archive-facets.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -129,8 +129,13 @@ describe('ArchiveFacetsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
-      providers: [ArchiveFacetsService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      imports: [LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        ArchiveFacetsService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
 
     archiveFacetsService = TestBed.inject(ArchiveFacetsService);

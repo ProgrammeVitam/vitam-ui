@@ -57,8 +57,7 @@ import {
   ReclassificationQuery,
 } from '../../../app/modules/services/reclassification.interface';
 import { ReclassificationMode } from './reclassification-dialog.types';
-
-export const RECLASSIFICATION_THRESHOLD = 10_000;
+import { VitamTenantConfigService } from '../../../app/modules/vitam-tenant-config.service';
 
 export interface BuildQueryParams {
   action: ReclassificationAction;
@@ -77,6 +76,7 @@ export interface BuildQueryParams {
 
 @Injectable()
 export class BaseReclassificationDialogService implements ReclassificationDialogService {
+  protected vitamConfigurationService = inject(VitamTenantConfigService);
   protected reclassificationService = inject(ReclassificationService);
   protected translateService = inject(TranslateService);
 
@@ -89,7 +89,7 @@ export class BaseReclassificationDialogService implements ReclassificationDialog
   readonly childrenCountLoaded = signal(false);
   readonly exactChildrenCountLoaded = signal(false);
   readonly shouldProposeExactChildrenCount = computed(() => {
-    const hasReachQueryThreshold = this.childrenCount() >= RECLASSIFICATION_THRESHOLD;
+    const hasReachQueryThreshold = this.childrenCount() >= this.vitamConfigurationService.tenantConfig()?.reclassificationThreshold;
 
     return hasReachQueryThreshold && !this.exactChildrenCountLoaded();
   });

@@ -57,6 +57,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,20 +105,20 @@ public class ArchiveSearchUnitExportCsvService {
 
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
 
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
     private final ObjectMapper objectMapper;
 
     public ArchiveSearchUnitExportCsvService(
         final @Lazy ArchiveSearchService archiveSearchService,
         final ArchiveSearchAgenciesService archiveSearchAgenciesService,
         ArchiveSearchThresholdService archiveSearchThresholdService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
+        ExternalParametersService externalParametersService,
         final ObjectMapper objectMapper
     ) {
         this.archiveSearchAgenciesService = archiveSearchAgenciesService;
         this.archiveSearchService = archiveSearchService;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
         this.objectMapper = objectMapper;
     }
 
@@ -130,7 +131,7 @@ public class ArchiveSearchUnitExportCsvService {
      */
     public Resource exportToCsvSearchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery)
         throws VitamClientException {
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(searchQuery::setThreshold);
         return exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
@@ -282,7 +283,7 @@ public class ArchiveSearchUnitExportCsvService {
      * subscribes to instead of during the browser navigation to the signed URL.
      */
     public void checkExportCsvSizeLimit(final SearchCriteriaDto searchQuery) throws VitamClientException {
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         try {
             checkSizeLimit(vitamContext, searchQuery);
         } catch (IOException e) {

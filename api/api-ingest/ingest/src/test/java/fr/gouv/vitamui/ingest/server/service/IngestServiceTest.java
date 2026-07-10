@@ -49,6 +49,7 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractCommonService;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +70,7 @@ import static org.mockito.Mockito.when;
 class IngestServiceTest {
 
     @Mock
-    private IngestExternalParametersService ingestExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @Mock
     private LogbookService logbookService;
@@ -91,7 +92,7 @@ class IngestServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         ingestAccessContractService = new IngestAccessContractService(accessContractCommonService, objectMapper);
         VitamContext vitamContext = new VitamContext(1).setAccessContract("ContratTNR");
-        doReturn(vitamContext).when(ingestExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(vitamContext).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     /**
@@ -103,7 +104,7 @@ class IngestServiceTest {
         final String accessContract = "AccessContract42";
         final String criteria = "{\"evTypeProc\":\"INGEST\"}";
         vitamContext.setAccessContract(accessContract);
-        when(ingestExternalParametersService.buildVitamContextFromExternalParam()).thenReturn(vitamContext);
+        when(externalParametersService.buildVitamContextFromExternalParam()).thenReturn(vitamContext);
         final AccessContractModel accessContractModel = new AccessContractModel();
         accessContractModel.setEveryOriginatingAgency(false);
         accessContractModel.setOriginatingAgencies(Collections.emptySet());

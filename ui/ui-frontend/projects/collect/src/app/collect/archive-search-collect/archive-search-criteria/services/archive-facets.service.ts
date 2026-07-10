@@ -35,8 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable } from '@angular/core';
-import { ArchiveSearchResultFacets, ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaMgtRuleEnum } from 'vitamui-library';
+import { inject, Injectable } from '@angular/core';
+import {
+  ArchiveSearchResultFacets,
+  ResultFacet,
+  ResultFacetList,
+  RuleFacets,
+  SearchCriteriaMgtRuleEnum,
+  VitamTenantConfigService,
+} from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 
 @Injectable({
@@ -44,6 +51,8 @@ import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 })
 // TODO: put in FacetsUtils
 export class ArchiveFacetsService {
+  private vitamConfigurationService = inject(VitamTenantConfigService);
+
   RULES_COMPUTED_NUMBER_PREFIX = 'RULES_COMPUTED_NUMBER_';
   FINAL_ACTION_COMPUTED_PREFIX = 'FINAL_ACTION_COMPUTED_';
   EXPIRED_RULES_COMPUTED_PREFIX = 'EXPIRED_RULES_COMPUTED_';
@@ -172,7 +181,7 @@ export class ArchiveFacetsService {
     if (count < 0) {
       facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
     }
-    if (!isExactCount && totalResults >= ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER) {
+    if (!isExactCount && totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
     }
 

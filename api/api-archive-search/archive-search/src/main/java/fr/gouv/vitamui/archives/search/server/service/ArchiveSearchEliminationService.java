@@ -50,6 +50,7 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -73,26 +74,26 @@ public class ArchiveSearchEliminationService {
     private final ArchiveSearchService archiveSearchService;
 
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
-    private final ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private final ExternalParametersService externalParametersService;
     private final ObjectMapper objectMapper;
 
     public ArchiveSearchEliminationService(
         final @Lazy ArchiveSearchService archiveSearchService,
         final EliminationService eliminationService,
         ArchiveSearchThresholdService archiveSearchThresholdService,
-        ArchiveSearchExternalParametersService archiveSearchExternalParametersService,
+        ExternalParametersService externalParametersService,
         final ObjectMapper objectMapper
     ) {
         this.eliminationService = eliminationService;
         this.archiveSearchService = archiveSearchService;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
-        this.archiveSearchExternalParametersService = archiveSearchExternalParametersService;
+        this.externalParametersService = externalParametersService;
         this.objectMapper = objectMapper;
     }
 
     public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery) throws VitamClientException {
         LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         JsonNode dslQuery = archiveSearchService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody = null;
         eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
@@ -125,7 +126,7 @@ public class ArchiveSearchEliminationService {
 
         Optional<Long> thresholdOpt = archiveSearchThresholdService.retrieveProfilThresholds();
         thresholdOpt.ifPresent(searchQuery::setThreshold);
-        VitamContext vitamContext = archiveSearchExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         JsonNode dslQuery = archiveSearchService.prepareDslQuery(searchQuery, vitamContext);
         EliminationRequestBody eliminationRequestBody = getEliminationRequestBody(dslQuery, searchQuery.getThreshold());
 

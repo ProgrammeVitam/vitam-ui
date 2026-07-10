@@ -43,6 +43,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +67,7 @@ class ArchiveSearchEliminationServiceTest {
     private ArchiveSearchService archiveSearchService;
 
     @MockitoBean(name = "externalParametersService")
-    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @MockitoBean(name = "archiveSearchThresholdService")
     private ArchiveSearchThresholdService archiveSearchThresholdService;
@@ -83,10 +84,10 @@ class ArchiveSearchEliminationServiceTest {
             archiveSearchService,
             eliminationService,
             archiveSearchThresholdService,
-            archiveSearchExternalParametersService,
+            externalParametersService,
             objectMapper
         );
-        doReturn(new VitamContext(1)).when(archiveSearchExternalParametersService).buildVitamContextFromExternalParam();
+        doReturn(new VitamContext(1)).when(externalParametersService).buildVitamContextFromExternalParam();
     }
 
     @Test

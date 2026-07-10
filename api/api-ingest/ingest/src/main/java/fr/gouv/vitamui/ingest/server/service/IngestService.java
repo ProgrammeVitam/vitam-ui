@@ -67,6 +67,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
@@ -115,7 +116,7 @@ public class IngestService {
 
     private final IngestGeneratorODTFile ingestGeneratorODTFile;
 
-    private final IngestExternalParametersService ingestExternalParametersService;
+    private final ExternalParametersService externalParametersService;
 
     private final IngestAccessContractService ingestAccessContractService;
 
@@ -127,7 +128,7 @@ public class IngestService {
         final CustomersApi customersApi,
         final UsersApi usersApi,
         final IngestGeneratorODTFile ingestGeneratorODTFile,
-        final IngestExternalParametersService ingestExternalParametersService,
+        final ExternalParametersService externalParametersService,
         final IngestAccessContractService ingestAccessContractService
     ) {
         this.securityService = securityService;
@@ -137,7 +138,7 @@ public class IngestService {
         this.customersApi = customersApi;
         this.usersApi = usersApi;
         this.ingestGeneratorODTFile = ingestGeneratorODTFile;
-        this.ingestExternalParametersService = ingestExternalParametersService;
+        this.externalParametersService = externalParametersService;
         this.ingestAccessContractService = ingestAccessContractService;
     }
 
@@ -148,7 +149,7 @@ public class IngestService {
         final Optional<DirectionDto> direction,
         Optional<String> criteria
     ) {
-        VitamContext vitamContext = ingestExternalParametersService.buildVitamContextFromExternalParam();
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
         final String accessContract = vitamContext.getAccessContract();
         Set<String> originatingAgencies = null;
         Boolean everyOriginatingAgency = false;
@@ -191,7 +192,7 @@ public class IngestService {
     public LogbookOperationDto getOne(final String id) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
-            VitamContext vitamContext = ingestExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
             LOGGER.info("Ingest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
             requestResponse = logbookService.selectOperationbyId(id, vitamContext);
@@ -275,7 +276,7 @@ public class IngestService {
     public byte[] generateODTReport(final String id) throws IngestFileGenerationException {
         try {
             LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
-            VitamContext vitamContext = ingestExternalParametersService.buildVitamContextFromExternalParam();
+            VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
             CustomerDto myCustomer = getMyCustomer();
             return generateODTReport(vitamContext, id, myCustomer);
         } catch (IngestFileGenerationException e) {

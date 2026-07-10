@@ -35,7 +35,6 @@ import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchEliminationService;
-import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchExternalParametersService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchMgtRulesService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchThresholdService;
@@ -54,6 +53,7 @@ import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.iam.security.service.ExternalParametersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -112,7 +112,7 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
     private ArchiveSearchUnitExportCsvService archiveSearchUnitExportCsvService;
 
     @MockitoBean
-    private ArchiveSearchExternalParametersService archiveSearchExternalParametersService;
+    private ExternalParametersService externalParametersService;
 
     @MockitoBean
     private ArchiveSearchThresholdService archiveSearchThresholdService;
