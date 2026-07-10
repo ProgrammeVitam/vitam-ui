@@ -91,7 +91,7 @@ public class GriffinService extends AbstractService {
     public void delete(Griffin griffin) throws VitamClientException, AccessExternalClientException, IOException {
         List<Griffin> nextGriffins = getAll()
             .stream()
-            .filter(currentGriffin -> currentGriffin.id().equals(griffin.id()))
+            .filter(currentGriffin -> !currentGriffin.id().equals(griffin.id()))
             .toList();
 
         this.put(nextGriffins);

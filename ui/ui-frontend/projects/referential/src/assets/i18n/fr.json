@@ -1170,6 +1170,14 @@
           "NAME": "Nom",
           "CREATION_DATE": "Date de création"
         }
+      },
+      "DELETE_DIALOG": {
+        "TITLE": "Suppression d'un griffon",
+        "MESSAGE": "Vous allez supprimer un griffon. Confirmez-vous cette action ?"
+      },
+      "SNACKBAR": {
+        "DELETE_REQUEST_ACCEPTED": "La demande de suppression a bien été prise en compte",
+        "DELETE_FAILED": "Le griffon n'a pas pu être supprimé. Veuillez consulter le détail dans le journal des opérations"
       }
     },
     "SCENARIO": {
@@ -1188,6 +1196,14 @@
           },
           "CREATION_DATE": "Date de création"
         }
+      },
+      "DELETE_DIALOG": {
+        "TITLE": "Suppression d'un scénario de préservation",
+        "MESSAGE": "Vous allez supprimer un scénario de préservation. Confirmez-vous cette action ?"
+      },
+      "SNACKBAR": {
+        "DELETE_REQUEST_ACCEPTED": "La demande de suppression a bien été prise en compte",
+        "DELETE_FAILED": "Le scénario n'a pas pu être supprimé. Veuillez consulter le détail dans le journal des opérations"
       },
       "IMPORT_DIALOG": {
         "SUBHEAD": "Importer un référentiel de scénarios",

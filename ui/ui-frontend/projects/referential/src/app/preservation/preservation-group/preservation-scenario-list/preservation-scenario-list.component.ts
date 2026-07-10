@@ -36,13 +36,24 @@
  */
 import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActionType, Direction, PreservationScenario, PreservationScenariosService, VitamUICommonModule } from 'vitamui-library';
+import {
+  ActionType,
+  ApplicationId,
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+  Direction,
+  PreservationScenario,
+  PreservationScenariosService,
+  SnackBarService,
+  VitamUICommonModule,
+} from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { factorOf, sortByKey } from '../../sorting';
 import { Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ACTION_TYPE_KEY = 'PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.';
@@ -50,12 +61,15 @@ const ACTION_TYPE_KEY = 'PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.';
 @Component({
   selector: 'app-preservation-scenario-list',
   templateUrl: './preservation-scenario-list.component.html',
+  styleUrls: ['./preservation-scenario-list.component.scss'],
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
 export class PreservationScenarioListComponent implements OnInit {
   private translateService = inject(TranslateService);
   private readonly preservationScenariosService = inject(PreservationScenariosService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly matDialog = inject(MatDialog);
+  private readonly snackBarService = inject(SnackBarService);
 
   private readonly allScenarios = signal<PreservationScenario[]>([]);
   readonly preservationScenarios = signal<PreservationScenario[]>([]);
@@ -83,6 +97,64 @@ export class PreservationScenarioListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadScenarios();
+  }
+
+  sort() {
+    this.applyFilterAndSort();
+  }
+
+  formatPossibleActions(possibleActions: ActionType[]) {
+    return possibleActions.map((pa) => this.translateService.instant(ACTION_TYPE_KEY.concat(pa))).join(', ');
+  }
+
+  deletePreservationScenarioDialog(scenario: PreservationScenario) {
+    this.matDialog
+      .open<ConfirmDialogComponent, ConfirmDialogData>(ConfirmDialogComponent, {
+        panelClass: 'small',
+        data: {
+          title: 'PRESERVATION.SCENARIO.DELETE_DIALOG.TITLE',
+          // `message` is rendered as-is by ConfirmDialogComponent, without the translate pipe.
+          message: this.translateService.instant('PRESERVATION.SCENARIO.DELETE_DIALOG.MESSAGE'),
+          confirmLabel: 'COMMON.CONFIRM',
+          cancelLabel: 'COMMON.CANCEL',
+        },
+      })
+      .afterClosed()
+      .pipe(
+        filter((confirmed) => !!confirmed),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.deletePreservationScenario(scenario));
+  }
+
+  private deletePreservationScenario(scenario: PreservationScenario) {
+    this.preservationScenariosService
+      .delete(scenario)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.snackBarService.open({
+            message: 'PRESERVATION.SCENARIO.SNACKBAR.DELETE_REQUEST_ACCEPTED',
+            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
+          });
+
+          if (this.selectedPreservationScenario()?.Identifier === scenario.Identifier) {
+            this.selectedPreservationScenario.set(null);
+          }
+
+          this.loadScenarios();
+        },
+        error: () => {
+          this.snackBarService.open({
+            message: 'PRESERVATION.SCENARIO.SNACKBAR.DELETE_FAILED',
+            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
+          });
+        },
+      });
+  }
+
+  private loadScenarios() {
     this.loading.set(true);
     this.preservationScenariosService
       .list()
@@ -93,16 +165,9 @@ export class PreservationScenarioListComponent implements OnInit {
           this.allScenarios.set(scenarios);
           this.applyFilterAndSort();
         },
+        complete: () => this.loading.set(false),
         error: () => this.loading.set(false),
       });
-  }
-
-  sort() {
-    this.applyFilterAndSort();
-  }
-
-  formatPossibleActions(possibleActions: ActionType[]) {
-    return possibleActions.map((pa) => this.translateService.instant(ACTION_TYPE_KEY.concat(pa))).join(', ');
   }
 
   private applyFilterAndSort() {

@@ -1170,6 +1170,14 @@
           "NAME": "Name",
           "CREATION_DATE": "Creation date"
         }
+      },
+      "DELETE_DIALOG": {
+        "TITLE": "Deletion of a griffin",
+        "MESSAGE": "You are about to delete a griffin. Do you confirm this action?"
+      },
+      "SNACKBAR": {
+        "DELETE_REQUEST_ACCEPTED": "The deletion request has been taken into account",
+        "DELETE_FAILED": "The griffin could not be deleted. Please check the details in the operations logbook"
       }
     },
     "SCENARIO": {
@@ -1188,6 +1196,14 @@
           },
           "CREATION_DATE": "Creation date"
         }
+      },
+      "DELETE_DIALOG": {
+        "TITLE": "Deletion of a preservation scenario",
+        "MESSAGE": "You are about to delete a preservation scenario. Do you confirm this action?"
+      },
+      "SNACKBAR": {
+        "DELETE_REQUEST_ACCEPTED": "The deletion request has been taken into account",
+        "DELETE_FAILED": "The preservation scenario could not be deleted. Please check the details in the operations logbook"
       },
       "IMPORT_DIALOG": {
         "SUBHEAD": "Import a preservation scenarios repository",
