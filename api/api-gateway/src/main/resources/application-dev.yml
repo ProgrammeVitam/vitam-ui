@@ -209,7 +209,7 @@ spring:
                   /collect-api/external-referential/agencies,
                   /collect-api/external-referential/ingestcontracts,
                   /collect-api/external-referential/profiles,
-                  /collect-api/configuration
+                  /collect-api/configuration,
 
                   /ingest-api/agency/**,
                   /ingest-api/ingestcontract/**,
