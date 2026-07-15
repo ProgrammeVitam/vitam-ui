@@ -1,0 +1,13 @@
+<vitamui-dialog-header
+  [subhead]="'PRESERVATION.GRIFFIN.IMPORT_DIALOG.SUBHEAD' | translate"
+  [title]="'PRESERVATION.GRIFFIN.IMPORT_DIALOG.TITLE' | translate"
+></vitamui-dialog-header>
+<mat-dialog-content class="gap-3 align-items-stretch">
+  <vitamui-file-selector [formControl]="files" [extensions]="['.json']" [fileValidators]="[jsonValidator]" />
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button [matDialogClose]="true" [disabled]="files.invalid" class="btn primary btn-confirm-dialog" (click)="import()">
+    {{ 'COMMON.IMPORT' | translate }}
+  </button>
+  <button matDialogClose class="btn link cancel cancel-popup">{{ 'COMMON.CANCEL' | translate }}</button>
+</mat-dialog-actions>

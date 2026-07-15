@@ -34,9 +34,11 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.preservation.GriffinModel;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -44,6 +46,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_REQUEST_ID_HEADER;
 
 @Service
 public class GriffinService extends AbstractService {
@@ -70,15 +74,23 @@ public class GriffinService extends AbstractService {
         return payload.getResults().stream().map(result -> objectMapper.convertValue(result, Griffin.class)).toList();
     }
 
-    public void put(List<Griffin> griffins) throws VitamClientException, IOException, AccessExternalClientException {
-        adminExternalClient.importGriffin(buildVitamContext(), toInputStream(griffins), "update_griffins.json");
+    public ResponseEntity<OperationIdDto> put(List<Griffin> griffins)
+        throws VitamClientException, IOException, AccessExternalClientException {
+        var response = adminExternalClient.importGriffin(
+            buildVitamContext(),
+            toInputStream(griffins),
+            "update_griffins.json"
+        );
+        return ResponseEntity.status(response.getStatus()).body(
+            new OperationIdDto(response.getHeaderString(X_REQUEST_ID_HEADER))
+        );
     }
 
     public void update(Griffin griffin) throws VitamClientException, AccessExternalClientException, IOException {
         List<Griffin> nextGriffins = getAll()
             .stream()
             .map(currentGriffin -> {
-                if (currentGriffin.id().equals(griffin.id())) {
+                if (currentGriffin.identifier().equals(griffin.identifier())) {
                     return griffin;
                 }
                 return currentGriffin;

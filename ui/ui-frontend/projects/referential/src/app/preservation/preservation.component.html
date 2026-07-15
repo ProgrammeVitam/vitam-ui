@@ -8,6 +8,12 @@
         <div class="hgap-2">
           <button class="btn primary" (click)="importScenarios()">{{ 'PRESERVATION.ACTION.IMPORT_SCENARIOS' | translate }}</button>
           <vitamui-menu-button overlayPos="end" icon="vitamui-icon-more-horiz">
+            <button mat-menu-item (click)="importGriffins()" [disabled]="!hasUpdateRole">
+              {{ 'PRESERVATION.ACTION.IMPORT_GRIFFINS' | translate }}
+            </button>
+            <button mat-menu-item (click)="exportGriffins()" [disabled]="!hasUpdateRole">
+              {{ 'PRESERVATION.ACTION.EXPORT_GRIFFINS' | translate }}
+            </button>
             <button mat-menu-item (click)="exportScenarios()">
               {{ 'PRESERVATION.ACTION.EXPORT_SCENARIOS' | translate }}
             </button>

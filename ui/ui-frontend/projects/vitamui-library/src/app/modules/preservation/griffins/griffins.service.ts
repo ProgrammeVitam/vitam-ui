@@ -37,6 +37,8 @@
 import { GriffinsApiService } from './griffins-api.service';
 import { CreateGriffin, Griffin } from './griffin.type';
 import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -44,27 +46,29 @@ import { inject, Injectable } from '@angular/core';
 export class GriffinsService {
   private api: GriffinsApiService;
 
+  private refresh$ = new BehaviorSubject<void>(undefined);
+
   constructor() {
     this.api = inject(GriffinsApiService);
   }
 
   public list() {
-    return this.api.getAll();
+    return this.refresh$.pipe(switchMap(() => this.api.getAll()));
   }
 
   public put(griffins: Griffin[]) {
-    return this.api.put(griffins);
+    return this.api.put(griffins).pipe(tap(() => this.refresh$.next()));
   }
 
   public create(griffin: CreateGriffin) {
-    return this.api.create(griffin);
+    return this.api.create(griffin).pipe(tap(() => this.refresh$.next()));
   }
 
   public update(griffin: Griffin) {
-    return this.api.update(griffin);
+    return this.api.update(griffin).pipe(tap(() => this.refresh$.next()));
   }
 
   public delete(griffin: Griffin) {
-    return this.api.delete(griffin);
+    return this.api.delete(griffin).pipe(tap(() => this.refresh$.next()));
   }
 }
