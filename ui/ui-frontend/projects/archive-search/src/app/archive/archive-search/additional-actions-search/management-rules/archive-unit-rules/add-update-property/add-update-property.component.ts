@@ -61,7 +61,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   showConfirmDeleteAddRulePropertySuscription: Subscription;
   managementRules: ManagementRules[] = [];
   managementRulesSubscription: Subscription;
-  isValidValue = true;
+  isConfirmButtonDisabled = true;
   showText = false;
   isCancelAddRulePropertyButtonDisabled = false;
 
@@ -122,18 +122,18 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
-    this.isValidValue = true;
+    this.isConfirmButtonDisabled = true;
     this.showText = true;
   }
 
-  onChangeValue() {
+  onChangeValue(value: string) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
     this.ruleActions.find(
       (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory,
     ).stepValid = false;
-    this.isValidValue = false;
+    this.isConfirmButtonDisabled = !value;
     this.showText = false;
   }
 
