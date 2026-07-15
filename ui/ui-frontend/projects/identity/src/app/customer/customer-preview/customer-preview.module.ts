@@ -65,7 +65,7 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
 import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-create/identity-provider-create.component';
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
 import { SsoTabComponent } from './sso-tab/sso-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -83,8 +83,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     VitamUICommonModule,
     CustomParamsModule,
-    TranslateModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [
     CustomerPreviewComponent,

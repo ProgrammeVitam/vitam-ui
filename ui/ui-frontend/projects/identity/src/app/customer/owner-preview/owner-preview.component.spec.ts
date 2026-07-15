@@ -74,7 +74,6 @@ describe('OwnerPreviewComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        // TranslateService provided by VitamUICommonTestModule (TranslateModule.forRoot())
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

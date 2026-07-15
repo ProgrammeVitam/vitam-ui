@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
@@ -64,15 +63,7 @@ describe('ManagementContractPreviewComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ManagementContractPreviewComponent, TruncateStubPipe],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatSidenavModule,
-        InjectorModule,
-        VitamUICommonTestModule,
-        TranslateModule.forRoot(),
-        RouterTestingModule,
-        LoggerModule.forRoot(),
-        MatDialogModule,
-      ],
+      imports: [MatSidenavModule, InjectorModule, VitamUICommonTestModule, RouterTestingModule, LoggerModule.forRoot(), MatDialogModule],
       providers: [
         {
           provide: WINDOW_LOCATION,

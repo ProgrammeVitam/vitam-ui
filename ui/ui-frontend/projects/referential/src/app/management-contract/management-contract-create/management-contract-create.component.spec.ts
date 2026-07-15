@@ -43,7 +43,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import {
@@ -104,7 +103,6 @@ describe('ManagementContractCreateComponent', () => {
         NoopAnimationsModule,
         ReactiveFormsModule,
         RouterTestingModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],

@@ -45,7 +45,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { IngestContractService } from './ingest-contract.service';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -68,7 +67,7 @@ describe('IngestContractComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestContractComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, TranslateModule.forRoot(), RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         GlobalEventService,
         { provide: ApplicationService, useValue: applicationServiceMock },

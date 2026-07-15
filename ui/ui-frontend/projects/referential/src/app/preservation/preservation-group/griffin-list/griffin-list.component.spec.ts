@@ -40,7 +40,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import type { Mock, MockInstance } from 'vitest';
 import { BASE_URL, Griffin, GriffinsService, LoggerModule, SnackBarService, StartupService, TenantSelectionService } from 'vitamui-library';
@@ -104,7 +103,7 @@ describe('GriffinListComponent', () => {
     const startupService = { getConfigStringValue: vi.fn().mockReturnValue(`${ADMIN_TENANT_IDENTIFIER}`) };
 
     await TestBed.configureTestingModule({
-      imports: [GriffinListComponent, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [GriffinListComponent, LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),

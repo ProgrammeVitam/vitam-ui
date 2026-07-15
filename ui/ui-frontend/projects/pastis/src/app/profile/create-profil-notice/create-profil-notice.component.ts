@@ -49,9 +49,17 @@ import { PastisMaterialModule } from '../../material.module';
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  imports: [VitamUILibraryModule, ReactiveFormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
+  imports: [
+    VitamUILibraryModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    PastisMaterialModule,
+    PastisGenericPopupComponent,
+    TranslatePipe,
+  ],
   selector: 'app-create-profil-notice',
   templateUrl: './create-profil-notice.component.html',
 })

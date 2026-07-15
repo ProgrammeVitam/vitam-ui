@@ -44,9 +44,10 @@ import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../../shared/shared.module';
 import { UserListComponent } from './user-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MatProgressSpinnerModule, VitamUICommonModule, SharedModule, MatSelectModule],
+  imports: [CommonModule, RouterModule, MatProgressSpinnerModule, VitamUICommonModule, SharedModule, MatSelectModule, TranslatePipe],
   declarations: [UserListComponent],
   exports: [UserListComponent],
 })

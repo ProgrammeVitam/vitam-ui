@@ -41,7 +41,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, SchemaService, TenantSelectionService } from 'vitamui-library';
 import { SchemaListComponent } from './schema-list.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('SchemaListComponent', () => {
   let component: SchemaListComponent;
@@ -60,7 +59,7 @@ describe('SchemaListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],
-      imports: [SchemaListComponent, TranslateModule.forRoot()],
+      imports: [SchemaListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },

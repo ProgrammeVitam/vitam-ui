@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -45,7 +45,6 @@ import { ApplicationApiService, ApplicationService, ProfileService, SelectCompon
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProfilesFormComponent } from './profiles-form.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 const expectedProfiles = [
   {
@@ -164,7 +163,6 @@ describe('ProfilesFormComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        TranslateModule.forRoot(),
         SelectComponent,
       ],
       declarations: [ProfilesFormComponent, TesthostComponent],

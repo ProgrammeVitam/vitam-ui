@@ -44,7 +44,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FileFormatComponent } from './file-format.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 @Component({
@@ -80,7 +79,6 @@ describe('FileFormatComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
-        TranslateModule.forRoot(),
         MatDialogModule,
       ],
       providers: [

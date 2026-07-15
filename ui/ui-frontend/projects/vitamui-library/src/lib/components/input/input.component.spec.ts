@@ -37,8 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
 
 import { input } from '../../../../testing/src/helpers';
 import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
@@ -47,29 +45,6 @@ import { InputComponent } from './input.component';
 let component: InputComponent;
 let fixture: ComponentFixture<InputComponent>;
 
-class TranslateServiceStub {
-  onTranslationChange = of({ lang: 'fr', translations: {} });
-  onLangChange = of({ translations: {} });
-  onDefaultLangChange = of();
-  onFallbackLangChange = of();
-
-  getCurrentLang(): string {
-    return 'fr';
-  }
-
-  getFallbackLang(): string {
-    return 'fr';
-  }
-
-  get(_key: string | Array<string>, _interpolateParams?: Object): Observable<string | any> {
-    return of('');
-  }
-
-  getParsedResult(_translations: any, _key: any, _interpolateParams?: Object): any {
-    return of();
-  }
-}
-
 function getInputs() {
   return fixture.nativeElement.querySelectorAll('input, textarea');
 }
@@ -77,8 +52,7 @@ function getInputs() {
 describe('VitamuiInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, TranslateModule.forRoot(), CommonTooltipModule],
-      providers: [{ provide: TranslateService, useClass: TranslateServiceStub }],
+      imports: [FormsModule, NoopAnimationsModule, CommonTooltipModule],
     }).compileComponents();
   });
 

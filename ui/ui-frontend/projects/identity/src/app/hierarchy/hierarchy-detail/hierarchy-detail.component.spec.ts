@@ -140,7 +140,6 @@ describe('HierarchyDetailComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        // TranslateService provided by VitamUICommonTestModule (TranslateModule.forRoot())
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

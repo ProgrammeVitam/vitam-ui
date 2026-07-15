@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -216,15 +216,7 @@ describe('DeleteUnitRulesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DeleteUnitRulesComponent],
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-        VitamUICommonTestModule,
-        RouterTestingModule,
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

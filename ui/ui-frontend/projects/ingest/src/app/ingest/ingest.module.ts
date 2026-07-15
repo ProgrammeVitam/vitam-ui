@@ -49,7 +49,7 @@ import { IngestListModule } from './ingest-list/ingest-list.module';
 import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestComponent } from './ingest.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -62,10 +62,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuModule,
     MatSidenavModule,
     ReactiveFormsModule,
-    TranslateModule,
     UploadModule,
     UploadTrackingModule,
     VitamUICommonModule,
+    TranslatePipe,
   ],
   declarations: [IngestComponent],
 })

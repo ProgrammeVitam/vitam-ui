@@ -45,7 +45,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   AccessContract,
@@ -123,7 +122,6 @@ describe('ArchiveComponent', () => {
         RouterTestingModule,
         NoopAnimationsModule,
         SearchBarComponent,
-        TranslateModule.forRoot(),
       ],
       providers: [
         FormBuilder,

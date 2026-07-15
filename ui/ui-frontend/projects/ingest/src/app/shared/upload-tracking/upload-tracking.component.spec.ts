@@ -39,8 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { LoggerModule } from 'vitamui-library';
 import { IngestList } from '../../core/common/ingest-list';
@@ -57,7 +55,7 @@ describe('UploadTrackingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, NoopAnimationsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [MatProgressBarModule, NoopAnimationsModule, LoggerModule.forRoot()],
       declarations: [UploadTrackingComponent],
       providers: [FormBuilder, { provide: UploadService, useValue: UploadServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],

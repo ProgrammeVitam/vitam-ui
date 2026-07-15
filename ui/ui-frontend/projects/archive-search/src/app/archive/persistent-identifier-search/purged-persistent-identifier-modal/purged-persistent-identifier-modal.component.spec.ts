@@ -38,7 +38,7 @@ import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { VitamuiMissingTranslationHandler } from 'vitamui-library';
 import {
@@ -72,17 +72,7 @@ describe('ErrorResponseModalComponent', () => {
   async function init(type: any, operationType: any) {
     await TestBed.configureTestingModule({
       declarations: [PurgedPersistentIdentifierModalComponent],
-      imports: [
-        TranslateModule.forRoot({
-          missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-          defaultLanguage: 'fr',
-          loader: {
-            provide: TranslateLoader,
-            useClass: FakeTranslateLoader,
-            deps: [HttpBackend],
-          },
-        }),
-      ],
+      imports: [],
       providers: [
         {
           provide: MatDialogRef,

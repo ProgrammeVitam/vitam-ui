@@ -37,8 +37,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY } from 'rxjs';
 import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger';
 import { DisplayObject, DisplayRule } from '../../../object-viewer/models';
@@ -68,7 +66,6 @@ describe('ArchiveUnitViewerService', () => {
         SchemaElementToDisplayRuleService,
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SchemaService, useClass: MockSchemaService },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

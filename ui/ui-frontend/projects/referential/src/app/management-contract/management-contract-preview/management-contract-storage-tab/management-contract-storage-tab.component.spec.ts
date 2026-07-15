@@ -41,7 +41,6 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -100,14 +99,7 @@ describe('ManagementContractStorageTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ManagementContractStorageTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatSidenavModule,
-        InjectorModule,
-        VitamUICommonTestModule,
-        TranslateModule.forRoot(),
-        RouterTestingModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [MatSidenavModule, InjectorModule, VitamUICommonTestModule, RouterTestingModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

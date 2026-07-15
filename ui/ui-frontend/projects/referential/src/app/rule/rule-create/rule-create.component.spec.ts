@@ -51,7 +51,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateComponent } from './rule-create.component';
 import { RuleCreateValidators } from './rule-create.validators';
-import { TranslateModule } from '@ngx-translate/core';
 
 const expectedRule = {
   ruleId: '424242',
@@ -114,7 +113,6 @@ describe('RuleCreateComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],

@@ -41,8 +41,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY } from 'rxjs';
 import { CustomerService } from './customer.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -105,7 +103,6 @@ describe('CustomerService', () => {
         CustomerService,
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: SnackBarService, useValue: snackBarSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

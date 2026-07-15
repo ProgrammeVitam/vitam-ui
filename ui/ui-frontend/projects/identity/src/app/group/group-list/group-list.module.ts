@@ -43,9 +43,10 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupListComponent } from './group-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, RouterModule, MatRippleModule, MatProgressSpinnerModule, VitamUICommonModule],
+  imports: [CommonModule, SharedModule, RouterModule, MatRippleModule, MatProgressSpinnerModule, VitamUICommonModule, TranslatePipe],
   declarations: [GroupListComponent],
   exports: [GroupListComponent],
 })

@@ -45,9 +45,19 @@ import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { CustomerListComponent } from './customer-list.component';
 import { OwnerListComponent } from './owner-list/owner-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, RouterModule, MatRippleModule, MatDialogModule, MatProgressSpinnerModule, VitamUICommonModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule,
+    MatRippleModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
+    VitamUICommonModule,
+    TranslatePipe,
+  ],
   declarations: [CustomerListComponent, OwnerListComponent],
   exports: [CustomerListComponent],
 })

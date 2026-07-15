@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { DownloadSnackBarComponent } from './download-snack-bar.component';
@@ -49,7 +48,7 @@ describe('DownloadSnackBarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DownloadSnackBarComponent],
-      imports: [MatDialogModule, MatProgressBarModule, TranslateModule.forRoot()],
+      imports: [MatDialogModule, MatProgressBarModule],
       providers: [
         {
           provide: MatDialog,

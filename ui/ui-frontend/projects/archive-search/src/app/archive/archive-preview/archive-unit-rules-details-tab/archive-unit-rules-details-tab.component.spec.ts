@@ -37,7 +37,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, Unit, WINDOW_LOCATION } from 'vitamui-library';
@@ -73,7 +72,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitRulesDetailsTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [InjectorModule, TranslateModule.forRoot()],
+      imports: [InjectorModule],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },

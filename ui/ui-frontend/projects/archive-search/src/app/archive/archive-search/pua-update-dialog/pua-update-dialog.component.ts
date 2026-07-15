@@ -136,7 +136,7 @@ export class PuaUpdateDialogComponent {
       criteriaList: this.data.listOfUACriteriaSearch,
       pageNumber: 0, // Whatever the value, it won't be interpreted by the backend for updating the rules
       size: 0, // Whatever the value, it won't be interpreted by the backend for updating the rules
-      language: this.translate.currentLang,
+      language: this.translate.getCurrentLang(),
     };
 
     if (actions) {

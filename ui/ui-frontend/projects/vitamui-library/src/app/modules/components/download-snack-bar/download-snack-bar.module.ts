@@ -38,11 +38,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslateModule } from '@ngx-translate/core';
 import { DownloadSnackBarComponent } from '../download-snack-bar/download-snack-bar.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, MatDialogModule, MatProgressBarModule, TranslateModule],
+  imports: [CommonModule, MatDialogModule, MatProgressBarModule, TranslatePipe],
   declarations: [DownloadSnackBarComponent],
   exports: [DownloadSnackBarComponent],
 })

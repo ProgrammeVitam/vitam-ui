@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -42,14 +42,13 @@ import { ConfirmDialogService, setTypeDetailAndStringSize, VitamUICommonModule, 
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateValidators } from './ontology-create.validators';
 import { collections, sizes, types } from '../ontology-form-options';
-
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-create',
   templateUrl: './ontology-create.component.html',
   styleUrls: ['./ontology-create.component.scss'],
-  imports: [MatDialogModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [MatDialogModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<OntologyCreateComponent>>(MatDialogRef);

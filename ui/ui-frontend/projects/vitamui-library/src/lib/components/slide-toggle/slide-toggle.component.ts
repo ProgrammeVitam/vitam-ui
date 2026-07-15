@@ -37,7 +37,6 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 
 export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,7 +49,7 @@ export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   templateUrl: './slide-toggle.component.html',
   styleUrls: ['./slide-toggle.component.scss'],
   providers: [SLIDE_TOGGLE_VALUE_ACCESSOR],
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule],
 })
 export class SlideToggleComponent implements ControlValueAccessor {
   @Input() required: boolean;

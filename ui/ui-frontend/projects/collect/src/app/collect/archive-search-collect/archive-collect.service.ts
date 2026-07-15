@@ -288,7 +288,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
 
     this.transactionApiService.launchDeletionAction(transactionId, unitsForDeletionCriteria).subscribe((data) => {

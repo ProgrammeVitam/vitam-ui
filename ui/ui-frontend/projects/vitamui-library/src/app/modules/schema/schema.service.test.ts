@@ -36,7 +36,6 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { TranslateService } from '@ngx-translate/core';
 import { SchemaService } from './schema.service';
 import { of } from 'rxjs';
 import { Schema, SchemaElement } from '../models';
@@ -209,11 +208,7 @@ describe('SchemaService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        SchemaService,
-        { provide: SchemaApiService, useValue: schemaApiServiceMock },
-        { provide: TranslateService, useValue: { instant: (key: string) => key } },
-      ],
+      providers: [SchemaService, { provide: SchemaApiService, useValue: schemaApiServiceMock }],
     });
     schemaService = TestBed.inject(SchemaService);
   });

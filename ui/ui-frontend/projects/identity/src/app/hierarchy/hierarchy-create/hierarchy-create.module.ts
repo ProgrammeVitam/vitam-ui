@@ -46,7 +46,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -59,9 +59,9 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelectModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [HierarchyCreateComponent],
   exports: [HierarchyCreateComponent],

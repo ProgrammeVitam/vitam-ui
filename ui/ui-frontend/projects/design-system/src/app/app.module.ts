@@ -36,7 +36,7 @@
  */
 import { registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { isDevMode, LOCALE_ID, NgModule, inject } from '@angular/core';
+import { inject, isDevMode, LOCALE_ID, NgModule } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -64,6 +64,7 @@ import {
   VitamUILibraryModule,
 } from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -88,6 +89,7 @@ registerLocaleData(localeFr, 'fr');
     }),
     ReactiveFormsModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   providers: [
     provideI18n(),

@@ -51,7 +51,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyService } from '../ontology.service';
 import { OntologyCreateComponent } from './ontology-create.component';
 import { OntologyCreateValidators } from './ontology-create.validators';
-import { TranslateModule } from '@ngx-translate/core';
 
 const expectedOntology = {
   shortName: 'Name',
@@ -108,7 +107,6 @@ describe('OntologyCreateComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],

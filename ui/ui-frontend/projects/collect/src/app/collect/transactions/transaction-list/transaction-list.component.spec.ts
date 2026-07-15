@@ -44,7 +44,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../../../../archive-search/src/environments/environment';
@@ -122,16 +122,7 @@ describe('TransactionListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TransactionListComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        InjectorModule,
-        MatSidenavModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [InjectorModule, MatSidenavModule, BrowserAnimationsModule, LoggerModule.forRoot(), RouterTestingModule],
       providers: [
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

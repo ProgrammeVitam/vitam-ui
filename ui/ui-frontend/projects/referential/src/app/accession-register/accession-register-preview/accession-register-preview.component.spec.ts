@@ -44,7 +44,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   AccessionRegisterDetail,
@@ -96,7 +95,6 @@ describe('AccessionRegisterPreviewComponent', () => {
         RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot(),
       ],
       declarations: [AccessionRegisterPreviewComponent, MockTruncatePipe],
       providers: [

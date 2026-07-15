@@ -71,7 +71,7 @@ export class AppComponent {
       } else if (route.path && route.redirectTo === undefined) {
         const data: RouteData = route.data;
         const altSearch = data?.altSearch
-          ? ([...(data.altSearch._ || []), ...(data.altSearch[translateService.currentLang] || [])] as string[])
+          ? ([...(data.altSearch._ || []), ...(data.altSearch[translateService.getCurrentLang()] || [])] as string[])
           : [];
         const routeTitle = translateService.instant(`ROUTE${pathWithContext.replace(/\//g, '.')}.TITLE`);
         const options = [routeTitle, ...altSearch].map((s) => ({ key: pathWithContext, label: s }));

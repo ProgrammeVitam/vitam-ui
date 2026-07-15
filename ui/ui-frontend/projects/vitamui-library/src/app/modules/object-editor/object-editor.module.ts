@@ -42,7 +42,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
 import { DisplayObjectService } from '../object-viewer/models';
 import { PathStrategyDisplayObjectService } from '../object-viewer/services/path-strategy-display-object.service';
 import { PipesModule } from '../pipes/pipes.module';
@@ -71,6 +70,7 @@ import { AccordionComponent } from '../components/accordion/accordion.component'
 import { DatepickerComponent } from '../components/datepicker/datepicker.component';
 import { VitamuiMenuButtonComponent } from '../components/vitamui-menu-button/vitamui-menu-button.component';
 import { MatMenuItem } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
@@ -83,7 +83,6 @@ import { MatMenuItem } from '@angular/material/menu';
   ],
   imports: [
     CommonModule,
-    TranslateModule,
     PipesModule,
     FormsModule,
     ReactiveFormsModule,
@@ -109,6 +108,7 @@ import { MatMenuItem } from '@angular/material/menu';
     DatepickerComponent,
     DialogHeaderComponent,
     MatMenuItem,
+    TranslatePipe,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })

@@ -48,7 +48,7 @@ import { SharedModule } from '../../../../../identity/src/app/shared/shared.modu
 import { ContextEditPermissionModule } from '../context-create/context-edit-permission/context-edit-permission.module';
 import { ContextEditComponent } from './context-edit.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -62,9 +62,9 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelectModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [ContextEditComponent],
 })

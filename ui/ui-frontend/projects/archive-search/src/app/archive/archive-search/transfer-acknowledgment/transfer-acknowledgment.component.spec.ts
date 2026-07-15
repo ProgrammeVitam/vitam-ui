@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
@@ -98,13 +98,7 @@ describe('TransferAcknowledgmentComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

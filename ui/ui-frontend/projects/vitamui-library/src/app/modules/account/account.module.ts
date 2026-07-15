@@ -39,7 +39,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { EditableFieldModule } from '../components/editable-field/editable-field.module';
 import { UserPhotoModule } from '../components/header/user-photo/user-photo.module';
@@ -49,6 +48,7 @@ import { AccountComponent } from './account.component';
 import { SlideToggleComponent } from '../../../lib/components/slide-toggle/slide-toggle.component';
 import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
 import { VitamUIFieldErrorComponent } from '../components/vitamui-field-error/vitamui-field-error.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -61,7 +61,7 @@ import { VitamUIFieldErrorComponent } from '../components/vitamui-field-error/vi
     VitamUIFieldErrorComponent,
     VitamuiTitleBreadcrumbComponent,
     UserPhotoModule,
-    TranslateModule,
+    TranslatePipe,
   ],
   declarations: [AccountComponent, AccountInformationTabComponent, AccountApplicationTabComponent],
 })

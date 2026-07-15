@@ -49,6 +49,7 @@ import { UserListModule } from './user-list';
 import { UserPreviewModule } from './user-preview';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { UserComponent } from './user.component';
     MatSidenavModule,
     FormsModule,
     UserRoutingModule,
+    TranslatePipe,
   ],
   declarations: [UserComponent],
 })

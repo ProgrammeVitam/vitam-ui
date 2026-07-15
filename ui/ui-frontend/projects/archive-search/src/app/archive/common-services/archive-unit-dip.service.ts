@@ -88,7 +88,7 @@ export class ArchiveUnitDipService {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
 
     const dialogRef = this.dialog.open(DipRequestCreateComponent, {
@@ -159,7 +159,7 @@ export class ArchiveUnitDipService {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
 
     const dialogRef = this.dialog.open(TransferRequestModalComponent, {

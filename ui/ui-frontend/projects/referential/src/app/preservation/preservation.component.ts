@@ -37,7 +37,6 @@
 
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuItem } from '@angular/material/menu';
 import {
@@ -54,12 +53,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImportScenarioDialogComponent } from './import-scenario-dialog/import-scenario-dialog.component';
 import { ImportGriffinDialogComponent } from './import-griffin-dialog/import-griffin-dialog.component';
 import { take } from 'rxjs/operators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-preservation',
   templateUrl: './preservation.component.html',
   styleUrl: './preservation.component.scss',
-  imports: [CommonModule, MatSidenavModule, TranslateModule, VitamUICommonModule, PreservationGroupComponent, MatMenuItem],
+  imports: [CommonModule, MatSidenavModule, VitamUICommonModule, PreservationGroupComponent, MatMenuItem, TranslatePipe],
 })
 export class PreservationComponent {
   search = '';

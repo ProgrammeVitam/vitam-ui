@@ -34,19 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../auth.service';
 import { ThemeDataType } from '../../models';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
-  imports: [TranslateModule],
+  imports: [],
 })
 export class FooterComponent implements OnInit {
   private startupService = inject(StartupService);

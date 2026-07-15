@@ -50,9 +50,18 @@ import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/p
 import { Router } from '@angular/router';
 import { FileService } from '../../core/services/file.service';
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  imports: [VitamUILibraryModule, ReactiveFormsModule, FormsModule, VitamUICommonModule, PastisMaterialModule, PastisGenericPopupComponent],
+  imports: [
+    VitamUILibraryModule,
+    ReactiveFormsModule,
+    FormsModule,
+    VitamUICommonModule,
+    PastisMaterialModule,
+    PastisGenericPopupComponent,
+    TranslatePipe,
+  ],
   selector: 'app-save-profile-popup',
   templateUrl: './save-profile-popup.component.html',
 })

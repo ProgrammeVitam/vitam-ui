@@ -39,7 +39,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { AddUnitsComponent } from './add-units.component';
@@ -104,14 +104,7 @@ describe('AddUnitsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AddUnitsComponent],
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },

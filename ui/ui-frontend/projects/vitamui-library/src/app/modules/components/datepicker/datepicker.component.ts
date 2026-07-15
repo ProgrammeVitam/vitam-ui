@@ -41,13 +41,13 @@ import {
   forwardRef,
   HostBinding,
   HostListener,
+  inject,
   Injector,
   input,
   Input,
   OnInit,
   Signal,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { PickerType } from './datepicker.interface';
@@ -57,10 +57,10 @@ import { CustomValidators } from '../../object-editor/pattern.validator';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
 import { DateTime } from 'luxon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -81,7 +81,7 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
-    TranslateModule,
+    TranslatePipe,
   ],
 })
 export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {

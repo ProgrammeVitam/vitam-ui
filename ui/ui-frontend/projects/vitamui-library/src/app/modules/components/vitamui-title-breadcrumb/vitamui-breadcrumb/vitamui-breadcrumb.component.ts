@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
 import { Application } from '../../../models';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-breadcrumb',
   templateUrl: './vitamui-breadcrumb.component.html',
   styleUrls: ['./vitamui-breadcrumb.component.scss'],
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslatePipe],
 })
 export class VitamuiBreadcrumbComponent implements OnInit {
   private route = inject(ActivatedRoute);

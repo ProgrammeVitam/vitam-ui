@@ -42,7 +42,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { ConfirmDialogModule } from '../components/common-confirm-dialog/confirm-dialog.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
@@ -56,6 +55,7 @@ import { InputComponent } from '../../../lib/components/input/input.component';
 import { CommonProgressBarComponent } from '../components/common-progress-bar/common-progress-bar.component';
 import { StepperComponent } from '../components/stepper/stepper.component';
 import { CdkStepperModule } from '@angular/cdk/stepper';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -70,11 +70,11 @@ import { CdkStepperModule } from '@angular/cdk/stepper';
     ReactiveFormsModule,
     ConfirmDialogModule,
     CommonProgressBarComponent,
-    TranslateModule,
     PipesModule,
     DialogHeaderComponent,
     SelectComponent,
     InputComponent,
+    TranslatePipe,
   ],
   declarations: [SubrogationBannerComponent, SubrogationModalComponent, SubrogationSnackBarComponent],
   exports: [SubrogationBannerComponent],

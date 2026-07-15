@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
 import { OperationsResults } from '../../models/operation-response.interface';
@@ -78,7 +77,7 @@ describe('LogbookManagementOperationPreviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [
         { provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },

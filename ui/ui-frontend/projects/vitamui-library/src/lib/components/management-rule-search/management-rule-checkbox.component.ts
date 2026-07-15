@@ -37,8 +37,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { SearchCriteriaAddAction, SearchCriteriaRemoveAction, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria';
-import { TranslateModule } from '@ngx-translate/core';
 import { ManagementRuleSearchHelper } from '../management-rule-search/utils/management-rule-search.helper';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-management-rule-checkbox',
@@ -48,7 +48,7 @@ import { ManagementRuleSearchHelper } from '../management-rule-search/utils/mana
     </mat-checkbox>
   `,
   standalone: true,
-  imports: [MatCheckboxModule, TranslateModule],
+  imports: [MatCheckboxModule, TranslatePipe],
 })
 export class ManagementRuleCheckboxComponent {
   @Input() label: string;

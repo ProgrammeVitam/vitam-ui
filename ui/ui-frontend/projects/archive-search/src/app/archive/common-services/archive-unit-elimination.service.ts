@@ -80,7 +80,7 @@ export class ArchiveUnitEliminationService {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
 
     this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria).subscribe((data) => {
@@ -130,7 +130,7 @@ export class ArchiveUnitEliminationService {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
 
     this.archiveService.launchEliminationAction(unitsForEliminationCriteria, onlyArchiveUnit).subscribe((response) => {

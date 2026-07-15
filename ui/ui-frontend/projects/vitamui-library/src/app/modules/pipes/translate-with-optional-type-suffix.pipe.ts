@@ -42,7 +42,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   pure: false,
 })
 export class TranslateWithOptionalTypeSuffixPipe extends TranslatePipe implements PipeTransform {
-  private readonly translateService = inject(TranslateService);
+  readonly #translateService = inject(TranslateService);
 
   transform(key: string) {
     if (this.hasKey(key)) {
@@ -58,6 +58,6 @@ export class TranslateWithOptionalTypeSuffixPipe extends TranslatePipe implement
   }
 
   private hasKey(key: string) {
-    return this.translateService.instant(key) !== key;
+    return this.#translateService.instant(key) !== key;
   }
 }

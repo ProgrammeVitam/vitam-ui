@@ -50,7 +50,6 @@ import { TenantService } from '../tenant.service';
 import { OwnerCreateComponent } from './owner-create.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-owner-form',
@@ -125,15 +124,7 @@ describe('OwnerCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatOptionModule,
-        MatProgressBarModule,
-        MatSelectModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
+      imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [OwnerCreateComponent, OwnerFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

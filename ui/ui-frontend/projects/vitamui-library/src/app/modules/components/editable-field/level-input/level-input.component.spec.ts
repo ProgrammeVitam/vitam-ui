@@ -37,7 +37,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { LevelInputComponent } from './level-input.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -49,7 +48,7 @@ describe('LevelInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LevelInputComponent],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule],
       providers: [
         {
           provide: WINDOW_LOCATION,

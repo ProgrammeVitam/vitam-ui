@@ -51,6 +51,7 @@ import { ProfileDetailModule } from './profile-detail/profile-detail.module';
 import { ProfileListModule } from './profile-list/profile-list.module';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import { ProfileComponent } from './profile.component';
     LevelInputModule,
     MatSidenavModule,
     ProfileRoutingModule,
+    TranslatePipe,
   ],
   declarations: [ProfileComponent],
 })

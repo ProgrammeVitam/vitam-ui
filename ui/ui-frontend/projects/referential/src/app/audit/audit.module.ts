@@ -54,6 +54,7 @@ import { AuditListComponent } from './audit-list/audit-list.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [AuditComponent, AuditListComponent],
@@ -74,6 +75,7 @@ import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
     MatFormFieldModule,
     MatInputModule,
     PipesModule,
+    TranslatePipe,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

@@ -44,7 +44,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   BASE_URL,
@@ -113,7 +112,6 @@ describe('ArchivePreviewComponent', () => {
         RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot(),
         VitamUICommonModule,
         InjectorModule,
         LoggerModule.forRoot(),

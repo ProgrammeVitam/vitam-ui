@@ -48,6 +48,7 @@ import { FileFormatPreviewModule } from './file-format-preview/file-format-previ
 import { FileFormatRoutingModule } from './file-format-routing.module';
 import { FileFormatComponent } from './file-format.component';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -63,6 +64,7 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    TranslatePipe,
   ],
   declarations: [FileFormatComponent, FileFormatListComponent],
 })

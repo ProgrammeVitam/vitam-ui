@@ -40,7 +40,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
@@ -150,14 +150,7 @@ describe('ManagementRulesComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ManagementRulesComponent],
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-        RouterTestingModule,
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

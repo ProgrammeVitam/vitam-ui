@@ -42,9 +42,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   BASE_URL,
   ConfigService,
@@ -71,15 +70,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
+
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 describe('ArchiveSearchCollectComponent', () => {
   let component: ArchiveSearchCollectComponent;
@@ -163,17 +155,7 @@ describe('ArchiveSearchCollectComponent', () => {
     await TestBed.configureTestingModule({
       declarations: declarations,
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatMenuModule,
-        MatSidenavModule,
-        RouterTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), MatMenuModule, MatSidenavModule, RouterTestingModule],
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,

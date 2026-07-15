@@ -41,7 +41,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
@@ -123,14 +122,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CollectObjectGroupDetailsTabComponent],
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },

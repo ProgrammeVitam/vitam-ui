@@ -39,7 +39,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { EditableLevelInputComponent } from './editable-level-input.component';
 import { SubLevelPipe } from './sub-level.pipe';
@@ -73,7 +72,7 @@ describe('EditableLevelInputComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [EditableLevelInputComponent, LevelInputStubComponent, SubLevelPipe],
-      imports: [ReactiveFormsModule, OverlayModule, TranslateModule.forRoot()],
+      imports: [ReactiveFormsModule, OverlayModule],
       providers: [
         {
           provide: WINDOW_LOCATION,

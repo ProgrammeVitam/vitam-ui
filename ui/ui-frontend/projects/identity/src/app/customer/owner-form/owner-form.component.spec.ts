@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -47,7 +47,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerService } from '../owner.service';
 import { OwnerFormComponent } from './owner-form.component';
 import { OwnerFormValidators } from './owner-form.validators';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
@@ -82,15 +81,7 @@ describe('OwnerFormComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [OwnerFormComponent, TesthostComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        FormsModule,
-        LoggerModule.forRoot(),
-        MatSelectModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
+      imports: [FormsModule, LoggerModule.forRoot(), MatSelectModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       providers: [
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -36,8 +36,7 @@
  */
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, from, mergeMap, toArray } from 'rxjs';
+import { from, mergeMap, toArray } from 'rxjs';
 import { LoggerModule } from '../../logger';
 import { Collection, ProfiledSchemaElement, Schema } from '../../models';
 import { DisplayRule } from '../../object-viewer/models';
@@ -69,7 +68,6 @@ describe('EditObjectService', () => {
         PathService,
         SchemaService,
         TemplateService,
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
       ],
     });
     service = TestBed.inject(EditObjectService);

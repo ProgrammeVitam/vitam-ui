@@ -45,7 +45,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -77,15 +77,7 @@ describe('AppComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [AppComponent, RouterOutletStubComponent],
-      imports: [
-        InjectorModule,
-        VitamUICommonTestModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [InjectorModule, VitamUICommonTestModule, BrowserAnimationsModule, LoggerModule.forRoot()],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },

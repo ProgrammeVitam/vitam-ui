@@ -42,7 +42,7 @@ import { PersistentIdentifierSearchRoutingModule } from './persistent-identifier
 import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';
 import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-identifier-modal/purged-persistent-identifier-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -50,8 +50,8 @@ import { TranslateModule } from '@ngx-translate/core';
     PersistentIdentifierSearchRoutingModule,
     VitamUICommonModule,
     MatDialogModule,
-    TranslateModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [PersistentIdentifierSearchComponent, PurgedPersistentIdentifierModalComponent, FoundObjectModalComponent],
 })

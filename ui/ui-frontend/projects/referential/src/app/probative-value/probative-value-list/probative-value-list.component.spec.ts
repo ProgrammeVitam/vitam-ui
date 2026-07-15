@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { ProbativeValueListComponent } from './probative-value-list.component';
 import { ProbativeValueService } from '../probative-value.service';
@@ -50,7 +49,7 @@ describe('ProbativeValueListComponent', () => {
       search: () => of(null),
     };
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [ProbativeValueListComponent],
       providers: [{ provide: ProbativeValueService, useValue: probativeValueServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],

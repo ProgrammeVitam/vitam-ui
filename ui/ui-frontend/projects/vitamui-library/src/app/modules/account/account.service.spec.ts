@@ -37,8 +37,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
-import { TranslateService } from '@ngx-translate/core';
-
 import { EMPTY } from 'rxjs';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { BASE_URL } from '../injection-tokens';
@@ -52,7 +50,6 @@ describe('AccountService', () => {
       providers: [
         AccountService,
         { provide: BASE_URL, useValue: {} },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

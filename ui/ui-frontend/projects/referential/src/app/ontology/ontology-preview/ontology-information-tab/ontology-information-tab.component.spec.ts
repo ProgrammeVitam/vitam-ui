@@ -46,7 +46,6 @@ import { Ontology, SecurityService, VitamUILibraryModule } from 'vitamui-library
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OntologyService } from '../../ontology.service';
 import { OntologyInformationTabComponent } from './ontology-information-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('OntologyInformationTabComponent', () => {
   let component: OntologyInformationTabComponent;
@@ -82,7 +81,6 @@ describe('OntologyInformationTabComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],

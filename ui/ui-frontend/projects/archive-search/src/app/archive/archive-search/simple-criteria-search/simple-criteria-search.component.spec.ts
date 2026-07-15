@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import {
   AgenciesModule,
@@ -94,7 +93,7 @@ describe('SimpleCriteriaSearchComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [SimpleCriteriaSearchComponent],
-      imports: [InjectorModule, TranslateModule.forRoot(), AgenciesModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, AgenciesModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },

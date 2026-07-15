@@ -51,7 +51,7 @@ import { OwnerFormModule } from '../owner-form/owner-form.module';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { CustomerColorsInputModule } from './customer-colors-input/customer-colors-input.module';
 import { CustomerCreateComponent } from './customer-create.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -67,8 +67,8 @@ import { TranslateModule } from '@ngx-translate/core';
     VitamUICommonModule,
     CustomerPreviewModule,
     MatDialogModule,
-    TranslateModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [CustomerCreateComponent, CustomerAlertingComponent],
 })

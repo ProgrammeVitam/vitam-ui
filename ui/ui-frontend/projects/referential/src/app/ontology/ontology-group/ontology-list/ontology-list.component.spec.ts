@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { EMPTY, Observable, of } from 'rxjs';
 import { AuthService, BASE_URL, Ontology, TenantSelectionService } from 'vitamui-library';
 import { OntologyListComponent } from './ontology-list.component';
@@ -71,12 +71,7 @@ describe('OntologyListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],
-      imports: [
-        OntologyListComponent,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [OntologyListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },

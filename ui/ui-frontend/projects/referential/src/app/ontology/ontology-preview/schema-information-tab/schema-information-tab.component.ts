@@ -34,20 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SchemaElement, SchemaService, Option } from 'vitamui-library';
+import { Option, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
-
-import { TranslateModule } from '@ngx-translate/core';
-
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-schema-information-tab',
   templateUrl: './schema-information-tab.component.html',
   styleUrl: './schema-information-tab.component.scss',
-  imports: [FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class SchemaInformationTabComponent {
   private formBuilder = inject(FormBuilder);

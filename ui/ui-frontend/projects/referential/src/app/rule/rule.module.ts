@@ -51,6 +51,7 @@ import { RulePreviewModule } from './rule-preview/rule-preview.module';
 import { RuleRoutingModule } from './rule-routing.module';
 import { RuleComponent } from './rule.component';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    TranslatePipe,
   ],
   declarations: [RuleComponent, RuleListComponent],
 })

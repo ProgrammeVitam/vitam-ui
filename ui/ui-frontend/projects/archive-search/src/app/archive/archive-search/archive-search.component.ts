@@ -959,7 +959,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         pageNumber: this.currentPage,
         size: PAGE_SIZE,
         sortingCriteria,
-        language: this.translateService.currentLang,
+        language: this.translateService.getCurrentLang(),
       };
       this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria);
     }
@@ -1133,7 +1133,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           criteriaList: this.listOfUACriteriaSearch,
           pageNumber: 0,
           size: selectedItems,
-          language: this.translateService.currentLang,
+          language: this.translateService.getCurrentLang(),
         };
         const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
           disableClose: false,

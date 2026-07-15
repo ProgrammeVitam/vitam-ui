@@ -47,6 +47,7 @@ import { SecurityProfilePreviewModule } from './security-profile-preview/securit
 import { SecurityProfileRoutingModule } from './security-profile-routing.module';
 import { SecurityProfileComponent } from './security-profile.component';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { SecurityProfileCreateComponent } from './security-profile-create/securi
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    TranslatePipe,
   ],
   declarations: [SecurityProfileComponent, SecurityProfileListComponent],
 })

@@ -42,9 +42,18 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OwnerFormComponent } from './owner-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, MatFormFieldModule, MatSelectModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    TranslatePipe,
+  ],
   declarations: [OwnerFormComponent],
   exports: [OwnerFormComponent],
 })

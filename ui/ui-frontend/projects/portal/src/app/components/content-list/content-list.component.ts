@@ -40,14 +40,14 @@ import { Category, VitamUICommonModule } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
 import { Content } from './content.interface';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-content-list',
   templateUrl: './content-list.component.html',
   styleUrls: ['./content-list.component.scss'],
-  imports: [CommonModule, MatTabsModule, TranslateModule, VitamUICommonModule, AngularSvgIconModule],
+  imports: [CommonModule, MatTabsModule, VitamUICommonModule, AngularSvgIconModule, TranslatePipe],
 })
 export class ContentListComponent {
   @Input() set content(content: Map<Category, Content>) {

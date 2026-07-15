@@ -41,7 +41,6 @@ import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
 import { RoleToggleComponent } from './role-toggle.component';
@@ -72,7 +71,7 @@ describe('RoleToggleComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RoleToggleComponent, TesthostComponent, RoleComponent],
-      imports: [SlideToggleComponent, FormsModule, TranslateModule.forRoot()],
+      imports: [SlideToggleComponent, FormsModule],
       providers: [
         {
           provide: WINDOW_LOCATION,

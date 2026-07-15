@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, forkJoin, of, Subject } from 'rxjs';
@@ -60,7 +60,7 @@ import {
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -84,8 +84,8 @@ import { CdkStepper } from '@angular/cdk/stepper';
     SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
-    TranslateModule,
     MatDialogModule,
+    TranslatePipe,
   ],
 })
 export class AuditCreateComponent implements OnInit, OnDestroy {

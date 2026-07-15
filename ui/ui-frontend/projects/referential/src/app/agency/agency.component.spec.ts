@@ -47,7 +47,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -83,7 +82,6 @@ describe('AgencyComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,

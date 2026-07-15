@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   BASE_URL,
@@ -96,7 +95,7 @@ describe('IngestContractAttachmentTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestContractAttachmentTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TranslateModule.forRoot(), LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: {} },

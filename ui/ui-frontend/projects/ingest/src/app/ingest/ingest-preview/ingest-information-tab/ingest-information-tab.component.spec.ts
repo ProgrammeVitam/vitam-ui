@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { ApplicationService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
@@ -50,7 +49,7 @@ describe('IngestInformationTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [IngestInformationTabComponent],
-      imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule],
       providers: [
         { provide: ApplicationService, useValue: { getUrl$: () => of('') } },
         { provide: IngestReferentialService, useValue: { resolveNames: () => of({}) } },

@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger';
 import { Unit, UnitType } from '../../../models';
@@ -99,7 +98,7 @@ describe('ArchiveUnitViewerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot()],
       providers: [
         {
           provide: BASE_URL,

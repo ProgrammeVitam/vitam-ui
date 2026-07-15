@@ -48,6 +48,7 @@ import { GroupListModule } from './group-list';
 import { GroupPreviewModule } from './group-preview';
 import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [GroupComponent],
@@ -62,6 +63,7 @@ import { GroupComponent } from './group.component';
     MatMenuModule,
     MatSidenavModule,
     GroupRoutingModule,
+    TranslatePipe,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

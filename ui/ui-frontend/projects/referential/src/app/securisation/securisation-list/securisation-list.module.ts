@@ -40,10 +40,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'vitamui-library';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 import { SecurisationListComponent } from './securisation-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SecurisationListComponent],
-  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule, PipesModule],
+  imports: [CommonModule, MatProgressSpinnerModule, VitamUICommonModule, PipesModule, TranslatePipe],
   exports: [SecurisationListComponent],
 })
 export class SecurisationListModule {}

@@ -38,8 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, of } from 'rxjs';
 import { AppGuard } from './app.guard';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
@@ -74,20 +72,6 @@ const expectedApp = [
   },
 ];
 
-class TranslateServiceStub {
-  setDefaultLang() {}
-
-  use() {}
-
-  instant() {
-    return EMPTY;
-  }
-
-  get onLangChange() {
-    return of({ lang: 'en' });
-  }
-}
-
 describe('AppGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -107,7 +91,6 @@ describe('AppGuard', () => {
         },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: TranslateService, useClass: TranslateServiceStub },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

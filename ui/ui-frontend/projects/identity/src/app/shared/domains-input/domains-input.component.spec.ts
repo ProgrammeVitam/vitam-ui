@@ -34,11 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { input } from 'vitamui-library/testing';
@@ -69,7 +68,7 @@ describe('DomainsInputComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule.forRoot()],
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
       declarations: [TestHostComponent, DomainsInputComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],

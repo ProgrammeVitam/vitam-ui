@@ -48,6 +48,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { OwnerFormModule } from '../../owner-form/owner-form.module';
 import { CustomerColorsInputComponent } from './customer-colors-input.component';
 import { InputColorComponent } from './input-color/input-color.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { InputColorComponent } from './input-color/input-color.component';
     ColorPickerDirective,
     VitamUILibraryModule,
     FormsModule,
+    TranslatePipe,
   ],
   declarations: [CustomerColorsInputComponent, InputColorComponent],
   exports: [CustomerColorsInputComponent],

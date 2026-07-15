@@ -39,7 +39,6 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { FileFormat, SecurityService, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
@@ -94,7 +93,7 @@ describe('FileFormatInformationTabComponent', () => {
       getTenantIdentifier: () => '',
     };
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [FileFormatInformationTabComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },

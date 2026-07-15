@@ -37,7 +37,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { AuthService } from '../../../auth.service';
 import { IEvent } from '../../../models';
@@ -72,7 +71,7 @@ describe('OperationHistoryTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OperationHistoryTabComponent, VitamUICommonTestModule, TranslateModule.forRoot()],
+      imports: [OperationHistoryTabComponent, VitamUICommonTestModule],
       providers: [
         { provide: AuthService, useValue: {} },
         { provide: LogbookService, useValue: {} },

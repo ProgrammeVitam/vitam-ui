@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { BASE_URL, LogbookService } from 'vitamui-library';
 import { LogbookOperation } from '../../models/logbook-event.interface';
@@ -66,7 +65,7 @@ describe('IngestPreviewComponent test:', () => {
     await TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule, TranslateModule.forRoot()],
+      imports: [MatMenuModule],
       providers: [
         { provide: LogbookService, useValue: {} },
         {

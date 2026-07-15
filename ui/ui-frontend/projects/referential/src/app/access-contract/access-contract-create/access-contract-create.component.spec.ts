@@ -58,7 +58,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedAccessContract = {
@@ -135,7 +134,6 @@ describe('AccessContractCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
-        TranslateModule.forRoot(),
         LoggerModule.forRoot(),
       ],
       providers: [

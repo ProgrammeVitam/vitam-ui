@@ -41,7 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import {
   ConfigurationsApiService,
@@ -129,9 +129,6 @@ describe('LeavesTreeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
         RouterTestingModule,
       ],
       providers: [

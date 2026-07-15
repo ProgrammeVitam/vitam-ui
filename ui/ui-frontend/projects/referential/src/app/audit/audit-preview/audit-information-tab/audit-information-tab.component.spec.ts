@@ -40,7 +40,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditInformationTabComponent } from './audit-information-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('AuditInformationTabComponent', () => {
   let component: AuditInformationTabComponent;
@@ -97,7 +96,7 @@ describe('AuditInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuditInformationTabComponent, TranslateModule.forRoot(), ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [AuditInformationTabComponent, ReactiveFormsModule, VitamUICommonTestModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

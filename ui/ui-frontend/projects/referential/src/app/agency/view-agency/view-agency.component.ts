@@ -34,26 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   Agency,
+  AgencyService,
   ApplicationId,
   BreadCrumbData,
   TenantSelectionService,
   VitamUICommonModule,
   VitamUILibraryModule,
-  AgencyService,
 } from 'vitamui-library';
 import { agencyTemplate } from '../agency.template';
 import { of, switchMap } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-view-agency',
   templateUrl: 'view-agency.component.html',
   styleUrls: ['view-agency.component.scss'],
-  imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class ViewAgencyComponent implements OnInit {
   private router = inject(Router);

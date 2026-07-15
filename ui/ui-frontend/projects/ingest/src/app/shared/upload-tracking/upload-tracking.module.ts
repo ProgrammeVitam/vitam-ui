@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { PipesModule, VitamUICommonModule } from 'vitamui-library';
 import { UploadTrackingComponent } from './upload-tracking.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -57,8 +57,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelectModule,
     PipesModule,
     ReactiveFormsModule,
-    TranslateModule,
     VitamUICommonModule,
+    TranslatePipe,
   ],
 
   declarations: [UploadTrackingComponent],

@@ -43,7 +43,6 @@ import { QueryParamsService } from '../../../app/modules/url/query-params.servic
 import { SearchCriteriaService } from '../../../app/modules/models/criteria/search-criteria.service';
 import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../models/management-rule-shared-data-service.interface';
 import { ACCESS_RULE, ApplicationId, ORIGIN_WAITING_RECALCULATE, StartupService } from '../../../app/modules';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';
 
@@ -119,7 +118,7 @@ describe('ManagementRuleSearchComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ManagementRuleSearchComponent, TranslateModule.forRoot()],
+      imports: [ManagementRuleSearchComponent],
       providers: [
         FormBuilder,
         { provide: QueryParamsService, useValue: mockQueryParamsService },

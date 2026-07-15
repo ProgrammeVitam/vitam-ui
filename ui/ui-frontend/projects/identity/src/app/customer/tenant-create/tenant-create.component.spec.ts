@@ -50,7 +50,6 @@ import { TenantCreateComponent } from './tenant-create.component';
 import { TenantFormValidators } from './tenant-form.validators';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('TenantCreateComponent', () => {
   let component: TenantCreateComponent;
@@ -75,15 +74,7 @@ describe('TenantCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatSelectModule,
-        MatOptionModule,
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
+      imports: [MatSelectModule, MatOptionModule, MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [TenantCreateComponent],
       providers: [

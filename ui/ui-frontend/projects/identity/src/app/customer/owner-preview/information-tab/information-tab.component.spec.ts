@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, Subject } from 'rxjs';
-import { BASE_URL, CountryService, LoggerModule, Owner, StartupService, Tenant, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, Owner, SnackBarService, StartupService, Tenant, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
@@ -49,7 +49,6 @@ import { TenantFormValidators } from '../../tenant-create/tenant-form.validators
 import { TenantService } from '../../tenant.service';
 import { InformationTabComponent } from './information-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { TranslateModule } from '@ngx-translate/core';
 
 const expectedOwner: Owner = {
   id: '5ad5f14c894e6a414edc7b63',
@@ -140,14 +139,7 @@ describe('Owner InformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        LoggerModule.forRoot(),
-        MatDividerModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
+      imports: [LoggerModule.forRoot(), MatDividerModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [TestHostComponent, InformationTabComponent],
       providers: [

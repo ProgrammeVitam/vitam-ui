@@ -45,8 +45,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { UploadComponent } from './upload.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -59,9 +59,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressBarModule,
     MatSelectModule,
     ReactiveFormsModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [UploadComponent],
 })

@@ -73,7 +73,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { PastisPopupMetadataLanguageComponent } from './pastis-popup-metadata-language.component';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
@@ -85,7 +84,7 @@ describe('PastisPopupMetadataLanguageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PastisPopupMetadataLanguageComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [PastisPopupMetadataLanguageService],
     }).compileComponents();
   });

@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
-import { TranslateModule } from '@ngx-translate/core';
 
 import {
   CriteriaOperator,
@@ -72,6 +71,7 @@ import {
 import { ManagementRuleFormUtils } from './utils/management-rule-form.utils';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';
 import { ManagementRuleCheckboxComponent } from './management-rule-checkbox.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 type RuleForm = {
   ruleIdentifier: FormControl<any[]>;
@@ -85,14 +85,7 @@ type RuleForm = {
   templateUrl: './management-rule-search.component.html',
   styleUrls: ['./management-rule-search.component.scss'],
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    TranslateModule,
-    SelectComponent,
-    ManagementRuleCheckboxComponent,
-    DatepickerComponent,
-    EditableFieldModule,
-  ],
+  imports: [ReactiveFormsModule, SelectComponent, ManagementRuleCheckboxComponent, DatepickerComponent, EditableFieldModule, TranslatePipe],
   providers: [
     ManagementRuleCriteriaService,
     {

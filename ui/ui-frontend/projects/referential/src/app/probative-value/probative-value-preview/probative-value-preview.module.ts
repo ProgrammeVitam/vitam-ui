@@ -48,6 +48,7 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ProbativeValuePreviewComponent],
@@ -66,6 +67,7 @@ import { ProbativeValuePreviewComponent } from './probative-value-preview.compon
     MatOptionModule,
     MatTabsModule,
     PipesModule,
+    TranslatePipe,
   ],
   exports: [ProbativeValuePreviewComponent],
 })

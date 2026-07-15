@@ -36,7 +36,6 @@
  */
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { LogbookService } from 'vitamui-library';
 import { OperationDetails } from '../../../models/operation-response.interface';
 import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-information-tab.component';
@@ -72,7 +71,7 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
     };
     await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [{ provide: LogbookService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

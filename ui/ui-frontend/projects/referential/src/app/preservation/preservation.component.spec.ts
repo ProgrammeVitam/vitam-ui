@@ -41,7 +41,6 @@ import { PreservationComponent } from './preservation.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BASE_URL, LoggerModule, SecurityService, VitamUICommonModule } from 'vitamui-library';
-import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
 
@@ -55,7 +54,7 @@ describe('PreservationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PreservationComponent, LoggerModule.forRoot(), TranslateModule.forRoot(), VitamUICommonModule],
+      imports: [PreservationComponent, LoggerModule.forRoot(), VitamUICommonModule],
       providers: [
         {
           provide: BASE_URL,

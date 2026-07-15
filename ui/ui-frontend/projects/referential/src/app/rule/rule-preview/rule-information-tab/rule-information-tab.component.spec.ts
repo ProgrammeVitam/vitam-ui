@@ -38,7 +38,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
@@ -86,7 +85,7 @@ describe('RuleInformationTabComponent', () => {
       data: of({ appId: 'RULES_APP' }),
     };
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [RuleInformationTabComponent],
       providers: [
         FormBuilder,

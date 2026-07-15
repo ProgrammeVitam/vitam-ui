@@ -40,7 +40,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { AuthService, ConfirmDialogService, LevelInputModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -82,14 +81,7 @@ describe('HierarchyCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        LevelInputModule,
-        TranslateModule.forRoot(),
-      ],
+      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputModule],
       declarations: [ProfilesFormStubComponent, HierarchyCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

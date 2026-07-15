@@ -87,7 +87,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateComponent } from './security-profile-create.component';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-domains-input',
@@ -189,7 +188,6 @@ describe('SecurityProfileCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
-        TranslateModule.forRoot(),
       ],
       declarations: [SecurityProfileEditPermissionStubComponent, DomainInputStubComponent],
       providers: [

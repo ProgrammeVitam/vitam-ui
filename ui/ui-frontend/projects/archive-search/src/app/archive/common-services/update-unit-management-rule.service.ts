@@ -134,7 +134,7 @@ export class UpdateUnitManagementRuleService {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
     this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery).subscribe((data) => {
       numberOfHoldingUnitType = data.totalResults;
@@ -151,7 +151,7 @@ export class UpdateUnitManagementRuleService {
           criteriaList: listOfUACriteriaSearch.filter((criteria) => criteria.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
           pageNumber: currentPage,
           size: PAGE_SIZE,
-          language: this.translateService.currentLang,
+          language: this.translateService.getCurrentLang(),
         };
         this.managementRulesSharedDataService.emitselectedItems(itemSelected);
         this.managementRulesSharedDataService.emitCriteriaSearchListToSave(criteriaSearchList);

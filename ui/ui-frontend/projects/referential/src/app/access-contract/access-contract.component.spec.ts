@@ -46,7 +46,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AccessContractComponent } from './access-contract.component';
 
 import { of } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-preview',
@@ -87,7 +86,6 @@ describe('AccessContractComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,

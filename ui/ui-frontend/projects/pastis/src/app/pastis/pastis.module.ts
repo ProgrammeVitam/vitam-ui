@@ -62,6 +62,7 @@ import { UserActionAddMetadataComponent } from '../user-actions/add-metadata/add
 import { UserActionRemoveMetadataComponent } from '../user-actions/remove-metadata/remove-metadata.component';
 import { UserActionsModule } from '../user-actions/user-actions.module';
 import { PastisRoutingModule } from './pastis-routing.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -91,6 +92,7 @@ import { PastisRoutingModule } from './pastis-routing.module';
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,
+    TranslatePipe,
   ],
   declarations: [MainComponent, UserActionRemoveMetadataComponent, UserActionAddMetadataComponent, SedaVisualizerComponent],
   exports: [],
