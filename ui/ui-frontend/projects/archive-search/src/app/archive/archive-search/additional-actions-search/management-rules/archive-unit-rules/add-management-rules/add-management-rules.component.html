@@ -71,21 +71,23 @@
 
 <ng-template #resultsFound>
   <div *ngIf="showText && itemsToUpdate !== '0'" class="row message-text-ok">
-    <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}
+    <div class="col-12 d-flex align-items-center">
+      <i class="material-icons">check_circle</i
+      ><span class="p-2">{{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}</span>
     </div>
   </div>
   <div *ngIf="showText && itemsWithSameRule !== '0'" class="row message-text-ko">
-    <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}
+    <div class="col-12 d-flex align-items-center">
+      <i class="material-icons">error</i
+      ><span class="p-2">{{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}</span>
     </div>
   </div>
   <div *ngIf="showText && itemsWithSameRuleAndDate > 0" class="row message-text-ko">
-    <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">
-      {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate } }}
+    <div class="col-12 d-flex align-items-center">
+      <i class="material-icons">error</i
+      ><span class="p-2">{{
+        'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate }
+      }}</span>
     </div>
   </div>
 </ng-template>

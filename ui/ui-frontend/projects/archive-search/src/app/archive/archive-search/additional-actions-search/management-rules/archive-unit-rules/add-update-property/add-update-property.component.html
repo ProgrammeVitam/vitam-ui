@@ -26,9 +26,9 @@
     ></vitamui-select>
 
     <div *ngIf="showText" class="row message-text-ok">
-      <div class="col-1"><i class="material-icons">check_circle</i></div>
-      <div class="col-11">
-        {{ 'RULES.UA_CONTROL.UA_FINAL_ACTION_MESSAGE' | translate }}
+      <div class="col-12 d-flex align-items-center">
+        <i class="material-icons">check_circle</i>
+        <span class="p-2">{{ 'RULES.UA_CONTROL.UA_FINAL_ACTION_MESSAGE' | translate }}</span>
       </div>
     </div>
   </div>

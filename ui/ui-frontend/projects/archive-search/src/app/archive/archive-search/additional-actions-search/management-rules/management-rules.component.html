@@ -12,7 +12,7 @@
           <div class="gap-3 align-items-stretch">
             <label class="text bold normal primary"> {{ 'RULES.SELECT_RULE_CATEGORY' | translate }} *</label>
             <div class="radio-group" *ngFor="let ruleCategory of rulesCategories">
-              <div class="radio-btn-list d-flex align-items-center">
+              <div class="radio-btn-list d-flex align-items-center p-2">
                 <mat-radio-button (change)="selectRule(ruleCategory)" [disabled]="ruleCategory.isDisabled" [value]="ruleCategory.id">
                   {{ ruleCategory.name }}
                 </mat-radio-button>
