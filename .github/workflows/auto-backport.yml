@@ -78,7 +78,7 @@ jobs:
           experimental: '{ "conflict_resolution": "draft_commit_conflicts" }'
           add_labels: 'Cherry-Pick'
           copy_all_reviewers: true
-          copy_labels_pattern: '.*'
+          copy_labels_pattern: '^(?!CP V\d+\.\d+$).*$' # All labels, except ones like "CP V9.1" or "CP V9.2"
           copy_milestone: true
-          pull_description: 'Voir #${pull_number}'
+          pull_description: 'Cherry-Picked from #${pull_number}'
           pull_title: 'CP V${{ matrix.target.version }} - ${pull_title}'
