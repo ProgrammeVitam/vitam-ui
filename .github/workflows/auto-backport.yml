@@ -63,6 +63,10 @@ jobs:
         target: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
       fail-fast: false # Prevents a failure on branch 9.1 from canceling branch 9.2
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history for all branches and tags (required for cherry-picking)
       - name: Backport Action
         uses: korthout/backport-action@v4.6.0
         with:
