@@ -37,13 +37,17 @@
 
 <ng-template #okTotalFound>
   <div *ngIf="showText && itemsWithSameRule !== '0'" class="row message-text-ok">
-    <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
+    <div class="col-12 d-flex align-items-center">
+      <i class="material-icons">check_circle</i
+      ><span class="p-2">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+    </div>
   </div>
 
   <div *ngIf="showText && itemsToNotUpdate !== '0'" class="row message-text-ko">
-    <div class="col-1"><i class="material-icons">error</i></div>
-    <div class="col-11">{{ 'RULES.APPRAISAL_RULES.UA_WITH_NO_PREVENT_RULES' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</div>
+    <div class="col-12 d-flex align-items-center">
+      <i class="material-icons">error</i
+      ><span class="p-2">{{ 'RULES.APPRAISAL_RULES.UA_WITH_NO_PREVENT_RULES' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</span>
+    </div>
   </div>
 </ng-template>
 
