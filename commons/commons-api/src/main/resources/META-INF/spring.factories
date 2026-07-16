@@ -1,1 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration,\
+fr.gouv.vitamui.commons.api.config.NonSortableFieldsAutoConfiguration

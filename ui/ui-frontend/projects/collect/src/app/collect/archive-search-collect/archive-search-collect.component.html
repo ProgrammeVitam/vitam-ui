@@ -373,6 +373,7 @@
               >
 
               <vitamui-common-order-by-button
+                *ngIf="isTitleSortable"
                 orderByKey="Title"
                 [(orderBy)]="orderBy"
                 [(direction)]="direction"

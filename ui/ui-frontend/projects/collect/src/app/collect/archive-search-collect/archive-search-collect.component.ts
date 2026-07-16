@@ -57,6 +57,7 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SidenavPage,
+  StartupService,
   Transaction,
   TransactionStatus,
   Unit,
@@ -134,6 +135,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   waitingToGetFixedCount = false;
   totalResults = 0;
   orderBy = 'Title';
+
+  isTitleSortable = true;
   direction = Direction.ASCENDANT;
   DEFAULT_RESULT_THRESHOLD = 10000;
   searchHasResults = false;
@@ -174,8 +177,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private archiveFacetsService: ArchiveFacetsService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
+    private startupService: StartupService,
   ) {
     super(route, globalEventService);
+    const unitNonSortableFields: string[] = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
+    this.isTitleSortable = !unitNonSortableFields.includes('Title');
     this.subscriptionSimpleSearchCriteriaAdd = this.archiveExchangeDataService
       .receiveSimpleSearchCriteriaSubject()
       .subscribe((criteria) => {

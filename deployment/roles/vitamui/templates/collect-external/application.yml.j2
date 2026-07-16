@@ -120,3 +120,6 @@ opentracing:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
 {% endif %}
+
+query:
+  non-sortable-fields: {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}

@@ -81,3 +81,6 @@ logging:
   level:
     fr.gouv.vitamui.archives.search.internal.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
     fr.gouv.vitam.archives.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+
+query:
+  non-sortable-fields: {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}

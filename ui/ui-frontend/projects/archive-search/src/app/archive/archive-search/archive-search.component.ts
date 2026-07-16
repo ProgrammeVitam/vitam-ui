@@ -1,4 +1,5 @@
 /*
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
@@ -66,6 +67,7 @@ import {
   SearchCriteriaRemoveAction,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  StartupService,
   Unit,
   UnitType,
   VitamuiRoles,
@@ -122,6 +124,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private readonly orderChange = new Subject<string>();
 
   orderBy = 'Title';
+
+  isTitleSortable = true;
   isIndeterminate: boolean;
   isAllChecked: boolean;
   hasResults = false;
@@ -208,7 +212,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     private computeInheritedRulesService: ComputeInheritedRulesService,
     private archiveUnitDipService: ArchiveUnitDipService,
     private cdr: ChangeDetectorRef,
+    private startupService: StartupService,
   ) {
+    const unitNonSortableFields: string[] = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
+    this.isTitleSortable = !unitNonSortableFields.includes('Title');
     this.subscriptions.add(
       this.managementRulesSharedDataService.getBulkOperationsThreshold().subscribe((bulkOperationsThreshold) => {
         this.bulkOperationsThreshold = bulkOperationsThreshold;
