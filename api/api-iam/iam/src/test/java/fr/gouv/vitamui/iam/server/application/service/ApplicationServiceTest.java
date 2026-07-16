@@ -7,6 +7,7 @@ import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.server.application.dao.ApplicationRepository;
@@ -42,9 +43,7 @@ class ApplicationServiceTest {
 
     private final SecurityService securityService = mock(SecurityService.class);
 
-    private final ExternalIdentifierConfiguration externalIdentifierConfiguration = mock(
-        ExternalIdentifierConfiguration.class
-    );
+    private final ConfigurationService configurationService = mock(ConfigurationService.class);
 
     @BeforeEach
     public void setup() {
@@ -53,7 +52,7 @@ class ApplicationServiceTest {
             applicationRepository,
             applicationConverter,
             securityService,
-            externalIdentifierConfiguration
+            configurationService
         );
 
         when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);

@@ -40,9 +40,11 @@ import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.IdentifierNameDto;
 import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
+import fr.gouv.vitamui.commons.api.domain.configuration.TenantId;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.server.application.dao.ApplicationRepository;
@@ -81,7 +83,7 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
     private final ApplicationConverter applicationConverter;
     private final SecurityService securityService;
 
-    private final ExternalIdentifierConfiguration externalIdentifierConfiguration;
+    private final ConfigurationService configurationService;
 
     @Autowired
     public ApplicationService(
@@ -89,13 +91,13 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
         final ApplicationRepository applicationRepository,
         final ApplicationConverter applicationConverter,
         final SecurityService securityService,
-        final ExternalIdentifierConfiguration externalIdentifierConfiguration
+        final ConfigurationService configurationService
     ) {
         super(sequenceGeneratorService, securityService);
         this.applicationRepository = applicationRepository;
         this.applicationConverter = applicationConverter;
         this.securityService = securityService;
-        this.externalIdentifierConfiguration = externalIdentifierConfiguration;
+        this.configurationService = configurationService;
     }
 
     /**
@@ -118,13 +120,13 @@ public class ApplicationService extends AbstractResourceClientService<Applicatio
     }
 
     public boolean isApplicationExternalIdentifierEnabled(String applicationId) {
-        String tenantId = securityService.getTenantIdentifier().toString();
-        Map<String, List<String>> enabledApplicationsByTenant = externalIdentifierConfiguration.getTenants();
-        List<String> tenantEnabledApplications = enabledApplicationsByTenant.getOrDefault(
-            tenantId,
-            Collections.emptyList()
-        );
-        return tenantEnabledApplications.contains(applicationId);
+        final TenantId tenantId = new TenantId(securityService.getTenantIdentifier());
+
+        return configurationService
+            .getPlatformConfiguration()
+            .externalReferentialIdentifiersByTenant()
+            .getOrDefault(tenantId, Collections.emptyList())
+            .contains(applicationId);
     }
 
     /**
