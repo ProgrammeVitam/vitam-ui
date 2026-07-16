@@ -64,4 +64,7 @@
   {% else %}
   ]
   {% endif %}
+  {% if vitamui_struct.vitamui_component in ["ui-archive-search", "ui-collect"] %}
+  ,"NON_SORTABLE_FIELDS": {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}
+  {% endif %}
 }
