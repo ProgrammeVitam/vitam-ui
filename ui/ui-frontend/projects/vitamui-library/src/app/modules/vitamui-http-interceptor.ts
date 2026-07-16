@@ -37,7 +37,6 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import moment from 'moment';
 import { Observable, throwError, timeout } from 'rxjs';
 
 import { catchError } from 'rxjs/operators';
@@ -129,7 +128,7 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
       headers: request.headers.delete(VitamuiHttpHeaders.X_BY_PASSED_ERROR),
       setHeaders: {
         [VitamuiHttpHeaders.X_REQUEST_ID]: requestId,
-        [VitamuiHttpHeaders.X_REQUEST_TIMESTAMP]: moment().unix().toString(),
+        [VitamuiHttpHeaders.X_REQUEST_TIMESTAMP]: Math.floor(Date.now() / 1000).toString(),
         [VitamuiHttpHeaders.X_REQUESTED_WITH]: 'XMLHttpRequest',
         [VitamuiHttpHeaders.X_TENANT_ID]: tenantIdentifier ? tenantIdentifier.toString() : '-1',
         [VitamuiHttpHeaders.X_APPLICATION_ID]: applicationId,
