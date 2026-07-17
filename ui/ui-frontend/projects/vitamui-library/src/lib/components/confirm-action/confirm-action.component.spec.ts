@@ -36,7 +36,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { ConfirmActionComponent } from './confirm-action.component';
 
@@ -54,12 +54,7 @@ describe('ConfirmActionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useValue: FakeLoader },
-        }),
-        ConfirmActionComponent,
-      ],
+      imports: [ConfirmActionComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

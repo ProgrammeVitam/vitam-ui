@@ -38,9 +38,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION, VitamUICommonModule, BASE_URL, ENVIRONMENT } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -55,14 +54,7 @@ describe('LogbookManagementOperationComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        InjectorModule,
-        VitamUICommonModule,
-        TranslateModule.forRoot(),
-        LoggerModule.forRoot(),
-        MatDatepickerModule,
-      ],
+      imports: [ReactiveFormsModule, InjectorModule, VitamUICommonModule, LoggerModule.forRoot(), MatDatepickerModule],
       declarations: [LogbookManagementOperationComponent],
       providers: [
         provideNativeDateAdapter(),

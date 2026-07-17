@@ -51,8 +51,8 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
 import { UnitsEditComponent } from './information-tab/units-edit/units-edit.component';
 import { ProfilesEditComponent } from './profiles-tab/profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -63,11 +63,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     RouterModule,
     SharedModule,
-    TranslateModule,
     UnitsFormModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     MatDialogModule,
+    TranslatePipe,
   ],
   declarations: [
     GroupPopupComponent,

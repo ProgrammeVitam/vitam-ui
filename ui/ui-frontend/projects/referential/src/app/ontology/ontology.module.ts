@@ -45,9 +45,9 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { OntologyGroupComponent } from './ontology-group/ontology-group.component';
 import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -61,9 +61,9 @@ import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.co
     OntologyPreviewComponent,
     OntologyRoutingModule,
     RouterModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [OntologyComponent],
 })

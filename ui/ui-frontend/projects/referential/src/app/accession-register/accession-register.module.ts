@@ -62,6 +62,7 @@ import { AccessionRegisterOperationsListComponent } from './accession-register-p
 import { AccessionRegisterPreviewComponent } from './accession-register-preview/accession-register-preview.component';
 import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
 import { AccessionRegisterComponent } from './accession-register.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -87,6 +88,7 @@ import { AccessionRegisterComponent } from './accession-register.component';
     MatDatepickerModule,
     VitamUICommonModule,
     MatRadioModule,
+    TranslatePipe,
   ],
   declarations: [
     AccessionRegisterComponent,

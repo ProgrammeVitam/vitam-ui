@@ -40,7 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
 import { CollapseModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -80,16 +80,7 @@ describe('ExternalParamProfileListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-        ReactiveFormsModule,
-        MatProgressBarModule,
-        CollapseModule,
-        MatButtonToggleModule,
-        VitamUICommonTestModule,
-      ],
+      imports: [ReactiveFormsModule, MatProgressBarModule, CollapseModule, MatButtonToggleModule, VitamUICommonTestModule],
       declarations: [ExternalParamProfileListComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },

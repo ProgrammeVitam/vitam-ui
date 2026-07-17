@@ -40,7 +40,6 @@ import { CreateProfilNoticeComponent } from './create-profil-notice.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProfileService } from '../../core/services/profile.service';
 import { ApplicationService, InputComponent, SelectComponent, SlideToggleComponent } from 'vitamui-library';
-import { TranslateModule } from '@ngx-translate/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileType } from '../../models/profile-type.enum';
@@ -80,7 +79,6 @@ describe('CreateProfilNoticeComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         MatRadioModule,
         InputComponent,
         SelectComponent,

@@ -54,6 +54,7 @@ import { LogbookOperationRoutingModule } from './logbook-operation-routing.modul
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [LogbookOperationComponent, LogbookOperationListComponent, LogbookOperationDetailComponent, LogbookOperationPopupComponent],
@@ -71,6 +72,7 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatFormFieldModule,
     MatInputModule,
     PipesModule,
+    TranslatePipe,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

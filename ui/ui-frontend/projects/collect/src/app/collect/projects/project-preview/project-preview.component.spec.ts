@@ -44,7 +44,6 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   BASE_URL,
   FilingPlanService,
@@ -147,7 +146,6 @@ describe('ProjectPreviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
         ProjectPreviewComponent,
         MatDialogModule,
         VitamUICommonTestModule,

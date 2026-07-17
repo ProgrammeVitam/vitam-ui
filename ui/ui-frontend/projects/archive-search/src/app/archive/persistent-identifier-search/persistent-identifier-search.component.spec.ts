@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL } from 'vitamui-library';
 
@@ -60,13 +60,7 @@ describe('PersistentIdentifierSearchComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PersistentIdentifierSearchComponent],
-      imports: [
-        MatDialogModule,
-        RouterTestingModule,
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-      ],
+      imports: [MatDialogModule, RouterTestingModule],
       providers: [
         {
           provide: BASE_URL,

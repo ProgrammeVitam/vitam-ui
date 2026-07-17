@@ -44,7 +44,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
 import { EllipsisDirectiveModule } from '../../directives/ellipsis/ellipsis.directive.module';
 import { ConfirmDialogModule } from '../common-confirm-dialog/confirm-dialog.module';
 import { EditableEmailInputComponent } from './editable-email-input/editable-email-input.component';
@@ -57,6 +56,7 @@ import { EditableTextareaComponent } from './editable-textarea/editable-textarea
 import { EditableButtonToggleComponent } from './editable-toggle-group/editable-button-toggle.component';
 import { EditableToggleGroupComponent } from './editable-toggle-group/editable-toggle-group.component';
 import { LevelInputModule } from './level-input/level-input.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -72,8 +72,8 @@ import { LevelInputModule } from './level-input/level-input.module';
     LevelInputModule,
     MatInputModule,
     MatFormFieldModule,
-    TranslateModule,
     EllipsisDirectiveModule,
+    TranslatePipe,
   ],
   declarations: [
     EditableFieldComponent,

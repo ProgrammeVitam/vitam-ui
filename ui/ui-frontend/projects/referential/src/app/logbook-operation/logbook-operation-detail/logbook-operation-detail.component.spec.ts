@@ -45,7 +45,6 @@ import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, Logbo
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 
@@ -75,7 +74,6 @@ describe('LogbookOperationDetailComponent', () => {
       imports: [
         InjectorModule,
         RouterTestingModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),

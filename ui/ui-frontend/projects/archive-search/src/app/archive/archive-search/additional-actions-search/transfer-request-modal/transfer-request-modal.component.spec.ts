@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, UsageVersionEnum, WINDOW_LOCATION } from 'vitamui-library';
@@ -75,7 +74,7 @@ describe('TransferRequestModalComponent tests', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TransferRequestModalComponent],
-      imports: [InjectorModule, TranslateModule.forRoot(), MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

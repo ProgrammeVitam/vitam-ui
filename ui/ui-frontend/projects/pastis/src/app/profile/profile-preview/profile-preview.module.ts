@@ -49,6 +49,7 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 import { ProfilePreviewComponent } from './profile-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { ProfilePreviewComponent } from './profile-preview.component';
     MatOptionModule,
     MatTabsModule,
     MatIconModule,
+    TranslatePipe,
   ],
 
   declarations: [ProfilePreviewComponent, ProfileInformationTabComponent],

@@ -41,7 +41,6 @@ import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
@@ -52,6 +51,7 @@ import {
   LoggerModule,
   Project,
   ProjectStatus,
+  TenantSelectionService,
   Transaction,
   TransactionStatus,
   WINDOW_LOCATION,
@@ -60,7 +60,6 @@ import {
 import { CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { ProjectsService } from '../projects.service';
-import { TenantSelectionService } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -162,7 +161,7 @@ describe('CreateProjectComponent', () => {
       declarations: [CreateProjectComponent, MockFileSizePipe],
       teardown: { destroyAfterEach: false },
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [BrowserAnimationsModule, InjectorModule, TranslateModule.forRoot(), MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [BrowserAnimationsModule, InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { IngestService } from '../ingest.service';
 import { IngestListComponent } from './ingest-list.component';
@@ -54,7 +53,7 @@ describe('IngestListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [IngestListComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [{ provide: IngestService, useValue: ingestServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

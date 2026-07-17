@@ -45,9 +45,19 @@ import { SharedModule } from '../../shared/shared.module';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { ProfileDetailComponent } from './profile-detail.component';
 import { ProfilePopupComponent } from './profile-popup.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonModule, RoleToggleModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatMenuModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    RoleToggleModule,
+    TranslatePipe,
+  ],
   declarations: [ProfilePopupComponent, ProfileDetailComponent, InformationTabComponent],
   exports: [ProfileDetailComponent],
 })

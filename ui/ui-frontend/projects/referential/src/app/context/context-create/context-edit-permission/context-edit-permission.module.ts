@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ContextEditPermissionComponent } from './context-edit-permission.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -58,8 +58,8 @@ import { TranslateModule } from '@ngx-translate/core';
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
-    TranslateModule,
     FormsModule,
+    TranslatePipe,
   ],
   declarations: [ContextEditPermissionComponent],
   exports: [ContextEditPermissionComponent],

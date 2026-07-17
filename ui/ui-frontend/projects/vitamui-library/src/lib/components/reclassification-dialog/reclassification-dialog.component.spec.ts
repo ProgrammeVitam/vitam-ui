@@ -37,15 +37,21 @@
 
 import { ReclassificationDialogComponent } from './reclassification-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { BASE_URL, PagedResult, WINDOW_LOCATION } from '../../../app/modules';
+import {
+  BASE_URL,
+  ConfirmDialogService,
+  CriteriaDataType,
+  CriteriaOperator,
+  LoggerModule,
+  PagedResult,
+  SearchCriteriaDto,
+  SearchCriteriaTypeEnum,
+  WINDOW_LOCATION,
+} from '../../../app/modules';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { LoggerModule } from '../../../app/modules';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules';
 import { Observable, of } from 'rxjs';
-import { ConfirmDialogService } from '../../../app/modules';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient } from '@angular/common/http';
@@ -113,7 +119,7 @@ describe('ReclassificationDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TranslateModule.forRoot(), MatSnackBarModule, LoggerModule.forRoot()],
+      imports: [NoopAnimationsModule, MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),

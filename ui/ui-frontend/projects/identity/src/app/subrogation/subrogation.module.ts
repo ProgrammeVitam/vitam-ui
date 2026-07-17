@@ -49,6 +49,7 @@ import { SubrogateUserListComponent } from './subrogate-user/subrogate-user-list
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationRoutingModule } from './subrogation-routing.module';
 import { CustomerSelectComponent } from './customer-select/customer-select.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -63,6 +64,7 @@ import { CustomerSelectComponent } from './customer-select/customer-select.compo
     SharedModule,
     SubrogationRoutingModule,
     VitamUICommonModule,
+    TranslatePipe,
   ],
   declarations: [SubrogateUserListComponent, SubrogateUserComponent],
 })

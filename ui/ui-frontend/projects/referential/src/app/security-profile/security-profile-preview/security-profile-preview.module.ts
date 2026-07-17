@@ -51,6 +51,7 @@ import { SecurityProfileEditPermissionModule } from '../security-profile-create/
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
 import { SecurityProfilePreviewComponent } from './security-profile-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import { SecurityProfilePreviewComponent } from './security-profile-preview.comp
     MatOptionModule,
     MatTabsModule,
     SecurityProfileEditPermissionModule,
+    TranslatePipe,
   ],
   declarations: [SecurityProfilePreviewComponent, SecurityProfileInformationTabComponent, SecurityProfilePermissionsTabComponent],
   exports: [SecurityProfilePreviewComponent],

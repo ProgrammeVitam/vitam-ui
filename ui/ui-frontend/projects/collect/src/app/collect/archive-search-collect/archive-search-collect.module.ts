@@ -73,7 +73,6 @@ import { SimpleCriteriaSearchComponent } from './archive-search-criteria/compone
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-units-metadata.component';
 import { AddUnitsComponent } from './add-units/add-units.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatMenuModule } from '@angular/material/menu';
 import {
   MatCell,
@@ -89,6 +88,7 @@ import {
 } from '@angular/material/table';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -107,7 +107,6 @@ import { MatCheckbox } from '@angular/material/checkbox';
     ReactiveFormsModule,
     SelectComponent,
     SelectWithTreeComponent,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     MatCell,
@@ -122,6 +121,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
     MatRowDef,
     MatMiniFabButton,
     MatCheckbox,
+    TranslatePipe,
   ],
   declarations: [
     ArchivePreviewComponent,

@@ -38,12 +38,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule } from 'vitamui-library';
 import { CustomParamsComponent } from './custom-params.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, TranslateModule, VitamUICommonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonModule, TranslatePipe],
   declarations: [CustomParamsComponent],
   exports: [CustomParamsComponent],
 })

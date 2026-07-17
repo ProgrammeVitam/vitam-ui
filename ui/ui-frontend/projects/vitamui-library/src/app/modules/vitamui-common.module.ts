@@ -40,7 +40,6 @@ import { inject, ModuleWithProviders, NgModule, provideAppInitializer } from '@a
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { first, switchMap } from 'rxjs/operators';
 import { AccountModule } from './account/account.module';
 import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
@@ -110,6 +109,7 @@ import { VitamUIFieldErrorComponent } from './components/vitamui-field-error/vit
 import { ElementsComponent } from './components/elements/elements.component';
 import { EventTypeLabelComponent } from './logbook';
 import { HistoryEventsComponent } from './logbook/history/history-events/history-events.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
@@ -185,7 +185,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TableFilterDirective,
     TableFilterOptionComponent,
     TableFilterSearchComponent,
-    TranslateModule,
     UserPhotoModule,
     VitamUIFieldErrorComponent,
     SnackBarComponent,
@@ -251,7 +250,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TableFilterDirective,
     TableFilterOptionComponent,
     TableFilterSearchComponent,
-    TranslateModule,
     UserPhotoModule,
     VitamUIFieldErrorComponent,
     SnackBarComponent,
@@ -265,6 +263,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiSupHeaderComponent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiTreeNodeComponent,
+    TranslatePipe,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

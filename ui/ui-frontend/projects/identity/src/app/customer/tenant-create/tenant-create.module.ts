@@ -43,8 +43,8 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { TenantCreateComponent } from './tenant-create.component';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -54,9 +54,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     VitamUICommonModule,
     MatOptionModule,
     MatSelectModule,
-    TranslateModule,
     MatDialogModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [TenantCreateComponent],
 })

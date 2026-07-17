@@ -49,6 +49,7 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { MatInputModule } from '@angular/material/input';
 import { AdminDslRoutingModule } from './admin-dsl-routing.module';
 import { AdminDslComponent } from './admin-dsl.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { AdminDslComponent } from './admin-dsl.component';
     RouterModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [AdminDslComponent],
 })

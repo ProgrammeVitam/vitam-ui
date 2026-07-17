@@ -41,9 +41,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'vitamui-library';
 
 import { DomainsInputComponent } from './domains-input.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, VitamUICommonModule, TranslatePipe],
   declarations: [DomainsInputComponent],
   exports: [DomainsInputComponent],
 })

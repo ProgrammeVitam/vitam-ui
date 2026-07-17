@@ -51,6 +51,7 @@ import { CustomerComponent } from './customer.component';
 import { OwnerCreateModule } from './owner-create/owner-create.module';
 import { OwnerPreviewModule } from './owner-preview/owner-preview.module';
 import { TenantCreateModule } from './tenant-create/tenant-create.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { TenantCreateModule } from './tenant-create/tenant-create.module';
     TenantCreateModule,
     MatSidenavModule,
     CustomerRoutingModule,
+    TranslatePipe,
   ],
   declarations: [CustomerComponent, CustomerPopupComponent],
   exports: [],

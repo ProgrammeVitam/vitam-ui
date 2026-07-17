@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { AuthService, BASE_URL, StartupService, SnackBarService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
@@ -52,7 +51,7 @@ describe('FileFormatListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [FileFormatListComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [
         { provide: BASE_URL, useValue: '' },
         FileFormatService,

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef, Input, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,7 +46,6 @@ import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
 import { InformationTabComponent } from './information-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { TranslateModule } from '@ngx-translate/core';
 
 let expectedCustomer: Customer = {
   id: '11',
@@ -197,7 +196,7 @@ describe('Customer InformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [LoggerModule.forRoot(), NoopAnimationsModule, ReactiveFormsModule, TranslateModule.forRoot(), VitamUICommonTestModule],
+      imports: [LoggerModule.forRoot(), NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [InformationTabComponent, TestHostComponent, EditableDomainInputStubComponent, CustomerColorsInputStubComponent],
       providers: [

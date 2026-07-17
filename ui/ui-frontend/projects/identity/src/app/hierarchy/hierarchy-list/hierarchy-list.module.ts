@@ -41,9 +41,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { HierarchyListComponent } from './hierarchy-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, MatProgressSpinnerModule, VitamUICommonModule],
+  imports: [CommonModule, SharedModule, MatProgressSpinnerModule, VitamUICommonModule, TranslatePipe],
   declarations: [HierarchyListComponent],
   exports: [HierarchyListComponent],
 })

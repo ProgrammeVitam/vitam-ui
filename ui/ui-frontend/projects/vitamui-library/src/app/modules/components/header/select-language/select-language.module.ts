@@ -38,12 +38,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { TranslateModule } from '@ngx-translate/core';
 import { ItemSelectModule } from '../item-select/item-select.module';
 import { SelectLanguageComponent } from './select-language.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, MatMenuModule, MatButtonModule, ItemSelectModule, TranslateModule],
+  imports: [CommonModule, MatMenuModule, MatButtonModule, ItemSelectModule, TranslatePipe],
   declarations: [SelectLanguageComponent],
   exports: [SelectLanguageComponent],
 })

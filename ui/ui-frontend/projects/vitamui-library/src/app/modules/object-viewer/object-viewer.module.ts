@@ -37,7 +37,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../pipes/pipes.module';
 import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
@@ -50,9 +49,10 @@ import { PathStrategyDisplayObjectService } from './services/path-strategy-displ
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { DataComponent } from '../components/data/data.component';
 import { AccordionComponent } from '../components/accordion/accordion.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, PipesModule, MatProgressSpinnerModule, AccordionComponent, DataComponent],
+  imports: [CommonModule, PipesModule, MatProgressSpinnerModule, AccordionComponent, DataComponent, TranslatePipe],
   declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
   providers: [
     DisplayObjectHelperService,

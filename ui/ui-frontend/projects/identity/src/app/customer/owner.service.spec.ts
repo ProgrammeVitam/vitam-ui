@@ -41,10 +41,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Type } from '@angular/core';
 import { BASE_URL, Owner, SnackBarService } from 'vitamui-library';
 import { OwnerService } from './owner.service';
-
-import { TranslateService } from '@ngx-translate/core';
-
-import { EMPTY } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedOwner: Owner = {
@@ -77,7 +73,6 @@ describe('OwnerService', () => {
         OwnerService,
         { provide: SnackBarService, useValue: snackBarSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

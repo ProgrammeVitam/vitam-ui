@@ -42,7 +42,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -85,7 +84,6 @@ describe('ManagementContractListComponent', () => {
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        TranslateModule.forRoot(),
         RouterTestingModule,
         LoggerModule.forRoot(),
         BrowserAnimationsModule,

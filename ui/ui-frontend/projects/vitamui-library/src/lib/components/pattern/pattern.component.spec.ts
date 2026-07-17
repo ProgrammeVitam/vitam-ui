@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
@@ -43,7 +43,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { PatternComponent } from './pattern.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { SelectComponent } from '../select/select.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
@@ -81,7 +80,6 @@ describe('PatternComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         VitamUICommonTestModule,
-        TranslateModule.forRoot(),
         PatternComponent,
         SelectComponent,
       ],

@@ -90,7 +90,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy
       criteriaList: this.listOfCriteriaSearch,
       pageNumber: CURRENT_PAGE,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
     this.selectUnitWithInheritedRulesSubscription = this.archiveSearchService
       .selectUnitWithInheritedRules(inheritedRulesCriteriaSearch)

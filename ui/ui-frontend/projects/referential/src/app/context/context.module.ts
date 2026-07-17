@@ -49,6 +49,7 @@ import { ContextPreviewModule } from './context-preview/context-preview.module';
 import { ContextRoutingModule } from './context-routing.module';
 import { ContextComponent } from './context.component';
 import { ContextCreateComponent } from './context-create/context-create.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -63,6 +64,7 @@ import { ContextCreateComponent } from './context-create/context-create.componen
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    TranslatePipe,
   ],
   declarations: [ContextComponent, ContextListComponent],
 })

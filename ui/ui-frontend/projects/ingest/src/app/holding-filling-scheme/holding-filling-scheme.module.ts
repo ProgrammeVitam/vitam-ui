@@ -47,7 +47,7 @@ import { UploadModule } from '../core/common/upload.module';
 import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
 import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -58,10 +58,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatProgressBarModule,
     MatSidenavModule,
     ReactiveFormsModule,
-    TranslateModule,
     UploadModule,
     UploadTrackingModule,
     VitamUICommonModule,
+    TranslatePipe,
   ],
   declarations: [HoldingFillingSchemeComponent],
 })

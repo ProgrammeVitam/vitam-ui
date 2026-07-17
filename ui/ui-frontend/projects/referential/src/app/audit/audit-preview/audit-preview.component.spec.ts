@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, SnackBarService } from 'vitamui-library';
 import { AuditPreviewComponent } from './audit-preview.component';
@@ -77,7 +76,7 @@ describe('AuditPreviewComponent', () => {
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SnackBarService, useValue: snackBarSpy },
       ],
-      imports: [AuditPreviewComponent, LoggerModule.forRoot(), PipesModule, TranslateModule.forRoot()],
+      imports: [AuditPreviewComponent, LoggerModule.forRoot(), PipesModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

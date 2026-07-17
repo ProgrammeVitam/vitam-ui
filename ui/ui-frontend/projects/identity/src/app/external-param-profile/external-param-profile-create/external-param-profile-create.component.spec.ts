@@ -49,7 +49,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { DecimalPipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -89,7 +88,6 @@ describe('ExternalParamProfileCreateComponent', () => {
         MatProgressBarModule,
         MatSelectModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
       ],
       providers: [

@@ -39,6 +39,7 @@ import {
   Component,
   computed,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -49,13 +50,12 @@ import {
   TemplateRef,
   ViewChild,
   ViewChildren,
-  inject,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, combineLatest, firstValueFrom, lastValueFrom, Observable, of, scan } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, mergeMap, share, shareReplay, startWith } from 'rxjs/operators';
 
@@ -88,14 +88,14 @@ import {
   SchemaElement,
   SchemaService,
   SecurityService,
+  SnackBarService,
   TENANT_SEPARATOR,
+  TenantSelectionService,
   Transaction,
   TransactionStatus,
   Unit,
   VitamUICommonModule,
   VitamUILibraryModule,
-  SnackBarService,
-  TenantSelectionService,
   Workflow,
 } from 'vitamui-library';
 import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/create-project.component';
@@ -116,9 +116,9 @@ import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/cre
     NgClass,
     NgTemplateOutlet,
     ReactiveFormsModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
 })
 export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy {

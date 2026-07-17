@@ -49,8 +49,6 @@ import {
 import { environment } from './../../../../environments/environment';
 
 import { Type } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY } from 'rxjs';
 import { IdentityProviderService } from './identity-provider.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -103,7 +101,6 @@ describe('IdentityProviderService', () => {
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],

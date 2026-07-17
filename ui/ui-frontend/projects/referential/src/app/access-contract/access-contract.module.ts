@@ -52,6 +52,7 @@ import { AccessContractPreviewModule } from './access-contract-preview/access-co
 import { AccessContractRoutingModule } from './access-contract-routing.module';
 import { AccessContractComponent } from './access-contract.component';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { AccessContractCreateComponent } from './access-contract-create/access-c
     AccessContractCreateComponent,
     AccessContractPreviewModule,
     ImportDialogModule,
+    TranslatePipe,
   ],
   declarations: [AccessContractComponent, AccessContractListComponent],
 })

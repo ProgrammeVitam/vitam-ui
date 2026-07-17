@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -52,13 +52,13 @@ import {
 import { OntologyService } from '../../ontology.service';
 import { collections, sizes, types } from '../../ontology-form-options';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-information-tab',
   templateUrl: './ontology-information-tab.component.html',
   styleUrls: ['./ontology-information-tab.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class OntologyInformationTabComponent {
   private formBuilder = inject(FormBuilder);

@@ -82,7 +82,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { PastisMaterialModule } from '../material.module';
 import { UserActionsModule } from '../user-actions/user-actions.module';
@@ -93,6 +92,7 @@ import { FilterByStringNamePipe } from './list-profile/pipes/filterByStringName.
 import { FilterByTypePipe } from './list-profile/pipes/filterByType.pipe';
 import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
 import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/pastis-generic-popup.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -107,11 +107,11 @@ import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/past
     ProfilePreviewModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     UserActionsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     PastisGenericPopupComponent,
+    TranslatePipe,
   ],
   exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
   declarations: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationId } from '../../application-id.enum';
 import { ApplicationService } from '../../application.service';
@@ -43,14 +43,13 @@ import { Logger } from '../../logger/logger';
 import { Application } from '../../models/application/application.interface';
 import { BreadCrumbData } from '../../models/breadcrumb/breadcrumb.interface';
 import { StartupService } from '../../startup.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamuiBreadcrumbComponent } from './vitamui-breadcrumb/vitamui-breadcrumb.component';
 
 @Component({
   selector: 'vitamui-title-breadcrumb',
   templateUrl: './vitamui-title-breadcrumb.component.html',
   styleUrls: ['./vitamui-title-breadcrumb.component.scss'],
-  imports: [TranslateModule, VitamuiBreadcrumbComponent],
+  imports: [VitamuiBreadcrumbComponent],
 })
 export class VitamuiTitleBreadcrumbComponent {
   location = inject(Location);

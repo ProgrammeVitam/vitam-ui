@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -46,12 +46,14 @@ import {
   Option,
   PersistentIdentifierPolicy,
   PersistentIdentifierPolicyTypeEnum,
+  VitamUICommonModule,
+  VitamUILibraryModule,
 } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -63,7 +65,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { PersistentIdentifierPoliciesFormModule } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.module';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 @Component({
   selector: 'app-management-contract-create',
   templateUrl: './management-contract-create.component.html',
@@ -81,9 +82,9 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
     PersistentIdentifierPoliciesFormModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
 })
 export class ManagementContractCreateComponent implements OnInit, OnDestroy {

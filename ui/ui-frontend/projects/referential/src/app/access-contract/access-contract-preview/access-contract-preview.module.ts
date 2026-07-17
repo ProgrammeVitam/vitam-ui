@@ -56,9 +56,9 @@ import { AccessContractPreviewComponent } from './access-contract-preview.compon
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab/access-contract-authorizations-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { TranslateModule } from '@ngx-translate/core';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-tab/access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -78,9 +78,9 @@ import { MatRadioModule } from '@angular/material/radio';
     ReactiveFormsModule,
     RouterModule,
     SelectComponent,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [
     AccessContractPreviewComponent,

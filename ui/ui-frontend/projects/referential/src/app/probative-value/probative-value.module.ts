@@ -56,6 +56,7 @@ import { PipesModule } from '../shared/pipes/pipes.module';
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ProbativeValueComponent, ProbativeValueListComponent],
@@ -77,6 +78,7 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
     MatFormFieldModule,
     MatInputModule,
     PipesModule,
+    TranslatePipe,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

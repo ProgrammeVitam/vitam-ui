@@ -40,7 +40,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of, throwError } from 'rxjs';
 import type { Mock, MockInstance } from 'vitest';
 import { BASE_URL, LoggerModule, PreservationScenario, PreservationScenariosService, SnackBarService } from 'vitamui-library';
@@ -80,7 +79,7 @@ describe('PreservationScenarioListComponent', () => {
     snackBarService = { open: vi.fn() };
 
     await TestBed.configureTestingModule({
-      imports: [PreservationScenarioListComponent, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [PreservationScenarioListComponent, LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),

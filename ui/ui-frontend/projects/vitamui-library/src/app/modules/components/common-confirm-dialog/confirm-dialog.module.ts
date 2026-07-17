@@ -37,15 +37,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 import { CommonConfirmDialogComponent } from './common-confirm-dialog.component';
 import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [CommonConfirmDialogComponent, ClosePopupDialogComponent],
-  imports: [CommonModule, MatDialogModule, TranslateModule, DialogHeaderComponent],
+  imports: [CommonModule, MatDialogModule, DialogHeaderComponent, TranslatePipe],
   exports: [CommonConfirmDialogComponent, ClosePopupDialogComponent],
 })
 export class ConfirmDialogModule {}

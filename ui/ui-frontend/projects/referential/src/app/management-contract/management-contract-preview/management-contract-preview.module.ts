@@ -52,6 +52,7 @@ import { ManagementContractIdentificationTabComponent } from './management-contr
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { ManagementContractStorageTabComponent } from './management-contract-sto
     MatOptionModule,
     MatTabsModule,
     PersistentIdentifierFormModule,
+    TranslatePipe,
   ],
   declarations: [
     ManagementContractPreviewComponent,

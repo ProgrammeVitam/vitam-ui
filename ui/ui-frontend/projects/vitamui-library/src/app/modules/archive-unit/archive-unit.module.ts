@@ -39,7 +39,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
 import { ObjectEditorModule } from '../object-editor/object-editor.module';
 import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
 import { PipesModule } from '../pipes/pipes.module';
@@ -50,11 +49,11 @@ import { EditorBannerComponent } from './components/archive-unit-editor/componen
 import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
 import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
 import { CommonTooltipModule } from '../components/common-tooltip/common-tooltip.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    TranslateModule,
     PipesModule,
     ReactiveFormsModule,
     MatSelectModule,
@@ -62,6 +61,7 @@ import { CommonTooltipModule } from '../components/common-tooltip/common-tooltip
     ObjectViewerModule,
     ObjectEditorModule,
     CommonTooltipModule,
+    TranslatePipe,
   ],
   providers: [ArchiveUnitEditorService],
   declarations: [

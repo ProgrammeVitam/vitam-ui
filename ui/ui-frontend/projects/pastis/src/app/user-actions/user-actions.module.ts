@@ -88,7 +88,6 @@ import { UserActionsDownloadDocComponent } from './download-doc/download-doc.com
 import { DuplicateMetadataComponent } from './duplicate-metadata/duplicate-metadata.component';
 import { UserActionSaveProfileComponent } from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 @NgModule({
@@ -111,7 +110,6 @@ import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/past
     PastisMaterialModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     VitamUILibraryModule,
     PastisGenericPopupComponent,
   ],

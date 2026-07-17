@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SaveProfilePopupComponent } from './save-profile-popup.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { ApplicationService, InputComponent, SelectComponent, SlideToggleComponent } from 'vitamui-library';
 import { ProfileService } from '../../core/services/profile.service';
@@ -93,7 +92,6 @@ describe('SaveProfilePopupComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         MatRadioModule,
         InputComponent,
         SelectComponent,

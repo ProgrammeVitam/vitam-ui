@@ -75,13 +75,13 @@ import { Component, Input } from '@angular/core';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogModule } from '../../../app/modules';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
   styleUrls: ['./confirm-action.component.scss'],
-  imports: [MatDialogModule, ConfirmDialogModule, TranslateModule],
+  imports: [MatDialogModule, ConfirmDialogModule, TranslatePipe],
 })
 export class ConfirmActionComponent {
   // delete or changeTab

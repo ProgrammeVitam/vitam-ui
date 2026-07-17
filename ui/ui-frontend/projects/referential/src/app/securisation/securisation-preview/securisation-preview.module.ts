@@ -50,6 +50,7 @@ import { SecurisationCheckTabComponent } from './securisation-check-tab/securisa
 import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { PipesModule } from '../../shared/pipes/pipes.module';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SecurisationPreviewComponent, SecurisationInformationTabComponent, SecurisationCheckTabComponent],
@@ -68,6 +69,7 @@ import { PipesModule } from '../../shared/pipes/pipes.module';
     MatOptionModule,
     MatTabsModule,
     PipesModule,
+    TranslatePipe,
   ],
   exports: [SecurisationPreviewComponent],
 })

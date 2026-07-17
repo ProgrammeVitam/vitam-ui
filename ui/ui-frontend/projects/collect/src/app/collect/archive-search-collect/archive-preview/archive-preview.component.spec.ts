@@ -44,7 +44,6 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   BASE_URL,
@@ -104,7 +103,6 @@ describe('ArchivePreviewComponent', () => {
         RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot(),
       ],
       declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [

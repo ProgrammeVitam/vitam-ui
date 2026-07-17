@@ -39,7 +39,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, LoggerModule, ObjectQualifierType, VitamuiMissingTranslationHandler } from 'vitamui-library';
 import { FoundObjectModalComponent } from './found-object-modal.component';
@@ -69,19 +69,7 @@ describe('ErrorResponseModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FoundObjectModalComponent],
-      imports: [
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        TranslateModule.forRoot({
-          missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-          defaultLanguage: 'fr',
-          loader: {
-            provide: TranslateLoader,
-            useClass: FakeTranslateLoader,
-            deps: [HttpBackend],
-          },
-        }),
-      ],
+      imports: [LoggerModule.forRoot(), RouterTestingModule],
       providers: [
         {
           provide: MatDialogRef,

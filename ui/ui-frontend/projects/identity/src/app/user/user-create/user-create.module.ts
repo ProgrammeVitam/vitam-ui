@@ -45,8 +45,8 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../group-attribution/group-attribution.module';
 import { UserCreateComponent } from './user-create.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -58,10 +58,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSelectModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     MatDialogModule,
+    TranslatePipe,
   ],
   declarations: [UserCreateComponent],
 })

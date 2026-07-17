@@ -46,8 +46,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { FileFormatCreateComponent } from './file-format-create.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -61,9 +61,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     SelectComponent,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [FileFormatCreateComponent],
 })

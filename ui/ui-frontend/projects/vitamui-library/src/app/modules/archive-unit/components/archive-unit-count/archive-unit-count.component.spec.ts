@@ -40,7 +40,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, SimpleChange } from '@angular
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
 import { LoggerModule } from '../../../logger';
 import { VitamuiMissingTranslationHandler } from '../../../missing-translation-handler';
@@ -77,20 +77,7 @@ describe('ArchiveUnitCountComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ArchiveUnitCountComponent, PluralPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      imports: [
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-          defaultLanguage: 'fr',
-          loader: {
-            provide: TranslateLoader,
-            useClass: FakeTranslateLoader,
-            deps: [HttpBackend],
-          },
-        }),
-        MatProgressSpinnerModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [LoggerModule.forRoot(), MatProgressSpinnerModule, LoggerModule.forRoot()],
       providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });

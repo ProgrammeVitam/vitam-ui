@@ -41,7 +41,6 @@ import { AccessContractService, BASE_URL, ExternalParameters, ExternalParameters
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SecurisationCheckTabComponent', () => {
@@ -109,7 +108,7 @@ describe('SecurisationCheckTabComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SecurisationCheckTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },

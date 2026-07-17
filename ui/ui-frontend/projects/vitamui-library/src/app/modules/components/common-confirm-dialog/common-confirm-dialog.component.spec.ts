@@ -37,7 +37,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { CommonConfirmDialogComponent } from './common-confirm-dialog.component';
@@ -48,7 +47,7 @@ describe('CommonConfirmDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, VitamUICommonTestModule, TranslateModule.forRoot()],
+      imports: [MatDialogModule, VitamUICommonTestModule],
       declarations: [CommonConfirmDialogComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

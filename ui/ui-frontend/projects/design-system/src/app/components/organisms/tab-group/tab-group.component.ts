@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, WritableSignal } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NumberInput } from '@angular/cdk/coercion';
 import { NgTemplateOutlet } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './tab-group.component.html',
   styleUrls: ['./tab-group.component.scss'],
-  imports: [MatTabsModule, TranslateModule, NgTemplateOutlet],
+  imports: [MatTabsModule, NgTemplateOutlet, TranslatePipe],
 })
 export class TabGroupComponent {
   tabIndex: NumberInput | WritableSignal<NumberInput>;

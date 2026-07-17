@@ -37,7 +37,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 
@@ -47,7 +46,7 @@ describe('ClosePopupDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, TranslateModule.forRoot()],
+      imports: [VitamUICommonTestModule],
       declarations: [ClosePopupDialogComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],

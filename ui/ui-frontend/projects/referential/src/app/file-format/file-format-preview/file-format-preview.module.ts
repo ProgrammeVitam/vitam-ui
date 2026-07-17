@@ -49,6 +49,7 @@ import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vita
 
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
 import { FileFormatPreviewComponent } from './file-format-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -66,6 +67,7 @@ import { FileFormatPreviewComponent } from './file-format-preview.component';
     SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [FileFormatPreviewComponent, FileFormatInformationTabComponent],
   exports: [FileFormatPreviewComponent],

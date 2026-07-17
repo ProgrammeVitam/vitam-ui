@@ -54,8 +54,8 @@ import { ThresholdsTabComponent } from './external-param-profile-detail/threshol
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
 import { ExternalParamProfileRoutingModule } from './external-param-profile-routing.module';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -74,9 +74,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     RoleToggleModule,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [
     ExternalParamProfileComponent,

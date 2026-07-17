@@ -38,8 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
-import { TranslateService } from '@ngx-translate/core';
-
 import { EMPTY } from 'rxjs';
 import { VitamUICommonTestModule } from '../../../../testing/src';
 
@@ -71,7 +69,6 @@ describe('SubrogationService', () => {
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

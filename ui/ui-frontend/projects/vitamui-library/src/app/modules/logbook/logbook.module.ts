@@ -36,13 +36,12 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { HistoryModule } from './history/history.module';
 import { EventTypeLabelComponent } from './event-type-label/event-type-label.component';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, HistoryModule, EventTypeLabelComponent, TranslateModule],
+  imports: [CommonModule, HistoryModule, EventTypeLabelComponent],
   exports: [HistoryModule],
 })
 export class LogbookModule {}

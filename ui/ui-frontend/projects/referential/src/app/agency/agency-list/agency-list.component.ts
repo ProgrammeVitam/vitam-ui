@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
@@ -57,6 +57,7 @@ import { AgencyCreateModule } from '../agency-create';
 import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -64,7 +65,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
   styleUrls: ['./agency-list.component.scss'],
-  imports: [AgencyCreateModule, ImportDialogModule, MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule],
+  imports: [AgencyCreateModule, ImportDialogModule, MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule, TranslatePipe],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   agencyService: AgencyService;

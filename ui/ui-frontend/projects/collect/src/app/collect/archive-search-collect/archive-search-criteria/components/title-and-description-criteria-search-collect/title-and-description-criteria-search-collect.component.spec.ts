@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule } from 'vitamui-library';
 
@@ -70,15 +70,7 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TitleAndDescriptionCriteriaSearchCollectComponent],
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-        RouterTestingModule,
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         FormBuilder,

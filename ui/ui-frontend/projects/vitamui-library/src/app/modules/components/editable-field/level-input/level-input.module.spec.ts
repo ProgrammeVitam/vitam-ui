@@ -34,20 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TranslateModule } from '@ngx-translate/core';
 import { LevelInputModule } from './level-input.module';
 
 describe('LevelInputComponent', () => {
   let levelInputModule: LevelInputModule;
-  let translateModule: TranslateModule;
 
   beforeEach(() => {
     levelInputModule = new LevelInputModule();
-    translateModule = new TranslateModule();
   });
 
   it('should create', () => {
     expect(levelInputModule).toBeTruthy();
-    expect(translateModule).toBeTruthy();
   });
 });

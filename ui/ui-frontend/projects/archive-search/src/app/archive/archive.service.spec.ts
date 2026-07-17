@@ -40,11 +40,11 @@ import { ArchiveService } from './archive.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BASE_URL, LoggerModule, Unit } from 'vitamui-library';
-import { TranslateModule } from '@ngx-translate/core';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { vi } from 'vitest';
-const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 import { of } from 'rxjs';
+
+const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 
 describe('ArchiveService', () => {
   let service: ArchiveService;
@@ -52,7 +52,7 @@ describe('ArchiveService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [LoggerModule.forRoot(), TranslateModule.forRoot()],
+      imports: [LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),

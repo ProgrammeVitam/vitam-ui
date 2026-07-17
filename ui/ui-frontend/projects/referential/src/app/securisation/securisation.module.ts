@@ -54,6 +54,7 @@ import { SecurisationListModule } from './securisation-list/securisation-list.mo
 import { SecurisationPreviewModule } from './securisation-preview/securisation-preview.module';
 import { SecurisationRoutingModule } from './securisation-routing.module';
 import { SecurisationComponent } from './securisation.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -73,6 +74,7 @@ import { SecurisationComponent } from './securisation.component';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
+    TranslatePipe,
   ],
   declarations: [SecurisationComponent],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],

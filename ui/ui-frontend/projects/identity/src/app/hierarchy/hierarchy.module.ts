@@ -48,6 +48,7 @@ import { HierarchyDetailModule } from './hierarchy-detail/hierarchy-detail.modul
 import { HierarchyListModule } from './hierarchy-list/hierarchy-list.module';
 import { HierarchyRoutingModule } from './hierarchy-routing.module';
 import { HierarchyComponent } from './hierarchy.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -62,6 +63,7 @@ import { HierarchyComponent } from './hierarchy.component';
     ReactiveFormsModule,
     MatSidenavModule,
     HierarchyRoutingModule,
+    TranslatePipe,
   ],
   declarations: [HierarchyComponent],
 })

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { ApplicationId } from '../../application-id.enum';
@@ -43,13 +43,13 @@ import { Tenant } from '../../models';
 import { MenuOption } from '../../models/menu-option.interface';
 
 import { TenantSelectContentComponent } from './tenant-select-content/tenant-select-content.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-tenant-select',
   templateUrl: './vitamui-tenant-select.component.html',
   styleUrls: ['./vitamui-tenant-select.component.scss'],
-  imports: [RouterModule, TenantSelectContentComponent, TranslateModule],
+  imports: [RouterModule, TenantSelectContentComponent, TranslatePipe],
 })
 export class VitamUITenantSelectComponent implements OnInit {
   private route = inject(ActivatedRoute);

@@ -51,6 +51,7 @@ import { IngestContractPreviewModule } from './ingest-contract-preview/ingest-co
 import { IngestContractRoutingModule } from './ingest-contract-routing.module';
 import { IngestContractComponent } from './ingest-contract.component';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [IngestContractComponent, IngestContractListComponent],
@@ -69,6 +70,7 @@ import { IngestContractCreateComponent } from './ingest-contract-create/ingest-c
     IngestContractPreviewModule,
     IngestContractCreateComponent,
     ImportDialogModule,
+    TranslatePipe,
   ],
 })
 export class IngestContractModule {}

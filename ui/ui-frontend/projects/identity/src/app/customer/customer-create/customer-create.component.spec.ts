@@ -56,7 +56,6 @@ import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
@@ -242,7 +241,6 @@ describe('CustomerCreateComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
       ],
       providers: [

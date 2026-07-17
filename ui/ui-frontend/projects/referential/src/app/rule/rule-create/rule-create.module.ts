@@ -46,8 +46,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { RuleCreateComponent } from './rule-create.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -60,9 +60,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSelectModule,
     ReactiveFormsModule,
     VitamUICommonModule,
-    TranslateModule,
     MatDialogModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [RuleCreateComponent],
 })

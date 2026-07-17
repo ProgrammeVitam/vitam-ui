@@ -37,7 +37,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { OperationsResults } from '../../models/operation-response.interface';
@@ -116,7 +115,7 @@ describe('LogbookManagementOperationListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationListComponent, MockTruncatePipe],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [TranslateModule.forRoot(), VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule],
       providers: [
         {
           provide: LogbookManagementOperationService,

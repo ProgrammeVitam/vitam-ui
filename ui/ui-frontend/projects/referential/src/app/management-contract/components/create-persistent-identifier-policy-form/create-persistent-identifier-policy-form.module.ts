@@ -47,6 +47,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CreatePersistentIdentifierPolicyFormComponent } from './create-persistent-identifier-policy-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [CreatePersistentIdentifierPolicyFormComponent],
@@ -64,6 +65,7 @@ import { CreatePersistentIdentifierPolicyFormComponent } from './create-persiste
     MatRadioModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   exports: [CreatePersistentIdentifierPolicyFormComponent],
 })

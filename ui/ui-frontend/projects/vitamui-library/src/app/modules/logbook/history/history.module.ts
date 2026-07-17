@@ -37,7 +37,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
 
 import { CollapseModule } from '../../components/collapse/collapse.module';
 import { PipesModule } from '../../pipes/pipes.module';
@@ -51,7 +50,6 @@ import { EventTypeLabelComponent } from '../event-type-label/event-type-label.co
     CollapseModule,
     MatProgressSpinnerModule,
     EventTypeLabelComponent,
-    TranslateModule,
     PipesModule,
     OperationHistoryTabComponent,
     MultiOperationHistoryTabComponent,

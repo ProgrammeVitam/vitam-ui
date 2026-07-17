@@ -36,7 +36,6 @@
  */
 
 import { Component, inject } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
@@ -48,17 +47,18 @@ import {
   SnackBarService,
 } from 'vitamui-library';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './import-griffin-dialog.component.html',
   imports: [
     DialogHeaderComponent,
-    TranslateModule,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
     FileSelectorComponent,
     ReactiveFormsModule,
+    TranslatePipe,
   ],
 })
 export class ImportGriffinDialogComponent {

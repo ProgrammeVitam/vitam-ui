@@ -51,7 +51,7 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -61,7 +61,6 @@ import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';
 import { UserInfoTabComponent } from './user-information-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { TranslateModule } from '@ngx-translate/core';
 
 let expectedUser: User = {
   id: 'idUser',
@@ -297,14 +296,7 @@ describe('UserInfoTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        LoggerModule.forRoot(),
-        MatButtonToggleModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot(),
-        VitamUICommonTestModule,
-      ],
+      imports: [LoggerModule.forRoot(), MatButtonToggleModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
       declarations: [UserInfoTabComponent, TestHostComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

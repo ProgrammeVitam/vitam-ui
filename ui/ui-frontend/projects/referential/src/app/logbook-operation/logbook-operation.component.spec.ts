@@ -45,7 +45,6 @@ import { DatepickerComponent, ENVIRONMENT, GlobalEventService, InjectorModule, L
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
-import { TranslateModule } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -59,15 +58,7 @@ describe('LogbookOperationComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatMenuModule,
-        DatepickerComponent,
-        ReactiveFormsModule,
-        SearchBarComponent,
-        TranslateModule.forRoot(),
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot(), MatMenuModule, DatepickerComponent, ReactiveFormsModule, SearchBarComponent],
       declarations: [LogbookOperationComponent],
       providers: [
         provideNativeDateAdapter(),

@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { SchemaElement, VitamUILibraryModule, Collection, SchemaService } from 'vitamui-library';
+import { Collection, SchemaElement, SchemaService, VitamUILibraryModule } from 'vitamui-library';
 import { SchemaInformationTabComponent } from './schema-information-tab.component';
 import { of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -45,7 +45,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SchemaInformationTabComponent', () => {
@@ -87,7 +86,6 @@ describe('SchemaInformationTabComponent', () => {
         MatSelectModule,
         NoopAnimationsModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],

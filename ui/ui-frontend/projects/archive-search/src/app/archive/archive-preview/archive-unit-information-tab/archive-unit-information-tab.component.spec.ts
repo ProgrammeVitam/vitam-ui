@@ -47,7 +47,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
@@ -140,7 +139,6 @@ describe('ArchiveUnitInformationTabComponent', () => {
         RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
-        TranslateModule.forRoot(),
         DataComponent,
         PipesModule,
       ],

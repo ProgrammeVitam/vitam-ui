@@ -37,7 +37,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { IngestContract } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractPreviewComponent } from './ingest-contract-preview.component';
@@ -75,7 +74,7 @@ describe('IngestContractPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [IngestContractPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },

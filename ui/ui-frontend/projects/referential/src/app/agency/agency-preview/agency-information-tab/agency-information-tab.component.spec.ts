@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { SecurityService, AgencyService } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab.component';
@@ -54,7 +53,7 @@ describe('AgencyInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       providers: [
         FormBuilder,
         { provide: AgencyService, useValue: {} },

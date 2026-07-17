@@ -40,7 +40,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ContextService } from '../context.service';
 import { ContextPreviewComponent } from './context-preview.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('ContextPreviewComponent', () => {
   let component: ContextPreviewComponent;
@@ -48,7 +47,7 @@ describe('ContextPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [ContextPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },

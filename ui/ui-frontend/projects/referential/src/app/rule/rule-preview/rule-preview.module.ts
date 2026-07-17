@@ -49,6 +49,7 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 import { RulePreviewComponent } from './rule-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ import { RulePreviewComponent } from './rule-preview.component';
     MatSelectModule,
     MatOptionModule,
     MatTabsModule,
+    TranslatePipe,
   ],
   declarations: [RulePreviewComponent, RuleInformationTabComponent],
   exports: [RulePreviewComponent],

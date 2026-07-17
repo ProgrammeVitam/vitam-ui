@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { RuleService } from 'vitamui-library';
 import { RulePreviewComponent } from './rule-preview.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('RulePreviewComponent', () => {
   let component: RulePreviewComponent;
@@ -47,7 +46,7 @@ describe('RulePreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [RulePreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },

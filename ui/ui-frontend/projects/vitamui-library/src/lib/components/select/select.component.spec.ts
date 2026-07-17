@@ -42,7 +42,6 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { TranslateModule } from '@ngx-translate/core';
 import { input } from '../../../../testing/src';
 
 const placeholder = 'test';
@@ -93,7 +92,7 @@ describe('SelectComponent', () => {
   ) {
     return async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TranslateModule.forRoot(), TestHostComponent],
+        imports: [NoopAnimationsModule, TestHostComponent],
       }).compileComponents();
 
       hostFixture = TestBed.createComponent(TestHostComponent);
@@ -368,7 +367,7 @@ describe('SelectComponent', () => {
   describe('regression test for bug (Referential fields appear empty in edit mode despite a saved value)', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TranslateModule.forRoot(), TestHostComponent],
+        imports: [NoopAnimationsModule, TestHostComponent],
       }).compileComponents();
 
       hostFixture = TestBed.createComponent(TestHostComponent);

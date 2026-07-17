@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
@@ -46,7 +45,7 @@ describe('EventTypeLabelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EventTypeLabelComponent, VitamUICommonTestModule, TranslateModule.forRoot()],
+      imports: [EventTypeLabelComponent, VitamUICommonTestModule],
     }).compileComponents();
   });
 

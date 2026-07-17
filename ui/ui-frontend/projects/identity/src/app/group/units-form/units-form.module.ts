@@ -42,9 +42,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { VitamUICommonModule } from 'vitamui-library';
 import { UnitsFormComponent } from './units-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, CommonModule, ReactiveFormsModule, MatSelectModule, VitamUICommonModule],
+  imports: [CommonModule, CommonModule, ReactiveFormsModule, MatSelectModule, VitamUICommonModule, TranslatePipe],
   declarations: [UnitsFormComponent],
   exports: [UnitsFormComponent],
 })

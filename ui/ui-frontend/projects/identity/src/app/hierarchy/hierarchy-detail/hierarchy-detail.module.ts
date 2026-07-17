@@ -44,9 +44,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';
 import { HierarchyPopupComponent } from './hierarchy-popup.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonModule],
+  imports: [CommonModule, SharedModule, MatMenuModule, MatTabsModule, ReactiveFormsModule, VitamUICommonModule, TranslatePipe],
   declarations: [HierarchyPopupComponent, HierarchyDetailComponent, InformationTabComponent],
   exports: [HierarchyDetailComponent],
 })

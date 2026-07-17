@@ -38,7 +38,7 @@
 import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform, TemplateRef } from '@angular/core';
 import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
 import { CdkStepper } from '@angular/cdk/stepper';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-tenant-select',
@@ -448,7 +448,8 @@ const components = [
 
 @NgModule({
   declarations: components,
-  imports: [TranslateModule.forRoot()],
-  exports: [...components, TranslateModule],
+  imports: [],
+  exports: [...components],
+  providers: [provideTranslateService({ fallbackLang: 'fr' })],
 })
 export class VitamUICommonTestModule {}

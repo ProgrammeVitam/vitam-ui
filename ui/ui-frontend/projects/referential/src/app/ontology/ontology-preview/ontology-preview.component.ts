@@ -39,12 +39,12 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  inject,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
@@ -55,6 +55,7 @@ import { OntologyInformationTabComponent } from './ontology-information-tab/onto
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchemaInformationTabComponent } from './schema-information-tab/schema-information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ontology-preview',
@@ -68,6 +69,7 @@ import { SchemaInformationTabComponent } from './schema-information-tab/schema-i
     SchemaInformationTabComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
 })
 export class OntologyPreviewComponent implements AfterViewInit, OnChanges {

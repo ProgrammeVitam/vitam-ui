@@ -40,7 +40,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatPreviewComponent } from './file-format-preview.component';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('FileFormatPreviewComponent', () => {
   let component: FileFormatPreviewComponent;
@@ -48,7 +47,7 @@ describe('FileFormatPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [FileFormatPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },

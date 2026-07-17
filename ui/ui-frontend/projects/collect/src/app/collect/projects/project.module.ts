@@ -54,7 +54,7 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
 import { ProjectRoutingModule } from './project-routing.module';
 import { ProjectsComponent } from './projects.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -73,9 +73,9 @@ import { TranslateModule } from '@ngx-translate/core';
     ProjectPreviewComponent,
     ProjectRoutingModule,
     ReactiveFormsModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent],
 })

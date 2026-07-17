@@ -48,7 +48,7 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupCreateComponent } from './group-create.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -61,10 +61,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelectModule,
     ReactiveFormsModule,
     SharedModule,
-    TranslateModule,
     UnitsFormModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [GroupCreateComponent],
 })

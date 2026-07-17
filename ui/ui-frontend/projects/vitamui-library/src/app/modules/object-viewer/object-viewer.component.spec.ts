@@ -39,7 +39,7 @@ import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { customTemplate } from '../archive-unit/archive-unit-template';
 import { BASE_URL } from '../injection-tokens';
@@ -93,18 +93,7 @@ describe('ObjectViewerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent, EmptyPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [
-        TranslateModule.forRoot({
-          missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
-          defaultLanguage: 'fr',
-          loader: {
-            provide: TranslateLoader,
-            useClass: FakeTranslateLoader,
-            deps: [HttpBackend],
-          },
-        }),
-        LoggerModule.forRoot(),
-      ],
+      imports: [LoggerModule.forRoot()],
       providers: [
         DataStructureService,
         TypeService,

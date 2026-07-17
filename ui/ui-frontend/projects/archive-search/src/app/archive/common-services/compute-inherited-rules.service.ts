@@ -82,7 +82,7 @@ export class ComputeInheritedRulesService {
       criteriaList: listOfUACriteriaSearch,
       pageNumber: currentPage,
       size: PAGE_SIZE,
-      language: this.translateService.currentLang,
+      language: this.translateService.getCurrentLang(),
     };
 
     this.archiveService.searchArchiveUnitsByCriteria(computedInheritedRulesSearchCriteria).subscribe((response) => {
@@ -110,7 +110,7 @@ export class ComputeInheritedRulesService {
               ),
               pageNumber: currentPage,
               size: PAGE_SIZE,
-              language: this.translateService.currentLang,
+              language: this.translateService.getCurrentLang(),
             };
             this.archiveService.launchComputedInheritedRules(computedInheritedRulesDSLQuery).subscribe((operationId) => {
               this.snackBarService.open({

@@ -47,8 +47,8 @@ import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vit
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionModule } from '../../user/group-attribution/group-attribution.module';
 import { ProfileCreateComponent } from './profile-create.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -63,10 +63,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     ReactiveFormsModule,
     RoleToggleModule,
     SharedModule,
-    TranslateModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     MatDialogModule,
+    TranslatePipe,
   ],
   declarations: [ProfileCreateComponent],
 })

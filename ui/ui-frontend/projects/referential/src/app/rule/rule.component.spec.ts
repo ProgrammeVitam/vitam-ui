@@ -63,7 +63,6 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
@@ -134,7 +133,6 @@ describe('RuleComponent', () => {
         MatSidenavModule,
         MatDialogModule,
         InjectorModule,
-        TranslateModule.forRoot(),
         LoggerModule.forRoot(),
       ],
       providers: [

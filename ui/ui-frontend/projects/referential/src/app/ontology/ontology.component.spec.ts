@@ -40,12 +40,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SecurityService, SchemaService } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SchemaService, SecurityService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { OntologyService } from './ontology.service';
+
 @Component({
   selector: 'app-ontology-preview',
   template: '',
@@ -75,7 +75,6 @@ describe('OntologyComponent', () => {
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
-        TranslateModule.forRoot(),
         InjectorModule,
         LoggerModule.forRoot(),
         NoopAnimationsModule,

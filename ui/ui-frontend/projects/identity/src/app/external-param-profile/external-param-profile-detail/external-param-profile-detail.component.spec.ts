@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of, Subject } from 'rxjs';
 import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
@@ -78,15 +78,7 @@ describe('ExternalParamProfilDetailComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [TestHostComponent, ExternalParamProfileDetailComponent, InformationTabStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-        MatMenuModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        LoggerModule.forRoot(),
-      ],
+      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot()],
       providers: [
         { provide: ExternalParamProfileService, useValue: { updated: new Subject() } },
         { provide: AuthService, useValue: authServiceMock },

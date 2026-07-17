@@ -37,7 +37,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import {
   AccessContract,
@@ -93,7 +92,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()],
+      imports: [],
       declarations: [ArchiveUnitObjectsDetailsTabComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceSpy },

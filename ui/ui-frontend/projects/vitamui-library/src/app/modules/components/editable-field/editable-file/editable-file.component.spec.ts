@@ -37,13 +37,12 @@
 /* eslint-disable no-magic-numbers */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { WINDOW_LOCATION } from '../../../injection-tokens';
@@ -97,7 +96,6 @@ describe('EditableFileComponent', () => {
         NoopAnimationsModule,
         OverlayModule,
         ReactiveFormsModule,
-        TranslateModule.forRoot(),
         VitamUIFieldErrorComponent,
       ],
       providers: [

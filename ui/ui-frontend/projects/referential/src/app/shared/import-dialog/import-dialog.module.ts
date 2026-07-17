@@ -37,13 +37,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ImportDialogComponent } from './import-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, VitamUICommonModule, TranslateModule, MatProgressSpinnerModule, MatDialogModule, VitamUILibraryModule],
+  imports: [CommonModule, VitamUICommonModule, MatProgressSpinnerModule, MatDialogModule, VitamUILibraryModule, TranslatePipe],
   declarations: [ImportDialogComponent],
 })
 export class ImportDialogModule {}

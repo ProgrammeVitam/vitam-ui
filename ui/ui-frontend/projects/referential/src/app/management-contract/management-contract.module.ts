@@ -49,6 +49,7 @@ import { ManagementContractPreviewModule } from './management-contract-preview/m
 import { ManagementContractRoutingModule } from './management-contract-routing.module';
 import { ManagementContractComponent } from './management-contract.component';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ManagementContractComponent, ManagementContractListComponent],
@@ -66,6 +67,7 @@ import { ManagementContractCreateComponent } from './management-contract-create/
     ManagementContractRoutingModule,
     ManagementContractPreviewModule,
     ManagementContractCreateComponent,
+    TranslatePipe,
   ],
 })
 export class ManagementContractModule {}

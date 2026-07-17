@@ -41,7 +41,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import {
   AccessContractService,
@@ -106,7 +105,6 @@ describe('IngestContractCreateComponent', () => {
         NoopAnimationsModule,
         VitamUICommonTestModule,
         LoggerModule.forRoot(),
-        TranslateModule.forRoot(),
         MatButtonToggleModule,
       ],
       providers: [

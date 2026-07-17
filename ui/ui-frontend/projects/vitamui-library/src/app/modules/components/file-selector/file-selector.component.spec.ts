@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileSelectorComponent } from './file-selector.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 import { LoggerModule } from '../../logger';
 import { CustomFile } from '../../../../lib/models/custom-file';
@@ -60,7 +59,7 @@ describe('FileSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHostComponent, FileSelectorComponent, TranslateModule.forRoot(), PipesModule, LoggerModule.forRoot()],
+      imports: [TestHostComponent, FileSelectorComponent, PipesModule, LoggerModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);

@@ -37,14 +37,12 @@
 import { Component, inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { SnackBarData, SnackBarUrlButton } from './snack-bar.interface';
-
-import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @Component({
   templateUrl: './snack-bar.component.html',
   styleUrls: ['./snack-bar.component.scss'],
-  imports: [TranslateModule, PipesModule],
+  imports: [PipesModule],
 })
 export class SnackBarComponent {
   data = inject<SnackBarData<SnackBarUrlButton>>(MAT_SNACK_BAR_DATA);

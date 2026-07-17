@@ -522,7 +522,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           criteriaList: this.listOfUACriteriaSearch,
           pageNumber: 0,
           size: selectedItems,
-          language: this.translateService.currentLang,
+          language: this.translateService.getCurrentLang(),
           tenantIdentifier: this.tenantIdentifier,
         };
         const dialogRef = this.dialog.open(ReclassificationDialogComponent, {
@@ -1289,7 +1289,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         pageNumber: this.currentPage,
         size: PAGE_SIZE,
         sortingCriteria,
-        language: this.translateService.currentLang,
+        language: this.translateService.getCurrentLang(),
       };
       this.archiveUnitCollectService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.transaction.id);
     }

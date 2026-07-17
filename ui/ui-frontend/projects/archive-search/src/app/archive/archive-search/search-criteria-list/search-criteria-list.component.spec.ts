@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import {
   CriteriaDataType,
@@ -95,14 +95,7 @@ describe('SearchCriteriaListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        InjectorModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader },
-        }),
-        RouterTestingModule,
-      ],
+      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
       declarations: [SearchCriteriaListComponent, MockTruncatePipe],
       providers: [
         ArchiveSharedDataService,
