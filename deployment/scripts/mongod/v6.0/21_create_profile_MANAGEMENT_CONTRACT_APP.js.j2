@@ -39,15 +39,6 @@ dbIam.sequences.updateOne(
 var profileMgtContractId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-MANAGEMENT_CONTRACT_APP-ADMIN";
 
 dbIam.groups.updateOne(
-    { "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363" },
-    {
-        $addToSet: {
-            "profileIds": profileMgtContractId
-        }
-    }
-);
-
-dbIam.groups.updateOne(
     { "_id": "admin_group" },
     {
         $addToSet: {
