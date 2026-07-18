@@ -1,9 +1,5 @@
-print("START 60_update_cas_create_user_email_customerid_index");
-
-db = db.getSiblingDB('iam');
-
 //Create a new index base on user email with userId for multi domain feature
-db.users.createIndex(
+dbIam.users.createIndex(
     {
         "email": 1,
         "customerId": 1
@@ -13,5 +9,3 @@ db.users.createIndex(
         "name": "idx_user_email_customerid"
     }
 )
-
-print("END 60_update_cas_create_user_email_customerid_index");

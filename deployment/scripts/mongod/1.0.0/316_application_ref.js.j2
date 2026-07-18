@@ -1,27 +1,21 @@
-db = db.getSiblingDB('iam')
-
-print("START 316_application_ref.js");
-
-// -------- VITAM ADMINISTRATION -----
-
-db.applications.insertOne({
-    "identifier" : "EXTERNAL_PARAM_PROFILE_APP",
-{% if vitamui.ui_identity.base_url is defined %}
-    "url": "{{ vitamui.ui_identity.base_url }}/externalparamprofile",
-    "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*",
-{% else %}
-    "url": "{{ url_prefix }}/identity/externalparamprofile",
-    "serviceId": "^{{ url_prefix }}/identity/.*",
-{% endif %}
-    "icon": "vitamui-icon vitamui-icon-archive",
-    "name": "Profil APP Paramétrages externes",
-    "category": "organization_and_user_rights",
-    "position": NumberInt(10),
-    "hasCustomerList": false,
-    "hasTenantList": false,
-    "hasHighlight": false,
-    "tooltip": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes",
-    "target": "_self"
-});
-
-print("END 316_application_ref.js");
+dbIam.applications.insertOne(
+    {
+        "identifier": "EXTERNAL_PARAM_PROFILE_APP",
+    {% if vitamui.ui_identity.base_url is defined %}
+        "url": "{{ vitamui.ui_identity.base_url }}/externalparamprofile",
+        "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*",
+    {% else %}
+        "url": "{{ url_prefix }}/identity/externalparamprofile",
+        "serviceId": "^{{ url_prefix }}/identity/.*",
+    {% endif %}
+        "icon": "vitamui-icon vitamui-icon-archive",
+        "name": "Profil APP Paramétrages externes",
+        "category": "organization_and_user_rights",
+        "position": NumberInt(10),
+        "hasCustomerList": false,
+        "hasTenantList": false,
+        "hasHighlight": false,
+        "tooltip": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes",
+        "target": "_self"
+    }
+);

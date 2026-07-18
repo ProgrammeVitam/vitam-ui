@@ -1,27 +1,21 @@
-db = db.getSiblingDB('iam')
-
-print("START 221_pastis_application_ref.js");
-
-// -------- VITAM ADMINISTRATION -----
-
-db.applications.insertOne({
-    "identifier" : "PASTIS_APP",
-{% if vitamui.ui_pastis.base_url is defined %}
-    "url": "{{ vitamui.ui_pastis.base_url }}/pastis",
-    "serviceId": "^{{ vitamui.ui_pastis.base_url }}/.*",
-{% else %}
-    "url": "{{ url_prefix }}/pastis/pastis",
-    "serviceId": "^{{ url_prefix }}/pastis/.*",
-{% endif %}
-    "icon" : "vitamui-icon vitamui-icon-ontologie",
-    "name" : "Profils Documentaires",
-    "category" : "referential",
-    "position": NumberInt(1),
-    "hasCustomerList" : false,
-    "hasTenantList" : true,
-    "hasHighlight" : false,
-    "tooltip" : "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique",
-    "target" : "_self",
-});
-
-print("END 221_pastis_application_ref.js");
+dbIam.applications.insertOne(
+    {
+        "identifier": "PASTIS_APP",
+    {% if vitamui.ui_pastis.base_url is defined %}
+        "url": "{{ vitamui.ui_pastis.base_url }}/pastis",
+        "serviceId": "^{{ vitamui.ui_pastis.base_url }}/.*",
+    {% else %}
+        "url": "{{ url_prefix }}/pastis/pastis",
+        "serviceId": "^{{ url_prefix }}/pastis/.*",
+    {% endif %}
+        "icon": "vitamui-icon vitamui-icon-ontologie",
+        "name": "Profils Documentaires",
+        "category": "referential",
+        "position": NumberInt(1),
+        "hasCustomerList": false,
+        "hasTenantList": true,
+        "hasHighlight": false,
+        "tooltip": "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique",
+        "target": "_self",
+    }
+);

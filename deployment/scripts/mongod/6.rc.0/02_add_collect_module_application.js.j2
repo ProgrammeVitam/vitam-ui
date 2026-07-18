@@ -1,36 +1,32 @@
-db = db.getSiblingDB('iam')
-
-print("START 6.rc.0/02_add_collect_module_application.js");
-
 //============================ CREATE COLLECT APP ==============================
-
-db.applications.insertOne({
-    "identifier" : "COLLECT_APP",
-{% if vitamui.ui_collect.base_url is defined %}
-    "url": "{{ vitamui.ui_collect.base_url }}/collect",
-    "serviceId": "^{{ vitamui.ui_collect.base_url }}/.*",
-{% else %}
-    "url": "{{ url_prefix }}/collect/collect",
-    "serviceId": "^{{ url_prefix }}/collect/.*",
-{% endif %}
-    "icon": "vitamui-icon vitamui-icon-archive-ingest",
-    "name": "Collecte et préparation des versements",
-    "category": "ingest_and_consultation",
-    "position": NumberInt(10),
-    "hasCustomerList": false,
-    "hasTenantList": true,
-    "hasHighlight": false,
-    "tooltip": "Collecte de données, Application de préparation de versements",
-    "target": "_self"
-});
+dbIam.applications.insertOne(
+    {
+        "identifier": "COLLECT_APP",
+    {% if vitamui.ui_collect.base_url is defined %}
+        "url": "{{ vitamui.ui_collect.base_url }}/collect",
+        "serviceId": "^{{ vitamui.ui_collect.base_url }}/.*",
+    {% else %}
+        "url": "{{ url_prefix }}/collect/collect",
+        "serviceId": "^{{ url_prefix }}/collect/.*",
+    {% endif %}
+        "icon": "vitamui-icon vitamui-icon-archive-ingest",
+        "name": "Collecte et préparation des versements",
+        "category": "ingest_and_consultation",
+        "position": NumberInt(10),
+        "hasCustomerList": false,
+        "hasTenantList": true,
+        "hasHighlight": false,
+        "tooltip": "Collecte de données, Application de préparation de versements",
+        "target": "_self"
+    }
+);
 
 //=================== CREATE PROFILES FOR EXISTING CUSTOMERS ===================
+var lastIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
-var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+dbIam.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
-
-    db.profiles.insertOne({
+    dbIam.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-COLLECT_APP-ARCHIVISTE",
         "identifier": NumberInt(lastIdProfile++),
         "name": "Collect Profile",
@@ -42,71 +38,68 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
         "readonly": false,
         "customerId": tenant.customerId,
         "roles": [
-            {"name": "ROLE_GET_FILLING_PLAN_ACCESS"},
-            {"name": "ROLE_GET_PROJECTS"},
-            {"name": "ROLE_CREATE_PROJECTS"},
-            {"name": "ROLE_UPDATE_PROJECTS"},
-            {"name": "ROLE_GET_ACCESS_CONTRACTS"},
-            {"name": "ROLE_GET_RULES"},
-            {"name": "ROLE_GET_ARCHIVE_SEARCH"}
+            { "name": "ROLE_GET_FILLING_PLAN_ACCESS" },
+            { "name": "ROLE_GET_PROJECTS" },
+            { "name": "ROLE_CREATE_PROJECTS" },
+            { "name": "ROLE_UPDATE_PROJECTS" },
+            { "name": "ROLE_GET_ACCESS_CONTRACTS" },
+            { "name": "ROLE_GET_RULES" },
+            { "name": "ROLE_GET_ARCHIVE_SEARCH" }
         ]
     });
 
 });
 
 // Update sequence
-db.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-    $set: {
-        "sequence": NumberInt(lastIdProfile)
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(lastIdProfile)
+        }
     }
-});
+);
 
 //============================ UPDATE ADMIN GROUPS =============================
-
 var profileCollectAppAdminId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ARCHIVISTE";
 
 // Update admin & super_admin group
-
-db.groups.updateOne(
+dbIam.groups.updateOne(
     {
         "_id": "admin_group",
         "profileIds": { $nin: [ profileCollectAppAdminId ] }
     },
     {
-        $addToSet: { "profileIds": profileCollectAppAdminId }
+        $addToSet: {
+            "profileIds": profileCollectAppAdminId
+        }
     },
-    {
-        "upsert": false
-    }
+    { "upsert": false }
 );
 
-db.groups.updateOne(
+dbIam.groups.updateOne(
     {
         "_id": "super_admin_group",
         "profileIds": { $nin: [ profileCollectAppAdminId ] }
     },
     {
-        $addToSet: { "profileIds": profileCollectAppAdminId }
+        $addToSet: {
+            "profileIds": profileCollectAppAdminId
+        }
     },
-    {
-        "upsert": false
-    }
+    { "upsert": false }
 );
 
 // Update demo group
-db.groups.updateOne(
+dbIam.groups.updateOne(
     {
         "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363",
         "profileIds": { $nin: [ profileCollectAppAdminId ] }
     },
     {
-        $addToSet: { "profileIds": profileCollectAppAdminId }
+        $addToSet: {
+            "profileIds": profileCollectAppAdminId
+        }
     },
-    {
-        "upsert": false
-    }
+    { "upsert": false }
 );
-
-print("END 6.rc.0/02_add_collect_module_application.js");

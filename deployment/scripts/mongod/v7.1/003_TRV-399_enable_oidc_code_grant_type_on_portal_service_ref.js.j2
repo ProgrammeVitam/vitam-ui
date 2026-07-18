@@ -1,25 +1,20 @@
+dbCas.services.deleteOne({ "_id": NumberInt(1) });
 
-db = db.getSiblingDB("cas");
-
-print("START 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
-
-db.services.deleteOne({ "_id": NumberInt(1) });
-
-db.services.insertOne({
-  _id: NumberInt(1),
-  _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "{{ vitamui.ui_portal.clientId | default('portal') }}",
-  serviceId: "{{ vitamui.ui_portal.serviceId | default('^' + vitamui.ui_portal.base_url | default(url_prefix) + '/.*') }}",
-  name: "{{ vitamui.ui_portal.name | default('Portal Application') }}",
-  bypassApprovalPrompt: true,
-  supportedGrantTypes: ["authorization_code"],
-  supportedResponseTypes: ["code", "token"],
-  attributeReleasePolicy: {
-    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    allowedAttributes: ["authtoken"],
-  },
-  evaluationOrder: 10000,
-  jsonFormat: true,
-});
-
-print("END 003_TRV-399_enable_oidc_code_grant_type_on_portal_service_ref.js");
+dbCas.services.insertOne(
+    {
+        "_id": NumberInt(1),
+        "_class": "org.apereo.cas.services.OidcRegisteredService",
+        "clientId": "{{ vitamui.ui_portal.clientId | default('portal') }}",
+        "serviceId": "{{ vitamui.ui_portal.serviceId | default('^' + vitamui.ui_portal.base_url | default(url_prefix) + '/.*') }}",
+        "name": "{{ vitamui.ui_portal.name | default('Portal Application') }}",
+        "bypassApprovalPrompt": true,
+        "supportedGrantTypes": ["authorization_code"],
+        "supportedResponseTypes": ["code", "token"],
+        "attributeReleasePolicy": {
+            "_class": "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+            "allowedAttributes": ["authtoken"],
+        },
+        "evaluationOrder": 10000,
+        "jsonFormat": true
+    }
+);

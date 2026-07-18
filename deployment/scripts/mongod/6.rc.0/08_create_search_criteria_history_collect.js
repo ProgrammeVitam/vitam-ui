@@ -1,8 +1,2 @@
-db = db.getSiblingDB('{{ mongodb.archivesearch.db }}')
-
-print("START 08_create_search_criteria_history_collect.js");
-
-db.searchCriteriaHistoriesCollect.deleteMany({});
-db.createCollection('searchCriteriaHistoriesCollect', {autoIndexId: true});
-
-print("END 08_create_search_criteria_history_collect.js");
+dbArchiveSearch.searchCriteriaHistoriesCollect.deleteMany({});
+dbArchiveSearch.createCollection('searchCriteriaHistoriesCollect', { autoIndexId: true });

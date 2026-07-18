@@ -1,24 +1,17 @@
+dbCas.services.deleteOne({ "_id": NumberInt(6) });
 
-db = db.getSiblingDB("cas");
-
-print("START 039_enable_oidc_code_grant_type_on_archive_search_service_ref.js.j2");
-
-db.services.deleteOne({ "_id": NumberInt(6) });
-
-db.services.insertOne({
-  _id: NumberInt(6),
-  _class: "org.apereo.cas.services.OidcRegisteredService",
-  clientId: "{{ vitamui.ui_archive_search.clientId | default('archive-search') }}",
-  serviceId: "{{ vitamui.ui_archive_search.serviceId | default('^' + vitamui.ui_archive_search.base_url | default(url_prefix+'/archive-search') + '/.*') }}",
-  name: "{{ vitamui.ui_archive_search.name | default('Archive Search Application') }}",
-  bypassApprovalPrompt: true,
-  supportedGrantTypes: ["authorization_code"],
-  supportedResponseTypes: ["code", "token"],
-  attributeReleasePolicy: {
-    _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
-    allowedAttributes: ["authtoken"],
-  },
-  jsonFormat: true,
+dbCas.services.insertOne({
+    _id: NumberInt(6),
+    _class: "org.apereo.cas.services.OidcRegisteredService",
+    clientId: "{{ vitamui.ui_archive_search.clientId | default('archive-search') }}",
+    serviceId: "{{ vitamui.ui_archive_search.serviceId | default('^' + vitamui.ui_archive_search.base_url | default(url_prefix+'/archive-search') + '/.*') }}",
+    name: "{{ vitamui.ui_archive_search.name | default('Archive Search Application') }}",
+    bypassApprovalPrompt: true,
+    supportedGrantTypes: ["authorization_code"],
+    supportedResponseTypes: ["code", "token"],
+    attributeReleasePolicy: {
+        _class: "org.apereo.cas.services.ReturnAllowedAttributeReleasePolicy",
+        allowedAttributes: ["authtoken"],
+    },
+    jsonFormat: true
 });
-
-print("END 039_enable_oidc_code_grant_type_on_archive_search_service_ref.js.j2");

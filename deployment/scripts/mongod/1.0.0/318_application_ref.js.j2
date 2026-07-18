@@ -1,27 +1,21 @@
-db = db.getSiblingDB('iam')
-
-print("START 318_application_ref.js");
-
-// -------- VITAM ADMINISTRATION -----
-
-db.applications.insertOne({
-    "identifier" : "ACCESSION_REGISTER_APP",
-{% if vitamui.ui_referential.base_url is defined %}
-    "url": "{{ vitamui.ui_referential.base_url }}/accession-register",
-    "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*",
-{% else %}
-    "url": "{{ url_prefix }}/referential/accession-register",
-    "serviceId": "^{{ url_prefix }}/referential/.*",
-{% endif %}
-    "icon" : "vitamui-icon vitamui-icon-rules",
-    "name" : "Registre des fonds",
-    "category" : "ingest_and_consultation",
-    "position" : NumberInt(88),
-    "hasCustomerList" : false,
-    "hasTenantList" : true,
-    "hasHighlight" : false,
-    "tooltip" : "Visualisation de l'ensemble des données du registre des fonds",
-    "target" : "_self"
-});
-
-print("END 318_application_ref.js");
+dbIam.applications.insertOne(
+    {
+        "identifier": "ACCESSION_REGISTER_APP",
+    {% if vitamui.ui_referential.base_url is defined %}
+        "url": "{{ vitamui.ui_referential.base_url }}/accession-register",
+        "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*",
+    {% else %}
+        "url": "{{ url_prefix }}/referential/accession-register",
+        "serviceId": "^{{ url_prefix }}/referential/.*",
+    {% endif %}
+        "icon": "vitamui-icon vitamui-icon-rules",
+        "name": "Registre des fonds",
+        "category": "ingest_and_consultation",
+        "position": NumberInt(88),
+        "hasCustomerList": false,
+        "hasTenantList": true,
+        "hasHighlight": false,
+        "tooltip": "Visualisation de l'ensemble des données du registre des fonds",
+        "target": "_self"
+    }
+);

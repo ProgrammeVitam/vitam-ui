@@ -1,10 +1,7 @@
-// Switch to versioning database
-db = db.getSiblingDB('{{ mongodb.versioning.db }}')
-
 // Create versioning user
 
-if (! db.getUser("{{ mongodb.versioning.user }}")) {
-    db.createUser(
+if (! dbVersioning.getUser("{{ mongodb.versioning.user }}")) {
+    dbVersioning.createUser(
         {
             user: "{{ mongodb.versioning.user }}",
             pwd: "{{ mongodb.versioning.password }}",
@@ -13,7 +10,7 @@ if (! db.getUser("{{ mongodb.versioning.user }}")) {
     )
 }
 else {
-    db.updateUser(
+    dbVersioning.updateUser(
         "{{ mongodb.versioning.user }}",
         {
             pwd: "{{ mongodb.versioning.password }}",

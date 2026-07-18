@@ -1,18 +1,13 @@
-dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
-dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
-
-print("START v9.0.1-03_projects_update_role_granularity");
-
 // First, rename "Profile Service producteur" to "Service producteur" for homogeneity
 dbIam.profiles.updateOne(
     { name: "Profile Service producteur" },
-    { $set : { name: "Service producteur" } }
+    { $set: { name: "Service producteur" } }
 );
 
 // Then, delete old "ROLE_UPDATE_PROJECTS" role
 dbIam.profiles.updateMany(
     {
-         $or: [
+        $or: [
             { name: { $regex: "^Archiviste - Administrateur" } },
             { name: { $regex: "^Archiviste - gestion et collecte" } },
             { name: { $regex: "^Service producteur" } }
@@ -24,7 +19,6 @@ dbIam.profiles.updateMany(
         }
     }
 );
-
 
 // Finally, add new projects roles on Archiviste - Administrateur
 dbIam.profiles.updateMany(
@@ -99,5 +93,3 @@ dbSecurity.contexts.updateOne(
         }
     }
 );
-
-print("END v9.0.1-03_projects_update_role_granularity");

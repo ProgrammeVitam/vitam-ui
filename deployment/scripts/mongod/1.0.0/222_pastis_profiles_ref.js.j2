@@ -1,48 +1,33 @@
-db = db.getSiblingDB('iam')
+var maxIdProfile = dbIam.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
-print("START 222_pastis_profiles_ref.js");
-
-// -------- VITAM ADMINISTRATION -----
-
-var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
-
-db.profiles.insertOne({
-  "_id": "system_pastis",
-  "identifier" : NumberInt(maxIdProfile++),
-  "name": "Pastis-Gestion des profils documentaires",
-  "description": "Pastis-Gestion des profils documentaires",
-  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "PASTIS_APP",
-  "level": "",
-  "enabled": true,
-  "readonly": false,
-  "customerId": "system_customer",
-  "roles": [
-  {
-                 "name": "ROLE_GET_ARCHIVE_PROFILES_UNIT"
-             },
-             {
-                 "name": "ROLE_UPDATE_ARCHIVE_PROFILES_UNIT"
-             },
-             {
-                 "name": "ROLE_CREATE_ARCHIVE_PROFILES_UNIT"
-             },
-              {
-                  "name": "ROLE_IMPORT_ARCHIVE_PROFILES_UNIT"
-              },
-            {
-                "name": "ROLE_DELETE_ARCHIVE_PROFILES_UNIT"
-            }
-   ]
-});
+dbIam.profiles.insertOne(
+    {
+        "_id": "system_pastis",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Pastis-Gestion des profils documentaires",
+        "description": "Pastis-Gestion des profils documentaires",
+        "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+        "applicationName": "PASTIS_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": "system_customer",
+        "roles": [
+            { "name": "ROLE_GET_ARCHIVE_PROFILES_UNIT" },
+            { "name": "ROLE_UPDATE_ARCHIVE_PROFILES_UNIT" },
+            { "name": "ROLE_CREATE_ARCHIVE_PROFILES_UNIT" },
+            { "name": "ROLE_IMPORT_ARCHIVE_PROFILES_UNIT" },
+            { "name": "ROLE_DELETE_ARCHIVE_PROFILES_UNIT" }
+        ]
+    }
+);
 
 
-db.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-	$set: {
-		"sequence": NumberInt(maxIdProfile)
-	}
-});
-
-print("END 222_pastis_profiles_ref.js");
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(maxIdProfile)
+        }
+    }
+);

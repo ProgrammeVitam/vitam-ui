@@ -1,42 +1,57 @@
-db = db.getSiblingDB("cas");
-
-print("START v9.0.0-05_update_applications_serviceId.js");
-
 // Update every serviceId, making sure the regex is escaped ("." should be "\\." to prevent matching incorrect URLs, like for example https://sub-domain.com/ instead of https://sub.domain.com/)
-db.services.updateOne({ "_id": NumberInt(1) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_portal.serviceId | default('^' + vitamui.ui_portal.base_url | default(url_prefix) | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+dbCas.services.updateOne(
+    { "_id": NumberInt(1) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_portal.serviceId | default('^' + vitamui.ui_portal.base_url | default(url_prefix) | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-db.services.updateOne({ "_id": NumberInt(2) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_identity.serviceId | default('^' + vitamui.ui_identity.base_url | default(url_prefix+'/identity') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+);
+dbCas.services.updateOne(
+    { "_id": NumberInt(2) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_identity.serviceId | default('^' + vitamui.ui_identity.base_url | default(url_prefix + '/identity') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-db.services.updateOne({ "_id": NumberInt(4) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_referential.serviceId | default('^' + vitamui.ui_referential.base_url | default(url_prefix+'/referential') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+);
+dbCas.services.updateOne(
+    { "_id": NumberInt(4) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_referential.serviceId | default('^' + vitamui.ui_referential.base_url | default(url_prefix + '/referential') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-db.services.updateOne({ "_id": NumberInt(5) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_ingest.serviceId | default('^' + vitamui.ui_ingest.base_url | default(url_prefix+'/ingest') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+);
+dbCas.services.updateOne(
+    { "_id": NumberInt(5) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_ingest.serviceId | default('^' + vitamui.ui_ingest.base_url | default(url_prefix + '/ingest') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-db.services.updateOne({ "_id": NumberInt(6) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_archive_search.serviceId | default('^' + vitamui.ui_archive_search.base_url | default(url_prefix+'/archive-search') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+);
+dbCas.services.updateOne(
+    { "_id": NumberInt(6) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_archive_search.serviceId | default('^' + vitamui.ui_archive_search.base_url | default(url_prefix + '/archive-search') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-db.services.updateOne({ "_id": NumberInt(7) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_collect.serviceId | default('^' + vitamui.ui_collect.base_url | default(url_prefix+'/collect') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+);
+dbCas.services.updateOne(
+    { "_id": NumberInt(7) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_collect.serviceId | default('^' + vitamui.ui_collect.base_url | default(url_prefix + '/collect') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-db.services.updateOne({ "_id": NumberInt(8) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_pastis.serviceId | default('^' + vitamui.ui_pastis.base_url | default(url_prefix+'/pastis') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+);
+dbCas.services.updateOne(
+    { "_id": NumberInt(8) },
+    {
+        $set: {
+            "serviceId": "{{ vitamui.ui_pastis.serviceId | default('^' + vitamui.ui_pastis.base_url | default(url_prefix + '/pastis') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-
-print("END v9.0.0-05_update_applications_serviceId.js");
+);

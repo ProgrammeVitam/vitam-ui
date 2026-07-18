@@ -1,11 +1,7 @@
-print("START v8.1.3-00_reduce_generic_admins_roles.js");
-
-db = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}');
-
 // For each customer (except system_customer)
-db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (customer) {
+dbIam.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (customer) {
 
-    var genericAdmin = db.getCollection('users').findOne({
+    var genericAdmin = dbIam.getCollection('users').findOne({
         type: 'GENERIC',
         email: {
             $regex: '^admin@',
@@ -20,7 +16,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         );
     }
 
-    var currentGroupForGenericAdmin = db.getCollection('groups').findOne({
+    var currentGroupForGenericAdmin = dbIam.getCollection('groups').findOne({
         _id: genericAdmin.groupId
     });
 
@@ -41,7 +37,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
     }
 
     // Update full admin group to make it read-only
-    db.groups.updateOne(
+    dbIam.groups.updateOne(
         {
             _id: currentGroupForGenericAdmin._id
         },
@@ -60,10 +56,10 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         // Not yet updated for this customer
 
         // Get current sequence for profiles
-        var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+        var maxIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
         // Find the proof tenant (created by default with the customer)
-        var proofTenant = db.getCollection('tenants').findOne({
+        var proofTenant = dbIam.getCollection('tenants').findOne({
             customerId: customer._id,
             proof: true
         });
@@ -71,7 +67,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         // CREATE NEW PROFILES FOR APPLICATIONS:
         // USERS_APP, ACCOUNTS_APP, GROUPS_APP, PROFILES_APP, HIERARCHY_PROFILE_APP
 
-        db.profiles.insertOne({
+        dbIam.profiles.insertOne({
             "_id": "PROFIL_" + proofTenant.identifier + "-USERS_APP_PROFILE_GENERIC_ADMIN",
             "identifier": NumberInt(++maxIdProfile),
             "name": "Profil restreint pour la gestion des utilisateurs " + proofTenant.identifier,
@@ -98,7 +94,7 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
 
         // Find existing profiles in admin group for applications:
         // ACCOUNTS_APP, GROUPS_APP, PROFILES_APP, HIERARCHY_PROFILE_APP
-        var matchingProfileIds = db.profiles.find(
+        var matchingProfileIds = dbIam.profiles.find(
             {
                 _id: {
                     $in: currentGroupForGenericAdmin.profileIds
@@ -125,11 +121,11 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         );
 
         // Get current sequence for groups
-        var maxIdGroup = db.getCollection('sequences').findOne({
+        var maxIdGroup = dbIam.getCollection('sequences').findOne({
             _id: 'group_identifier'
         }).sequence;
 
-        db.groups.insertOne({
+        dbIam.groups.insertOne({
             _id: "RESTRICTED_ADMIN_GROUP_" + proofTenant.identifier,
             name: "RESTRICTED_ADMIN_GROUP " + customer.code,
             readonly: true,
@@ -140,10 +136,8 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         });
 
         // Update generic admin group
-        db.users.updateOne(
-            {
-                _id: genericAdmin._id
-            },
+        dbIam.users.updateOne(
+            { _id: genericAdmin._id },
             {
                 $set: {
                     groupId: "RESTRICTED_ADMIN_GROUP_" + proofTenant.identifier
@@ -152,27 +146,21 @@ db.customers.find({ "_id": { $ne: "system_customer" } }).forEach(function (custo
         );
 
         // Update sequences
-        db.sequences.updateOne(
-            {
-                _id: "group_identifier"
-            },
+        dbIam.sequences.updateOne(
+            { _id: "group_identifier" },
             {
                 $set: {
                     sequence: NumberInt(maxIdGroup)
                 }
             }
         );
-         db.sequences.updateOne(
-                    {
-                        _id: "profile_identifier"
-                    },
-                    {
-                        $set: {
-                            sequence: NumberInt(maxIdProfile)
-                        }
-                    }
-                );
+        dbIam.sequences.updateOne(
+            { _id: "profile_identifier" },
+            {
+                $set: {
+                    sequence: NumberInt(maxIdProfile)
+                }
+            }
+        );
     }
 });
-
-print("END v8.1.3-00_reduce_generic_admins_roles.js");

@@ -1,14 +1,9 @@
-db = db.getSiblingDB('iam')
-
-print("START 35_add_consult_ingest_contract_profil.js");
-
 // Create new profile CONSULTATION for INGEST_APP
+var lastIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
-var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+dbIam.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
-
-    db.profiles.insertOne({
+    dbIam.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-INGEST_APP-CONSULTATION",
         "identifier": NumberInt(lastIdProfile++),
         "name": "Profil pour la consultation des contrats d'entrée",
@@ -38,12 +33,11 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 });
 
 // Update sequence
-db.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-    $set: {
-        "sequence": NumberInt(lastIdProfile)
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(lastIdProfile)
+        }
     }
-});
-
-print("END 35_add_consult_ingest_contract_profil.js");
+);

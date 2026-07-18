@@ -1,18 +1,9 @@
-db = db.getSiblingDB("iam");
-
-print("START_40_update_application_file_format_app_ref_to_be_multi_tenant.js");
-
 // =============== REFERENTIAL : FILE_FORMATS_APP ==========
-
-db.applications.updateOne(
-  {
-    identifier: "FILE_FORMATS_APP",
-  },
-  {
-    $set: {
-      hasTenantList: true,
-    },
-  }
+dbIam.applications.updateOne(
+    { "identifier": "FILE_FORMATS_APP" },
+    {
+        $set: {
+            "hasTenantList": true
+        }
+    }
 );
-
-print("END_40_update_application_file_format_app_ref_to_be_multi_tenant.js");

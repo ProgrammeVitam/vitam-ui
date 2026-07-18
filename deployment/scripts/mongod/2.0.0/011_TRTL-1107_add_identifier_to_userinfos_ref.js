@@ -1,33 +1,31 @@
-db = db.getSiblingDB('iam')
+dbIam.sequences.insertOne(
+    {
+        "_id": "user_infos_identifier",
+        "name": "userInfosIdentifier",
+        "sequence": NumberInt(100)
+    }
+);
 
-print("START 011_TRTL-1107_add_identifier_to_userinfos_ref");
+var maxIdentifier = dbIam.getCollection('sequences').findOne({ '_id': 'user_infos_identifier' }).sequence;
 
-db.sequences.insertOne({
-    "_id": "user_infos_identifier",
-    "name": "userInfosIdentifier",
-    "sequence": NumberInt(100)
-});
+dbIam.userInfos.find({ identifier: { $eq: null } }).forEach(userInfos => {
 
-var maxIdentifier = db.getCollection('sequences').findOne({'_id': 'user_infos_identifier'}).sequence;
-
-db.userInfos.find({identifier: {$eq: null}}).forEach(userInfos => {
-
-    var result = db.userInfos.updateOne(
-        {_id: userInfos._id},
+    dbIam.userInfos.updateOne(
+        { "_id": userInfos._id },
         {
-            "$set": {"identifier": NumberInt(maxIdentifier+1)},
+            $set: {
+                "identifier": NumberInt(maxIdentifier + 1)
+            }
         }
     );
     maxIdentifier++;
 });
 
-db.sequences.updateOne({
-    "_id": "user_infos_identifier"
-  }, {
-  $set: {
-    "sequence": NumberInt(maxIdentifier)
-  }
-});
-
-print("END 011_TRTL-1107_add_identifier_to_userinfos_ref");
-
+dbIam.sequences.updateOne(
+    { "_id": "user_infos_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(maxIdentifier)
+        }
+    }
+);

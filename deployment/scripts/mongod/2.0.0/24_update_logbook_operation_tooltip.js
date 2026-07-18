@@ -1,14 +1,8 @@
-db = db.getSiblingDB('iam')
-
-print("START_24_update_logbook_operation_tooltip.js");
-
-db.applications.updateOne({
-      "identifier" : "LOGBOOK_MANAGEMENT_OPERATION_APP"},
-{
-     $set : {
-         "tooltip": "Consulter et gérer l'ensemble des opérations qui sont en cours"
-},
-
-});
-
-print("END_24_update_logbook_operation_tooltip.js");
+dbIam.applications.updateOne(
+    { "identifier": "LOGBOOK_MANAGEMENT_OPERATION_APP" },
+    {
+        $set: {
+            "tooltip": "Consulter et gérer l'ensemble des opérations qui sont en cours"
+        },
+    }
+);

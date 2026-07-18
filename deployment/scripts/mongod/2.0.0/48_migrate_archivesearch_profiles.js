@@ -1,9 +1,5 @@
-db = db.getSiblingDB('iam');
-
-print("START 48_migrate_archivesearch_profiles.js");
-
 //======== MIGRATE OLD PROFILES FOR APP ARCHIVE_SEARCH_MANAGEMENT_APP ========//
-db.groups.aggregate([
+dbIam.groups.aggregate([
     {
         $lookup: {
             from: "profiles",
@@ -25,17 +21,17 @@ db.groups.aggregate([
             print("Original group: " + JSON.stringify(fullGroup));
 
             // We check if the expected profile exist; otherwise we couldn't associate to it
-            const newProfile = db.profiles.findOne({ "_id": expectedProfileId });
+            const newProfile = dbIam.profiles.findOne({ "_id": expectedProfileId });
 
             print("Group: " + fullGroup.name);
             print("Migrate profileId: " + profileToReplace._id + " to " + newProfile._id);
 
-            var bulk = db.groups.initializeOrderedBulkOp();
+            var bulk = dbIam.groups.initializeOrderedBulkOp();
             bulk.find({ "_id": fullGroup._id }).updateOne({ "$addToSet": { "profileIds": newProfile._id } });
             bulk.find({ "_id": fullGroup._id }).updateOne({ "$pull": { "profileIds": profileToReplace._id } });
             bulk.execute();
 
-            print("Updated group: " + JSON.stringify(db.groups.findOne({ "_id": fullGroup._id })));
+            print("Updated group: " + JSON.stringify(dbIam.groups.findOne({ "_id": fullGroup._id })));
         }
 
     });
@@ -43,12 +39,11 @@ db.groups.aggregate([
 });
 
 //======== DELETE OLD PROFILES FOR APP ARCHIVE_SEARCH_MANAGEMENT_APP ========//
-db.profiles.deleteMany(
+dbIam.profiles.deleteMany(
     {
         $and: [
             { "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP" },
             { "_id": { $not: { $regex: "^PROFIL_" } } }
         ]
-    });
-
-print("END 48_migrate_archivesearch_profiles.js");
+    }
+);

@@ -1,11 +1,8 @@
-db = db.getSiblingDB("cas");
-
-print("START v9.0.1-01_fix_identity_admin_serviceId.js");
-
-db.services.updateOne({ "_id": NumberInt(3) }, {
-    "$set": {
-        serviceId: "{{ vitamui.ui_identity_admin.serviceId | default('^' + vitamui.ui_identity_admin.base_url | default(url_prefix+'/identity-admin') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+dbCas.services.updateOne(
+    { "_id": NumberInt(3) },
+    {
+        "$set": {
+            serviceId: "{{ vitamui.ui_identity_admin.serviceId | default('^' + vitamui.ui_identity_admin.base_url | default(url_prefix + '/identity-admin') | regex_escape() | replace('\\', '\\\\') + '/.*') }}"
+        }
     }
-});
-
-print("END v9.0.1-01_fix_identity_admin_serviceId.js");
+);

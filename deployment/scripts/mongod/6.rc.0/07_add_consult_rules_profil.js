@@ -1,14 +1,8 @@
-db = db.getSiblingDB('iam')
+var lastIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
-print("START 6.rc.0/07_add_consult_rules_profil.js");
+dbIam.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
-// Create new profile CONSULTATION for RULES_APP
-
-var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
-
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
-
-    db.profiles.insertOne({
+    dbIam.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-RULES_APP-CONSULTATION",
         "identifier": NumberInt(lastIdProfile++),
         "name": "Profil consultation des règles de gestion",
@@ -29,12 +23,11 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 });
 
 // Update sequence
-db.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-    $set: {
-        "sequence": NumberInt(lastIdProfile)
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(lastIdProfile)
+        }
     }
-});
-
-print("END 6.rc.0/07_add_consult_rules_profil.js");
+);

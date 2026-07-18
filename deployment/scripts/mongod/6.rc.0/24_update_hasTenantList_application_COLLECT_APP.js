@@ -1,13 +1,8 @@
-db = db.getSiblingDB('iam')
-
-print("START_24_update_hasTenantList_application_COLLECT_APP.js");
-
-db.applications.updateOne({
-    "identifier" : "COLLECT_APP"
-}, {
-    $set: {
-        "hasTenantList": true
-    },
-});
-
-print("END_24_update_hasTenantList_application_COLLECT_APP.js");
+dbIam.applications.updateOne(
+    { "identifier": "COLLECT_APP" },
+    {
+        $set: {
+            "hasTenantList": true
+        }
+    }
+);

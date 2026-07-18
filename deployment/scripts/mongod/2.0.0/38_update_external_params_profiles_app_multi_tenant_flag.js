@@ -1,16 +1,9 @@
-db = db.getSiblingDB('iam')
-
-print("START_38_update_external_params_profiles_app_multi_tenant_flag.js");
-
 // -------- EXTERNAL_PARAM_PROFILE_APP  -----
-
-db.applications.updateOne({
-   "identifier":"EXTERNAL_PARAM_PROFILE_APP"
-},
-{
-   $set:{
-      "hasTenantList":true
-   }
-});
-
-print("END_38_update_external_params_profiles_app_multi_tenant_flag.js");
+dbIam.applications.updateOne(
+    { "identifier": "EXTERNAL_PARAM_PROFILE_APP" },
+    {
+        $set: {
+            "hasTenantList": true
+        }
+    }
+);

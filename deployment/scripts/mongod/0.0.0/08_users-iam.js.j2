@@ -1,10 +1,7 @@
-// Switch to iam database
-db = db.getSiblingDB('{{ mongodb.iam.db }}')
-
 // Create iam user
 
-if (! db.getUser("{{ mongodb.iam.user }}")) {
-    db.createUser(
+if (! dbIam.getUser("{{ mongodb.iam.user }}")) {
+    dbIam.createUser(
         {
             user: "{{ mongodb.iam.user }}",
             pwd: "{{ mongodb.iam.password }}",
@@ -13,7 +10,7 @@ if (! db.getUser("{{ mongodb.iam.user }}")) {
     )
 }
 else {
-    db.updateUser(
+    dbIam.updateUser(
         "{{ mongodb.iam.user }}",
         {
             pwd: "{{ mongodb.iam.password }}",
