@@ -4,7 +4,8 @@ dbSecurity.contexts.updateOne(
         $addToSet: {
             "roleNames": {
                 $each: [
-                    "ROLE_EXPORT_DIP"
+                    "ROLE_EXPORT_DIP",
+                    "ROLE_GET_EXTERNAL_PARAMS"
                 ]
             }
         }

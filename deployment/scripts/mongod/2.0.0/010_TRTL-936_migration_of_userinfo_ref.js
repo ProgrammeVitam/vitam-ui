@@ -51,7 +51,8 @@ dbSecurity.contexts.updateMany(
                 $each: [
                     "ROLE_GET_USER_INFOS",
                     "ROLE_CREATE_USER_INFOS",
-                    "ROLE_UPDATE_USER_INFOS"
+                    "ROLE_UPDATE_USER_INFOS",
+                    "ROLE_GET_EXTERNAL_PARAMS"
                 ]
             }
         }

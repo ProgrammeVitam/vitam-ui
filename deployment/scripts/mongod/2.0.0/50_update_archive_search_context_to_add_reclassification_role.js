@@ -4,7 +4,8 @@ dbSecurity.contexts.updateOne(
         $addToSet: {
             "roleNames": {
                 $each: [
-                    "ROLE_RECLASSIFICATION"
+                    "ROLE_RECLASSIFICATION",
+                    "ROLE_UPDATE_UNIT_DESC_METADATA"
                 ]
             }
         }
