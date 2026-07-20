@@ -42,9 +42,18 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ProfilesFormComponent } from './profiles-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, MatSelectModule, VitamUICommonModule, VitamUILibraryModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    TranslatePipe,
+  ],
   declarations: [ProfilesFormComponent],
   exports: [ProfilesFormComponent],
 })
