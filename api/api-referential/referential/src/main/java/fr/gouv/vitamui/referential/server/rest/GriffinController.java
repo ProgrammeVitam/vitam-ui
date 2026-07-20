@@ -29,7 +29,10 @@ package fr.gouv.vitamui.referential.server.rest;
 
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.vitam.api.dto.HistoryEventDto;
 import fr.gouv.vitamui.referential.common.dto.preservation.griffin.Griffin;
 import fr.gouv.vitamui.referential.server.security.RequireAdminTenant;
 import fr.gouv.vitamui.referential.server.service.preservation.GriffinService;
@@ -38,6 +41,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,9 +83,9 @@ public class GriffinController {
     @PostMapping
     @RequireAdminTenant
     @Secured(ROLE_UPDATE_GRIFFINS)
-    public void updateGriffin(@RequestBody Griffin griffin)
+    public ResponseEntity<OperationIdDto> updateGriffin(@RequestBody Griffin griffin)
         throws VitamClientException, AccessExternalClientException, IOException {
-        this.griffinService.update(griffin);
+        return this.griffinService.update(griffin);
     }
 
     @DeleteMapping
@@ -90,5 +94,12 @@ public class GriffinController {
     public void deleteGriffin(@RequestBody Griffin griffin)
         throws VitamClientException, AccessExternalClientException, IOException {
         this.griffinService.delete(griffin);
+    }
+
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    @Secured(ROLE_GET_GRIFFINS)
+    public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
+        throws PreconditionFailedException, VitamClientException {
+        return griffinService.findHistoryById(id);
     }
 }

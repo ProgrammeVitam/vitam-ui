@@ -40,9 +40,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PreservationComponent } from './preservation.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { BASE_URL, LoggerModule, SecurityService, VitamUICommonModule } from 'vitamui-library';
+import { BASE_URL, InjectorModule, LoggerModule, SecurityService, VitamUICommonModule } from 'vitamui-library';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY } from 'rxjs';
+import { of } from 'rxjs';
 
 describe('PreservationComponent', () => {
   let component: PreservationComponent;
@@ -54,15 +54,22 @@ describe('PreservationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PreservationComponent, LoggerModule.forRoot(), VitamUICommonModule],
+      imports: [PreservationComponent, LoggerModule.forRoot(), VitamUICommonModule, InjectorModule],
       providers: [
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
-        { provide: ActivatedRoute, useValue: { snapshot: { data: EMPTY } } },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            data: of({ appId: 'referential' }),
+            params: of({}),
+            paramMap: of({}),
+            snapshot: {
+              data: { appId: 'referential' },
+            },
+          },
+        },
         {
           provide: SecurityService,
           useValue: securityServiceMock,

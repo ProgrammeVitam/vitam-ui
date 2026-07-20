@@ -38,8 +38,10 @@ import { TestBed } from '@angular/core/testing';
 import { GriffinsService } from './griffins.service';
 import { GriffinsApiService } from './griffins-api.service';
 import { of } from 'rxjs';
-import { Griffin, CreateGriffin } from './griffin.type';
+import { CreateGriffin, Griffin } from './griffin.type';
 import { vi } from 'vitest';
+import { BASE_URL } from '../../injection-tokens';
+import { LoggerModule } from '../../logger';
 
 describe('GriffinsService', () => {
   let service: GriffinsService;
@@ -68,7 +70,8 @@ describe('GriffinsService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [GriffinsService, { provide: GriffinsApiService, useValue: spy }],
+      imports: [LoggerModule.forRoot()],
+      providers: [GriffinsService, { provide: GriffinsApiService, useValue: spy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
 
     service = TestBed.inject(GriffinsService);

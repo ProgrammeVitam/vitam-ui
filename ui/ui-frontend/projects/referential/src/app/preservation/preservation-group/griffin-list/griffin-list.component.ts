@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -65,7 +65,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
 export class GriffinListComponent implements OnInit {
-  private readonly griffinsService = inject(GriffinsService);
+  griffinsService = inject(GriffinsService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly matDialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
@@ -88,6 +88,9 @@ export class GriffinListComponent implements OnInit {
   direction = Direction.ASCENDANT;
 
   private _searchText: string;
+
+  griffinClick = output<Griffin>();
+
   private readonly searchChange = new Subject<string>();
 
   @Input()
@@ -180,6 +183,11 @@ export class GriffinListComponent implements OnInit {
       : [...this.allGriffins()];
 
     this.griffins.set(filtered.sort(sortByKey(this.orderByKey, factorOf(this.direction))));
+  }
+
+  selectLine(griffin: Griffin) {
+    this.griffinsService.selectedId$.next(griffin.Identifier);
+    this.griffinClick.emit(griffin);
   }
 
   isSelected(griffin: Griffin) {

@@ -1128,6 +1128,8 @@
     "ONTOLOGY_CREATED": "The ontology has been successfully created",
     "ONTOLOGY_UPDATED": "The ontology has been updated successfully",
     "ONTOLOGY_DELETED": "Ontology has been successfully deleted",
+    "GRIFFIN_UPDATE_SUCCESS": "The griffin has been successfully updated",
+    "GRIFFIN_UPDATE_FAIL": "Failure of the update of the griffin",
     "VOCABULARY_DELETED": "Vocabulary has been successfully deleted",
     "VOCABULARY_DELETION_FAILED": "Vocabulary deletion failed. Please consult the details in the operations log",
     "AUDIT_RUN": "The audit \"{{type}}\" has been launched",
@@ -1163,6 +1165,21 @@
     "HOME": {
       "TITLE": "Griffins and preservation scenarios repository",
       "SEARCH_PLACEHOLDER": "Name, identifier"
+    },
+    "TAB": {
+      "INFORMATION": {
+        "TITLE": "Informations",
+        "IDENTIFIER": "Identifier",
+        "NAME": "Name",
+        "EXECUTABLE_NAME": "Executable name",
+        "VERSION": "Version",
+        "DESCRIPTION": "Description",
+        "CREATION_DATE": "Creation date",
+        "MODIFICATION_DATE": "Modification date"
+      },
+      "HISTORY": {
+        "TITLE": "History"
+      }
     },
     "GRIFFIN": {
       "TITLE": "Griffins",

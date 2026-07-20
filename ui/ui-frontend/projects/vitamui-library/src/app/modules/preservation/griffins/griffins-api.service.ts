@@ -67,7 +67,7 @@ export class GriffinsApiService {
   }
 
   public update(griffin: Griffin) {
-    return this.http.post<Griffin>(this.apiUrl, griffin);
+    return this.http.post<OperationId>(this.apiUrl, griffin, { headers: addSkipErrorNotificationHeader(new HttpHeaders()) });
   }
 
   public delete(griffin: Griffin) {
