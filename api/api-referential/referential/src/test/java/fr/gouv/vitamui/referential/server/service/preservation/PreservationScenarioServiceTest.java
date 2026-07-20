@@ -59,7 +59,7 @@ class PreservationScenarioServiceTest {
     private PreservationScenarioService service;
 
     private static PreservationScenario scenario(String identifier) {
-        return new PreservationScenario(identifier, "name-" + identifier, null, null, null, null, null, null);
+        return new PreservationScenario(identifier, "name-" + identifier, null, null, null, null, null, null, null);
     }
 
     @BeforeEach

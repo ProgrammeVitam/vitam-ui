@@ -1,9 +1,26 @@
-<vitamui-common-sidenav-header [title]="editableElement().Name" [subtitle]="editableElement().Identifier" (onclose)="emitClose()" />
+<vitamui-common-sidenav-header
+  [title]="editableElement().Name"
+  [subtitle]="editableElement().Identifier"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="editableElement().Name"
+  [actionsBelowTitle]="true"
+  (onclose)="emitClose()"
+>
+  @if (isPreservationScenario()) {
+    <button class="btn primary ml-4" (click)="downloadScenario()">
+      {{ 'PRESERVATION.TAB.DOWNLOAD_SCENARIO' | translate }}
+    </button>
+  }
+</vitamui-common-sidenav-header>
 
-<div class="vitamui-sidepanel-body">
+<div class="vitamui-sidepanel-body {{ isPreservationScenario() ? 'mt-4' : '' }}">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'PRESERVATION.TAB.INFORMATION.TITLE' | translate">
-      <app-griffin-information-tab [inputGriffin]="selectedElement()" #infoTab (updatedGriffin)="updateGriffin($event)" />
+      @if (isPreservationScenario()) {
+        <app-preservation-scenario-information-tab [inputPreservationScenario]="selectedElement()" #infoTab />
+      } @else {
+        <app-griffin-information-tab [inputGriffin]="selectedElement()" #infoTab (updatedGriffin)="updateGriffin($event)" />
+      }
     </mat-tab>
 
     <mat-tab [label]="'PRESERVATION.TAB.HISTORY.TITLE' | translate">

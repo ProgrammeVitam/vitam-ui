@@ -37,7 +37,7 @@
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
 import { PreservationScenario } from './preservation-scenario.type';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Subject, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -46,6 +46,7 @@ export class PreservationScenariosService {
   private api: PreservationScenariosApiService;
 
   private refresh$ = new BehaviorSubject<void>(undefined);
+  selectedId$ = new Subject<string>();
 
   constructor() {
     this.api = inject(PreservationScenariosApiService);

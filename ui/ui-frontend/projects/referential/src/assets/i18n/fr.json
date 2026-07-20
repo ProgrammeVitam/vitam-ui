@@ -1167,6 +1167,7 @@
       "SEARCH_PLACEHOLDER": "Nom, identifiant"
     },
     "TAB": {
+      "DOWNLOAD_SCENARIO": "Télécharger le scénario (JSON)",
       "INFORMATION": {
         "TITLE": "Informations",
         "IDENTIFIER": "Identifiant",
@@ -1175,7 +1176,8 @@
         "VERSION": "Version",
         "DESCRIPTION": "Description",
         "CREATION_DATE": "Date de création",
-        "MODIFICATION_DATE": "Date de modification"
+        "MODIFICATION_DATE": "Date de modification",
+        "POSSIBLE_ACTIONS": "Actions possibles"
       },
       "HISTORY": {
         "TITLE": "Historique"

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -44,6 +44,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogData,
   Direction,
+  GriffinsService,
   PreservationScenario,
   PreservationScenariosService,
   SnackBarService,
@@ -65,8 +66,9 @@ const ACTION_TYPE_KEY = 'PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.';
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
 export class PreservationScenarioListComponent implements OnInit {
-  private translateService = inject(TranslateService);
-  private readonly preservationScenariosService = inject(PreservationScenariosService);
+  private readonly translateService = inject(TranslateService);
+  readonly preservationScenariosService = inject(PreservationScenariosService);
+  readonly griffinsService = inject(GriffinsService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly matDialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
@@ -84,6 +86,9 @@ export class PreservationScenarioListComponent implements OnInit {
   direction = Direction.ASCENDANT;
 
   private _searchText: string;
+
+  preservationScenarioClick = output<PreservationScenario>();
+
   private readonly searchChange = new Subject<string>();
 
   @Input()
@@ -177,5 +182,11 @@ export class PreservationScenarioListComponent implements OnInit {
       : [...this.allScenarios()];
 
     this.preservationScenarios.set(filtered.sort(sortByKey(this.orderByKey, factorOf(this.direction))));
+  }
+
+  selectLine(preservationScenario: PreservationScenario) {
+    this.griffinsService.selectedId$.next(null);
+    this.preservationScenariosService.selectedId$.next(preservationScenario.Identifier);
+    this.preservationScenarioClick.emit(preservationScenario);
   }
 }

@@ -1,0 +1,37 @@
+<form [formGroup]="form" class="gap-6">
+  <div class="gap-4 w-100">
+    <vitamui-input class="w-100" formControlName="Identifier" [placeholder]="'PRESERVATION.TAB.INFORMATION.IDENTIFIER' | translate" />
+
+    <vitamui-input class="w-100" formControlName="Name" [placeholder]="'PRESERVATION.TAB.INFORMATION.NAME' | translate" />
+
+    <vitamui-select
+      class="w-100"
+      formControlName="ActionList"
+      [placeholder]="'PRESERVATION.TAB.INFORMATION.POSSIBLE_ACTIONS' | translate"
+      [options]="possibleActions"
+    />
+
+    <vitamui-input
+      [textarea]="true"
+      class="w-100"
+      formControlName="Description"
+      [placeholder]="'PRESERVATION.TAB.INFORMATION.DESCRIPTION' | translate"
+    />
+
+    <vitamui-input
+      class="w-100"
+      [ngModel]="form.get('CreationDate').value | dateTime: 'dd/MM/yyyy'"
+      [ngModelOptions]="{ standalone: true }"
+      [placeholder]="'PRESERVATION.TAB.INFORMATION.CREATION_DATE' | translate"
+      [disabled]="true"
+    />
+
+    <vitamui-input
+      class="w-100"
+      [ngModel]="form.get('LastUpdate').value | dateTime: 'dd/MM/yyyy'"
+      [ngModelOptions]="{ standalone: true }"
+      [placeholder]="'PRESERVATION.TAB.INFORMATION.MODIFICATION_DATE' | translate"
+      [disabled]="true"
+    />
+  </div>
+</form>

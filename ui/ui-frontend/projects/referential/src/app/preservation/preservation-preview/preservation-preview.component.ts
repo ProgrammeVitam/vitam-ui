@@ -35,27 +35,49 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, effect, ElementRef, inject, input, output, signal, viewChild } from '@angular/core';
-import { Griffin, GriffinsService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Component, computed, effect, ElementRef, inject, input, output, Signal, signal, viewChild } from '@angular/core';
+import {
+  download,
+  Griffin,
+  GriffinsService,
+  PreservationScenario,
+  PreservationScenariosService,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { GriffinInformationTabComponent } from './griffin-information-tab/griffin-information-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { PreservationScenarioInformationTabComponent } from './preservation-scenario-information-tab/preservation-scenario-information-tab.component';
 
 @Component({
   selector: 'app-preservation-preview',
   templateUrl: './preservation-preview.component.html',
-  imports: [VitamUICommonModule, VitamUILibraryModule, MatTab, MatTabGroup, GriffinInformationTabComponent, TranslatePipe],
+  imports: [
+    VitamUICommonModule,
+    VitamUILibraryModule,
+    MatTab,
+    MatTabGroup,
+    GriffinInformationTabComponent,
+    TranslatePipe,
+    PreservationScenarioInformationTabComponent,
+  ],
 })
 export class PreservationPreviewComponent {
   previewClose = output();
 
-  private griffinService = inject(GriffinsService);
+  private readonly griffinService = inject(GriffinsService);
+  private readonly preservationScenarioService = inject(PreservationScenariosService);
 
-  selectedElement = input.required<Griffin>();
-  editableElement = signal<Griffin | null>(null);
+  selectedElement = input.required<Griffin | PreservationScenario>();
+  editableElement = signal<Griffin | PreservationScenario | null>(null);
   tabUpdated: boolean[] = [false, false];
 
   title: string;
+
+  isPreservationScenario: Signal<boolean> = computed(() => {
+    return this.selectedElement() && 'ActionList' in this.selectedElement();
+  });
 
   infoTab = viewChild<ElementRef<HTMLElement>>('infoTab');
 
@@ -69,9 +91,15 @@ export class PreservationPreviewComponent {
     this.editableElement.set(griffin);
   }
 
+  downloadScenario() {
+    const blob = new Blob([JSON.stringify(this.selectedElement(), null, 2)], { type: 'octet/stream' });
+    download(blob, 'PreservationScenario.json');
+  }
+
   emitClose() {
     this.previewClose.emit();
     this.tabUpdated = [false, false];
     this.griffinService.selectedId$.next(null);
+    this.preservationScenarioService.selectedId$.next(null);
   }
 }

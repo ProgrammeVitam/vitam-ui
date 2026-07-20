@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { of, firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { vi } from 'vitest';
 
 import { PreservationScenariosService } from './preservation-scenarios.service';
@@ -60,6 +60,7 @@ describe('PreservationScenariosService', () => {
     Name: 'Scenario 1',
     Description: 'Description 1',
     CreationDate: new Date(),
+    LastUpdate: new Date(),
     ActionList: [],
     GriffinByFormat: [],
     DefaultGriffin: {

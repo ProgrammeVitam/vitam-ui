@@ -38,14 +38,10 @@ public record PreservationScenario(
     @JsonProperty("Identifier") String identifier,
     @JsonProperty("Name") String name,
     @JsonProperty("Description") String description,
-
     @JsonProperty("CreationDate") String creationDate,
-
+    @JsonProperty("LastUpdate") String lastUpdateDate,
     @JsonProperty("ActionList") List<ActionTypePreservation> actionList,
-
     @JsonProperty("GriffinByFormat") List<GriffinByFormat> griffinByFormat,
-
     @JsonProperty("DefaultGriffin") DefaultGriffin defaultGriffin,
-
     @JsonProperty("TransformationRules") String transformationRules
 ) {}
