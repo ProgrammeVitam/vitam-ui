@@ -10,7 +10,7 @@ spring:
         serviceName: ${spring.application.name}
         preferIpAddress: true
         ipAddress: ${server.address}
-        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health
+        healthCheckUrl: http://${management.server.address}:${management.server.port}/actuator/health/consul
         tags: vitamui, {{ vitamui_struct.vitamui_component }}
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
 
