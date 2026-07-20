@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/vitam-ui
+
+server:
+  port: 8666
+
+auth-gateway:
+  access-token:
+    issuer: http://localhost:${server.port}
