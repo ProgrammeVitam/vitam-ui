@@ -48,10 +48,12 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
+import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.NonSortableFields;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamResponseHandler;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
@@ -83,6 +85,7 @@ public class UnitService {
 
     public RequestResponse<JsonNode> searchUnits(final JsonNode dslQuery, final VitamContext vitamContext)
         throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         final RequestResponse<JsonNode> result = accessExternalClient.selectUnits(vitamContext, dslQuery);
         VitamRestUtils.checkResponse(result);
         return result;
@@ -93,6 +96,7 @@ public class UnitService {
         final JsonNode dslQuery,
         final VitamContext vitamContext
     ) throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         final RequestResponse<JsonNode> result;
         if (unitId.isPresent()) {
             result = accessExternalClient.selectUnitbyId(vitamContext, dslQuery, unitId.get());
@@ -106,6 +110,7 @@ public class UnitService {
         final JsonNode dslQuery,
         final VitamContext vitamContext
     ) throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         final RequestResponse<JsonNode> result = accessExternalClient.selectUnitsWithInheritedRules(
             vitamContext,
             dslQuery
@@ -348,6 +353,7 @@ public class UnitService {
      */
     public RequestResponse<JsonNode> computedInheritedRules(final VitamContext vitamContext, final JsonNode dslQuery)
         throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         final RequestResponse<JsonNode> jsonResponse = accessExternalClient.computedInheritedRules(
             vitamContext,
             dslQuery
@@ -368,6 +374,7 @@ public class UnitService {
         final VitamContext vitamContext,
         final JsonNode dslQuery
     ) throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitsWithInheritedRules(
             vitamContext,
             dslQuery

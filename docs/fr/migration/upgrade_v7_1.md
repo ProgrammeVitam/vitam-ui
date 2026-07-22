@@ -110,6 +110,32 @@ ansible-vault edit --vault-password-file vault_pass.txt environments/group_vars/
 
 > Attention, la clé devrait être configurée avec une clé alphanumérique longue et sans caractères spéciaux.
 
+### Neutralisation du tri sur les champs de métadonnées analysés
+
+Le tri sur certains champs de métadonnées, tel que `Unit.Title`, est désormais neutralisé par défaut : il provoquait l'expiration des recherches sur les tenants volumineux. Le chevron de tri correspondant n'est plus proposé dans les interfaces.
+
+Aucune action n'est requise : la variable `query_non_sortable_fields` n'est déclarée dans aucun fichier de `group_vars`. En son absence, la valeur `{ 'Unit': ['Title'] }` est appliquée automatiquement.
+
+Pour modifier ce comportement, déclarer la variable globalement via `vitamui_defaults.services.query_non_sortable_fields` ou par composant via `vitamui.<composant>.query_non_sortable_fields`. La valeur déclarée remplace intégralement la valeur par défaut.
+
+* Neutraliser d'autres champs, en reconduisant `Unit: ['Title']` pour le conserver :
+
+  ```yaml
+  vitamui_defaults:
+    services:
+      query_non_sortable_fields: { 'Unit': ['Title', '<autre_champ>'] }
+  ```
+
+* Restaurer le tri sur l'ensemble des champs :
+
+  ```yaml
+  vitamui_defaults:
+    services:
+      query_non_sortable_fields: {}
+  ```
+
+> Attention, cette dernière valeur restaure le comportement à l'origine des expirations de recherche. Elle n'est destinée qu'à des fins de test et ne doit pas être utilisée en production.
+
 ---
 
 ## Procédures à exécuter AVANT la montée de version

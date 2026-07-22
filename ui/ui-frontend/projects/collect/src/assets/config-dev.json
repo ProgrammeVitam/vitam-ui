@@ -62,5 +62,6 @@
       "title": "Organisation & droits utilisateurs",
       "order": 5
     }
-  ]
+  ],
+  "NON_SORTABLE_FIELDS": { "Unit": ["Title"] }
 }

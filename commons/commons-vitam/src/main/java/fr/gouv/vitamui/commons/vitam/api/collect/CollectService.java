@@ -37,8 +37,10 @@ import fr.gouv.vitam.collect.external.client.CollectExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.NonSortableFields;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 
 import javax.ws.rs.core.Response;
@@ -72,6 +74,7 @@ public class CollectService {
         final VitamContext vitamContext
     ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, searchQuery);
         final RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
             vitamContext,
             transactionId,
@@ -87,6 +90,7 @@ public class CollectService {
         final VitamContext vitamContext
     ) throws VitamClientException {
         LOGGER.debug(PROJECT_ID, transactionId);
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, searchQuery);
         final RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
             vitamContext,
             transactionId,
@@ -378,6 +382,7 @@ public class CollectService {
         String transactionId,
         final VitamContext vitamContext
     ) throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         RequestResponse<JsonNode> response = collectExternalClient.selectUnitsWithInheritedRules(
             vitamContext,
             transactionId,

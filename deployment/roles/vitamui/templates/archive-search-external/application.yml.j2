@@ -105,3 +105,6 @@ logging:
     fr.gouv.vitamui.archives.search.external.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
     org.springframework.web.filter.CommonsRequestLoggingFilter: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
     fr.gouv.vitamui.iam.security: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+
+query:
+  non-sortable-fields: {{ vitamui_struct.query_non_sortable_fields | default(default_non_sortable_fields) | to_json }}

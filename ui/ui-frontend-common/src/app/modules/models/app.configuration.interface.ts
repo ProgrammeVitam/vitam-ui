@@ -62,4 +62,5 @@ export interface AppConfiguration {
   UI: Ui;
   VITAM: VitamConfiguration;
   VITAM_ADMIN_TENANT?: number;
+  NON_SORTABLE_FIELDS?: { [collection: string]: string[] };
 }

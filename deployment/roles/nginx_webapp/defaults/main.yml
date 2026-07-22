@@ -13,4 +13,6 @@ nginx_ssl_dir: /etc/nginx/conf.d/ssl
 
 secure: "{{ vitamui_defaults.services.secure | default(true) | bool }}"
 
+default_non_sortable_fields: "{{ vitamui_defaults.services.query_non_sortable_fields | default({ 'Unit': ['Title'] }) }}"
+
 package_name: "vitamui-{{ vitamui_struct.vitamui_component }}-rsc"
