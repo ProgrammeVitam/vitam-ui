@@ -36,18 +36,18 @@
  */
 
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map, Observable, switchMap } from 'rxjs';
 import {
   BASE_URL,
   PageRequest,
+  PaginatedHttpClient,
   PaginatedResponse,
   Project,
   ProjectAttachments,
   SearchCriteriaHistory,
   Transaction,
   VitamuiHttpHeaders,
-  PaginatedHttpClient,
 } from 'vitamui-library';
 
 @Injectable({
@@ -143,12 +143,17 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
     return this.http.request<Transaction>(new HttpRequest('POST', `${this.apiUrl}/upload`, content, options));
   }
 
-  uploadSip(content: Blob, transactionId: string): Observable<HttpEvent<any>> {
-    let headers = new HttpHeaders()
-      .set(VitamuiHttpHeaders.X_TRANSACTION_ID, transactionId)
-      .set('Content-Type', 'application/octet-stream')
-      .set('reportProgress', 'true')
-      .set('ngsw-bypass', 'true');
+  uploadSip(content: Blob, transactionId: string, attachmentId?: string): Observable<HttpEvent<any>> {
+    const headersConfig: Record<string, string> = {
+      [VitamuiHttpHeaders.X_TRANSACTION_ID]: transactionId,
+      'Content-Type': 'application/octet-stream',
+      reportProgress: 'true',
+      'ngsw-bypass': 'true',
+    };
+    if (attachmentId) {
+      headersConfig[VitamuiHttpHeaders.X_ATTACHEMENT_ID] = attachmentId;
+    }
+    const headers = new HttpHeaders(headersConfig);
     const options: Object = {
       headers: headers,
       responseType: 'text',
