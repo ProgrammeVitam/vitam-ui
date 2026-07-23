@@ -13,11 +13,23 @@ import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.ssl.SSLContexts;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import javax.net.ssl.SSLContext;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
 /**
@@ -36,7 +48,33 @@ public class IamClient {
     private final RestClient restClient;
 
     public IamClient(AuthServerProperties properties) {
-        this.restClient = RestClient.builder().baseUrl(properties.getIam().getBaseUrl()).build();
+        RestClient.Builder builder = RestClient.builder().baseUrl(properties.getIam().getBaseUrl());
+        if (properties.getIam().isTrustAllCerts()) {
+            builder = builder.requestFactory(new HttpComponentsClientHttpRequestFactory(trustAllHttpClient()));
+        }
+        this.restClient = builder.build();
+    }
+
+    private static CloseableHttpClient trustAllHttpClient() {
+        try {
+            SSLContext sslContext = SSLContexts.custom()
+                .loadTrustMaterial(null, (X509Certificate[] chain, String authType) -> true)
+                .build();
+            SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(
+                sslContext,
+                NoopHostnameVerifier.INSTANCE
+            );
+            Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslSocketFactory)
+                .build();
+            return HttpClients.custom()
+                .setConnectionManager(
+                    PoolingHttpClientConnectionManagerBuilder.create().setSSLSocketFactory(sslSocketFactory).build()
+                )
+                .build();
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to build trust-all HTTP client", e);
+        }
     }
 
     public List<HrdEntryDto> resolveHrd(String email) {

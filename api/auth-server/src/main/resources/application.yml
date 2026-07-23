@@ -1,7 +1,11 @@
 server:
   port: 9443
   ssl:
-    enabled: false
+    enabled: ${SSL_ENABLED:true}
+    key-store: classpath:certs/dev-vitamui.p12
+    key-store-type: PKCS12
+    key-store-password: ${SSL_KEYSTORE_PASSWORD:changeit}
+    key-alias: dev-vitamui
 
 spring:
   application:
@@ -17,13 +21,22 @@ vitam:
 
 vitamui:
   auth-server:
-    issuer: http://localhost:${server.port}
+    # The issuer must exactly match the URL the browser uses to reach the auth-server, otherwise
+    # angular-oauth2-oidc rejects the discovery document with "issuer mismatch".
+    issuer: ${AUTH_SERVER_ISSUER:https://dev.vitamui.com:9443}
     iam:
-      base-url: http://localhost:9000
+      base-url: ${IAM_BASE_URL:https://localhost:8083}
+      # For dev only: accept self-signed / hostname-mismatched certs when calling IAM.
+      # Set to false in staging/prod once IAM has a proper cert.
+      trust-all-certs: ${IAM_TRUST_ALL_CERTS:true}
       internal-application-id: auth-server
     portal-client:
       client-id: portal
-      redirect-uri: https://dev.vitamui.com:4200/
-      post-logout-redirect-uri: https://dev.vitamui.com:4200/
+      redirect-uri: ${PORTAL_REDIRECT_URI:https://dev.vitamui.com:4200/}
+      post-logout-redirect-uri: ${PORTAL_REDIRECT_URI:https://dev.vitamui.com:4200/}
     token:
       access-token-ttl-minutes: 240
+    # CORS origins allowed to call the OIDC endpoints and login JSON API from a browser.
+    # Comma-separated list; wildcard subdomain patterns are allowed.
+    cors:
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:https://dev.vitamui.com:4200,http://localhost:4200}

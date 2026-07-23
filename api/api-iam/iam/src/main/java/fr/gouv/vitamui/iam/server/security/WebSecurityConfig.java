@@ -67,6 +67,15 @@ public class WebSecurityConfig extends ApiWebSecurityConfig {
 
     @Override
     protected String[] getAuthList() {
-        return ArrayUtils.addAll(super.getAuthList(), RestApi.IAM_API_PATH + "/*/signed-download/*");
+        return ArrayUtils.addAll(
+            super.getAuthList(),
+            RestApi.IAM_API_PATH + "/*/signed-download/*",
+            // POC auth-server (Spring Authorization Server) — inter-service endpoints called from SAS.
+            // Bypass tenant + token auth in the same way as other technical endpoints (actuator/health, etc.).
+            // Production hardening (mTLS / signed header) is deferred to Phase 2.
+            RestApi.V1_CAS_URL + RestApi.CAS_HRD_PATH,
+            RestApi.V1_CAS_URL + RestApi.CAS_TOKENS_PATH,
+            RestApi.V1_CAS_URL + RestApi.CAS_LOGIN_PATH
+        );
     }
 }

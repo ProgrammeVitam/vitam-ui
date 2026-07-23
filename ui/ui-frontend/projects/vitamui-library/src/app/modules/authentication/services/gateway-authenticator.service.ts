@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AuthenticatorService } from './authenticator.service';
 import { AuthGatewayService } from './auth-gateway.service';
 

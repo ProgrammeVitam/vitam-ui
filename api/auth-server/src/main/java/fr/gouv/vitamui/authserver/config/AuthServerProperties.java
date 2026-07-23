@@ -9,6 +9,8 @@ package fr.gouv.vitamui.authserver.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.List;
+
 @Data
 @ConfigurationProperties(prefix = "vitamui.auth-server")
 public class AuthServerProperties {
@@ -17,11 +19,13 @@ public class AuthServerProperties {
     private Iam iam = new Iam();
     private PortalClient portalClient = new PortalClient();
     private Token token = new Token();
+    private Cors cors = new Cors();
 
     @Data
     public static class Iam {
         private String baseUrl;
         private String internalApplicationId;
+        private boolean trustAllCerts = false;
     }
 
     @Data
@@ -34,5 +38,10 @@ public class AuthServerProperties {
     @Data
     public static class Token {
         private int accessTokenTtlMinutes = 240;
+    }
+
+    @Data
+    public static class Cors {
+        private List<String> allowedOrigins = List.of();
     }
 }

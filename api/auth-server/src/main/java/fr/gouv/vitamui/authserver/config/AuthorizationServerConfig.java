@@ -33,6 +33,7 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import fr.gouv.vitamui.authserver.security.IamAuthenticationProvider;
 import fr.gouv.vitamui.authserver.security.OpaqueVitamTokenGenerator;
@@ -45,12 +46,16 @@ public class AuthorizationServerConfig {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(
+        HttpSecurity http,
+        CorsConfigurationSource corsConfigurationSource
+    ) throws Exception {
         http.oauth2AuthorizationServer(authorizationServer -> {
             http.securityMatcher(authorizationServer.getEndpointsMatcher());
             authorizationServer.oidc(Customizer.withDefaults());
         });
 
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource));
         http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
 
         MediaTypeRequestMatcher htmlRequests = new MediaTypeRequestMatcher(MediaType.TEXT_HTML);
@@ -65,11 +70,15 @@ public class AuthorizationServerConfig {
 
     @Bean
     @Order(2)
-    public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain webSecurityFilterChain(
+        HttpSecurity http,
+        CorsConfigurationSource corsConfigurationSource
+    ) throws Exception {
         http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers("/login/**", "/api/login/**", "/assets/**", "/favicon.ico", "/error")
+                    .requestMatchers("/login", "/login/**", "/api/login/**", "/assets/**", "/favicon.ico", "/error")
                     .permitAll()
                     .anyRequest()
                     .authenticated()

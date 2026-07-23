@@ -39,15 +39,31 @@ async function resolve() {
   const email = $('email').value.trim();
   if (!email) return showError('Adresse email requise.');
 
-  const response = await postJson('/api/login/resolve', { email });
+  let response;
+  try {
+    response = await postJson('/api/login/resolve', { email });
+  } catch (e) {
+    console.error('resolve network error', e);
+    return showError('Erreur réseau vers /api/login/resolve : ' + e.message);
+  }
   if (response.status === 404) {
     return showError("Aucune organisation associée à cet email.");
   }
   if (response.status === 409) {
-    return showError('Plusieurs organisations trouvées : cas non supporté par le POC (Phase 2).');
+    let details = '';
+    try {
+      const entries = await response.json();
+      if (Array.isArray(entries) && entries.length > 0) {
+        details =
+          ' Organisations: ' +
+          entries.map((e) => `${e.customerId}/${e.identityProviderId}${e.internal ? ' (interne)' : ' (externe)'}`).join(', ');
+      }
+    } catch (_) {}
+    console.warn('HRD returned multiple entries', details);
+    return showError('Plusieurs organisations trouvées : cas non supporté par le POC (Phase 2).' + details);
   }
   if (!response.ok) {
-    return showError('Erreur de résolution HRD (' + response.status + ').');
+    return showError('Erreur de résolution HRD (' + response.status + '). IAM est-il démarré ?');
   }
   const data = await response.json();
   state.email = email;
@@ -70,11 +86,17 @@ async function authenticate() {
   const password = $('password').value;
   if (!password) return showError('Mot de passe requis.');
 
-  const response = await postJson('/api/login/authenticate', {
-    email: state.email,
-    password,
-    customerId: state.customerId,
-  });
+  let response;
+  try {
+    response = await postJson('/api/login/authenticate', {
+      email: state.email,
+      password,
+      customerId: state.customerId,
+    });
+  } catch (e) {
+    console.error('authenticate network error', e);
+    return showError('Erreur réseau vers /api/login/authenticate : ' + e.message);
+  }
   if (response.status === 401) {
     return showError('Identifiants invalides.');
   }
@@ -96,7 +118,7 @@ function back() {
   $('password').value = '';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function bindHandlers() {
   $('btn-resolve').addEventListener('click', resolve);
   $('btn-authenticate').addEventListener('click', authenticate);
   $('btn-back').addEventListener('click', back);
@@ -106,4 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
   $('password').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') authenticate();
   });
-});
+}
+
+// Script is loaded at the end of <body>; DOMContentLoaded may already have fired.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bindHandlers);
+} else {
+  bindHandlers();
+}

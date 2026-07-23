@@ -29,7 +29,7 @@ Mongo `tokens` existante — laissant les 8 frontends Angular et les Resource Se
 
 ## Comment lancer le POC en local
 
-### 1. Démarrer IAM (port `9000` par défaut)
+### 1. Démarrer IAM (port `8083` par défaut vitam-ui)
 
 ```bash
 mvn -pl api/api-iam/iam spring-boot:run
@@ -38,19 +38,47 @@ mvn -pl api/api-iam/iam spring-boot:run
 Sanity check :
 
 ```bash
-curl "http://localhost:9000/iam/v1/cas/hrd?email=admin@vitamui.com"
+curl "http://localhost:8083/iam/v1/cas/hrd?email=admin@vitamui.com"
 ```
 
-### 2. Démarrer auth-server (port `9443`)
+Override si nécessaire : `IAM_BASE_URL=http://localhost:<port>` sur le lancement d'auth-server.
+
+### 2. Démarrer auth-server (port `9443` HTTPS)
 
 ```bash
 mvn -pl api/auth-server spring-boot:run
 ```
 
+SSL est **activé par défaut** avec le keystore self-signed livré
+(`src/main/resources/certs/dev-vitamui.p12`, CN=dev.vitamui.com, SAN=DNS:dev.vitamui.com,
+DNS:localhost, IP:127.0.0.1). Il faut que ton `/etc/hosts` mappe `dev.vitamui.com` sur `127.0.0.1`
+(habitude vitam-ui).
+
+**Accepte le cert self-signed dans le navigateur** avant de tester le portal — visite manuellement
+<https://dev.vitamui.com:9443/.well-known/openid-configuration> une fois, sinon
+`angular-oauth2-oidc` retournera `status: 0` sans jamais atteindre SAS.
+
+Overrides possibles :
+
+- `SSL_ENABLED=false` pour tester en HTTP pur.
+- `AUTH_SERVER_ISSUER=…` si tu changes le hostname/port (l'issuer doit correspondre exactement à
+  l'URL utilisée par le navigateur).
+- `SSL_KEYSTORE_PASSWORD=…` si tu régénères le keystore avec un autre mot de passe.
+
+Pour régénérer le keystore :
+
+```bash
+keytool -genkeypair -alias dev-vitamui -keyalg RSA -keysize 2048 -validity 365 \
+  -dname "CN=dev.vitamui.com,OU=vitamui-dev,O=Vitam,C=FR" \
+  -ext "SAN=DNS:dev.vitamui.com,DNS:localhost,IP:127.0.0.1" \
+  -keystore api/auth-server/src/main/resources/certs/dev-vitamui.p12 \
+  -storetype PKCS12 -storepass changeit -keypass changeit
+```
+
 Sanity check :
 
 ```bash
-curl -s http://localhost:9443/.well-known/openid-configuration | jq
+curl -sk https://dev.vitamui.com:9443/.well-known/openid-configuration | jq
 ```
 
 ### 3. Basculer la config portal sur SAS

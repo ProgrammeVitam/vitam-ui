@@ -124,7 +124,9 @@ public class CasController {
 
     @PostMapping(value = RestApi.CAS_LOGIN_PATH)
     @Operation(operationId = "cas_login", summary = "Performs the login of a user")
-    @Secured(ServicesData.ROLE_CAS_LOGIN)
+    // POC auth-server: role-based check removed here so SAS can delegate password validation without carrying a
+    // pre-existing Authentication. Hardening (mTLS or signed inter-service header) is deferred to Phase 2 alongside
+    // {@code /cas/hrd} and {@code /cas/tokens}.
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
         final String username = dto.getLoginEmail();
         final User user = casService.findUserByEmailAndCustomerId(dto.getLoginEmail(), dto.getLoginCustomerId());

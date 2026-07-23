@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,6 +57,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoginController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
     private final IamClient iamClient;
     private final AuthenticationManager authenticationManager;
 
@@ -63,14 +67,19 @@ public class LoginController {
     private final RequestCache requestCache = new HttpSessionRequestCache();
 
     @PostMapping("/resolve")
-    public ResponseEntity<ResolveResponse> resolve(@RequestBody HrdRequest request) {
+    public ResponseEntity<?> resolve(@RequestBody HrdRequest request) {
         List<HrdEntryDto> entries = iamClient.resolveHrd(request.getEmail());
+        LOGGER.info("HRD resolve email={} → {} matching entries: {}", request.getEmail(), entries.size(), entries);
         if (entries.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         if (entries.size() > 1) {
-            // Phase 1 : multi-customer selection is not supported yet
-            return ResponseEntity.status(409).build();
+            LOGGER.warn(
+                "HRD resolve email={} matched multiple entries — POC Phase 1 only supports N=1. Entries: {}",
+                request.getEmail(),
+                entries
+            );
+            return ResponseEntity.status(409).body(entries);
         }
         HrdEntryDto entry = entries.get(0);
         String providerType = entry.isInternal() ? "internal" : "external";
