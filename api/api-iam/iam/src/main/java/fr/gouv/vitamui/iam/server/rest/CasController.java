@@ -47,6 +47,9 @@ import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
+import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -329,5 +332,43 @@ public class CasController {
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
         SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
+    }
+
+    /**
+     * Mint an opaque auth token ({@code TOK-<UUID>}) pointing to an existing user, persisted in the {@code tokens} collection.
+     * Consumed by external issuers (e.g. Spring Authorization Server POC) after they have authenticated a user via {@link #login}
+     * and need a Bearer that vitam-ui Resource Servers accept without any change.
+     */
+    @PostMapping(value = RestApi.CAS_TOKENS_PATH)
+    @Operation(operationId = "cas_createAuthToken", summary = "Create an opaque auth token for a given user")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateTokenResponseDto createAuthToken(@Valid @RequestBody final CreateTokenRequestDto request) {
+        LOGGER.debug(
+            "createAuthToken refId={} surrogation={} api={}",
+            request.getRefId(),
+            request.isSurrogation(),
+            request.isApi()
+        );
+        ParameterChecker.checkParameter("refId is mandatory : ", request.getRefId());
+        SanityChecker.checkSecureParameter(request.getRefId());
+        final String tokenId = casService.createAuthToken(request.getRefId(), request.isSurrogation(), request.isApi());
+        return new CreateTokenResponseDto(tokenId);
+    }
+
+    /**
+     * Mini Home Realm Discovery: given an email, return the list of {@code (customerId, identityProviderId, internal)}
+     * tuples matching through the identity provider {@code patterns} regex list.
+     * For an unknown email or one that matches no provider, returns an empty list (anti-enumeration).
+     */
+    @GetMapping(value = RestApi.CAS_HRD_PATH, params = "email")
+    @Operation(
+        operationId = "cas_resolveHrd",
+        summary = "Mini HRD: resolve an email to the list of matching (customer, IdP) tuples"
+    )
+    public List<HrdEntryDto> resolveHrd(@RequestParam final String email) {
+        LOGGER.debug("resolveHrd email={}", email);
+        ParameterChecker.checkParameter("email is mandatory : ", email);
+        SanityChecker.checkSecureParameter(email);
+        return casService.resolveHrdEntries(email);
     }
 }

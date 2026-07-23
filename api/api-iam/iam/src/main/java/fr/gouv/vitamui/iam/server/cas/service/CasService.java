@@ -56,11 +56,14 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
+import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
@@ -161,6 +164,9 @@ public class CasService {
 
     @Autowired
     private IdentityProviderService identityProviderService;
+
+    @Autowired
+    private IdentityProviderRepository identityProviderRepository;
 
     @Autowired
     private GroupService groupService;
@@ -620,28 +626,77 @@ public class CasService {
     }
 
     private void generateAndAddAuthToken(final AuthUserDto user, final boolean isSubrogation, final boolean isApi) {
-        final Token token = new Token();
-        token.setRefId(user.getId());
-        final int ttlInMinutes;
-        if (isSubrogation && user.getType() == UserTypeEnum.GENERIC) {
-            ttlInMinutes = subrogationTokenTtl;
-        } else if (isApi) {
-            ttlInMinutes = apiTokenTtl;
-        } else {
-            ttlInMinutes = tokenTtl;
-        }
-        Date currentDate = new Date();
-        token.setCreatedDate(currentDate);
-        final Date nowPlusXMinutes = DateUtils.addMinutes(currentDate, ttlInMinutes);
-        token.setUpdatedDate(nowPlusXMinutes);
-        token.setId(generateUniqueTicketId(TOKEN_PREFIX));
-        token.setSurrogation(isSubrogation);
-        tokenRepository.save(token);
+        final int ttlInMinutes = resolveTokenTtl(isSubrogation, isApi, user.getType() == UserTypeEnum.GENERIC);
+        final String tokenId = persistToken(user.getId(), isSubrogation, ttlInMinutes);
         user.setLastConnection(OffsetDateTime.now());
-        user.setAuthToken(token.getId());
+        user.setAuthToken(tokenId);
         final Query query = new Query(Criteria.where(ID).is(user.getId()));
         final Update update = Update.update(LAST_CONNECTION, user.getLastConnection());
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
+    }
+
+    /**
+     * Create an opaque auth token pointing to the given user, persisted in the {@code tokens} collection.
+     * Used by external issuers (e.g. Spring Authorization Server POC) that only need to mint a token
+     * without updating the user's lastConnection.
+     */
+    public String createAuthToken(final String userId, final boolean isSubrogation, final boolean isApi) {
+        Assert.hasText(userId, "userId must not be empty");
+        final User user = userRepository
+            .findById(userId)
+            .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_MESSAGE + userId));
+        checkStatus(user.getStatus(), user.getEmail());
+        final int ttlInMinutes = resolveTokenTtl(isSubrogation, isApi, user.getType() == UserTypeEnum.GENERIC);
+        return persistToken(userId, isSubrogation, ttlInMinutes);
+    }
+
+    private int resolveTokenTtl(boolean isSubrogation, boolean isApi, boolean userIsGeneric) {
+        if (isSubrogation && userIsGeneric) {
+            return subrogationTokenTtl;
+        }
+        if (isApi) {
+            return apiTokenTtl;
+        }
+        return tokenTtl;
+    }
+
+    /**
+     * Mini Home Realm Discovery: resolves an email to the list of (customer, identity provider) tuples
+     * that match through the identity provider {@code patterns} regex list.
+     * Mirrors the resolution logic used today by {@code IdentityProviderHelper} inside the CAS webflow,
+     * but exposed as a stateless server-side query for external issuers (e.g. Spring Authorization Server POC).
+     */
+    public List<HrdEntryDto> resolveHrdEntries(final String email) {
+        Assert.hasText(email, "email must not be empty");
+        final Iterable<IdentityProvider> providers = identityProviderRepository.findAll();
+        return java.util.stream.StreamSupport.stream(providers.spliterator(), false)
+            .filter(p -> p.getPatterns() != null && !p.getPatterns().isEmpty())
+            .filter(
+                p ->
+                    p
+                        .getPatterns()
+                        .stream()
+                        .anyMatch(
+                            pattern ->
+                                java.util.regex.Pattern.compile(pattern, java.util.regex.Pattern.CASE_INSENSITIVE)
+                                    .matcher(email)
+                                    .matches()
+                        )
+            )
+            .map(p -> new HrdEntryDto(p.getCustomerId(), p.getId(), Boolean.TRUE.equals(p.getInternal())))
+            .collect(Collectors.toList());
+    }
+
+    private String persistToken(final String userId, final boolean isSubrogation, final int ttlInMinutes) {
+        final Token token = new Token();
+        token.setRefId(userId);
+        final Date currentDate = new Date();
+        token.setCreatedDate(currentDate);
+        token.setUpdatedDate(DateUtils.addMinutes(currentDate, ttlInMinutes));
+        token.setId(generateUniqueTicketId(TOKEN_PREFIX));
+        token.setSurrogation(isSubrogation);
+        tokenRepository.save(token);
+        return token.getId();
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {

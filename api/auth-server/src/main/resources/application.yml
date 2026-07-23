@@ -1,0 +1,29 @@
+server:
+  port: 9443
+  ssl:
+    enabled: false
+
+spring:
+  application:
+    name: auth-server
+  thymeleaf:
+    enabled: false
+
+vitam:
+  security:
+    jwt:
+      public-key-path: classpath:certs/public.pem
+      private-key-path: classpath:certs/private.pem
+
+vitamui:
+  auth-server:
+    issuer: http://localhost:${server.port}
+    iam:
+      base-url: http://localhost:9000
+      internal-application-id: auth-server
+    portal-client:
+      client-id: portal
+      redirect-uri: https://dev.vitamui.com:4200/
+      post-logout-redirect-uri: https://dev.vitamui.com:4200/
+    token:
+      access-token-ttl-minutes: 240

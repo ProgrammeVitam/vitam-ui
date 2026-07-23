@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vitam-UI · Authentification</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Connexion Vitam-UI</h1>
+      <p class="subtitle">POC Spring Authorization Server</p>
+
+      <section id="step-email">
+        <label for="email">Adresse email</label>
+        <input id="email" type="email" autocomplete="username" required />
+        <button type="button" id="btn-resolve">Continuer</button>
+      </section>
+
+      <section id="step-password" hidden>
+        <label>Adresse email</label>
+        <input id="email-readonly" type="email" readonly />
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" autocomplete="current-password" required />
+        <button type="button" id="btn-authenticate">Se connecter</button>
+        <button type="button" class="link" id="btn-back">← Changer d'email</button>
+      </section>
+
+      <div id="error" class="error" hidden></div>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
