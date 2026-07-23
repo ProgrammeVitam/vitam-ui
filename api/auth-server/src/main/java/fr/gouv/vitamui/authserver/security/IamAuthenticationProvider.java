@@ -12,6 +12,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.FactorGrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -50,11 +52,13 @@ public class IamAuthenticationProvider implements AuthenticationProvider {
             if (user == null) {
                 throw new BadCredentialsException("IAM returned no user");
             }
-            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
-                user,
-                null,
-                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+            // Spring Security 7 / SAS 7 require a FactorGrantedAuthority carrying an issuedAt so JwtGenerator
+            // can populate the OIDC id_token auth_time claim.
+            List<GrantedAuthority> authorities = List.of(
+                new SimpleGrantedAuthority("ROLE_USER"),
+                FactorGrantedAuthority.fromAuthority(FactorGrantedAuthority.PASSWORD_AUTHORITY)
             );
+            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(user, null, authorities);
             result.setDetails(authentication.getDetails());
             return result;
         } catch (IamClient.BadCredentialsClientException e) {

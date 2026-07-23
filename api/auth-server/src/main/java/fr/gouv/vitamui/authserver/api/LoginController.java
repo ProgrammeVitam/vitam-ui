@@ -67,23 +67,17 @@ public class LoginController {
     private final RequestCache requestCache = new HttpSessionRequestCache();
 
     @PostMapping("/resolve")
-    public ResponseEntity<?> resolve(@RequestBody HrdRequest request) {
+    public ResponseEntity<ResolveResponse> resolve(@RequestBody HrdRequest request) {
         List<HrdEntryDto> entries = iamClient.resolveHrd(request.getEmail());
         LOGGER.info("HRD resolve email={} → {} matching entries: {}", request.getEmail(), entries.size(), entries);
         if (entries.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        if (entries.size() > 1) {
-            LOGGER.warn(
-                "HRD resolve email={} matched multiple entries — POC Phase 1 only supports N=1. Entries: {}",
-                request.getEmail(),
-                entries
-            );
-            return ResponseEntity.status(409).body(entries);
+        if (entries.size() == 1) {
+            HrdEntryDto entry = entries.get(0);
+            return ResponseEntity.ok(ResolveResponse.single(entry));
         }
-        HrdEntryDto entry = entries.get(0);
-        String providerType = entry.isInternal() ? "internal" : "external";
-        return ResponseEntity.ok(new ResolveResponse(entry.getCustomerId(), entry.getIdentityProviderId(), providerType));
+        return ResponseEntity.ok(ResolveResponse.multi(entries));
     }
 
     @PostMapping("/authenticate")
@@ -124,9 +118,30 @@ public class LoginController {
 
     @Data
     public static class ResolveResponse {
+
+        private final boolean needsCustomerSelection;
         private final String customerId;
+        private final String customerName;
         private final String identityProviderId;
+        private final String identityProviderName;
         private final String providerType;
+        private final List<HrdEntryDto> entries;
+
+        public static ResolveResponse single(HrdEntryDto e) {
+            return new ResolveResponse(
+                false,
+                e.getCustomerId(),
+                e.getCustomerName(),
+                e.getIdentityProviderId(),
+                e.getIdentityProviderName(),
+                e.isInternal() ? "internal" : "external",
+                null
+            );
+        }
+
+        public static ResolveResponse multi(List<HrdEntryDto> entries) {
+            return new ResolveResponse(true, null, null, null, null, null, entries);
+        }
     }
 
     @Data

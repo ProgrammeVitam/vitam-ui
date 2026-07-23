@@ -8,12 +8,13 @@ package fr.gouv.vitamui.authserver.security;
 
 import fr.gouv.vitamui.authserver.config.AuthServerProperties;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
-import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -26,8 +27,15 @@ import java.util.HashSet;
  * <p>The resulting {@link OAuth2AccessToken} value is directly usable as a Bearer against every vitam-ui Resource
  * Server without any modification (the existing {@code iam-security} filter resolves it through {@code /users/me}).
  */
-@Component
+/**
+ * Not a {@code @Component} on purpose: SAS resolves its {@link OAuth2TokenGenerator} bean through
+ * {@code getBeanProvider(OAuth2TokenGenerator.class).getIfUnique()} which returns {@code null} when
+ * multiple beans of the type exist. This generator lives only inside the composite built in
+ * {@link fr.gouv.vitamui.authserver.config.AuthorizationServerConfig#tokenGenerator}.
+ */
 public class OpaqueVitamTokenGenerator implements OAuth2TokenGenerator<OAuth2AccessToken> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OpaqueVitamTokenGenerator.class);
 
     private final IamClient iamClient;
     private final Duration ttl;
@@ -40,15 +48,24 @@ public class OpaqueVitamTokenGenerator implements OAuth2TokenGenerator<OAuth2Acc
     @Override
     public OAuth2AccessToken generate(OAuth2TokenContext context) {
         if (!OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
+            LOGGER.debug("Skipping opaque generator: token type is {} (expected ACCESS_TOKEN)", context.getTokenType());
             return null;
         }
 
         UserDto user = extractUser(context.getPrincipal());
         if (user == null || user.getId() == null) {
+            LOGGER.warn(
+                "Skipping opaque generator: could not extract UserDto from principal. principal class={}, inner class={}",
+                context.getPrincipal() != null ? context.getPrincipal().getClass().getName() : "null",
+                context.getPrincipal() != null && context.getPrincipal().getPrincipal() != null
+                    ? context.getPrincipal().getPrincipal().getClass().getName()
+                    : "null"
+            );
             return null;
         }
 
         String opaqueTokenId = iamClient.createOpaqueAuthToken(user.getId(), false, false);
+        LOGGER.info("Issued opaque TOK for userId={} email={}", user.getId(), user.getEmail());
         Instant issuedAt = Instant.now();
         Instant expiresAt = issuedAt.plus(ttl);
         return new OAuth2AccessToken(

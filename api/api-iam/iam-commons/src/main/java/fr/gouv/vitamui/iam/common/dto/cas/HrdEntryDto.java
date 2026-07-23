@@ -24,7 +24,11 @@ public class HrdEntryDto {
 
     private String customerId;
 
+    private String customerName;
+
     private String identityProviderId;
+
+    private String identityProviderName;
 
     /** {@code true} if the matched IdP is the local username/password provider (Apereo &quot;internal&quot;). */
     private boolean internal;

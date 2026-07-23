@@ -669,7 +669,7 @@ public class CasService {
     public List<HrdEntryDto> resolveHrdEntries(final String email) {
         Assert.hasText(email, "email must not be empty");
         final Iterable<IdentityProvider> providers = identityProviderRepository.findAll();
-        return java.util.stream.StreamSupport.stream(providers.spliterator(), false)
+        final List<IdentityProvider> matches = java.util.stream.StreamSupport.stream(providers.spliterator(), false)
             .filter(p -> p.getPatterns() != null && !p.getPatterns().isEmpty())
             .filter(
                 p ->
@@ -683,7 +683,33 @@ public class CasService {
                                     .matches()
                         )
             )
-            .map(p -> new HrdEntryDto(p.getCustomerId(), p.getId(), Boolean.TRUE.equals(p.getInternal())))
+            .collect(Collectors.toList());
+
+        if (matches.isEmpty()) {
+            return List.of();
+        }
+
+        final Set<String> customerIds = matches
+            .stream()
+            .map(IdentityProvider::getCustomerId)
+            .collect(Collectors.toSet());
+        final Map<String, String> customerNamesById = new HashMap<>();
+        customerRepository
+            .findAllById(customerIds)
+            .forEach(customer -> customerNamesById.put(customer.getId(), customer.getName()));
+
+        return matches
+            .stream()
+            .map(
+                p ->
+                    new HrdEntryDto(
+                        p.getCustomerId(),
+                        customerNamesById.getOrDefault(p.getCustomerId(), p.getCustomerId()),
+                        p.getId(),
+                        p.getName(),
+                        Boolean.TRUE.equals(p.getInternal())
+                    )
+            )
             .collect(Collectors.toList());
     }
 

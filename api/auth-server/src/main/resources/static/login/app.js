@@ -49,36 +49,73 @@ async function resolve() {
   if (response.status === 404) {
     return showError("Aucune organisation associée à cet email.");
   }
-  if (response.status === 409) {
-    let details = '';
-    try {
-      const entries = await response.json();
-      if (Array.isArray(entries) && entries.length > 0) {
-        details =
-          ' Organisations: ' +
-          entries.map((e) => `${e.customerId}/${e.identityProviderId}${e.internal ? ' (interne)' : ' (externe)'}`).join(', ');
-      }
-    } catch (_) {}
-    console.warn('HRD returned multiple entries', details);
-    return showError('Plusieurs organisations trouvées : cas non supporté par le POC (Phase 2).' + details);
-  }
   if (!response.ok) {
     return showError('Erreur de résolution HRD (' + response.status + '). IAM est-il démarré ?');
   }
   const data = await response.json();
   state.email = email;
-  state.customerId = data.customerId;
-  state.providerId = data.identityProviderId;
-  state.providerType = data.providerType;
+
+  if (data.needsCustomerSelection) {
+    showCustomerChoice(data.entries || []);
+    return;
+  }
+
+  applySelectedEntry({
+    customerId: data.customerId,
+    identityProviderId: data.identityProviderId,
+    providerType: data.providerType,
+    customerName: data.customerName,
+    identityProviderName: data.identityProviderName,
+    internal: data.providerType === 'internal',
+  });
+}
+
+function showCustomerChoice(entries) {
+  const container = $('customer-list');
+  container.replaceChildren();
+  entries.forEach((entry) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'customer-choice';
+    const providerBadgeClass = entry.internal ? 'badge' : 'badge external';
+    const providerLabel = entry.internal ? 'interne' : 'externe';
+    btn.innerHTML =
+      '<span class="name">' + escapeHtml(entry.customerName || entry.customerId) + '</span>' +
+      '<span class="provider">via ' + escapeHtml(entry.identityProviderName || entry.identityProviderId) +
+      ' <span class="' + providerBadgeClass + '">' + providerLabel + '</span></span>';
+    btn.addEventListener('click', () => applySelectedEntry(entry));
+    container.appendChild(btn);
+  });
+  $('step-email').hidden = true;
+  $('step-customer').hidden = false;
+}
+
+function applySelectedEntry(entry) {
+  state.customerId = entry.customerId;
+  state.providerId = entry.identityProviderId;
+  state.providerType = entry.providerType || (entry.internal ? 'internal' : 'external');
 
   if (state.providerType !== 'internal') {
-    return showError("Fournisseur d'identité externe non supporté par le POC (Phase 2).");
+    return showError(
+      "Fournisseur d'identité externe (" + (entry.identityProviderName || entry.identityProviderId) +
+        ') non supporté par le POC pour l\'instant.'
+    );
   }
 
   $('step-email').hidden = true;
+  $('step-customer').hidden = true;
   $('step-password').hidden = false;
   $('email-readonly').value = state.email;
   $('password').focus();
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 async function authenticate() {
@@ -114,6 +151,7 @@ async function authenticate() {
 function back() {
   clearError();
   $('step-password').hidden = true;
+  $('step-customer').hidden = true;
   $('step-email').hidden = false;
   $('password').value = '';
 }
@@ -122,6 +160,7 @@ function bindHandlers() {
   $('btn-resolve').addEventListener('click', resolve);
   $('btn-authenticate').addEventListener('click', authenticate);
   $('btn-back').addEventListener('click', back);
+  $('btn-back-customer').addEventListener('click', back);
   $('email').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') resolve();
   });

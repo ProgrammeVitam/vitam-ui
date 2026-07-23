@@ -72,6 +72,45 @@ button.link {
   color: #3b82f6;
   padding: 0.35rem;
 }
+button.customer-choice {
+  display: block;
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  text-align: left;
+  font-weight: 400;
+  cursor: pointer;
+}
+button.customer-choice:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+button.customer-choice .name {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+button.customer-choice .provider {
+  font-size: 0.825rem;
+  color: #64748b;
+}
+button.customer-choice .badge {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  margin-left: 0.35rem;
+}
+button.customer-choice .badge.external {
+  background: #fef3c7;
+  color: #92400e;
+}
 button.link:hover {
   background: rgba(59, 130, 246, 0.08);
 }

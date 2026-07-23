@@ -36,7 +36,11 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import fr.gouv.vitamui.authserver.security.IamAuthenticationProvider;
+import fr.gouv.vitamui.authserver.security.IamClient;
 import fr.gouv.vitamui.authserver.security.OpaqueVitamTokenGenerator;
+import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationConverter;
+import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationProvider;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 
 import java.security.interfaces.RSAPublicKey;
 
@@ -48,11 +52,22 @@ public class AuthorizationServerConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(
         HttpSecurity http,
-        CorsConfigurationSource corsConfigurationSource
+        CorsConfigurationSource corsConfigurationSource,
+        RegisteredClientRepository registeredClientRepository
     ) throws Exception {
         http.oauth2AuthorizationServer(authorizationServer -> {
             http.securityMatcher(authorizationServer.getEndpointsMatcher());
             authorizationServer.oidc(Customizer.withDefaults());
+            // Allow public (PKCE) clients to hit /oauth2/revoke with just client_id — RFC 7009 permits this,
+            // SAS enforces client auth by default.
+            authorizationServer.clientAuthentication(clientAuth -> {
+                clientAuth.authenticationConverter(
+                    new PublicClientRevocationAuthenticationConverter(registeredClientRepository)
+                );
+                clientAuth.authenticationProvider(
+                    new PublicClientRevocationAuthenticationProvider(registeredClientRepository)
+                );
+            });
         });
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource));
@@ -113,12 +128,18 @@ public class AuthorizationServerConfig {
      * Composite token generator: opaque access token (persisted in Mongo via IAM) + JWT id_token (OIDC) + refresh token.
      * Order matters: {@link OpaqueVitamTokenGenerator} is consulted first for access_token; it returns {@code null}
      * for other token types, letting {@link JwtGenerator} emit the id_token.
+     * <p>
+     * Must be the ONLY {@link OAuth2TokenGenerator} bean in the context — SAS uses
+     * {@code getBeanProvider(...).getIfUnique()} which returns {@code null} when several beans exist and falls back
+     * to a default composite that emits base64url opaque tokens (not our {@code TOK-<UUID>} format).
      */
     @Bean
     public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator(
         NimbusJwtEncoder jwtEncoder,
-        OpaqueVitamTokenGenerator opaqueVitamTokenGenerator
+        IamClient iamClient,
+        AuthServerProperties properties
     ) {
+        OpaqueVitamTokenGenerator opaqueVitamTokenGenerator = new OpaqueVitamTokenGenerator(iamClient, properties);
         JwtGenerator jwtGenerator = new JwtGenerator(jwtEncoder);
         OAuth2AccessTokenGenerator fallbackAccessTokenGenerator = new OAuth2AccessTokenGenerator();
         OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
