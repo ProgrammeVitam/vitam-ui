@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/lib/components/filing-plan/node.component.scss"],
+  "sourcesContent": [":host {\n  display: flex;\n  width: 100%;\n  align-items: center;\n\n  .hover-btn {\n    transform: translateX(20%);\n    transition:\n      transform 100ms ease-out,\n      opacity 100ms ease-out;\n    opacity: 0;\n  }\n\n  &:hover {\n    .hover-btn {\n      transform: translateX(20%);\n      transition:\n        transform 100ms ease-out,\n        opacity 100ms ease-out;\n      opacity: 0;\n    }\n\n    &:hover {\n      .hover-btn {\n        transform: translateX(0);\n        opacity: 1;\n      }\n    }\n  }\n}\n\n.node-label {\n  flex-grow: 1;\n  padding: 10px 0;\n}\n"],
+  "mappings": "AAAA,MACE,QAAA,KACA,MAAA,KACA,YAAA,OAEA,MAAA,CAAA,UACE,UAAA,UAAA,KACA,WACE,UAAA,IAAA,QAAA,CAAA,QAAA,IAAA,SAEF,QAAA,EAIA,KAAA,OAAA,CATF,UAUI,UAAA,UAAA,KACA,WACE,UAAA,IAAA,QAAA,CAAA,QAAA,IAAA,SAEF,QAAA,EAIA,KAAA,MAAA,OAAA,CAlBJ,UAmBM,UAAA,UAAA,GACA,QAAA,EAMR,CAAA,WACE,UAAA,EAhCF,QAiCE,KAAA",
+  "names": []
+}

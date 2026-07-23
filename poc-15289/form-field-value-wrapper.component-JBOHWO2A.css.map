@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/lib/components/form-field-value-wrapper/form-field-value-wrapper.component.scss"],
+  "sourcesContent": [".editable-field-actions {\n  margin: 5px 0 5px 10px;\n}\n"],
+  "mappings": "AAAA,CAAA,uBAAA,OACE,IAAA,EAAA,IAAA",
+  "names": []
+}

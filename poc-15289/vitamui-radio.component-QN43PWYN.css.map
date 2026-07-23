@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["projects/vitamui-library/src/lib/components/vitamui-radio/vitamui-radio.component.scss"],
+  "sourcesContent": ["input[type='radio'] {\n  position: absolute;\n  visibility: hidden;\n  display: none;\n}\n\n.radio-label {\n  color: var(--vitamui-primary);\n  display: inline-block;\n  cursor: pointer;\n  font-weight: bold;\n  padding: 5px 20px;\n\n  span {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n  }\n}\n\n.radio-label.checked {\n  color: var(--vitamui-white);\n  background: var(--vitamui-primary);\n}\n"],
+  "mappings": "AAAA,KAAA,CAAA,YACE,SAAA,SACA,WAAA,OACA,QAAA,KAGF,CAAA,YACE,MAAA,IAAA,mBACA,QAAA,aACA,OAAA,QACA,YAAA,IAVF,QAWE,IAAA,KAEA,CAPF,YAOE,KACE,oBAAA,KACA,iBAAA,KACA,gBAAA,KACA,YAAA,KAIJ,CAfA,WAeA,CAAA,QACE,MAAA,IAAA,iBACA,WAAA,IAAA",
+  "names": []
+}
