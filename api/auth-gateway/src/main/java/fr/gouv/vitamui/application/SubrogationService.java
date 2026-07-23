@@ -27,32 +27,86 @@
 
 package fr.gouv.vitamui.application;
 
-import fr.gouv.vitamui.domain.AccountType;
+import fr.gouv.vitamui.api.AccessTokenResponse;
+import fr.gouv.vitamui.api.SubrogationRequest;
 import fr.gouv.vitamui.domain.ApplicationUser;
-import fr.gouv.vitamui.domain.SubrogationWindow;
+import fr.gouv.vitamui.domain.Identity;
+import fr.gouv.vitamui.domain.SecurityContext;
+import fr.gouv.vitamui.domain.ports.IdentityProviderResolver;
 import fr.gouv.vitamui.domain.ports.SubrogationRepository;
+import fr.gouv.vitamui.domain.ports.TokenGenerator;
+import fr.gouv.vitamui.exception.SubrogationNotAllowedException;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service de contrôle des règles métier de subrogation.
+ *
+ * <p>Règles :
+ * <ul>
+ *   <li><b>GENERIC</b> : peut être subrogé par tout utilisateur portant le rôle ROLE_SUBROGATION.</li>
+ *   <li><b>NOMINATIVE</b> : peut être subrogé uniquement par un utilisateur portant le rôle ROLE_SUBROGATION
+ *       ET uniquement pendant une fenêtre de temps active accordée explicitement.</li>
+ *   <li><b>SERVICE</b> : ne peut jamais être subrogé.</li>
+ * </ul>
+ */
 @Service
 @RequiredArgsConstructor
 public class SubrogationService {
 
+    public final String ROLE_SUBROGATION = "ROLE_SUBROGATION";
+
+    private final IdentityProviderResolver resolver;
+    private final TokenGenerator generator;
+    private final SecurityContextService securityContextService;
     private final SubrogationRepository repository;
 
-    public boolean allowed(ApplicationUser admin, ApplicationUser target) {
-        if (target.accountType() == AccountType.GENERIC) {
-            return isAdmin(admin);
+    /**
+     * Subrogation explicite : l'administrateur prend l'identité du compte cible.
+     * Le jeton retourné porte les droits du compte subrogé, avec une durée de vie réduite.
+     */
+    public AccessTokenResponse subrogate(String identityToken, SubrogationRequest request) {
+        Identity identity = resolver.authenticate(identityToken);
+        SecurityContext adminContext = securityContextService.create(identity);
+
+        ApplicationUser targetUser = securityContextService.resolveTargetUser(
+            request.getSurrogateUserEmail(),
+            request.getSurrogateCustomerId()
+        );
+
+        if (!allowed(adminContext.authenticatedUser(), targetUser)) {
+            throw new SubrogationNotAllowedException(targetUser.id().toString());
         }
 
-        if (target.accountType() == AccountType.NOMINATIVE) {
-            return repository.findActive(target.id()).map(SubrogationWindow::active).orElse(false);
-        }
-
-        return false;
+        SecurityContext subrogatedContext = securityContextService.subrogate(adminContext, targetUser);
+        String accessToken = generator.generate(subrogatedContext);
+        return new AccessTokenResponse(accessToken);
     }
 
-    private boolean isAdmin(ApplicationUser user) {
-        return user.accountType() == AccountType.SERVICE || user.login().equals("super-admin");
+    boolean allowed(ApplicationUser subrogator, ApplicationUser target) {
+        if (!hasSubrogationRole(subrogator)) {
+            return false;
+        }
+
+        return switch (target.accountType()) {
+            case GENERIC -> true;
+            case NOMINATIVE -> hasActiveSubrogation(subrogator, target);
+        };
+    }
+
+    private boolean hasSubrogationRole(ApplicationUser user) {
+        return user.permissions() != null && user.permissions().contains(ROLE_SUBROGATION);
+    }
+
+    /**
+     * Une subrogation "active" = un document encore présent en base (le TTL Mongo sur
+     * `date` supprime automatiquement les subrogations expirées) et au statut ACCEPTED.
+     */
+    private boolean hasActiveSubrogation(ApplicationUser subrogator, ApplicationUser target) {
+        return repository
+            .findBySuperUserAndSurrogate(subrogator.login(), target.login())
+            .map(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)
+            .orElse(false);
     }
 }

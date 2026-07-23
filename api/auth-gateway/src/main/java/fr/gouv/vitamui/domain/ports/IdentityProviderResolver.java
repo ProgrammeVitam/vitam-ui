@@ -14,12 +14,11 @@ public class IdentityProviderResolver {
     private final List<IdentityProvider> providers = new ArrayList<>();
     private final JwtDecoder jwtDecoder;
 
-    public IdentityProviderResolver(JwtDecoder jwtDecoder) {
+    public IdentityProviderResolver(JwtDecoder jwtDecoder, List<IdentityProvider> providers) {
         this.jwtDecoder = jwtDecoder;
-    }
-
-    public void addProvider(IdentityProvider provider) {
-        this.providers.add(provider);
+        if (providers != null) {
+            this.providers.addAll(providers);
+        }
     }
 
     public Identity authenticate(String token) {
@@ -28,7 +27,8 @@ public class IdentityProviderResolver {
         String issuer = jwt.getIssuer().toString();
 
         // 2. Trouver le provider qui supporte cet émetteur
-        return providers.stream()
+        return providers
+            .stream()
             .filter(p -> p.supports(issuer))
             .findFirst()
             .orElseThrow(() -> new RuntimeException("No provider found for issuer: " + issuer))

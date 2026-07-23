@@ -27,34 +27,31 @@
 
 package fr.gouv.vitamui.application;
 
+import fr.gouv.vitamui.api.AccessTokenRequest;
 import fr.gouv.vitamui.api.AccessTokenResponse;
-import fr.gouv.vitamui.domain.ApplicationUser;
 import fr.gouv.vitamui.domain.Identity;
 import fr.gouv.vitamui.domain.SecurityContext;
 import fr.gouv.vitamui.domain.ports.IdentityProviderResolver;
 import fr.gouv.vitamui.domain.ports.TokenGenerator;
-import fr.gouv.vitamui.domain.ports.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
     private final IdentityProviderResolver resolver;
-
     private final TokenGenerator generator;
-
     private final SecurityContextService securityContextService;
 
-    public AccessTokenResponse exchange(String identityToken) {
+    /**
+     * Échange standard : jeton d'identité IdP → jeton d'accès applicatif Vitam-UI.
+     * Aucune logique de subrogation ici.
+     */
+    public AccessTokenResponse exchange(String identityToken, AccessTokenRequest request) {
         Identity identity = resolver.authenticate(identityToken);
         SecurityContext context = securityContextService.create(identity);
         String accessToken = generator.generate(context);
-
         return new AccessTokenResponse(accessToken);
     }
 }

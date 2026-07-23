@@ -27,11 +27,10 @@
 
 package fr.gouv.vitamui.domain.ports;
 
-import fr.gouv.vitamui.domain.SubrogationWindow;
+import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface SubrogationRepository {
-    Optional<SubrogationWindow> findActive(UUID userId);
+    Optional<Subrogation> findBySuperUserAndSurrogate(String superUser, String surrogate);
 }

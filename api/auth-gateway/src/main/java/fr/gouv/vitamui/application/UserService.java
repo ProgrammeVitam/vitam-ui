@@ -44,4 +44,8 @@ public class UserService {
             .findByProviderAndExternalId(identity.provider(), identity.externalId())
             .orElseThrow(() -> new RuntimeException("Unknown user"));
     }
+
+    public java.util.Optional<ApplicationUser> findByEmailAndCustomerId(String email, String customerId) {
+        return repository.findByEmailAndCustomerId(email, customerId);
+    }
 }

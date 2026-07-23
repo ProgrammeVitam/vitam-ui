@@ -39,4 +39,3 @@ public class JwtTokenGenerator implements TokenGenerator {
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }
-

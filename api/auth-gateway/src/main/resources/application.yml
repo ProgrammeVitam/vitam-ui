@@ -8,6 +8,12 @@ spring:
 server:
   port: 8666
 
+vitam:
+  security:
+    jwt:
+      public-key-path: classpath:certs/vitam-public.pem
+      private-key-path: classpath:certs/vitam-private.pem
+
 auth-gateway:
   access-token:
     issuer: http://localhost:${server.port}

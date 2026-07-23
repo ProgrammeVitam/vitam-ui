@@ -27,10 +27,15 @@
 
 package fr.gouv.vitamui.api;
 
+import com.nimbusds.jwt.JWT;
 import fr.gouv.vitamui.application.AuthenticationService;
+import fr.gouv.vitamui.application.SubrogationService;
+import fr.gouv.vitamui.domain.IdentityToken;
+import fr.gouv.vitamui.domain.JsonWebToken;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,11 +45,29 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final SubrogationService subrogationService;
 
+    /**
+     * Échange un jeton d'identité IdP contre un jeton d'accès applicatif Vitam-UI.
+     * Contexte de connexion standard : identification + choix d'organisation.
+     */
     @PostMapping("/exchange")
-    public AccessTokenResponse exchange(@RequestHeader("Authorization") String authorization) {
-        String authToken = authorization.substring(7);
+    public AccessTokenResponse exchange(
+        @AuthenticationPrincipal JWT jwt,
+        @RequestBody(required = false) AccessTokenRequest request
+    ) {
+        // String identityToken = authorization.substring(7);
+        JsonWebToken identityToken = new IdentityToken(jwt.serialize());
+        return authenticationService.exchange(identityToken.bearer(), request);
+    }
 
-        return authenticationService.exchange(authToken);
+    /**
+     * Émet un jeton d'accès applicatif en mode subrogation.
+     * L'administrateur (porteur du jeton d'identité) prend l'identité du compte cible.
+     */
+    @PostMapping("/subrogate")
+    public AccessTokenResponse subrogate(@AuthenticationPrincipal JWT jwt, @RequestBody SubrogationRequest request) {
+        JsonWebToken identityToken = new IdentityToken(jwt.serialize());
+        return subrogationService.subrogate(identityToken.bearer(), request);
     }
 }

@@ -25,51 +25,25 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.application;
+package fr.gouv.vitamui.infrastructure.security;
 
-import fr.gouv.vitamui.domain.ApplicationUser;
-import fr.gouv.vitamui.domain.Identity;
-import fr.gouv.vitamui.domain.SecurityContext;
-import fr.gouv.vitamui.exception.AccessDeniedException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 
-import java.time.Instant;
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
 
-import static java.time.temporal.ChronoUnit.HOURS;
-import static java.time.temporal.ChronoUnit.MINUTES;
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated());
 
-@Service
-@RequiredArgsConstructor
-public class SecurityContextService {
-
-    private final UserService users;
-    private final SubrogationService subrogation;
-
-    public SecurityContext create(Identity identity) {
-        ApplicationUser user = users.resolve(identity);
-
-        return new SecurityContext(identity, user, user, false, Instant.now(), Instant.now().plus(1, HOURS));
-    }
-
-    public SecurityContext subrogate(SecurityContext context, ApplicationUser target) {
-        if (!subrogation.allowed(context.authenticatedUser(), target)) {
-            throw new AccessDeniedException("Subrogation refused");
-        }
-
-        return new SecurityContext(
-            context.identity(),
-            context.authenticatedUser(),
-            target,
-            true,
-            Instant.now(),
-            Instant.now().plus(15, MINUTES)
-        );
-    }
-
-    public ApplicationUser resolveTargetUser(String email, String customerId) {
-        return users
-            .findByEmailAndCustomerId(email, customerId)
-            .orElseThrow(() -> new AccessDeniedException("Target user for subrogation not found"));
+        return http.build();
     }
 }

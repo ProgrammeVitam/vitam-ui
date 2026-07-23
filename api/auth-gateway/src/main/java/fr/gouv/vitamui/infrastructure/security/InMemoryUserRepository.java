@@ -25,51 +25,51 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.application;
+package fr.gouv.vitamui.infrastructure.security;
 
+import fr.gouv.vitamui.application.SubrogationService;
+import fr.gouv.vitamui.domain.AccountType;
 import fr.gouv.vitamui.domain.ApplicationUser;
-import fr.gouv.vitamui.domain.Identity;
-import fr.gouv.vitamui.domain.SecurityContext;
-import fr.gouv.vitamui.exception.AccessDeniedException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import fr.gouv.vitamui.domain.ports.UserRepository;
+import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
-import static java.time.temporal.ChronoUnit.HOURS;
-import static java.time.temporal.ChronoUnit.MINUTES;
+@Repository
+public class InMemoryUserRepository implements UserRepository {
 
-@Service
-@RequiredArgsConstructor
-public class SecurityContextService {
-
-    private final UserService users;
-    private final SubrogationService subrogation;
-
-    public SecurityContext create(Identity identity) {
-        ApplicationUser user = users.resolve(identity);
-
-        return new SecurityContext(identity, user, user, false, Instant.now(), Instant.now().plus(1, HOURS));
-    }
-
-    public SecurityContext subrogate(SecurityContext context, ApplicationUser target) {
-        if (!subrogation.allowed(context.authenticatedUser(), target)) {
-            throw new AccessDeniedException("Subrogation refused");
-        }
-
-        return new SecurityContext(
-            context.identity(),
-            context.authenticatedUser(),
-            target,
+    private final List<ApplicationUser> users = List.of(
+        new ApplicationUser(
+            UUID.fromString("00000000-0000-0000-0000-000000000001"),
+            "super-admin",
+            AccountType.GENERIC,
             true,
-            Instant.now(),
-            Instant.now().plus(15, MINUTES)
-        );
+            Set.of("ROLE_ADMIN", "ROLE_SUPER_ADMIN", SubrogationService.ROLE_SUBROGATION),
+            List.of("AGENCY_01")
+        ),
+        new ApplicationUser(
+            UUID.fromString("00000000-0000-0000-0000-000000000002"),
+            "agent.archive@vitamui.fr",
+            AccountType.NOMINATIVE,
+            true,
+            Set.of("ROLE_USER"),
+            List.of("AGENCY_01")
+        )
+    );
+
+    @Override
+    public Optional<ApplicationUser> findByProviderAndExternalId(String provider, String externalId) {
+        return users
+            .stream()
+            .filter(u -> u.login().equalsIgnoreCase(externalId) || u.login().equalsIgnoreCase("super-admin"))
+            .findFirst();
     }
 
-    public ApplicationUser resolveTargetUser(String email, String customerId) {
-        return users
-            .findByEmailAndCustomerId(email, customerId)
-            .orElseThrow(() -> new AccessDeniedException("Target user for subrogation not found"));
+    @Override
+    public Optional<ApplicationUser> findByEmailAndCustomerId(String email, String customerId) {
+        return users.stream().filter(u -> u.login().equalsIgnoreCase(email)).findFirst();
     }
 }

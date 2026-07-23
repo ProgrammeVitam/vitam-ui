@@ -33,4 +33,5 @@ import java.util.Optional;
 
 public interface UserRepository {
     Optional<ApplicationUser> findByProviderAndExternalId(String provider, String externalId);
+    Optional<ApplicationUser> findByEmailAndCustomerId(String email, String customerId);
 }

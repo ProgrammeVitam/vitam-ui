@@ -229,3 +229,6 @@ export * from './app/modules/preservation/griffins/griffin.type';
 export * from './app/modules/preservation/griffins/griffins.service';
 export * from './app/modules/preservation/scenarios/preservation-scenario.type';
 export * from './app/modules/preservation/scenarios/preservation-scenarios.service';
+
+export * from './app/modules/authentication/services/auth-gateway.service';
+export * from './app/modules/authentication/services/gateway-authenticator.service';

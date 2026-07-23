@@ -30,5 +30,4 @@ package fr.gouv.vitamui.domain;
 public enum AccountType {
     GENERIC,
     NOMINATIVE,
-    SERVICE,
 }

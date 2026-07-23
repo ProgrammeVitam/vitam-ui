@@ -27,19 +27,15 @@
 
 package fr.gouv.vitamui.domain;
 
-import java.time.Instant;
-import java.util.UUID;
+public record IdentityToken(String value) implements JsonWebToken {
+    public IdentityToken {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException("Token vide");
+        }
+    }
 
-public record SubrogationWindow(
-    UUID userId,
-
-    Instant validFrom,
-
-    Instant validUntil
-) {
-    public boolean active() {
-        Instant now = Instant.now();
-
-        return now.isAfter(validFrom) && now.isBefore(validUntil);
+    @Override
+    public String bearer() {
+        return value;
     }
 }
