@@ -61,4 +61,7 @@ public class RestApi {
 
     public static final String REASSIGNMENT_ACTION = "/reassignment";
     public static final String CHECK_ENTRY_OPERATION_IDS = "/check-operation-ids";
+
+    public static final String PRESERVATION = "/preservation";
+    public static final String PRESERVATION_OBJECT_GROUPS_COUNT = "/preservation/object-groups-count";
 }

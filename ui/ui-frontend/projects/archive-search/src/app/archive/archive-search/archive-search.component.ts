@@ -118,6 +118,7 @@ import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/trans
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ReassignmentDialogService } from './additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
+import { PreservationDialogService } from './additional-actions-search/preservation-dialog/preservation-dialog.service';
 import { ReassignmentMode } from '../models/reassign-request.interface';
 
 const PAGE_SIZE = 10;
@@ -157,6 +158,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private searchCriteriaService = inject(SearchCriteriaService);
   private ruleService = inject(RuleService);
   private reassignmentDialogService = inject(ReassignmentDialogService);
+  private preservationDialogService = inject(PreservationDialogService);
   protected configService = inject(ConfigService);
   private securityService = inject(SecurityService);
   private vitamConfigurationService = inject(VitamTenantConfigService);
@@ -189,6 +191,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
   hasReclassificationRole = false;
+  hasPreservationRole = false;
   waitingToGetFixedCount = false;
   showDuaEndDate = false;
   pending = false;
@@ -466,6 +469,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.checkUserHasRole(VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_RECLASSIFICATION, +this.tenantIdentifier);
     this.checkUserHasRole(VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT, +this.tenantIdentifier);
+    this.checkUserHasRole(VitamuiRoles.ROLE_LAUNCH_PRESERVATION, +this.tenantIdentifier);
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
     this.managementRulesSharedDataService.emitManagementRules([]);
@@ -1093,6 +1097,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         case VitamuiRoles.ROLE_RECLASSIFICATION:
           this.hasReclassificationRole = result;
           break;
+        case VitamuiRoles.ROLE_LAUNCH_PRESERVATION:
+          this.hasPreservationRole = result;
+          break;
         case VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT:
           this.hasTransferAcknowledgmentRole = result;
           break;
@@ -1201,6 +1208,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     } else {
       this.reassignmentDialogService.launchEntryOperationReassignmentModal(this.tenantIdentifier, this.accessContractId);
     }
+  }
+
+  async launchPreservationModal() {
+    await this.launchBulkOperationWorkflow(
+      () =>
+        this.preservationDialogService.launchPreservationModal(this.listOfUACriteriaSearch, this.selectedItemCount, this.tenantIdentifier),
+      this.vitamConfigurationService.tenantConfig()?.preservationThreshold,
+    );
   }
 
   async launchComputedInheritedRulesModal() {

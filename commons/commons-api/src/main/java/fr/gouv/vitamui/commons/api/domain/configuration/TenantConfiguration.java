@@ -85,6 +85,7 @@ public record TenantConfiguration(
     long updateMgtRulesThreshold,
     long puaUpdateThreshold,
     long originatingAgencyReassignmentThreshold,
+    long preservationThreshold,
 
     long deletionThreshold
 ) {}

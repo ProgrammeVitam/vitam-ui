@@ -302,6 +302,9 @@
           <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
             {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
           </button>
+          <button mat-menu-item (click)="launchPreservationModal()" [disabled]="!hasPreservationRole || selectedItemCount === 0">
+            {{ 'ARCHIVE_SEARCH.PRESERVATION.ACTION' | translate }}
+          </button>
           @if ((configService.config$ | async)?.REASSIGNMENT_ENABLED) {
             <button
               *vitamuiCommonHasRole="{

@@ -55,6 +55,7 @@ import {
   Unit,
 } from 'vitamui-library';
 import { ExportDIPRequestDto, TransferRequestDto } from '../../archive/models/dip.interface';
+import { PreservationRequestDto } from '../../archive/models/preservation-request.interface';
 import { ReclassificationCriteriaDto } from '../../archive/models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
 import { ReassignRequestDto } from '../../archive/models/reassign-request.interface';
@@ -270,5 +271,28 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
    */
   checkOperationIdsExistence(operationIds: string[], headers?: HttpHeaders): Observable<{ [key: string]: boolean }> {
     return this.http.post<{ [key: string]: boolean }>(`${this.apiUrl}/check-operation-ids`, operationIds, { headers });
+  }
+
+  /**
+   * Launches a preservation operation for a list of selected Units.
+   *
+   * @param preservationRequestDto the scenario parameters and search criteria used to identify the Units to preserve
+   * @param headers optionnal headers.
+   */
+  launchPreservation(preservationRequestDto: PreservationRequestDto, headers?: HttpHeaders): Observable<String> {
+    return this.http.post(`${this.apiUrl}/preservation`, preservationRequestDto, {
+      responseType: 'text',
+      headers,
+    });
+  }
+
+  /**
+   * Counts the distinct object groups referenced by the units matching the given search criteria.
+   *
+   * @param criteriaDto search criteria used to identify the selected Units
+   * @param headers optionnal headers.
+   */
+  countObjectGroups(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<number> {
+    return this.http.post<number>(`${this.apiUrl}/preservation/object-groups-count`, criteriaDto, { headers });
   }
 }

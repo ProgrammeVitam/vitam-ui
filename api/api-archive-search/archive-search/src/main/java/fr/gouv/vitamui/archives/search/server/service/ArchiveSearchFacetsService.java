@@ -50,10 +50,12 @@ import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.SingleValueFacet;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetBucketDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.FacetResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -120,6 +122,7 @@ public class ArchiveSearchFacetsService {
     public static final String MAX_END_DATE_FIELD = ".MaxEndDate";
     public static final String RULES_RULE_ID_FIELD = ".Rules.Rule";
     public static final String FINAL_ACTION_FIELD = ".FinalAction";
+    private static final String OBJECT_GROUPS_COUNT_FACET_NAME = "objectGroupsCount";
 
     private final ArchiveSearchService archiveSearchService;
     private final ObjectMapper objectMapper;
@@ -396,6 +399,33 @@ public class ArchiveSearchFacetsService {
             )
         );
         return noRuleFacet;
+    }
+
+    /**
+     * Counts the distinct object groups referenced by the units matching the given search criteria.
+     * @param searchCriteriaDto the units selection criteria
+     * @param vitamContext the vitam context
+     * @return the number of distinct object groups
+     */
+    public Long countObjectGroups(final SearchCriteriaDto searchCriteriaDto, final VitamContext vitamContext)
+        throws InvalidCreateOperationException, InvalidParseOperationException, VitamClientException, JsonProcessingException {
+        SelectMultiQuery selectMultiQuery = createSelectMultiQuery(searchCriteriaDto.getCriteriaList());
+        selectMultiQuery.setLimitFilter(0, 1);
+        selectMultiQuery.addFacets(
+            FacetHelper.cardinality(OBJECT_GROUPS_COUNT_FACET_NAME, ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS)
+        );
+        JsonNode dslQuery = selectMultiQuery.getFinalSelect();
+        JsonNode vitamResponse = archiveSearchService.searchArchiveUnits(dslQuery, vitamContext);
+        VitamUISearchResponseDto response = objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
+        return Optional.ofNullable(response.getFacetResults())
+            .orElseGet(List::of)
+            .stream()
+            .filter(facet -> OBJECT_GROUPS_COUNT_FACET_NAME.equals(facet.getName()))
+            .findFirst()
+            .map(FacetResultsDto::getSingleValueFacet)
+            .map(SingleValueFacet::getValue)
+            .map(Double::longValue)
+            .orElse(null);
     }
 
     private Integer countArchiveUnitByCriteriaList(

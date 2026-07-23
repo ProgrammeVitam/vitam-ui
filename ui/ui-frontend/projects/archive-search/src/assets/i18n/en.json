@@ -25,6 +25,29 @@
     "PUA": {
       "UPDATE": "Update AUP"
     },
+    "PRESERVATION": {
+      "ACTION": "Preserve archives",
+      "TITLE": "Configure a preservation operation",
+      "SELECTED_UNITS": "{{count}} selected archival units",
+      "SELECTED_OBJECT_GROUPS": "{{count}} technical object groups",
+      "SOURCE_USAGE": "Source usage",
+      "VERSION": "Source version",
+      "SCENARIO": "Preservation scenario",
+      "TARGET_USAGE": "Target usage",
+      "VERSIONS": {
+        "FIRST": "First version",
+        "LAST": "Last version"
+      },
+      "USAGES": {
+        "BINARYMASTER": "Digital original",
+        "DISSEMINATION": "Dissemination version",
+        "THUMBNAIL": "Thumbnail",
+        "TEXTCONTENT": "Raw content"
+      },
+      "LAUNCH": "LAUNCH SCENARIO",
+      "LAUNCHED": "The preservation request has been launched",
+      "ERROR": "An error occurred while launching the preservation"
+    },
     "ORIGINATING_AGENCY_REASSIGNMENT": {
       "ACTION": "Originating agency reassignment",
       "TITLE": "Reassign a selection of archival units to an originating agency",

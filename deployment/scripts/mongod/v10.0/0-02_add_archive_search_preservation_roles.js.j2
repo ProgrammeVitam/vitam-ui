@@ -1,0 +1,37 @@
+dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
+dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
+
+print("START v10.0.0-02_add_archive_search_preservation_roles.js");
+
+// Add archive search preservation roles to archive admin profiles
+dbIam.profiles.updateMany({
+    applicationName: "ARCHIVE_SEARCH_MANAGEMENT_APP",
+    name: {
+        $regex: "Archiviste administrateur"
+    }
+}, {
+    $addToSet: {
+        roles: {
+            $each: [
+                { name: "ROLE_GET_PRESERVATION_SCENARIOS" },
+                { name: "ROLE_LAUNCH_PRESERVATION" }
+            ]
+        }
+    }
+});
+
+// Add archive search preservation roles to archive-search-ui context
+dbSecurity.contexts.updateOne({
+    "_id": "ui_archive_search_context"
+}, {
+    $addToSet: {
+        "roleNames": {
+            $each: [
+                "ROLE_GET_PRESERVATION_SCENARIOS",
+                "ROLE_LAUNCH_PRESERVATION"
+            ]
+        }
+    }
+});
+
+print("END v10.0.0-02_add_archive_search_preservation_roles.js");

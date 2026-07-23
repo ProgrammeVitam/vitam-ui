@@ -30,8 +30,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.PreservationRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
@@ -40,6 +43,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchEliminationService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchMgtRulesService;
+import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchPreservationService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchThresholdService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchUnitExportCsvService;
@@ -62,6 +66,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -121,6 +126,7 @@ public class ArchivesSearchController {
     private final ArchiveSearchEliminationService archiveSearchEliminationService;
     private final ArchiveSearchMgtRulesService archiveSearchMgtRulesService;
     private final ArchiveSearchThresholdService archiveSearchThresholdService;
+    private final ArchiveSearchPreservationService archiveSearchPreservationService;
     private final ObjectMapper objectMapper;
     private final SignedDownloadTokenService signedDownloadTokenService;
 
@@ -132,6 +138,7 @@ public class ArchivesSearchController {
         ArchiveSearchEliminationService archiveSearchEliminationService,
         ArchiveSearchMgtRulesService archiveSearchMgtRulesService,
         ArchiveSearchThresholdService archiveSearchThresholdService,
+        ArchiveSearchPreservationService archiveSearchPreservationService,
         ObjectMapper objectMapper,
         SignedDownloadTokenService signedDownloadTokenService
     ) {
@@ -142,6 +149,7 @@ public class ArchivesSearchController {
         this.archiveSearchEliminationService = archiveSearchEliminationService;
         this.archiveSearchMgtRulesService = archiveSearchMgtRulesService;
         this.archiveSearchThresholdService = archiveSearchThresholdService;
+        this.archiveSearchPreservationService = archiveSearchPreservationService;
         this.objectMapper = objectMapper;
         this.signedDownloadTokenService = signedDownloadTokenService;
     }
@@ -444,6 +452,22 @@ public class ArchivesSearchController {
         throws VitamClientException {
         LOGGER.debug("Calling reassign action By Criteria {} ", reassignRequestDto);
         return archiveSearchService.reassignOriginatingAgency(reassignRequestDto);
+    }
+
+    @PostMapping(RestApi.PRESERVATION)
+    @Secured(ServicesData.ROLE_LAUNCH_PRESERVATION)
+    public String launchPreservation(final @Valid @RequestBody PreservationRequestDto preservationRequestDto)
+        throws VitamClientException {
+        LOGGER.debug("Calling launch preservation by criteria {} ", preservationRequestDto);
+        return archiveSearchPreservationService.launchPreservation(preservationRequestDto);
+    }
+
+    @PostMapping(RestApi.PRESERVATION_OBJECT_GROUPS_COUNT)
+    @Secured(ServicesData.ROLE_LAUNCH_PRESERVATION)
+    public Long countObjectGroups(final @RequestBody SearchCriteriaDto searchCriteriaDto)
+        throws InvalidCreateOperationException, InvalidParseOperationException, VitamClientException, JsonProcessingException {
+        LOGGER.debug("Counting object groups by criteria {} ", searchCriteriaDto);
+        return archiveSearchPreservationService.countObjectGroups(searchCriteriaDto);
     }
 
     @PostMapping(RestApi.CHECK_ENTRY_OPERATION_IDS)

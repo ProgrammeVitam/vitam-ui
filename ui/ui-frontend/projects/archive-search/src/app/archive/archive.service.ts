@@ -71,6 +71,7 @@ import { ReclassificationCriteriaDto } from './models/reclassification-request.i
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { RuleTypeEnum } from './models/rule-type-enum';
 import { ReassignRequestDto } from './models/reassign-request.interface';
+import { PreservationRequestDto } from './models/preservation-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -396,6 +397,16 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   launchReassignmentAction(reassignDto: ReassignRequestDto): Observable<String> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
     return this.archiveApiService.launchReassignmentAction(reassignDto, headers);
+  }
+
+  launchPreservation(preservationRequestDto: PreservationRequestDto): Observable<String> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.archiveApiService.launchPreservation(preservationRequestDto, headers);
+  }
+
+  countObjectGroups(criteriaDto: SearchCriteriaDto): Observable<number> {
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
+    return this.archiveApiService.countObjectGroups(criteriaDto, headers);
   }
 
   checkOperationIdsExistence(operationIds: string[]): Observable<{ [key: string]: boolean }> {

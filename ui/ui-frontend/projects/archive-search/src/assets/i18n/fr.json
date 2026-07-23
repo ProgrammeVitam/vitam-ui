@@ -25,6 +25,29 @@
     "PUA": {
       "UPDATE": "Mettre à jour les PUA"
     },
+    "PRESERVATION": {
+      "ACTION": "Préserver des archives",
+      "TITLE": "Paramétrer une opération de préservation",
+      "SELECTED_UNITS": "{{count}} unités archivistiques sélectionnées",
+      "SELECTED_OBJECT_GROUPS": "{{count}} groupes d'objets techniques",
+      "SOURCE_USAGE": "Usage source",
+      "VERSION": "Version source",
+      "SCENARIO": "Scénario de préservation",
+      "TARGET_USAGE": "Usage cible",
+      "VERSIONS": {
+        "FIRST": "Première version",
+        "LAST": "Dernière version"
+      },
+      "USAGES": {
+        "BINARYMASTER": "Original numérique",
+        "DISSEMINATION": "Version de diffusion",
+        "THUMBNAIL": "Vignette",
+        "TEXTCONTENT": "Contenu brut"
+      },
+      "LAUNCH": "LANCER LE SCÉNARIO",
+      "LAUNCHED": "La demande de préservation a bien été lancée",
+      "ERROR": "Une erreur est survenue lors du lancement de la préservation"
+    },
     "ORIGINATING_AGENCY_REASSIGNMENT": {
       "ACTION": "Réattribution du service producteur",
       "TITLE": "Réattribuer une sélection d'unités archivistiques à un service producteur",
