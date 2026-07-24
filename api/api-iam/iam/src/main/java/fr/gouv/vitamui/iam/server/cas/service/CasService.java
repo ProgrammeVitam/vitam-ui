@@ -383,10 +383,22 @@ public class CasService {
     ) {
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
-            Optional<ProvidedUserDto> providedUser =
-                this.provisionUser(loginEmail, loginCustomerId, idp, userIdentifier);
-            if (loginEmail.isBlank() && providedUser.isPresent()) {
-                loginEmail = providedUser.get().getEmail();
+            try {
+                Optional<ProvidedUserDto> providedUser =
+                    this.provisionUser(loginEmail, loginCustomerId, idp, userIdentifier);
+                if (loginEmail.isBlank() && providedUser.isPresent()) {
+                    loginEmail = providedUser.get().getEmail();
+                }
+            } catch (NotFoundException e) {
+                // No ProvisioningClient configured for this IdP (typical for the SAS POC where
+                // provisioning is handled by /cas/users/jit instead). Fall through to the local
+                // lookup: if the user was already JIT-created it exists in Mongo, otherwise
+                // getUserByEmailAndCustomerId will throw 404 and SAS will trigger a fresh JIT.
+                LOGGER.debug(
+                    "No provisioning client for IdP {} — falling back to local user lookup: {}",
+                    idp,
+                    e.getMessage()
+                );
             }
         }
 

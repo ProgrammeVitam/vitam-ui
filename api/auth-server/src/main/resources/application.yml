@@ -14,7 +14,11 @@ server:
         name: SAS_JSESSIONID
         secure: true
         http-only: true
-        same-site: lax
+        # SAML POST binding: the IdP posts the SAMLResponse cross-site to /login/saml2/sso/**;
+        # SameSite=lax would strip the session cookie on that POST → Spring loses the AuthnRequest
+        # and rejects the response with `invalid_in_response_to`. `none` requires Secure=true (OK,
+        # we're on HTTPS 9443).
+        same-site: none
 
 spring:
   application:
@@ -30,6 +34,8 @@ logging:
     org.springframework.security.web.authentication.logout: DEBUG
     org.springframework.security.oauth2.server.authorization: TRACE
     org.springframework.session: DEBUG
+    org.springframework.security.saml2: TRACE
+    org.springframework.security.web.authentication: DEBUG
 
 vitam:
   security:

@@ -138,8 +138,13 @@ public class AuthorizationServerConfig {
         CorsConfigurationSource corsConfigurationSource,
         SecurityContextRepository securityContextRepository,
         MongoClientRegistrationRepository clientRegistrationRepository,
+        fr.gouv.vitamui.authserver.security.MongoRelyingPartyRegistrationRepository relyingPartyRegistrationRepository,
         IamClient iamClient
     ) throws Exception {
+        FederatedLoginSuccessHandler federatedSuccessHandler = new FederatedLoginSuccessHandler(
+            iamClient,
+            securityContextRepository
+        );
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
             .securityContext(sc -> sc.securityContextRepository(securityContextRepository))
@@ -154,6 +159,9 @@ public class AuthorizationServerConfig {
                         "/api/login/**",
                         "/oauth2/authorization/**",
                         "/login/oauth2/code/**",
+                        "/saml2/authenticate/**",
+                        "/login/saml2/sso/**",
+                        "/saml2/service-provider-metadata/**",
                         "/assets/**",
                         "/favicon.ico",
                         "/error"
@@ -162,15 +170,23 @@ public class AuthorizationServerConfig {
                     .anyRequest()
                     .authenticated()
             )
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**", "/login/saml2/sso/**"))
             .formLogin(form -> form.loginPage("/login").permitAll())
             .oauth2Login(oauth2 ->
                 oauth2
                     .clientRegistrationRepository(clientRegistrationRepository)
                     .loginPage("/login")
-                    .successHandler(new FederatedLoginSuccessHandler(iamClient, securityContextRepository))
+                    .successHandler(federatedSuccessHandler)
                     .failureUrl("/login?error=federation")
-            );
+            )
+            .saml2Login(saml2 ->
+                saml2
+                    .relyingPartyRegistrationRepository(relyingPartyRegistrationRepository)
+                    .loginPage("/login")
+                    .successHandler(federatedSuccessHandler)
+                    .failureUrl("/login?error=federation")
+            )
+            .saml2Metadata(org.springframework.security.config.Customizer.withDefaults());
 
         return http.build();
     }

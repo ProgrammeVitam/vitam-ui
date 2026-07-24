@@ -26,6 +26,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.saml2.provider.service.authentication.Saml2AuthenticatedPrincipal;
+import org.springframework.security.saml2.provider.service.authentication.Saml2Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -70,17 +72,33 @@ public class FederatedLoginSuccessHandler implements AuthenticationSuccessHandle
         HttpServletResponse response,
         Authentication authentication
     ) throws IOException {
-        if (!(authentication instanceof OAuth2AuthenticationToken oauthAuth)) {
+        ExternalIdentity identity = extractIdentity(authentication);
+        if (identity == null) {
             LOGGER.warn(
-                "Unexpected authentication type after OAuth2 callback: {}",
+                "Unexpected authentication type after federation callback: {}",
                 authentication != null ? authentication.getClass().getName() : "null"
             );
             response.sendRedirect("/login?error=federation");
             return;
         }
 
-        String registrationId = oauthAuth.getAuthorizedClientRegistrationId();
-        OAuth2User oauthUser = oauthAuth.getPrincipal();
+        // SAML principal doesn't reliably expose the registrationId (null in Spring Security 7's
+        // Saml2AssertionAuthentication); fall back to the trailing path segment of the callback URI
+        // — Spring's Saml2WebSsoAuthenticationFilter matches exactly /login/saml2/sso/{id}.
+        String registrationId = identity.registrationId();
+        if (registrationId == null) {
+            String uri = request.getRequestURI();
+            int lastSlash = uri.lastIndexOf('/');
+            if (lastSlash >= 0 && lastSlash < uri.length() - 1) {
+                registrationId = uri.substring(lastSlash + 1);
+            }
+        }
+        LOGGER.info(
+            "Federated callback: auth={} registrationId={} name={}",
+            authentication.getClass().getSimpleName(),
+            registrationId,
+            identity.name()
+        );
 
         IdentityProviderDto idp;
         try {
@@ -97,14 +115,14 @@ public class FederatedLoginSuccessHandler implements AuthenticationSuccessHandle
         }
 
         String mailAttribute = idp.getMailAttribute() != null ? idp.getMailAttribute() : DEFAULT_MAIL_ATTRIBUTE;
-        Object emailClaim = oauthUser.getAttribute(mailAttribute);
-        String email = emailClaim != null ? String.valueOf(emailClaim) : oauthUser.getName();
+        String emailClaim = identity.attribute(mailAttribute);
+        String email = emailClaim != null ? emailClaim : identity.name();
 
         String identifierAttribute = idp.getIdentifierAttribute();
         String userIdentifier = null;
         if (identifierAttribute != null) {
-            Object claim = oauthUser.getAttribute(identifierAttribute);
-            if (claim != null) userIdentifier = String.valueOf(claim);
+            String claim = identity.attribute(identifierAttribute);
+            if (claim != null) userIdentifier = claim;
         }
 
         LOGGER.info(
@@ -125,11 +143,11 @@ public class FederatedLoginSuccessHandler implements AuthenticationSuccessHandle
                     idp.getCustomerId(),
                     idp.getId()
                 );
-                String givenName = stringAttribute(oauthUser, "given_name");
-                String familyName = stringAttribute(oauthUser, "family_name");
-                String subject = stringAttribute(oauthUser, "sub");
+                String givenName = firstNonNull(identity.attribute("given_name"), identity.attribute("givenName"));
+                String familyName = firstNonNull(identity.attribute("family_name"), identity.attribute("familyName"));
+                String subject = identity.attribute("sub");
                 if (subject == null) subject = userIdentifier;
-                if (subject == null) subject = oauthUser.getName();
+                if (subject == null) subject = identity.name();
 
                 try {
                     user = iamClient.jitProvisionUser(
@@ -158,13 +176,14 @@ public class FederatedLoginSuccessHandler implements AuthenticationSuccessHandle
             }
         }
 
+        boolean isSaml = authentication instanceof Saml2Authentication;
         List<GrantedAuthority> authorities = List.of(
             new SimpleGrantedAuthority("ROLE_USER"),
-            FactorGrantedAuthority.fromAuthority(FactorGrantedAuthority.SAML_RESPONSE_AUTHORITY.equals(
-                idp.getProtocoleType()
+            FactorGrantedAuthority.fromAuthority(
+                isSaml
+                    ? FactorGrantedAuthority.SAML_RESPONSE_AUTHORITY
+                    : FactorGrantedAuthority.AUTHORIZATION_CODE_AUTHORITY
             )
-                ? FactorGrantedAuthority.SAML_RESPONSE_AUTHORITY
-                : FactorGrantedAuthority.AUTHORIZATION_CODE_AUTHORITY)
         );
         UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
             new VitamuiPrincipal(user),
@@ -191,8 +210,48 @@ public class FederatedLoginSuccessHandler implements AuthenticationSuccessHandle
         response.sendRedirect(redirectUrl);
     }
 
-    private static String stringAttribute(OAuth2User user, String key) {
-        Object v = user.getAttribute(key);
-        return v != null ? String.valueOf(v) : null;
+    private static String firstNonNull(String a, String b) {
+        return a != null ? a : b;
+    }
+
+    /**
+     * Normalises the caller-provided {@link Authentication} into a protocol-agnostic view — either
+     * OIDC ({@link OAuth2AuthenticationToken}) or SAML ({@link Saml2Authentication}) — so the rest of
+     * this handler doesn't have to branch on the auth type.
+     */
+    private static ExternalIdentity extractIdentity(Authentication authentication) {
+        if (authentication instanceof OAuth2AuthenticationToken oauth) {
+            OAuth2User user = oauth.getPrincipal();
+            return new ExternalIdentity(
+                oauth.getAuthorizedClientRegistrationId(),
+                name -> {
+                    Object v = user.getAttribute(name);
+                    return v != null ? String.valueOf(v) : null;
+                },
+                user.getName()
+            );
+        }
+        if (authentication instanceof Saml2Authentication saml
+            && saml.getPrincipal() instanceof Saml2AuthenticatedPrincipal samlPrincipal) {
+            return new ExternalIdentity(
+                samlPrincipal.getRelyingPartyRegistrationId(),
+                name -> {
+                    Object v = samlPrincipal.getFirstAttribute(name);
+                    return v != null ? String.valueOf(v) : null;
+                },
+                samlPrincipal.getName()
+            );
+        }
+        return null;
+    }
+
+    private record ExternalIdentity(
+        String registrationId,
+        java.util.function.Function<String, String> attributeFn,
+        String name
+    ) {
+        String attribute(String name) {
+            return attributeFn.apply(name);
+        }
     }
 }
