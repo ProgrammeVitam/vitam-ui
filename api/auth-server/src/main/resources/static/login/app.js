@@ -114,6 +114,7 @@ async function resolve() {
     customerId: data.customerId,
     identityProviderId: data.identityProviderId,
     providerType: data.providerType,
+    protocoleType: data.protocoleType,
     customerName: data.customerName,
     identityProviderName: data.identityProviderName,
     internal: data.providerType === 'internal',
@@ -144,11 +145,27 @@ function applySelectedEntry(entry) {
   state.customerId = entry.customerId;
   state.providerId = entry.identityProviderId;
   state.providerType = entry.providerType || (entry.internal ? 'internal' : 'external');
+  state.protocoleType = entry.protocoleType || null;
 
   if (state.providerType !== 'internal') {
+    // External IdP — redirect to the appropriate Spring endpoint. OIDC is served via
+    // /oauth2/authorization/{registrationId}, SAML via /saml2/authenticate/{registrationId}.
+    // The Phase 2a POC only wires OIDC; SAML lands on the dead-end below until Phase 2b.
+    const registrationId = encodeURIComponent(state.providerId);
+    if (state.protocoleType && state.protocoleType.toUpperCase() === 'OIDC') {
+      window.location.assign('/oauth2/authorization/' + registrationId);
+      return;
+    }
+    if (state.protocoleType && state.protocoleType.toUpperCase() === 'SAML') {
+      // SAML support pending Phase 2b.
+      return showError(
+        "Fournisseur d'identité SAML (" + (entry.identityProviderName || entry.identityProviderId) +
+          ') non encore branché.'
+      );
+    }
     return showError(
       "Fournisseur d'identité externe (" + (entry.identityProviderName || entry.identityProviderId) +
-        ') non supporté par le POC pour l\'instant.'
+        ") sans protocoleType reconnu (attendu OIDC ou SAML)."
     );
   }
 

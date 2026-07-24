@@ -282,6 +282,7 @@ public class LoginController {
         private final String identityProviderId;
         private final String identityProviderName;
         private final String providerType;
+        private final String protocoleType;
         private final List<HrdEntryDto> entries;
 
         public static ResolveResponse single(HrdEntryDto e) {
@@ -292,12 +293,13 @@ public class LoginController {
                 e.getIdentityProviderId(),
                 e.getIdentityProviderName(),
                 e.isInternal() ? "internal" : "external",
+                e.getProtocoleType(),
                 null
             );
         }
 
         public static ResolveResponse multi(List<HrdEntryDto> entries) {
-            return new ResolveResponse(true, null, null, null, null, null, entries);
+            return new ResolveResponse(true, null, null, null, null, null, null, entries);
         }
     }
 

@@ -32,4 +32,7 @@ public class HrdEntryDto {
 
     /** {@code true} if the matched IdP is the local username/password provider (Apereo &quot;internal&quot;). */
     private boolean internal;
+
+    /** {@code OIDC}, {@code SAML} or {@code CERTIFICAT} — populated from {@code IdentityProvider.protocoleType}. */
+    private String protocoleType;
 }

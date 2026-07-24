@@ -76,7 +76,10 @@ public class WebSecurityConfig extends ApiWebSecurityConfig {
             RestApi.V1_CAS_URL + RestApi.CAS_HRD_PATH,
             RestApi.V1_CAS_URL + RestApi.CAS_TOKENS_PATH,
             RestApi.V1_CAS_URL + RestApi.CAS_LOGIN_PATH,
-            RestApi.V1_CAS_URL + RestApi.CAS_SUBROGATION_VALIDATE_PATH
+            RestApi.V1_CAS_URL + RestApi.CAS_SUBROGATION_VALIDATE_PATH,
+            RestApi.V1_CAS_URL + RestApi.CAS_IDP_PATH + "/*",
+            RestApi.V1_CAS_URL + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
+            RestApi.V1_CAS_URL + RestApi.CAS_USERS_JIT_PATH
         );
     }
 }

@@ -46,10 +46,12 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
+import fr.gouv.vitamui.iam.common.dto.cas.JitProvisionRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
@@ -73,6 +75,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -237,7 +240,7 @@ public class CasController {
         operationId = "cas_getUser",
         summary = "Get a user by their loginEmail, loginCustomerId and optional idp"
     )
-    @Secured(ServicesData.ROLE_CAS_USERS)
+    // POC auth-server: whitelist-based for consistency with the other /cas endpoints — Phase 3 to harden.
     public UserDto getUser(
         @RequestParam String loginEmail,
         @RequestParam String loginCustomerId,
@@ -374,6 +377,38 @@ public class CasController {
         ParameterChecker.checkParameter("email is mandatory : ", email);
         SanityChecker.checkSecureParameter(email);
         return casService.resolveHrdEntries(email);
+    }
+
+    /**
+     * Just-in-Time provisioning: creates a new vitam-ui user from claims received after a successful
+     * federated authentication (OIDC or SAML). Called by SAS POC when the standard resolution fails
+     * and the identity provider has {@code autoProvisioningEnabled=true}.
+     */
+    @PostMapping(value = RestApi.CAS_USERS_JIT_PATH)
+    @Operation(operationId = "cas_jitProvisionUser", summary = "JIT-provision a user from an external IdP")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto jitProvisionUser(@Valid @RequestBody final JitProvisionRequestDto request) {
+        LOGGER.debug(
+            "jitProvisionUser email={} customer={} idp={}",
+            request.getEmail(),
+            request.getCustomerId(),
+            request.getIdentityProviderId()
+        );
+        SanityChecker.checkSecureParameter(request.getEmail(), request.getSubjectId());
+        return casService.jitProvisionUser(request);
+    }
+
+    /**
+     * Returns the full {@link IdentityProviderDto} of a given identity provider (including sensitive
+     * fields such as client_secret, SAML keystore, etc.). Used by SAS POC to build the
+     * {@code ClientRegistration} / {@code RelyingPartyRegistration} on demand at each callback.
+     */
+    @GetMapping(value = RestApi.CAS_IDP_PATH + "/{id}")
+    @Operation(operationId = "cas_getIdentityProvider", summary = "Return a full IdentityProviderDto by id")
+    public IdentityProviderDto getIdentityProvider(@PathVariable final String id) {
+        LOGGER.debug("getIdentityProvider id={}", id);
+        SanityChecker.checkSecureParameter(id);
+        return casService.getIdentityProviderById(id);
     }
 
     /**

@@ -8,13 +8,17 @@ package fr.gouv.vitamui.authserver.security;
 
 import fr.gouv.vitamui.authserver.config.AuthServerProperties;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
+import fr.gouv.vitamui.iam.common.dto.cas.JitProvisionRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
@@ -46,6 +50,8 @@ import java.util.List;
  */
 @Component
 public class IamClient {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IamClient.class);
 
     private final RestClient restClient;
 
@@ -138,6 +144,83 @@ public class IamClient {
         public SubrogationNotValidException(String message) {
             super(message);
         }
+    }
+
+    /**
+     * Loads the full {@link IdentityProviderDto} for the given identity provider id.
+     * Used by the federated authentication path to build the {@code ClientRegistration}
+     * at each callback. Returns {@code null} on 404.
+     */
+    public IdentityProviderDto getIdentityProvider(String id) {
+        return restClient
+            .get()
+            .uri(RestApi.V1_CAS_URL + RestApi.CAS_IDP_PATH + "/" + id)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (req, resp) -> {
+                throw new IdentityProviderNotFoundException("IAM returned " + resp.getStatusCode());
+            })
+            .body(IdentityProviderDto.class);
+    }
+
+    /**
+     * Resolves the vitam-ui user matching an identity received from an external IdP (via OIDC or SAML),
+     * with auto-provisioning if the provider has it enabled. Returns {@code null} if IAM returns 404.
+     */
+    public fr.gouv.vitamui.commons.api.domain.UserDto resolveExternalUser(
+        String loginEmail,
+        String loginCustomerId,
+        String idpId,
+        String userIdentifier
+    ) {
+        LOGGER.info("resolveExternalUser call email={} customer={} idp={}", loginEmail, loginCustomerId, idpId);
+        try {
+            fr.gouv.vitamui.commons.api.domain.UserDto user = restClient
+                .get()
+                .uri(uriBuilder ->
+                    uriBuilder
+                        .path(RestApi.V1_CAS_URL + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING)
+                        .queryParam("loginEmail", loginEmail)
+                        .queryParam("loginCustomerId", loginCustomerId)
+                        .queryParamIfPresent("idp", java.util.Optional.ofNullable(idpId))
+                        .queryParamIfPresent("userIdentifier", java.util.Optional.ofNullable(userIdentifier))
+                        .build()
+                )
+                .retrieve()
+                .onStatus(status -> status.value() == 404, (req, resp) -> {
+                    // Absorb 404 explicitly and abort the body-mapping — we return null via the catch below.
+                    throw new UserNotFoundResponseException();
+                })
+                .body(fr.gouv.vitamui.commons.api.domain.UserDto.class);
+            LOGGER.info("resolveExternalUser email={} → id={}", loginEmail, user != null ? user.getId() : "null");
+            return user;
+        } catch (UserNotFoundResponseException e) {
+            LOGGER.info("resolveExternalUser email={} → 404 (not found)", loginEmail);
+            return null;
+        } catch (Exception e) {
+            LOGGER.warn("resolveExternalUser email={} → error: {}", loginEmail, e.toString());
+            throw e;
+        }
+    }
+
+    private static final class UserNotFoundResponseException extends RuntimeException {}
+
+    public static class IdentityProviderNotFoundException extends RuntimeException {
+        public IdentityProviderNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * Just-in-Time provisions a new vitam-ui user in IAM from the claims received via an external IdP.
+     * Requires the IdentityProvider to have {@code autoProvisioningEnabled=true} and {@code defaultGroupId} set.
+     */
+    public fr.gouv.vitamui.commons.api.domain.UserDto jitProvisionUser(JitProvisionRequestDto request) {
+        return restClient
+            .post()
+            .uri(RestApi.V1_CAS_URL + RestApi.CAS_USERS_JIT_PATH)
+            .body(request)
+            .retrieve()
+            .body(fr.gouv.vitamui.commons.api.domain.UserDto.class);
     }
 
     /** Marker exception mapped to {@link org.springframework.security.authentication.BadCredentialsException} upstream. */

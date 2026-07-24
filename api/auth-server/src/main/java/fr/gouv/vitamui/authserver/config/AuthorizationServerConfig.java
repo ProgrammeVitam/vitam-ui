@@ -38,8 +38,10 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import fr.gouv.vitamui.authserver.security.FederatedLoginSuccessHandler;
 import fr.gouv.vitamui.authserver.security.IamAuthenticationProvider;
 import fr.gouv.vitamui.authserver.security.IamClient;
+import fr.gouv.vitamui.authserver.security.MongoClientRegistrationRepository;
 import fr.gouv.vitamui.authserver.security.OpaqueVitamTokenGenerator;
 import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationConverter;
 import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationProvider;
@@ -134,7 +136,9 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain webSecurityFilterChain(
         HttpSecurity http,
         CorsConfigurationSource corsConfigurationSource,
-        SecurityContextRepository securityContextRepository
+        SecurityContextRepository securityContextRepository,
+        MongoClientRegistrationRepository clientRegistrationRepository,
+        IamClient iamClient
     ) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
@@ -144,13 +148,29 @@ public class AuthorizationServerConfig {
             )
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers("/login", "/login/**", "/api/login/**", "/assets/**", "/favicon.ico", "/error")
+                    .requestMatchers(
+                        "/login",
+                        "/login/**",
+                        "/api/login/**",
+                        "/oauth2/authorization/**",
+                        "/login/oauth2/code/**",
+                        "/assets/**",
+                        "/favicon.ico",
+                        "/error"
+                    )
                     .permitAll()
                     .anyRequest()
                     .authenticated()
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**"))
-            .formLogin(form -> form.loginPage("/login").permitAll());
+            .formLogin(form -> form.loginPage("/login").permitAll())
+            .oauth2Login(oauth2 ->
+                oauth2
+                    .clientRegistrationRepository(clientRegistrationRepository)
+                    .loginPage("/login")
+                    .successHandler(new FederatedLoginSuccessHandler(iamClient, securityContextRepository))
+                    .failureUrl("/login?error=federation")
+            );
 
         return http.build();
     }

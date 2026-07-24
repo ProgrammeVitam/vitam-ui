@@ -85,6 +85,13 @@ public class IdentityProvider extends CustomerIdDocument {
     @NotNull
     private Boolean enabled;
 
+    /**
+     * Default {@code Group} id for Just-in-Time provisioning of federated users (OIDC/SAML external).
+     * When {@link #autoProvisioningEnabled} is {@code true} and no user is found in IAM for the incoming
+     * claims, a new user is created in this group. Mandatory when JIT is enabled.
+     */
+    private String defaultGroupId;
+
     @NotNull
     @Size(min = 1)
     private List<String> patterns;

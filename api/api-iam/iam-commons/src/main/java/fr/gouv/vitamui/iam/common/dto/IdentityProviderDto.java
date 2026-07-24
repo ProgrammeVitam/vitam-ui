@@ -74,6 +74,9 @@ public class IdentityProviderDto extends CustomerIdDto {
     @NotNull
     private Boolean enabled;
 
+    /** See {@code IdentityProvider.defaultGroupId} — Group id for Just-in-Time provisioning of federated users. */
+    private String defaultGroupId;
+
     @NotNull
     @Size(min = 1)
     private List<String> patterns;
