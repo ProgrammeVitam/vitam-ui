@@ -69,36 +69,31 @@ public class AuthorizationServerConfig {
         HttpSecurity http,
         CorsConfigurationSource corsConfigurationSource,
         RegisteredClientRepository registeredClientRepository,
-        SecurityContextRepository securityContextRepository
+        SecurityContextRepository securityContextRepository,
+        JwtDecoder jwtDecoder
     ) throws Exception {
         http.oauth2AuthorizationServer(authorizationServer -> {
             http.securityMatcher(authorizationServer.getEndpointsMatcher());
             authorizationServer.oidc(oidc ->
                 oidc.logoutEndpoint(logout -> {
-                    // Provider tolerant to the sub mismatch that happens when a subrogated session
-                    // receives a logout with the pre-subrogation id_token_hint from another tab.
-                    logout.authenticationProvider(
+                    var tolerantProvider =
                         new fr.gouv.vitamui.authserver.security.SubrogationTolerantOidcLogoutAuthenticationProvider(
                             registeredClientRepository,
                             () ->
                                 http.getSharedObject(
                                     org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService.class
-                                )
-                        )
-                    );
-                    // Keep the tolerant post_logout_redirect_uri validator on the default provider too,
-                    // so requests that go through it (non-subrogated cases) still accept angular-oauth2-oidc
-                    // URIs carrying trailing query params.
+                                ),
+                            () -> jwtDecoder
+                        );
+                    // Replace the default OidcLogoutAuthenticationProvider entirely — it enforces a strict
+                    // sub check that fails in the legitimate subrogation transition. Our tolerant provider
+                    // handles both the normal and subrogated cases.
                     logout.authenticationProviders(providers -> {
-                        for (var provider : providers) {
-                            if (
-                                provider instanceof org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider oidcLogoutProvider
-                            ) {
-                                oidcLogoutProvider.setAuthenticationValidator(
-                                    fr.gouv.vitamui.authserver.security.TolerantPostLogoutRedirectUriValidator.INSTANCE
-                                );
-                            }
-                        }
+                        providers.removeIf(p ->
+                            p instanceof
+                            org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider
+                        );
+                        providers.add(0, tolerantProvider);
                     });
                 })
             );

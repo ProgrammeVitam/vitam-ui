@@ -19,6 +19,9 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -54,14 +57,18 @@ public class SubrogationTolerantOidcLogoutAuthenticationProvider implements Auth
     // Lazy supplier — SAS sets the shared OAuth2AuthorizationService AFTER our configurer lambda runs,
     // so grabbing it eagerly at construction time yields null. We resolve it on the first authenticate().
     private final Supplier<OAuth2AuthorizationService> authorizationServiceSupplier;
+    private final Supplier<JwtDecoder> jwtDecoderSupplier;
     private volatile OAuth2AuthorizationService authorizationService;
+    private volatile JwtDecoder jwtDecoder;
 
     public SubrogationTolerantOidcLogoutAuthenticationProvider(
         RegisteredClientRepository registeredClientRepository,
-        Supplier<OAuth2AuthorizationService> authorizationServiceSupplier
+        Supplier<OAuth2AuthorizationService> authorizationServiceSupplier,
+        Supplier<JwtDecoder> jwtDecoderSupplier
     ) {
         this.registeredClientRepository = registeredClientRepository;
         this.authorizationServiceSupplier = authorizationServiceSupplier;
+        this.jwtDecoderSupplier = jwtDecoderSupplier;
     }
 
     private OAuth2AuthorizationService resolveAuthorizationService() {
@@ -78,6 +85,18 @@ public class SubrogationTolerantOidcLogoutAuthenticationProvider implements Auth
         return cached;
     }
 
+    private JwtDecoder resolveJwtDecoder() {
+        JwtDecoder cached = this.jwtDecoder;
+        if (cached == null) {
+            cached = this.jwtDecoderSupplier.get();
+            if (cached == null) {
+                throw new IllegalStateException("JwtDecoder is not yet available.");
+            }
+            this.jwtDecoder = cached;
+        }
+        return cached;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         OidcLogoutAuthenticationToken logout = (OidcLogoutAuthenticationToken) authentication;
@@ -86,33 +105,42 @@ public class SubrogationTolerantOidcLogoutAuthenticationProvider implements Auth
             logout.getIdTokenHint(),
             ID_TOKEN_TOKEN_TYPE
         );
-        if (authorization == null) {
-            // Cannot validate → let the default provider try (it will fail identically but with its standard
-            // error path). Better than short-circuiting the chain with an incomplete answer.
-            return null;
-        }
 
-        // Delegate to the default provider when the current principal matches the id_token subject —
-        // that's the vast majority of logouts and we want its full behaviour (session termination,
-        // OAuth2Authorization invalidation, back-channel notification, etc.).
-        Authentication currentForDelegateCheck = (Authentication) logout.getPrincipal();
-        Authentication authorizedForDelegateCheck = authorization.getAttribute(Principal.class.getName());
-        if (
-            currentForDelegateCheck != null &&
-            authorizedForDelegateCheck != null &&
-            currentForDelegateCheck.getName().equals(authorizedForDelegateCheck.getName())
-        ) {
-            LOGGER.debug("Delegating to default provider: sub matches current principal");
-            return null;
-        }
+        OidcIdToken idToken;
+        RegisteredClient registeredClient;
+        Authentication authorizedPrincipal;
 
-        OAuth2Authorization.Token<OidcIdToken> authorizedIdToken = authorization.getToken(OidcIdToken.class);
-        if (authorizedIdToken.isInvalidated() || authorizedIdToken.isBeforeUse()) {
-            throwError(OAuth2ErrorCodes.INVALID_TOKEN, "id_token_hint");
+        if (authorization != null) {
+            OAuth2Authorization.Token<OidcIdToken> authorizedIdToken = authorization.getToken(OidcIdToken.class);
+            if (authorizedIdToken.isInvalidated() || authorizedIdToken.isBeforeUse()) {
+                throwError(OAuth2ErrorCodes.INVALID_TOKEN, "id_token_hint");
+            }
+            registeredClient = this.registeredClientRepository.findById(authorization.getRegisteredClientId());
+            idToken = authorizedIdToken.getToken();
+            authorizedPrincipal = authorization.getAttribute(Principal.class.getName());
+        } else {
+            // Fallback for logouts issued after a SAS restart: the in-memory authorization store lost this
+            // token, but the JWT itself is still verifiable via the JWKS. Decode + resolve the client via aud.
+            LOGGER.info("Authorization not found in store — falling back to JWT decoding (probably a stale token cached client-side).");
+            Jwt jwt;
+            try {
+                jwt = resolveJwtDecoder().decode(logout.getIdTokenHint());
+            } catch (JwtException e) {
+                LOGGER.warn("id_token_hint failed JWT decoding: {}", e.getMessage());
+                throwError(OAuth2ErrorCodes.INVALID_TOKEN, "id_token_hint");
+                return null; // unreachable
+            }
+            idToken = new OidcIdToken(jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt(), jwt.getClaims());
+            List<String> jwtAud = idToken.getAudience();
+            if (CollectionUtils.isEmpty(jwtAud)) {
+                throwError(OAuth2ErrorCodes.INVALID_TOKEN, IdTokenClaimNames.AUD);
+            }
+            registeredClient = this.registeredClientRepository.findByClientId(jwtAud.get(0));
+            if (registeredClient == null) {
+                throwError(OAuth2ErrorCodes.INVALID_TOKEN, IdTokenClaimNames.AUD);
+            }
+            authorizedPrincipal = null; // unknown in fallback mode
         }
-
-        RegisteredClient registeredClient = this.registeredClientRepository.findById(authorization.getRegisteredClientId());
-        OidcIdToken idToken = authorizedIdToken.getToken();
 
         // Client identity: the audience must include the client that emitted the token.
         List<String> aud = idToken.getAudience();
@@ -146,14 +174,17 @@ public class SubrogationTolerantOidcLogoutAuthenticationProvider implements Auth
             }
         }
 
-        // Sub mismatch confirmed → this is a subrogation transition. Accept and complete auth here.
+        // Both normal and subrogation cases: return authenticated. We deliberately skip the strict sub
+        // check the default provider would do — it fails in the subrogation transition where the current
+        // server-side principal (surrogate) differs from the id_token subject (super-user).
         Authentication currentPrincipal = (Authentication) logout.getPrincipal();
         LOGGER.info(
-            "Accepting subrogation-tolerant logout: current={} authorized={}",
+            "Authenticating logout (tolerant): current={} authorized={} subMatches={}",
             currentPrincipal != null ? currentPrincipal.getName() : "null",
-            authorization.getAttribute(Principal.class.getName()) != null
-                ? ((Authentication) authorization.getAttribute(Principal.class.getName())).getName()
-                : "null"
+            authorizedPrincipal != null ? authorizedPrincipal.getName() : "null",
+            currentPrincipal != null &&
+                authorizedPrincipal != null &&
+                currentPrincipal.getName().equals(authorizedPrincipal.getName())
         );
 
         return new OidcLogoutAuthenticationToken(
