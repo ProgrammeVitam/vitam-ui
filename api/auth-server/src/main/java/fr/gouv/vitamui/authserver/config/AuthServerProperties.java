@@ -17,7 +17,7 @@ public class AuthServerProperties {
 
     private String issuer;
     private Iam iam = new Iam();
-    private PortalClient portalClient = new PortalClient();
+    private List<Client> clients = List.of();
     private Token token = new Token();
     private Cors cors = new Cors();
 
@@ -29,10 +29,10 @@ public class AuthServerProperties {
     }
 
     @Data
-    public static class PortalClient {
+    public static class Client {
         private String clientId;
-        private String redirectUri;
-        private String postLogoutRedirectUri;
+        private List<String> redirectUris = List.of();
+        private List<String> postLogoutRedirectUris = List.of();
     }
 
     @Data

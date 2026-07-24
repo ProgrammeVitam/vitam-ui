@@ -64,8 +64,18 @@ public class OpaqueVitamTokenGenerator implements OAuth2TokenGenerator<OAuth2Acc
             return null;
         }
 
-        String opaqueTokenId = iamClient.createOpaqueAuthToken(user.getId(), false, false);
-        LOGGER.info("Issued opaque TOK for userId={} email={}", user.getId(), user.getEmail());
+        boolean surrogation = context
+            .getPrincipal()
+            .getAuthorities()
+            .stream()
+            .anyMatch(a -> SubrogationConstants.SUBROGATED_AUTHORITY.equals(a.getAuthority()));
+        String opaqueTokenId = iamClient.createOpaqueAuthToken(user.getId(), surrogation, false);
+        LOGGER.info(
+            "Issued opaque TOK for userId={} email={} surrogation={}",
+            user.getId(),
+            user.getEmail(),
+            surrogation
+        );
         Instant issuedAt = Instant.now();
         Instant expiresAt = issuedAt.plus(ttl);
         return new OAuth2AccessToken(
@@ -82,8 +92,11 @@ public class OpaqueVitamTokenGenerator implements OAuth2TokenGenerator<OAuth2Acc
             return null;
         }
         Object candidate = principal.getPrincipal();
-        if (candidate instanceof UserDto userDto) {
-            return userDto;
+        if (candidate instanceof VitamuiPrincipal vp) {
+            return vp.getUserDto();
+        }
+        if (candidate instanceof UserDto direct) {
+            return direct;
         }
         return null;
     }

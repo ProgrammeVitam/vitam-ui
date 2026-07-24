@@ -83,6 +83,8 @@ public abstract class RestApi {
 
     public static final String CAS_HRD_PATH = "/hrd";
 
+    public static final String CAS_SUBROGATION_VALIDATE_PATH = "/subrogations/validate";
+
     public static final String USERS_PROVISIONING = "/provisioning";
 
     public static final String CAS_SUBROGATIONS_PATH = "/subrogations";

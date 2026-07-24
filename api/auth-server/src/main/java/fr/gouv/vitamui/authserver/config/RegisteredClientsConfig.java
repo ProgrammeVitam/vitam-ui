@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.server.authorization.settings.OAuth2T
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 
 @Configuration
@@ -26,31 +27,45 @@ public class RegisteredClientsConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(AuthServerProperties properties) {
-        AuthServerProperties.PortalClient cfg = properties.getPortalClient();
         AuthServerProperties.Token token = properties.getToken();
 
-        RegisteredClient portal = RegisteredClient.withId(UUID.randomUUID().toString())
+        List<RegisteredClient> clients = properties
+            .getClients()
+            .stream()
+            .map(cfg -> buildRegisteredClient(cfg, token))
+            .toList();
+
+        if (clients.isEmpty()) {
+            throw new IllegalStateException(
+                "vitamui.auth-server.clients must not be empty. Configure at least one OIDC client in application.yml."
+            );
+        }
+
+        return new InMemoryRegisteredClientRepository(clients);
+    }
+
+    private static RegisteredClient buildRegisteredClient(
+        AuthServerProperties.Client cfg,
+        AuthServerProperties.Token token
+    ) {
+        RegisteredClient.Builder builder = RegisteredClient.withId(UUID.randomUUID().toString())
             .clientId(cfg.getClientId())
             .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri(cfg.getRedirectUri())
-            .postLogoutRedirectUri(cfg.getPostLogoutRedirectUri())
             .scope(OidcScopes.OPENID)
             .clientSettings(
-                ClientSettings.builder()
-                    .requireProofKey(true)
-                    .requireAuthorizationConsent(false)
-                    .build()
+                ClientSettings.builder().requireProofKey(true).requireAuthorizationConsent(false).build()
             )
             .tokenSettings(
                 TokenSettings.builder()
                     .accessTokenTimeToLive(Duration.ofMinutes(token.getAccessTokenTtlMinutes()))
                     .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
                     .build()
-            )
-            .build();
+            );
 
-        return new InMemoryRegisteredClientRepository(portal);
+        cfg.getRedirectUris().forEach(builder::redirectUri);
+        cfg.getPostLogoutRedirectUris().forEach(builder::postLogoutRedirectUri);
+        return builder.build();
     }
 }

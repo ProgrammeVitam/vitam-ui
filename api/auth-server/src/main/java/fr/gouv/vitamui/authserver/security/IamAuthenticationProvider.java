@@ -58,7 +58,11 @@ public class IamAuthenticationProvider implements AuthenticationProvider {
                 new SimpleGrantedAuthority("ROLE_USER"),
                 FactorGrantedAuthority.fromAuthority(FactorGrantedAuthority.PASSWORD_AUTHORITY)
             );
-            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(user, null, authorities);
+            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(
+                new VitamuiPrincipal(user),
+                null,
+                authorities
+            );
             result.setDetails(authentication.getDetails());
             return result;
         } catch (IamClient.BadCredentialsClientException e) {

@@ -6,12 +6,30 @@ server:
     key-store-type: PKCS12
     key-store-password: ${SSL_KEYSTORE_PASSWORD:changeit}
     key-alias: dev-vitamui
+  servlet:
+    session:
+      cookie:
+        # Cookies do NOT scope by port — a JSESSIONID emitted by ng serve on :4200 (or any other
+        # servlet on dev.vitamui.com) would overwrite ours and break SSO. Use a distinct name.
+        name: SAS_JSESSIONID
+        secure: true
+        http-only: true
+        same-site: lax
 
 spring:
   application:
     name: auth-server
   thymeleaf:
     enabled: false
+
+# Diagnostic logs for the cross-app SSO issue. Set the block to WARN once SSO works.
+logging:
+  level:
+    org.springframework.security.web.context.HttpSessionSecurityContextRepository: TRACE
+    org.springframework.security.web.access: DEBUG
+    org.springframework.security.web.authentication.logout: DEBUG
+    org.springframework.security.oauth2.server.authorization: TRACE
+    org.springframework.session: DEBUG
 
 vitam:
   security:
@@ -30,13 +48,70 @@ vitamui:
       # Set to false in staging/prod once IAM has a proper cert.
       trust-all-certs: ${IAM_TRUST_ALL_CERTS:true}
       internal-application-id: auth-server
-    portal-client:
-      client-id: portal
-      redirect-uri: ${PORTAL_REDIRECT_URI:https://dev.vitamui.com:4200/}
-      post-logout-redirect-uri: ${PORTAL_REDIRECT_URI:https://dev.vitamui.com:4200/}
+    # The 8 vitam-ui OIDC clients. redirect-uris and post-logout-redirect-uris accept multiple values
+    # so both dev.vitamui.com and localhost work.
+    clients:
+      - client-id: portal
+        redirect-uris:
+          - https://dev.vitamui.com:4200/
+          - http://localhost:4200/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4200/
+          - http://localhost:4200/
+      - client-id: identity
+        redirect-uris:
+          - https://dev.vitamui.com:4201/user
+          - https://dev.vitamui.com:4201/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4201/user
+          - https://dev.vitamui.com:4201/
+      - client-id: identityadmin
+        redirect-uris:
+          - https://dev.vitamui.com:4201/customer
+          - https://dev.vitamui.com:4201/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4201/customer
+          - https://dev.vitamui.com:4201/
+      - client-id: referential
+        redirect-uris:
+          - https://dev.vitamui.com:4202/ingest-contract
+          - https://dev.vitamui.com:4202/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4202/ingest-contract
+          - https://dev.vitamui.com:4202/
+      - client-id: ingest
+        redirect-uris:
+          - https://dev.vitamui.com:4208/ingest
+          - https://dev.vitamui.com:4208/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4208/ingest
+          - https://dev.vitamui.com:4208/
+      - client-id: archive-search
+        redirect-uris:
+          - https://dev.vitamui.com:4209/archive-search
+          - https://dev.vitamui.com:4209/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4209/archive-search
+          - https://dev.vitamui.com:4209/
+      - client-id: collect
+        redirect-uris:
+          - https://dev.vitamui.com:4210/collect
+          - https://dev.vitamui.com:4210/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4210/collect
+          - https://dev.vitamui.com:4210/
+      - client-id: pastis
+        redirect-uris:
+          - https://dev.vitamui.com:4251/pastis
+          - https://dev.vitamui.com:4251/
+        post-logout-redirect-uris:
+          - https://dev.vitamui.com:4251/pastis
+          - https://dev.vitamui.com:4251/
     token:
       access-token-ttl-minutes: 240
     # CORS origins allowed to call the OIDC endpoints and login JSON API from a browser.
-    # Comma-separated list; wildcard subdomain patterns are allowed.
+    # Comma-separated list; wildcard patterns are supported.
+    # dev.vitamui.com uses ports 4200 (portal), 4201 (identity/identity-admin), 4202 (referential),
+    # 4208 (ingest), 4209 (archive-search), 4210 (collect), 4251 (pastis).
     cors:
-      allowed-origins: ${CORS_ALLOWED_ORIGINS:https://dev.vitamui.com:4200,http://localhost:4200}
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:https://dev.vitamui.com:*,http://localhost:*}

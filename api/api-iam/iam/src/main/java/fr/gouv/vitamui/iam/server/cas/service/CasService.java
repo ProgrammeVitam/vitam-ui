@@ -57,6 +57,9 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
+import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
@@ -636,6 +639,18 @@ public class CasService {
     }
 
     /**
+     * Invalidates every opaque auth token pointing to the given user id — used at the beginning of a
+     * subrogation flow to force other apps still holding the super-user's token to re-authenticate
+     * (they will get a fresh subrogated token via SSO instead of continuing to see the super-user).
+     *
+     * @return the number of tokens deleted
+     */
+    public long invalidateTokensOfUser(final String userId) {
+        Assert.hasText(userId, "userId must not be empty");
+        return tokenRepository.deleteByRefId(userId);
+    }
+
+    /**
      * Create an opaque auth token pointing to the given user, persisted in the {@code tokens} collection.
      * Used by external issuers (e.g. Spring Authorization Server POC) that only need to mint a token
      * without updating the user's lastConnection.
@@ -711,6 +726,65 @@ public class CasService {
                     )
             )
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Validates that an ACCEPTED {@link Subrogation} exists between the given super-user and surrogate
+     * within the provided customer contexts, and resolves both user identifiers.
+     * Used by the auth-server (SAS POC) at the {@code /login/subrogate} step.
+     *
+     * @throws NotFoundException if no matching subrogation exists or its status is not ACCEPTED, or if
+     *                            either user cannot be resolved.
+     */
+    public SubrogationValidateResponseDto validateSubrogation(final SubrogationValidateRequestDto request) {
+        Assert.notNull(request, "request must not be null");
+        Optional<Subrogation> subro =
+            subrogationRepository.findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
+                request.getSuperUserEmail(),
+                request.getSuperUserCustomerId(),
+                request.getSurrogateEmail(),
+                request.getSurrogateCustomerId()
+            );
+        if (subro.isEmpty() || subro.get().getStatus() != SubrogationStatusEnum.ACCEPTED) {
+            throw new NotFoundException("No ACCEPTED subrogation between the given super-user and surrogate");
+        }
+        // Reject subrogations whose date is in the past — the Mongo TTL index should have purged them but
+        // in practice we see stale entries lingering (TTL runs every 60s, some deployments have it disabled).
+        final Date now = new Date();
+        if (subro.get().getDate() != null && subro.get().getDate().before(now)) {
+            throw new NotFoundException(
+                "Subrogation between " +
+                request.getSuperUserEmail() +
+                " and " +
+                request.getSurrogateEmail() +
+                " has expired at " +
+                subro.get().getDate()
+            );
+        }
+        final User surrogate = userRepository.findByEmailIgnoreCaseAndCustomerId(
+            request.getSurrogateEmail(),
+            request.getSurrogateCustomerId()
+        );
+        if (surrogate == null) {
+            throw new NotFoundException("Surrogate user not found: " + request.getSurrogateEmail());
+        }
+        final User superUser = userRepository.findByEmailIgnoreCaseAndCustomerId(
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId()
+        );
+        if (superUser == null) {
+            throw new NotFoundException("Super-user not found: " + request.getSuperUserEmail());
+        }
+        // Wipe every active TOK held by the super-user so that other apps (portal, ingest, …) still open
+        // in another tab lose their token and, on their next API call, get a 401 → re-authenticate via
+        // SSO → receive a fresh surrogated token. Without this, those apps keep showing the super-user.
+        final long deleted = tokenRepository.deleteByRefId(superUser.getId());
+        LOGGER.info(
+            "Subrogation validate: invalidated {} TOK(s) of super-user {} to propagate the switch",
+            deleted,
+            request.getSuperUserEmail()
+        );
+        return new SubrogationValidateResponseDto(superUser.getId(), surrogate.getId());
     }
 
     private String persistToken(final String userId, final boolean isSubrogation, final int ttlInMinutes) {

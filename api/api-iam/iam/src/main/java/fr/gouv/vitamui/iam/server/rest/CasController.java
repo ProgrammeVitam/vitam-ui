@@ -51,6 +51,8 @@ import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
@@ -372,5 +374,26 @@ public class CasController {
         ParameterChecker.checkParameter("email is mandatory : ", email);
         SanityChecker.checkSecureParameter(email);
         return casService.resolveHrdEntries(email);
+    }
+
+    /**
+     * Validates that an ACCEPTED subrogation exists between the given super-user and surrogate,
+     * and returns both resolved user ids. Called by auth-server (SAS POC) at the {@code /login/subrogate} step.
+     */
+    @PostMapping(value = RestApi.CAS_SUBROGATION_VALIDATE_PATH)
+    @Operation(
+        operationId = "cas_validateSubrogation",
+        summary = "Validate an ACCEPTED subrogation between super-user and surrogate"
+    )
+    public SubrogationValidateResponseDto validateSubrogation(
+        @Valid @RequestBody final SubrogationValidateRequestDto request
+    ) {
+        LOGGER.debug(
+            "validateSubrogation superUser={} surrogate={}",
+            request.getSuperUserEmail(),
+            request.getSurrogateEmail()
+        );
+        SanityChecker.checkSecureParameter(request.getSuperUserEmail(), request.getSurrogateEmail());
+        return casService.validateSubrogation(request);
     }
 }

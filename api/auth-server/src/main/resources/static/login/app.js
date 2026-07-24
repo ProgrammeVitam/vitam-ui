@@ -10,6 +10,7 @@ const state = {
   customerId: null,
   providerType: null,
   providerId: null,
+  subrogation: null,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -32,6 +33,55 @@ async function postJson(url, body) {
     body: JSON.stringify(body),
   });
   return response;
+}
+
+async function fetchContext() {
+  try {
+    const response = await fetch('/api/login/context', { credentials: 'include' });
+    if (!response.ok) return null;
+    return await response.json();
+  } catch (e) {
+    console.error('fetchContext error', e);
+    return null;
+  }
+}
+
+async function initFlow() {
+  const context = await fetchContext();
+  if (context && context.mode === 'subrogation') {
+    state.subrogation = context;
+    $('subrogation-super-email').value = context.superUserEmail;
+    $('subrogation-surrogate-email').value = context.surrogateEmail;
+    $('step-email').hidden = true;
+    $('step-subrogation').hidden = false;
+    $('subrogation-password').focus();
+  }
+}
+
+async function authenticateSubrogation() {
+  clearError();
+  const password = $('subrogation-password').value;
+  if (!password) return showError('Mot de passe requis.');
+
+  let response;
+  try {
+    response = await postJson('/api/login/authenticate-subrogation', { password });
+  } catch (e) {
+    console.error('authenticate-subrogation network error', e);
+    return showError('Erreur réseau vers /api/login/authenticate-subrogation : ' + e.message);
+  }
+  if (response.status === 401) {
+    return showError('Mot de passe invalide ou subrogation refusée.');
+  }
+  if (!response.ok) {
+    return showError('Erreur d\'authentification subrogée (' + response.status + ').');
+  }
+  const data = await response.json();
+  if (data.redirectUrl) {
+    window.location.assign(data.redirectUrl);
+  } else {
+    showError('Aucune URL de redirection retournée par le serveur.');
+  }
 }
 
 async function resolve() {
@@ -161,12 +211,17 @@ function bindHandlers() {
   $('btn-authenticate').addEventListener('click', authenticate);
   $('btn-back').addEventListener('click', back);
   $('btn-back-customer').addEventListener('click', back);
+  $('btn-subrogation-authenticate').addEventListener('click', authenticateSubrogation);
   $('email').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') resolve();
   });
   $('password').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') authenticate();
   });
+  $('subrogation-password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') authenticateSubrogation();
+  });
+  initFlow();
 }
 
 // Script is loaded at the end of <body>; DOMContentLoaded may already have fired.

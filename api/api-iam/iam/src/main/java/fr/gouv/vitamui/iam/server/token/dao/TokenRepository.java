@@ -44,4 +44,6 @@ import fr.gouv.vitamui.iam.server.token.domain.Token;
  *
  *
  */
-public interface TokenRepository extends VitamUIRepository<Token, String> {}
+public interface TokenRepository extends VitamUIRepository<Token, String> {
+    long deleteByRefId(String refId);
+}

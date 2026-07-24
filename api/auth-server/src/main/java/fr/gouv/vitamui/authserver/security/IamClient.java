@@ -12,6 +12,8 @@ import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -113,6 +115,29 @@ public class IamClient {
             .retrieve()
             .body(CreateTokenResponseDto.class);
         return response != null ? response.getTokenId() : null;
+    }
+
+    /**
+     * Verifies that an ACCEPTED subrogation exists between the super-user and surrogate and returns
+     * both resolved user ids. Returns {@code null} on 404 (no matching subrogation).
+     */
+    public SubrogationValidateResponseDto validateSubrogation(SubrogationValidateRequestDto request) {
+        return restClient
+            .post()
+            .uri(RestApi.V1_CAS_URL + RestApi.CAS_SUBROGATION_VALIDATE_PATH)
+            .body(request)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, (req, resp) -> {
+                throw new SubrogationNotValidException("IAM returned " + resp.getStatusCode());
+            })
+            .body(SubrogationValidateResponseDto.class);
+    }
+
+    /** Marker exception mapped to a client-side error upstream. */
+    public static class SubrogationNotValidException extends RuntimeException {
+        public SubrogationNotValidException(String message) {
+            super(message);
+        }
     }
 
     /** Marker exception mapped to {@link org.springframework.security.authentication.BadCredentialsException} upstream. */

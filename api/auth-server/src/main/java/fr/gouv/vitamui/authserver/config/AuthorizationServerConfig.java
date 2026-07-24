@@ -18,6 +18,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.oauth2.core.OAuth2Token;
@@ -32,6 +33,8 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Refr
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -40,7 +43,11 @@ import fr.gouv.vitamui.authserver.security.IamClient;
 import fr.gouv.vitamui.authserver.security.OpaqueVitamTokenGenerator;
 import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationConverter;
 import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationProvider;
+import fr.gouv.vitamui.authserver.security.SubrogationConstants;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 import java.security.interfaces.RSAPublicKey;
 
@@ -49,15 +56,52 @@ import java.security.interfaces.RSAPublicKey;
 public class AuthorizationServerConfig {
 
     @Bean
+    public SecurityContextRepository securityContextRepository() {
+        // Shared between both filter chains so the Authentication persisted by the SPA login flow (Chain 2)
+        // is picked up by the OAuth2 authorize endpoint (Chain 1) — that's what makes SSO work when a
+        // second client (e.g. identity :4201) hits /oauth2/authorize after the user already logged in.
+        return new HttpSessionSecurityContextRepository();
+    }
+
+    @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authorizationServerSecurityFilterChain(
         HttpSecurity http,
         CorsConfigurationSource corsConfigurationSource,
-        RegisteredClientRepository registeredClientRepository
+        RegisteredClientRepository registeredClientRepository,
+        SecurityContextRepository securityContextRepository
     ) throws Exception {
         http.oauth2AuthorizationServer(authorizationServer -> {
             http.securityMatcher(authorizationServer.getEndpointsMatcher());
-            authorizationServer.oidc(Customizer.withDefaults());
+            authorizationServer.oidc(oidc ->
+                oidc.logoutEndpoint(logout -> {
+                    // Provider tolerant to the sub mismatch that happens when a subrogated session
+                    // receives a logout with the pre-subrogation id_token_hint from another tab.
+                    logout.authenticationProvider(
+                        new fr.gouv.vitamui.authserver.security.SubrogationTolerantOidcLogoutAuthenticationProvider(
+                            registeredClientRepository,
+                            () ->
+                                http.getSharedObject(
+                                    org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService.class
+                                )
+                        )
+                    );
+                    // Keep the tolerant post_logout_redirect_uri validator on the default provider too,
+                    // so requests that go through it (non-subrogated cases) still accept angular-oauth2-oidc
+                    // URIs carrying trailing query params.
+                    logout.authenticationProviders(providers -> {
+                        for (var provider : providers) {
+                            if (
+                                provider instanceof org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcLogoutAuthenticationProvider oidcLogoutProvider
+                            ) {
+                                oidcLogoutProvider.setAuthenticationValidator(
+                                    fr.gouv.vitamui.authserver.security.TolerantPostLogoutRedirectUriValidator.INSTANCE
+                                );
+                            }
+                        }
+                    });
+                })
+            );
             // Allow public (PKCE) clients to hit /oauth2/revoke with just client_id — RFC 7009 permits this,
             // SAS enforces client auth by default.
             authorizationServer.clientAuthentication(clientAuth -> {
@@ -71,6 +115,13 @@ public class AuthorizationServerConfig {
         });
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource));
+        http.securityContext(sc -> sc.securityContextRepository(securityContextRepository));
+        // Keep the same JSESSIONID across /oauth2/authorize requests: without this, Spring's default
+        // "changeSessionId" fixation strategy rotates the cookie during the flow and the browser's second
+        // /oauth2/authorize (from another client, e.g. identity) presents a stale id → new session → SSO KO.
+        http.sessionManagement(session ->
+            session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation(sf -> sf.none())
+        );
         http.authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
 
         MediaTypeRequestMatcher htmlRequests = new MediaTypeRequestMatcher(MediaType.TEXT_HTML);
@@ -87,10 +138,15 @@ public class AuthorizationServerConfig {
     @Order(2)
     public SecurityFilterChain webSecurityFilterChain(
         HttpSecurity http,
-        CorsConfigurationSource corsConfigurationSource
+        CorsConfigurationSource corsConfigurationSource,
+        SecurityContextRepository securityContextRepository
     ) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource))
+            .securityContext(sc -> sc.securityContextRepository(securityContextRepository))
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation(sf -> sf.none())
+            )
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers("/login", "/login/**", "/api/login/**", "/assets/**", "/favicon.ico", "/error")
@@ -137,10 +193,12 @@ public class AuthorizationServerConfig {
     public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator(
         NimbusJwtEncoder jwtEncoder,
         IamClient iamClient,
-        AuthServerProperties properties
+        AuthServerProperties properties,
+        OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer
     ) {
         OpaqueVitamTokenGenerator opaqueVitamTokenGenerator = new OpaqueVitamTokenGenerator(iamClient, properties);
         JwtGenerator jwtGenerator = new JwtGenerator(jwtEncoder);
+        jwtGenerator.setJwtCustomizer(jwtCustomizer);
         OAuth2AccessTokenGenerator fallbackAccessTokenGenerator = new OAuth2AccessTokenGenerator();
         OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
         return new DelegatingOAuth2TokenGenerator(
@@ -149,5 +207,41 @@ public class AuthorizationServerConfig {
             fallbackAccessTokenGenerator,
             refreshTokenGenerator
         );
+    }
+
+    /**
+     * Ensures the {@code sub} claim of the OIDC {@code id_token} carries the vitam-ui user id (Mongo id),
+     * not the giant Lombok {@code UserDto.toString()} output. Also flags subrogation via a custom claim to
+     * ease debugging.
+     */
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
+        return (JwtEncodingContext context) -> {
+            Object principal = context.getPrincipal() != null ? context.getPrincipal().getPrincipal() : null;
+            UserDto user = null;
+            if (principal instanceof fr.gouv.vitamui.authserver.security.VitamuiPrincipal vp) {
+                user = vp.getUserDto();
+            } else if (principal instanceof UserDto direct) {
+                user = direct;
+            }
+            if (user != null) {
+                if (user.getId() != null) {
+                    context.getClaims().subject(user.getId());
+                }
+                if (user.getEmail() != null) {
+                    context.getClaims().claim("email", user.getEmail());
+                }
+            }
+            boolean subrogated =
+                context.getPrincipal() != null &&
+                context
+                    .getPrincipal()
+                    .getAuthorities()
+                    .stream()
+                    .anyMatch(a -> SubrogationConstants.SUBROGATED_AUTHORITY.equals(a.getAuthority()));
+            if (subrogated) {
+                context.getClaims().claim("surrogation", true);
+            }
+        };
     }
 }

@@ -75,7 +75,8 @@ public class WebSecurityConfig extends ApiWebSecurityConfig {
             // Production hardening (mTLS / signed header) is deferred to Phase 2.
             RestApi.V1_CAS_URL + RestApi.CAS_HRD_PATH,
             RestApi.V1_CAS_URL + RestApi.CAS_TOKENS_PATH,
-            RestApi.V1_CAS_URL + RestApi.CAS_LOGIN_PATH
+            RestApi.V1_CAS_URL + RestApi.CAS_LOGIN_PATH,
+            RestApi.V1_CAS_URL + RestApi.CAS_SUBROGATION_VALIDATE_PATH
         );
     }
 }

@@ -23,6 +23,17 @@
         <button type="button" class="link" id="btn-back-customer">← Changer d'email</button>
       </section>
 
+      <section id="step-subrogation" hidden>
+        <p class="subtitle">Reprise d'identité d'un utilisateur : confirmez votre mot de passe pour poursuivre.</p>
+        <label>Votre compte support</label>
+        <input id="subrogation-super-email" type="email" readonly />
+        <label>Compte cible</label>
+        <input id="subrogation-surrogate-email" type="email" readonly />
+        <label for="subrogation-password">Votre mot de passe</label>
+        <input id="subrogation-password" type="password" autocomplete="current-password" required />
+        <button type="button" id="btn-subrogation-authenticate">Confirmer la reprise d'identité</button>
+      </section>
+
       <section id="step-password" hidden>
         <label>Adresse email</label>
         <input id="email-readonly" type="email" readonly />
