@@ -38,15 +38,11 @@ export interface PreservationScenario {
   Identifier: string;
   Name: string;
   Description: string;
-
   CreationDate: Date;
-
+  LastUpdate: Date;
   ActionList: ActionType[];
-
   GriffinByFormat: GriffinByFormat[];
-
   DefaultGriffin: DefaultGriffin;
-
   TransformationRules: string;
 }
 

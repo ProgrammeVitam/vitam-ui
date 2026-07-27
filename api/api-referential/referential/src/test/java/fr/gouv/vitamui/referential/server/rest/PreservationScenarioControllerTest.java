@@ -265,6 +265,7 @@ class PreservationScenarioControllerTest {
             "Scenario " + id,
             null,
             null,
+            null,
             List.of(ActionTypePreservation.GENERATE),
             null,
             null,

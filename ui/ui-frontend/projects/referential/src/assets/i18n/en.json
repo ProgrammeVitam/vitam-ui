@@ -1167,6 +1167,7 @@
       "SEARCH_PLACEHOLDER": "Name, identifier"
     },
     "TAB": {
+      "DOWNLOAD_SCENARIO": "Download scenario (JSON)",
       "INFORMATION": {
         "TITLE": "Informations",
         "IDENTIFIER": "Identifier",
@@ -1175,7 +1176,8 @@
         "VERSION": "Version",
         "DESCRIPTION": "Description",
         "CREATION_DATE": "Creation date",
-        "MODIFICATION_DATE": "Modification date"
+        "MODIFICATION_DATE": "Modification date",
+        "POSSIBLE_ACTIONS": "Possible actions"
       },
       "HISTORY": {
         "TITLE": "History"

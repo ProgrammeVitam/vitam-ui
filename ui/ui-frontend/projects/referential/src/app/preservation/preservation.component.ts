@@ -45,6 +45,7 @@ import {
   download,
   Griffin,
   GriffinsService,
+  PreservationScenario,
   PreservationScenariosService,
   Role,
   SecurityService,
@@ -77,7 +78,7 @@ import { PreservationPreviewComponent } from './preservation-preview/preservatio
     MatMenuItem,
   ],
 })
-export class PreservationComponent extends SidenavPage<Griffin> {
+export class PreservationComponent extends SidenavPage<Griffin | PreservationScenario> {
   search = '';
 
   private readonly preservationScenariosService = inject(PreservationScenariosService);
@@ -126,7 +127,7 @@ export class PreservationComponent extends SidenavPage<Griffin> {
       });
   }
 
-  showGriffin(item: Griffin) {
+  showElement(item: Griffin | PreservationScenario) {
     this.openPanel(item);
   }
 }

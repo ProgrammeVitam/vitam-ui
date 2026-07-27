@@ -45,6 +45,7 @@ import {
   Direction,
   Griffin,
   GriffinsService,
+  PreservationScenariosService,
   SnackBarService,
   StartupService,
   TenantSelectionService,
@@ -65,7 +66,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
 export class GriffinListComponent implements OnInit {
-  griffinsService = inject(GriffinsService);
+  readonly griffinsService = inject(GriffinsService);
+  readonly preservationScenariosService = inject(PreservationScenariosService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly matDialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
@@ -186,6 +188,7 @@ export class GriffinListComponent implements OnInit {
   }
 
   selectLine(griffin: Griffin) {
+    this.preservationScenariosService.selectedId$.next(null);
     this.griffinsService.selectedId$.next(griffin.Identifier);
     this.griffinClick.emit(griffin);
   }

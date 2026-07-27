@@ -51,6 +51,7 @@ const SCENARIO: PreservationScenario = {
   Name: 'Scenario 1',
   Description: '',
   CreationDate: new Date(),
+  LastUpdate: new Date(),
   ActionList: [],
   GriffinByFormat: [],
   DefaultGriffin: null,

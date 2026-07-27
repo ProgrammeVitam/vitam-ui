@@ -39,7 +39,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { PreservationScenarioListComponent } from './preservation-scenario-list/preservation-scenario-list.component';
 import { GriffinListComponent } from './griffin-list/griffin-list.component';
-import { Griffin } from 'vitamui-library';
+import { Griffin, PreservationScenario } from 'vitamui-library';
 
 @Component({
   selector: 'app-preservation-group',
@@ -49,7 +49,7 @@ import { Griffin } from 'vitamui-library';
 })
 export class PreservationGroupComponent {
   searchText = input<string>('');
-  selectElement = output<Griffin>();
+  selectElement = output<Griffin | PreservationScenario>();
 
   tabIndex = 0;
 }
