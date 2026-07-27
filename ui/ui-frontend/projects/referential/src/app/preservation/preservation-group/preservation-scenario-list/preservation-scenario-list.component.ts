@@ -36,15 +36,16 @@
  */
 import { Component, DestroyRef, inject, Input, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   ActionType,
-  ApplicationId,
   ConfirmDialogComponent,
   ConfirmDialogData,
   Direction,
   GriffinsService,
+  OperationId,
   PreservationScenario,
   PreservationScenariosService,
   SnackBarService,
@@ -138,11 +139,13 @@ export class PreservationScenarioListComponent implements OnInit {
       .delete(scenario)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
-          this.snackBarService.open({
-            message: 'PRESERVATION.SCENARIO.SNACKBAR.DELETE_REQUEST_ACCEPTED',
-            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
-          });
+        next: (operationId: OperationId) => {
+          this.snackBarService.open(
+            this.snackBarService.buildSnackBarForOperationsLog(
+              'PRESERVATION.SCENARIO.SNACKBAR.DELETE_REQUEST_ACCEPTED',
+              operationId.operationId,
+            ),
+          );
 
           if (this.selectedPreservationScenario()?.Identifier === scenario.Identifier) {
             this.selectedPreservationScenario.set(null);
@@ -150,11 +153,11 @@ export class PreservationScenarioListComponent implements OnInit {
 
           this.loadScenarios();
         },
-        error: () => {
-          this.snackBarService.open({
-            message: 'PRESERVATION.SCENARIO.SNACKBAR.DELETE_FAILED',
-            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
-          });
+        error: (error: HttpErrorResponse) => {
+          const operationId = error.error?.operationId;
+          this.snackBarService.open(
+            this.snackBarService.buildSnackBarForOperationsLog('PRESERVATION.SCENARIO.SNACKBAR.DELETE_FAILED', operationId),
+          );
         },
       });
   }

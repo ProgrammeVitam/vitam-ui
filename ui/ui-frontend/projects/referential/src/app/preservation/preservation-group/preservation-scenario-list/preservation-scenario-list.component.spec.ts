@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -45,6 +45,8 @@ import type { Mock, MockInstance } from 'vitest';
 import { BASE_URL, LoggerModule, PreservationScenario, PreservationScenariosService, SnackBarService } from 'vitamui-library';
 
 import { PreservationScenarioListComponent } from './preservation-scenario-list.component';
+
+const OPERATION_ID = 'aeeaaaaaacaaaaaaabcdefghijklmnopq';
 
 const SCENARIO: PreservationScenario = {
   Identifier: 'PSC-000001',
@@ -63,7 +65,7 @@ describe('PreservationScenarioListComponent', () => {
   let fixture: ComponentFixture<PreservationScenarioListComponent>;
 
   let preservationScenariosService: { list: Mock; delete: Mock };
-  let snackBarService: { open: Mock };
+  let snackBarService: { open: Mock; buildSnackBarForOperationsLog: Mock };
   let matDialogOpen: MockInstance<MatDialog['open']>;
 
   /** Makes the confirmation dialog close with the given result. */
@@ -74,10 +76,10 @@ describe('PreservationScenarioListComponent', () => {
   beforeEach(async () => {
     preservationScenariosService = {
       list: vi.fn().mockReturnValue(of([SCENARIO])),
-      delete: vi.fn().mockReturnValue(of(undefined)),
+      delete: vi.fn().mockReturnValue(of({ operationId: OPERATION_ID })),
     };
 
-    snackBarService = { open: vi.fn() };
+    snackBarService = { open: vi.fn(), buildSnackBarForOperationsLog: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [PreservationScenarioListComponent, LoggerModule.forRoot()],
@@ -130,8 +132,9 @@ describe('PreservationScenarioListComponent', () => {
 
       component.deletePreservationScenarioDialog(SCENARIO);
 
-      expect(snackBarService.open).toHaveBeenCalledExactlyOnceWith(
-        expect.objectContaining({ message: 'PRESERVATION.SCENARIO.SNACKBAR.DELETE_REQUEST_ACCEPTED' }),
+      expect(snackBarService.buildSnackBarForOperationsLog).toHaveBeenCalledExactlyOnceWith(
+        'PRESERVATION.SCENARIO.SNACKBAR.DELETE_REQUEST_ACCEPTED',
+        OPERATION_ID,
       );
       expect(preservationScenariosService.list).toHaveBeenCalledTimes(1);
     });
@@ -145,14 +148,18 @@ describe('PreservationScenarioListComponent', () => {
     });
 
     it('should notify the user and keep the list untouched on failure', () => {
-      preservationScenariosService.delete.mockReturnValue(throwError(() => new Error('import KO')));
+      preservationScenariosService.delete.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 400, error: { operationId: OPERATION_ID } })),
+      );
       preservationScenariosService.list.mockClear();
 
       component.deletePreservationScenarioDialog(SCENARIO);
 
-      expect(snackBarService.open).toHaveBeenCalledExactlyOnceWith(
-        expect.objectContaining({ message: 'PRESERVATION.SCENARIO.SNACKBAR.DELETE_FAILED' }),
+      expect(snackBarService.buildSnackBarForOperationsLog).toHaveBeenCalledExactlyOnceWith(
+        'PRESERVATION.SCENARIO.SNACKBAR.DELETE_FAILED',
+        OPERATION_ID,
       );
+      expect(snackBarService.open).toHaveBeenCalledTimes(1);
       expect(preservationScenariosService.list).not.toHaveBeenCalled();
     });
 

@@ -44,7 +44,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -180,7 +179,7 @@ class GriffinControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException {
         // Given
         Griffin griffin = buildGriffin("id-1");
-        doNothing().when(griffinService).delete(griffin);
+        when(griffinService.delete(griffin)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
 
         // When / Then
         assertThatCode(() -> griffinController.deleteGriffin(griffin)).doesNotThrowAnyException();

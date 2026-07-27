@@ -91,9 +91,9 @@ public class GriffinController {
     @DeleteMapping
     @RequireAdminTenant
     @Secured(ROLE_UPDATE_GRIFFINS)
-    public void deleteGriffin(@RequestBody Griffin griffin)
+    public ResponseEntity<OperationIdDto> deleteGriffin(@RequestBody Griffin griffin)
         throws VitamClientException, AccessExternalClientException, IOException {
-        this.griffinService.delete(griffin);
+        return this.griffinService.delete(griffin);
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
