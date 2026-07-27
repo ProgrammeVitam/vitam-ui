@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import {
   IEvent,
@@ -122,7 +122,12 @@ export class LogbookDownloadService extends SearchService<IEvent> {
         if (eventType === 'EXPORT_PROBATIVE_VALUE' || eventType === 'RECTIFICATION_AUDIT') {
           return DOWNLOAD_TYPE_REPORT;
         }
-        if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT' || eventType === 'LINKED_CHECK_SECURISATION') {
+        if (
+          eventType === 'EVIDENCE_AUDIT' ||
+          eventType === 'PROCESS_AUDIT' ||
+          eventType === 'LINKED_CHECK_SECURISATION' ||
+          eventType === 'TRACEABILITY_CHAIN_AUDIT'
+        ) {
           return DOWNLOAD_TYPE_BATCH_REPORT;
         }
         return DOWNLOAD_TYPE_REPORT;
