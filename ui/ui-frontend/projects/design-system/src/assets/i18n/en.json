@@ -45,10 +45,11 @@
     },
     "organisms": {
       "TITLE": "Organisms",
-      "table.TITLE": "Table",
-      "tab-group.TITLE": "Tab group",
       "dialog.TITLE": "Dialog",
-      "snackbar.TITLE": "Snackbar"
+      "discussion.TITLE": "Discussion",
+      "snackbar.TITLE": "Snackbar",
+      "table.TITLE": "Table",
+      "tab-group.TITLE": "Tab group"
     },
     "miscellaneous.TITLE": "Miscellaneous",
     "translation.TITLE": "Translation",

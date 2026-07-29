@@ -1,0 +1,14 @@
+@use '../../../../sass/spacing';
+
+:host {
+  @extend .hgap-2;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--vitamui-secondary);
+  }
+}

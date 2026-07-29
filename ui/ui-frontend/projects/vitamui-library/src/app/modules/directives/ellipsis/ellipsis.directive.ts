@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
@@ -46,12 +47,14 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
 
   @Input() isToolTipOnMouseEnter = false;
   @Input() vitamuiCommonEllipsisLines = 1;
+  @Input({ transform: coerceBooleanProperty }) breakAll = false;
 
   domElement: any;
 
   ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;
     this.renderer.addClass(this.elementRef.nativeElement, 'text-ellipsis');
+    if (this.breakAll) this.renderer.addClass(this.elementRef.nativeElement, 'break-all');
     this.setToolTip();
   }
 

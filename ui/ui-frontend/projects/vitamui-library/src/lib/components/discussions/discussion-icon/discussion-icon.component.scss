@@ -1,0 +1,31 @@
+@use '../../../../sass/mixins/elevation' as elevation;
+
+:host {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: fit-content;
+}
+
+i {
+  font-size: 24px !important;
+  color: var(--vitamui-secondary);
+
+  &.badge {
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 1rem;
+
+    &.green {
+      width: 8px;
+      height: 8px;
+      border-radius: 1rem;
+      background-color: var(--vitamui-green);
+      border: 1px solid var(--vitamui-white);
+      @include elevation.shadow-4dp-dark;
+    }
+  }
+}

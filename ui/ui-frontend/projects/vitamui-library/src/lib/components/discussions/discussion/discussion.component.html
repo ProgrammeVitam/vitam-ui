@@ -1,0 +1,15 @@
+<div #scrollWrapper class="scroll-wrapper">
+  @for (message of discussion().discussion.messages; track message.id) {
+    @if (displayNewMessageSeparator(message)) {
+      <vitamui-content-divider [text]="'DISCUSSION.MESSAGE.NEW_MESSAGES' | translate" />
+    }
+    <vitamui-message
+      [discussion]="discussion().discussion"
+      [message]="message"
+      [lastReadAt]="lastReadAt()"
+      (markUnread)="markUnread($event)"
+    />
+  }
+</div>
+
+<vitamui-message-new [discussion]="discussion().discussion" [(lastReadAt)]="lastReadAt" (messageAdded)="scrollToBottom()" />

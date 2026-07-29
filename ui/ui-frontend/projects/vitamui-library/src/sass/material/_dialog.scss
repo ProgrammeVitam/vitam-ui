@@ -6,7 +6,7 @@
   .cdk-overlay-container {
     z-index: 1000; // Should be the Angular Material default value for overlays, but we make sure it'll stay the same in the future
 
-    &:has(.mat-mdc-dialog-container, vitamui-common-menu, .header-select) {
+    &:has(.mat-mdc-dialog-container, vitamui-common-menu, .header-select, .discussion-overlay) {
       z-index: 1002; // Make sure the overlay for a dialog (or the global menu or select options from the header) is over the header
     }
   }

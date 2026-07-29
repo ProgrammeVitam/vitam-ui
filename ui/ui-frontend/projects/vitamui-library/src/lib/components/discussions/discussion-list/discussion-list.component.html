@@ -1,0 +1,21 @@
+@for (discussion of discussions(); track discussion.discussion.id) {
+  @if (!$first && discussions()[$index - 1].discussion.status !== discussion.discussion.status) {
+    <vitamui-content-divider [text]="'DISCUSSION.CLOSED_DISCUSSIONS' | translate" />
+  }
+  <div
+    (click)="openDiscussion.emit(discussion)"
+    class="discussion py-2 px-4"
+    [class.read]="!discussion.unread"
+    [class.closed]="discussion.discussion.status === 'RESOLVED'"
+  >
+    <div class="title text medium bold">{{ discussion.discussion.title }}</div>
+    @let message = messageToDisplay(discussion.discussion);
+    @if (message) {
+      <div class="d-flex text caption">
+        <span vitamuiCommonEllipsis breakAll>{{ message.userName || message.userId }}</span>
+        <span class="text-nowrap">&nbsp;- {{ message.updatedAt || message.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      <div class="message text normal m-0" [class.bold]="discussion.unread">{{ message.text }}</div>
+    }
+  </div>
+}

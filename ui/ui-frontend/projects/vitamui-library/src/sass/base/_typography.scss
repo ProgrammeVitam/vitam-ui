@@ -109,4 +109,8 @@ h5 {
   -webkit-box-orient: vertical;
   word-break: break-word;
   white-space: normal;
+
+  &.break-all {
+    word-break: break-all;
+  }
 }

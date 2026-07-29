@@ -1,0 +1,28 @@
+@use '../../../sass/spacing';
+@use '../../../sass/mixins/elevation' as elevation;
+
+.discussion-overlay {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--vitamui-secondary-50);
+  @extend .pt-2;
+  @extend .pl-4;
+  @extend .pr-4;
+  @extend .pb-4;
+  @include elevation.shadow-2dp-dark;
+
+  vitamui-discussion-title {
+    // Negative margin to make the container grow in order to intercept clicks to toggle the panel
+    margin: -10px -20px 0;
+    padding: 10px 20px;
+
+    cursor: pointer;
+  }
+
+  &:not(.resizing) {
+    transition: height 225ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

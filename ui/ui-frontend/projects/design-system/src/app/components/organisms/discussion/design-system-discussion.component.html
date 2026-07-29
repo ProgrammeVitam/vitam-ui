@@ -1,0 +1,68 @@
+<h2>Discussion panel</h2>
+
+<div class="hgap-2 mb-4 clickable" (click)="discussionPanel.opened.set(true); discussionPanel.expanded.set(true)">
+  <vitamui-discussion-icon class="clickable" vitamuiTooltip="Open discussions" [discussions]="discussions$ | async" />
+  Click to open discussion panel on the bottom of the screen
+</div>
+
+<vitamui-discussion-panel #discussionPanel [discussionEntity]="{ id: 'mock', type: 'mock' }"></vitamui-discussion-panel>
+
+@let discussion = (discussions$ | async)[0];
+@let closedDiscussion = (discussions$ | async).filter((d) => d.discussion.status === 'RESOLVED')[0];
+
+<h2>Discussion list</h2>
+
+<div class="row no-gutters">
+  <div class="col-sm">
+    <h3>Normal</h3>
+    <div class="bg-grey p-3">
+      <vitamui-discussion-list [discussions]="discussions$ | async" />
+    </div>
+  </div>
+  <div class="col-sm">
+    <h3>Hover</h3>
+    <div class="bg-grey p-3">
+      <vitamui-discussion-list class="hover" [discussions]="discussions$ | async" />
+    </div>
+  </div>
+  <div class="col-sm">
+    <h3>Active</h3>
+    <div class="bg-grey p-3">
+      <vitamui-discussion-list class="active" [discussions]="discussions$ | async" />
+    </div>
+  </div>
+</div>
+
+<h2>Discussion</h2>
+
+<div class="row no-gutters">
+  <div class="col-sm">
+    <h3>Opened</h3>
+    <div class="bg-grey p-6">
+      <vitamui-discussion [discussion]="discussion" />
+    </div>
+  </div>
+  <div class="col-sm">
+    <h3>Closed</h3>
+    <div class="bg-grey p-6">
+      <vitamui-discussion [discussion]="closedDiscussion" />
+    </div>
+  </div>
+</div>
+
+<h2>Message</h2>
+
+<div class="row no-gutters">
+  <div class="col-sm">
+    <h3>Normal</h3>
+    <div class="bg-grey p-3">
+      <vitamui-message [discussion]="discussion" [message]="discussion.discussion.messages[0]" />
+    </div>
+  </div>
+  <div class="col-sm">
+    <h3>Hover</h3>
+    <div class="bg-grey p-3">
+      <vitamui-message class="hover" [discussion]="discussion" [message]="discussion.discussion.messages[0]" />
+    </div>
+  </div>
+</div>

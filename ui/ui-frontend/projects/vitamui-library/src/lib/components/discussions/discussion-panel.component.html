@@ -1,0 +1,47 @@
+<div cdkOverlayOrigin #dummyOrigin="cdkOverlayOrigin"></div>
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="dummyOrigin"
+  [cdkConnectedOverlayOpen]="opened()"
+  cdkConnectedOverlayDisableClose="true"
+>
+  <div
+    class="discussion-overlay"
+    [class.resizing]="!!resizeStartPosition"
+    [style.width.px]="width"
+    [style.height.px]="expanded() ? height : titleEl().nativeElement.offsetTop + titleEl().nativeElement.offsetHeight"
+    [style.left.px]="left"
+  >
+    <vitamui-discussion-title
+      cdkDrag
+      (cdkDragStarted)="onTitleDragStart()"
+      (cdkDragEnded)="onTitleDragEnd()"
+      (cdkDragMoved)="onTitleMove($event)"
+      (click)="toggle()"
+      [discussions]="discussions()"
+      [currentDiscussion]="currentDiscussion()?.discussion"
+      (panelResizeStart)="onResizeStart()"
+      (panelResize)="onResize($event)"
+      (panelResizeEnd)="onResizeEnd()"
+      (backToDiscussions)="backToDiscussions()"
+    />
+    @if (expanded()) {
+      @switch (componentState()) {
+        @case ('LIST_DISCUSSIONS') {
+          <vitamui-discussion-list [discussions]="discussions()" (openDiscussion)="openDiscussion($event.discussion.id)" />
+        }
+        @case ('CREATE_DISCUSSION') {
+          <vitamui-discussion-new (createDiscussion)="createDiscussion($event)" />
+        }
+        @case ('DISCUSSION') {
+          @if (currentDiscussion()) {
+            <vitamui-discussion [discussion]="currentDiscussion()" />
+          }
+        }
+        @case ('RENAME_DISCUSSION') {
+          <vitamui-discussion-rename [discussion]="currentDiscussion().discussion" />
+        }
+      }
+    }
+  </div>
+</ng-template>

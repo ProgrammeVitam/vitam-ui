@@ -1,0 +1,46 @@
+:host {
+  display: block;
+  background: var(--vitamui-white);
+
+  &:hover,
+  &.hover {
+    background: var(--vitamui-secondary-50);
+
+    .actions {
+      visibility: visible;
+    }
+  }
+
+  &:first-of-type {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  &:last-of-type {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  &.closed .text {
+    color: var(--vitamui-grey-700) !important;
+  }
+}
+
+.actions {
+  visibility: hidden;
+}
+
+.message {
+  white-space-collapse: preserve;
+  word-break: break-word;
+}
+
+// Override textarea label, border and scrollbar color
+vitamui-input ::ng-deep {
+  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);
+  label {
+    color: var(--vitamui-secondary) !important;
+  }
+  .form-field:focus-within {
+    border-color: var(--vitamui-secondary) !important;
+  }
+}

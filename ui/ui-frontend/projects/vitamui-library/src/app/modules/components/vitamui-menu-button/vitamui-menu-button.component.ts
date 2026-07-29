@@ -63,6 +63,20 @@ export class VitamuiMenuButtonComponent {
   @Input() label: string;
 
   @Input() disabled = false;
-  @Input() outline: 'primary' | 'secondary' | 'none' = 'none';
-  @Input() menuButtonSize: 'large' | 'medium' | 'small' = 'large';
+  /**
+   * Color of the menu button (and overlay)
+   */
+  @Input() menuColor: 'primary' | 'secondary' = 'secondary';
+  /**
+   * Whether the menu button is in outline style or plain
+   */
+  @Input() menuButtonOutline = false;
+  /**
+   * Size of the menu button
+   */
+  @Input() menuButtonSize: 'large' | 'medium' | 'small' | 'xsmall link' = 'large';
+  /**
+   * When true, do not show an "X" button in place of the trigger button when opened and removes menu borders
+   */
+  @Input() simpleOverlay = false;
 }

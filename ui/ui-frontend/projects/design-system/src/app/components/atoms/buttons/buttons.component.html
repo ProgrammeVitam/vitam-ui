@@ -208,7 +208,7 @@
 
   @for (color of buttonType.colors; track color) {
     <ng-container *ngTemplateOutlet="title; context: { $implicit: color, depth: depth + 1 }"></ng-container>
-    <div class="row m-0 gap-1">
+    <div class="row m-0 gap-1" [class.bg-grey]="color.includes('tonal')">
       <div class="col"></div>
       @for (variation of variations; track variation) {
         <div class="col">{{ variation | titlecase }}</div>

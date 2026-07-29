@@ -208,6 +208,18 @@
           $button-color-hover: var(--vitamui-primary),
           $button-color-active: var(--vitamui-primary-50)
         );
+
+        &.tonal {
+          @include btn(
+            $background-color: var(--vitamui-primary-50),
+            $background-color-hover: var(--vitamui-white),
+            $background-color-active: var(--vitamui-primary-100),
+            $border-color: transparent,
+            $button-color: var(--vitamui-primary),
+            $button-color-hover: var(--vitamui-primary),
+            $button-color-active: var(--vitamui-primary)
+          );
+        }
       }
       &.secondary {
         @include btn(
@@ -219,6 +231,18 @@
           $button-color-hover: var(--vitamui-secondary),
           $button-color-active: var(--vitamui-secondary-50)
         );
+
+        &.tonal {
+          @include btn(
+            $background-color: var(--vitamui-secondary-50),
+            $background-color-hover: var(--vitamui-white),
+            $background-color-active: var(--vitamui-secondary-100),
+            $border-color: transparent,
+            $button-color: var(--vitamui-secondary),
+            $button-color-hover: var(--vitamui-secondary),
+            $button-color-active: var(--vitamui-secondary)
+          );
+        }
       }
     }
 

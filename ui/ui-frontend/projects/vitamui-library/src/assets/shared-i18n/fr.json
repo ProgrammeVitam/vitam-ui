@@ -16,6 +16,7 @@
     "UPDATE": "Modifier",
     "NEXT": "Suivant",
     "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler",
     "SAVE": "Enregistrer",
     "CLOSE": "Fermer",
     "REQUIRED": "Champ requis",
@@ -6413,5 +6414,39 @@
     "PLACEHOLDER_SEARCHBAR_DUA": "Sélectionnez une ou plusieurs règle(s) de durée d'utilité administrative",
     "PLACEHOLDER_SEARCHBAR_DUC": "Sélectionnez une ou plusieurs règle(s) de durée d'utilité courante",
     "PLACEHOLDER_SEARCHBAR_REUSE": "Sélectionnez une ou plusieurs règle(s) de réutilisation"
+  },
+  "DISCUSSION": {
+    "OPEN": "Ouvrir les discussions",
+    "TITLE": "Liste des discussions",
+    "CLOSED_DISCUSSIONS": "Discussions closes",
+    "NEW": {
+      "TITLE": "Créer une nouvelle discussion",
+      "SUBJECT_PLACEHOLDER": "Sujet de la discussion",
+      "BODY_PLACEHOLDER": "Écrire un message",
+      "SUBMIT": "Démarrer la discussion"
+    },
+    "RENAME": {
+      "TITLE": "Renommer la discussion",
+      "SUBJECT_PLACEHOLDER": "Sujet de la discussion",
+      "SUBMIT": "Modifier le sujet"
+    },
+    "ACTIONS": {
+      "RENAME": "Modifier le sujet",
+      "CLOSE": "Clore la discussion"
+    },
+    "BACK_TO_DISCUSSIONS": "Revenir aux discussions",
+    "TOOLTIP_CLOSE_DISCUSSION_PANEL": "Fermer le panneau de discussion",
+    "MESSAGE": {
+      "WRITE_PLACEHOLDER": "Écrire un message",
+      "SEND": "Envoyer",
+      "UPDATE": "Modifier mon message",
+      "UPDATE_PLACEHOLDER": "Modifier votre message",
+      "UPDATED_AT": "(modifié le {{date}})",
+      "DELETE": "Supprimer mon message",
+      "DELETE_CONFIRM_TITLE": "Êtes-vous sûr de vouloir supprimer ce message ?",
+      "MARK_AS_UNREAD": "Marquer comme non lu",
+      "DELETED_BY_AUTHOR": "Ce message a été supprimé par son auteur.",
+      "NEW_MESSAGES": "Nouveau(x) message(s)"
+    }
   }
 }

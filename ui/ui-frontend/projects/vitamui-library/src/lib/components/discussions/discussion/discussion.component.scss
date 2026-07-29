@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+vitamui-content-divider {
+  background-color: var(--vitamui-white);
+}
+
+.scroll-wrapper {
+  overflow-y: auto;
+  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);
+  scrollbar-width: thin;
+}

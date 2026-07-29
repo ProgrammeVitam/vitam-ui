@@ -1,0 +1,21 @@
+@use '../../../../../sass/spacing';
+
+:host {
+  @extend .gap-4;
+
+  flex-shrink: 0;
+  margin: auto -20px -20px;
+  padding: 20px;
+  background-color: var(--vitamui-white);
+}
+
+// Override textarea label, border and scrollbar color
+vitamui-input ::ng-deep {
+  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);
+  label {
+    color: var(--vitamui-secondary) !important;
+  }
+  .form-field:focus-within {
+    border-color: var(--vitamui-secondary) !important;
+  }
+}

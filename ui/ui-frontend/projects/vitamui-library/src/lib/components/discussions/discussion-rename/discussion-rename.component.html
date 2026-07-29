@@ -1,0 +1,5 @@
+<vitamui-input class="w-100" [placeholder]="'DISCUSSION.RENAME.SUBJECT_PLACEHOLDER' | translate" [formControl]="title()" />
+
+<button class="btn default secondary" (click)="rename()" [disabled]="!isControlValid()">
+  {{ 'DISCUSSION.RENAME.SUBMIT' | translate }}
+</button>

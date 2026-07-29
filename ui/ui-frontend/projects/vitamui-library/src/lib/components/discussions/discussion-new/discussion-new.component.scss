@@ -1,0 +1,21 @@
+@use 'bootstrap/scss/bootstrap-grid';
+@use '../../../../sass/spacing';
+
+:host {
+  background: var(--vitamui-white);
+  border-radius: 10px;
+
+  @extend .p-4;
+  @extend .gap-4;
+}
+
+// Override textarea label, border and scrollbar color
+vitamui-input ::ng-deep {
+  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);
+  label {
+    color: var(--vitamui-secondary) !important;
+  }
+  .form-field:focus-within {
+    border-color: var(--vitamui-secondary) !important;
+  }
+}
