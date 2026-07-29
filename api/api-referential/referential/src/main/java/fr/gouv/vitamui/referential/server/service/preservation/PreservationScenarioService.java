@@ -112,14 +112,14 @@ public class PreservationScenarioService extends AbstractService {
         this.put(nextScenarios);
     }
 
-    public void delete(PreservationScenario scenario)
+    public ResponseEntity<OperationIdDto> delete(PreservationScenario scenario)
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         List<PreservationScenario> nextScenarios = getAll()
             .stream()
             .filter(currentScenario -> !currentScenario.identifier().equals(scenario.identifier()))
             .toList();
 
-        this.put(nextScenarios);
+        return this.put(nextScenarios);
     }
 
     private InputStream toInputStream(List<PreservationScenario> scenarios) throws IOException {

@@ -36,15 +36,16 @@
  */
 import { Component, DestroyRef, inject, Input, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
-  ApplicationId,
   ConfirmDialogComponent,
   ConfirmDialogData,
   Direction,
   Griffin,
   GriffinsService,
+  OperationId,
   PreservationScenariosService,
   SnackBarService,
   StartupService,
@@ -142,11 +143,13 @@ export class GriffinListComponent implements OnInit {
       .delete(griffin)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => {
-          this.snackBarService.open({
-            message: 'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_REQUEST_ACCEPTED',
-            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
-          });
+        next: (operationId: OperationId) => {
+          this.snackBarService.open(
+            this.snackBarService.buildSnackBarForOperationsLog(
+              'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_REQUEST_ACCEPTED',
+              operationId.operationId,
+            ),
+          );
 
           if (this.isSelected(griffin)) {
             this.selectedGriffin.set(null);
@@ -154,11 +157,11 @@ export class GriffinListComponent implements OnInit {
 
           this.loadGriffins();
         },
-        error: () => {
-          this.snackBarService.open({
-            message: 'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_FAILED',
-            buttons: [{ appId: ApplicationId.LOGBOOK_OPERATION_APP, label: 'SNACKBAR.OPEN_LOGBOOK' }],
-          });
+        error: (error: HttpErrorResponse) => {
+          const operationId = error.error?.operationId;
+          this.snackBarService.open(
+            this.snackBarService.buildSnackBarForOperationsLog('PRESERVATION.GRIFFIN.SNACKBAR.DELETE_FAILED', operationId),
+          );
         },
       });
   }

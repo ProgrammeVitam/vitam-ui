@@ -71,6 +71,6 @@ export class GriffinsApiService {
   }
 
   public delete(griffin: Griffin) {
-    return this.http.delete<void>(this.apiUrl, { body: griffin });
+    return this.http.delete<OperationId>(this.apiUrl, { body: griffin, headers: addSkipErrorNotificationHeader(new HttpHeaders()) });
   }
 }

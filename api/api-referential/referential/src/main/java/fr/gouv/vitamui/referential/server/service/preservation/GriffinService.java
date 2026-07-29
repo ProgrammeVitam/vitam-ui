@@ -111,13 +111,14 @@ public class GriffinService extends AbstractService {
         return this.put(nextGriffins);
     }
 
-    public void delete(Griffin griffin) throws VitamClientException, AccessExternalClientException, IOException {
+    public ResponseEntity<OperationIdDto> delete(Griffin griffin)
+        throws VitamClientException, AccessExternalClientException, IOException {
         List<Griffin> nextGriffins = getAll()
             .stream()
             .filter(currentGriffin -> !currentGriffin.id().equals(griffin.id()))
             .toList();
 
-        this.put(nextGriffins);
+        return this.put(nextGriffins);
     }
 
     private InputStream toInputStream(List<Griffin> griffins) throws IOException {

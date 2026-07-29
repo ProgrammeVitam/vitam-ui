@@ -209,7 +209,7 @@ class PreservationScenarioControllerTest {
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
         // Given
         PreservationScenario scenario = buildScenario("id-1");
-        doNothing().when(preservationScenarioService).delete(scenario);
+        when(preservationScenarioService.delete(scenario)).thenReturn(ResponseEntity.ok(new OperationIdDto("42")));
 
         // When / Then
         assertThatCode(

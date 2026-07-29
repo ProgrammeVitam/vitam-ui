@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -48,6 +48,7 @@ import { GriffinListComponent } from './griffin-list.component';
 
 const ADMIN_TENANT_IDENTIFIER = 1;
 const OTHER_TENANT_IDENTIFIER = 2;
+const OPERATION_ID = 'aeeaaaaaacaaaaaaabcdefghijklmnopq';
 
 const GRIFFIN: Griffin = {
   '#id': 'id-1',
@@ -67,7 +68,7 @@ describe('GriffinListComponent', () => {
   let fixture: ComponentFixture<GriffinListComponent>;
 
   let griffinsService: { list: Mock; delete: Mock };
-  let snackBarService: { open: Mock };
+  let snackBarService: { open: Mock; buildSnackBarForOperationsLog: Mock };
   let tenantSelectionService: { getSelectedTenant: Mock };
   let matDialogOpen: MockInstance<MatDialog['open']>;
 
@@ -94,10 +95,10 @@ describe('GriffinListComponent', () => {
   beforeEach(async () => {
     griffinsService = {
       list: vi.fn().mockReturnValue(of([GRIFFIN])),
-      delete: vi.fn().mockReturnValue(of(undefined)),
+      delete: vi.fn().mockReturnValue(of({ operationId: OPERATION_ID })),
     };
 
-    snackBarService = { open: vi.fn() };
+    snackBarService = { open: vi.fn(), buildSnackBarForOperationsLog: vi.fn() };
     tenantSelectionService = { getSelectedTenant: vi.fn() };
 
     const startupService = { getConfigStringValue: vi.fn().mockReturnValue(`${ADMIN_TENANT_IDENTIFIER}`) };
@@ -173,8 +174,9 @@ describe('GriffinListComponent', () => {
 
       component.deleteGriffinDialog(GRIFFIN);
 
-      expect(snackBarService.open).toHaveBeenCalledExactlyOnceWith(
-        expect.objectContaining({ message: 'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_REQUEST_ACCEPTED' }),
+      expect(snackBarService.buildSnackBarForOperationsLog).toHaveBeenCalledExactlyOnceWith(
+        'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_REQUEST_ACCEPTED',
+        OPERATION_ID,
       );
       expect(griffinsService.list).toHaveBeenCalledTimes(1);
     });
@@ -190,13 +192,16 @@ describe('GriffinListComponent', () => {
 
     it('should notify the user and keep the list untouched on failure', () => {
       createComponent(ADMIN_TENANT_IDENTIFIER);
-      griffinsService.delete.mockReturnValue(throwError(() => new Error('Can not remove used griffin(s)')));
+      griffinsService.delete.mockReturnValue(
+        throwError(() => new HttpErrorResponse({ status: 400, error: { operationId: OPERATION_ID } })),
+      );
       griffinsService.list.mockClear();
 
       component.deleteGriffinDialog(GRIFFIN);
 
-      expect(snackBarService.open).toHaveBeenCalledExactlyOnceWith(
-        expect.objectContaining({ message: 'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_FAILED' }),
+      expect(snackBarService.buildSnackBarForOperationsLog).toHaveBeenCalledExactlyOnceWith(
+        'PRESERVATION.GRIFFIN.SNACKBAR.DELETE_FAILED',
+        OPERATION_ID,
       );
       expect(griffinsService.list).not.toHaveBeenCalled();
     });

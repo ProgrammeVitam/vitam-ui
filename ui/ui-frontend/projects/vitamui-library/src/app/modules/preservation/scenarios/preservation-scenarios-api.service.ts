@@ -71,6 +71,9 @@ export class PreservationScenariosApiService {
   }
 
   public delete(preservationScenario: PreservationScenario) {
-    return this.http.delete<void>(this.apiUrl, { body: preservationScenario });
+    return this.http.delete<OperationId>(this.apiUrl, {
+      body: preservationScenario,
+      headers: addSkipErrorNotificationHeader(new HttpHeaders()),
+    });
   }
 }

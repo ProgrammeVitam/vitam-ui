@@ -85,8 +85,8 @@ public class PreservationScenarioController {
 
     @DeleteMapping
     @Secured(ROLE_UPDATE_PRESERVATION_SCENARIOS)
-    public void deletePreservationScenario(@RequestBody PreservationScenario scenario)
+    public ResponseEntity<OperationIdDto> deletePreservationScenario(@RequestBody PreservationScenario scenario)
         throws VitamClientException, AccessExternalClientException, IOException, InvalidCreateOperationException {
-        this.preservationScenarioService.delete(scenario);
+        return this.preservationScenarioService.delete(scenario);
     }
 }
