@@ -1157,7 +1157,7 @@
   },
   "PRESERVATION": {
     "ACTION": {
-      "IMPORT_SCENARIOS": "Import preservation scenarios",
+      "IMPORT_SCENARIOS": "Import preservation scenarios referential",
       "EXPORT_SCENARIOS": "Export scenarios repository",
       "IMPORT_GRIFFINS": "Import a griffins referential",
       "EXPORT_GRIFFINS": "Export griffins referential"
