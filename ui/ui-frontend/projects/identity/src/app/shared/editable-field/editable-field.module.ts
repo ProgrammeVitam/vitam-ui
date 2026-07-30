@@ -49,6 +49,7 @@ import { EditableCustomParamsComponent } from './editable-custom-params/editable
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
 import { EditablePatternsComponent } from './editable-patterns/editable-patterns.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { EditablePatternsComponent } from './editable-patterns/editable-patterns
     ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
+    TranslatePipe,
   ],
   declarations: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
   exports: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
