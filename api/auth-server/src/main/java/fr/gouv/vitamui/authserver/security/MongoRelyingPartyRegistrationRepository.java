@@ -74,8 +74,10 @@ public class MongoRelyingPartyRegistrationRepository implements RelyingPartyRegi
             LOGGER.debug("IdP {} is not a SAML provider (protocoleType={})", registrationId, idp.getProtocoleType());
             return Optional.empty();
         }
-        if (!StringUtils.hasText(idp.getIdpMetadata())) {
-            LOGGER.warn("IdP {} misses idpMetadata XML — skipping", registrationId);
+        boolean hasUrl = StringUtils.hasText(idp.getIdpMetadataUrl());
+        boolean hasXml = StringUtils.hasText(idp.getIdpMetadata());
+        if (!hasUrl && !hasXml) {
+            LOGGER.warn("IdP {} misses both idpMetadataUrl and idpMetadata — skipping", registrationId);
             return Optional.empty();
         }
         if (!StringUtils.hasText(idp.getKeystoreBase64())) {
@@ -85,9 +87,16 @@ public class MongoRelyingPartyRegistrationRepository implements RelyingPartyRegi
 
         try {
             Saml2X509Credential spCredential = buildSpCredential(idp);
-            RelyingPartyRegistration registration = RelyingPartyRegistrations
-                // Parse asserting-party (IdP) metadata XML: SSO URL, entityId, verification cert.
-                .fromMetadata(new ByteArrayInputStream(idp.getIdpMetadata().getBytes()))
+            // Prefer the URL descriptor when configured: RelyingPartyRegistrations.fromMetadataLocation
+            // fetches a fresh copy each time it's called. Combined with our 60 s Caffeine cache above,
+            // the SP effectively refreshes the IdP metadata (and its signing certs) every minute —
+            // no manual copy-paste when Keycloak rotates its keys. Fall back to the static XML on
+            // fetch error so a temporary IdP outage doesn't kill the whole SAML login path.
+            var metadataBuilder = loadMetadata(idp, hasUrl, hasXml);
+            if (metadataBuilder == null) {
+                return Optional.empty();
+            }
+            RelyingPartyRegistration registration = metadataBuilder
                 .registrationId(idp.getId())
                 // {baseUrl} is substituted with the SAS public URL at request time.
                 .entityId("{baseUrl}/saml2/service-provider-metadata/{registrationId}")
@@ -106,6 +115,29 @@ public class MongoRelyingPartyRegistrationRepository implements RelyingPartyRegi
             LOGGER.error("Failed to build RelyingPartyRegistration for IdP {} : {}", registrationId, e.toString(), e);
             return Optional.empty();
         }
+    }
+
+    /**
+     * Resolves the asserting-party metadata to use, preferring the descriptor URL when configured
+     * and falling back to the static XML on fetch failure.
+     */
+    private RelyingPartyRegistration.Builder loadMetadata(IdentityProviderDto idp, boolean hasUrl, boolean hasXml) {
+        if (hasUrl) {
+            try {
+                return RelyingPartyRegistrations.fromMetadataLocation(idp.getIdpMetadataUrl());
+            } catch (Exception e) {
+                LOGGER.warn(
+                    "IdP {} metadata fetch from {} failed ({}) — falling back to stored XML",
+                    idp.getId(),
+                    idp.getIdpMetadataUrl(),
+                    e.getMessage()
+                );
+                if (!hasXml) {
+                    return null;
+                }
+            }
+        }
+        return RelyingPartyRegistrations.fromMetadata(new ByteArrayInputStream(idp.getIdpMetadata().getBytes()));
     }
 
     /**

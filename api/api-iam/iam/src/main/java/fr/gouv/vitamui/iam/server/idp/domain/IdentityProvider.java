@@ -116,6 +116,14 @@ public class IdentityProvider extends CustomerIdDocument {
 
     private String idpMetadata;
 
+    /**
+     * Optional descriptor URL. When set, the auth-server fetches the SAML metadata from this URL on
+     * each cache miss (default 60 s) instead of parsing {@link #idpMetadata}. This lets the SP
+     * follow IdP key rotations transparently — no manual copy-paste of the XML. When null (or when
+     * the fetch fails), we fall back to the static {@code idpMetadata} XML.
+     */
+    private String idpMetadataUrl;
+
     private String spMetadata;
 
     private Integer maximumAuthenticationLifetime;

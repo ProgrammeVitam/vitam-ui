@@ -101,6 +101,12 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private String idpMetadata;
 
+    /**
+     * Optional descriptor URL. Consumed by the auth-server SAML repository to fetch a fresh copy of
+     * the metadata on each cache miss — see {@code IdentityProvider#idpMetadataUrl} for details.
+     */
+    private String idpMetadataUrl;
+
     private String spMetadata;
 
     private Integer maximumAuthenticationLifetime;
