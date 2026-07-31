@@ -822,8 +822,17 @@ public class CasService {
      */
     public List<HrdEntryDto> resolveHrdEntries(final String email) {
         Assert.hasText(email, "email must not be empty");
-        final Iterable<IdentityProvider> providers = identityProviderRepository.findAll();
-        final List<IdentityProvider> matches = java.util.stream.StreamSupport.stream(providers.spliterator(), false)
+        final List<IdentityProvider> providers = java.util.stream.StreamSupport.stream(
+            identityProviderRepository.findAll().spliterator(),
+            false
+        ).collect(Collectors.toList());
+
+        // (A) Pattern-based matches — the historical resolution. Feeds two use cases:
+        //   1. federated (external) IdPs where a user is JIT-provisioned at first login — the user
+        //      doesn't exist yet, so pattern is the only signal.
+        //   2. internal IdPs whose patterns explicitly cover the incoming email.
+        final List<IdentityProvider> patternMatched = providers
+            .stream()
             .filter(p -> p.getPatterns() != null && !p.getPatterns().isEmpty())
             .filter(
                 p ->
@@ -839,11 +848,53 @@ public class CasService {
             )
             .collect(Collectors.toList());
 
-        if (matches.isEmpty()) {
+        // (B) Real users with this email — for each, find the enabled internal IdP of their customer.
+        //     This covers the case where an internal user exists but the IdP pattern doesn't match
+        //     their address (typical when patterns are prefix-based like `admin.*` and the account
+        //     doesn't fit the pattern). Without this, the SPA would either route to the wrong tenant
+        //     (via a pattern-based catch-all) or return "email inconnu".
+        final List<User> existingUsers = userRepository.findAllByEmailIgnoreCase(email);
+        final Map<String, IdentityProvider> internalIdpByCustomer = providers
+            .stream()
+            .filter(p -> Boolean.TRUE.equals(p.getInternal()))
+            .filter(p -> Boolean.TRUE.equals(p.getEnabled()))
+            .collect(Collectors.toMap(IdentityProvider::getCustomerId, p -> p, (a, b) -> a));
+        final List<IdentityProvider> userDriven = existingUsers
+            .stream()
+            .map(u -> internalIdpByCustomer.get(u.getCustomerId()))
+            .filter(java.util.Objects::nonNull)
+            .collect(Collectors.toList());
+
+        // Union with dedup by provider id (an IdP that is both pattern-matched AND user-driven only
+        // shows up once).
+        final Map<String, IdentityProvider> byProviderId = new java.util.LinkedHashMap<>();
+        patternMatched.forEach(p -> byProviderId.put(p.getId(), p));
+        userDriven.forEach(p -> byProviderId.put(p.getId(), p));
+
+        // Filter: for an internal IdP, keep only when a real user actually exists in that customer.
+        // External IdPs stay (JIT will provision on first login). This drops the pattern-catch-all
+        // false-positive (e.g. Client2 with `.*@change-it.fr` when the account lives elsewhere).
+        final Set<String> customersWithUser = existingUsers
+            .stream()
+            .map(User::getCustomerId)
+            .collect(Collectors.toSet());
+        final List<IdentityProvider> resolved = byProviderId
+            .values()
+            .stream()
+            .filter(p -> !Boolean.TRUE.equals(p.getInternal()) || customersWithUser.contains(p.getCustomerId()))
+            .collect(Collectors.toList());
+
+        if (resolved.isEmpty()) {
+            LOGGER.debug(
+                "HRD: no IdP resolved for email={} (patternMatched={}, existingUsers={}) — treating as unknown",
+                email,
+                patternMatched.size(),
+                existingUsers.size()
+            );
             return List.of();
         }
 
-        final Set<String> customerIds = matches
+        final Set<String> customerIds = resolved
             .stream()
             .map(IdentityProvider::getCustomerId)
             .collect(Collectors.toSet());
@@ -852,7 +903,7 @@ public class CasService {
             .findAllById(customerIds)
             .forEach(customer -> customerNamesById.put(customer.getId(), customer.getName()));
 
-        return matches
+        return resolved
             .stream()
             .map(
                 p ->
