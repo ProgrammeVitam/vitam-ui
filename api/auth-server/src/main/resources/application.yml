@@ -2,10 +2,14 @@ server:
   port: 9443
   ssl:
     enabled: ${SSL_ENABLED:true}
-    key-store: classpath:certs/dev-vitamui.p12
+    # Server cert signed by the vitamui-services CA (alias cas-server, CN=dev.vitamui.com,
+    # SAN=dev.vitamui.com+localhost). This is what lets IAM validate our TLS handshake via the
+    # shared truststore, instead of the self-signed cert we used during Phase 1/2 that required
+    # importing the cert into every peer's truststore.
+    key-store: classpath:certs/keystore_sas-server.p12
     key-store-type: PKCS12
-    key-store-password: ${SSL_KEYSTORE_PASSWORD:changeit}
-    key-alias: dev-vitamui
+    key-store-password: ${SSL_KEYSTORE_PASSWORD:changeme}
+    key-alias: cas-server
   servlet:
     session:
       cookie:
@@ -61,16 +65,13 @@ spring:
             password: ${IAM_MTLS_TRUSTSTORE_PASSWORD:changeme}
             type: PKCS12
 
-# Diagnostic logs for the cross-app SSO issue. Set the block to WARN once SSO works.
+# Spring Security noise stays at WARN by default — the noisy TRACE/DEBUG we lived with during Phase 2
+# debugging is a liability at scale (log volume + potential leak of tokens/cookies in traces).
+# Bump a specific package with `LOGGING_LEVEL_<pkg>=DEBUG` env var when you need to drill in.
 logging:
   level:
-    org.springframework.security.web.context.HttpSessionSecurityContextRepository: TRACE
-    org.springframework.security.web.access: DEBUG
-    org.springframework.security.web.authentication.logout: DEBUG
-    org.springframework.security.oauth2.server.authorization: TRACE
-    org.springframework.session: DEBUG
-    org.springframework.security.saml2: TRACE
-    org.springframework.security.web.authentication: DEBUG
+    org.springframework.security: WARN
+    org.springframework.session: WARN
 
 vitam:
   security:
