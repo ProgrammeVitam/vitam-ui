@@ -201,6 +201,20 @@ public class AuthorizationServerConfig {
         return new ProviderManager(iamAuthenticationProvider);
     }
 
+    /**
+     * Persistent replacement for {@code InMemoryOAuth2AuthorizationService}. Emissions survive SAS
+     * restarts, which is what lets the OIDC logout endpoint keep resolving the {@code id_token} → user
+     * link even when tokens outlive the process — SAS auto-picks this bean and skips its in-memory
+     * default.
+     */
+    @Bean
+    public org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService oauth2AuthorizationService(
+        fr.gouv.vitamui.authserver.security.OAuth2AuthorizationDocumentRepository documents,
+        RegisteredClientRepository registeredClientRepository
+    ) {
+        return new fr.gouv.vitamui.authserver.security.MongoOAuth2AuthorizationService(documents, registeredClientRepository);
+    }
+
     @Bean
     public NimbusJwtEncoder jwtEncoder(@Qualifier("vitamJwkSource") JWKSource<SecurityContext> jwkSource) {
         return new NimbusJwtEncoder(jwkSource);

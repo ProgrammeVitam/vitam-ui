@@ -6,6 +6,9 @@
 
 package fr.gouv.vitamui.authserver.security;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import org.springframework.security.core.AuthenticatedPrincipal;
 
@@ -19,11 +22,13 @@ import org.springframework.security.core.AuthenticatedPrincipal;
  * <p>Also used by {@link OpaqueVitamTokenGenerator} and the JWT customizer to reach the UserDto
  * via {@link #getUserDto()}.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VitamuiPrincipal implements AuthenticatedPrincipal {
 
     private final UserDto userDto;
 
-    public VitamuiPrincipal(UserDto userDto) {
+    @JsonCreator
+    public VitamuiPrincipal(@JsonProperty("userDto") UserDto userDto) {
         if (userDto == null || userDto.getId() == null) {
             throw new IllegalArgumentException("UserDto (with id) must not be null");
         }
