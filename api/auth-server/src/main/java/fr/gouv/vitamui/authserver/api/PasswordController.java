@@ -9,10 +9,12 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import fr.gouv.vitamui.authserver.security.CustomerIdAuthenticationDetails;
 import fr.gouv.vitamui.authserver.security.IamClient;
+import fr.gouv.vitamui.authserver.security.PasswordEndpointRateLimiter;
 import fr.gouv.vitamui.authserver.security.PasswordResetMailer;
 import fr.gouv.vitamui.authserver.security.PasswordResetService;
 import fr.gouv.vitamui.authserver.security.PasswordResetTokenDocument;
 import fr.gouv.vitamui.authserver.security.VitamuiPrincipal;
+import jakarta.servlet.http.HttpServletRequest;
 import fr.gouv.vitamui.authserver.config.AuthServerProperties;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -53,6 +55,7 @@ public class PasswordController {
     private final PasswordResetService passwordResetService;
     private final PasswordResetMailer passwordResetMailer;
     private final AuthServerProperties properties;
+    private final PasswordEndpointRateLimiter rateLimiter;
     // Config changes require a service redeploy — a 5-minute TTL is plenty and shields IAM from
     // a hot-reload burst if every open tab happens to open the change/reset screen at once.
     private final Cache<String, PasswordPolicyDto> policyCache = Caffeine.newBuilder()
@@ -161,8 +164,15 @@ public class PasswordController {
      * </ul>
      */
     @PostMapping("/reset/request")
-    public ResponseEntity<RequestResetResponse> requestReset(@RequestBody RequestResetRequest request) {
+    public ResponseEntity<RequestResetResponse> requestReset(
+        @RequestBody RequestResetRequest request,
+        HttpServletRequest httpRequest
+    ) {
         String email = request.getEmail();
+        var denial = rateLimiter.tryAcquire(clientIp(httpRequest), email);
+        if (denial.isPresent()) {
+            return tooManyRequests(denial.get());
+        }
         List<UserDto> candidates = iamClient.getUsersByEmail(email).stream()
             .filter(u -> UserTypeEnum.NOMINATIVE.equals(u.getType()))
             .filter(u -> UserStatusEnum.ENABLED.equals(u.getStatus()))
@@ -212,6 +222,26 @@ public class PasswordController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Best-effort client IP. Trusts {@code X-Forwarded-For} when present (SAS in staging/prod runs
+     * behind a reverse proxy) — the ingress must strip client-supplied values or an attacker could
+     * spoof and bypass the per-IP bucket. Falls back to the socket remote address.
+     */
+    private static String clientIp(HttpServletRequest request) {
+        String xff = request.getHeader("X-Forwarded-For");
+        if (xff != null && !xff.isBlank()) {
+            int comma = xff.indexOf(',');
+            return (comma > 0 ? xff.substring(0, comma) : xff).trim();
+        }
+        return request.getRemoteAddr();
+    }
+
+    private static ResponseEntity<RequestResetResponse> tooManyRequests(PasswordEndpointRateLimiter.Denial denial) {
+        return ResponseEntity.status(org.springframework.http.HttpStatus.TOO_MANY_REQUESTS)
+            .header("Retry-After", String.valueOf(denial.retryAfterSeconds()))
+            .body(RequestResetResponse.opaque());
+    }
+
     @Data
     public static class ChangePasswordRequest {
 
@@ -236,9 +266,16 @@ public class PasswordController {
      * given address. Rate-limiting the endpoint is tracked as Phase 3 debt.
      */
     @PostMapping("/first-connection")
-    public ResponseEntity<RequestResetResponse> firstConnection(@RequestBody FirstConnectionRequest request) {
+    public ResponseEntity<RequestResetResponse> firstConnection(
+        @RequestBody FirstConnectionRequest request,
+        HttpServletRequest httpRequest
+    ) {
         String email = request.getEmail();
         String customerId = request.getCustomerId();
+        var denial = rateLimiter.tryAcquire(clientIp(httpRequest), email);
+        if (denial.isPresent()) {
+            return tooManyRequests(denial.get());
+        }
         long ttlHours = properties.getPasswordReset().getFirstConnectionTtlHours();
         String nonce = passwordResetService.issueWithTtl(email, customerId, java.time.Duration.ofHours(ttlHours));
         String link = properties.getPasswordReset().getBaseUrl() + "/reset-password?token=" + nonce;
