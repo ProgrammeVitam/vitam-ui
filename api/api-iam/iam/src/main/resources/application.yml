@@ -43,5 +43,16 @@ cas.reset.password.url: /extras/resetPassword?username={username}&firstname={fir
 
 user.connection.tracing.enabled: false
 
+# Encryption key for IdP secret fields (clientSecret, keystoreBase64, keystorePassword,
+# privateKeyPassword) — 32 raw bytes base64. When set, EncryptedSecretCipher encrypts them at rest.
+# When null (default), the cipher runs in PASSTHROUGH: values are stored in the clear and a WARN
+# is logged at boot. This is a deliberate choice — an embedded dev key would give a false sense of
+# security since anyone with source access could decrypt. Ops opts in explicitly by pasting a real
+# key here (per-env config file, out of git). Generate one with: openssl rand -base64 32
+# Kept under `secrets.*` rather than `iam.*` because ApiIamApplicationProperties binds `iam.*` with
+# ignoreUnknownFields=false and would refuse an ad-hoc property in its namespace.
+secrets:
+  idp-key: ~
+
 gateway:
   enabled: true
