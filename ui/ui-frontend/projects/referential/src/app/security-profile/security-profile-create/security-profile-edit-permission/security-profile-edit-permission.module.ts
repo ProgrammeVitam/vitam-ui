@@ -45,6 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule } from 'vitamui-library';
 import { SecurityProfileEditPermissionComponent } from './security-profile-edit-permission.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { SecurityProfileEditPermissionComponent } from './security-profile-edit-
     MatSelectModule,
     ReactiveFormsModule,
     VitamUICommonModule,
+    TranslatePipe,
   ],
   declarations: [SecurityProfileEditPermissionComponent],
   exports: [SecurityProfileEditPermissionComponent],

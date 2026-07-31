@@ -89,6 +89,7 @@ import { DuplicateMetadataComponent } from './duplicate-metadata/duplicate-metad
 import { UserActionSaveProfileComponent } from './save-profile/save-profile.component';
 import { SelectNoticeComponent } from './select-notice/select-notice.component';
 import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/pastis-generic-popup.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/past
     SharedModule,
     VitamUILibraryModule,
     PastisGenericPopupComponent,
+    TranslatePipe,
   ],
   exports: [
     UserActionSaveProfileComponent,
