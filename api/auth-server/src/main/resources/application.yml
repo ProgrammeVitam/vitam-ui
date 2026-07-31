@@ -25,6 +25,16 @@ spring:
     name: auth-server
   thymeleaf:
     enabled: false
+  # Boot 4 moved connection props from `spring.data.mongodb.*` to `spring.mongodb.*` (the former are
+  # kept only as deprecated aliases). `spring.data.mongodb.*` still hosts the ODM/repository settings
+  # (auto-index-creation, gridfs, representation).
+  mongodb:
+    # Dedicated auth-server database on the same Mongo instance as IAM (dev). Requires a user created
+    # once via mongosh — see README.md § Bootstrap. Override entirely with AUTH_SERVER_MONGO_URI in
+    # staging/prod. directConnection=true bypasses replica-set topology discovery: the dev container's
+    # rs0 advertises itself as `vitamui-mongo:27018`, which isn't resolvable from the host; without it
+    # the Java Mongo driver reconnects to that hostname and times out.
+    uri: ${AUTH_SERVER_MONGO_URI:mongodb://mongod_dbuser_authserver:mongod_dbpwd_authserver@localhost:27018/auth-server?connectTimeoutMS=2000&directConnection=true}
   ssl:
     bundle:
       jks:

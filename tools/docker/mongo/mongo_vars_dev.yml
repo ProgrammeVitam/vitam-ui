@@ -50,6 +50,11 @@ mongodb:
     user: "mongod_dbuser_cas"
     password: "mongod_dbpwd_cas"
     roles: '[{ role: "readWrite", db: "cas" }]'
+  authserver:
+    db: auth-server
+    user: "mongod_dbuser_authserver"
+    password: "mongod_dbpwd_authserver"
+    roles: '[{ role: "readWrite", db: "auth-server" }]'
   versioning:
     enable: false
     db: versioning

@@ -1,8 +1,63 @@
-# auth-server — POC Spring Authorization Server
+# auth-server — Spring Authorization Server
 
-Phase 1 du remplacement d'Apereo CAS par Spring Authorization Server (SAS). Le but est de valider
-qu'un SAS peut émettre un `access_token` opaque au format `TOK-<UUID>` persisté dans la collection
-Mongo `tokens` existante — laissant les 8 frontends Angular et les Resource Servers inchangés.
+Remplacement d'Apereo CAS par Spring Authorization Server (SAS). Émet des `access_token` opaques
+`TOK-<UUID>` persistés dans la collection Mongo `tokens` — laissant les 8 frontends Angular et les
+Resource Servers inchangés. Historique et retex détaillés : `api/auth-gateway/docs/2026-07-*/`.
+
+## Bootstrap Mongo dev (base `auth-server`)
+
+Le module utilise sa propre base Mongo `auth-server` (collection `registered_clients` pour les
+clients OIDC, futures collections d'`OAuth2Authorization`). Elle est hébergée sur la même instance
+Mongo dev que les autres services vitam-ui (`localhost:27018`).
+
+**Vous relancez `tools/docker/mongo/start_dev.sh`** → rien à faire : le user est créé automatiquement
+via `deployment/scripts/mongod/v10.0/0-02_users-authserver.js.j2` (vars dans
+`tools/docker/mongo/mongo_vars_dev.yml`).
+
+**Votre instance Mongo tourne déjà** → provisionner le user une fois :
+
+```bash
+mongosh "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@localhost:27018/admin" \
+  --eval 'db.getSiblingDB("auth-server").createUser({
+    user: "mongod_dbuser_authserver",
+    pwd:  "mongod_dbpwd_authserver",
+    roles: [{ role: "readWrite", db: "auth-server" }]
+  })'
+```
+
+Vérification :
+
+```bash
+mongosh "mongodb://mongod_dbuser_authserver:mongod_dbpwd_authserver@localhost:27018/auth-server" \
+  --eval 'db.runCommand({ping: 1})'
+```
+
+Au premier démarrage de l'auth-server, la collection `registered_clients` sera peuplée depuis les
+8 clients yaml de `application.yml` (portal, identity, identityadmin, referential, ingest,
+archive-search, collect, pastis), avec un `_id` UUID stable dérivé du `clientId` — les restarts
+n'engendrent pas de duplication.
+
+Vérification post-boot :
+
+```bash
+mongosh "mongodb://mongod_dbuser_authserver:mongod_dbpwd_authserver@localhost:27018/auth-server" \
+  --eval 'db.registered_clients.find({}, {clientId: 1}).toArray()'
+```
+
+## Ajouter un nouveau client OIDC (sans redémarrage)
+
+Insertion Mongo directe :
+
+```bash
+mongosh "mongodb://mongod_dbuser_authserver:mongod_dbpwd_authserver@localhost:27018/auth-server"
+> const gabarit = db.registered_clients.findOne({clientId: "portal"})
+> // dupliquer le blob JSON, changer clientId + redirectUris, générer un nouveau _id
+```
+
+Ou (pérenne, versionné) : ajouter le client sous `vitamui.auth-server.clients` de
+`application.yml` — au prochain restart, le bootstrap l'upsertera avec un `_id` stable.
+
+## Origine et hors-scope initiaux
 
 ## Ce que fait ce module en Phase 1
 

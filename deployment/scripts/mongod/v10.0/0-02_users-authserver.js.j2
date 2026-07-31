@@ -1,0 +1,23 @@
+// Switch to auth-server database
+db = db.getSiblingDB('{{ mongodb.authserver.db }}')
+
+// Create authserver user
+
+if (! db.getUser("{{ mongodb.authserver.user }}")) {
+    db.createUser(
+        {
+            user: "{{ mongodb.authserver.user }}",
+            pwd: "{{ mongodb.authserver.password }}",
+            roles: {{ mongodb.authserver.roles }}
+        }
+    )
+}
+else {
+    db.updateUser(
+        "{{ mongodb.authserver.user }}",
+        {
+            pwd: "{{ mongodb.authserver.password }}",
+            roles: {{ mongodb.authserver.roles }}
+        }
+    )
+}

@@ -37,6 +37,11 @@ mongodb:
         user: cas
         password: changeit_cas
         roles: '[{ role: "readWrite", db: "cas" }]'
+    authserver:
+        db: auth-server
+        user: api-authserver
+        password: changeit_authserver
+        roles: '[{ role: "readWrite", db: "auth-server" }]'
     versioning:
         db: versioning
         user: versioning
