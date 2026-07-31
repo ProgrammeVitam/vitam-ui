@@ -204,6 +204,17 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         return new RestClientConfiguration();
     }
 
+    /**
+     * mTLS-authenticated REST client pointed at the Spring Authorization Server. Used by
+     * {@link UserEmailService} to trigger the welcome (first-connection) email at user creation
+     * time — the historical CAS-hosted email endpoint no longer exists.
+     */
+    @Bean
+    @ConfigurationProperties(value = "auth-server-client")
+    public RestClientConfiguration authServerClientProperties() {
+        return new RestClientConfiguration();
+    }
+
     @Bean
     @ConfigurationProperties(value = "provisioning-client")
     public ProvisioningClientConfiguration provisioningClientProperties() {
@@ -533,10 +544,10 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     @Bean
     public UserEmailService userEmailService(
         final RestClient.Builder restClientBuilder,
-        final RestClientConfiguration casClientProperties
+        final RestClientConfiguration authServerClientProperties
     ) {
         final BaseVitamuiRestClientFactory factory = new BaseVitamuiRestClientFactory(
-            casClientProperties,
+            authServerClientProperties,
             restClientBuilder
         );
         return new UserEmailService(factory);

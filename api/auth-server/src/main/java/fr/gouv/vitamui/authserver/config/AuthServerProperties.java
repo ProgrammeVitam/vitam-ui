@@ -57,6 +57,9 @@ public class AuthServerProperties {
     public static class PasswordReset {
         // TTL of a reset nonce — kept short to shrink the window in which a stolen inbox helps.
         private long ttlMinutes = 30;
+        // TTL of a first-connection nonce — much longer than a reset, so a user who's away for a day
+        // still has a chance to open the email from their real inbox.
+        private long firstConnectionTtlHours = 24;
         // From address on outgoing reset emails.
         private String from = "no-reply@vitamui.local";
         // Public base URL of the auth-server (protocol + host + port). Used to build the reset link

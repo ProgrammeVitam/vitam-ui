@@ -229,6 +229,28 @@ public class PasswordController {
         private String email;
     }
 
+    /**
+     * Called by IAM right after {@code UserService.create} to hand a new user a link where they can
+     * pick their initial password. Public endpoint (no auth) — anti-enumeration is enforced by the
+     * always-opaque 200 body; the only reachable side-effect is delivering a welcome email to the
+     * given address. Rate-limiting the endpoint is tracked as Phase 3 debt.
+     */
+    @PostMapping("/first-connection")
+    public ResponseEntity<RequestResetResponse> firstConnection(@RequestBody FirstConnectionRequest request) {
+        String email = request.getEmail();
+        String customerId = request.getCustomerId();
+        long ttlHours = properties.getPasswordReset().getFirstConnectionTtlHours();
+        String nonce = passwordResetService.issueWithTtl(email, customerId, java.time.Duration.ofHours(ttlHours));
+        String link = properties.getPasswordReset().getBaseUrl() + "/reset-password?token=" + nonce;
+        try {
+            passwordResetMailer.sendWelcome(email, request.getFirstname(), link, ttlHours);
+        } catch (MessagingException e) {
+            LOGGER.error("Failed to send welcome email to {}: {}", email, e.getMessage(), e);
+            throw new RuntimeException("Failed to send welcome email", e);
+        }
+        return ResponseEntity.ok(RequestResetResponse.opaque());
+    }
+
     @Data
     public static class ResetRequest {
 
@@ -237,6 +259,23 @@ public class PasswordController {
 
         @NotBlank
         private String newPassword;
+    }
+
+    @Data
+    public static class FirstConnectionRequest {
+
+        @NotBlank
+        private String email;
+
+        @NotBlank
+        private String customerId;
+
+        // Firstname is used to personalise the greeting — safe to be null/blank, we fall back to a
+        // generic "Bonjour,".
+        private String firstname;
+
+        private String lastname;
+        private String language;
     }
 
     @Data

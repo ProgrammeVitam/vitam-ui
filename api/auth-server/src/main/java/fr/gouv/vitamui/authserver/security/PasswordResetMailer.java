@@ -58,6 +58,52 @@ public class PasswordResetMailer {
         );
     }
 
+    /**
+     * Sends the welcome/first-connection email. Same channel as {@link #send} but with a template
+     * that pitches the flow as "set your password" rather than "reset it", and speaks to the user by
+     * name when we have it.
+     */
+    public void sendWelcome(String recipient, String firstname, String resetLink, long ttlHours) throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, StandardCharsets.UTF_8.name());
+        helper.setFrom(settings.getFrom());
+        helper.setTo(recipient);
+        helper.setSubject("Vitam-UI · Bienvenue — choisissez votre mot de passe");
+        String hello = (firstname != null && !firstname.isBlank()) ? ("Bonjour " + firstname + ",") : "Bonjour,";
+        helper.setText(buildWelcomeText(hello, resetLink, ttlHours), buildWelcomeHtml(hello, resetLink, ttlHours));
+        mailSender.send(message);
+        LOGGER.info("Welcome email sent to {}", recipient);
+    }
+
+    private static String buildWelcomeText(String hello, String link, long ttlHours) {
+        return (
+            hello + "\n\n" +
+            "Un compte Vitam-UI a été créé pour vous.\n" +
+            "Pour définir votre mot de passe et vous connecter, ouvrez ce lien dans les " + ttlHours + " prochaines heures :\n\n" +
+            link + "\n\n" +
+            "Passé ce délai, contactez votre administrateur qui pourra vous renvoyer un lien.\n\n" +
+            "— Vitam-UI"
+        );
+    }
+
+    private static String buildWelcomeHtml(String hello, String link, long ttlHours) {
+        return (
+            "<!doctype html><html lang=\"fr\"><body style=\"font-family:Arial,sans-serif;color:#111;\">" +
+            "<p>" + hello + "</p>" +
+            "<p>Un compte Vitam-UI a été créé pour vous.</p>" +
+            "<p>Pour définir votre mot de passe et vous connecter, cliquez sur le lien ci-dessous dans les <b>" +
+            ttlHours + " prochaines heures</b> :</p>" +
+            "<p><a href=\"" + link + "\" style=\"display:inline-block;padding:0.6rem 1rem;background:#1e40af;color:#fff;" +
+            "text-decoration:none;border-radius:6px;\">Choisir mon mot de passe</a></p>" +
+            "<p style=\"color:#666;font-size:0.85rem;\">Si le bouton ne fonctionne pas, copiez-collez cette adresse " +
+            "dans votre navigateur : <br/>" + link + "</p>" +
+            "<p style=\"color:#666;font-size:0.85rem;\">Passé ce délai, contactez votre administrateur qui pourra " +
+            "vous renvoyer un lien.</p>" +
+            "<p>— Vitam-UI</p>" +
+            "</body></html>"
+        );
+    }
+
     private static String buildHtmlBody(String link, long ttlMinutes) {
         return (
             "<!doctype html><html lang=\"fr\"><body style=\"font-family:Arial,sans-serif;color:#111;\">" +

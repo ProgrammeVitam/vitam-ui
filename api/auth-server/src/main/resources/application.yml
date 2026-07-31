@@ -86,6 +86,7 @@ vitamui:
     # Password reset (chantier #6c) — nonce TTL, sender identity, base URL used in the email link.
     password-reset:
       ttl-minutes: ${PASSWORD_RESET_TTL_MINUTES:30}
+      first-connection-ttl-hours: ${FIRST_CONNECTION_TTL_HOURS:24}
       from: ${PASSWORD_RESET_FROM:no-reply@vitamui.local}
       # Where the email link points. Must match how users reach the auth-server from a browser (same
       # value as `issuer` in most setups). Kept separate so ops can tune the visible URL independently.

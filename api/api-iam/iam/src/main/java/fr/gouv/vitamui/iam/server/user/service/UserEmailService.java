@@ -54,10 +54,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
- * Send user email service.
+ * Sends the welcome email to a freshly created user by delegating to the Spring Authorization Server
+ * ({@code POST /api/password/first-connection}) — SAS owns the reset/welcome token store and the
+ * mailer since chantier #6.
  */
 @Getter
 @Setter
@@ -65,10 +68,13 @@ public class UserEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserEmailService.class);
 
-    @Value("${cas.reset.password.url}")
+    /**
+     * Path on the auth-server that accepts the welcome payload. Kept in a property so ops can pin a
+     * different route if the SAS ever moves that endpoint (unlikely).
+     */
+    @Value("${auth-server.first-connection.path:/api/password/first-connection}")
     @NotNull
-    @Setter
-    private String casResetPasswordUrl;
+    private String firstConnectionPath;
 
     @Autowired
     private IdentityProviderHelper identityProviderHelper;
@@ -85,39 +91,63 @@ public class UserEmailService {
         this.vitamuiRestClientFactory = vitamuiRestClientFactory;
     }
 
+    /**
+     * Fires the welcome email for a newly created user. Silent no-op when the user is not eligible
+     * (not nominative, not enabled, or the email doesn't match any internal IdP pattern for their
+     * customer — the historical guard preventing invites for federated-only IdPs).
+     *
+     * <p>The SAS call is best-effort; on failure we log and continue so a mail hiccup can't roll
+     * back the user creation.
+     */
     public void sendCreationEmail(final UserDto userDto) {
         if (
-            userDto != null &&
-            userDto.getStatus() == UserStatusEnum.ENABLED &&
-            userDto.getType() == UserTypeEnum.NOMINATIVE
+            userDto == null ||
+            userDto.getStatus() != UserStatusEnum.ENABLED ||
+            userDto.getType() != UserTypeEnum.NOMINATIVE
         ) {
-            final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(
-                Optional.empty(),
-                Optional.empty()
-            );
-            if (
-                identityProviderHelper.identifierMatchProviderPattern(
-                    providers,
-                    userDto.getEmail(),
-                    userDto.getCustomerId()
-                )
-            ) {
-                LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
-                final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
-                vitamuiRestClientFactory
-                    .getRestClient()
-                    .get()
-                    .uri(
-                        vitamuiRestClientFactory.getBaseUrl() + casResetPasswordUrl,
-                        userDto.getEmail(),
-                        userDto.getFirstname(),
-                        userDto.getLastname(),
-                        LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(),
-                        userDto.getCustomerId()
-                    )
-                    .retrieve()
-                    .body(Boolean.class);
-            }
+            return;
+        }
+        final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(
+            Optional.empty(),
+            Optional.empty()
+        );
+        if (
+            !identityProviderHelper.identifierMatchProviderPattern(
+                providers,
+                userDto.getEmail(),
+                userDto.getCustomerId()
+            )
+        ) {
+            LOGGER.debug("Skipping welcome email for {} — no matching internal IdP pattern", userDto.getEmail());
+            return;
+        }
+
+        final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
+        final Map<String, String> body = Map.of(
+            "email",
+            userDto.getEmail(),
+            "customerId",
+            userDto.getCustomerId(),
+            "firstname",
+            userDto.getFirstname() != null ? userDto.getFirstname() : "",
+            "lastname",
+            userDto.getLastname() != null ? userDto.getLastname() : "",
+            "language",
+            LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage()
+        );
+
+        try {
+            LOGGER.debug("Requesting welcome email from SAS for {}", userDto.getEmail());
+            vitamuiRestClientFactory
+                .getRestClient()
+                .post()
+                .uri(vitamuiRestClientFactory.getBaseUrl() + firstConnectionPath)
+                .body(body)
+                .retrieve()
+                .toBodilessEntity();
+        } catch (Exception e) {
+            // Do not fail user creation because SAS is down; ops will replay via the reset flow.
+            LOGGER.warn("Welcome email request to SAS failed for {}: {}", userDto.getEmail(), e.toString());
         }
     }
 }

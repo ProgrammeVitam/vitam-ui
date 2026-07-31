@@ -174,6 +174,9 @@ public class AuthorizationServerConfig {
                         // Anti-enumeration + one-shot nonce are enforced by the controller itself.
                         "/api/password/reset",
                         "/api/password/reset/**",
+                        // Welcome / first-connection: called by IAM after account creation. Public;
+                        // rate-limiting tracked as Phase 3 debt.
+                        "/api/password/first-connection",
                         // The policy JSON is also consumed by the (unauthenticated) reset screen so
                         // users see the rules before typing a new password. No user data leaked.
                         "/api/password/policy",

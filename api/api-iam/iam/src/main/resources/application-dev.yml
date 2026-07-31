@@ -71,6 +71,21 @@ cas-client:
       key-password: changeme
     hostname-verification: false
 
+# Auth-server (SAS) client — used to trigger welcome emails at user creation. mTLS via the same
+# vitamui-services PKI as the other internal services.
+auth-server-client:
+  server-host: dev.vitamui.com
+  server-port: 9443
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: ../../../dev-deployment/environments/keystores/vitamui-services/truststore_vitamui-services.p12
+      key-password: changeme
+    keystore:
+      key-path: ../../../dev-deployment/environments/keystores/vitamui-services/clients/keystore_iam.p12
+      key-password: changeme
+    hostname-verification: false
+
 cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
 cas.tenant.identifier: -1
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x

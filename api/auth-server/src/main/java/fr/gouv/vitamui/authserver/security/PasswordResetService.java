@@ -39,14 +39,28 @@ public class PasswordResetService {
 
     /**
      * Purges any pending reset for the (email, customerId) pair (a fresh request supersedes previous
-     * ones) then issues a new nonce with the configured TTL.
+     * ones) then issues a new nonce with the default reset TTL.
      */
     public String issue(String email, String customerId) {
+        return issueWithTtl(email, customerId, ttl);
+    }
+
+    /**
+     * Same as {@link #issue(String, String)} but with a caller-supplied TTL — used by the welcome
+     * flow that hands out a much longer window (typically 24 h) so a new user has time to open the
+     * email from their real inbox.
+     */
+    public String issueWithTtl(String email, String customerId, Duration customTtl) {
         tokens.deleteByEmailAndCustomerId(email, customerId);
         String nonce = generateNonce();
-        Instant expiresAt = Instant.now().plus(ttl);
+        Instant expiresAt = Instant.now().plus(customTtl);
         tokens.save(new PasswordResetTokenDocument(nonce, email, customerId, expiresAt));
-        LOGGER.info("Issued password-reset token for email={} customer={} (ttl={}min)", email, customerId, ttl.toMinutes());
+        LOGGER.info(
+            "Issued password-reset token for email={} customer={} (ttl={}min)",
+            email,
+            customerId,
+            customTtl.toMinutes()
+        );
         return nonce;
     }
 
