@@ -234,8 +234,9 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public fr.gouv.vitamui.iam.security.provider.AuthServerSystemAuthenticator authServerSystemAuthenticator(
-        @org.springframework.beans.factory.annotation.Value("${iam.auth-server.accepted-cns:cas-server}")
-        String acceptedCns
+        @org.springframework.beans.factory.annotation.Value(
+            "${iam.auth-server.accepted-cns:cas-server}"
+        ) String acceptedCns
     ) {
         return new fr.gouv.vitamui.iam.security.provider.AuthServerSystemAuthenticator(acceptedCns);
     }

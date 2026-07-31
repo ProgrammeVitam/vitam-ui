@@ -155,6 +155,24 @@ public class IamClient {
             .body(UserDto.class);
     }
 
+    /**
+     * Invalidates every opaque {@code TOK-<UUID>} pointing to the given user id. Fire-and-forget
+     * from the auth-server's logout hook — subsequent resource-server calls holding the old token
+     * get a 401 and re-authenticate through SAS. Never throws on missing user or empty result.
+     */
+    public void invalidateTokensOfUser(String userId) {
+        restClient
+            .post()
+            .uri(uriBuilder ->
+                uriBuilder
+                    .path(RestApi.V1_CAS_URL + RestApi.CAS_TOKENS_INVALIDATE_PATH)
+                    .queryParam("userId", userId)
+                    .build()
+            )
+            .retrieve()
+            .toBodilessEntity();
+    }
+
     public String createOpaqueAuthToken(String userId, boolean surrogation, boolean api) {
         CreateTokenResponseDto response = restClient
             .post()

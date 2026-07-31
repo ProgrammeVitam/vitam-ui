@@ -81,6 +81,8 @@ public abstract class RestApi {
 
     public static final String CAS_TOKENS_PATH = "/tokens";
 
+    public static final String CAS_TOKENS_INVALIDATE_PATH = "/tokens/invalidate";
+
     public static final String CAS_HRD_PATH = "/hrd";
 
     public static final String CAS_SUBROGATION_VALIDATE_PATH = "/subrogations/validate";

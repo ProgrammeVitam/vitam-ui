@@ -9,13 +9,14 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
-import java.security.cert.X509Certificate;
-import java.util.List;
-import java.util.Set;
-import javax.security.auth.x500.X500Principal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+
+import javax.security.auth.x500.X500Principal;
+import java.security.cert.X509Certificate;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Recognises the Spring Authorization Server as a peer service when it presents its client certificate

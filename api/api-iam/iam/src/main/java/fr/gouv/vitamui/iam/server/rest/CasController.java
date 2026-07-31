@@ -417,6 +417,26 @@ public class CasController {
      * Validates that an ACCEPTED subrogation exists between the given super-user and surrogate,
      * and returns both resolved user ids. Called by auth-server (SAS POC) at the {@code /login/subrogate} step.
      */
+    /**
+     * Invalidates every opaque auth token pointing to the given user id — used at OIDC logout time to
+     * propagate the end-of-session across all vitam-ui apps: as soon as the tokens are gone from the
+     * {@code tokens} collection, other frontends holding the same token get a 401 from their resource
+     * server and re-initiate authentication through SAS.
+     */
+    @PostMapping(value = RestApi.CAS_TOKENS_INVALIDATE_PATH)
+    @Operation(
+        operationId = "cas_invalidateTokens",
+        summary = "Invalidate every opaque token of a user (called at logout to propagate cross-app)"
+    )
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void invalidateTokensOfUser(@RequestParam final String userId) {
+        LOGGER.debug("invalidateTokensOfUser userId={}", userId);
+        SanityChecker.checkSecureParameter(userId);
+        final long deleted = casService.invalidateTokensOfUser(userId);
+        LOGGER.info("Invalidated {} token(s) for userId={}", deleted, userId);
+    }
+
     @PostMapping(value = RestApi.CAS_SUBROGATION_VALIDATE_PATH)
     @Operation(
         operationId = "cas_validateSubrogation",

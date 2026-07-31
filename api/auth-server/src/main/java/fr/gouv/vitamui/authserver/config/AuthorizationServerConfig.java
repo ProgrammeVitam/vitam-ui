@@ -41,6 +41,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import fr.gouv.vitamui.authserver.security.FederatedLoginSuccessHandler;
 import fr.gouv.vitamui.authserver.security.IamAuthenticationProvider;
 import fr.gouv.vitamui.authserver.security.IamClient;
+import fr.gouv.vitamui.authserver.security.IamRevocationLogoutSuccessHandler;
 import fr.gouv.vitamui.authserver.security.MongoClientRegistrationRepository;
 import fr.gouv.vitamui.authserver.security.OpaqueVitamTokenGenerator;
 import fr.gouv.vitamui.authserver.security.PublicClientRevocationAuthenticationConverter;
@@ -72,7 +73,7 @@ public class AuthorizationServerConfig {
         CorsConfigurationSource corsConfigurationSource,
         RegisteredClientRepository registeredClientRepository,
         SecurityContextRepository securityContextRepository,
-        JwtDecoder jwtDecoder
+        IamClient iamClient
     ) throws Exception {
         http.oauth2AuthorizationServer(authorizationServer -> {
             http.securityMatcher(authorizationServer.getEndpointsMatcher());
@@ -84,8 +85,7 @@ public class AuthorizationServerConfig {
                             () ->
                                 http.getSharedObject(
                                     org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService.class
-                                ),
-                            () -> jwtDecoder
+                                )
                         );
                     // Replace the default OidcLogoutAuthenticationProvider entirely — it enforces a strict
                     // sub check that fails in the legitimate subrogation transition. Our tolerant provider
@@ -97,6 +97,9 @@ public class AuthorizationServerConfig {
                         );
                         providers.add(0, tolerantProvider);
                     });
+                    // Propagate end-of-session to the other vitam-ui apps: after SAS accepts the logout,
+                    // ask IAM to purge every opaque TOK-<UUID> pointing to the user (sub of the id_token).
+                    logout.logoutResponseHandler(new IamRevocationLogoutSuccessHandler(iamClient));
                 })
             );
             // Allow public (PKCE) clients to hit /oauth2/revoke with just client_id — RFC 7009 permits this,
