@@ -197,7 +197,7 @@ public class CasController {
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @Operation(operationId = "cas_changePassword", summary = "Change password of a user")
-    @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
+    @Secured({ ServicesData.ROLE_CAS_CHANGE_PASSWORD, ServicesData.ROLE_SYSTEM_SAS })
     @ResponseBody
     public String changePassword(
         @RequestHeader final String username,

@@ -165,15 +165,22 @@ public class AuthorizationServerConfig {
                         "/saml2/authenticate/**",
                         "/login/saml2/sso/**",
                         "/saml2/service-provider-metadata/**",
+                        // Static assets for the password self-service SPA (change + reset later on).
+                        "/change-password",
+                        "/change-password/**",
                         "/assets/**",
                         "/favicon.ico",
                         "/error"
                     )
                     .permitAll()
+                    // JSON APIs for password self-service — the controller enforces auth via SecurityContext
+                    // and returns 403 when unauthenticated, so the SPA can surface a clean error.
+                    .requestMatchers("/api/password/**")
+                    .authenticated()
                     .anyRequest()
                     .authenticated()
             )
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**", "/login/saml2/sso/**"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**", "/api/password/**", "/login/saml2/sso/**"))
             .formLogin(form -> form.loginPage("/login").permitAll())
             .oauth2Login(oauth2 ->
                 oauth2

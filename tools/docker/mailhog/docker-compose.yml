@@ -1,0 +1,15 @@
+# MailHog — lightweight SMTP sink for local dev. Used by the auth-server to send password reset
+# emails without needing a real SMTP relay. The UI lets you inspect messages and copy the reset
+# link into your browser.
+#
+# Ports exposed to the host:
+#   1025 -> SMTP (auth-server's spring.mail config points here)
+#   8025 -> HTTP UI  (http://localhost:8025)
+services:
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: vitamui-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: unless-stopped

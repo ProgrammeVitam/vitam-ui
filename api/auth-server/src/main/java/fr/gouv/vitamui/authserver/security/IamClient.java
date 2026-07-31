@@ -156,6 +156,23 @@ public class IamClient {
     }
 
     /**
+     * Updates a user's password in IAM. IAM enforces its {@code PasswordValidator} policy and the
+     * historical passwords check server-side — this call propagates any {@code 400/409} back so the
+     * SPA can surface a meaningful error. Old-password verification is the caller's responsibility
+     * ({@link #login(String, String, String)} is expected to have succeeded first).
+     */
+    public void changePassword(String email, String customerId, String newPassword) {
+        restClient
+            .post()
+            .uri(RestApi.V1_CAS_URL + RestApi.CAS_CHANGE_PASSWORD_PATH)
+            .header("username", email)
+            .header("password", newPassword)
+            .header("customerId", customerId)
+            .retrieve()
+            .toBodilessEntity();
+    }
+
+    /**
      * Invalidates every opaque {@code TOK-<UUID>} pointing to the given user id. Fire-and-forget
      * from the auth-server's logout hook — subsequent resource-server calls holding the old token
      * get a 401 and re-authenticate through SAS. Never throws on missing user or empty result.

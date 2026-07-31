@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vitam-UI · Changer le mot de passe</title>
+    <link rel="stylesheet" href="/login/style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Changer le mot de passe</h1>
+      <p class="subtitle" id="current-user"></p>
+
+      <section id="step-change">
+        <label for="current">Mot de passe actuel</label>
+        <input id="current" type="password" autocomplete="current-password" required />
+
+        <label for="new">Nouveau mot de passe</label>
+        <input id="new" type="password" autocomplete="new-password" required />
+
+        <label for="confirm">Confirmer le nouveau mot de passe</label>
+        <input id="confirm" type="password" autocomplete="new-password" required />
+
+        <ul id="policy-hints" class="policy-hints" hidden></ul>
+
+        <button type="button" id="btn-submit">Valider</button>
+      </section>
+
+      <section id="step-done" hidden>
+        <p class="subtitle">Mot de passe changé avec succès.</p>
+        <a class="link" href="/login">← Retour à la connexion</a>
+      </section>
+
+      <div id="error" class="error" hidden></div>
+    </main>
+    <script src="/change-password/app.js"></script>
+  </body>
+</html>
