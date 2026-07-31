@@ -29,6 +29,12 @@ spring:
     name: auth-server
   thymeleaf:
     enabled: false
+  autoconfigure:
+    # Thymeleaf is used only by our MailTemplateEngineConfig (two engines, HTML + text). Boot's
+    # MVC autoconfiguration would try to inject a single SpringTemplateEngine for the view resolver
+    # and fail with "2 beans found". We don't need MVC view resolution — the SPAs are static —
+    # so we exclude the autoconfig entirely and keep just the standalone engines we own.
+    exclude: org.springframework.boot.thymeleaf.autoconfigure.ThymeleafAutoConfiguration
   # Boot 4 moved connection props from `spring.data.mongodb.*` to `spring.mongodb.*` (the former are
   # kept only as deprecated aliases). `spring.data.mongodb.*` still hosts the ODM/repository settings
   # (auto-index-creation, gridfs, representation).

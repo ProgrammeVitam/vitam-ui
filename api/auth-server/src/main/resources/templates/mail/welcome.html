@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+  <body style="font-family:Arial,sans-serif;color:#111;">
+    <p th:text="${hello}">Bonjour,</p>
+    <p>Un compte Vitam-UI a été créé pour vous.</p>
+    <p>
+      Pour définir votre mot de passe et vous connecter, cliquez sur le lien ci-dessous dans les
+      <b><span th:text="${ttlHours}">24</span> prochaines heures</b> :
+    </p>
+    <p>
+      <a th:href="${resetLink}"
+         style="display:inline-block;padding:0.6rem 1rem;background:#1e40af;color:#fff;text-decoration:none;border-radius:6px;">
+        Choisir mon mot de passe
+      </a>
+    </p>
+    <p style="color:#666;font-size:0.85rem;">
+      Si le bouton ne fonctionne pas, copiez-collez cette adresse dans votre navigateur :<br />
+      <span th:text="${resetLink}">https://…</span>
+    </p>
+    <p style="color:#666;font-size:0.85rem;">
+      Passé ce délai, contactez votre administrateur qui pourra vous renvoyer un lien.
+    </p>
+    <p>— Vitam-UI</p>
+  </body>
+</html>

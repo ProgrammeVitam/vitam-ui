@@ -1,0 +1,10 @@
+[(${hello})]
+
+Un compte Vitam-UI a été créé pour vous.
+Pour définir votre mot de passe et vous connecter, ouvrez ce lien dans les [(${ttlHours})] prochaines heures :
+
+[(${resetLink})]
+
+Passé ce délai, contactez votre administrateur qui pourra vous renvoyer un lien.
+
+— Vitam-UI

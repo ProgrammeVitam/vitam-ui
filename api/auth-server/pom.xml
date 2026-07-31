@@ -63,6 +63,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
+        <!--
+          Thymeleaf is used only by the mail templating engine (see MailTemplateEngineConfig).
+          MVC view resolution stays disabled (spring.thymeleaf.enabled=false in application.yml) so
+          the SPA fallbacks remain unaffected.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.bucket4j</groupId>
             <artifactId>bucket4j-core</artifactId>
