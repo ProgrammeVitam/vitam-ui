@@ -53,6 +53,7 @@ import fr.gouv.vitamui.iam.common.dto.cas.CreateTokenResponseDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.cas.JitProvisionRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -193,6 +194,18 @@ public class CasController {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the vitam-ui password policy in a shape the SPA can render as bullet points. Used by
+     * change-password / reset-password screens so users see the rules before they type. Config-derived,
+     * no user context needed.
+     */
+    @GetMapping(value = RestApi.CAS_PASSWORD_POLICY_PATH)
+    @Operation(operationId = "cas_passwordPolicy", summary = "Return the active password policy (SPA-friendly)")
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
+    public PasswordPolicyDto getPasswordPolicy() {
+        return casService.getPasswordPolicy();
     }
 
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)

@@ -58,6 +58,7 @@ import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.cas.JitProvisionRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
@@ -221,6 +222,43 @@ public class CasService {
     }
 
     public CasService() {}
+
+    /**
+     * Flattens {@code PasswordConfiguration} into a SPA-friendly {@link PasswordPolicyDto}. Extracts
+     * the human messages from the active profile's constraints (defaults + customs) so the SPA can
+     * render them as-is without having to know the internal ANSSI/custom layout.
+     */
+    public PasswordPolicyDto getPasswordPolicy() {
+        java.util.List<String> messages = new java.util.ArrayList<>();
+        if (passwordConfiguration != null && passwordConfiguration.getConstraints() != null) {
+            var constraints = passwordConfiguration.getConstraints();
+            if (constraints.getDefaults() != null) {
+                constraints
+                    .getDefaults()
+                    .values()
+                    .forEach(d -> {
+                        if (d.getMessages() != null) messages.addAll(d.getMessages());
+                        if (d.getSpecialChars() != null && d.getSpecialChars().getMessages() != null) {
+                            messages.addAll(d.getSpecialChars().getMessages());
+                        }
+                    });
+            }
+            if (constraints.getCustoms() != null) {
+                constraints
+                    .getCustoms()
+                    .values()
+                    .forEach(c -> {
+                        if (c.getMessages() != null) messages.addAll(c.getMessages());
+                    });
+            }
+        }
+        return new PasswordPolicyDto(
+            passwordConfiguration != null ? passwordConfiguration.getLength() : null,
+            passwordConfiguration != null ? passwordConfiguration.getProfile() : null,
+            passwordConfiguration != null ? passwordConfiguration.getMaxOldPassword() : null,
+            messages
+        );
+    }
 
     @Transactional
     public void updatePassword(final String email, final String rawPassword, final String customerId) {

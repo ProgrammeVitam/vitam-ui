@@ -156,6 +156,18 @@ public class IamClient {
     }
 
     /**
+     * Returns the vitam-ui password policy (min length, profile, human messages). Cached upstream in
+     * the SAS proxy — this call goes to IAM every time so callers should wrap it in their own cache.
+     */
+    public fr.gouv.vitamui.iam.common.dto.cas.PasswordPolicyDto getPasswordPolicy() {
+        return restClient
+            .get()
+            .uri(RestApi.V1_CAS_URL + RestApi.CAS_PASSWORD_POLICY_PATH)
+            .retrieve()
+            .body(fr.gouv.vitamui.iam.common.dto.cas.PasswordPolicyDto.class);
+    }
+
+    /**
      * Updates a user's password in IAM. IAM enforces its {@code PasswordValidator} policy and the
      * historical passwords check server-side — this call propagates any {@code 400/409} back so the
      * SPA can surface a meaningful error. Old-password verification is the caller's responsibility

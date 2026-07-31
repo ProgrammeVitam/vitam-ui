@@ -122,3 +122,15 @@ button.link:hover {
   border-radius: 6px;
   font-size: 0.875rem;
 }
+.policy-hints {
+  margin: 0.4rem 0 1rem 0;
+  padding: 0.6rem 0.85rem 0.6rem 1.6rem;
+  background: #eff6ff;
+  color: #1e40af;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+.policy-hints li {
+  margin: 0.15rem 0;
+}

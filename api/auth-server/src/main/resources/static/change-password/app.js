@@ -7,6 +7,9 @@
   const stepDone = document.getElementById('step-done');
   const errorEl = document.getElementById('error');
   const currentUserEl = document.getElementById('current-user');
+  const policyHintsEl = document.getElementById('policy-hints');
+
+  let policy = null;
 
   function showError(msg) {
     errorEl.textContent = msg;
@@ -16,6 +19,24 @@
     errorEl.hidden = true;
     errorEl.textContent = '';
   }
+
+  // Load policy so users see the rules before typing (rendered as bullet points).
+  fetch('/api/password/policy', { credentials: 'include' })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((p) => {
+      if (!p) return;
+      policy = p;
+      const items = [];
+      if (p.minLength) items.push('Longueur minimum : ' + p.minLength + ' caractères');
+      (p.messages || []).forEach((m) => items.push(m));
+      if (p.maxOldPassword) items.push('Ne pas réutiliser vos ' + p.maxOldPassword + ' derniers mots de passe');
+      if (items.length === 0) return;
+      policyHintsEl.innerHTML = items.map((i) => '<li>' + i + '</li>').join('');
+      policyHintsEl.hidden = false;
+    })
+    .catch(() => {
+      // Silent — the server still enforces the policy; SPA hint is nice-to-have.
+    });
 
   submitBtn.addEventListener('click', async () => {
     clearError();
@@ -32,6 +53,10 @@
     }
     if (next === current) {
       showError('Le nouveau mot de passe doit être différent de l’ancien.');
+      return;
+    }
+    if (policy && policy.minLength && next.length < policy.minLength) {
+      showError('Le nouveau mot de passe doit faire au moins ' + policy.minLength + ' caractères.');
       return;
     }
 

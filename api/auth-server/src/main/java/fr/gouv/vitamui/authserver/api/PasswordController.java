@@ -5,10 +5,14 @@
  */
 package fr.gouv.vitamui.authserver.api;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import fr.gouv.vitamui.authserver.security.CustomerIdAuthenticationDetails;
 import fr.gouv.vitamui.authserver.security.IamClient;
 import fr.gouv.vitamui.authserver.security.VitamuiPrincipal;
+import fr.gouv.vitamui.iam.common.dto.cas.PasswordPolicyDto;
 import jakarta.validation.constraints.NotBlank;
+import java.time.Duration;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,6 +22,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +40,23 @@ public class PasswordController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PasswordController.class);
 
     private final IamClient iamClient;
+    // Config changes require a service redeploy — a 5-minute TTL is plenty and shields IAM from
+    // a hot-reload burst if every open tab happens to open the change/reset screen at once.
+    private final Cache<String, PasswordPolicyDto> policyCache = Caffeine.newBuilder()
+        .expireAfterWrite(Duration.ofMinutes(5))
+        .maximumSize(1)
+        .build();
+
+    /**
+     * Returns the password policy in a shape the SPA can render as bullet points. Publicly readable
+     * (the same rules are surfaced on the login screen if password reset is engaged) and does not
+     * leak user data — so no auth check.
+     */
+    @GetMapping("/policy")
+    public ResponseEntity<PasswordPolicyDto> policy() {
+        PasswordPolicyDto policy = policyCache.get("policy", k -> iamClient.getPasswordPolicy());
+        return ResponseEntity.ok(policy);
+    }
 
     /**
      * Change the currently authenticated user's password. Re-authenticates the caller via IAM's

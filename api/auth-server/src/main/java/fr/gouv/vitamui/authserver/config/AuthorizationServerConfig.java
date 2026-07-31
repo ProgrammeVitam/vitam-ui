@@ -168,13 +168,17 @@ public class AuthorizationServerConfig {
                         // Static assets for the password self-service SPA (change + reset later on).
                         "/change-password",
                         "/change-password/**",
+                        // The policy JSON is also consumed by the (unauthenticated) reset screen so
+                        // users see the rules before typing a new password. No user data leaked.
+                        "/api/password/policy",
                         "/assets/**",
                         "/favicon.ico",
                         "/error"
                     )
                     .permitAll()
-                    // JSON APIs for password self-service — the controller enforces auth via SecurityContext
-                    // and returns 403 when unauthenticated, so the SPA can surface a clean error.
+                    // Remaining password APIs (change, request-reset, reset) — the controllers enforce
+                    // auth or token semantics themselves; keep the chain requiring authentication so
+                    // an unauthenticated /change gets a clean 401 instead of leaking through.
                     .requestMatchers("/api/password/**")
                     .authenticated()
                     .anyRequest()
