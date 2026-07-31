@@ -43,7 +43,6 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -77,9 +76,6 @@ public class UserEmailService {
     private String firstConnectionPath;
 
     @Autowired
-    private IdentityProviderHelper identityProviderHelper;
-
-    @Autowired
     private UserInfoService userInfoService;
 
     @Autowired
@@ -93,8 +89,14 @@ public class UserEmailService {
 
     /**
      * Fires the welcome email for a newly created user. Silent no-op when the user is not eligible
-     * (not nominative, not enabled, or the email doesn't match any internal IdP pattern for their
-     * customer — the historical guard preventing invites for federated-only IdPs).
+     * (not nominative, not enabled, or their customer has no enabled internal IdP — the user could
+     * never sign in with a local password anyway, so the "choose your password" link would lead
+     * nowhere).
+     *
+     * <p>The pattern-based guard used before (email must match an internal IdP pattern) was dropped:
+     * IdP patterns are prefix-based (e.g. {@code admin.*}) and would silently drop welcome emails
+     * for legitimate accounts that don't happen to fit the pattern. The right question is "does the
+     * customer accept local passwords at all?" — a much less brittle test.
      *
      * <p>The SAS call is best-effort; on failure we log and continue so a mail hiccup can't roll
      * back the user creation.
@@ -111,14 +113,20 @@ public class UserEmailService {
             Optional.empty(),
             Optional.empty()
         );
-        if (
-            !identityProviderHelper.identifierMatchProviderPattern(
-                providers,
+        boolean customerHasInternalIdp = providers
+            .stream()
+            .anyMatch(
+                p ->
+                    userDto.getCustomerId().equals(p.getCustomerId()) &&
+                    Boolean.TRUE.equals(p.getInternal()) &&
+                    Boolean.TRUE.equals(p.getEnabled())
+            );
+        if (!customerHasInternalIdp) {
+            LOGGER.debug(
+                "Skipping welcome email for {} — customer {} has no enabled internal IdP",
                 userDto.getEmail(),
                 userDto.getCustomerId()
-            )
-        ) {
-            LOGGER.debug("Skipping welcome email for {} — no matching internal IdP pattern", userDto.getEmail());
+            );
             return;
         }
 

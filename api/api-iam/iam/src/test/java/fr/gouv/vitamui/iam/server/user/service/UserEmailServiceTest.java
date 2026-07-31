@@ -6,19 +6,16 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,7 +24,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link UserEmailService}. Since the welcome flow was migrated from CAS to SAS, the assertion
  * looks for a POST on {@code /api/password/first-connection} (with a JSON body) instead of the
- * historical GET on the CAS reset URL.
+ * historical GET on the CAS reset URL. The pattern-based gate was replaced by an "internal IdP
+ * exists in the customer" gate — the tests below cover both branches.
  */
 final class UserEmailServiceTest {
 
@@ -38,7 +36,6 @@ final class UserEmailServiceTest {
     private static final String BASE_URL = "https://dev.vitamui.com:9443";
     private static final String FIRST_CONNECTION_PATH = "/api/password/first-connection";
 
-    private IdentityProviderHelper identityProviderHelper;
     private IdentityProviderService identityProviderService;
     private VitamuiRestClientFactory vitamuiRestClientFactory;
     private RestClient restClient;
@@ -50,7 +47,6 @@ final class UserEmailServiceTest {
 
     @BeforeEach
     public void setUp() {
-        identityProviderHelper = mock(IdentityProviderHelper.class);
         userInfoService = mock(UserInfoService.class);
         identityProviderService = mock(IdentityProviderService.class);
         vitamuiRestClientFactory = mock(VitamuiRestClientFactory.class);
@@ -68,12 +64,12 @@ final class UserEmailServiceTest {
 
         userEmailService = new UserEmailService(vitamuiRestClientFactory);
         userEmailService.setInternalIdentityProviderService(identityProviderService);
-        userEmailService.setIdentityProviderHelper(identityProviderHelper);
         userEmailService.setUserInfoService(userInfoService);
         userEmailService.setFirstConnectionPath(FIRST_CONNECTION_PATH);
-        final List<IdentityProviderDto> providers = new ArrayList<>();
-        when(identityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(providers);
-        when(identityProviderHelper.identifierMatchProviderPattern(providers, EMAIL, CUSTOMER_ID)).thenReturn(true);
+        // Default: the customer has an enabled internal IdP — the eligible branch.
+        when(identityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(
+            List.of(internalIdp(CUSTOMER_ID, true))
+        );
         when(userInfoService.getOne(any())).thenReturn(buildUserInfoDto());
     }
 
@@ -119,11 +115,13 @@ final class UserEmailServiceTest {
     }
 
     @Test
-    void testSendEmailKoUserIsNotInternal() {
+    void testSendEmailKoCustomerHasNoInternalIdp() {
+        // Only external / disabled IdPs in this customer — the user can't set a local password, so
+        // the welcome flow doesn't apply.
+        when(identityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(
+            List.of(internalIdp(CUSTOMER_ID, false), externalIdp(CUSTOMER_ID))
+        );
         final UserDto user = buildUser();
-        when(
-            identityProviderHelper.identifierMatchProviderPattern(any(List.class), eq(EMAIL), eq(CUSTOMER_ID))
-        ).thenReturn(false);
 
         userEmailService.sendCreationEmail(user);
 
@@ -154,5 +152,21 @@ final class UserEmailServiceTest {
 
     private UserInfoDto buildUserInfoDto() {
         return IamServerUtilsTest.buildUserInfoDto();
+    }
+
+    private static IdentityProviderDto internalIdp(String customerId, boolean enabled) {
+        IdentityProviderDto dto = new IdentityProviderDto();
+        dto.setCustomerId(customerId);
+        dto.setInternal(true);
+        dto.setEnabled(enabled);
+        return dto;
+    }
+
+    private static IdentityProviderDto externalIdp(String customerId) {
+        IdentityProviderDto dto = new IdentityProviderDto();
+        dto.setCustomerId(customerId);
+        dto.setInternal(false);
+        dto.setEnabled(true);
+        return dto;
     }
 }
