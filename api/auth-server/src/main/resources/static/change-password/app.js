@@ -20,6 +20,14 @@
     errorEl.textContent = '';
   }
 
+  // Reads the XSRF-TOKEN cookie set by Spring Security so the SPA can echo it on POST /change.
+  // Undefined when the cookie hasn't been set yet — the initial GET /api/password/policy below
+  // triggers Spring to set it before the user has a chance to submit.
+  function csrfToken() {
+    const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/);
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
   // Load policy so users see the rules before typing (rendered as bullet points).
   fetch('/api/password/policy', { credentials: 'include' })
     .then((res) => (res.ok ? res.json() : null))
@@ -62,10 +70,13 @@
 
     submitBtn.disabled = true;
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      const token = csrfToken();
+      if (token) headers['X-XSRF-TOKEN'] = token;
       const res = await fetch('/api/password/change', {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: headers,
         body: JSON.stringify({ currentPassword: current, newPassword: next }),
       });
       if (res.status === 204) {

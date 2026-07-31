@@ -193,7 +193,37 @@ public class AuthorizationServerConfig {
                     .anyRequest()
                     .authenticated()
             )
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**", "/api/password/**", "/login/saml2/sso/**"))
+            // CSRF: SAS_JSESSIONID is SameSite=none (required for SAML POST binding), which means a
+            // browser will send it on cross-site requests too — SameSite is no longer the implicit
+            // shield. Every mutating endpoint that runs on an authenticated session MUST validate a
+            // CSRF token. We only whitelist requests where CSRF is either not applicable (public,
+            // pre-session endpoints) or protected by another mechanism (SAML POST from an IdP,
+            // one-shot nonce in the body).
+            .csrf(csrf -> csrf
+                // The SPA reads the XSRF-TOKEN cookie and echoes it back in X-XSRF-TOKEN. Cookie
+                // must be readable from JS (HttpOnly=false) which is fine because it isn't a
+                // session identifier — its only purpose is to prove same-origin.
+                .csrfTokenRepository(org.springframework.security.web.csrf.CookieCsrfTokenRepository.withHttpOnlyFalse())
+                // Raw token (no XOR/BREACH wrapping): the SPA can hand back exactly what it read from
+                // the cookie. The BREACH wrapper would force an extra unwrap step in JS with no gain
+                // for a cookie-based flow (BREACH only matters when the token is embedded in HTML).
+                .csrfTokenRequestHandler(new org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler())
+                .ignoringRequestMatchers(
+                    // Login flow — pre-session, no cookie to tokenise against.
+                    "/api/login/**",
+                    // Public reset endpoints — pre-session. The reset endpoint itself is protected by
+                    // the one-shot nonce carried in the body (its own anti-CSRF).
+                    "/api/password/reset/request",
+                    "/api/password/reset",
+                    // Welcome/first-connection is meant to be called by IAM via mTLS; even if it's
+                    // path-public the caller identity is not session-based.
+                    "/api/password/first-connection",
+                    // SAML POST binding: the IdP browser-POSTs the SAMLResponse cross-site — there
+                    // is no way for the IdP to know our CSRF token. Authenticity is checked via the
+                    // SAML assertion signature.
+                    "/login/saml2/sso/**"
+                )
+            )
             // JSON APIs must not be redirected to the login page when unauthenticated — the fetch()
             // in the mini-SPAs would auto-follow the 302 and land on /login's HTML, hiding the real
             // 401. Send a bare 401 for anything under /api/** so the client can render a proper error.
