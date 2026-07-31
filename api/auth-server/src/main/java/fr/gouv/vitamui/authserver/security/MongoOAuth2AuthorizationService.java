@@ -5,12 +5,6 @@
  */
 package fr.gouv.vitamui.authserver.security;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.security.jackson.SecurityJacksonModules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
@@ -32,8 +27,18 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.security.oauth2.server.authorization.jackson.OAuth2AuthorizationServerJacksonModule;
 import org.springframework.util.Assert;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Persistent {@link OAuth2AuthorizationService} backed by Mongo — mirrors the reference
@@ -47,11 +52,13 @@ import org.springframework.util.Assert;
 public class MongoOAuth2AuthorizationService implements OAuth2AuthorizationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoOAuth2AuthorizationService.class);
-    private static final TypeReference<Map<String, Object>> STRING_OBJECT_MAP = new TypeReference<>() {};
+    private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP =
+        new ParameterizedTypeReference<>() {};
 
     private final OAuth2AuthorizationDocumentRepository documents;
     private final RegisteredClientRepository registeredClientRepository;
     private final ObjectMapper jsonMapper;
+    private final JavaType mapType;
 
     public MongoOAuth2AuthorizationService(
         OAuth2AuthorizationDocumentRepository documents,
@@ -60,49 +67,44 @@ public class MongoOAuth2AuthorizationService implements OAuth2AuthorizationServi
         this.documents = documents;
         this.registeredClientRepository = registeredClientRepository;
         this.jsonMapper = buildJsonMapper();
+        this.mapType = this.jsonMapper.getTypeFactory().constructType(STRING_OBJECT_MAP.getType());
     }
 
     private static ObjectMapper buildJsonMapper() {
-        ObjectMapper mapper = new ObjectMapper();
         ClassLoader classLoader = MongoOAuth2AuthorizationService.class.getClassLoader();
-        List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
-        mapper.registerModules(securityModules);
-        mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-        // The SAS module activates an allowlist-based default typing which only knows Spring Security
-        // internals — it rejects our VitamuiPrincipal / CustomerIdAuthenticationDetails and Spring's own
-        // FactorGrantedAuthority on read. We're a trusted source (SAS reads what it wrote itself into
-        // Mongo), so replace the typing with one that accepts anything under `java.` /
-        // `org.springframework.` / `fr.gouv.vitamui.`. Serialization keeps writing the @class discriminator.
-        PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
-            .allowIfBaseType(Object.class)
+        // Extend the SS default allowlist with our custom principal / details / factor authority.
+        // In Jackson 3, SecurityJacksonModules.getModules(loader, builder) hands the builder to the
+        // security modules which then own default typing setup — no direct activateDefaultTyping.
+        BasicPolymorphicTypeValidator.Builder ptv = BasicPolymorphicTypeValidator.builder()
             .allowIfSubType("java.")
             .allowIfSubType("org.springframework.")
-            .allowIfSubType("fr.gouv.vitamui.")
-            .build();
-        mapper.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-        // FactorGrantedAuthority has factory methods only — Jackson can't invoke them via a mixin
-        // (`@JsonCreator` on a static method inside a mixin is silently ignored because the target
-        // class has no matching static method). A custom deserializer sidesteps the whole dance.
-        com.fasterxml.jackson.databind.module.SimpleModule factorModule = new com.fasterxml.jackson.databind.module.SimpleModule();
+            .allowIfSubType("fr.gouv.vitamui.");
+        List<JacksonModule> securityModules = SecurityJacksonModules.getModules(classLoader, ptv);
+        // FactorGrantedAuthority has factory methods only — Jackson can't invoke them via a mixin.
+        // A custom deserializer sidesteps the whole dance.
+        SimpleModule factorModule = new SimpleModule();
         factorModule.addDeserializer(
             org.springframework.security.core.authority.FactorGrantedAuthority.class,
             new FactorGrantedAuthorityDeserializer()
         );
-        mapper.registerModule(factorModule);
-        return mapper;
+        return JsonMapper.builder()
+            .addModules(securityModules)
+            .addModule(new OAuth2AuthorizationServerJacksonModule())
+            .addModule(factorModule)
+            .build();
     }
 
     /** Rebuilds a {@link org.springframework.security.core.authority.FactorGrantedAuthority} from
      *  the {@code {authority, issuedAt}} shape Spring writes out. */
     private static final class FactorGrantedAuthorityDeserializer
-        extends com.fasterxml.jackson.databind.JsonDeserializer<org.springframework.security.core.authority.FactorGrantedAuthority> {
+        extends ValueDeserializer<org.springframework.security.core.authority.FactorGrantedAuthority> {
 
         @Override
         public org.springframework.security.core.authority.FactorGrantedAuthority deserialize(
-            com.fasterxml.jackson.core.JsonParser parser,
-            com.fasterxml.jackson.databind.DeserializationContext ctx
-        ) throws java.io.IOException {
-            com.fasterxml.jackson.databind.JsonNode node = parser.getCodec().readTree(parser);
+            JsonParser parser,
+            DeserializationContext ctx
+        ) {
+            JsonNode node = ctx.readTree(parser);
             String authority = node.hasNonNull("authority") ? node.get("authority").asText() : null;
             java.time.Instant issuedAt = readInstant(node.get("issuedAt"));
             if (authority == null) {
@@ -121,7 +123,7 @@ public class MongoOAuth2AuthorizationService implements OAuth2AuthorizationServi
          * Spring writes {@code issuedAt} as an epoch-seconds double (e.g. {@code 1.785e9}). Fall back
          * to ISO-8601 parsing for values written by other serialisers.
          */
-        private static java.time.Instant readInstant(com.fasterxml.jackson.databind.JsonNode node) {
+        private static java.time.Instant readInstant(JsonNode node) {
             if (node == null || node.isNull()) {
                 return java.time.Instant.now();
             }
@@ -352,7 +354,7 @@ public class MongoOAuth2AuthorizationService implements OAuth2AuthorizationServi
     private Map<String, Object> readMap(String json) {
         if (json == null || json.isBlank()) return Map.of();
         try {
-            return jsonMapper.readValue(json, STRING_OBJECT_MAP);
+            return jsonMapper.readValue(json, mapType);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to deserialise map", e);
         }

@@ -5,9 +5,6 @@
  */
 package fr.gouv.vitamui.authserver.security;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -16,17 +13,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.jackson2.SecurityJackson2Modules;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.security.jackson.SecurityJacksonModules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.security.oauth2.server.authorization.jackson.OAuth2AuthorizationServerJacksonModule;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ConfigurationSettingNames;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.util.Assert;
+import tools.jackson.databind.JacksonModule;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Persistent {@link RegisteredClientRepository} backed by Mongo — mirrors the reference
@@ -40,28 +41,28 @@ import org.springframework.util.Assert;
 public class MongoRegisteredClientRepository implements RegisteredClientRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoRegisteredClientRepository.class);
-    private static final TypeReference<Map<String, Object>> STRING_OBJECT_MAP = new TypeReference<>() {};
+    private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP =
+        new ParameterizedTypeReference<>() {};
 
     private final RegisteredClientDocumentRepository documents;
-    private final ObjectMapper settingsMapper;
+    private final JsonMapper settingsMapper;
+    private final JavaType mapType;
 
     public MongoRegisteredClientRepository(RegisteredClientDocumentRepository documents) {
         this.documents = documents;
         this.settingsMapper = buildSettingsMapper();
+        this.mapType = this.settingsMapper.getTypeFactory().constructType(STRING_OBJECT_MAP.getType());
     }
 
     /**
-     * Same setup as the reference {@code JdbcRegisteredClientRepository$Jackson2} — needed to
+     * Same setup as the reference {@code JdbcRegisteredClientRepository$Jackson3} — needed to
      * round-trip the polymorphic values inside SAS {@code Settings} maps (Duration, OAuth2TokenFormat,
      * SignatureAlgorithm, etc.).
      */
-    private static ObjectMapper buildSettingsMapper() {
-        ObjectMapper mapper = new ObjectMapper();
+    private static JsonMapper buildSettingsMapper() {
         ClassLoader classLoader = MongoRegisteredClientRepository.class.getClassLoader();
-        List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
-        mapper.registerModules(securityModules);
-        mapper.registerModule(new OAuth2AuthorizationServerJackson2Module());
-        return mapper;
+        List<JacksonModule> securityModules = SecurityJacksonModules.getModules(classLoader);
+        return JsonMapper.builder().addModules(securityModules).addModule(new OAuth2AuthorizationServerJacksonModule()).build();
     }
 
     @Override
@@ -155,7 +156,7 @@ public class MongoRegisteredClientRepository implements RegisteredClientReposito
     private Map<String, Object> readSettings(String json) {
         if (json == null || json.isBlank()) return Map.of();
         try {
-            return settingsMapper.readValue(json, STRING_OBJECT_MAP);
+            return settingsMapper.readValue(json, mapType);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to deserialise settings", e);
         }
