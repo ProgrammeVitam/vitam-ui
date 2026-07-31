@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vitam-UI · Mot de passe oublié</title>
+    <link rel="stylesheet" href="/login/style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Mot de passe oublié</h1>
+
+      <section id="step-request">
+        <p class="subtitle">Entrez votre adresse email : si un compte existe, un lien de réinitialisation vous sera envoyé.</p>
+        <label for="email">Adresse email</label>
+        <input id="email" type="email" autocomplete="username" required />
+        <button type="button" id="btn-request">Envoyer le lien</button>
+        <a class="link" href="/login">← Retour à la connexion</a>
+      </section>
+
+      <section id="step-request-done" hidden>
+        <p class="subtitle" id="opaque-message"></p>
+        <a class="link" href="/login">← Retour à la connexion</a>
+      </section>
+
+      <section id="step-reset" hidden>
+        <p class="subtitle">Choisissez un nouveau mot de passe.</p>
+        <label for="new">Nouveau mot de passe</label>
+        <input id="new" type="password" autocomplete="new-password" required />
+        <label for="confirm">Confirmer le nouveau mot de passe</label>
+        <input id="confirm" type="password" autocomplete="new-password" required />
+        <ul id="policy-hints" class="policy-hints" hidden></ul>
+        <button type="button" id="btn-reset">Valider</button>
+      </section>
+
+      <section id="step-reset-done" hidden>
+        <p class="subtitle">Mot de passe changé avec succès.</p>
+        <a class="link" href="/login">← Se connecter</a>
+      </section>
+
+      <div id="error" class="error" hidden></div>
+    </main>
+    <script src="/reset-password/app.js"></script>
+  </body>
+</html>

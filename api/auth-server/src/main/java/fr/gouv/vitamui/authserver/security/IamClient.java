@@ -156,6 +156,23 @@ public class IamClient {
     }
 
     /**
+     * Returns every vitam-ui user whose email matches — used by the password-reset flow to bind the
+     * email to an actual account (HRD is pattern-based on IdPs and can false-positive across customers).
+     */
+    public List<UserDto> getUsersByEmail(String email) {
+        return restClient
+            .get()
+            .uri(uriBuilder ->
+                uriBuilder
+                    .path(RestApi.V1_CAS_URL + RestApi.CAS_USERS_PATH)
+                    .queryParam("email", email)
+                    .build()
+            )
+            .retrieve()
+            .body(new ParameterizedTypeReference<List<UserDto>>() {});
+    }
+
+    /**
      * Returns the vitam-ui password policy (min length, profile, human messages). Cached upstream in
      * the SAS proxy — this call goes to IAM every time so callers should wrap it in their own cache.
      */

@@ -20,6 +20,7 @@ public class AuthServerProperties {
     private List<Client> clients = List.of();
     private Token token = new Token();
     private Cors cors = new Cors();
+    private PasswordReset passwordReset = new PasswordReset();
 
     @Data
     public static class Iam {
@@ -50,5 +51,16 @@ public class AuthServerProperties {
     @Data
     public static class Cors {
         private List<String> allowedOrigins = List.of();
+    }
+
+    @Data
+    public static class PasswordReset {
+        // TTL of a reset nonce — kept short to shrink the window in which a stolen inbox helps.
+        private long ttlMinutes = 30;
+        // From address on outgoing reset emails.
+        private String from = "no-reply@vitamui.local";
+        // Public base URL of the auth-server (protocol + host + port). Used to build the reset link
+        // embedded in the email. Must match how the browser reaches SAS or the link 404s.
+        private String baseUrl;
     }
 }

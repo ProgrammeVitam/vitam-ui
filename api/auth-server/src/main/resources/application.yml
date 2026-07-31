@@ -28,6 +28,16 @@ spring:
   # Boot 4 moved connection props from `spring.data.mongodb.*` to `spring.mongodb.*` (the former are
   # kept only as deprecated aliases). `spring.data.mongodb.*` still hosts the ODM/repository settings
   # (auto-index-creation, gridfs, representation).
+  # SMTP for password-reset emails. In dev we point at MailHog (tools/docker/mailhog); in staging/prod
+  # override MAIL_HOST + MAIL_PORT + MAIL_USERNAME + MAIL_PASSWORD to the real relay.
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_SMTP_STARTTLS:false}
   mongodb:
     # Dedicated auth-server database on the same Mongo instance as IAM (dev). Requires a user created
     # once via mongosh — see README.md § Bootstrap. Override entirely with AUTH_SERVER_MONGO_URI in
@@ -73,6 +83,13 @@ vitamui:
     # The issuer must exactly match the URL the browser uses to reach the auth-server, otherwise
     # angular-oauth2-oidc rejects the discovery document with "issuer mismatch".
     issuer: ${AUTH_SERVER_ISSUER:https://dev.vitamui.com:9443}
+    # Password reset (chantier #6c) — nonce TTL, sender identity, base URL used in the email link.
+    password-reset:
+      ttl-minutes: ${PASSWORD_RESET_TTL_MINUTES:30}
+      from: ${PASSWORD_RESET_FROM:no-reply@vitamui.local}
+      # Where the email link points. Must match how users reach the auth-server from a browser (same
+      # value as `issuer` in most setups). Kept separate so ops can tune the visible URL independently.
+      base-url: ${PASSWORD_RESET_BASE_URL:https://dev.vitamui.com:9443}
     iam:
       base-url: ${IAM_BASE_URL:https://localhost:8083}
       # mTLS bundle configured under `spring.ssl.bundle.jks.iam-mtls` (see above). When set, the RestClient

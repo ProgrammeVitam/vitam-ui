@@ -165,9 +165,15 @@ public class AuthorizationServerConfig {
                         "/saml2/authenticate/**",
                         "/login/saml2/sso/**",
                         "/saml2/service-provider-metadata/**",
-                        // Static assets for the password self-service SPA (change + reset later on).
+                        // Static assets for the password self-service SPAs (change + reset).
                         "/change-password",
                         "/change-password/**",
+                        "/reset-password",
+                        "/reset-password/**",
+                        // Reset endpoints are unauthenticated by definition (the user is locked out).
+                        // Anti-enumeration + one-shot nonce are enforced by the controller itself.
+                        "/api/password/reset",
+                        "/api/password/reset/**",
                         // The policy JSON is also consumed by the (unauthenticated) reset screen so
                         // users see the rules before typing a new password. No user data leaked.
                         "/api/password/policy",
@@ -185,6 +191,13 @@ public class AuthorizationServerConfig {
                     .authenticated()
             )
             .csrf(csrf -> csrf.ignoringRequestMatchers("/api/login/**", "/api/password/**", "/login/saml2/sso/**"))
+            // JSON APIs must not be redirected to the login page when unauthenticated — the fetch()
+            // in the mini-SPAs would auto-follow the 302 and land on /login's HTML, hiding the real
+            // 401. Send a bare 401 for anything under /api/** so the client can render a proper error.
+            .exceptionHandling(ex -> ex.defaultAuthenticationEntryPointFor(
+                new org.springframework.security.web.authentication.HttpStatusEntryPoint(org.springframework.http.HttpStatus.UNAUTHORIZED),
+                org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher.withDefaults().matcher("/api/**")
+            ))
             .formLogin(form -> form.loginPage("/login").permitAll())
             .oauth2Login(oauth2 ->
                 oauth2

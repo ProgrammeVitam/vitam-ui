@@ -26,4 +26,9 @@ public class LoginPageController {
     public String changePasswordPage() {
         return "forward:/change-password/index.html";
     }
+
+    @GetMapping("/reset-password")
+    public String resetPasswordPage() {
+        return "forward:/reset-password/index.html";
+    }
 }

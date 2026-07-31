@@ -236,7 +236,7 @@ public class CasController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
     @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
-    @Secured(ServicesData.ROLE_CAS_USERS)
+    @Secured({ ServicesData.ROLE_CAS_USERS, ServicesData.ROLE_SYSTEM_SAS })
     public List<UserDto> getUsersByEmail(
         @RequestParam final String email,
         @RequestParam final Optional<String> embedded
