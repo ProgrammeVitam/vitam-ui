@@ -129,9 +129,7 @@ public class CasController {
 
     @PostMapping(value = RestApi.CAS_LOGIN_PATH)
     @Operation(operationId = "cas_login", summary = "Performs the login of a user")
-    // POC auth-server: role-based check removed here so SAS can delegate password validation without carrying a
-    // pre-existing Authentication. Hardening (mTLS or signed inter-service header) is deferred to Phase 2 alongside
-    // {@code /cas/hrd} and {@code /cas/tokens}.
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
         final String username = dto.getLoginEmail();
         final User user = casService.findUserByEmailAndCustomerId(dto.getLoginEmail(), dto.getLoginCustomerId());
@@ -240,7 +238,7 @@ public class CasController {
         operationId = "cas_getUser",
         summary = "Get a user by their loginEmail, loginCustomerId and optional idp"
     )
-    // POC auth-server: whitelist-based for consistency with the other /cas endpoints — Phase 3 to harden.
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public UserDto getUser(
         @RequestParam String loginEmail,
         @RequestParam String loginCustomerId,
@@ -349,6 +347,7 @@ public class CasController {
     @PostMapping(value = RestApi.CAS_TOKENS_PATH)
     @Operation(operationId = "cas_createAuthToken", summary = "Create an opaque auth token for a given user")
     @ResponseStatus(HttpStatus.CREATED)
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public CreateTokenResponseDto createAuthToken(@Valid @RequestBody final CreateTokenRequestDto request) {
         LOGGER.debug(
             "createAuthToken refId={} surrogation={} api={}",
@@ -372,6 +371,7 @@ public class CasController {
         operationId = "cas_resolveHrd",
         summary = "Mini HRD: resolve an email to the list of matching (customer, IdP) tuples"
     )
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public List<HrdEntryDto> resolveHrd(@RequestParam final String email) {
         LOGGER.debug("resolveHrd email={}", email);
         ParameterChecker.checkParameter("email is mandatory : ", email);
@@ -387,6 +387,7 @@ public class CasController {
     @PostMapping(value = RestApi.CAS_USERS_JIT_PATH)
     @Operation(operationId = "cas_jitProvisionUser", summary = "JIT-provision a user from an external IdP")
     @ResponseStatus(HttpStatus.CREATED)
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public UserDto jitProvisionUser(@Valid @RequestBody final JitProvisionRequestDto request) {
         LOGGER.debug(
             "jitProvisionUser email={} customer={} idp={}",
@@ -405,6 +406,7 @@ public class CasController {
      */
     @GetMapping(value = RestApi.CAS_IDP_PATH + "/{id}")
     @Operation(operationId = "cas_getIdentityProvider", summary = "Return a full IdentityProviderDto by id")
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public IdentityProviderDto getIdentityProvider(@PathVariable final String id) {
         LOGGER.debug("getIdentityProvider id={}", id);
         SanityChecker.checkSecureParameter(id);
@@ -420,6 +422,7 @@ public class CasController {
         operationId = "cas_validateSubrogation",
         summary = "Validate an ACCEPTED subrogation between super-user and surrogate"
     )
+    @Secured(ServicesData.ROLE_SYSTEM_SAS)
     public SubrogationValidateResponseDto validateSubrogation(
         @Valid @RequestBody final SubrogationValidateRequestDto request
     ) {

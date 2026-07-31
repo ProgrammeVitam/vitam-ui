@@ -25,6 +25,21 @@ spring:
     name: auth-server
   thymeleaf:
     enabled: false
+  ssl:
+    bundle:
+      jks:
+        # mTLS bundle for outgoing calls to IAM. The keystore identifies this auth-server (CN=cas-server,
+        # inherited from the historical CAS slot in the vitamui-services PKI); the truststore validates
+        # IAM's server certificate. Referenced from `vitamui.auth-server.iam.ssl-bundle`.
+        iam-mtls:
+          keystore:
+            location: classpath:certs/keystore_auth-server.p12
+            password: ${IAM_MTLS_KEYSTORE_PASSWORD:changeme}
+            type: PKCS12
+          truststore:
+            location: classpath:certs/truststore_vitamui-services.p12
+            password: ${IAM_MTLS_TRUSTSTORE_PASSWORD:changeme}
+            type: PKCS12
 
 # Diagnostic logs for the cross-app SSO issue. Set the block to WARN once SSO works.
 logging:
@@ -50,9 +65,14 @@ vitamui:
     issuer: ${AUTH_SERVER_ISSUER:https://dev.vitamui.com:9443}
     iam:
       base-url: ${IAM_BASE_URL:https://localhost:8083}
-      # For dev only: accept self-signed / hostname-mismatched certs when calling IAM.
-      # Set to false in staging/prod once IAM has a proper cert.
-      trust-all-certs: ${IAM_TRUST_ALL_CERTS:true}
+      # mTLS bundle configured under `spring.ssl.bundle.jks.iam-mtls` (see above). When set, the RestClient
+      # presents a client cert to IAM and validates IAM's cert against the shared vitamui-services truststore.
+      ssl-bundle: ${IAM_SSL_BUNDLE:iam-mtls}
+      # Dev-only fallback: only used when ssl-bundle is empty. Keep off by default now that mTLS is wired.
+      trust-all-certs: ${IAM_TRUST_ALL_CERTS:false}
+      # Skips hostname verification on the mTLS handshake. The dev cert has CN=iam while the URL host is
+      # localhost/dev.vitamui.com, so verification would fail. Never true in staging/prod.
+      disable-hostname-verification: ${IAM_DISABLE_HOSTNAME_VERIFICATION:true}
       internal-application-id: auth-server
     # The 8 vitam-ui OIDC clients. redirect-uris and post-logout-redirect-uris accept multiple values
     # so both dev.vitamui.com and localhost work.

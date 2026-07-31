@@ -50,10 +50,8 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
-import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
-import fr.gouv.vitamui.iam.security.authentication.AuthenticationToken;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
@@ -90,8 +88,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -749,10 +745,8 @@ public class CasService {
         dto.setOtp(false);
         dto.setAutoProvisioningEnabled(true);
 
-        final UserDto created = runAsSystem(request.getCustomerId(), () -> {
-            dto.setUserInfoId(createUserInfo(customer.getLanguage()).getId());
-            return userService.create(dto);
-        });
+        dto.setUserInfoId(createUserInfo(customer.getLanguage()).getId());
+        final UserDto created = userService.create(dto);
         LOGGER.info(
             "JIT-provisioned user id={} email={} customer={} from idp={} into group={}",
             created.getId(),
@@ -765,53 +759,12 @@ public class CasService {
     }
 
     /**
-     * Poses a synthetic top-level {@link AuthenticationToken} on the {@link SecurityContextHolder}
-     * for the duration of {@code action}. Needed because the JIT endpoint is whitelisted (no header
-     * auth filter runs) but {@link UserService#beforeCreate} calls {@code SecurityService.checkLevel}
-     * which requires an authenticated principal. Using {@code level=""} makes
-     * {@code SecurityService.isLevelAllowed} accept any child level. Phase 3 hardening replaces this
-     * with a proper inter-service system principal.
-     */
-    private <T> T runAsSystem(final String customerId, final java.util.function.Supplier<T> action) {
-        final Authentication previous = SecurityContextHolder.getContext().getAuthentication();
-        final Integer proofTenantId = iamLogbookService.getProofTenantByCustomerId(customerId).getIdentifier();
-        final AuthUserDto systemUser = new AuthUserDto();
-        systemUser.setCustomerId(customerId);
-        systemUser.setLevel("");
-        systemUser.setEmail("jit-provision@system.local");
-        systemUser.setIdentifier("system-jit");
-        systemUser.setProofTenantIdentifier(proofTenantId);
-        final HttpContext systemHttpContext = new HttpContext(
-            proofTenantId,
-            "system-jit",
-            false,
-            "iam",
-            "jit-provision@system.local",
-            "jit-" + java.util.UUID.randomUUID(),
-            null,
-            "/iam/v1/cas/users/jit"
-        );
-        final AuthenticationToken systemAuth = new AuthenticationToken(
-            systemUser,
-            systemHttpContext,
-            null,
-            java.util.List.of("ROLE_SYSTEM")
-        );
-        SecurityContextHolder.getContext().setAuthentication(systemAuth);
-        try {
-            return action.get();
-        } finally {
-            SecurityContextHolder.getContext().setAuthentication(previous);
-        }
-    }
-
-    /**
      * Returns the complete {@link IdentityProviderDto} for a given identity provider id — including the
      * sensitive fields (client_secret for OIDC, keystore / keys for SAML) that the SAS POC needs to
      * assemble a {@code ClientRegistration} or {@code RelyingPartyRegistration} at runtime.
      *
-     * <p>Whitelisted through {@code WebSecurityConfig.getAuthList()} for the POC. Phase 3 must gate this
-     * endpoint behind mTLS or a signed inter-service header (secrets in clear are highly sensitive).
+     * <p>Callable only by the SAS peer via mTLS ({@code @Secured(ROLE_SYSTEM_SAS)} on the controller).
+     * The secrets returned in clear should still be encrypted at rest — tracked as Phase 3 debt.
      */
     public IdentityProviderDto getIdentityProviderById(final String id) {
         Assert.hasText(id, "id must not be empty");

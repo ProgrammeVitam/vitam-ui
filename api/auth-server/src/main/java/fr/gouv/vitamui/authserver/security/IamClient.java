@@ -23,30 +23,36 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContexts;
+import org.springframework.boot.ssl.SslBundle;
+import org.springframework.boot.ssl.SslBundles;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
 /**
- * Thin HTTP client to IAM's CAS endpoints. Used by the POC Spring Authorization Server to :
+ * Thin HTTP client to IAM's CAS endpoints. Used by the Spring Authorization Server to :
  * - resolve HRD entries for an email (mini HRD),
  * - validate a user's password (delegated login),
- * - mint an opaque access token ({@code TOK-<UUID>}) persisted in the {@code tokens} collection.
+ * - mint an opaque access token ({@code TOK-<UUID>}) persisted in the {@code tokens} collection,
+ * - resolve / JIT-provision users after external OIDC or SAML federation.
  *
- * <p>Security note: the POC calls IAM without an auth header on the new endpoints (see
- * {@code CasController#createAuthToken} / {@code resolveHrd}). Production hardening (mTLS or signed
- * inter-service headers) is deferred to Phase 2.
+ * <p>The channel to IAM is authenticated via mTLS when a Spring {@code SslBundle} is configured
+ * (property {@code vitamui.auth-server.iam.ssl-bundle}). The client keystore identifies this
+ * auth-server to IAM (CN reused as system principal on the IAM side); the truststore validates
+ * IAM's server certificate. Falls back to a trust-all mode (dev only) when no bundle is set.
  */
 @Component
 public class IamClient {
@@ -55,12 +61,48 @@ public class IamClient {
 
     private final RestClient restClient;
 
-    public IamClient(AuthServerProperties properties) {
+    public IamClient(AuthServerProperties properties, SslBundles sslBundles) {
         RestClient.Builder builder = RestClient.builder().baseUrl(properties.getIam().getBaseUrl());
-        if (properties.getIam().isTrustAllCerts()) {
+        String bundleName = properties.getIam().getSslBundle();
+        if (bundleName != null && !bundleName.isBlank()) {
+            SslBundle bundle = sslBundles.getBundle(bundleName);
+            builder = builder.requestFactory(
+                new HttpComponentsClientHttpRequestFactory(
+                    mtlsHttpClient(bundle, properties.getIam().isDisableHostnameVerification())
+                )
+            );
+            LOGGER.info("IAM client uses mTLS via SslBundle '{}'", bundleName);
+        } else if (properties.getIam().isTrustAllCerts()) {
             builder = builder.requestFactory(new HttpComponentsClientHttpRequestFactory(trustAllHttpClient()));
+            LOGGER.warn("IAM client uses trust-all-certs mode — DO NOT USE OUTSIDE DEV");
         }
+        // Attach the identity headers IAM's pre-auth filter expects on every call — without X-Origin
+        // buildFromExternalRequest throws, and X-Application-Id / X-Request-Id feed the logbook.
+        String applicationId = properties.getIam().getInternalApplicationId();
+        builder = builder.requestInterceptor((request, body, execution) -> {
+            request.getHeaders().set("X-Origin", "INTERNAL");
+            request.getHeaders().set("X-Application-Id", applicationId != null ? applicationId : "auth-server");
+            request.getHeaders().set("X-Request-Id", java.util.UUID.randomUUID().toString());
+            // /cas/* endpoints are cross-tenant service endpoints; -1 mirrors the fallback IAM applies
+            // to whitelisted paths and keeps HttpContext.getTenantIdentifier happy without leaking a
+            // real tenant id into this system-to-system call.
+            request.getHeaders().set("X-Tenant-Id", "-1");
+            return execution.execute(request, body);
+        });
         this.restClient = builder.build();
+    }
+
+    private static CloseableHttpClient mtlsHttpClient(SslBundle bundle, boolean disableHostnameVerification) {
+        SSLContext sslContext = bundle.createSslContext();
+        HostnameVerifier verifier = disableHostnameVerification
+            ? NoopHostnameVerifier.INSTANCE
+            : new DefaultHostnameVerifier();
+        SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext, verifier);
+        return HttpClients.custom()
+            .setConnectionManager(
+                PoolingHttpClientConnectionManagerBuilder.create().setSSLSocketFactory(sslSocketFactory).build()
+            )
+            .build();
     }
 
     private static CloseableHttpClient trustAllHttpClient() {

@@ -58,13 +58,16 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
 
     private final InternalApiAuthenticationProvider internalApiAuthenticationProvider;
     private final ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
+    private final AuthServerSystemAuthenticator authServerSystemAuthenticator;
 
     public ApiAuthenticationProvider(
         final InternalApiAuthenticationProvider internalApiAuthenticationProvider,
-        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider
+        final ExternalApiAuthenticationProvider externalApiAuthenticationProvider,
+        final AuthServerSystemAuthenticator authServerSystemAuthenticator
     ) {
         this.internalApiAuthenticationProvider = internalApiAuthenticationProvider;
         this.externalApiAuthenticationProvider = externalApiAuthenticationProvider;
+        this.authServerSystemAuthenticator = authServerSystemAuthenticator;
     }
 
     @Override
@@ -78,6 +81,13 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
         final X509Certificate certificate = (X509Certificate) token.getCredentials();
         LOGGER.debug("Principal: {}", httpContext);
         LOGGER.debug("Certificate: {}", certificate);
+
+        // Recognise the Spring Authorization Server before the standard user-based auth path: it
+        // presents its client cert on /cas/* endpoints but never carries a user token.
+        final Authentication systemAuth = authServerSystemAuthenticator.tryAuthenticate(httpContext, certificate);
+        if (systemAuth != null) {
+            return systemAuth;
+        }
 
         final Integer tenantIdentifier = httpContext.getTenantIdentifier();
         LOGGER.debug("tenantIdentifier: {}", tenantIdentifier);

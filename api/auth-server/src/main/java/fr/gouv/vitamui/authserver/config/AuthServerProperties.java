@@ -25,7 +25,14 @@ public class AuthServerProperties {
     public static class Iam {
         private String baseUrl;
         private String internalApplicationId;
+        // When set, the RestClient to IAM uses this Spring SSL bundle (`spring.ssl.bundle.jks.<name>`)
+        // for mTLS — client keystore identifies us to IAM, truststore validates IAM's cert. Leave null
+        // to fall back to the legacy trustAllCerts mode (dev only).
+        private String sslBundle;
         private boolean trustAllCerts = false;
+        // Skips hostname verification on outgoing mTLS requests to IAM. Needed in dev because the
+        // certificate CN (iam) doesn't match the URL host (localhost). Never set to true in prod.
+        private boolean disableHostnameVerification = false;
     }
 
     @Data

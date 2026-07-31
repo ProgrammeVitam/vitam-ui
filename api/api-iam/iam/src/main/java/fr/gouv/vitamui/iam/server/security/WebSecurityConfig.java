@@ -67,19 +67,11 @@ public class WebSecurityConfig extends ApiWebSecurityConfig {
 
     @Override
     protected String[] getAuthList() {
-        return ArrayUtils.addAll(
-            super.getAuthList(),
-            RestApi.IAM_API_PATH + "/*/signed-download/*",
-            // POC auth-server (Spring Authorization Server) — inter-service endpoints called from SAS.
-            // Bypass tenant + token auth in the same way as other technical endpoints (actuator/health, etc.).
-            // Production hardening (mTLS / signed header) is deferred to Phase 2.
-            RestApi.V1_CAS_URL + RestApi.CAS_HRD_PATH,
-            RestApi.V1_CAS_URL + RestApi.CAS_TOKENS_PATH,
-            RestApi.V1_CAS_URL + RestApi.CAS_LOGIN_PATH,
-            RestApi.V1_CAS_URL + RestApi.CAS_SUBROGATION_VALIDATE_PATH,
-            RestApi.V1_CAS_URL + RestApi.CAS_IDP_PATH + "/*",
-            RestApi.V1_CAS_URL + RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING,
-            RestApi.V1_CAS_URL + RestApi.CAS_USERS_JIT_PATH
-        );
+        // The auth-server (Spring Authorization Server) endpoints — /cas/{login,tokens,hrd,
+        // subrogations/validate,idp/*,users/provisioning,users/jit} — are secured by mTLS + the
+        // @Secured(ROLE_SYSTEM_SAS) annotation on CasController, resolved by
+        // AuthServerSystemAuthenticator when the presented client certificate CN matches an accepted
+        // peer identity. They intentionally stay out of getAuthList so the standard auth chain runs.
+        return ArrayUtils.addAll(super.getAuthList(), RestApi.IAM_API_PATH + "/*/signed-download/*");
     }
 }

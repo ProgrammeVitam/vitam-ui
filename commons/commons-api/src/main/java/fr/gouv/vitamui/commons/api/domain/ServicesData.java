@@ -68,6 +68,11 @@ public class ServicesData {
     // Role for internal-only APIs (otherwise, the API would be publicly open)
     public static final String ROLE_INTERNAL = ROLE_PREFIX + "INTERNAL";
 
+    // Role granted to the Spring Authorization Server when it authenticates to IAM via mTLS on
+    // the /cas/* endpoints (login delegation, token minting, HRD, IdP lookup, JIT provisioning).
+    // Never granted to real users.
+    public static final String ROLE_SYSTEM_SAS = ROLE_PREFIX + "SYSTEM_SAS";
+
     //------------------------------------ USERS -------------------------------------------
     public static final String SERVICE_USERS = "USERS";
 
