@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import java.io.Serializable;
 import org.springframework.security.core.AuthenticatedPrincipal;
 
 /**
@@ -23,7 +24,9 @@ import org.springframework.security.core.AuthenticatedPrincipal;
  * via {@link #getUserDto()}.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VitamuiPrincipal implements AuthenticatedPrincipal {
+public class VitamuiPrincipal implements AuthenticatedPrincipal, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final UserDto userDto;
 

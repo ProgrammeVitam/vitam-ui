@@ -8,6 +8,7 @@ package fr.gouv.vitamui.authserver.security;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 
 /**
  * Carries the {@code customerId} resolved by the mini HRD, attached as details of the {@code Authentication}.
@@ -16,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * through the persistent {@code OAuth2AuthorizationService} — Lombok's generated constructor lacks the
  * annotations Jackson needs on the target JVM.
  */
-public final class CustomerIdAuthenticationDetails {
+public final class CustomerIdAuthenticationDetails implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final String customerId;
 

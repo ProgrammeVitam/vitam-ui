@@ -68,6 +68,16 @@
             <artifactId>bucket4j-core</artifactId>
             <version>8.10.1</version>
         </dependency>
+        <!--
+          Spring Session Mongo backend. In Spring Boot 4, the datastore-specific Session modules were
+          externalised to their vendors; MongoDB now owns `mongodb-spring-session` (previously
+          org.springframework.session:spring-session-data-mongodb). Package is org.mongodb.spring.session.
+        -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-spring-session</artifactId>
+            <version>4.0.0</version>
+        </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>iam-commons</artifactId>
