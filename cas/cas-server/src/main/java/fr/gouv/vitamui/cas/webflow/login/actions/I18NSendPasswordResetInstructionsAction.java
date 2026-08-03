@@ -50,11 +50,11 @@ import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
 import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
+import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.inspektr.audit.annotation.Audit;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
@@ -92,7 +92,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         final PasswordResetUrlBuilder passwordResetUrlBuilder,
         final MultifactorAuthenticationProviderSelector multifactorAuthenticationProviderSelector,
         final AuthenticationSystemSupport authenticationSystemSupport,
-        final ApplicationContext applicationContext,
+        final ServicesManager servicesManager,
         final HierarchicalMessageSource messageSource,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
@@ -109,7 +109,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             passwordResetUrlBuilder,
             multifactorAuthenticationProviderSelector,
             authenticationSystemSupport,
-            applicationContext
+            // CAS 7.3 expects the ServicesManager here, where the ApplicationContext used to go.
+            servicesManager
         );
         this.messageSource = messageSource;
         this.providersService = providersService;

@@ -42,10 +42,11 @@ import org.apereo.cas.authentication.DefaultAuthenticationBuilder;
 import org.apereo.cas.authentication.DefaultAuthenticationResultBuilder;
 import org.apereo.cas.authentication.principal.DefaultPrincipalElectionStrategy;
 import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.authentication.principal.ServiceFactory;
 import org.apereo.cas.authentication.principal.WebApplicationService;
-import org.apereo.cas.authentication.principal.WebApplicationServiceFactory;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
+import org.apereo.cas.logout.LogoutConfirmationResolver;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.logout.slo.SingleLogoutExecutionRequest;
 import org.apereo.cas.logout.slo.SingleLogoutRequestContext;
@@ -59,7 +60,6 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -84,30 +84,36 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
     private final Action frontChannelLogoutAction;
     private final TicketRegistry ticketRegistry;
 
+    private final ServiceFactory<WebApplicationService> webApplicationServiceFactory;
+
     public TerminateApiSessionAction(
         final CentralAuthenticationService centralAuthenticationService,
         final CasCookieBuilder ticketGrantingTicketCookieGenerator,
         final CasCookieBuilder warnCookieGenerator,
         final LogoutProperties logoutProperties,
         final LogoutManager logoutManager,
-        final ConfigurableApplicationContext applicationContext,
         final Utils utils,
         final CasApi casApi,
         final ServicesManager servicesManager,
         final CasConfigurationProperties casProperties,
         final Action frontChannelLogoutAction,
         final TicketRegistry ticketRegistry,
-        final SingleLogoutRequestExecutor singleLogoutRequestExecutor
+        final SingleLogoutRequestExecutor singleLogoutRequestExecutor,
+        final LogoutConfirmationResolver logoutConfirmationResolver,
+        final ServiceFactory<WebApplicationService> webApplicationServiceFactory
     ) {
+        // CAS 7.3 dropped the ApplicationContext from the parent constructor and added the logout
+        // confirmation resolver.
         super(
             centralAuthenticationService,
             ticketGrantingTicketCookieGenerator,
             warnCookieGenerator,
             logoutProperties,
             logoutManager,
-            applicationContext,
-            singleLogoutRequestExecutor
+            singleLogoutRequestExecutor,
+            logoutConfirmationResolver
         );
+        this.webApplicationServiceFactory = webApplicationServiceFactory;
         this.utils = utils;
         this.casApi = casApi;
         this.servicesManager = servicesManager;
@@ -183,18 +189,21 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
                 .build();
 
             // 2️⃣ Crée un AuthenticationResult factice à partir de l'authentication
-            AuthenticationResult authenticationResult = new DefaultAuthenticationResultBuilder()
+            // CAS 7.3 : la PrincipalElectionStrategy passe au constructeur, build() prend le service.
+            AuthenticationResult authenticationResult = new DefaultAuthenticationResultBuilder(
+                new DefaultPrincipalElectionStrategy()
+            )
                 .collect(fakeAuthentication)
-                .build(new DefaultPrincipalElectionStrategy()); // PrincipalElectionStrategy trivial
+                .build(null);
 
             // 3️⃣ Crée le TGT factice via l'API CAS 7
-            TicketGrantingTicket fakeTgt = centralAuthenticationService.createTicketGrantingTicket(
-                authenticationResult
-            );
+            TicketGrantingTicket fakeTgt =
+                (TicketGrantingTicket) centralAuthenticationService.createTicketGrantingTicket(authenticationResult);
 
             Collection<RegisteredService> registeredServices = servicesManager.getAllServices();
-            // Préparer le factory de services CAS
-            WebApplicationServiceFactory serviceFactory = new WebApplicationServiceFactory();
+            // CAS 7.3 : WebApplicationServiceFactory n'a plus de constructeur sans argument, on réutilise
+            // le bean fourni par CAS.
+            ServiceFactory<WebApplicationService> serviceFactory = webApplicationServiceFactory;
 
             for (RegisteredService registeredService : registeredServices) {
                 if (!(registeredService instanceof BaseRegisteredService baseService)) continue;

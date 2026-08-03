@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.context.servlet.ServletExternalContext;
@@ -45,6 +46,8 @@ public abstract class BaseWebflowActionTest {
 
     protected HttpServletResponse response;
 
+    protected ApplicationContext applicationContext;
+
     @Before
     public void setUp() throws FileNotFoundException {
         context = mock(RequestContext.class);
@@ -58,6 +61,10 @@ public abstract class BaseWebflowActionTest {
 
         final var flow = mock(Flow.class);
         when(flow.getVariable("credential")).thenReturn(mock(FlowVariable.class));
+        // CAS 7.3 publishes a CasWebflowActionExecutingEvent from BaseCasWebflowAction#doExecute, which reads
+        // the application context off the active flow.
+        applicationContext = mock(ApplicationContext.class);
+        when(flow.getApplicationContext()).thenReturn(applicationContext);
 
         when(context.getActiveFlow()).thenReturn(flow);
         when(context.getRequestScope()).thenReturn(flowParameters);

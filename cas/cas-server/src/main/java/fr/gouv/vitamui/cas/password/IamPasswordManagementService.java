@@ -59,7 +59,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
-import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.InvalidPasswordException;
 import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordHistoryService;
@@ -107,10 +107,11 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final PasswordConfiguration passwordConfiguration;
 
+    // CAS 7.3 takes the whole CasConfigurationProperties and derives the issuer from it, so the
+    // PasswordManagementProperties and issuer arguments are gone.
     public IamPasswordManagementService(
-        final PasswordManagementProperties passwordManagementProperties,
+        final CasConfigurationProperties casProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
-        final String issuer,
         final PasswordHistoryService passwordHistoryService,
         final CasApi casApi,
         final ProvidersService providersService,
@@ -121,7 +122,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final PasswordValidator passwordValidator,
         final PasswordConfiguration passwordConfiguration
     ) {
-        super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
+        super(casProperties, cipherExecutor, passwordHistoryService);
         this.casApi = casApi;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -171,7 +172,9 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             throw new PasswordConfirmException();
         }
 
-        if (!passwordValidator.isValid(getProperties().getCore().getPasswordPolicyPattern(), password)) {
+        if (
+            !passwordValidator.isValid(casProperties.getAuthn().getPm().getCore().getPasswordPolicyPattern(), password)
+        ) {
             throw new PasswordNotMatchRegexException();
         }
 
@@ -329,7 +332,14 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordAlreadyUsedException() {
-            super(".alreadyUsed", null, null);
+            super(null, null);
+        }
+
+        // CAS 7.3 hardcodes the exception code, but PasswordChangeAction still appends it to
+        // "pm.validationFailure" to build the message key, so the suffix has to come from here instead.
+        @Override
+        public String getCode() {
+            return ".alreadyUsed";
         }
 
         @Override
@@ -343,7 +353,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187076L;
 
         public PasswordNotMatchRegexException() {
-            super(".invalidPassword", null, null);
+            super(null, null);
+        }
+
+        @Override
+        public String getCode() {
+            return ".invalidPassword";
         }
 
         @Override
@@ -357,7 +372,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187076L;
 
         public PasswordConfirmException() {
-            super(".pwdNotConfirm", null, null);
+            super(null, null);
+        }
+
+        @Override
+        public String getCode() {
+            return ".pwdNotConfirm";
         }
 
         @Override
@@ -371,7 +391,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordContainsUserDictionaryException(String message) {
-            super(".invalidPwdDictionary", message, null);
+            super(message, null);
+        }
+
+        @Override
+        public String getCode() {
+            return ".invalidPwdDictionary";
         }
 
         @Override

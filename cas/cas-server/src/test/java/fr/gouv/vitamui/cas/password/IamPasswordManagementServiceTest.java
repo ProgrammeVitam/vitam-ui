@@ -55,7 +55,7 @@ import org.apereo.cas.authentication.DefaultAuthentication;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
-import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.junit.Before;
@@ -126,8 +126,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderHelper = mock(IdentityProviderHelper.class);
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
-        PasswordManagementProperties passwordManagementProperties = new PasswordManagementProperties();
-        passwordManagementProperties.getCore().setPasswordPolicyPattern(encode(policyPattern));
+        CasConfigurationProperties casProperties = new CasConfigurationProperties();
+        casProperties.getAuthn().getPm().getCore().setPasswordPolicyPattern(encode(policyPattern));
         PasswordConfiguration passwordConfiguration = new PasswordConfiguration();
         passwordConfiguration.setCheckOccurrence(true);
         passwordConfiguration.setOccurrencesCharsNumber(4);
@@ -143,8 +143,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         );
         final var utils = new Utils(null, 0, null, null, "");
         service = new IamPasswordManagementService(
-            passwordManagementProperties,
-            null,
+            casProperties,
             null,
             null,
             casApi,
