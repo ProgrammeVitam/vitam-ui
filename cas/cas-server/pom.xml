@@ -37,9 +37,7 @@
         <reactor.version>3.6.2</reactor.version>
         <micrometer.version>1.12.1</micrometer.version>
         <swagger.version>2.2.2</swagger.version>
-        <font-awesome.version>6.5.1</font-awesome.version>
         <jquery-ui.version>1.14.2</jquery-ui.version>
-        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <commons-io.version>2.15.1</commons-io.version>
         <inspektr.version>1.8.20.GA</inspektr.version>
 
@@ -109,22 +107,12 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- HTTP Client 5 (External) -->
-            <dependency>
-                <groupId>org.apache.httpcomponents.client5</groupId>
-                <artifactId>httpclient5</artifactId>
-                <version>5.2.3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents.core5</groupId>
-                <artifactId>httpcore5</artifactId>
-                <version>5.2.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents.core5</groupId>
-                <artifactId>httpcore5-h2</artifactId>
-                <version>5.2.4</version>
-            </dependency>
+            <!--
+                HTTP Client 5, hibernate-validator and font-awesome used to be pinned here. The CAS overlay WAR
+                ships its own, newer copies, and the war plugin keeps both files: two versions of the same library
+                then sit on the runtime classpath. Let the CAS BOM decide so the names collide and only one jar
+                survives.
+            -->
         </dependencies>
     </dependencyManagement>
 
@@ -677,7 +665,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -700,7 +687,6 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>${font-awesome.version}</version>
         </dependency>
 
         <!-- ========================================================== -->
@@ -843,26 +829,19 @@
                                 <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/commons-io-*.jar</exclude>
                                 <exclude>WEB-INF/lib/jackson-*.jar</exclude>
-                                <exclude>WEB-INF/lib/jcl-over-slf4j-*.jar</exclude>
-                                <exclude>WEB-INF/lib/json-20160810.jar</exclude>
                                 <exclude>WEB-INF/lib/jul-to-slf4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-core-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jcl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jul-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-layout-template-json-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-slf4j-impl-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-slf4j18-impl-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-web-*.jar</exclude>
                                 <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
                                 <exclude>WEB-INF/lib/pac4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-expression-*.jar</exclude>
-                                <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-slf4j2-impl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jakarta-web-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-spring-boot-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-spring-cloud-config-client-*.jar</exclude>
                                 <exclude>WEB-INF/lib/httpclient5-*.jar</exclude>
                                 <exclude>WEB-INF/lib/httpclient-*.jar</exclude>
@@ -870,36 +849,14 @@
                             </excludes>
                         </overlay>
                     </overlays>
-                    <packagingExcludes>
-                        WEB-INF/lib/slf4j-simple-1.7.31.jar,
-                        WEB-INF/lib/log4j-api-*.jar,
-                        WEB-INF/lib/log4j-jul-*.jar,
-                        WEB-INF/lib/log4j-core-*.jar,
-                        WEB-INF/lib/log4j-jcl-*.jar,
-                        WEB-INF/lib/log4j-web-*.jar,
-                        WEB-INF/lib/log4j-slf4j-impl-*.jar,
-                        WEB-INF/lib/log4j-slf4j18-impl-*.jar,
-                        WEB-INF/lib/log4j-layout-template-json-*.jar,
-                        WEB-INF/lib/spring-boot-starter-log4j2-*.jar,
-                        WEB-INF/lib/slf4j-api-1.8.0-beta4.jar,
-                        WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar,
-                        WEB-INF/lib/jul-to-slf4j-1.8.0-beta4.jar,
-                        WEB-INF/lib/jackson-core-2.8.10.jar,
-                        WEB-INF/lib/jackson-databind-2.8.10.jar,
-                        WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar,
-                        WEB-INF/lib/cas-server-core-logging-api-*.jar,
-                        WEB-INF/lib/slf4j-api-*.jar,
-                        WEB-INF/lib/oauth2-oidc-sdk-*.jar,
-                        WEB-INF/lib/pac4j-*.jar,
-                        WEB-INF/lib/spring-webmvc-pac4j-*.jar,
-                        WEB-INF/lib/log4j-slf4j2-impl-*.jar,
-                        WEB-INF/lib/log4j-jakarta-web-*.jar,
-                        WEB-INF/lib/log4j-spring-boot-*.jar,
-                        WEB-INF/lib/log4j-spring-cloud-config-client-*.jar,
-                        WEB-INF/lib/httpclient5-*.jar,
-                        WEB-INF/lib/httpclient-*.jar,
-                        WEB-INF/lib/httpcore-*.jar
-                    </packagingExcludes>
+                    <!--
+                        There used to be a packagingExcludes block here, listing 28 patterns. It never applied:
+                        the entries were written one per line, and the plugin keeps the surrounding whitespace when
+                        it splits the value on commas, so none of them ever matched. pac4j and slf4j-api are proof —
+                        both are listed there and both ship in the WAR, and the application needs them. Repairing
+                        the block would strip required jars, so it is removed rather than fixed. The overlay
+                        excludes above are the ones that actually do the work.
+                    -->
                 </configuration>
             </plugin>
 
@@ -918,7 +875,7 @@
                     </excludes>
                     <arguments>
                         <argument>
-                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
+                            --spring.config.additional-location=file:${basedir}/src/main/config/application-dev.yml
                         </argument>
                     </arguments>
                 </configuration>
