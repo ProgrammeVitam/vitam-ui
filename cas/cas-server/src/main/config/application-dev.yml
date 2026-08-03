@@ -38,7 +38,8 @@ server:
 # Root: management - Spring Boot Actuator endpoints and monitoring
 management:
   endpoints:
-    enabled-by-default: true
+    access:
+      default: unrestricted
     web:
       exposure:
         include: health,metrics,prometheus,info,status,configurationMetadata

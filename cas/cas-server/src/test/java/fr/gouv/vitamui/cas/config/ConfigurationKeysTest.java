@@ -96,6 +96,37 @@ public class ConfigurationKeysTest {
             .isEmpty();
     }
 
+    /**
+     * A key can be perfectly well declared and still be dead. Spring Boot keeps deprecated properties in the
+     * metadata, reports them at startup through PropertiesMigrationListener, and then ignores them. Checking that
+     * a key exists, which the test above does, does not catch that — the eight management.* keys this module
+     * carried into CAS 7.3.8 went unnoticed until the server was actually started.
+     */
+    @Test
+    public void noConfigurationKeyIsDeprecated() throws Exception {
+        final Metadata metadata = Metadata.fromClasspath();
+        final TreeMap<String, String> removed = new TreeMap<>();
+
+        for (final Path file : configurationFiles()) {
+            final Map<String, Integer> keys = file.toString().endsWith(".properties")
+                ? readProperties(file)
+                : readYaml(file);
+            keys.forEach((key, line) -> {
+                if (!CHECKED_PREFIXES.contains(key.split("\\.")[0])) {
+                    return;
+                }
+                final String replacement = metadata.removedReplacementFor(key);
+                if (replacement != null) {
+                    removed.put(file.getFileName() + ":" + line + "  " + key + "  ->  " + replacement, key);
+                }
+            });
+        }
+
+        assertThat(removed.keySet())
+            .as("Deprecated configuration keys: they parse, and then do nothing. Each line shows the replacement.")
+            .isEmpty();
+    }
+
     private static List<Path> configurationFiles() throws IOException {
         final List<Path> files = new ArrayList<>();
         files.add(Path.of("src/main/resources/application.properties"));
@@ -151,11 +182,17 @@ public class ConfigurationKeysTest {
     }
 
     /** The union of every spring-configuration-metadata.json reachable on the classpath. */
-    private record Metadata(Set<String> names, Set<String> containers, List<Pattern> templated) {
+    private record Metadata(
+        Set<String> names,
+        Set<String> containers,
+        List<Pattern> templated,
+        Map<String, String> removed
+    ) {
         static Metadata fromClasspath() throws IOException {
             final Set<String> names = new TreeSet<>();
             final Set<String> containers = new TreeSet<>();
             final List<Pattern> templated = new ArrayList<>();
+            final Map<String, String> removed = new TreeMap<>();
             final ObjectMapper mapper = new ObjectMapper();
 
             final Resource[] resources = new PathMatchingResourcePatternResolver()
@@ -179,13 +216,26 @@ public class ConfigurationKeysTest {
                         continue;
                     }
                     names.add(normalise(name));
+                    final JsonNode deprecation = property.path("deprecation");
+                    if (!deprecation.isMissingNode()) {
+                        // The level field is often absent, and Spring Boot still refuses the key when the
+                        // replacement has an incompatible type — which is how the management.* ones slipped
+                        // through. Any deprecation block is treated as a key to migrate.
+                        final String replacement = deprecation.path("replacement").asText();
+                        removed.put(normalise(name), replacement.isEmpty() ? "no replacement" : replacement);
+                    }
                     final String type = property.path("type").asText();
                     if (type.startsWith("java.util.Map") || type.startsWith("java.util.List")) {
                         containers.add(normalise(name));
                     }
                 }
             }
-            return new Metadata(names, containers, templated);
+            return new Metadata(names, containers, templated, removed);
+        }
+
+        /** Replacement advertised for a key Spring Boot removed, or null when the key is still supported. */
+        String removedReplacementFor(final String key) {
+            return removed.get(normalise(key));
         }
 
         boolean declares(final String key) {
