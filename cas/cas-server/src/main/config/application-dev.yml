@@ -69,20 +69,20 @@ cas:
         - login-url: https://dev.vitamui.com:8080/cas/login
       core.session-replication.cookie:
         crypto:
-          encryption.key: T4LxS93IaaD-F-7kz66VEc2BD3g8uGGYKPECFkV9vBU
+          encryption.key: 2eO_ft6D83MxFDEmNxCz4Hy51eIqRC9JLBGVJBeIKwnGY2HpnTrEw3o7wvvyaA34GrfXyb0EW_mGmy-iGQaUfg
           signing.key: fRYHy2_3_qApascjXEaXuTL5o52nrohztttpiGKFkWpXYUHaV85lS8Ph10OGfkpUUZlkyhhq6oPOXOlGIAQbiQ
     pm.reset.crypto:
-      encryption.key: w7ZxSCZsGix3Xl6pFg-1viJIeFIWdrwEjxUvDyyVCM8
+      encryption.key: Pn9G5O9-oXBHt0Jl1uiad0VNTVq8vagzwLori3eSHzaVyjNKDggff5mr6ns2ofo5rgYKee-K4dORTEkZ4Ho3OQ
       signing.key: TIUaCcEAjUW_HV-1hJRrcVobZ3CCEwJC8u60vPH2nspslA3TkRFjAsceEUugp9mb6rGQiFj1IY2HJuf3FmXM5w
     oauth:
       access-token.crypto:
-        encryption.key: RGAYHpTTKJ-YMbh7Yrt3Xd6VQH_myXYISwThfo-9OKI
+        encryption.key: 35p4Z2bJcae-N2Ar5Op9YGQAZi9tGK24xdmIFXTu9RbWm30oABQKEeitG_W2hIBUIg--lZOeF9l452Botoq7Tg
         signing.key: j8AZtUo6i4BI2n3bu2Elr9d3aIOL35vec0AjUBubP6rgj5arKWB9lRcWq9bjxGIwoAbFv-1MRmiScXlIIX0BGg
       crypto:
-        encryption.key: 0mfCTGphgW6sLEG2xsmnb-dzQZ-9wQfjOWDrXdUg4lg
+        encryption.key: L_nqrNYEAUMveny7NRAmSCh6fC3WcfZgXT9Kdq13Rxe7Nnko369ffJzCWKowIMmQCAM2Sf1etQsOIJ6jVqOJQA
         signing.key: kSs5OT5bTV6E9Ba0biGZ3taVlmlBFmoMyvG4JB0pSiZJml3CqyfHlexueJAv2BT4YG9gQ1IP_hvu1leejdFzng
       session-replication.cookie.crypto:
-        encryption.key: 2macKckIM22PrUn9cHkyVe1lB4jc12hXsbUa8e7Ih8Q
+        encryption.key: A9bQP1zZO9KYQcv2Yondqo2QWyvHcPaoxC9UM5VPCXFu_KY7bmfOcKM-B2S4jqzFOlre-e9J-AxAiLEfxf3FRg
         signing.key: vhnibDmTxFA0q_jO3XedyoHgKkPQPmfVeWLVj9byRfLiVFqZi38ZsEy4Qt0Vu2rZFXceBgp5nb55iWgxo2EzCQ
     oidc.jwks.file-system.jwks-file: file:./src/main/config/keystore.jwks
   monitor.endpoints.endpoint.defaults.access: PERMIT
