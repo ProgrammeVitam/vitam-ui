@@ -37,8 +37,8 @@ public class CasWebflowConstantsTest {
         entry("ACTION_ID_TERMINATE_SESSION", "terminateSessionAction"),
         entry("ACTION_ID_TICKET_GRANTING_TICKET_CHECK", "ticketGrantingTicketCheckAction"),
         entry("BEAN_NAME_FLOW_BUILDER_SERVICES", "flowBuilderServices"),
-        entry("BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY", "loginFlowRegistry"),
-        entry("BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY", "logoutFlowRegistry"),
+        // CAS 7.3 replaced the separate login/logout registries with a single one.
+        entry("BEAN_NAME_FLOW_DEFINITION_REGISTRY", "flowDefinitionRegistry"),
         entry("STATE_ID_ACCOUNT_DISABLED", "casAccountDisabledView"),
         entry("STATE_ID_GATEWAY_REQUEST_CHECK", "gatewayRequestCheck"),
         entry("STATE_ID_HAS_SERVICE_CHECK", "hasServiceCheck"),

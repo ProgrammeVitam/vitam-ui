@@ -83,6 +83,7 @@ import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.services.RegisteredServicePrincipalAccessStrategyEnforcer;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
@@ -361,7 +362,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public OAuth20AccessTokenFactory defaultAccessTokenFactory(
-        @Qualifier(CasBeans.ACCESS_TOKEN_ID_GENERATOR) final UniqueTicketIdGenerator accessTokenIdGenerator,
+        @Qualifier(CasBeans.TICKET_REGISTRY) final TicketRegistry ticketRegistry,
         @Qualifier(CasBeans.ACCESS_TOKEN_EXPIRATION_POLICY) final ExpirationPolicyBuilder accessTokenExpirationPolicy,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
         @Qualifier(CasBeans.ACCESS_TOKEN_JWT_BUILDER) final JwtBuilder accessTokenJwtBuilder,
@@ -370,7 +371,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         ) final TicketTrackingPolicy descendantTicketsTrackingPolicy
     ) {
         return new CustomOAuth20DefaultAccessTokenFactory(
-            accessTokenIdGenerator,
+            ticketRegistry,
             accessTokenExpirationPolicy,
             accessTokenJwtBuilder,
             servicesManager,
@@ -401,9 +402,20 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @SneakyThrows
     public SurrogateAuthenticationService surrogateAuthenticationService(
         final CasApi casApi,
-        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
+        final CasConfigurationProperties casProperties,
+        @Qualifier(
+            RegisteredServicePrincipalAccessStrategyEnforcer.BEAN_NAME
+        ) final RegisteredServicePrincipalAccessStrategyEnforcer principalAccessStrategyEnforcer,
+        final ConfigurableApplicationContext applicationContext
     ) {
-        return new IamSurrogateAuthenticationService(casApi, servicesManager);
+        return new IamSurrogateAuthenticationService(
+            casApi,
+            servicesManager,
+            casProperties,
+            principalAccessStrategyEnforcer,
+            applicationContext
+        );
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
@@ -424,9 +436,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final PasswordConfiguration passwordConfiguration
     ) {
         return new IamPasswordManagementService(
-            casProperties.getAuthn().getPm(),
+            casProperties,
             passwordManagementCipherExecutor,
-            casProperties.getServer().getPrefix(),
             passwordHistoryService,
             casApi,
             providersService,
@@ -552,7 +563,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final var authorizers = delegatedClientIdentityProviderAuthorizers;
 
         return DelegatedClientAuthenticationConfigurationContext.builder()
-            .credentialExtractor(delegatedAuthenticationCredentialExtractor)
+            // CAS 7.3 accepts a list of credential extractors instead of a single one.
+            .credentialExtractors(List.of(delegatedAuthenticationCredentialExtractor))
             .initialAuthenticationAttemptWebflowEventResolver(initialAuthenticationAttemptWebflowEventResolver)
             .serviceTicketRequestWebflowEventResolver(serviceTicketRequestWebflowEventResolver)
             .adaptiveAuthenticationPolicy(adaptiveAuthenticationPolicy)

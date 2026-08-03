@@ -31,9 +31,13 @@ import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.logout.LogoutConfirmationResolver;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
+import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.flow.actions.logout.DelegatedAuthenticationClientLogoutAction;
 import org.pac4j.core.client.Client;
+import org.pac4j.core.context.WebContext;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.profile.UserProfile;
 
@@ -49,22 +53,30 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
 
     private final IdentityProviderHelper identityProviderHelper;
 
+    // CAS 7.3 added the ticket registry, the CAS properties and the logout confirmation resolver to the parent
+    // constructor, and hands a WebContext to findCurrentClient so providers can be resolved per request.
     public CustomDelegatedAuthenticationClientLogoutAction(
         final DelegatedIdentityProviders identityProviders,
         final SessionStore sessionStore,
+        final TicketRegistry ticketRegistry,
+        final CasConfigurationProperties casProperties,
+        final LogoutConfirmationResolver logoutConfirmationResolver,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper
     ) {
-        super(identityProviders, sessionStore);
+        super(identityProviders, sessionStore, ticketRegistry, casProperties, logoutConfirmationResolver);
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
     }
 
     @Override
-    protected Optional<Client> findCurrentClient(final UserProfile currentProfile) {
+    protected Optional<? extends Client> findCurrentClient(
+        final UserProfile currentProfile,
+        final WebContext webContext
+    ) {
         val optClient = currentProfile == null
             ? Optional.<Client>empty()
-            : identityProviders.findClient(currentProfile.getClientName());
+            : identityProviders.findClient(currentProfile.getClientName(), webContext);
 
         LOGGER.debug("optClient: {}", optClient);
         if (optClient.isEmpty()) {

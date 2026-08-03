@@ -44,7 +44,7 @@
         <inspektr.version>1.8.20.GA</inspektr.version>
 
         <!-- Test Versions -->
-        <junit-vintage-engine.version>5.7.2</junit-vintage-engine.version>
+        <junit.version>5.12.2</junit.version>
         <mockito.version>5.2.0</mockito.version>
         <assertj-core.version>3.11.1</assertj-core.version>
 
@@ -65,6 +65,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--
+                Declared first so it wins: the root parent (Spring Boot 4) manages junit-platform at 6.x while this
+                module pins Spring Boot 3.5, which manages junit at 5.12. Mixing the two breaks test discovery.
+            -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- CAS BOM -->
             <dependency>
                 <groupId>org.apereo.cas</groupId>
@@ -144,6 +156,15 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+                <!--
+                    OpenSAML 5.2 (CAS 7.3) configures its parser pool with jdk.xml.maxElementDepth, which the
+                    Xerces implementation pulled in transitively does not recognise, and SAML2Client then fails
+                    to initialise. The JDK parser supports it, so keep Xerces off this classpath.
+                -->
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
