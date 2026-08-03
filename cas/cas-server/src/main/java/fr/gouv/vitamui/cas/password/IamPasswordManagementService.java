@@ -304,7 +304,21 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     @Override
     public String findEmail(final PasswordManagementQuery query) {
         final var username = query.getUsername().toLowerCase().trim();
-        final String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
+        final var record = query.getRecord();
+        final String customerId = record == null
+            ? null
+            : (String) record.getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
+
+        // CAS 7.3 calls this a second time, from PasswordChangeAction, to send a password reset confirmation
+        // email that did not exist before — cas.authn.pm.reset.confirmation-mail is new in 7.3. It builds the
+        // query from the username alone, with no record, so there is no customer id to identify the user by, and
+        // the lookup below would fail. The failure surfaced well after the password had already been changed:
+        // PasswordChangeAction catches it and shows "password could not be changed" on a change that succeeded.
+        // Returning null leaves the email unresolved, which is how CAS skips that confirmation message.
+        if (StringUtils.isBlank(customerId)) {
+            LOGGER.debug("No customer id in the query for {}: no email to resolve", username);
+            return null;
+        }
 
         try {
             UserDto user = findUserByEmailAndCustomerId(username, customerId);

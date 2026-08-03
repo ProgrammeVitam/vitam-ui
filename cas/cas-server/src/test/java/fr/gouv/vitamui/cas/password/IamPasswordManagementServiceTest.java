@@ -89,6 +89,8 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -401,6 +403,19 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         assertThatThrownBy(() -> service.findEmail(getPasswordManagementQuery())).isInstanceOf(
             PreventedException.class
         );
+    }
+
+    /**
+     * CAS 7.3 calls findEmail from PasswordChangeAction with a query built from the username alone, to send a
+     * confirmation email that did not exist in 7.0. Without a customer id the user cannot be looked up, and
+     * letting that fail turned a successful password change into "password could not be changed" on screen.
+     */
+    @Test
+    public void testFindEmailWithoutCustomerIdReturnsNull() {
+        final var queryWithoutRecord = PasswordManagementQuery.builder().username(EMAIL).build();
+
+        assertNull(service.findEmail(queryWithoutRecord));
+        verify(casApi, never()).getUser(any(), any(), any(), any(), any());
     }
 
     @Test
