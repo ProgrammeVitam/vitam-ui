@@ -22,7 +22,6 @@
         <module>api-pastis</module>
         <module>api-collect</module>
         <module>api-gateway</module>
-        <module>auth-gateway</module>
         <module>auth-server</module>
     </modules>
 
