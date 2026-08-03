@@ -36,7 +36,9 @@ import org.apereo.cas.web.CasWebSecurityConfigurer;
 import org.apereo.cas.web.security.CasWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 import java.util.List;
@@ -44,19 +46,24 @@ import java.util.List;
 /** Exclude the URL /extras from security. */
 public class CustomCasWebSecurityConfigurerAdapter extends CasWebSecurityConfigurerAdapter {
 
+    // CAS 7.3 added managementServerProperties and webProperties to the parent constructor.
     public CustomCasWebSecurityConfigurerAdapter(
         final CasConfigurationProperties casProperties,
         final WebEndpointProperties webEndpointProperties,
+        final ManagementServerProperties managementServerProperties,
         final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
         final List<CasWebSecurityConfigurer> webSecurityConfigurers,
-        final SecurityContextRepository securityContextRepository
+        final SecurityContextRepository securityContextRepository,
+        final WebProperties webProperties
     ) {
         super(
             casProperties,
             webEndpointProperties,
+            managementServerProperties,
             pathMappedEndpoints,
             webSecurityConfigurers,
-            securityContextRepository
+            securityContextRepository,
+            webProperties
         );
     }
 

@@ -45,9 +45,9 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
-import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessTokenFactory;
+import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -65,20 +65,16 @@ import java.util.Objects;
 @Slf4j
 public class CustomOAuth20DefaultAccessTokenFactory extends OAuth20DefaultAccessTokenFactory {
 
+    // CAS 7.3 replaced the leading UniqueTicketIdGenerator argument with the TicketRegistry. This factory
+    // overrides generateAccessTokenId anyway, so it never used the generator.
     public CustomOAuth20DefaultAccessTokenFactory(
-        final UniqueTicketIdGenerator accessTokenIdGenerator,
+        final TicketRegistry ticketRegistry,
         final ExpirationPolicyBuilder<OAuth20AccessToken> expirationPolicyBuilder,
         final JwtBuilder jwtBuilder,
         final ServicesManager servicesManager,
         final TicketTrackingPolicy descendantTicketsTrackingPolicy
     ) {
-        super(
-            accessTokenIdGenerator,
-            expirationPolicyBuilder,
-            jwtBuilder,
-            servicesManager,
-            descendantTicketsTrackingPolicy
-        );
+        super(ticketRegistry, expirationPolicyBuilder, jwtBuilder, servicesManager, descendantTicketsTrackingPolicy);
     }
 
     @Override

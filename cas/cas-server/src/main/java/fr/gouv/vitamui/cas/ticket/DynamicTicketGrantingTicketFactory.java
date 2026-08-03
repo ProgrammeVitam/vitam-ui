@@ -82,21 +82,21 @@ public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTic
         this.utils = utils;
     }
 
+    // CAS 7.3 dropped the Class<T> argument and the generic return type from produceTicket.
     @Override
-    protected <T extends TicketGrantingTicket> T produceTicket(
+    protected TicketGrantingTicket produceTicket(
         final Authentication authentication,
         final String tgtId,
-        final Service service,
-        final Class<T> clazz
+        final Service service
     ) {
         final Principal principal = authentication.getPrincipal();
         final Map<String, List<Object>> attributes = principal.getAttributes();
         final String superUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
         final UserTypeEnum type = (UserTypeEnum) utils.getAttributeValue(attributes, TYPE_ATTRIBUTE);
         if (superUser != null && type == UserTypeEnum.GENERIC) {
-            return (T) new TicketGrantingTicketImpl(tgtId, authentication, new HardTimeoutExpirationPolicy(170 * 60));
+            return new TicketGrantingTicketImpl(tgtId, authentication, new HardTimeoutExpirationPolicy(170 * 60));
         } else {
-            return super.produceTicket(authentication, tgtId, service, clazz);
+            return super.produceTicket(authentication, tgtId, service);
         }
     }
 }

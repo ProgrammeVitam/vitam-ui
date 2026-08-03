@@ -62,12 +62,16 @@ import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.MultifactorAuthenticationProviderSelector;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
+import org.apereo.cas.authentication.principal.ServiceFactory;
+import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.bucket4j.consumer.BucketConsumer;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.logout.LogoutConfirmationResolver;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
 import org.apereo.cas.mfa.simple.validation.CasSimpleMultifactorAuthenticationService;
+import org.apereo.cas.multitenancy.TenantExtractor;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationFailureEvaluator;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
@@ -181,6 +185,7 @@ public class WebflowConfig {
         @Qualifier(CasBeans.PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver,
         @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
         @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
@@ -200,7 +205,7 @@ public class WebflowConfig {
             passwordResetUrlBuilder,
             multifactorAuthenticationProviderSelector,
             authenticationSystemSupport,
-            applicationContext,
+            servicesManager,
             messageSource,
             providersService,
             identityProviderHelper,
@@ -223,17 +228,17 @@ public class WebflowConfig {
     public CasWebflowConfigurer defaultWebflowConfigurer(
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
-        @Qualifier(CasBeans.LOGIN_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry loginFlowRegistry,
-        @Qualifier(CasBeans.LOGOUT_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry logoutFlowRegistry,
+        @Qualifier(CasBeans.FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry flowDefinitionRegistry,
         @Qualifier(CasBeans.FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices
     ) {
+        // Since CAS 7.3 a single registry holds both the login and the logout flows, so there is no separate
+        // logout registry to hand over any more.
         final var c = new VitamLoginWebflowConfigurer(
             flowBuilderServices,
-            loginFlowRegistry,
+            flowDefinitionRegistry,
             applicationContext,
             casProperties
         );
-        c.setLogoutFlowDefinitionRegistry(logoutFlowRegistry);
         c.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return c;
     }
@@ -299,7 +304,13 @@ public class WebflowConfig {
         @Qualifier(CasBeans.FRONT_CHANNEL_LOGOUT_ACTION) final Action frontChannelLogoutAction,
         @Qualifier(
             CasBeans.SINGLE_LOGOUT_REQUEST_EXECUTOR
-        ) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor
+        ) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor,
+        @Qualifier(
+            LogoutConfirmationResolver.DEFAULT_BEAN_NAME
+        ) final LogoutConfirmationResolver logoutConfirmationResolver,
+        @Qualifier("webApplicationServiceFactory") final ServiceFactory<
+            WebApplicationService
+        > webApplicationServiceFactory
     ) {
         return WebflowActionBeanSupplier.builder()
             .withApplicationContext(applicationContext)
@@ -312,14 +323,15 @@ public class WebflowConfig {
                         warnCookieGenerator,
                         casProperties.getLogout(),
                         logoutManager,
-                        applicationContext,
                         utils,
                         casApi,
                         servicesManager,
                         casProperties,
                         frontChannelLogoutAction,
                         ticketRegistry,
-                        defaultSingleLogoutRequestExecutor
+                        defaultSingleLogoutRequestExecutor,
+                        logoutConfirmationResolver,
+                        webApplicationServiceFactory
                     )
             )
             .withId(CasWebflowConstants.ACTION_ID_TERMINATE_SESSION)
@@ -346,6 +358,7 @@ public class WebflowConfig {
         @Qualifier(
             CasBeans.MFA_SIMPLE_MULTIFACTOR_BUCKET_CONSUMER
         ) final BucketConsumer mfaSimpleMultifactorBucketConsumer,
+        @Qualifier(TenantExtractor.BEAN_NAME) final TenantExtractor tenantExtractor,
         final CasConfigurationProperties casProperties,
         final Utils utils
     ) {
@@ -360,6 +373,7 @@ public class WebflowConfig {
                     simple,
                     mfaSimpleMultifactorTokenCommunicationStrategy,
                     mfaSimpleMultifactorBucketConsumer,
+                    tenantExtractor,
                     utils
                 );
             })
@@ -375,14 +389,14 @@ public class WebflowConfig {
         @Qualifier(
             CasBeans.MFA_SIMPLE_AUTHENTICATOR_FLOW_REGISTRY
         ) final FlowDefinitionRegistry mfaSimpleAuthenticatorFlowRegistry,
-        @Qualifier(CasBeans.LOGIN_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry loginFlowRegistry,
+        @Qualifier(CasBeans.FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry flowDefinitionRegistry,
         @Qualifier(CasBeans.FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext
     ) {
         final var cfg = new VitamMfaWebflowConfigurer(
             flowBuilderServices,
-            loginFlowRegistry,
+            flowDefinitionRegistry,
             mfaSimpleAuthenticatorFlowRegistry,
             applicationContext,
             casProperties,
@@ -406,6 +420,10 @@ public class WebflowConfig {
         @Qualifier(
             CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
         ) final SessionStore delegatedClientDistributedSessionStore,
+        @Qualifier(CasBeans.TICKET_REGISTRY) final TicketRegistry ticketRegistry,
+        @Qualifier(
+            LogoutConfirmationResolver.DEFAULT_BEAN_NAME
+        ) final LogoutConfirmationResolver logoutConfirmationResolver,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper
     ) {
@@ -426,6 +444,9 @@ public class WebflowConfig {
                                 new CustomDelegatedAuthenticationClientLogoutAction(
                                     identityProviders,
                                     delegatedClientDistributedSessionStore,
+                                    ticketRegistry,
+                                    casProperties,
+                                    logoutConfirmationResolver,
                                     providersService,
                                     identityProviderHelper
                                 )
