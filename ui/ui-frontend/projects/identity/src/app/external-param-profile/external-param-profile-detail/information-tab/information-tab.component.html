@@ -1,11 +1,7 @@
 <div>
   <form [formGroup]="form" class="gap-3 align-items-stretch">
     <vitamui-slide-toggle formControlName="enabled">
-      {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }}
-      @if (!form.get('enabled')?.value) {
-        <span>in</span>
-      }
-      {{ 'COMMON.ACTIVE' | translate }}
+      {{ (form.get('enabled')?.value ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE') | translate }}
     </vitamui-slide-toggle>
 
     <div class="row">
