@@ -64,7 +64,9 @@ import org.pac4j.core.client.Client;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.HierarchicalMessageSource;
@@ -170,14 +172,18 @@ public class WebConfig {
         final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
         final List<CasWebSecurityConfigurer> configurersList,
         final WebEndpointProperties webEndpointProperties,
+        final ManagementServerProperties managementServerProperties,
+        final WebProperties webProperties,
         final CasConfigurationProperties casProperties
     ) {
         val adapter = new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
+            managementServerProperties,
             pathMappedEndpoints,
             configurersList,
-            securityContextRepository
+            securityContextRepository,
+            webProperties
         );
         return adapter::configureWebSecurity;
     }
@@ -189,14 +195,18 @@ public class WebConfig {
         final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
         final List<CasWebSecurityConfigurer> configurersList,
         final WebEndpointProperties webEndpointProperties,
+        final ManagementServerProperties managementServerProperties,
+        final WebProperties webProperties,
         final CasConfigurationProperties casProperties
     ) throws Exception {
         val adapter = new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
+            managementServerProperties,
             pathMappedEndpoints,
             configurersList,
-            securityContextRepository
+            securityContextRepository,
+            webProperties
         );
         return adapter.configureHttpSecurity(http).build();
     }

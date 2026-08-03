@@ -55,7 +55,6 @@ import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeExcepti
 import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAuthenticationHandler;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
-import org.apereo.cas.services.ServicesManager;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
@@ -86,12 +85,12 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
     private final String ipHeaderName;
 
     public LoginPwdAuthenticationHandler(
-        final ServicesManager servicesManager,
         final PrincipalFactory principalFactory,
         final CasApi casApi,
         final String ipHeaderName
     ) {
-        super(LoginPwdAuthenticationHandler.class.getSimpleName(), servicesManager, principalFactory, 1);
+        // CAS 7.3 dropped the ServicesManager argument from AbstractAuthenticationHandler.
+        super(LoginPwdAuthenticationHandler.class.getSimpleName(), principalFactory, 1);
         this.casApi = casApi;
         this.ipHeaderName = ipHeaderName;
     }

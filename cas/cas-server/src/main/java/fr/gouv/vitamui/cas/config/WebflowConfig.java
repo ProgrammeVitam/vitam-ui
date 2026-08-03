@@ -223,17 +223,17 @@ public class WebflowConfig {
     public CasWebflowConfigurer defaultWebflowConfigurer(
         final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
-        @Qualifier(CasBeans.LOGIN_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry loginFlowRegistry,
-        @Qualifier(CasBeans.LOGOUT_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry logoutFlowRegistry,
+        @Qualifier(CasBeans.FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry flowDefinitionRegistry,
         @Qualifier(CasBeans.FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices
     ) {
+        // Since CAS 7.3 a single registry holds both the login and the logout flows, so there is no separate
+        // logout registry to hand over any more.
         final var c = new VitamLoginWebflowConfigurer(
             flowBuilderServices,
-            loginFlowRegistry,
+            flowDefinitionRegistry,
             applicationContext,
             casProperties
         );
-        c.setLogoutFlowDefinitionRegistry(logoutFlowRegistry);
         c.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return c;
     }
@@ -375,14 +375,14 @@ public class WebflowConfig {
         @Qualifier(
             CasBeans.MFA_SIMPLE_AUTHENTICATOR_FLOW_REGISTRY
         ) final FlowDefinitionRegistry mfaSimpleAuthenticatorFlowRegistry,
-        @Qualifier(CasBeans.LOGIN_FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry loginFlowRegistry,
+        @Qualifier(CasBeans.FLOW_DEFINITION_REGISTRY) final FlowDefinitionRegistry flowDefinitionRegistry,
         @Qualifier(CasBeans.FLOW_BUILDER_SERVICES) final FlowBuilderServices flowBuilderServices,
         final CasConfigurationProperties casProperties,
         final ConfigurableApplicationContext applicationContext
     ) {
         final var cfg = new VitamMfaWebflowConfigurer(
             flowBuilderServices,
-            loginFlowRegistry,
+            flowDefinitionRegistry,
             mfaSimpleAuthenticatorFlowRegistry,
             applicationContext,
             casProperties,
