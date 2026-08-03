@@ -5,6 +5,7 @@ import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -50,6 +51,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -121,6 +123,16 @@ public class GroupServiceIntegrationTest extends AbstractLogbookIntegrationTest 
         when(securityService.getCustomerId()).thenReturn(CUSTOMER_ID);
         when(securityService.getTenantIdentifier()).thenReturn(10);
         when(securityService.hasRole(eq(ServicesData.ROLE_GET_ALL_TENANTS))).thenReturn(true);
+    }
+
+    @Test
+    void getOne_shouldNotFindGroupOfAnotherCustomer() {
+        final String groupId = "idGroupOfAnotherCustomer";
+        repository.save(IamServerUtilsTest.buildGroup(groupId, "1001", "nametest", "anotherCustomerId"));
+
+        assertThatThrownBy(() -> service.getOne(groupId, Optional.empty(), Optional.empty())).isInstanceOf(
+            NotFoundException.class
+        );
     }
 
     @Test

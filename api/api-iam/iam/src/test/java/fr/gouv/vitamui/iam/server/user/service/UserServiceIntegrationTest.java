@@ -355,7 +355,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(securityService.isLevelAllowed(any())).thenReturn(true);
-        Mockito.when(groupService.getOneByPassSecurity(any(), any())).thenReturn(buildGroupDto());
+        Mockito.when(groupService.getOneByPassSecurity(any(), any())).thenReturn(group);
         Mockito.when(securityService.getHttpContext()).thenReturn(httpContext);
 
         final UserDto userAdminComDto = userService.create(userAdminCom);
@@ -383,7 +383,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(securityService.isLevelAllowed(any())).thenReturn(true);
-        Mockito.when(groupService.getOneByPassSecurity(any(), any())).thenReturn(buildGroupDto());
+        Mockito.when(groupService.getOneByPassSecurity(any(), any())).thenReturn(group);
         Mockito.when(securityService.getHttpContext()).thenReturn(httpContext);
 
         final UserDto userAdminFrDto = userService.create(userAdminFr);
@@ -414,7 +414,7 @@ public final class UserServiceIntegrationTest extends AbstractLogbookIntegration
         Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
         Mockito.when(groupService.getOne(any(), any(), any())).thenReturn(group);
         Mockito.when(securityService.isLevelAllowed(any())).thenReturn(true);
-        Mockito.when(groupService.getOneByPassSecurity(any(), any())).thenReturn(buildGroupDto());
+        Mockito.when(groupService.getOneByPassSecurity(any(), any())).thenReturn(group);
         Mockito.when(securityService.getHttpContext()).thenReturn(httpContext);
 
         user = userService.create(user);

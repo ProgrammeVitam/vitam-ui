@@ -129,7 +129,7 @@ public class ExternalParametersService
             LOGGER.warn("External parameter profile have no external parameter id");
             return null;
         }
-        return this.getOne(externalParametersProfile.getExternalParamId());
+        return getOneByPassSecurity(externalParametersProfile.getExternalParamId(), Optional.empty());
     }
 
     @Override
