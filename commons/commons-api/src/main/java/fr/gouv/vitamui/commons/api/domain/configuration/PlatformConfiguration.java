@@ -86,6 +86,7 @@ public record PlatformConfiguration(
             this.distributionThreshold(),
             this.distributionThreshold(),
             this.distributionThreshold(),
+            this.distributionThreshold(),
             10_000
         );
     }

@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,37 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// testing/tenant-config.service.mock.ts
-import { signal } from '@angular/core';
-import { of } from 'rxjs';
 
-export const tenantConfigServiceMock = {
-  load: () => of(),
-  tenantConfig: signal({
-    tenantId: 1,
-    adminTenant: true,
-    indexInheritedRulesWithApiV2Output: false,
-    indexInheritedRulesWithRulesId: true,
-    externalReferentialIdentifiers: [],
-    virtualPaths: [],
+package fr.gouv.vitamui.commons.vitam.api.access;
 
-    distributionThreshold: 100_000,
-    eliminationAnalysisThreshold: 100_000,
-    eliminationActionThreshold: 100_000,
-    computedInheritedRulesThreshold: 100_000,
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.PreservationRequest;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.hc.core5.http.HttpStatus;
 
-    classificationLevel: {},
+/**
+ * Service de lancement des workflows de préservation
+ * Pour plus d'informations : <a href="https://www.programmevitam.fr/vitam-doc/fr/master_9.1.x/sections/preservation.html">documentation métier</a>
+ */
+public class PreservationService {
 
-    resultThreshold: 100_000,
-    reclassificationThreshold: 100_000,
+    private final AccessExternalClient accessExternalClient;
 
-    dipExportThreshold: 100_000,
-    transferThreshold: 100_000,
-    updateMgtRulesThreshold: 100_000,
-    puaUpdateThreshold: 100_000,
-    originatingAgencyReassignmentThreshold: 100_000,
-    preservationThreshold: 100_000,
+    public PreservationService(final AccessExternalClient accessExternalClient) {
+        this.accessExternalClient = accessExternalClient;
+    }
 
-    deletionThreshold: 100_000,
-  }),
-};
+    /**
+     * Starts the preservation workflow of the units by dsl query.
+     * @param vitamContext The vitam context
+     * @param preservationRequest The scenario parameters and the DSL query used to select the units to preserve
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> launchPreservation(
+        final VitamContext vitamContext,
+        final PreservationRequest preservationRequest
+    ) throws VitamClientException {
+        final RequestResponse<JsonNode> response = accessExternalClient.launchPreservation(
+            vitamContext,
+            preservationRequest
+        );
+        VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return response;
+    }
+}

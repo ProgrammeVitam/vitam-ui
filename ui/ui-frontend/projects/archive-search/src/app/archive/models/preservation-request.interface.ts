@@ -34,64 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { SearchCriteriaDto } from 'vitamui-library';
 
-import { BASE_URL } from '../injection-tokens';
-import { Observable } from 'rxjs';
-
-export type TenantId = Number;
-
-export interface ClassificationLevel {
-  readonly allowList: string[];
-  readonly authorizeNotDefined: boolean;
+export enum PreservationVersion {
+  FIRST = 'FIRST',
+  LAST = 'LAST',
 }
 
-export interface TenantConfiguration {
-  readonly tenantId: TenantId;
-  readonly adminTenant: boolean;
-  readonly indexInheritedRulesWithApiV2Output: boolean;
-  readonly indexInheritedRulesWithRulesId: boolean;
-  readonly externalReferentialIdentifiers: string[];
-  readonly virtualPaths: string[];
-
-  readonly distributionThreshold: number;
-  readonly eliminationAnalysisThreshold: number;
-  readonly eliminationActionThreshold: number;
-  readonly computedInheritedRulesThreshold: number;
-
-  readonly classificationLevel: ClassificationLevel;
-
-  readonly resultThreshold: number;
-  readonly reclassificationThreshold: number;
-
-  readonly dipExportThreshold: number;
-  readonly transferThreshold: number;
-  readonly updateMgtRulesThreshold: number;
-  readonly puaUpdateThreshold: number;
-  readonly originatingAgencyReassignmentThreshold: number;
-  readonly preservationThreshold: number;
-
-  readonly deletionThreshold: number;
+export enum PreservationUsage {
+  BINARYMASTER = 'BinaryMaster',
+  DISSEMINATION = 'Dissemination',
+  THUMBNAIL = 'Thumbnail',
+  TEXTCONTENT = 'TextContent',
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ConfigurationsApiService {
-  private http: HttpClient;
-  private readonly baseUrl: string;
+export const PreservationUsageList: Array<string> = Object.values(PreservationUsage);
 
-  constructor() {
-    this.baseUrl = inject(BASE_URL);
-    this.http = inject(HttpClient);
-  }
-
-  public getConfiguration() {
-    return this.http.get<TenantConfiguration>(`${this.baseUrl}/configuration`);
-  }
-
-  getVirtualPathsFields(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/configurations/virtual-paths-fields`);
-  }
+export interface PreservationRequestDto {
+  scenarioIdentifier: string;
+  sourceUsage: PreservationUsage;
+  targetUsage?: PreservationUsage;
+  version: PreservationVersion;
+  searchCriteria: SearchCriteriaDto;
 }

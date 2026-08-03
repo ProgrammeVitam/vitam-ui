@@ -1,0 +1,66 @@
+<vitamui-dialog-header
+  [subhead]="'ARCHIVE_SEARCH.PRESERVATION.ACTION' | translate"
+  [title]="'ARCHIVE_SEARCH.PRESERVATION.TITLE' | translate"
+></vitamui-dialog-header>
+
+<form [formGroup]="preservationForm" (ngSubmit)="launch()">
+  <mat-dialog-content class="gap-4 align-items-stretch">
+    <div class="d-flex flex-column gap-1">
+      <p class="text light m-0">
+        {{ 'ARCHIVE_SEARCH.PRESERVATION.SELECTED_UNITS' | translate: { count: itemSelected } }}
+      </p>
+      @if (objectGroupsCount() !== null) {
+        <vitamui-badge
+          [text]="'ARCHIVE_SEARCH.PRESERVATION.SELECTED_OBJECT_GROUPS' | translate: { count: objectGroupsCount() }"
+          color="secondary"
+          decoration="bordered"
+        ></vitamui-badge>
+      }
+    </div>
+
+    <vitamui-select
+      [multiple]="false"
+      [enableSearch]="false"
+      [enableSelectAll]="false"
+      [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.SOURCE_USAGE' | translate"
+      formControlName="sourceUsage"
+      [options]="usageOptions"
+    ></vitamui-select>
+
+    <vitamui-select
+      [multiple]="false"
+      [enableSearch]="false"
+      [enableSelectAll]="false"
+      [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.VERSION' | translate"
+      formControlName="version"
+      [options]="versionOptions"
+    ></vitamui-select>
+
+    <vitamui-select
+      [multiple]="false"
+      [enableSearch]="true"
+      [enableSelectAll]="false"
+      [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.SCENARIO' | translate"
+      formControlName="scenarioIdentifier"
+      [options]="scenarioOptions()"
+    ></vitamui-select>
+
+    <vitamui-select
+      [multiple]="false"
+      [enableSearch]="false"
+      [enableSelectAll]="false"
+      [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.TARGET_USAGE' | translate"
+      formControlName="targetUsage"
+      [options]="usageOptions"
+    ></vitamui-select>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button type="submit" [disabled]="preservationForm.invalid" class="btn primary">
+      {{ 'ARCHIVE_SEARCH.PRESERVATION.LAUNCH' | translate }}
+    </button>
+    <button type="button" class="btn link cancel" (click)="onCancel()">
+      {{ 'COMMON.UNDO' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -36,6 +36,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchEliminationService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchMgtRulesService;
+import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchPreservationService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchThresholdService;
 import fr.gouv.vitamui.archives.search.server.service.ArchiveSearchUnitExportCsvService;
@@ -118,6 +119,9 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
     private ArchiveSearchThresholdService archiveSearchThresholdService;
 
     @MockitoBean
+    private ArchiveSearchPreservationService archiveSearchPreservationService;
+
+    @MockitoBean
     private ObjectMapper objectMapper;
 
     @MockitoBean
@@ -140,6 +144,7 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
             archiveSearchEliminationService,
             archiveSearchMgtRulesService,
             archiveSearchThresholdService,
+            archiveSearchPreservationService,
             objectMapper,
             signedDownloadTokenService
         );
