@@ -24,7 +24,6 @@
         <!-- CAS & Security Versions -->
         <cas.version>7.3.8</cas.version>
         <pac4j.version>6.3.3</pac4j.version>
-        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
 
         <!-- Logger & Utils Versions -->
         <slf4j.version>2.0.9</slf4j.version>
@@ -513,11 +512,16 @@
         <!-- ========================================================== -->
         <!-- Security Libraries (pac4j, etc.)                           -->
         <!-- ========================================================== -->
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-javaee</artifactId>
-            <version>${pac4j.version}</version>
-        </dependency>
+        <!--
+            pac4j-javaee is deliberately absent. It carries the same class as pac4j-jakartaee,
+            org.pac4j.jee.context.JEEContext, built against javax.servlet instead of jakarta.servlet. Both jars
+            ended up in the WAR, the javax one won at class loading, and any request reaching the OIDC throttling
+            filter died on:
+                NoSuchMethodError: org.pac4j.jee.context.JEEContext.<init>(
+                    jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
+            The code here builds a JEEContext from CAS's jakarta request and response, so it compiles against
+            pac4j-jakartaee, which CAS brings in — the two copies simply disagreed at runtime.
+        -->
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>
@@ -553,11 +557,11 @@
             <artifactId>pac4j-oidc</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>spring-webmvc-pac4j</artifactId>
-            <version>${spring-webmvc-pac4j.version}</version>
-        </dependency>
+        <!--
+            spring-webmvc-pac4j is deliberately absent too. Nothing here imports org.pac4j.springframework, CAS 7.3
+            does not ship it in its overlay, and it is a javax-era artifact whose only effect was to drag
+            pac4j-javaee 5.4.3 onto a Jakarta classpath.
+        -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
