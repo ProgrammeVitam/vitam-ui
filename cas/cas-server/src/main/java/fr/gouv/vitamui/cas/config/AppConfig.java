@@ -134,7 +134,6 @@ import org.springframework.data.mongodb.observability.MongoObservationCommandLis
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
@@ -232,8 +231,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         //       -> accessTokenJwtBuilder
         // The session store is only read while resolving a principal, never during construction, so injecting it
         // lazily breaks the cycle where it costs nothing.
-        @Lazy
-        @Qualifier(
+        @Lazy @Qualifier(
             CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
         ) final SessionStore delegatedClientDistributedSessionStore,
         @Qualifier(CasBeans.PRINCIPAL_FACTORY) PrincipalFactory principalFactory,
