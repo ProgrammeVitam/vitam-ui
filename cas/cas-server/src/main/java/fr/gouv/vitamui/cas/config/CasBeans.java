@@ -113,10 +113,12 @@ public final class CasBeans {
         "registeredServiceAuthenticationPolicyWebflowEventResolver";
 
     // === Webflow / Definitions ===
-    public static final String LOGIN_FLOW_DEFINITION_REGISTRY =
-        CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY;
-    public static final String LOGOUT_FLOW_DEFINITION_REGISTRY =
-        CasWebflowConstants.BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY;
+    /**
+     * CAS 7.3 merged the separate login and logout flow definition registries into a single registry, so the
+     * former BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY and BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY are gone.
+     */
+    public static final String FLOW_DEFINITION_REGISTRY = CasWebflowConstants.BEAN_NAME_FLOW_DEFINITION_REGISTRY;
+
     public static final String FLOW_BUILDER_SERVICES = CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES;
     public static final String MFA_SIMPLE_AUTHENTICATOR_FLOW_REGISTRY = "mfaSimpleAuthenticatorFlowRegistry";
 

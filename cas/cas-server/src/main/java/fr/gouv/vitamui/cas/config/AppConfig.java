@@ -166,10 +166,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public LoginPwdAuthenticationHandler loginPwdAuthenticationHandler(
         final CasApi casApi,
         @Value("${ip.header}") final String ipHeaderName,
-        @Qualifier(CasBeans.PRINCIPAL_FACTORY) final PrincipalFactory principalFactory,
-        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
+        @Qualifier(CasBeans.PRINCIPAL_FACTORY) final PrincipalFactory principalFactory
     ) {
-        return new LoginPwdAuthenticationHandler(servicesManager, principalFactory, casApi, ipHeaderName);
+        return new LoginPwdAuthenticationHandler(principalFactory, casApi, ipHeaderName);
     }
 
     @Bean

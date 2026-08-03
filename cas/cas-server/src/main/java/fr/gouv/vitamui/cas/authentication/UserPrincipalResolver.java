@@ -62,7 +62,6 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
-import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.util.CommonHelper;
 import org.pac4j.jee.context.JEEContext;
@@ -474,11 +473,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
             credential instanceof ClientCredential ||
             credential instanceof X509CertificateCredential
         );
-    }
-
-    @Override
-    public IPersonAttributeDao getAttributeRepository() {
-        return null;
     }
 
     private boolean isTrueAuthUserDtoInstance(AuthUserDto authUser) {
