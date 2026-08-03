@@ -17,7 +17,7 @@
         <apache.commons.codec.version>1.22.0</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
         <bouncycastle.version>1.84</bouncycastle.version>
-        <cas.version>7.0.10.1</cas.version>
+        <cas.version>7.3.8</cas.version>
         <commons.beanutils.version>1.11.0</commons.beanutils.version>
         <commons.collections4.version>4.5.0</commons.collections4.version>
         <commons.compress.version>1.26.1</commons.compress.version>
@@ -65,7 +65,7 @@
         <serenity.version>5.3.10</serenity.version>
         <slf4j.version>2.0.9</slf4j.version>
         <spring-cloud-dependencies.version>2025.1.0</spring-cloud-dependencies.version>
-        <spring-security-cas.version>6.2.8</spring-security-cas.version>
+        <spring-security-cas.version>6.5.5</spring-security-cas.version>
         <swagger.version>3.0.0</swagger.version>
         <testcontainers.version>1.21.4</testcontainers.version>
         <archunit.version>1.4.2</archunit.version>

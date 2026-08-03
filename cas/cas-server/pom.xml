@@ -19,10 +19,10 @@
         <maven.compiler.release>21</maven.compiler.release>
 
         <!-- Spring & Spring Cloud Versions -->
-        <spring.boot.version>3.2.1</spring.boot.version>
+        <spring.boot.version>3.5.6</spring.boot.version>
 
         <!-- CAS & Security Versions -->
-        <cas.version>7.0.10.1</cas.version>
+        <cas.version>7.3.8</cas.version>
         <pac4j.version>6.3.3</pac4j.version>
         <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
 
@@ -349,10 +349,11 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-oauth-core</artifactId>
-        </dependency>
+        <!--
+            cas-server-support-oauth-core was removed in CAS 7.3: its only class,
+            CasOAuth20ProtocolTicketCatalogConfiguration, was folded into CasOAuth20Configuration,
+            which cas-server-support-oauth already brings in.
+        -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-core-api</artifactId>
