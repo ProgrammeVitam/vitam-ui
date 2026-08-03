@@ -1,10 +1,7 @@
-// Switch to security database
-db = db.getSiblingDB('{{ mongodb.security.db }}')
-
 // Create security user
 
-if (! db.getUser("{{ mongodb.security.user }}")) {
-    db.createUser(
+if (! dbSecurity.getUser("{{ mongodb.security.user }}")) {
+    dbSecurity.createUser(
         {
             user: "{{ mongodb.security.user }}",
             pwd: "{{ mongodb.security.password }}",
@@ -13,7 +10,7 @@ if (! db.getUser("{{ mongodb.security.user }}")) {
     )
 }
 else {
-    db.updateUser(
+    dbSecurity.updateUser(
         "{{ mongodb.security.user }}",
         {
             pwd: "{{ mongodb.security.password }}",

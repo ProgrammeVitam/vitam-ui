@@ -1,0 +1,46 @@
+// Rename, update description and add new roles for current collect default profile
+dbIam.profiles.updateMany(
+    { "applicationName": "COLLECT_APP" },
+    {
+        $set: {
+            "description": "Profil de supervision des projets de versement ayant tous les droits dans l'APP Collecte dont celui permettant d'annuler une transaction",
+            "name": "Archiviste - Administrateur"
+        }
+    }
+);
+
+dbIam.profiles.updateMany(
+    { "applicationName": "COLLECT_APP" },
+    {
+        $addToSet: {
+            "roles": {
+                $each: [
+                    { "name": "ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT" },
+                    { "name": "ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT" },
+                    { "name": "ROLE_COLLECT_GET_ARCHIVE_BINARY" },
+                    { "name": "ROLE_COLLECT_GET_ARCHIVE_SEARCH" },
+                    { "name": "ROLE_GET_ONTOLOGIES" },
+                    { "name": "ROLE_GET_FILLING_PLAN_ACCESS" }
+                ]
+            }
+        }
+    }
+);
+
+//Remove unused roles
+dbIam.profiles.updateMany(
+    { "applicationName": "COLLECT_APP" },
+    {
+        $pull: {
+            roles: {
+                name: {
+                    $in: [
+                        "ROLE_DELETE_TRANSACTIONS",
+                        "ROLE_UPDATE_UNIT_DESC_METADATA",
+                        "ROLE_UPDATE_UNITS_METADATA"
+                    ]
+                }
+            }
+        }
+    }
+);

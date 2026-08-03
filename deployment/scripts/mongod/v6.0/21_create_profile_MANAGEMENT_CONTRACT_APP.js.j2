@@ -1,25 +1,21 @@
-db = db.getSiblingDB('iam')
+// MANAGEMENT CONTRACT : ADD NEW ADMIN PROFILE
 
-print("START_21_create_profile_MANAGEMENT_CONTRACT_APP.js");
+var maxIdProfile = dbIam.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
-// ========================================= MANAGEMENT CONTRACT : ADD NEW ADMIN PROFILE =========================================
+dbIam.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
-var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
-
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
-
-    db.profiles.insertOne({
-        "_id" : "PROFIL_" + tenant.identifier + "-MANAGEMENT_CONTRACT_APP-ADMIN",
-        "identifier" : NumberInt(maxIdProfile++),
-        "name" : "Contrats de gestion",
-        "description" : "Application des contrats de gestion",
+    dbIam.profiles.insertOne({
+        "_id": "PROFIL_" + tenant.identifier + "-MANAGEMENT_CONTRACT_APP-ADMIN",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Contrats de gestion",
+        "description": "Application des contrats de gestion",
         "tenantIdentifier": NumberInt(tenant.identifier),
-        "applicationName" : "MANAGEMENT_CONTRACT_APP",
-        "enabled" : true,
-        "readonly" : true,
-        "level" : "",
-        "customerId" : tenant.customerId,
-        "roles" : [
+        "applicationName": "MANAGEMENT_CONTRACT_APP",
+        "enabled": true,
+        "readonly": true,
+        "level": "",
+        "customerId": tenant.customerId,
+        "roles": [
             {"name": "ROLE_GET_MANAGEMENT_CONTRACT"},
             {"name": "ROLE_CREATE_MANAGEMENT_CONTRACT"},
             {"name": "ROLE_UPDATE_MANAGEMENT_CONTRACT"},
@@ -29,34 +25,24 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
 });
 
-
-db.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-	$set: {
-		"sequence": NumberInt(maxIdProfile)
-	}
-});
-
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(maxIdProfile)
+        }
+    }
+);
 
 //============================ UPDATE ADMIN GROUPS =============================
 
 var profileMgtContractId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-MANAGEMENT_CONTRACT_APP-ADMIN";
 
-db.groups.updateOne({
-    "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
-}, {
-    $addToSet: {
-        "profileIds": profileMgtContractId
+dbIam.groups.updateOne(
+    { "_id": "admin_group" },
+    {
+        $addToSet: {
+            "profileIds": profileMgtContractId
+        }
     }
-});
-
-db.groups.updateOne({
-    "_id": "admin_group"
-}, {
-    $addToSet: {
-        "profileIds": profileMgtContractId
-    }
-});
-
-print("END_21_create_profile_MANAGEMENT_CONTRACT_APP.js");
+);

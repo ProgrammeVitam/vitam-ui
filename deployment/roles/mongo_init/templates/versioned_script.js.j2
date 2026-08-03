@@ -1,13 +1,13 @@
-versioningDb = db.getSiblingDB('versioning')
+var commitChangelog = dbVersioning.changelog.find({filename: '{{ mongo_file.finalname }}'}).toArray();
 
-var commitChangelog = versioningDb.changelog.find({filename: '{{ mongo_file.finalname }}'}).toArray();
-
-if (commitChangelog.length  == 0) {
+if (commitChangelog.length == 0) {
+    print("START -> {{ mongo_file.finalname }}")
     {% if mock_insert_data is not defined %}
         // Insert data
         {{ script_content.stdout }}
     {% endif %}
 
     // Insert changelog
-    versioningDb.changelog.insertOne({filename: '{{ mongo_file.finalname }}', date: new Date(), version: '{{ mongo_file.version }}', checksum: '{{ stat_result.stat.checksum}}'});
+    dbVersioning.changelog.insertOne({filename: '{{ mongo_file.finalname }}', date: new Date(), version: '{{ mongo_file.version }}', checksum: '{{ stat_result.stat.checksum}}'});
+    print("END -> {{ mongo_file.finalname }}")
 }

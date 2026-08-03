@@ -1,10 +1,7 @@
-// Switch to archivesearch database
-db = db.getSiblingDB('{{ mongodb.archivesearch.db }}')
+// Create archivesearch user
 
-// Create search user
-
-if (! db.getUser("{{ mongodb.archivesearch.user }}")) {
-    db.createUser(
+if (! dbArchiveSearch.getUser("{{ mongodb.archivesearch.user }}")) {
+    dbArchiveSearch.createUser(
         {
             user: "{{ mongodb.archivesearch.user }}",
             pwd: "{{ mongodb.archivesearch.password }}",
@@ -13,7 +10,7 @@ if (! db.getUser("{{ mongodb.archivesearch.user }}")) {
     )
 }
 else {
-    db.updateUser(
+    dbArchiveSearch.updateUser(
         "{{ mongodb.archivesearch.user }}",
         {
             pwd: "{{ mongodb.archivesearch.password }}",

@@ -1,28 +1,27 @@
-print("START v8.1.0-03_update_ontology_app.js");
-
-dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
-dbIam.profiles.updateMany({
-    "applicationName": "ONTOLOGY_APP"
-}, {
-    $addToSet: {
-        "roles": {
-            $each: [
-                { "name": "ROLE_IMPORT_SCHEMAS" },
-                { "name": "ROLE_GET_SCHEMAS" },
-                { "name": "ROLE_DELETE_SCHEMAS" }
-            ]
+dbIam.profiles.updateMany(
+    { "applicationName": "ONTOLOGY_APP" },
+    {
+        $addToSet: {
+            "roles": {
+                $each: [
+                    { "name": "ROLE_IMPORT_SCHEMAS" },
+                    { "name": "ROLE_GET_SCHEMAS" },
+                    { "name": "ROLE_DELETE_SCHEMAS" }
+                ]
+            }
         }
     }
-});
+);
 
-dbIam.applications.updateOne({
-    "identifier": "ONTOLOGY_APP"
-}, {
-    $set: {
-        "hasTenantList": true,
-        "hasCustomerList": false
-    },
-});
+dbIam.applications.updateOne(
+    { "identifier": "ONTOLOGY_APP" },
+    {
+        $set: {
+            "hasTenantList": true,
+            "hasCustomerList": false
+        },
+    }
+);
 
 // CREATING NEW PROFILES FOR ONTOLOGY_APP on existing tenants
 
@@ -60,27 +59,26 @@ dbIam.tenants.find({
 });
 
 // Update sequence
-dbIam.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-    $set: {
-        "sequence": NumberInt(maxIdProfile)
-    }
-});
-
-dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
-dbSecurity.contexts.updateOne({
-    "_id": "ui_referential_context"
-}, {
-    $addToSet: {
-        "roleNames": {
-            $each: [
-                "ROLE_IMPORT_SCHEMAS",
-                "ROLE_GET_SCHEMAS",
-                "ROLE_DELETE_SCHEMAS"
-            ]
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(maxIdProfile)
         }
     }
-});
+);
 
-print("END v8.1.0-03_update_ontology_app.js");
+dbSecurity.contexts.updateOne(
+    { "_id": "ui_referential_context" },
+    {
+        $addToSet: {
+            "roleNames": {
+                $each: [
+                    "ROLE_IMPORT_SCHEMAS",
+                    "ROLE_GET_SCHEMAS",
+                    "ROLE_DELETE_SCHEMAS"
+                ]
+            }
+        }
+    }
+);

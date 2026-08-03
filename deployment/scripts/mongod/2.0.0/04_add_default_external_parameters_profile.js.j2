@@ -1,19 +1,15 @@
-db = db.getSiblingDB('iam')
+dbIam.externalParameters.deleteMany({});
+dbIam.createCollection('externalParameters', { autoIndexId: true });
 
-print("START 04_add_default_external_parameters_profile.js.j2");
-
-db.externalParameters.deleteMany({});
-db.createCollection('externalParameters', { autoIndexId: true });
-
-var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+var maxIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
 // For each tenants (except cas tenant)
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+dbIam.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 
     // EXTERNAL_PARAMS
     var externalParamId = "DEFAULT_EXT_PARAM_" + tenant.identifier;
 
-    db.externalParameters.insertOne({
+    dbIam.externalParameters.insertOne({
         "_id": externalParamId,
         "identifier": externalParamId,
         "name": "Liste des paramétrages externes du tenant " + tenant.identifier,
@@ -25,7 +21,7 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
         ]
     });
 
-    db.profiles.insertOne({
+    dbIam.profiles.insertOne({
         "_id": "PROFIL_" + tenant.identifier + "-EXTERNAL_PARAMS-DEFAULT",
         "identifier": NumberInt(maxIdProfile++),
         "name": "Profil pour la gestion des paramétrages externes du tenant " + tenant.identifier,
@@ -46,32 +42,24 @@ db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 });
 
 // Update sequence
-db.sequences.updateOne({
-    "_id": "profile_identifier"
-}, {
-    $set: {
-        "sequence": NumberInt(maxIdProfile)
+dbIam.sequences.updateOne(
+    { "_id": "profile_identifier" },
+    {
+        $set: {
+            "sequence": NumberInt(maxIdProfile)
+        }
     }
-});
+);
 
 //============================ UPDATE ADMIN GROUPS =============================
 
 var profileExtParamAdminId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-EXTERNAL_PARAMS-DEFAULT";
 
-db.groups.updateOne({
-    "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
-}, {
-    $addToSet: {
-        "profileIds": profileExtParamAdminId
+dbIam.groups.updateOne(
+    { "_id": "admin_group" },
+    {
+        $addToSet: {
+            "profileIds": profileExtParamAdminId
+        }
     }
-});
-
-db.groups.updateOne({
-    "_id": "admin_group"
-}, {
-    $addToSet: {
-        "profileIds": profileExtParamAdminId
-    }
-});
-
-print("END 04_add_default_external_parameters_profile.js.j2");
+);

@@ -1,3 +1,11 @@
+// Init databases connections
+dbAdmin = db.getSiblingDB('{{ mongodb.admin.db | default('admin') }}')
+dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
+dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
+dbCas = db.getSiblingDB('{{ mongodb.cas.db | default('cas') }}')
+dbArchiveSearch = db.getSiblingDB('{{ mongodb.archivesearch.db | default('archivesearch') }}')
+dbVersioning = db.getSiblingDB('{{ mongodb.versioning.db | default('versioning') }}')
+
 {% for script in mongod_eligible_files_sorted %}
   {% if mongodb.docker is defined and mongodb.docker.enable %}
     load('{{ mongodb.docker.internal_dir}}/app/mongod/{{ script.finalname }}');

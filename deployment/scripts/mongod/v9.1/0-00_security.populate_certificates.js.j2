@@ -1,20 +1,18 @@
-dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
-
-print("START v9.1.0-00_security.populate_certificates.js");
-
 dbSecurity.certificates.deleteMany({});
 
 {% macro insertCertificate(pemFile, contextId, groupName) -%}
-  {% if groups[groupName] | default([]) | length > 0 %}
-    dbSecurity.certificates.insertOne({
-      "_id": "{{ pemFile | basename | replace('.pem','_cert') }}",
-      "contextId": "{{ contextId }}",
-      "subjectDN": "subjectDN",
-      "issuerDN": "issuerDN",
-      "serialNumber": "serialNumberAdmin",
-      "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
-    })
-  {% endif %}
+    {% if groups[groupName] | default([]) | length > 0 %}
+        dbSecurity.certificates.insertOne(
+            {
+                "_id": "{{ pemFile | basename | replace('.pem','_cert') }}",
+                "contextId": "{{ contextId }}",
+                "subjectDN": "subjectDN",
+                "issuerDN": "issuerDN",
+                "serialNumber": "serialNumberAdmin",
+                "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+            }
+        )
+    {% endif %}
 {%- endmacro %}
 
 {{ insertCertificate(pki_dir + '/vitamui-services/clients/cas-server/cas-server.pem', 'cas_context', 'hosts_cas_server') }}
@@ -27,5 +25,3 @@ dbSecurity.certificates.deleteMany({});
 {{ insertCertificate(pki_dir + '/vitamui-services/clients/ui-ingest/ui-ingest.pem', 'ui_ingest_context', 'hosts_ui_ingest') }}
 {{ insertCertificate(pki_dir + '/vitamui-services/clients/ui-pastis/ui-pastis.pem', 'ui_pastis_context', 'hosts_ui_pastis') }}
 {{ insertCertificate(pki_dir + '/vitamui-services/clients/ui-collect/ui-collect.pem', 'ui_collect_context', 'hosts_ui_collect') }}
-
-print("END v9.1.0-00_security.populate_certificates.js");

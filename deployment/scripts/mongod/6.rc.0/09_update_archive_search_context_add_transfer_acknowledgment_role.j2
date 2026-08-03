@@ -1,15 +1,9 @@
-db = db.getSiblingDB('security')
-
-print("SRART 09_update_archive_search_context_add_transfer_acknowledgment_role.js");
-
-db.contexts.updateOne({
-    "_id":"ui_archive_search_context"
-},
-{
-    $addToSet:{
-         "roleNames":"ROLE_TRANSFER_ACKNOWLEDGMENT"
-}
-});
-
-print("END 09_update_archive_search_context_add_transfer_acknowledgment_role.js");
-
+// Warning: this file is wrongly named without .js extension. It has been backuped in versioning.changelog database under `filename: 'vitamui_6.rc.0_09_update_archive_search_context_add_transfer_acknowledgment_role'`. We can't rename it in .js format to avoid duplications on migration.
+dbSecurity.contexts.updateOne(
+    { "_id": "ui_archive_search_context" },
+    {
+        $addToSet: {
+            "roleNames": "ROLE_TRANSFER_ACKNOWLEDGMENT"
+        }
+    }
+);

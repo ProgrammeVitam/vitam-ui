@@ -1,8 +1,3 @@
-dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
-dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
-
-print("START v10.0.0-00_add_preservation_app.js");
-
 var userRoles = [
     "ROLE_GET_PRESERVATION_SCENARIOS",
     "ROLE_UPDATE_PRESERVATION_SCENARIOS",
@@ -44,23 +39,25 @@ var profiles = {
     })
 };
 
-dbIam.applications.insertOne({
-    "identifier" : "PRESERVATION_APP",
-{% if vitamui.ui_referential.base_url is defined %}
-    "url": "{{ vitamui.ui_referential.base_url }}/preservation",
-{% else %}
-    "url": "{{ url_prefix }}/referential/preservation",
-{% endif %}
-    "icon" : "vitamui-icon vitamui-icon-fichiers",
-    "name" : "Préservation",
-    "category" : "referential",
-    "position" : NumberInt(31),
-    "hasCustomerList" : false,
-    "hasTenantList" : true,
-    "hasHighlight" : false,
-    "tooltip" : "Accéder, créer ou supprimer les griffons ou scénarios de préservation",
-    "target" : "_self"
-});
+dbIam.applications.insertOne(
+    {
+        "identifier": "PRESERVATION_APP",
+    {% if vitamui.ui_referential.base_url is defined %}
+        "url": "{{ vitamui.ui_referential.base_url }}/preservation",
+    {% else %}
+        "url": "{{ url_prefix }}/referential/preservation",
+    {% endif %}
+        "icon": "vitamui-icon vitamui-icon-fichiers",
+        "name": "Préservation",
+        "category": "referential",
+        "position": NumberInt(31),
+        "hasCustomerList": false,
+        "hasTenantList": true,
+        "hasHighlight": false,
+        "tooltip": "Accéder, créer ou supprimer les griffons ou scénarios de préservation",
+        "target": "_self"
+    }
+);
 
 // sequence recovery
 var seqDoc = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' });
@@ -96,12 +93,10 @@ dbIam.tenants.find({
 
 // UI referential context update
 dbSecurity.contexts.updateOne(
-    {
-        _id: "ui_referential_context"
-    },
+    { "_id": "ui_referential_context" },
     {
         $addToSet: {
-            roleNames: {
+            "roleNames": {
                 $each: adminRoles
             }
         }
@@ -110,9 +105,7 @@ dbSecurity.contexts.updateOne(
 
 // profile sequence update
 dbIam.sequences.updateOne(
-    {
-        "_id": "profile_identifier"
-    },
+    { "_id": "profile_identifier" },
     {
         $set: {
             "sequence": NumberInt(maxIdProfile)
@@ -120,44 +113,25 @@ dbIam.sequences.updateOne(
     }
 );
 
-db.groups.updateOne(
-	{
-		"_id": "admin_group"
-	},
-	{
-		$addToSet: {"profileIds": "system_preservation" }
-	},
-	{
-		"upsert": false
-	}
-);
-
-db.groups.updateOne(
-	{
-		"_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
-	},
-	{
-		$addToSet: {"profileIds": "system_preservation" }
-	},
-	{
-		"upsert": false
-	}
-);
-
-db.applications.updateOne(
+dbIam.groups.updateOne(
+    { "_id": "admin_group" },
     {
-      "identifier" : "PRESERVATION_APP",
+        $addToSet: {
+            "profileIds": "system_preservation"
+        }
     },
+    { "upsert": false }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "PRESERVATION_APP" },
     {
-      $set:
-      {
+        $set: {
         {% if vitamui.ui_referential.base_url is defined %}
-          "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*",
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
         {% else %}
-          "serviceId": "^{{ url_prefix }}/referential/.*",
+            "serviceId": "^{{ url_prefix }}/referential/.*"
         {% endif %}
-      },
+        }
     }
 );
-
-print("END v10.0.0-00_add_preservation_app.js");

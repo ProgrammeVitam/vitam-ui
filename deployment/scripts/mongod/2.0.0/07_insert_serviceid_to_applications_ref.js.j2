@@ -1,0 +1,284 @@
+// =============== INGEST ==========
+dbIam.applications.updateOne(
+    { "identifier": "HOLDING_FILLING_SCHEME_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_ingest.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_ingest.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/ingest/.*"
+        {% endif %}
+        }
+    }
+);
+
+// =============== ARCHIVE-SEARCH ==========
+dbIam.applications.updateOne(
+    { "identifier": "ARCHIVE_SEARCH_MANAGEMENT_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_archive_search.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_archive_search.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/archive-search/.*"
+        {% endif %}
+        }
+    }
+);
+
+// =============== IDENTITY ==========
+dbIam.applications.updateOne(
+    { "identifier": "ACCOUNTS_APP" },
+    {
+        $set: {
+            "serviceId": "^{{ vitamui.ui_portal.base_url | default(url_prefix) }}/.*"
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "HIERARCHY_PROFILE_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_identity.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/identity/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "SUBROGATIONS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_identity.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/identity/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "PROFILES_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_identity.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/identity/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "GROUPS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_identity.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/identity/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "USERS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_identity.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*",
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/identity/.*",
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "CUSTOMERS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_identity.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_identity.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/identity/.*"
+        {% endif %}
+        }
+    }
+);
+
+// =============== REFERENTIAL ==========
+dbIam.applications.updateOne(
+    { "identifier": "LOGBOOK_OPERATION_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "PROBATIVE_VALUE_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "DSL_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "SECURE_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "AUDIT_APP" }, {
+    $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+        "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+        "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "ONTOLOGY_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+    }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "SECURITY_PROFILES_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "CONTEXTS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "FILE_FORMATS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "AGENCIES_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "ACCESS_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "INGEST_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);
+
+dbIam.applications.updateOne(
+    { "identifier": "RULES_APP" },
+    {
+        $set: {
+        {% if vitamui.ui_referential.base_url is defined %}
+            "serviceId": "^{{ vitamui.ui_referential.base_url }}/.*"
+        {% else %}
+            "serviceId": "^{{ url_prefix }}/referential/.*"
+        {% endif %}
+        }
+    }
+);

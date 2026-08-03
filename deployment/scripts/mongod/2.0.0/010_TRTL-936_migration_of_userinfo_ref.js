@@ -1,9 +1,4 @@
-db = db.getSiblingDB('iam')
-
-print("START 010_TRTL-936_migration_of_userinfo_ref.js");
-
-
-db.users.find({"userInfoId" : {$exists : false}}).forEach(user => {
+dbIam.users.find({ "userInfoId": { $exists: false } }).forEach(user => {
 
     var language = "FRENCH";
 
@@ -13,50 +8,53 @@ db.users.find({"userInfoId" : {$exists : false}}).forEach(user => {
 
     var userInfoId = new ObjectId().valueOf() + new ObjectId().valueOf();
 
-    db.userInfos.insertOne({
-        "_id": userInfoId,
-        "language": language,
-        "_class": "userInfos"
-    });
-
-    db.users.updateOne(
-        {_id: user._id},
+    dbIam.userInfos.insertOne(
         {
-            "$set": {"userInfoId": userInfoId},
+            "_id": userInfoId,
+            "language": language,
+            "_class": "userInfos"
         }
     );
 
-    db.users.updateOne(
-        {_id: user._id},
+    dbIam.users.updateOne(
+        { "_id": user._id },
         {
-            $unset: {"language": ""},
+            $set: {
+                "userInfoId": userInfoId
+            },
+        }
+    );
+
+    dbIam.users.updateOne(
+        { "_id": user._id },
+        {
+            $unset: {
+                "language": ""
+            },
         }
     );
 });
 
 // Add user infos role to ui_admin_identity_context and ui_identity_context
-db = db.getSiblingDB('security')
-db.contexts.updateMany({
-        '_id': {
+dbSecurity.contexts.updateMany(
+    {
+        "_id": {
             $in: [
-                'ui_admin_identity_context',
-                'ui_identity_context'
+                "ui_admin_identity_context",
+                "ui_identity_context"
             ]
         }
     },
     {
-        "$push": {
+        $addToSet: {
             "roleNames": {
-                "$each":
-                    [
-                        "ROLE_GET_USER_INFOS",
-                        "ROLE_CREATE_USER_INFOS",
-                        "ROLE_UPDATE_USER_INFOS"
-
-                    ]
+                $each: [
+                    "ROLE_GET_USER_INFOS",
+                    "ROLE_CREATE_USER_INFOS",
+                    "ROLE_UPDATE_USER_INFOS",
+                    "ROLE_GET_EXTERNAL_PARAMS"
+                ]
             }
         }
     }
 );
-print("END 010_TRTL-936_migration_of_userinfo_ref.js");
-

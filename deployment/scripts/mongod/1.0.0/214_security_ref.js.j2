@@ -1,17 +1,21 @@
-db = db.getSiblingDB('security')
-
-print("START 214_security_ref.js");
-
-db.contexts.insertOne({
-    "_id" : "ui_ingest_context",
-    "name": "Contexte UI Ingest",
-    "fullAccess" : true,
-    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
-    "roleNames" : [
-        "ROLE_CREATE_INGEST", "ROLE_GET_INGEST", "ROLE_GET_ALL_INGEST", "ROLE_LOGBOOKS", "ROLE_UPDATE_ME_USERS",
-        "ROLE_CREATE_HOLDING_FILLING_SCHEME", "ROLE_GET_HOLDING_FILLING_SCHEME", "ROLE_GET_ALL_HOLDING_FILLING_SCHEME"
-
-    ]
-});
-
-print("END 214_security_ref.js");
+dbSecurity.contexts.insertOne(
+    {
+        "_id": "ui_ingest_context",
+        "name": "Contexte UI Ingest",
+        "fullAccess": true,
+        "tenants": [
+            NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+            NumberInt({{ vitamui_platform_informations.cas_tenant }})
+        ],
+        "roleNames": [
+            "ROLE_CREATE_INGEST",
+            "ROLE_GET_INGEST",
+            "ROLE_GET_ALL_INGEST",
+            "ROLE_LOGBOOKS",
+            "ROLE_UPDATE_ME_USERS",
+            "ROLE_CREATE_HOLDING_FILLING_SCHEME",
+            "ROLE_GET_HOLDING_FILLING_SCHEME",
+            "ROLE_GET_ALL_HOLDING_FILLING_SCHEME"
+        ]
+    }
+);
