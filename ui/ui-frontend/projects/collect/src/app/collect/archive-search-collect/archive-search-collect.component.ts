@@ -59,6 +59,7 @@ import {
   CriteriaSearchCriteria,
   CriteriaValue,
   Direction,
+  DiscussionEntity,
   DISSEMINATION_RULE,
   ExternalParameters,
   ExternalParametersService,
@@ -238,6 +239,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   deletionAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
 
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
+  discussionEntities: DiscussionEntity[];
 
   constructor() {
     const route = inject(ActivatedRoute);
@@ -434,6 +436,23 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       .pipe(map((rules) => rules.sort((a, b) => a.ruleId.localeCompare(b.ruleId))));
 
     this.checkUpdateUnitPermissions();
+
+    this.transaction$.subscribe((transaction) => {
+      if (transaction) {
+        const { id: transactionId, projectId } = transaction;
+        this.discussionEntities = [
+          {
+            type: 'PROJECT',
+            id: projectId,
+          },
+          {
+            type: 'TRANSACTION',
+            id: transactionId,
+            main: true,
+          },
+        ];
+      }
+    });
   }
 
   ngAfterViewInit() {

@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, inject, input, OnInit, Renderer2 } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
@@ -44,14 +45,16 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);
 
-  @Input() isToolTipOnMouseEnter = false;
-  @Input() vitamuiCommonEllipsisLines = 1;
+  isToolTipOnMouseEnter = input(false, { transform: coerceBooleanProperty });
+  vitamuiCommonEllipsisLines = input(1);
+  breakAll = input(false, { transform: coerceBooleanProperty });
 
   domElement: any;
 
   ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;
     this.renderer.addClass(this.elementRef.nativeElement, 'text-ellipsis');
+    if (this.breakAll()) this.renderer.addClass(this.elementRef.nativeElement, 'break-all');
     this.setToolTip();
   }
 
@@ -69,13 +72,13 @@ export class EllipsisDirective implements OnInit, AfterViewInit {
 
   @HostListener('mouseenter')
   setToolTipOnMouseEnter() {
-    if (this.isToolTipOnMouseEnter) {
+    if (this.isToolTipOnMouseEnter()) {
       this.setToolTip();
     }
   }
 
   @HostBinding('style.-webkit-line-clamp')
   get lineClamp() {
-    return this.vitamuiCommonEllipsisLines > 1 ? this.vitamuiCommonEllipsisLines : null;
+    return this.vitamuiCommonEllipsisLines() > 1 ? this.vitamuiCommonEllipsisLines() : null;
   }
 }

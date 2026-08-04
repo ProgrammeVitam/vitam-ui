@@ -1,0 +1,4 @@
+<vitamui-input class="w-100" [placeholder]="'DISCUSSION.NEW.SUBJECT_PLACEHOLDER' | translate" [formControl]="title" />
+<vitamui-input class="w-100" [placeholder]="'DISCUSSION.NEW.BODY_PLACEHOLDER' | translate" [textarea]="true" [formControl]="text" />
+
+<button class="btn default secondary" (click)="create()" [disabled]="!isControlValid()">{{ 'DISCUSSION.NEW.SUBMIT' | translate }}</button>

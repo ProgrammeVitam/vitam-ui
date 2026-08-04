@@ -1,0 +1,10 @@
+@use 'bootstrap/scss/bootstrap-grid';
+@use '../../../../sass/spacing';
+
+:host {
+  background: var(--vitamui-white);
+  border-radius: 10px;
+
+  @extend .p-4;
+  @extend .gap-4;
+}

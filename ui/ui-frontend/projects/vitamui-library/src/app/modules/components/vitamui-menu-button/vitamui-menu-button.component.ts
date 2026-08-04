@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'vitamui-menu-button',
@@ -47,22 +48,36 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class VitamuiMenuButtonComponent {
   /** Set the menu overlay display (by defaut at start) */
-  @Input() overlayPos: 'start' | 'end' = 'start';
+  overlayPos = input<'start' | 'end'>('start');
 
   /**
    * Set the icon to display on the button.
    * If there is only an icon, the button will be rounded.
    * WARNING : ONLY USE VITAMUI ICONS, MATERIAL ICONS WONT WORK
    */
-  @Input() icon: string;
+  icon = input<string>();
 
   /**
    * Set the label that will be displayed on the button.
    * Can be combined with an icon.
    */
-  @Input() label: string;
+  label = input<string>();
 
-  @Input() disabled = false;
-  @Input() outline: 'primary' | 'secondary' | 'none' = 'none';
-  @Input() menuButtonSize: 'large' | 'medium' | 'small' = 'large';
+  disabled = input(false, { transform: coerceBooleanProperty });
+  /**
+   * Color of the menu button (and overlay)
+   */
+  menuColor = input<'primary' | 'secondary'>('secondary');
+  /**
+   * Whether the menu button is in outline style or plain
+   */
+  menuButtonOutline = input(false, { transform: coerceBooleanProperty });
+  /**
+   * Size of the menu button
+   */
+  menuButtonSize = input<'large' | 'medium' | 'small' | 'xsmall link'>('large');
+  /**
+   * When true, do not show an "X" button in place of the trigger button when opened and removes menu borders
+   */
+  simpleOverlay = input(false, { transform: coerceBooleanProperty });
 }

@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+export * from './discussion.service.mock';
 export * from './vitamui-common-test.module';
 export * from './helpers';
 export * from './tenant-config.service.mock';

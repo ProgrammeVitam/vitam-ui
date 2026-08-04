@@ -132,6 +132,7 @@ spring:
                   /collect-api/users/analytics,
                   /collect-api/logbooks/operations/**,
                   /collect-api/accesscontracts/**,
+                  /collect-api/discussions/**,
 
                   /ingest-api/ui/applications/**,
                   /ingest-api/externalparameters/**,
@@ -186,6 +187,7 @@ spring:
                 - RewritePath=/collect-api/userinfos(?<segment>.*),/iam/v1/userinfos$\{segment},
                 - RewritePath=/collect-api/users(?<segment>.*),/iam/v1/users$\{segment},
                 - RewritePath=/collect-api/subrogations/(?<segment>.*),/iam/v1/subrogations/$\{segment},
+                - RewritePath=/collect-api/discussions(?<segment>.*),/iam/v1/discussions$\{segment},
                 - RewritePath=/collect-api/(?<segment>.*),/v1/$\{segment}
 
                 # Ingest IAM API

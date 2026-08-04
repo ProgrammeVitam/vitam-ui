@@ -1,0 +1,103 @@
+<div
+  class="text medium bold {{
+    currentDiscussion()?.status === 'RESOLVED' ? 'vitamui-grey' : 'secondary'
+  }} d-flex align-items-center justify-content-between"
+>
+  <ng-template #backButton>
+    @if (expanded()) {
+      <button
+        class="btn btn-circle link secondary xsmall tonal"
+        (click)="back($event)"
+        [vitamuiTooltip]="'DISCUSSION.BACK_TO_DISCUSSIONS' | translate"
+        vitamuiTooltipClass="secondary"
+        vitamuiTooltipPosition="TOP"
+      >
+        <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+      </button>
+    }
+  </ng-template>
+
+  <div class="d-flex align-items-center">
+    @switch (componentState()) {
+      @case ('LIST_DISCUSSIONS') {
+        <span class="align-items-center hgap-2">
+          <vitamui-discussion-icon [discussions]="discussions()" />
+          {{ 'DISCUSSION.TITLE' | translate }}
+        </span>
+      }
+      @case ('CREATE_DISCUSSION') {
+        <ng-container *ngTemplateOutlet="backButton"></ng-container>
+        <span>{{ 'DISCUSSION.NEW.TITLE' | translate }}</span>
+      }
+      @case ('DISCUSSION') {
+        <ng-container *ngTemplateOutlet="backButton"></ng-container>
+        <span>{{ currentDiscussion()?.title }}</span>
+      }
+      @case ('RENAME_DISCUSSION') {
+        <ng-container *ngTemplateOutlet="backButton"></ng-container>
+        <span>{{ 'DISCUSSION.RENAME.TITLE' | translate }}</span>
+      }
+    }
+  </div>
+
+  @if (expanded()) {
+    @switch (componentState()) {
+      @case ('LIST_DISCUSSIONS') {
+        <button
+          class="btn btn-circle link secondary xsmall tonal"
+          (click)="componentState.set('CREATE_DISCUSSION'); $event.stopPropagation()"
+          [vitamuiTooltip]="'DISCUSSION.NEW.TITLE' | translate"
+          vitamuiTooltipClass="secondary"
+          vitamuiTooltipPosition="TOP"
+        >
+          <i class="vitamui-icon vitamui-icon-add"></i>
+        </button>
+      }
+      @case ('DISCUSSION') {
+        <vitamui-menu-button
+          overlayPos="end"
+          menuColor="secondary"
+          icon="vitamui-icon-more-horiz"
+          menuButtonSize="xsmall tonal link"
+          [simpleOverlay]="true"
+          (click)="$event.stopPropagation()"
+        >
+          <button mat-menu-item (click)="renameDiscussion()">
+            <div matMenuItemIcon>
+              <i class="vitamui-icon vitamui-icon-ic24-dialog secondary"></i>
+              <i class="vitamui-icon vitamui-icon-ic24-BadgeModifier badge secondary"></i>
+            </div>
+            {{ 'DISCUSSION.ACTIONS.RENAME' | translate }}
+          </button>
+          <button mat-menu-item (click)="closeDiscussion()">
+            <div matMenuItemIcon>
+              <i class="vitamui-icon vitamui-icon-ic24-dialog secondary"></i>
+              <i class="vitamui-icon vitamui-icon-ic24-BadgeSupprimer badge grey-800"></i>
+            </div>
+            {{ 'DISCUSSION.ACTIONS.CLOSE' | translate }}
+          </button>
+        </vitamui-menu-button>
+      }
+    }
+  } @else {
+    <button
+      class="btn btn-circle link secondary xsmall tonal"
+      (click)="opened.set(false); $event.stopPropagation()"
+      [vitamuiTooltip]="'DISCUSSION.TOOLTIP_CLOSE_DISCUSSION_PANEL' | translate"
+      vitamuiTooltipClass="secondary"
+      vitamuiTooltipPosition="TOP"
+    >
+      <i class="vitamui-icon vitamui-icon-close" style="font-size: 8px"></i>
+    </button>
+  }
+
+  <div
+    class="resize-handle"
+    cdkDrag
+    (cdkDragStarted)="panelResizeStart.emit()"
+    (cdkDragEnded)="panelResizeEnd.emit()"
+    (cdkDragMoved)="panelResize.emit($event)"
+  >
+    <i class="vitamui-icon vitamui-icon-agrandissement"></i>
+  </div>
+</div>

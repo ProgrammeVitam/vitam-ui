@@ -1,5 +1,5 @@
 .clickable {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .hidden {
@@ -12,6 +12,14 @@
 
 .underline {
   text-decoration: underline;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .bg-primary {
@@ -37,10 +45,15 @@
 }
 
 $vitamui-colors: vitamui-grey, vitamui-primary, vitamui-secondary;
+$vitamui-color-variations: 50, 100, 200, 300, 400, 600, 700, 800, 900;
 @each $color in $vitamui-colors {
-  @for $i from 1 to 9 {
-    .#{$color}-#{$i * 100} {
-      color: var(--#{$color}-#{$i * 100});
+  .#{$color},
+  .#{$color}-500 {
+    color: var(--#{$color});
+  }
+  @each $i in $vitamui-color-variations {
+    .#{$color}-#{$i} {
+      color: var(--#{$color}-#{$i});
     }
   }
 }

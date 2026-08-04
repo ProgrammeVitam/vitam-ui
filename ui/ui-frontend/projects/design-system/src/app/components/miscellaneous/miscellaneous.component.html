@@ -37,35 +37,70 @@
 
 <div>
   <h2>Action button menu with overlay</h2>
+  <div class="gap-2">
+    @for (menuButtonOutline of [false, true]; track menuButtonOutline) {
+      @for (menuColor of ['primary', 'secondary']; track menuColor) {
+        <div class="d-flex hgap-2">
+          <vitamui-menu-button
+            [simpleOverlay]="true"
+            [menuButtonOutline]="menuButtonOutline"
+            [menuColor]="menuColor"
+            overlayPos="start"
+            icon="vitamui-icon-more-horiz"
+          >
+            <button mat-menu-item>Activer</button>
+            <button mat-menu-item>Désactiver</button>
+          </vitamui-menu-button>
 
-  <div class="d-flex">
-    <div class="mr-2">
-      <vitamui-menu-button [overlayPos]="'start'" [icon]="'vitamui-icon-more-horiz'">
-        <button mat-menu-item>Activer</button>
-        <button mat-menu-item>Désactiver</button>
-      </vitamui-menu-button>
-    </div>
+          <vitamui-menu-button
+            [simpleOverlay]="true"
+            [menuButtonOutline]="menuButtonOutline"
+            [menuColor]="menuColor"
+            overlayPos="end"
+            icon="vitamui-icon-more-horiz"
+          >
+            <button mat-menu-item>Activer</button>
+            <button mat-menu-item>Désactiver</button>
+          </vitamui-menu-button>
 
-    <div class="mr-2">
-      <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-        <button mat-menu-item>Activer</button>
-        <button mat-menu-item>Désactiver</button>
-      </vitamui-menu-button>
-    </div>
+          <vitamui-menu-button
+            [menuButtonOutline]="menuButtonOutline"
+            [menuColor]="menuColor"
+            overlayPos="start"
+            icon="vitamui-icon-more-horiz"
+          >
+            <button mat-menu-item>Activer</button>
+            <button mat-menu-item>Désactiver</button>
+          </vitamui-menu-button>
 
-    <div class="mr-2">
-      <vitamui-menu-button [overlayPos]="'end'" [label]="'With text only'">
-        <button mat-menu-item>Activer</button>
-        <button mat-menu-item>Désactiver</button>
-      </vitamui-menu-button>
-    </div>
+          <vitamui-menu-button
+            [menuButtonOutline]="menuButtonOutline"
+            [menuColor]="menuColor"
+            overlayPos="end"
+            icon="vitamui-icon-more-horiz"
+          >
+            <button mat-menu-item>Activer</button>
+            <button mat-menu-item>Désactiver</button>
+          </vitamui-menu-button>
 
-    <div>
-      <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'" [label]="'With text & icon'">
-        <button mat-menu-item>Activer</button>
-        <button mat-menu-item>Désactiver</button>
-      </vitamui-menu-button>
-    </div>
+          <vitamui-menu-button [menuButtonOutline]="menuButtonOutline" [menuColor]="menuColor" overlayPos="end" label="With text only">
+            <button mat-menu-item>Activer</button>
+            <button mat-menu-item>Désactiver</button>
+          </vitamui-menu-button>
+
+          <vitamui-menu-button
+            [menuButtonOutline]="menuButtonOutline"
+            [menuColor]="menuColor"
+            overlayPos="end"
+            icon="vitamui-icon-more-horiz"
+            label="With text & icon"
+          >
+            <button mat-menu-item>Activer</button>
+            <button mat-menu-item>Désactiver</button>
+          </vitamui-menu-button>
+        </div>
+      }
+    }
   </div>
 </div>
 

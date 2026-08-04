@@ -1,0 +1,54 @@
+@use '../../../../sass/spacing';
+
+:host {
+  @extend .gap-2;
+  overflow-y: auto;
+  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);
+  scrollbar-width: thin;
+}
+
+.discussion {
+  cursor: pointer;
+  width: 100%;
+  background-color: var(--vitamui-white);
+  border-radius: 10px;
+  border: 1px solid var(--vitamui-white);
+
+  &.closed .text {
+    color: var(--vitamui-grey-700);
+
+    &.title {
+      color: var(--vitamui-grey);
+    }
+  }
+
+  &:hover,
+  ::ng-deep .hover & {
+    background-color: var(--vitamui-secondary-50);
+  }
+
+  &:active,
+  ::ng-deep .active & {
+    background-color: var(--vitamui-secondary-100);
+  }
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  color: var(--vitamui-secondary);
+
+  .read & {
+    color: var(--vitamui-grey-900);
+  }
+}
+
+.message {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}

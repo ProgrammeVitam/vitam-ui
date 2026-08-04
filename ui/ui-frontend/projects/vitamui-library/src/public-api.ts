@@ -59,6 +59,12 @@ export * from './lib/components/dialog/dialog-content-with-state/dialog-content-
 export * from './lib/components/dialog/dialog-header/dialog-header.component';
 export * from './lib/components/dialog/error-dialog/error-dialog.component';
 export * from './lib/components/dialog/errors-details-dialog/errors-details-dialog.component';
+export * from './lib/components/discussions/discussion-panel.component';
+export * from './lib/components/discussions/discussion/discussion.component';
+export * from './lib/components/discussions/discussion/message/message.component';
+export * from './lib/components/discussions/discussion-icon/discussion-icon.component';
+export * from './lib/components/discussions/discussion-list/discussion-list.component';
+export * from './lib/components/discussions/discussion.service';
 export * from './lib/components/next-step/next-step.component';
 export * from './lib/components/pattern/pattern.component';
 export * from './lib/components/previous-step/previous-step.component';

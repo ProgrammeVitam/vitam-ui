@@ -1,0 +1,71 @@
+@let mine = message().userId === me.id;
+<div class="px-4 py-2">
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex text caption">
+      <span vitamuiCommonEllipsis breakAll>{{ message().userName || message().userId }}</span>
+      <span class="text-nowrap">&nbsp;- {{ message().createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+    @if (!updateMode) {
+      <div class="actions hgap-1">
+        @if (!message().deletedAt) {
+          @if (mine) {
+            <button
+              class="btn btn-circle default link secondary xsmall tonal"
+              (click)="updateMode = true"
+              [vitamuiTooltip]="'DISCUSSION.MESSAGE.UPDATE' | translate"
+              vitamuiTooltipClass="secondary"
+            >
+              <i class="vitamui-icon vitamui-icon-edit"></i>
+            </button>
+            <button
+              class="btn btn-circle default link secondary xsmall tonal"
+              (click)="deleteMessage()"
+              [vitamuiTooltip]="'DISCUSSION.MESSAGE.DELETE' | translate"
+              vitamuiTooltipClass="secondary"
+            >
+              <i class="vitamui-icon vitamui-icon-delete"></i>
+            </button>
+          }
+          <button
+            class="btn btn-circle default link secondary xsmall tonal"
+            (click)="markUnread.emit(message())"
+            [vitamuiTooltip]="'DISCUSSION.MESSAGE.MARK_AS_UNREAD' | translate"
+            vitamuiTooltipClass="secondary"
+          >
+            <i class="vitamui-icon vitamui-icon-ic24-dialog"></i>
+          </button>
+        }
+      </div>
+    }
+  </div>
+  @if (message().deletedAt) {
+    <div class="text normal secondary italic">
+      {{ 'DISCUSSION.MESSAGE.DELETED_BY_AUTHOR' | translate }}
+      <br />
+      {{ message().deletedAt | date: 'dd/MM/yyyy HH:mm' }}
+    </div>
+  } @else {
+    @if (updateMode) {
+      <div class="gap-4">
+        <vitamui-input
+          class="w-100"
+          [placeholder]="'DISCUSSION.MESSAGE.UPDATE_PLACEHOLDER' | translate"
+          [textarea]="true"
+          [formControl]="control()"
+        ></vitamui-input>
+        <button class="btn default secondary" (click)="updateMessage()" [disabled]="!isControlValid()">
+          {{ 'COMMON.UPDATE' | translate }}
+        </button>
+      </div>
+    } @else {
+      <div class="text medium message" [class.bold]="message().createdAt > lastReadAt()">
+        <!--Keep the comment to prevent any leading whitespace-->{{ message().text }}
+        @if (message().updatedAt) {
+          <span class="text normal secondary italic">{{
+            'DISCUSSION.MESSAGE.UPDATED_AT' | translate: { date: message().updatedAt | date: 'dd/MM/yyyy H:mm' }
+          }}</span>
+        }
+      </div>
+    }
+  }
+</div>

@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?u6sheu');
-  src:  url('fonts/vitamui-icon.eot?u6sheu#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?u6sheu') format('truetype'),
-    url('fonts/vitamui-icon.woff?u6sheu') format('woff'),
-    url('fonts/vitamui-icon.svg?u6sheu#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?m2eedj');
+  src:  url('fonts/vitamui-icon.eot?m2eedj#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?m2eedj') format('truetype'),
+    url('fonts/vitamui-icon.woff?m2eedj') format('woff'),
+    url('fonts/vitamui-icon.svg?m2eedj#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,13 +25,26 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-ic24-BadgeModifier:before {
+  content: "\e97d";
+}
+.vitamui-icon-ic24-BadgeSupprimer:before {
+  content: "\e97e";
+}
+.vitamui-icon-ic24-dialog:before {
+  content: "\e97f";
+}
+.vitamui-icon-ic24-dialog-plain:before {
+  content: "\e980";
+}
+.vitamui-icon-agrandissement:before {
+  content: "\e97c";
+}
 .vitamui-icon-save:before {
   content: "\e97a";
-  color: #757575;
 }
 .vitamui-icon-ic24-rattribution:before {
   content: "\e97b";
-  color: #757575;
 }
 .vitamui-icon-ic24-arborescence:before {
   content: "\e961";

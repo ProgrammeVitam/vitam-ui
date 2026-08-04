@@ -1,0 +1,4 @@
+<vitamui-input class="w-100" [placeholder]="'DISCUSSION.MESSAGE.WRITE_PLACEHOLDER' | translate" [textarea]="true" [formControl]="control" />
+<button class="btn default secondary" (click)="addMessage()" [disabled]="!isControlValid()">
+  {{ 'DISCUSSION.MESSAGE.SEND' | translate }}
+</button>

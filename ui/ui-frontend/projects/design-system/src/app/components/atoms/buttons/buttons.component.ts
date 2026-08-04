@@ -70,7 +70,7 @@ export class ButtonsComponent {
         {
           type: 'xsmall',
           classes: 'link',
-          colors: ['xsmall'],
+          colors: ['xsmall', 'xsmall tonal'],
           sizes: ['primary', 'secondary'],
           icon: 'content-copy',
         },

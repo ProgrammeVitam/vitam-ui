@@ -2,6 +2,10 @@
 
 .vitamui-icon {
   @include fonts.text-colors;
+
+  &.grey-800 {
+    color: var(--vitamui-grey-800);
+  }
 }
 
 // App engine icon theming
