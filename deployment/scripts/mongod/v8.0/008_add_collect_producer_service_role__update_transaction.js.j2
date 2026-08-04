@@ -1,21 +1,17 @@
-
 const scriptName = 'v8.0-008_add_collect_producer_service_role__update_transaction.js';
+
+dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
+
 print(['START', scriptName].join(' '));
 
 dbIam.profiles.updateMany({
     applicationName: "COLLECT_APP",
      name: {
-                $in: [
-                    "Service producteur",
-                ]
-            }
+          $regex : "Service producteur"
+       }
 }, {
     $addToSet: {
-        roles: {
-            $each: [
-                { name: "ROLE_UPDATE_TRANSACTIONS" }
-            ]
-        }
+        roles: { name: "ROLE_UPDATE_TRANSACTIONS" }
     }
 });
 
