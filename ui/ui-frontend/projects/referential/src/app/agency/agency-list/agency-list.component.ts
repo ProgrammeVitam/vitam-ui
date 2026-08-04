@@ -40,18 +40,17 @@ import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
 import {
-  AdminUserProfile,
-  Agency,
   AgencyService,
   ApplicationId,
-  DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
   Role,
   SecurityService,
+  DEFAULT_PAGE_SIZE,
   VitamUICommonModule,
 } from 'vitamui-library';
+import type { Agency, AdminUserProfile } from 'vitamui-library';
 import { AgencyCreateModule } from '../agency-create';
 
 import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';

@@ -40,7 +40,8 @@ import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
-import { AuthnRequestBindingEnum, IdentityProvider, newFile, SnackBarService } from 'vitamui-library';
+import type { IdentityProvider } from 'vitamui-library';
+import { AuthnRequestBindingEnum, newFile, SnackBarService } from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 
@@ -241,8 +242,8 @@ export class IdentityProviderDetailsComponent {
    */
   diff(o1: { [key: string]: any }, o2: { [key: string]: any }): { [key: string]: any } {
     let diffObj = {};
-    if (o1.protocoleType !== o2.protocoleType) {
-      switch (o2.protocoleType) {
+    if (o1['protocoleType'] !== o2['protocoleType']) {
+      switch (o2['protocoleType']) {
         case ProtocoleType.OIDC:
           diffObj = {
             clientId: null,

@@ -121,7 +121,8 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
   }
 
   isStepOneValid(): any {
-    const { profileType, profileVersion } = this.noticeForm.controls;
+    const profileType = this.noticeForm.controls['profileType'];
+    const profileVersion = this.noticeForm.controls['profileVersion'];
     return profileType.valid && profileVersion.valid;
   }
 
@@ -135,7 +136,7 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
 
   validate() {
     if (!this.externalIdentifierEnabledSignal) {
-      this.noticeForm.controls.identifier.setValue(this.noticeForm.controls.name.value);
+      this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
     }
     if (this.noticeForm.invalid) {
       return;
@@ -149,7 +150,7 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
   }
 
   private updateControlSchema(): void {
-    const additionalProps = this.noticeForm.controls.additionalProperties.value;
+    const additionalProps = this.noticeForm.controls['additionalProperties'].value;
 
     const updatedPatternProperties = {
       ...this.controlSchema?.patternProperties,
@@ -183,7 +184,7 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
       () => {
         const isPUA = this.modePUA();
         const isEnabled = this.externalIdentifierEnabledSignal();
-        const identifierCtrl = this.noticeForm.controls.identifier;
+        const identifierCtrl = this.noticeForm.controls['identifier'];
         const appType = isPUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE';
 
         // check for external identifier
@@ -216,7 +217,7 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
         this.profileTypeSignal.set(value);
         if (value === ProfileType.PUA) {
           this.controlSchema = JSON.parse(this.profileService.controlSchema.getValue());
-          this.noticeForm.controls.additionalProperties.setValue(this.controlSchema?.additionalProperties);
+          this.noticeForm.controls['additionalProperties'].setValue(this.controlSchema?.additionalProperties);
         }
       }),
     );

@@ -53,27 +53,27 @@ export class ProfileApiService extends PaginatedHttpClient<Profile> {
     super(http, baseUrl + '/profiles');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Profile> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Profile> {
     return super.getOne(id, headers);
   }
 
-  getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Profile> {
+  override getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Profile> {
     return super.getOneWithEmbedded(id, embedded, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
-  create(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
+  override create(profile: Profile, headers?: HttpHeaders): Observable<Profile> {
     return super.create(profile, headers);
   }
 
-  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Profile> {
+  override patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Profile> {
     return super.patch(data, headers);
   }
 

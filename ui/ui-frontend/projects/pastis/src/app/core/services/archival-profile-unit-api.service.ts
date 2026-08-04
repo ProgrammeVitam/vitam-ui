@@ -58,11 +58,11 @@ export class ArchivalProfileUnitApiService extends PaginatedHttpClient<ArchivalP
     super(http, baseUrl + pastisConfiguration.archivalProfileUnitApiPath);
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
     return super.getOne(id, headers);
   }
 
@@ -71,11 +71,11 @@ export class ArchivalProfileUnitApiService extends PaginatedHttpClient<ArchivalP
     return this.http.put<ArchivalProfileUnit>(this.apiUrl + '/' + archivalUnitProfile.id, archivalUnitProfile, { headers: allHeaders });
   }
 
-  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAgency, headers);
   }
 
-  create(
+  override create(
     archivalUnitProfile: ArchivalProfileUnit,
     headers = new HttpHeaders({ [SKIP_ERROR_NOTIFICATION]: 1 }),
   ): Observable<ArchivalProfileUnit> {

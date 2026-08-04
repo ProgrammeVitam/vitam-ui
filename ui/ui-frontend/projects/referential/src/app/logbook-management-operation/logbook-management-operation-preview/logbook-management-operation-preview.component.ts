@@ -38,9 +38,9 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { OperationDetails } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 import { FormControl, Validators } from '@angular/forms';
+import type { OperationDetails } from '../../models/operation-response.interface';
 
 @Component({
   selector: 'app-logbook-management-operation-preview',

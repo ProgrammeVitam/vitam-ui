@@ -92,7 +92,6 @@ export class SubrogationModalComponent implements OnInit {
     this.subrogationService.checkCurrentUserIsInSubrogation().subscribe((response: Subrogation) => {
       if (response.id) {
         if (response.surrogate === surrogateEmail) {
-          // eslint-disable-next-line no-magic-numbers
           this.stepIndex = 1;
           // TODO subscribe to the modal close event and cancel the subrogation
           this.pending = true;
@@ -141,7 +140,6 @@ export class SubrogationModalComponent implements OnInit {
     };
     this.subrogationService.createSubrogation(this.subrogation).subscribe(
       (subrogation) => {
-        // eslint-disable-next-line no-magic-numbers
         this.stepIndex = 1;
         this.subrogation = subrogation;
         this.subrogationService.checkSubrogationStatus(this.subrogation, this.dialogRef).subscribe(() => {

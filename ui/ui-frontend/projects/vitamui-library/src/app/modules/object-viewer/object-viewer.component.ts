@@ -38,6 +38,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@ang
 import { Logger } from '../logger/logger';
 import { DisplayObjectService, DisplayRule } from './models';
 import { Mode } from './models/display-object.enum';
+import { AUMode } from '../archive-unit/components/archive-unit-viewer/archive-unit-viewer.service';
 
 @Component({
   selector: 'vitamui-common-object-viewer',
@@ -51,7 +52,7 @@ export class ObjectViewerComponent implements OnInit, OnChanges {
 
   @Input() data!: any;
   @Input() template!: DisplayRule[];
-  @Input() mode: Mode = Mode.TEMPLATE_DRIVEN;
+  @Input() mode: Mode | AUMode = Mode.TEMPLATE_DRIVEN;
 
   ngOnInit(): void {
     this.displayObjectService.setMode(this.mode);

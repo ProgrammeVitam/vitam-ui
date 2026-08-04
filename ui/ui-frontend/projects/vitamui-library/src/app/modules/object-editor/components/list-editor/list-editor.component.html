@@ -27,7 +27,9 @@
       <div class="row">
         <div class="col">
           @if (child.type === DisplayObjectType.GROUP) {
-            <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+            @defer (on immediate) {
+              <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+            }
           }
           @if (child.type === DisplayObjectType.LIST) {
             <vitamui-common-list-editor [editObject]="child"></vitamui-common-list-editor>
@@ -49,7 +51,7 @@
       [placeholder]="editObject.displayRule.ui.label | translate | empty"
       [required]="editObject.required"
       [textarea]="editObject.displayRule.ui.layout.size === 'large'"
-      [formControl]="editObject.control"
+      [formControl]="formControl"
     >
     </vitamui-input>
   }
@@ -81,7 +83,9 @@
       <div class="row">
         <div class="col">
           @if (child.type === DisplayObjectType.GROUP) {
-            <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+            @defer (on immediate) {
+              <vitamui-common-group-editor [editObject]="child"></vitamui-common-group-editor>
+            }
           }
           @if (child.type === DisplayObjectType.LIST) {
             <vitamui-common-list-editor [editObject]="child"></vitamui-common-list-editor>
@@ -104,7 +108,7 @@
       [placeholder]="editObject.displayRule.ui.label | translate | empty"
       [required]="editObject.required"
       [textarea]="editObject.displayRule.ui.layout.size === 'large'"
-      [formControl]="editObject.control"
+      [formControl]="formControl"
     >
     </vitamui-input>
   }

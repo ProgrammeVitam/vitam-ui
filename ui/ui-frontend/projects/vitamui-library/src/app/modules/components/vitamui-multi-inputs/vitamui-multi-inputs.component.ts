@@ -46,7 +46,6 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-multi-inputs',
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],
@@ -76,12 +75,12 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
     return super.canConfirm && !!value;
   }
 
-  enterEditMode() {
+  override enterEditMode() {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
   }
 
-  confirm() {
+  override confirm() {
     if (this.control.invalid || this.control.pending) {
       return;
     }
@@ -109,7 +108,7 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.reset?.currentValue) {
+    if (changes['reset']?.currentValue) {
       this.values = [];
       this.onChange(this.values);
       this.control.reset(this.values);

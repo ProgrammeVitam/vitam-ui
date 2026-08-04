@@ -39,9 +39,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
-import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
 @Pipe({
   name: 'truncate',
@@ -68,8 +68,8 @@ describe('ProbativeValuePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProbativeValuePreviewComponent, EventTypeBadgeClassPipe, MockTruncatePipe],
-      imports: [],
+      declarations: [ProbativeValuePreviewComponent, MockTruncatePipe],
+      imports: [EventTypeBadgeColorPipe],
       providers: [
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: ProbativeValueService, useValue: {} },

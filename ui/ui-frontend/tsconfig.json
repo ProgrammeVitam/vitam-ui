@@ -26,19 +26,17 @@
     },
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "useDefineForClassFields": false
-    // FIXME: uncomment to improve code quality
-    // "noImplicitOverride": true,
-    // "noImplicitReturns": true,
-    // "noPropertyAccessFromIndexSignature": true,
-    // "isolatedModules": true,
+    "useDefineForClassFields": false,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "isolatedModules": true
   },
-  // FIXME: uncomment to improve code quality
-  // "angularCompilerOptions": {
-  //   "enableI18nLegacyMessageIdFormat": false,
-  //   "strictInjectionParameters": true,
-  //   "strictInputAccessModifiers": true,
-  //   "strictTemplates": true,
-  //   "fullTemplateTypeCheck": true
-  // }
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+    "fullTemplateTypeCheck": true
+  }
 }

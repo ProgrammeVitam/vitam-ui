@@ -115,7 +115,7 @@
           @for (persistentIdentifier of getPersistentIdentifierPolicies().controls; track persistentIdentifier) {
             <div>
               <app-create-persistent-identifier-policy-form
-                [form]="persistentIdentifier"
+                [form]="$any(persistentIdentifier)"
                 (objectUsagePolicyAdded)="form.markAsDirty()"
                 (objectUsagePolicyRemoved)="form.markAsDirty()"
               ></app-create-persistent-identifier-policy-form>

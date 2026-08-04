@@ -124,7 +124,7 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
     this.updatedProfileSub.unsubscribe();
   }
 
-  search() {
+  override search() {
     const defaultCriterion: Criterion = { key: 'applicationName', value: ApplicationId.USERS_APP, operator: Operators.equals };
     const query: CriteriaSearchQuery = {
       criteria: [defaultCriterion, ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],

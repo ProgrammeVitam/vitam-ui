@@ -87,12 +87,12 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   const inheritedPropertyCarried: InheritedPropertyDto = {
     PropertyName: 'name',
-    PropertyValue: {},
+    PropertyValue: '',
     Paths: [['firstId']],
   };
   const inheritedProperty: InheritedPropertyDto = {
     PropertyName: 'name',
-    PropertyValue: {},
+    PropertyValue: '',
     Paths: [
       ['firstId', 'secondId', 'thirdId'],
       ['firstId2', 'secondId2', 'thirdId2'],

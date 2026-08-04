@@ -134,6 +134,8 @@ export class LeavesTreeService {
       }
       realChildrenMap.set(node.id, node);
     });
+
+    return true;
   }
 
   private deduplicateAndMergeChildren(

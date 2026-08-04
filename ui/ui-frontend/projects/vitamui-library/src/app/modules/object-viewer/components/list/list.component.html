@@ -1,7 +1,9 @@
 @if (!isPrimitiveList) {
   @for (child of displayObject.children; track child) {
     @if (child.type === DisplayObjectType.GROUP) {
-      <vitamui-common-group [displayObject]="child"></vitamui-common-group>
+      @defer (on immediate) {
+        <vitamui-common-group [displayObject]="child"></vitamui-common-group>
+      }
     }
     @if (child.type === DisplayObjectType.LIST) {
       <vitamui-common-list [displayObject]="child"></vitamui-common-list>

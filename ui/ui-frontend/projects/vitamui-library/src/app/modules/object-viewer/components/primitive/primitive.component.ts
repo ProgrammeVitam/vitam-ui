@@ -36,7 +36,7 @@
  */
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { DisplayObject } from '../../models';
+import type { DisplayObject } from '../../models';
 import { DateDisplayService } from '../../services/date-display.service';
 
 @Component({

@@ -41,7 +41,7 @@ import { Logger } from './logger';
 export class LoggerService implements Logger {
   public info(parentClass: Object, ...msg: any) {
     const className = parentClass.constructor.name;
-    // eslint-disable-next-line no-console
+
     console.info('%c' + new Date().toLocaleString() + ' %c' + className, 'color: red', 'color: blue', ...msg);
   }
   public log(parentClass: Object, ...msg: any) {

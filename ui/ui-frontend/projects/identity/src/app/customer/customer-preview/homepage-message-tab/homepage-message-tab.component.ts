@@ -37,7 +37,8 @@
 import { Component, Input, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Customer, StartupService } from 'vitamui-library';
+import type { Customer } from 'vitamui-library';
+import { StartupService } from 'vitamui-library';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';
 
 @Component({

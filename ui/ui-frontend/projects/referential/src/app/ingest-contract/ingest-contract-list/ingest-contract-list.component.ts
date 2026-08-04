@@ -111,8 +111,8 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
       criteria.Name = this._searchText;
       criteria.Identifier = this._searchText;
     }
-    if (this.filterMap.status.length > 0) {
-      criteria.Status = this.filterMap.status;
+    if (this.filterMap['status'].length > 0) {
+      criteria.Status = this.filterMap['status'];
     }
     return criteria;
   }

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FileNode } from '../../models/file-node';
+import type { FileNode } from '../../models/file-node';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

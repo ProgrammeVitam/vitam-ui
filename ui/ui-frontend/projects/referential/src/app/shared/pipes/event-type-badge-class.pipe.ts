@@ -34,33 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Event } from 'vitamui-library';
+import { IEvent } from 'vitamui-library';
 
 import { Pipe, PipeTransform } from '@angular/core';
-
-const classMap: { [key: string]: string } = {
-  OK: 'status-badge-green',
-  WARNING: 'status-badge-orange',
-  KO: 'status-badge-red',
-  FATAL: 'status-badge-red',
-};
+import { eventTypeToBadgeColor } from './event-type-badge-color.pipe';
 
 @Pipe({
   name: 'eventTypeBadgeClass',
-  standalone: false,
 })
 export class EventTypeBadgeClassPipe implements PipeTransform {
-  transform(event: Event): string {
-    if (!event || !event.events || event.events.length <= 0) {
-      return 'status-badge-grey';
-    }
-
-    const lastEvent = event.events[event.events.length - 1];
-
-    if (lastEvent.outcome === 'OK' && event.type === lastEvent.type) {
-      return 'status-badge-green';
-    }
-
-    return classMap[lastEvent.outcome] || 'status-badge-grey';
+  transform(event: IEvent): 'status-badge-green' | 'status-badge-grey' | 'status-badge-orange' | 'status-badge-red' | 'status-badge-black' {
+    return `status-badge-${eventTypeToBadgeColor(event)}`;
   }
 }

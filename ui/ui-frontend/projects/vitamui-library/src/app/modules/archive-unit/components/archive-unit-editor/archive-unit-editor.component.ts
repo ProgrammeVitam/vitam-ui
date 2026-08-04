@@ -40,7 +40,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { EditObject } from '../../../object-editor/models/edit-object.model';
 import { DisplayRule } from '../../../object-viewer/models';
 import { customTemplate } from '../../archive-unit-template';
-import { ArchiveUnit } from '../../models/archive-unit';
+import type { ArchiveUnit } from '../../models/archive-unit';
 import { JsonPatchDto } from '../../models/json-patch';
 import { ArchiveUnitEditorService } from './archive-unit-editor.service';
 

@@ -93,7 +93,7 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
 
   projectId: string;
 
-  headers = new HttpHeaders();
+  override headers = new HttpHeaders();
 
   public static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;

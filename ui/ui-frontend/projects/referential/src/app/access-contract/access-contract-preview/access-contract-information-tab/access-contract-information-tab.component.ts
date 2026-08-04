@@ -39,7 +39,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, AccessContractService, diff, Option } from 'vitamui-library';
+import type { AccessContract, Option } from 'vitamui-library';
+import { AccessContractService, diff } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 
@@ -132,12 +133,12 @@ export class AccessContractInformationTabComponent {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this._accessContract.id, identifier: this._accessContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
-        if (formData.status) {
-          if (formData.status === 'ACTIVE') {
-            formData.activationDate = new Date();
+        if (formData['status']) {
+          if (formData['status'] === 'ACTIVE') {
+            formData['activationDate'] = new Date();
           } else {
-            formData.status = 'INACTIVE';
-            formData.deactivationDate = new Date();
+            formData['status'] = 'INACTIVE';
+            formData['deactivationDate'] = new Date();
           }
         }
         return this.accessContractService.patch(formData).pipe(catchError(() => of(null)));
@@ -160,18 +161,18 @@ export class AccessContractInformationTabComponent {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.accessLogControl.valueChanges.subscribe((value) => {
-      this.form.controls.accessLog.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls['accessLog'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.ruleFilter.valueChanges.subscribe((val) => {
       if (val === true) {
-        this.form.controls.ruleCategoryToFilter.setValue(this._accessContract.ruleCategoryToFilter);
+        this.form.controls['ruleCategoryToFilter'].setValue(this._accessContract.ruleCategoryToFilter);
       } else {
-        this.form.controls.ruleCategoryToFilter.setValue([]);
+        this.form.controls['ruleCategoryToFilter'].setValue([]);
       }
     });
   }

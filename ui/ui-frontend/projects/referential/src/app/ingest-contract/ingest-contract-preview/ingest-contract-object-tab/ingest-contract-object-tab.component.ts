@@ -39,7 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { IngestContract, Option, diff } from 'vitamui-library';
+import { diff, Option } from 'vitamui-library';
+import type { IngestContract } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
 
@@ -114,15 +115,15 @@ export class IngestContractObjectTabComponent {
       dataObjectVersion: [[]],
     });
 
-    this.form.controls.everyDataObjectVersion.valueChanges.subscribe((value: boolean) => {
+    this.form.controls['everyDataObjectVersion'].valueChanges.subscribe((value: boolean) => {
       if (value) {
-        this.form.controls.dataObjectVersion.setValidators([]);
-        this.form.controls.dataObjectVersion.setValue([]);
-        this.form.controls.dataObjectVersion.updateValueAndValidity();
+        this.form.controls['dataObjectVersion'].setValidators([]);
+        this.form.controls['dataObjectVersion'].setValue([]);
+        this.form.controls['dataObjectVersion'].updateValueAndValidity();
       } else {
-        this.form.controls.dataObjectVersion.setValidators(Validators.required);
-        this.form.controls.dataObjectVersion.markAllAsTouched();
-        this.form.controls.dataObjectVersion.updateValueAndValidity();
+        this.form.controls['dataObjectVersion'].setValidators(Validators.required);
+        this.form.controls['dataObjectVersion'].markAllAsTouched();
+        this.form.controls['dataObjectVersion'].updateValueAndValidity();
       }
     });
   }

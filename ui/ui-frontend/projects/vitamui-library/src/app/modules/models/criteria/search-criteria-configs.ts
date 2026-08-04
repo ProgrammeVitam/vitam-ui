@@ -148,10 +148,10 @@ const searchCriteriaConfigs: { [key: string]: Partial<SearchCriteriaAddAction> }
     keyTranslated: true,
   },
 };
-searchCriteriaConfigs.Title = searchCriteriaConfigs.title;
-searchCriteriaConfigs.Description = searchCriteriaConfigs.description;
-searchCriteriaConfigs.StartDate = searchCriteriaConfigs.beginDt;
-searchCriteriaConfigs.EndDate = searchCriteriaConfigs.endDt;
+searchCriteriaConfigs['Title'] = searchCriteriaConfigs['title'];
+searchCriteriaConfigs['Description'] = searchCriteriaConfigs['description'];
+searchCriteriaConfigs['StartDate'] = searchCriteriaConfigs['beginDt'];
+searchCriteriaConfigs['EndDate'] = searchCriteriaConfigs['endDt'];
 
 export const translatedKeys = [
   'FINAL_ACTION_TYPE',

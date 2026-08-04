@@ -99,7 +99,7 @@ export class EditObjectService {
     });
     this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
       const child = editObject.children[i];
-      if (this.canAddAndRemove(child) && !child.required && !child.virtual) child.actions.remove = action;
+      if (this.canAddAndRemove(child) && !child.required && !child.virtual) child.actions['remove'] = action;
     });
     this.sort(editObject, orderedFields);
 
@@ -219,7 +219,7 @@ export class EditObjectService {
     }
 
     if (['object-array', 'object'].includes(editObject.kind)) {
-      editObject?.actions?.remove?.handler();
+      editObject?.actions?.['remove']?.handler();
     } else {
       editObject.displayRule = {
         ...editObject.displayRule,
@@ -376,15 +376,15 @@ export class EditObjectService {
 
             this.computeChildrenRemoveActions(editObject).forEach((action, i) => {
               const child = editObject.children[i];
-              if (this.canAddAndRemove(child)) child.actions.remove = action;
+              if (this.canAddAndRemove(child)) child.actions['remove'] = action;
             });
 
-            object.actions.add = add;
+            object.actions['add'] = add;
           },
         };
 
         editObject.children.forEach((child) => {
-          child.actions.add = add;
+          child.actions['add'] = add;
         });
 
         return [add];

@@ -39,7 +39,6 @@ import { Directive, ElementRef, HostListener, Input, OnInit, inject } from '@ang
 import { DOCUMENT } from '@angular/common';
 
 @Directive({
-  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiVerticalResizeSidebar]',
   standalone: false,
 })
@@ -67,19 +66,17 @@ export class ResizeVerticalDirective implements OnInit {
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (!this.isDragging) {
-      return false;
+    if (this.isDragging) {
+      let height;
+      if (this.orientation === 'top') {
+        height = `height:${Math.max(event.clientY - this.paddingSize, this.minSize)}px`;
+      } else {
+        const { top } = this.elementRef.nativeElement.getBoundingClientRect();
+        const clientHeight = this.siblingElement.clientHeight;
+        height = `height:${Math.max(top - event.clientY + clientHeight, this.minSize)}px`;
+      }
+      this.siblingElement.setAttribute('style', `flex:0 0 auto;max-height:75%;${height}`);
     }
-
-    let height;
-    if (this.orientation === 'top') {
-      height = `height:${Math.max(event.clientY - this.paddingSize, this.minSize)}px`;
-    } else {
-      const { top } = this.elementRef.nativeElement.getBoundingClientRect();
-      const clientHeight = this.siblingElement.clientHeight;
-      height = `height:${Math.max(top - event.clientY + clientHeight, this.minSize)}px`;
-    }
-    this.siblingElement.setAttribute('style', `flex:0 0 auto;max-height:75%;${height}`);
   }
 
   ngOnInit(): void {

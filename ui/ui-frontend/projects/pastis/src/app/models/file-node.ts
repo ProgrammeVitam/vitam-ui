@@ -157,7 +157,7 @@ export interface FileNode {
 // for debug purpose
 export function nodeToString(node: FileNode): string {
   if (!node) {
-    return;
+    return undefined;
   }
   return (
     '{' +

@@ -101,7 +101,7 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
+    this.route.params.subscribe((params) => (this.tenantIdentifier = params['tenantIdentifier']));
   }
 
   showContext(item: Context) {

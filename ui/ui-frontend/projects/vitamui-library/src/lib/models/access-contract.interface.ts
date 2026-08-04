@@ -126,4 +126,6 @@ export function accessRightTypeOf(accessContract: AccessContract): AccessRightTy
   ) {
     return AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES;
   }
+
+  throw new Error(`Couldn't find a suitable access right type for ${JSON.stringify(accessContract)}`);
 }

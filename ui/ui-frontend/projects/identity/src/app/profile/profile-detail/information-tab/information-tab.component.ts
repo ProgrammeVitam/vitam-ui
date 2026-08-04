@@ -40,7 +40,8 @@ import { of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Profile, Role } from 'vitamui-library';
+import { AuthService, buildValidators, diff, Role } from 'vitamui-library';
+import type { Profile } from 'vitamui-library';
 
 import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';
@@ -114,28 +115,28 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   private completeUpdateRoles(data: { [key: string]: any }): { [key: string]: any } {
     // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
     // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
-    if (data.roles) {
+    if (data['roles']) {
       const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
 
-      const hasUpdateRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
-      const roleUpdateUsersIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USERS);
-      const roleUpdateUsersInfoIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USER_INFOS);
+      const hasUpdateRole = data['roles'].some((r: any) => userUpdateRolesNames.includes(r.name));
+      const roleUpdateUsersIndex = data['roles'].findIndex((role: any) => role.name === Role.ROLE_UPDATE_USERS);
+      const roleUpdateUsersInfoIndex = data['roles'].findIndex((role: any) => role.name === Role.ROLE_UPDATE_USER_INFOS);
 
       if (hasUpdateRole) {
         if (roleUpdateUsersIndex === -1) {
-          data.roles.push({ name: Role.ROLE_UPDATE_USERS });
+          data['roles'].push({ name: Role.ROLE_UPDATE_USERS });
         }
 
         if (roleUpdateUsersInfoIndex === -1) {
-          data.roles.push({ name: Role.ROLE_UPDATE_USER_INFOS });
+          data['roles'].push({ name: Role.ROLE_UPDATE_USER_INFOS });
         }
       } else {
         if (roleUpdateUsersIndex !== -1) {
-          data.roles.splice(roleUpdateUsersIndex, 1);
+          data['roles'].splice(roleUpdateUsersIndex, 1);
         }
 
         if (roleUpdateUsersInfoIndex !== -1) {
-          data.roles.splice(roleUpdateUsersInfoIndex, 1);
+          data['roles'].splice(roleUpdateUsersInfoIndex, 1);
         }
       }
     }
@@ -144,18 +145,18 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private completeCreateRoles(data: { [key: string]: any }): { [key: string]: any } {
-    if (data.roles) {
+    if (data['roles']) {
       const useCreateRolesNames = [Role.ROLE_CREATE_USERS.toString()];
 
-      const hasUserCreateRole = data.roles.some((r: any) => useCreateRolesNames.includes(r.name));
-      const userCreateInfoRoleIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_CREATE_USER_INFOS);
+      const hasUserCreateRole = data['roles'].some((r: any) => useCreateRolesNames.includes(r.name));
+      const userCreateInfoRoleIndex = data['roles'].findIndex((role: any) => role.name === Role.ROLE_CREATE_USER_INFOS);
 
       if (hasUserCreateRole) {
         if (userCreateInfoRoleIndex === -1) {
-          data.roles.push({ name: Role.ROLE_CREATE_USER_INFOS });
+          data['roles'].push({ name: Role.ROLE_CREATE_USER_INFOS });
         }
       } else if (userCreateInfoRoleIndex !== -1) {
-        data.roles.splice(userCreateInfoRoleIndex, 1);
+        data['roles'].splice(userCreateInfoRoleIndex, 1);
       }
     }
     return data;

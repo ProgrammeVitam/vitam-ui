@@ -39,7 +39,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subscription } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { ArchiveUnit, ArchiveUnitEditorComponent, EditObject, JsonPatch, SnackBarService, SpinnerOverlayService } from 'vitamui-library';
+import type { ArchiveUnit, EditObject, JsonPatch } from 'vitamui-library';
+import { ArchiveUnitEditorComponent, SnackBarService, SpinnerOverlayService } from 'vitamui-library';
 import { ArchiveUnitService } from './archive-unit.service';
 
 @Component({

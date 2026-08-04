@@ -40,7 +40,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, IngestContract, Option, VitamuiHttpHeaders } from 'vitamui-library';
+import { diff, Option, VitamuiHttpHeaders } from 'vitamui-library';
+import type { IngestContract } from 'vitamui-library';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';
@@ -131,12 +132,12 @@ export class IngestContractInformationTabComponent implements OnInit {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     this.ruleFilter.valueChanges.subscribe((val) => {
       if (val === true) {
-        this.form.controls.ruleCategoryToFilter.setValue(new Array<string>());
+        this.form.controls['ruleCategoryToFilter'].setValue(new Array<string>());
       }
     });
   }
@@ -190,19 +191,19 @@ export class IngestContractInformationTabComponent implements OnInit {
       map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
-        if (formData.status) {
-          if (formData.status === 'ACTIVE') {
-            formData.activationDate = new Date();
-            formData.deactivationDate = null;
+        if (formData['status']) {
+          if (formData['status'] === 'ACTIVE') {
+            formData['activationDate'] = new Date();
+            formData['deactivationDate'] = null;
           } else {
-            formData.status = 'INACTIVE';
-            formData.activationDate = null;
-            formData.deactivationDate = new Date();
+            formData['status'] = 'INACTIVE';
+            formData['activationDate'] = null;
+            formData['deactivationDate'] = new Date();
           }
         }
         // Set management contract ID to null if undefined
-        if (formData.managementContractId === undefined) {
-          formData.managementContractId = null;
+        if (formData['managementContractId'] === undefined) {
+          formData['managementContractId'] = null;
         }
         return this.ingestContractService.patch(formData).pipe(catchError(() => of(null)));
       }),

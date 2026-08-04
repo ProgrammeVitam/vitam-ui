@@ -66,7 +66,7 @@ export class OntologyGroupComponent {
 
   constructor() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.tabIndex = params.tab;
+      this.tabIndex = params['tab'];
     });
   }
 

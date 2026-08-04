@@ -86,6 +86,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   secondChoiceEnregistrement: string;
   firstChoiceGestionNotice: string;
   secondChoiceGestionNotice: string;
+  titleGestionNotice: string;
   externalIdentifierEnabled: boolean;
 
   okLabel: string;
@@ -106,6 +107,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
     this.secondChoiceEnregistrement = this.translateService.instant('PROFILE.POP_UP_SAVE.CHOICE.SECOND_CHOICE_ENREGISTREMENT');
     this.firstChoiceGestionNotice = this.translateService.instant('PROFILE.POP_UP_SAVE.CHOICE.FIRST_CHOICE_GESTION_NOTICE');
     this.secondChoiceGestionNotice = this.translateService.instant('PROFILE.POP_UP_SAVE.CHOICE.SECOND_CHOICE_GESTION_NOTICE');
+    this.titleGestionNotice = this.translateService.instant('PROFILE.POP_UP_SAVE.CHOICE.TITLE_GESTION_NOTICE');
 
     if (this.editProfile) {
       this.subscriptions.add(
@@ -161,7 +163,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
     const action = this.gestionNotice() ? 'creation' : 'rattachement';
     if (this.gestionNotice()) {
       if (!this.externalIdentifierEnabled && !this.editProfile) {
-        this.noticeForm.controls.identifier.setValue(this.noticeForm.controls.name.value);
+        this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
       }
       if (this.noticeForm.invalid) {
         return;
@@ -207,7 +209,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   }
 
   private updateControlSchema(): void {
-    const additionalProps = this.noticeForm.controls.additionalProperties.value;
+    const additionalProps = this.noticeForm.controls['additionalProperties'].value;
 
     const updatedPatternProperties = {
       ...this.controlSchema?.patternProperties,
@@ -248,7 +250,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
     this.applicationService
       .isApplicationExternalIdentifierEnabled(this.profileService.profileType === ProfileType.PUA ? 'ARCHIVE_UNIT_PROFILE' : 'PROFILE')
       .subscribe((value) => {
-        const identifierCtrl = this.noticeForm.controls.identifier;
+        const identifierCtrl = this.noticeForm.controls['identifier'];
 
         this.externalIdentifierEnabled = value;
 

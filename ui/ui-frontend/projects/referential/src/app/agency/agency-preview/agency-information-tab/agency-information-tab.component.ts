@@ -40,7 +40,10 @@ import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
-import { Agency, ApplicationId, diff, Role, SecurityService, AgencyService, VitamUICommonModule } from 'vitamui-library';
+import type { Agency } from 'vitamui-library';
+import { ApplicationId, Role } from 'vitamui-library';
+import { SecurityService } from 'vitamui-library';
+import { diff, VitamUICommonModule, AgencyService } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AsyncPipe } from '@angular/common';
 import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';
@@ -106,7 +109,7 @@ export class AgencyInformationTabComponent {
     });
 
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      this.tenantIdentifier = +params['tenantIdentifier'];
     });
 
     this.checkUpdateRole = this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, this.tenantIdentifier);

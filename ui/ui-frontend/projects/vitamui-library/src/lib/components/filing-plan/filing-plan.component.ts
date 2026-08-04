@@ -72,7 +72,7 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     excluded: [],
   };
 
-  disabled: boolean;
+  override disabled: boolean;
 
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
@@ -85,7 +85,7 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     this.nestedDataSource = new MatTreeNestedDataSource();
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     super.ngOnInit();
     if (this.dataSource) {
       const nodes = this.filingPlanService.loadTreeFromDataSource(this.dataSource, this.componentId);
@@ -247,28 +247,26 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     return this.areAllParentsUnchecked(parents[0].parents);
   }
 
-  initCheckedNodes(obj: { included: string[]; excluded: string[] }, nodes: Node[], parentChecked: boolean = false) {
+  initCheckedNodes(obj: { included: string[]; excluded: string[] }, nodes: Node[], parentChecked: boolean = false): boolean {
     if (!obj || !nodes) {
-      return;
+      return false;
     }
 
     let shouldStop = false;
 
-    nodes.forEach((node) => {
-      if (!node || shouldStop) {
-        return;
-      }
+    for (const node of nodes) {
+      if (!node || shouldStop) continue;
 
       if (this.mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {
         node.checked = true;
         shouldStop = true;
-        return;
+        break;
       }
 
       if (this.mode === FilingPlanMode.INCLUDE_ONLY && !parentChecked && obj.included && obj.included.includes(node.vitamId)) {
         node.checked = true;
         this.updateChildrenStatusAndSelectedNodes(node.children, true);
-        return;
+        continue;
       }
 
       if (
@@ -289,12 +287,12 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
       }
 
       shouldStop = this.initCheckedNodes(obj, node.children, node.checked);
-    });
+    }
 
     return shouldStop;
   }
 
-  writeValue(obj: { included: string[]; excluded: string[] }): void {
+  override writeValue(obj: { included: string[]; excluded: string[] }): void {
     this.initCheckedNodes(obj, this.nestedDataSource.data);
     this.selectedNodes = obj;
   }

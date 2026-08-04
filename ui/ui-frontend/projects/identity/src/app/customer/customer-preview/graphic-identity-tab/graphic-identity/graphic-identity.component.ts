@@ -38,8 +38,9 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
-import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
+import type { Customer, Logo, Theme } from 'vitamui-library';
+import { ThemeColorType, ThemeService } from 'vitamui-library';
+import type { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
 interface ThemeColorGroup {
   [ThemeColorType.VITAMUI_PRIMARY]: FormControl<string>;

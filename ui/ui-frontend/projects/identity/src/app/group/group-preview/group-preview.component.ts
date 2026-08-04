@@ -36,7 +36,8 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Group, isLevelAllowed, StartupService } from 'vitamui-library';
+import type { Group } from 'vitamui-library';
+import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 
@@ -98,6 +99,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if (this.group) {
       return !isLevelAllowed(this.authService.user, this.group.level);
     }
+    return false;
   }
 
   emitClose() {

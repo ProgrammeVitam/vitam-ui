@@ -39,7 +39,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Operators } from '../../../vitamui-table';
+import { Operators } from '../../../vitamui-table/operators.enum';
 import { SiteApiService } from './../../../api/site-api.service';
 import { AuthService } from './../../../auth.service';
 

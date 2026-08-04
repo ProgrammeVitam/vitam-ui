@@ -34,31 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Customer, User } from 'vitamui-library';
+import { IEvent } from 'vitamui-library';
 
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Pipe, PipeTransform } from '@angular/core';
 
-import { CustomerService } from '../../core/customer.service';
+const classMap: { [key: string]: 'green' | 'grey' | 'orange' | 'red' | 'black' } = {
+  OK: 'green',
+  WARNING: 'orange',
+  KO: 'red',
+  FATAL: 'red',
+};
 
-@Component({
-  selector: 'app-profile-group-popup',
-  template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>',
-  standalone: false,
-})
-export class UserPopupComponent {
-  private route = inject(ActivatedRoute);
-  private customerService = inject(CustomerService);
-
-  user: User;
-  customer: Customer;
-
-  constructor() {
-    this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
-    this.user = this.route.snapshot.data['user'];
+export function eventTypeToBadgeColor(event: IEvent): 'green' | 'grey' | 'orange' | 'red' | 'black' {
+  if (!event || !event.events || event.events.length <= 0) {
+    return 'grey';
   }
 
-  closePopup() {
-    window.close();
+  const lastEvent = event.events[event.events.length - 1];
+
+  if (lastEvent.outcome === 'OK' && event.type === lastEvent.type) {
+    return 'green';
+  }
+
+  return classMap[lastEvent.outcome] || 'grey';
+}
+
+@Pipe({
+  name: 'eventTypeBadgeColor',
+})
+export class EventTypeBadgeColorPipe implements PipeTransform {
+  transform(event: IEvent): 'green' | 'grey' | 'orange' | 'red' | 'black' {
+    return eventTypeToBadgeColor(event);
   }
 }

@@ -86,7 +86,7 @@ export class ContextEditComponent implements OnInit, OnDestroy {
       permissions: [permissions],
     });
     if (data.enableControl) {
-      this.form.controls.permissions.setValidators([this.contextCreateValidators.permissionInvalid()]);
+      this.form.controls['permissions'].setValidators([this.contextCreateValidators.permissionInvalid()]);
     }
   }
 

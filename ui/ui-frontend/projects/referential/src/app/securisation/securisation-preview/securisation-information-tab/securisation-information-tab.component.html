@@ -24,13 +24,13 @@
   <div class="read-only-field mr-5">
     <label>{{ 'SECURE.TAB.INFORMATIONS.START_DATE' | translate }}</label>
     <div class="word-break">
-      {{ securisation?.parsedData?.StartDate | dateTime: 'dd/MM/yyyy - HH:mm:ss' }}
+      {{ securisation?.parsedData?.['StartDate'] | dateTime: 'dd/MM/yyyy - HH:mm:ss' }}
     </div>
   </div>
   <div class="read-only-field">
     <label>{{ 'SECURE.TAB.INFORMATIONS.END_DATE' | translate }}</label>
     <div class="word-break">
-      {{ securisation?.parsedData?.EndDate | dateTime: 'dd/MM/yyyy - HH:mm:ss' }}
+      {{ securisation?.parsedData?.['EndDate'] | dateTime: 'dd/MM/yyyy - HH:mm:ss' }}
     </div>
   </div>
 </div>
@@ -38,21 +38,21 @@
 <div class="read-only-field">
   <label>{{ 'SECURE.TAB.INFORMATIONS.NUMBER_OF_OPERATIONS' | translate }}</label>
   <div class="word-break">
-    {{ securisation?.parsedData?.NumberOfElements }}
+    {{ securisation?.parsedData?.['NumberOfElements'] }}
   </div>
 </div>
 
 <div class="read-only-field">
   <label>{{ 'SECURE.TAB.INFORMATIONS.FILE_NAME' | translate }}</label>
   <div class="word-break">
-    {{ securisation?.parsedData?.FileName }}
+    {{ securisation?.parsedData?.['FileName'] }}
   </div>
 </div>
 
 <div class="read-only-field">
   <label>{{ 'SECURE.TAB.INFORMATIONS.FILE_SIZE' | translate }}</label>
   <div class="word-break">
-    {{ securisation?.parsedData?.Size | fileSize }}
+    {{ securisation?.parsedData?.['Size'] | fileSize }}
   </div>
 </div>
 
@@ -60,7 +60,7 @@
   <div class="read-only-field mr-5">
     <label>{{ 'SECURE.TAB.INFORMATIONS.HASH_ALGORITHM' | translate }}</label>
     <div class="word-break">
-      {{ securisation?.parsedData?.DigestAlgorithm }}
+      {{ securisation?.parsedData?.['DigestAlgorithm'] }}
     </div>
   </div>
   <div class="read-only-field">
@@ -81,6 +81,6 @@
 <div class="read-only-field">
   <label>{{ 'SECURE.TAB.INFORMATIONS.MERKLE_TREE_HASH' | translate }}</label>
   <div class="word-break">
-    {{ securisation?.parsedData?.Hash }}
+    {{ securisation?.parsedData?.['Hash'] }}
   </div>
 </div>

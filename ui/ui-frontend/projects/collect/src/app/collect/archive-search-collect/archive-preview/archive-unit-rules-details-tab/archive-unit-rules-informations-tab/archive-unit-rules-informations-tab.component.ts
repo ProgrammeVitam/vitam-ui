@@ -37,7 +37,8 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
+import type { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
+import { Logger } from 'vitamui-library';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',
@@ -78,8 +79,8 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initializeParameters();
-    if (changes.archiveUnitRules) {
-      this.getInheritedRulesDetails(changes.archiveUnitRules.currentValue);
+    if (changes['archiveUnitRules']) {
+      this.getInheritedRulesDetails(changes['archiveUnitRules']['currentValue']);
       this.showListOfPropertiesBloc();
     }
   }
@@ -88,6 +89,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
     if (ruleCategoryId) {
       return this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.CATEGORY_NAME.' + ruleCategoryId.toUpperCase());
     }
+    return undefined;
   }
 
   getRuleStatus(ruleDUA: UnitRuleDto): string {
@@ -99,6 +101,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
         ? this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED')
         : this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED');
     }
+    return undefined;
   }
 
   getMaxEndDate(rules: UnitRuleDto[]): string {
@@ -107,6 +110,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
 
       return response ? response[0]?.EndDate : null;
     }
+    return undefined;
   }
 
   getFinalActionValue(propertiesDUA: InheritedPropertyDto[]): string {
@@ -122,6 +126,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
             );
       }
     }
+    return undefined;
   }
 
   getPropertyName(property: string): string {
@@ -130,12 +135,14 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
         return this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION_VALUE');
       }
     }
+    return undefined;
   }
 
   getPropertyValue(property: any): string {
     if (property) {
       return this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.' + property.toUpperCase());
     }
+    return undefined;
   }
 
   getFinalActionStatus(propertiesDUA: InheritedPropertyDto): string {
@@ -152,6 +159,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
         ? this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED')
         : this.translateService.instant('COLLECT.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED');
     }
+    return undefined;
   }
 
   showlistOfRulesBloc() {

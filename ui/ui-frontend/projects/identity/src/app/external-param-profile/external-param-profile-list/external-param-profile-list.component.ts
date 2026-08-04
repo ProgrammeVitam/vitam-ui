@@ -127,7 +127,7 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
     });
   }
 
-  search() {
+  override search() {
     const query: CriteriaSearchQuery = {
       criteria: [...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
     };

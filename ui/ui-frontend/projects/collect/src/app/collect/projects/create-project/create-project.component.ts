@@ -183,7 +183,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   get linkParentIdControl() {
-    return this.projectForm.controls.linkParentIdControl as FormControl;
+    return this.projectForm.controls['linkParentIdControl'] as FormControl;
   }
 
   ngOnInit(): void {
@@ -306,34 +306,34 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   /*** Form validator Step : /*** Form validator Step : Description du versement ***/
   stepConnectingToRefEASIsInvalid() {
-    return this.connectedToArchivingSystem && this.projectForm.controls.archivingSystem.invalid;
+    return this.connectedToArchivingSystem && this.projectForm.controls['archivingSystem'].invalid;
   }
 
   importTypeIsInvalid() {
-    return this.projectForm.controls.importType.invalid;
+    return this.projectForm.controls['importType'].invalid;
   }
 
   /*** Form validator Step : Description du versement ***/
   stepDescriptionIsInvalid() {
     return (
-      this.projectForm.controls.originatingAgencyIdentifier.invalid ||
-      this.projectForm.controls.messageIdentifier.invalid ||
-      this.projectForm.controls.submissionAgencyIdentifier.invalid
+      this.projectForm.controls['originatingAgencyIdentifier'].invalid ||
+      this.projectForm.controls['messageIdentifier'].invalid ||
+      this.projectForm.controls['submissionAgencyIdentifier'].invalid
     );
   }
 
   /*** Form validator Step : Contexte du versement ***/
   stepContextIsInvalid() {
     return (
-      this.projectForm.controls.archivalAgencyIdentifier.invalid ||
-      this.projectForm.controls.transferringAgencyIdentifier.invalid ||
-      this.projectForm.controls.archivalAgreement.invalid
+      this.projectForm.controls['archivalAgencyIdentifier'].invalid ||
+      this.projectForm.controls['transferringAgencyIdentifier'].invalid ||
+      this.projectForm.controls['archivalAgreement'].invalid
     );
   }
 
   /*** Form validator Step : Parametrer les regles de rattachement ***/
   stepRulesParamsIsInvalid() {
-    return this.projectForm.controls.rulesParams.invalid;
+    return this.projectForm.controls['rulesParams'].invalid;
   }
 
   get defaultAttachmentEnabled(): boolean {
@@ -451,7 +451,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   get rulesParams(): FormArray<FormGroup> {
-    return this.projectForm.controls.rulesParams as FormArray<FormGroup>;
+    return this.projectForm.controls['rulesParams'] as FormArray<FormGroup>;
   }
 
   addRuleParam() {

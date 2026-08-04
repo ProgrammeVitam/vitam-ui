@@ -41,7 +41,10 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
-import { ApplicationId, diff, FILE_FORMAT_EXTERNAL_PREFIX, FileFormat, Role, SecurityService, VitamuiSelectOptions } from 'vitamui-library';
+import type { FileFormat, VitamuiSelectOptions } from 'vitamui-library';
+import { ApplicationId, Role } from 'vitamui-library';
+import { SecurityService } from 'vitamui-library';
+import { diff, FILE_FORMAT_EXTERNAL_PREFIX } from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 
 @Component({
@@ -105,17 +108,17 @@ export class FileFormatInformationTabComponent {
       map(([isInternal, canUpdateFileFormat]: boolean[]) => isInternal || !canUpdateFileFormat),
       tap((disabled) => {
         if (disabled) {
-          this.form.controls.name.disable({ onlySelf: true });
-          this.form.controls.mimeType.disable({ onlySelf: true });
-          this.form.controls.version.disable({ onlySelf: true });
-          this.form.controls.extensions.disable({ onlySelf: true });
-          this.form.controls.hasPriorityOverFileFormatIDs.disable({ onlySelf: true });
+          this.form.controls['name'].disable({ onlySelf: true });
+          this.form.controls['mimeType'].disable({ onlySelf: true });
+          this.form.controls['version'].disable({ onlySelf: true });
+          this.form.controls['extensions'].disable({ onlySelf: true });
+          this.form.controls['hasPriorityOverFileFormatIDs'].disable({ onlySelf: true });
         } else {
-          this.form.controls.name.enable({ onlySelf: true });
-          this.form.controls.mimeType.enable({ onlySelf: true });
-          this.form.controls.version.enable({ onlySelf: true });
-          this.form.controls.extensions.enable({ onlySelf: true });
-          this.form.controls.hasPriorityOverFileFormatIDs.enable({ onlySelf: true });
+          this.form.controls['name'].enable({ onlySelf: true });
+          this.form.controls['mimeType'].enable({ onlySelf: true });
+          this.form.controls['version'].enable({ onlySelf: true });
+          this.form.controls['extensions'].enable({ onlySelf: true });
+          this.form.controls['hasPriorityOverFileFormatIDs'].enable({ onlySelf: true });
         }
       }),
     );

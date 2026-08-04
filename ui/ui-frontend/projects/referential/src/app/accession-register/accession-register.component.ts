@@ -79,7 +79,7 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
       .pipe(map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)));
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     super.ngOnDestroy();
   }
 

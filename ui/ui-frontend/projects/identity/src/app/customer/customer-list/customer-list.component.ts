@@ -73,9 +73,9 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
   @Output() customerClick = new EventEmitter<Customer>();
   @Output() ownerClick = new EventEmitter<Owner>();
   @Output() tenantClick = new EventEmitter<any>();
+  override overridePendingChange = true;
 
   tenants: Tenant[] = [];
-  overridePendingChange: true;
   loaded = false;
 
   private updatedCustomerSub: Subscription;

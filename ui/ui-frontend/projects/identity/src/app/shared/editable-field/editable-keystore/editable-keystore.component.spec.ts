@@ -166,7 +166,6 @@ describe('EditableKeystoreComponent', () => {
     it('should display the errors', () => {
       testhost.component.control.setErrors({ badPassword: true });
       fixture.detectChanges(false);
-      const elError = fixture.nativeElement.querySelector('vitamui-common-input-error');
       expect(testhost.component.control.hasError('badPassword')).toBe(true);
     });
   });

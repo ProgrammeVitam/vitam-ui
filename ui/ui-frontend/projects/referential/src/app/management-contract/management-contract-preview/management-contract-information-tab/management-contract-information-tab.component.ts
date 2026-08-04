@@ -39,7 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, diff } from 'vitamui-library';
+import { diff } from 'vitamui-library';
+import type { ManagementContract } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
 
 @Component({
@@ -109,18 +110,18 @@ export class ManagementContractInformationTabComponent {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
         const partialManagementContract = { ...formData };
         const date = new Date().toISOString();
-        const statusIsConsistent = formData.status !== undefined && formData.status !== null;
+        const statusIsConsistent = formData['status'] !== undefined && formData['status'] !== null;
 
-        if (statusIsConsistent && formData.status) {
-          partialManagementContract.activationDate = date;
-          partialManagementContract.deactivationDate = null;
-          partialManagementContract.status = 'ACTIVE';
+        if (statusIsConsistent && formData['status']) {
+          partialManagementContract['activationDate'] = date;
+          partialManagementContract['deactivationDate'] = null;
+          partialManagementContract['status'] = 'ACTIVE';
         }
 
-        if (statusIsConsistent && !formData.status) {
-          partialManagementContract.activationDate = null;
-          partialManagementContract.deactivationDate = date;
-          partialManagementContract.status = 'INACTIVE';
+        if (statusIsConsistent && !formData['status']) {
+          partialManagementContract['activationDate'] = null;
+          partialManagementContract['deactivationDate'] = date;
+          partialManagementContract['status'] = 'INACTIVE';
         }
 
         return this.managementContractService.patch(partialManagementContract).pipe(catchError(() => of(null)));

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ValidatorFn, Validators } from '@angular/forms';
-import { User } from '../models';
+import { User } from '../models/user/user.interface';
 
 export function extractSubLevel(userLevel: string, level: string): string {
   if (!userLevel) {

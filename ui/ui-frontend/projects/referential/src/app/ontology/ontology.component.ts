@@ -65,7 +65,7 @@ import { OntologyService } from './ontology.service';
 })
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
   private ontologyService = inject(OntologyService);
@@ -106,7 +106,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
 
   private initializeTenantId(): void {
     this.route.params.subscribe((params) => {
-      this.tenantId = +params.tenantIdentifier;
+      this.tenantId = +params['tenantIdentifier'];
     });
   }
 
@@ -192,7 +192,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
     this.schemaService.selectedPath$.next(null);
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 

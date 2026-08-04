@@ -51,7 +51,6 @@ import { of } from 'rxjs';
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
@@ -62,7 +61,6 @@ class AgencyPreviewStub {
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
 describe('FileFormatComponent', () => {

@@ -8,9 +8,9 @@
   (keyup)="forceHex()"
   [formControl]="colorInput"
   cpAlphaChannel="disabled"
-  cpDisableInput="true"
+  [cpDisableInput]="true"
   cpOutputFormat="hex"
-  maxlength="7"
+  [maxlength]="7"
   [placeholder]="placeholder"
   [errorMessageMap]="{
     colorTooLight: 'CUSTOMER.GRAPHIC_IDENTITY.TOO_LIGHT' | translate,

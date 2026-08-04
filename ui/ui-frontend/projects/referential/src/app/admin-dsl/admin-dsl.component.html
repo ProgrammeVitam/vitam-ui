@@ -23,8 +23,8 @@
           [placeholder]="'DSL.HOME.IDENTIFIER' | translate"
           [required]="isUnitIdRequired()"
           [errorMessageMap]="{
-            minlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.minlength?.requiredLength },
-            maxlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.maxlength?.requiredLength },
+            minlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.['minlength']?.requiredLength },
+            maxlength: 'DSL.HOME.IDENTIFIER_LENGTH_ERROR' | translate: { length: form.get('id')?.errors?.['maxlength']?.requiredLength },
             unknownUnit: 'DSL.HOME.UNKNOWN_UNIT' | translate,
           }"
         >
@@ -67,7 +67,7 @@
           <button class="btn secondary" (click)="checkDsl()">{{ 'DSL.HOME.VALIDATE_JSON' | translate }}</button>
         </div>
         <div>
-          <button class="btn outline outline-primary mr-3" (click)="copyToClipbord(responseText.value)">
+          <button class="btn outline outline-primary mr-3" (click)="copyToClipboard($any(responseText).value)">
             {{ 'COMMON.COPY' | translate }}
           </button>
 

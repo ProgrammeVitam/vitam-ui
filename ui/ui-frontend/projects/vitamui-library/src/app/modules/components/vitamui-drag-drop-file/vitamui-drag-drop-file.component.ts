@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import type { SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -119,7 +119,7 @@ export class VitamuiDragDropFileComponent {
       logoImage.onload = () => {
         if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
           this.imageToUpload = this.lastImageUploaded;
-          // eslint-disable-next-line max-len
+
           this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
             width: this.logoSize.width,
             height: this.logoSize.height,

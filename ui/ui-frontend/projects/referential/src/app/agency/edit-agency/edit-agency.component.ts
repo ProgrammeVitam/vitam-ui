@@ -103,7 +103,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
   editObject: EditObject;
 
   constructor() {
-    this.agency = this.router.getCurrentNavigation()?.extras?.state?.agency;
+    this.agency = this.router.getCurrentNavigation()?.extras?.state?.['agency'];
   }
 
   ngOnInit() {
@@ -112,7 +112,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
         switchMap((agency: Agency) => {
           if (agency) return of(agency);
 
-          return this.route.params.pipe(switchMap((params) => this.agencyService.get(params?.agencyIdentifier)));
+          return this.route.params.pipe(switchMap((params) => this.agencyService.get(params?.['agencyIdentifier'])));
         }),
       )
       .subscribe({

@@ -72,7 +72,7 @@
                 <button
                   class="vitamui-filter-button ml-1"
                   [vitamuiCommonTableFilter]="statusFilterTemplate"
-                  [class.active]="filterMap.get('Status') && filterMap.get('Status').length > 0"
+                  [class.active]="filterMap['Status'] && filterMap['Status'].length > 0"
                   #statusFilterTrigger="vitamuiCommonTableFilter"
                 >
                   <em class="material-icons vitamui-row-icon">filter_list</em>
@@ -80,7 +80,7 @@
               </span>
               <ng-template #statusFilterTemplate>
                 <vitamui-common-table-filter-search
-                  [(filter)]="filterMap['Status']"
+                  [filter]="filterMap['Status']"
                   [options]="statusFilterOptions$ | async"
                   (filterChange)="onFilterChange('Status', $event)"
                   (filterClose)="statusFilterTrigger?.close()"

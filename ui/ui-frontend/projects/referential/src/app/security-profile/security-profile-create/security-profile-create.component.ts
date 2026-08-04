@@ -114,9 +114,9 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
       permissions: null,
     });
 
-    this.form.controls.name.valueChanges.subscribe((value) => {
+    this.form.controls['name'].valueChanges.subscribe((value) => {
       if (!this.isSlaveMode) {
-        this.form.controls.identifier.setValue(value);
+        this.form.controls['identifier'].setValue(value);
       }
     });
 

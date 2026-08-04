@@ -1,7 +1,7 @@
 <vitamui-common-sidenav-header
   [title]="securisation?.id | truncate: 30"
   (onclose)="emitClose()"
-  [badge]="securisation | eventTypeBadgeClass | slice: 13"
+  [badge]="securisation | eventTypeBadgeColor"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="securisation?.id"
   [toolTipTitleDuration]="300"

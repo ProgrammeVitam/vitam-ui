@@ -38,17 +38,8 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  collapseAnimation,
-  Context,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-  User,
-} from 'vitamui-library';
+import { Direction, InfiniteScrollTable, PageRequest, collapseAnimation, DEFAULT_PAGE_SIZE, rotateAnimation } from 'vitamui-library';
+import type { Context, User, AdminUserProfile } from 'vitamui-library';
 import { ContextService } from '../context.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -144,12 +135,12 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   buildContextCriteriaFromSearch() {
     const criteria: any = {};
     if (this._searchText.length > 0) {
-      criteria.Name = this._searchText;
-      criteria.Identifier = this._searchText;
+      criteria['Name'] = this._searchText;
+      criteria['Identifier'] = this._searchText;
     }
 
-    if (this.filterMap.status.length > 0) {
-      criteria.Status = this.filterMap.status;
+    if (this.filterMap['status'].length > 0) {
+      criteria['Status'] = this.filterMap['status'];
     }
 
     return criteria;

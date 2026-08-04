@@ -49,8 +49,8 @@ import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.componen
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  route: ActivatedRoute;
+  override globalEventService: GlobalEventService;
 
   public profiles: Profile[];
   public search: string;
@@ -74,7 +74,7 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
     });
   }
 
-  public openHierarchyDuplicateDialog(): void {
+  openHierarchyDuplicateDialog(): void {
     this.dialog
       .open(HierarchyCreateComponent, {
         disableClose: true,
@@ -88,7 +88,7 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
       });
   }
 
-  public onSearchSubmit(search: string): void {
+  onSearchSubmit(search: string): void {
     this.search = search;
   }
 

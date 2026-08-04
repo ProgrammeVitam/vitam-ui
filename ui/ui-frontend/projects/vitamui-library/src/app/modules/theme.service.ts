@@ -38,9 +38,10 @@ import { Injectable, inject } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
-import { AppConfiguration } from '.';
+import { AppConfiguration } from './models/app.configuration.interface';
 import { convertToDarkColor, convertToLightColor, setLuminosity } from './utils/colors.util';
-import { AuthUser, ThemeDataType } from './models';
+import { ThemeDataType } from './models/customer/theme/themeDataType.enum';
+import { AuthUser } from './models/user/auth-user.interface';
 import { GraphicIdentity } from './models/customer/graphic-identity.interface';
 import { Color } from './models/customer/theme/color.interface';
 import { getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
@@ -162,7 +163,7 @@ export class ThemeService {
     return this._defaultTheme.pipe(
       filter((theme: Theme) => !!theme),
       map((theme: Theme) => {
-        let value: string | SafeResourceUrl;
+        let value: string | SafeResourceUrl = '';
         switch (type) {
           case ThemeDataType.PORTAL_LOGO:
             const portal64 = hasCustomGraphicIdentity && userGraphicIdentity.portalDataBase64;
@@ -181,7 +182,7 @@ export class ThemeService {
             value = userData64 ? this.domSanitize(userGraphicIdentity.userDataBase64) : theme.userUrl;
             break;
           default:
-            return;
+            break;
         }
 
         return value;

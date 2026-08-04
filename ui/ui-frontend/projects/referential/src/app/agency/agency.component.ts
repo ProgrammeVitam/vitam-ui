@@ -82,8 +82,8 @@ import { map } from 'rxjs/operators';
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
-  globalEventService: GlobalEventService;
-  private route: ActivatedRoute;
+  override globalEventService: GlobalEventService;
+  route: ActivatedRoute;
   private securityService = inject(SecurityService);
   private agencyService = inject(AgencyService);
   private translateService = inject(TranslateService);
@@ -111,11 +111,11 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      this.tenantIdentifier = +params['tenantIdentifier'];
     });
     this.queryParamsService
       .getQueryParams()
-      .pipe(map((queryParam) => queryParam.s || ''))
+      .pipe(map((queryParam) => queryParam['s'] || ''))
       .subscribe((s) => (this.search = s));
 
     zip(

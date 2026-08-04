@@ -45,7 +45,7 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedPosition } from '@angular/cdk/overlay';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
@@ -89,9 +89,10 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   }
 
   @HostListener('document:click', ['$event.target'])
-  onClick(target: HTMLElement) {
+  onClick(target: EventTarget) {
+    const htmlTarget = target as HTMLElement;
     const clickInside =
-      this.isInside(target, this.#componentRef) || this.isInside(target, this.cdkConnectedOverlay.overlayRef?.hostElement);
+      this.isInside(htmlTarget, this.#componentRef) || this.isInside(htmlTarget, this.cdkConnectedOverlay.overlayRef?.hostElement);
     const activeElementInside = this.isInside(document.activeElement, this.#componentRef);
     if (clickInside || activeElementInside) {
       clearTimeout(this.#cancelTimeout);
@@ -101,17 +102,18 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   }
 
   @HostListener('focusout', ['$event.relatedTarget'])
-  focusOut(target: HTMLElement) {
+  focusOut(target: EventTarget) {
+    const htmlTarget = target as HTMLElement;
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
-    if (this.isInside(target, this.#componentRef) || this.isInside(target, overlayRef.hostElement)) {
+    if (this.isInside(htmlTarget, this.#componentRef) || this.isInside(htmlTarget, overlayRef.hostElement)) {
       return;
     }
     this.#cancelTimeout = window.setTimeout(() => this.cancel(), 100);
   }
 
   @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: KeyboardEvent) {
-    event.preventDefault();
+  onEscape(event: Event) {
+    (event as KeyboardEvent).preventDefault();
     this.cancel();
   }
 
@@ -132,7 +134,7 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
     this.innerControl = this.ref?.setControl(this.control);
   }
 
-  writeValue(value: any) {
+  override writeValue(value: any) {
     this.ref?.writeValue(value);
   }
 
@@ -153,11 +155,11 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
     this.editMode = false;
   }
 
-  protected isInside(target: Element, element: Element): boolean {
-    return element && (target === element || element.contains(target));
+  protected isInside(target: Element | null, element: Element | null | undefined): boolean {
+    return !!element && !!target && (target === element || element.contains(target));
   }
 
-  positions = [
+  positions: ConnectedPosition[] = [
     {
       originX: 'end',
       originY: 'top',

@@ -109,7 +109,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nestedDataSourceLeaves || changes.searchRequestResultFacets) {
+    if (changes['nestedDataSourceLeaves'] || changes['searchRequestResultFacets']) {
       this.virtualPathLimitReached = this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE;
       this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
       if (this.searchCriterias) {
@@ -117,12 +117,12 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
           .loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets)
           .subscribe(() => this.refreshTreeNodes());
       }
-      if (changes.searchRequestResultFacets && changes.searchRequestResultFacets.currentValue?.length > 0) {
-        this.leavesTreeService.setSearchRequestResultFacets(changes.searchRequestResultFacets.currentValue);
+      if (changes['searchRequestResultFacets'] && changes['searchRequestResultFacets']['currentValue']?.length > 0) {
+        this.leavesTreeService.setSearchRequestResultFacets(changes['searchRequestResultFacets']['currentValue']);
       }
       this.refreshTreeNodes();
     }
-    if (changes.transactionId) {
+    if (changes['transactionId']) {
       this.leavesTreeService.setTransactionId(this.transactionId);
     }
     this.nonOrphanNodeSelected = this.allNonOrphanNodes.some((node) => node.id === this.unitId);

@@ -212,7 +212,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   isNotOpen$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   isNotReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  tenantIdentifier: string;
+  tenantIdentifier: number;
   projectName: string;
   isAutomaticIngest = false;
   breadcrumbData: BreadCrumbData[];
@@ -343,7 +343,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.selectedArchive$ = archiveSharedDataService.selectedUnit$;
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     this.subscriptions.unsubscribe();
     this.actionsWithThresholdReachedAlerteMessageDialogSubscription?.unsubscribe();
   }
@@ -357,7 +357,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.vitamConfigurationService.load().subscribe();
 
     this.transaction$ = this.route.params.pipe(
-      tap((params) => (this.tenantIdentifier = params.tenantIdentifier)),
+      tap((params) => (this.tenantIdentifier = Number(params['tenantIdentifier']))),
       mergeMap((params) => {
         const { projectId, transactionId } = params;
         return transactionId
@@ -432,7 +432,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
 
     this.rulesToExport$ = this.ruleService
-      .getAllForTenant(this.tenantIdentifier)
+      .getAllForTenant(String(this.tenantIdentifier))
       .pipe(map((rules) => rules.sort((a, b) => a.ruleId.localeCompare(b.ruleId))));
 
     this.checkUpdateUnitPermissions();
@@ -455,7 +455,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     });
   }
 
-  ngAfterViewInit() {
+  override ngAfterViewInit() {
     // Trigger the search after getting the transaction and the view is init. Also making sure that searchCriteriaService is ready (i.e.: schema has been retrieved) in order to trigger search only after criteria have been set from the URL query params
     zip(this.transaction$, this.searchCriteriaService.ready()).subscribe(() => {
       this.archiveSharedDataService
@@ -480,31 +480,27 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   private checkUpdateUnitPermissions() {
-    this.archiveUnitCollectService
-      .hasCollectRole('ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT', Number(this.tenantIdentifier))
-      .subscribe((result) => {
-        this.hasUnitaryUpdateUnitRole = result;
-      });
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_UPDATE_UNITARY_ARCHIVE_UNIT', this.tenantIdentifier).subscribe((result) => {
+      this.hasUnitaryUpdateUnitRole = result;
+    });
 
-    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_DELETE_ARCHIVE_UNIT', Number(this.tenantIdentifier)).subscribe((result) => {
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_DELETE_ARCHIVE_UNIT', this.tenantIdentifier).subscribe((result) => {
       this.hasDeleteArchiveUnitActionRole = result;
     });
 
-    this.archiveUnitCollectService
-      .hasCollectRole('ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT', Number(this.tenantIdentifier))
-      .subscribe((result) => {
-        this.hasBulkUpdateUnitRole = result;
-      });
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_UPDATE_BULK_ARCHIVE_UNIT', this.tenantIdentifier).subscribe((result) => {
+      this.hasBulkUpdateUnitRole = result;
+    });
 
-    this.archiveUnitCollectService.hasCollectRole('ROLE_SEND_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+    this.archiveUnitCollectService.hasCollectRole('ROLE_SEND_TRANSACTIONS', this.tenantIdentifier).subscribe((result) => {
       this.hasSendTransactionRole = result;
     });
 
-    this.archiveUnitCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
+    this.archiveUnitCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', this.tenantIdentifier).subscribe((result) => {
       this.hasCloseTransactionRole = result;
     });
 
-    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_RECLASSIFICATION', Number(this.tenantIdentifier)).subscribe((result) => {
+    this.archiveUnitCollectService.hasCollectRole('ROLE_COLLECT_RECLASSIFICATION', this.tenantIdentifier).subscribe((result) => {
       this.hasReclassificationRole = result;
     });
   }
@@ -632,7 +628,6 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
 
-    // eslint-disable-next-line guard-for-in
     for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
@@ -1139,7 +1134,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
             this.archiveUnitCollectService.launchDeletionModal(
               this.transaction.id,
               this.listOfUACriteriaSearch,
-              Number(this.tenantIdentifier),
+              this.tenantIdentifier,
               this.currentPage,
               this.confirmSecondActionBigNumberOfResultsActionDialog,
             ),

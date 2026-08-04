@@ -67,7 +67,7 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
   }
 

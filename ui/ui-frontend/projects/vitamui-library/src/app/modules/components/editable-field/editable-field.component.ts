@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 import {
   AfterContentInit,
   ContentChildren,
@@ -49,16 +49,17 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from '@angular/forms';
+import { ControlValueAccessor, FormControl } from '@angular/forms';
+import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'editable-field-component',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
   protected elementRef: ElementRef;
 
@@ -67,15 +68,10 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   }
 
   @Input() label: string;
-  @Input()
-  set disabled(disabled: boolean) {
-    this._disabled = disabled;
-    this.readonly = this._disabled;
-  }
-  get disabled(): boolean {
-    return this._disabled;
-  }
-  private _disabled: boolean;
+
+  @Input({ transform: coerceBooleanProperty })
+  @HostBinding('class.readonly')
+  disabled = false;
 
   @Input()
   set validator(validator: ValidatorFn) {
@@ -95,12 +91,10 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
   @ContentChildren(VitamUIFieldErrorComponent) errors: QueryList<VitamUIFieldErrorComponent>;
 
-  @HostBinding('class.readonly') readonly = false;
-
   control = new FormControl();
   originValue: any;
   editMode = false;
-  positions = [
+  positions: ConnectedPosition[] = [
     {
       originX: 'end',
       originY: 'center',
@@ -161,24 +155,26 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   }
 
   @HostListener('document:keydown.escape', ['$event'])
-  onEscape(event: KeyboardEvent) {
-    event.preventDefault();
+  onEscape(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
+    keyboardEvent.preventDefault();
     this.cancel();
   }
 
   @HostListener('keydown.enter', ['$event'])
-  onEnter(event: KeyboardEvent) {
-    event.preventDefault();
+  onEnter(event: Event) {
+    (event as KeyboardEvent).preventDefault();
     this.confirm();
   }
 
   @HostListener('document:click', ['$event.target'])
-  onClick(target: HTMLElement) {
+  onClick(target: EventTarget) {
+    const htmlTarget = target as HTMLElement;
     if (!this.editMode) {
       return;
     }
     const overlayRef = this.cdkConnectedOverlay.overlayRef;
-    if (this.isInside(target, this.elementRef.nativeElement) || this.isInside(target, overlayRef.hostElement)) {
+    if (this.isInside(htmlTarget, this.elementRef.nativeElement) || this.isInside(htmlTarget, overlayRef.hostElement)) {
       return;
     }
     this.cancel();

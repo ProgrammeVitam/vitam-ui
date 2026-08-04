@@ -66,7 +66,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
+      if (params['tenantIdentifier']) {
         this.findUserAccessContract();
       }
     });

@@ -35,16 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FilingHoldingSchemeNode } from '../../models';
+import type { FilingHoldingSchemeNode } from '../../models';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 import { UnitType } from '../../models';
 import { CommonModule } from '@angular/common';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
@@ -56,8 +56,8 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
 
   @Input() node: FilingHoldingSchemeNode;
   @Input() icon: string;
-  @Input() expanded: boolean;
-  @Input() disabled: boolean;
+  @Input({ transform: coerceBooleanProperty }) expanded: boolean;
+  @Input({ transform: coerceBooleanProperty }) disabled: boolean;
   @Input() hasCheckBox = true;
   @Input() labelIsLinkedToCheckbox = false;
 

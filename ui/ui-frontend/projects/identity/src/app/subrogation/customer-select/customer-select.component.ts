@@ -59,7 +59,7 @@ export class CustomerSelectComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this.destroyer$)).subscribe((data) => {
-      this.customers = data.customers;
+      this.customers = data['customers'];
     });
 
     this.globalEventService.customerEvent

@@ -41,7 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
-import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
 @Pipe({
   name: 'truncate',
@@ -116,8 +116,8 @@ describe('SecurisationPreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule],
-      declarations: [SecurisationPreviewComponent, MockTruncatePipe, EventTypeBadgeClassPipe],
+      imports: [BrowserAnimationsModule, EventTypeBadgeColorPipe],
+      declarations: [SecurisationPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

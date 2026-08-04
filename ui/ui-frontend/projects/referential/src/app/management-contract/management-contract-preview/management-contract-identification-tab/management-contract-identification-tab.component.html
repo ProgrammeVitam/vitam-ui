@@ -16,7 +16,7 @@
     @for (persistentIdentifier of getPersistentIdentifierPolicies().controls; track persistentIdentifier) {
       <div>
         <app-update-persistent-identifier-policy-form
-          [form]="persistentIdentifier"
+          [form]="$any(persistentIdentifier)"
           (objectUsagePolicyAdded)="contractForm.markAsDirty()"
           (objectUsagePolicyRemoved)="contractForm.markAsDirty()"
         ></app-update-persistent-identifier-policy-form>
@@ -24,9 +24,9 @@
     }
   </div>
   @for (error of $any(contractForm.errors) ?? []; track error) {
-    <vitamui-common-input-error>
+    <div>
       {{ error }}
-    </vitamui-common-input-error>
+    </div>
   }
   <div class="row">
     @if (!sending) {

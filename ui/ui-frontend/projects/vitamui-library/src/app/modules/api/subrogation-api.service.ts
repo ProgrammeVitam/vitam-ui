@@ -57,11 +57,11 @@ export class SubrogationApiService extends BaseHttpClient<Subrogation> {
     super(http, baseUrl + '/subrogations');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Subrogation> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Subrogation> {
     return super.getOne(id, headers);
   }
 
@@ -85,7 +85,7 @@ export class SubrogationApiService extends BaseHttpClient<Subrogation> {
     return this.http.delete<void>(this.apiUrl + '/surrogate/decline/' + id);
   }
 
-  create(subrogation: Subrogation, headers?: HttpHeaders): Observable<Subrogation> {
+  override create(subrogation: Subrogation, headers?: HttpHeaders): Observable<Subrogation> {
     return super.create(subrogation, headers);
   }
 

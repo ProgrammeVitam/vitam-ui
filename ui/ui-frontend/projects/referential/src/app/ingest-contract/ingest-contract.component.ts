@@ -100,8 +100,8 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     });
 
     this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        this.tenantId = +params.tenantIdentifier;
+      if (params['tenantIdentifier']) {
+        this.tenantId = +params['tenantIdentifier'];
       }
     });
   }
@@ -109,7 +109,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   ngOnInit() {
     this.hasUpdateIngestRole$ = this.route.params.pipe(
       mergeMap((params) => {
-        this.tenantIdentifier = +params.tenantIdentifier;
+        this.tenantIdentifier = +params['tenantIdentifier'];
         return this.securityService.hasRole$(this.appName, Role.ROLE_UPDATE_INGEST_CONTRACTS, this.tenantIdentifier);
       }),
     );

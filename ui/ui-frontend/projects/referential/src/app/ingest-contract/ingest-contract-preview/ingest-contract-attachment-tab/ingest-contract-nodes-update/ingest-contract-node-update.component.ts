@@ -85,18 +85,18 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   ngOnInit() {
     this.linkParentIdControl.valueChanges.subscribe((value) => {
       if (value.included.length > 0) {
-        this.selectNodesForm.controls.linkParentId.setValue(value.included[0]);
+        this.selectNodesForm.controls['linkParentId'].setValue(value.included[0]);
       } else {
-        this.selectNodesForm.controls.linkParentId.setValue('');
+        this.selectNodesForm.controls['linkParentId'].setValue('');
       }
     });
 
     this.checkParentIdControl.valueChanges.subscribe((value) => {
-      this.selectNodesForm.controls.checkParentId.setValue(value.included);
+      this.selectNodesForm.controls['checkParentId'].setValue(value.included);
     });
 
     this.checkParentLinkControl.valueChanges.subscribe((value) => {
-      this.selectNodesForm.controls.checkParentLink.setValue(value);
+      this.selectNodesForm.controls['checkParentLink'].setValue(value);
     });
 
     this.linkParentIdControl.setValue(

@@ -125,6 +125,6 @@ export class TitleAndDescriptionCriteriaSearchCollectComponent {
   }
 
   get archiveCriteria() {
-    return this.quickSearchCriteriaForm.controls.archiveCriteria;
+    return this.quickSearchCriteriaForm.controls['archiveCriteria'];
   }
 }

@@ -442,7 +442,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      this.tenantIdentifier = +params['tenantIdentifier'];
       this.hasRole('ROLE_ORIGINATING_AGENCY_REASSIGNMENT');
     });
     this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
@@ -485,7 +485,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
+    if (changes['accessContract']) {
       this.archiveSharedDataService.emitToggle(true);
     }
   }
@@ -597,7 +597,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
 
-    // eslint-disable-next-line guard-for-in
     for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
@@ -625,6 +624,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }
+    return undefined;
   }
 
   private launchComputingManagementRulesFacets() {

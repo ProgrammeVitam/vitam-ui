@@ -44,7 +44,7 @@ import { Option } from '../../../app/modules';
 
 export const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => PatternComponent),
   multi: true,
 };

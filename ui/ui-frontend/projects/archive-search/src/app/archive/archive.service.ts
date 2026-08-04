@@ -91,7 +91,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     this.archiveApiService = archiveApiService;
   }
 
-  headers = new HttpHeaders();
+  override headers = new HttpHeaders();
 
   rulesMap: Map<String, String> = new Map([
     [RuleTypeEnum.ACCESSRULE, 'ACCESS_RULE'],

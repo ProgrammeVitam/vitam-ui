@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { type AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import * as uuid from 'uuid';
@@ -223,7 +223,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   secondStepInvalid(): boolean {
     const fieldNames = ['unitStrategy', 'objectGroupStrategy', 'objectStrategy'];
 
-    return this.isInvalid(fieldNames, this.form.controls.storage);
+    return this.isInvalid(fieldNames, this.form.controls['storage']);
   }
 
   hasValidPersistentIdentifierPolicies(): boolean {

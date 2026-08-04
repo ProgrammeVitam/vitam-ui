@@ -75,7 +75,7 @@
           </mat-form-field>
         </div>
         <mat-form-field class="mr-3 field-domain vitamui-mat-select">
-          <mat-select [formControl]="country" disabled panelClass="vitamui-mat-select">
+          <mat-select [formControl]="country" [disabled]="true" panelClass="vitamui-mat-select">
             @for (country of countries; track country) {
               <mat-option [value]="country.key">
                 {{ country.label }}
@@ -138,7 +138,7 @@
           </mat-button-toggle>
         </mat-button-toggle-group>
 
-        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group disabled" disabled>
+        <mat-button-toggle-group [formControl]="control" class="vitamui-button-toggle-group disabled" [disabled]="true">
           <mat-button-toggle [value]="'FIRST'">
             <span>First</span>
           </mat-button-toggle>

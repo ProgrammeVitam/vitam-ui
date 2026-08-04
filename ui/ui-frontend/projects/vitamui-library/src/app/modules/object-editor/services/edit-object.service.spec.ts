@@ -315,7 +315,7 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject).toBeTruthy();
 
-          addresseesEditObject.actions.add.handler();
+          addresseesEditObject.actions['add'].handler();
 
           expect(addresseesEditObject.children.length).toEqual(2);
         });
@@ -387,7 +387,7 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject).toBeTruthy();
 
-          addresseesEditObject.children[0].actions.remove.handler();
+          addresseesEditObject.children[0].actions['remove'].handler();
 
           expect(addresseesEditObject.children.length).toEqual(0);
         });
@@ -459,13 +459,13 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject).toBeTruthy();
 
-          addresseesEditObject.actions.add.handler({ FirstName: 'John' });
-          addresseesEditObject.actions.add.handler({ FirstName: 'Daniel' });
-          addresseesEditObject.actions.add.handler({ FirstName: 'Alexandre' });
+          addresseesEditObject.actions['add'].handler({ FirstName: 'John' });
+          addresseesEditObject.actions['add'].handler({ FirstName: 'Daniel' });
+          addresseesEditObject.actions['add'].handler({ FirstName: 'Alexandre' });
 
           expect(addresseesEditObject.children.length).toEqual(4);
 
-          addresseesEditObject.children[2].actions.remove.handler();
+          addresseesEditObject.children[2].actions['remove'].handler();
 
           expect(addresseesEditObject.children.length).toEqual(3);
           expect(addresseesEditObject.control.value).not.toEqual(

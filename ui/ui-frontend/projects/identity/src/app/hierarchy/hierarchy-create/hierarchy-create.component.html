@@ -22,14 +22,14 @@
 
         <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
           @if (form?.get('level')?.touched && form?.get('level')?.hasError('required')) {
-            <vitamui-common-input-error>
+            <div>
               {{ 'COMMON.ERROR.REQUIRED' | translate }}
-            </vitamui-common-input-error>
+            </div>
           }
           @if (form?.get('level')?.touched && form?.get('level')?.hasError('pattern')) {
-            <vitamui-common-input-error>
+            <div>
               {{ 'HIERARCHY.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}
-            </vitamui-common-input-error>
+            </div>
           }
         </vitamui-common-level-input>
       </div>
@@ -39,7 +39,7 @@
 
     <app-profiles-form
       formControlName="profileIds"
-      showLevel="true"
+      [showLevel]="true"
       [tenantIdentifier]="data.tenantId"
       [applicationNameExclude]="['USERS_APP', 'ARCHIVE_APP']"
     ></app-profiles-form>

@@ -39,7 +39,8 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
-import { AdminUserProfile, AuthService, Group, isRootLevel, Profile, User } from 'vitamui-library';
+import { AuthService, isRootLevel } from 'vitamui-library';
+import type { AdminUserProfile, Group, Profile, User } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
 import { GroupAttributionComponent } from '../../group-attribution/group-attribution.component';
 import { GroupSelection } from '../../group-selection.interface';

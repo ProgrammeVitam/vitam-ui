@@ -212,12 +212,12 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
     );
 
     if (Object.keys(consistentData).length > 0) {
-      if (this.type === ManagementRuleType.APPRAISAL && consistentData.ruleEliminationIdentifier) {
+      if (this.type === ManagementRuleType.APPRAISAL && consistentData['ruleEliminationIdentifier']) {
         this.managementRuleCriteriaService.addFromParams({
           [ELIMINATION_TECHNICAL_ID + this.config.ruleTypeSuffix]:
             formData.ruleEliminationIdentifier && formData.ruleEliminationIdentifier !== '' ? formData.ruleEliminationIdentifier : null,
         });
-        this.criteriaForm.controls.ruleEliminationIdentifier?.reset(undefined, { emitEvent: false });
+        this.criteriaForm.controls['ruleEliminationIdentifier']?.reset(undefined, { emitEvent: false });
       }
 
       this.previousCriteriaValue = consistentData;
@@ -233,17 +233,17 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   addBeginDtCriteria() {
-    const startDt = this.criteriaForm.controls?.ruleStartDate.value;
-    const endDt = this.endDateInterval ? this.criteriaForm.controls?.ruleEndDate.value : null;
+    const startDt = this.criteriaForm.controls['ruleStartDate']?.value;
+    const endDt = this.endDateInterval ? this.criteriaForm.controls['ruleEndDate']?.value : null;
     // FIXME: Interval detection not based on valu presences but on id name (eltValue.id) after emit...
     const isInterval = startDt && endDt;
     const dateId = isInterval ? INTERVAL_DATE_ACCESS : this.config.id_endDate;
 
     this.handleDateCriteria(RULE_END_DATE, dateId, startDt, endDt);
 
-    this.criteriaForm.controls.ruleStartDate.reset();
+    this.criteriaForm.controls['ruleStartDate'].reset();
     if (this.endDateInterval) {
-      this.criteriaForm.controls.ruleEndDate.reset();
+      this.criteriaForm.controls['ruleEndDate'].reset();
     }
   }
 
@@ -252,11 +252,11 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   get ruleStartDateCtrl(): FormControl {
-    return this.criteriaForm.controls?.ruleStartDate as FormControl;
+    return this.criteriaForm.controls['ruleStartDate'] as FormControl;
   }
 
   get ruleEndDateCtrl(): FormControl {
-    return this.criteriaForm.controls?.ruleEndDate as FormControl;
+    return this.criteriaForm.controls['ruleEndDate'] as FormControl;
   }
 
   protected initAdditionalCriteria() {
@@ -305,7 +305,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   updateEndDateInterval(status: boolean) {
     this.endDateInterval = status;
     if (!status) {
-      this.criteriaForm.controls.ruleEndDate.reset();
+      this.criteriaForm.controls['ruleEndDate'].reset();
     }
   }
 

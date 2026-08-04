@@ -42,7 +42,7 @@ import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
 
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => EditablePatternsComponent),
   multi: true,
 };
@@ -68,7 +68,7 @@ export class EditablePatternsComponent extends EditableFieldComponent {
     super(elementRef);
   }
 
-  onClick(target: HTMLElement) {
+  override onClick(target: HTMLElement) {
     if (!this.editMode) {
       return;
     }
@@ -95,7 +95,7 @@ export class EditablePatternsComponent extends EditableFieldComponent {
     this.patternClicked = true;
   }
 
-  protected isInside(target: HTMLElement, element: HTMLElement): boolean {
+  protected override isInside(target: HTMLElement, element: HTMLElement): boolean {
     return element && (target === element || element.contains(target));
   }
 }

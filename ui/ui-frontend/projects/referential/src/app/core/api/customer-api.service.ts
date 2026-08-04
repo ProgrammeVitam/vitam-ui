@@ -36,7 +36,7 @@
  */
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BaseHttpClient, BASE_URL, Customer } from 'vitamui-library';
+import { BaseHttpClient, BASE_URL, type Customer } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

@@ -132,10 +132,10 @@ describe('ManagementContractListComponent', () => {
     const expectedResponse = ['ACTIVE', 'INACTIVE'];
 
     // Then
-    expect(component.filterMap.status).toBeDefined();
-    expect(component.filterMap.status).not.toBeNull();
-    expect(component.filterMap.status.length).toEqual(2);
-    expect(component.filterMap.status).toEqual(expectedResponse);
+    expect(component.filterMap['status']).toBeDefined();
+    expect(component.filterMap['status']).not.toBeNull();
+    expect(component.filterMap['status'].length).toEqual(2);
+    expect(component.filterMap['status']).toEqual(expectedResponse);
   });
 
   it('should not call search of SearchService', () => {
@@ -152,7 +152,7 @@ describe('ManagementContractListComponent', () => {
 
   it('should return the criteria search when no status filter is given', () => {
     // Given
-    component.filterMap.status = [];
+    component.filterMap['status'] = [];
     component._searchText = 'IdentifierCriteria';
     const expectedResppnse = { Name: 'IdentifierCriteria', Identifier: 'IdentifierCriteria' };
 
@@ -165,10 +165,10 @@ describe('ManagementContractListComponent', () => {
 
   it('filterMap should have values', () => {
     // Then
-    expect(component.filterMap.status).toBeDefined();
-    expect(component.filterMap.status).not.toBeNull();
-    expect(component.filterMap.status.length).toEqual(2);
-    expect(component.filterMap.status[0]).toEqual('ACTIVE');
+    expect(component.filterMap['status']).toBeDefined();
+    expect(component.filterMap['status']).not.toBeNull();
+    expect(component.filterMap['status'].length).toEqual(2);
+    expect(component.filterMap['status'][0]).toEqual('ACTIVE');
   });
 
   describe('DOM', () => {

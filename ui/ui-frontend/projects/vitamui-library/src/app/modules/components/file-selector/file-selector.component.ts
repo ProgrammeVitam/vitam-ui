@@ -142,7 +142,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     super(injector);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
 
     this.control.addValidators([this.maxSizeInBytesValidator, this.maxFilesValidator]);
@@ -158,7 +158,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
 
   private isInitialization = true;
 
-  writeValue(): void {
+  override writeValue(): void {
     // Only add files to init the component from the form control value, otherwise it would be triggered after calling control.setValue
     if (this.isInitialization) {
       this.isInitialization = false;
