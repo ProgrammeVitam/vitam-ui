@@ -198,63 +198,29 @@ To ensure these configurations work properly, there are certain rules to follow:
 
 **Settings example for local test**
 
-Bellow an example on OIDC authentication provider based on a pre-configured keycloak.
+`tools/docker/keycloak` provides a ready-made OIDC IdP: a disposable Keycloak
+exposing the `vitamui` realm, along with the provisioning that registers the
+matching provider and its test user in the `iam` database.
 
-To test the authentication delegation in the OIDC protocol, you will find an example of ready-made configuration here.
-- Simply launch the `tools/docker/external-idp-cas/run-dev.sh` script,
-- This script will create a Docker container with a Keycloak and its database, create an OIDC client, and create a test user.
-- The keycloak is accessible on the url `http://localhost:8041`
-- The keycloak credentials for admin are:
-    - user: `admin`,
-    - password: `changeme`
-- The OIDC client created has the following informations:
-    - identifier: `vitamui-oidc`
-    - secret: `QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui`
-    - OpenID Endpoint Configuration: `http://localhost:8041/realms/vitamui-test/.well-known/openid-configuration`
-- The user created has the following informations:
-    - Username: `demo@change-me.fr`
-    - Email: `demo@change-me.fr`
-    - Name: `demo oidc vitamui`
-    - Password: `ChangeIt.2024`
-
-** Vitamui provider collection content **
-Based on the test container, bellow an example of OIDC authentication provider for the local provider:
-
-```mongodb-json
-
-{
-    _id: '662f3f36f0fb0f340240221df27815df8c0a490d8f2f73b120d78a3fc0de2a7b',
-    identifier: '53',
-    name: 'keycloak-oidc',
-    technicalName: 'idp295983',
-    internal: false,
-    enabled: true,
-    patterns: [
-        '.*@change-me.fr'
-    ],
-    readonly: false,
-    mailAttribute: 'email',
-    autoProvisioningEnabled: false,
-    propagateLogout: false,
-    authnRequestBinding: 'POST',
-    wantsAssertionsSigned: false,
-    authnRequestSigned: false,
-    clientId: 'vitamui-oidc',
-    clientSecret: 'QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui',
-    discoveryUrl: 'http://localhost:8041/realms/vitamui-test/.well-known/openid-configuration',
-    scope: 'openid email',
-    preferredJwsAlgorithm: 'ES256',
-    useState: true,
-    useNonce: true,
-    usePkce: false,
-    protocoleType: 'OIDC',
-    customerId: '5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9',
-    _class: 'providers'
-}
-
+```sh
+cd tools/docker/keycloak
+./setup.sh
 ```
 
+The same instance also exposes the identity over SAML, so one command covers
+both delegation paths. Then log in on https://dev.vitamui.com:8080/cas/login
+with `demo.oidc@keycloak-oidc.fr` / `ChangeIt.2024`.
+
+`tools/docker/keycloak/provision/vitamui-providers.js.tpl` holds the reference
+shape of an OIDC document of the `providers` collection, field by field, and
+`tools/docker/keycloak/README.md` covers the rest — including a QA recipe going
+through both protocols.
+
 ## SAML V2 authentication delegation
+
+For a purely local test, jump to "Settings example for local test" below:
+`tools/docker/keycloak` sets up an IdP and registers the provider in one
+command. The manual procedure that follows applies to a real IdP.
 
 To set up Saml V2 authentication with vitamui, please follow these steps:
 
@@ -275,107 +241,25 @@ To set up Saml V2 authentication with vitamui, please follow these steps:
 
 **Settings example for local test**
 
-To test the saml authentication, bellow an example with an external CAS on version 6.6.x :
+`tools/docker/keycloak` provides a ready-made SAML IdP: a disposable Keycloak
+exposing the `vitamui` realm, along with the provisioning that registers the
+matching provider and its test user in the `iam` database.
 
-- clone the example project ```https://github.com/casinthecloud/cas-overlay-demo.git```
-  - Checkout the branch ```6.6.x```
-  - Create a directory ```/etc/cas``` with ```777``` permissions on the folder.
-  - To run the test as a war without an application server, you need to update some settings:
-      - in the ```pom.xml```:
-          - Replace each occurance of ```cas-server-webapp``` by ```cas-server-webapp-tomcat```
-          - Add the following dependencies:
-               ```xml
-                 <dependency>
-                    <groupId>org.apereo.cas</groupId>
-                    <artifactId>cas-server-support-saml-idp</artifactId>
-                    <version>${cas.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apereo.cas</groupId>
-                    <artifactId>cas-server-support-oidc</artifactId>
-                    <version>${cas.version}</version>
-                </dependency>
-                ```
-          - Add the plugin:
-            ```xml
-               <plugin>
-                  <groupId>org.springframework.boot</groupId>
-                  <artifactId>spring-boot-maven-plugin</artifactId>
-                  <version>2.7.3</version>
-                  <configuration>
-                      <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
-                      <excludes>
-                          <exclude>
-                              <groupId>org.apereo.cas</groupId>
-                              <artifactId>cas-server-webapp-tomcat</artifactId>
-                          </exclude>
-                      </excludes>
-                  </configuration>
-                  <executions>
-                      <execution>
-                          <goals>
-                              <goal>repackage</goal>
-                          </goals>
-                      </execution>
-                  </executions>
-              </plugin>
-            ```
-        - in the ```application.yml```:
-          - update the port of the external cas by change the default port from ```8080``` to another port ex(```8383```)
-          and add these settings:
-              ```yaml
-            cas.server.name: http://localhost:8383
-            cas.server.prefix: http://localhost:8383/cas
-            server.port: 8383
-            server.ssl.enabled: false
-            cas.server.tomcat.httpProxy.enabled: false
-            cas.server.tomcat.http:
-              - enabled: false
-             ```
-          - add a test user/password:
-            ```yaml
-              cas.authn.accept.users: myusernam@mydomainmail.fr::mypassword
-              cas.authn.attribute-repository.stub.attributes.email: myusernam@mydomainmail.fr
-             ```
-          - **myusernam@mydomainmail.fr**  is the user email for testing, and **mypassword** is the password
+```sh
+cd tools/docker/keycloak
+./setup.sh
+```
 
-      - run ```mvn clean package``` on the project.
-      - run ```java -jar target/cas.war```
-      - After launching,cas will generate some settings files inside the directory ```/etc/cas/saml```
-      - Login in into Vitamui as a superadmin, create a SAML provider with the following information:
-        - Pattern: email domain configured before: ```mydomainmail.fr```
-        - Type: ```SAML```
-        - Email attribute: The attribute containing the user email sent by the idp after authentication, please check that the attribute 'nameid-format' to 'emailAddress' instead of 'transient'
-        - CAS Keystore: for testing: you upload any keystore with the right passowrd.
-        - IDP Metadata: upload the file generated by running external CAS, from the path ```/etc/cas/saml/idp-metadata.xml```
-        - Assertions : false
-        - Signed request: false.
-      - On vitamui, after creating the provider (SSO list) :
-        - we download the ```SPS-metadata.xml``` file and copy it in a directory accessible by external CAS,
-            example ```/some-path-of-cas/SPS-metadata.xml```.
-        - create a new resource file on the project external CAS , example: ```saml-metadata.json``` in the directory:
-             src/main/resources/services with the following content:
-        ```json
-           {
-          "@class" : "org.apereo.cas.support.saml.services.SamlRegisteredService",
-          "name" : "SAMLService",
-          "id" : 1,
-          "evaluationOrder" : 1,
-          "metadataLocation" : "/some-path-of-cas/SPS-metadata.xml",
-          "skipGeneratingTransientNameId": true,
-          "serviceId" : "https://vitamui_host/cas/login/{{technical-provider-id}}"
-          }
-        ```
-        We have to check the following important informations:
-        **vitamui_host** is the url of the vitamui.
-        **some-path-of-cas** is a directory path on the CAS external path vm.
-        **technical-provider-id** is the ```technicalName``` of the provider in providers collection in vitamui db created before.
-    - run ```mvn clean package``` on the project.
-    - run ```java -jar target/cas.war```
+The script generates the service provider keystore, downloads the IdP metadata
+and writes the provider, so none of the manual steps above have to be done by
+hand. Then log in on https://dev.vitamui.com:8080/cas/login with
+`demo.saml@keycloak-saml.fr` / `ChangeIt.2024`.
 
-- You need to restart the CAS service on the Vitamui environment, after adding the provider.
-- Create a user into the organisation with email address ```myusernam@mydomainmail.fr```
-- We can test the SAML delegated authentication using the external CAS.
+See `tools/docker/keycloak/README.md` for the rest: how the two sides are bound
+together, how to tear the setup down, the one failure mode worth knowing about
+(a SAML provider carries a *copy* of the IdP metadata, which goes stale as soon
+as the realm signing keys are regenerated), and a QA recipe covering both
+delegation paths.
 
 
 ## Auto provisioning:
