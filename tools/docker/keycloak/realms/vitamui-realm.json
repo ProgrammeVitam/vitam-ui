@@ -1,0 +1,136 @@
+{
+  "realm": "vitamui",
+  "displayName": "VitamUI test IdP",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": false,
+  "verifyEmail": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "editUsernameAllowed": false,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["fr", "en"],
+  "defaultLocale": "fr",
+  "clients": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "clientId": "vitamui-oidc",
+      "name": "VitamUI CAS (OIDC)",
+      "description": "Authentication delegation from VitamUI CAS using OpenID Connect.",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "UOOtWLQjkFEcRnbAyNlEuZeaTMSDqLNK",
+      "clientAuthenticatorType": "client-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "redirectUris": ["https://dev.vitamui.com:8080/cas/login*"],
+      "webOrigins": ["+"],
+      "attributes": {
+        "post.logout.redirect.uris": "+",
+        "id.token.signed.response.alg": "RS256"
+      }
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "clientId": "https://dev.vitamui.com:8080/cas/login/keycloak-saml",
+      "name": "VitamUI CAS (SAML)",
+      "description": "Authentication delegation from VitamUI CAS using SAML 2. The clientId is the service provider entityId computed by pac4j: <cas-url>/login/<technicalName>.",
+      "protocol": "saml",
+      "enabled": true,
+      "frontchannelLogout": true,
+      "fullScopeAllowed": true,
+      "redirectUris": ["https://dev.vitamui.com:8080/cas/login*"],
+      "attributes": {
+        "saml.assertion.signature": "true",
+        "saml.server.signature": "true",
+        "saml.server.signature.keyinfo.ext": "false",
+        "saml.signature.algorithm": "RSA_SHA256",
+        "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#",
+        "saml.client.signature": "false",
+        "saml.authnstatement": "true",
+        "saml.force.post.binding": "true",
+        "saml_name_id_format": "email",
+        "saml_force_name_id_format": "true",
+        "saml_assertion_consumer_url_post": "https://dev.vitamui.com:8080/cas/login?client_name=keycloak-saml",
+        "saml_assertion_consumer_url_redirect": "https://dev.vitamui.com:8080/cas/login?client_name=keycloak-saml",
+        "saml_single_logout_service_url_post": "https://dev.vitamui.com:8080/cas/login?client_name=keycloak-saml",
+        "saml_single_logout_service_url_redirect": "https://dev.vitamui.com:8080/cas/login?client_name=keycloak-saml"
+      },
+      "protocolMappers": [
+        {
+          "name": "email",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "email",
+            "friendly.name": "email",
+            "attribute.name": "email",
+            "attribute.nameformat": "Basic"
+          }
+        },
+        {
+          "name": "firstName",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "firstName",
+            "friendly.name": "givenName",
+            "attribute.name": "firstName",
+            "attribute.nameformat": "Basic"
+          }
+        },
+        {
+          "name": "lastName",
+          "protocol": "saml",
+          "protocolMapper": "saml-user-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "lastName",
+            "friendly.name": "surname",
+            "attribute.name": "lastName",
+            "attribute.nameformat": "Basic"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "demo.oidc@keycloak-oidc.fr",
+      "email": "demo.oidc@keycloak-oidc.fr",
+      "firstName": "Demo",
+      "lastName": "OIDC",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ChangeIt.2024",
+          "temporary": false
+        }
+      ]
+    },
+    {
+      "username": "demo.saml@keycloak-saml.fr",
+      "email": "demo.saml@keycloak-saml.fr",
+      "firstName": "Demo",
+      "lastName": "SAML",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "ChangeIt.2024",
+          "temporary": false
+        }
+      ]
+    }
+  ]
+}

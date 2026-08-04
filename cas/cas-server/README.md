@@ -198,6 +198,11 @@ To ensure these configurations work properly, there are certain rules to follow:
 
 **Settings example for local test**
 
+`tools/docker/keycloak` provides a Keycloak exposing the same identity over both
+OIDC and SAML, and provisions the matching providers and test users in the `iam`
+database in one command (`./setup.sh`). It is the quickest way to exercise both
+delegation paths; the OIDC-only setup described below remains available.
+
 Bellow an example on OIDC authentication provider based on a pre-configured keycloak.
 
 To test the authentication delegation in the OIDC protocol, you will find an example of ready-made configuration here.
@@ -255,6 +260,10 @@ Based on the test container, bellow an example of OIDC authentication provider f
 ```
 
 ## SAML V2 authentication delegation
+
+For a local test, `tools/docker/keycloak` sets up a SAML IdP, generates the
+service provider keystore and registers the provider for you; the manual
+procedure below applies to a real IdP.
 
 To set up Saml V2 authentication with vitamui, please follow these steps:
 
