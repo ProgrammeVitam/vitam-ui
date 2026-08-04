@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/elements/elements.component.scss"],
-  "sourcesContent": [".container {\n  display: flex;\n  align-items: center;\n  height: 72px;\n  border-radius: 10px;\n  cursor: pointer;\n  border: 1px solid var(--vitamui-grey-400);\n\n  .vitamui-icon {\n    display: flex;\n    align-items: center;\n    color: var(--vitamui-grey-600);\n    width: 24px;\n    height: 24px;\n  }\n}\n"],
-  "mappings": "AAAA,CAAA,UACE,QAAA,KACA,YAAA,OACA,OAAA,KAHF,cAIE,KACA,OAAA,QACA,OAAA,IAAA,MAAA,IAAA,oBAEA,CARF,UAQE,CAAA,aACE,QAAA,KACA,YAAA,OACA,MAAA,IAAA,oBACA,MAAA,KACA,OAAA",
-  "names": []
-}

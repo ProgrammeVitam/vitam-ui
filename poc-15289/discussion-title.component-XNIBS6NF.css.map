@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/lib/components/discussions/discussion-title/discussion-title.component.scss"],
-  "sourcesContent": [".resize-handle {\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 20px;\n  height: 20px;\n  cursor: ne-resize;\n\n  .vitamui-icon {\n    font-size: 15px;\n    color: var(--vitamui-secondary-200);\n    position: absolute;\n    bottom: 0;\n    left: 0;\n  }\n}\n\nspan {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n\n  .position-relative {\n    position: relative;\n  }\n}\n"],
-  "mappings": "AAAA,CAAA,cACE,SAAA,SACA,IAAA,EACA,MAAA,EACA,MAAA,KACA,OAAA,KACA,OAAA,UAEA,CARF,cAQE,CAAA,aACE,UAAA,KACA,MAAA,IAAA,yBACA,SAAA,SACA,OAAA,EACA,KAAA,EAIJ,KACE,SAAA,OACA,cAAA,SACA,QAAA,YACA,mBAAA,EACA,mBAAA,SAEA,KAAA,CAAA,kBACE,SAAA",
-  "names": []
-}

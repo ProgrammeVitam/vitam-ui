@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/lib/components/vitamui-radio-group/vitamui-radio-group.component.scss"],
-  "sourcesContent": [".radio-group {\n  border: solid 1px var(--vitamui-primary);\n  display: inline-block;\n  border-radius: 5px;\n  overflow: hidden;\n}\n\nlabel {\n  pointer-events: none;\n\n  .required-marker {\n    color: var(--vitamui-primary);\n  }\n}\n"],
-  "mappings": "AAAA,CAAA,YACE,OAAA,MAAA,IAAA,IAAA,mBACA,QAAA,aAFF,cAGE,IACA,SAAA,OAGF,MACE,eAAA,KAEA,MAAA,CAAA,gBACE,MAAA,IAAA",
-  "names": []
-}

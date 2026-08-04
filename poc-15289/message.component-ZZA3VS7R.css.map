@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/lib/components/discussions/discussion/message/message.component.scss"],
-  "sourcesContent": [":host {\n  display: block;\n  background: var(--vitamui-white);\n\n  &:hover,\n  &.hover {\n    background: var(--vitamui-secondary-50);\n\n    .actions {\n      visibility: visible;\n    }\n  }\n\n  &:first-of-type {\n    border-top-left-radius: 10px;\n    border-top-right-radius: 10px;\n  }\n  &:last-of-type {\n    border-bottom-left-radius: 10px;\n    border-bottom-right-radius: 10px;\n  }\n\n  &.closed .text {\n    color: var(--vitamui-grey-700) !important;\n  }\n}\n\n.actions {\n  visibility: hidden;\n}\n\n.message {\n  white-space-collapse: preserve;\n}\n\n// Override textarea label, border and scrollbar color\nvitamui-input ::ng-deep {\n  scrollbar-color: var(--vitamui-secondary) var(--vitamui-secondary-50);\n  label {\n    color: var(--vitamui-secondary) !important;\n  }\n  .form-field:focus-within {\n    border-color: var(--vitamui-secondary) !important;\n  }\n}\n"],
-  "mappings": "AAAA,MACE,QAAA,MACA,WAAA,IAAA,iBAEA,KAAA,OAAA,KAAA,CAAA,MAEE,WAAA,IAAA,wBAEA,KAAA,OAAA,CAAA,QAAA,KAAA,CAJF,MAIE,CAAA,QACE,WAAA,QAIJ,KAAA,eACE,uBAAA,KACA,wBAAA,KAEF,KAAA,cACE,0BAAA,KACA,2BAAA,KAGF,KAAA,CAAA,OAAA,CAAA,KACE,MAAA,IAAA,8BAIJ,CAnBI,QAoBF,WAAA,OAGF,CAAA,QACE,qBAAA,SAIF,cAAA,UACE,gBAAA,IAAA,qBAAA,IAAA,wBACA,cAAA,UAAA,MACE,MAAA,IAAA,+BAEF,cAAA,UAAA,CAAA,UAAA,cACE,aAAA,IAAA",
-  "names": []
-}

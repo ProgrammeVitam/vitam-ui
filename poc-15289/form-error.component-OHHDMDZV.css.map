@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/lib/components/form-errors/form-error/form-error.component.scss"],
-  "sourcesContent": [".vitamui-icon {\n  line-height: 20px;\n}\n"],
-  "mappings": "AAAA,CAAA,aACE,YAAA",
-  "names": []
-}

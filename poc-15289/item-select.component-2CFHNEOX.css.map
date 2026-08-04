@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["projects/vitamui-library/src/app/modules/components/header/item-select/item-select.component.scss"],
-  "sourcesContent": ["@use '../../../../../sass/mixins/elevation' as elevation;\n\n:host::ng-deep {\n  ::ng-deep .mat-mdc-form-field {\n    --mat-select-enabled-arrow-color: var(--vitamui-header-footer-font);\n  }\n\n  .selected-item-label,\n  .unselected-item-label {\n    color: var(--vitamui-primary);\n    font-size: 16px;\n    font-weight: 700;\n  }\n}\n\nmat-form-field {\n  background-color: transparent !important;\n}\n"],
-  "mappings": "AAGE,KAAA,UAAA,UAAA,CAAA,mBACE,kCAAA,IAAA,8BAGF,KAAA,UAAA,CAAA,oBAAA,KAAA,UAAA,CAAA,sBAEE,MAAA,IAAA,mBACA,UAAA,KACA,YAAA,IAIJ,eACE,iBAAA",
-  "names": []
-}
