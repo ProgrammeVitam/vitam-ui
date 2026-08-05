@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.cas.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -52,10 +53,13 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
+import fr.gouv.vitamui.iam.auth.contract.UserPrincipalAttributes;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
@@ -718,6 +722,191 @@ public class CasService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerService.getAllById(customerIds);
+    }
+
+    /**
+     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
+     *
+     * Le serveur d'authentification construit aujourd'hui cette table lui-même, ce qui l'oblige à
+     * connaître les quelque soixante noms d'attributs de {@link CommonConstants} et la façon dont chacun
+     * se dérive du modèle utilisateur. Un attribut ajouté ici imposait jusqu'à présent de modifier aussi
+     * le serveur d'authentification.
+     *
+     * Toutes les valeurs sont des chaînes, y compris les booléens et les dates. Ce n'est pas un
+     * appauvrissement : c'est la forme sous laquelle elles parviennent déjà aux applications, puisque
+     * {@code AuthUserDto.buildFromAttributes} les relit avec {@code Boolean.parseBoolean((String) value)}
+     * ou {@code OffsetDateTime.parse((String) value)}. Les attributs composés sont sérialisés en JSON avec
+     * le même {@link JsonUtils} que {@code CasJsonWrapper.toString()} employait, si bien que la chaîne
+     * transmise est identique.
+     *
+     * Un attribut dont la valeur est absente est omis plutôt que porté à {@code null} : la relecture
+     * procède par un aiguillage sur les clés présentes, une clé absente et une clé nulle y sont
+     * équivalentes.
+     */
+    public Map<String, List<String>> buildPrincipalAttributes(final PrincipalAttributesRequestDto request) {
+        Assert.notNull(request, "request must not be null");
+
+        final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
+
+        // Le jeton d'authentification est toujours demandé ; la subrogation et les appels hors navigateur
+        // réclament en plus leur propre bloc, comme le fait aujourd'hui le résolveur du serveur d'auth.
+        String embedded = CommonConstants.AUTH_TOKEN_PARAMETER;
+        if (subrogation) {
+            embedded += "," + CommonConstants.SURROGATION_PARAMETER;
+        } else if (request.isApiContext()) {
+            embedded += "," + CommonConstants.API_PARAMETER;
+        }
+
+        final UserDto user = getUser(
+            request.getLoginEmail(),
+            request.getLoginCustomerId(),
+            request.getIdentityProviderId(),
+            request.getUserIdentifier(),
+            embedded
+        );
+        if (user == null) {
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getLoginEmail());
+        }
+
+        UserDto superUser = null;
+        if (subrogation) {
+            superUser = getUserByEmailAndCustomerId(
+                request.getSuperUserEmail(),
+                request.getSuperUserCustomerId(),
+                null
+            );
+            if (superUser == null) {
+                throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getSuperUserEmail());
+            }
+        }
+        return toPrincipalAttributes(user, request, superUser);
+    }
+
+    /**
+     * Traduit un utilisateur déjà résolu en table d'attributs. Séparée de la résolution, cette conversion
+     * se vérifie pour elle-même : c'est la forme des valeurs qui fait l'iso-fonctionnel, pas la façon dont
+     * l'utilisateur a été retrouvé.
+     */
+    public Map<String, List<String>> toPrincipalAttributes(
+        final UserDto user,
+        final PrincipalAttributesRequestDto request,
+        final UserDto superUser
+    ) {
+        final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
+        final Map<String, List<String>> attributes = new LinkedHashMap<>();
+
+        put(attributes, CommonConstants.USER_ID_ATTRIBUTE, user.getId());
+        put(attributes, CommonConstants.CUSTOMER_ID_ATTRIBUTE, user.getCustomerId());
+        put(attributes, CommonConstants.EMAIL_ATTRIBUTE, user.getEmail());
+        put(attributes, CommonConstants.FIRSTNAME_ATTRIBUTE, user.getFirstname());
+        put(attributes, CommonConstants.LASTNAME_ATTRIBUTE, user.getLastname());
+        put(attributes, CommonConstants.IDENTIFIER_ATTRIBUTE, user.getIdentifier());
+        put(attributes, CommonConstants.OTP_ATTRIBUTE, user.isOtp());
+        put(
+            attributes,
+            UserPrincipalAttributes.COMPUTED_OTP,
+            user.isOtp() &&
+            authenticatesWithInternalProvider(otpEmail(request, subrogation), otpCustomerId(request, subrogation))
+        );
+        put(attributes, CommonConstants.SUBROGEABLE_ATTRIBUTE, user.isSubrogeable());
+        put(attributes, CommonConstants.USER_INFO_ID, user.getUserInfoId());
+        put(attributes, CommonConstants.PHONE_ATTRIBUTE, user.getPhone());
+        put(attributes, CommonConstants.MOBILE_ATTRIBUTE, user.getMobile());
+        put(attributes, CommonConstants.STATUS_ATTRIBUTE, user.getStatus());
+        put(attributes, CommonConstants.TYPE_ATTRIBUTE, user.getType());
+        put(attributes, CommonConstants.READONLY_ATTRIBUTE, user.isReadonly());
+        put(attributes, CommonConstants.LEVEL_ATTRIBUTE, user.getLevel());
+        put(attributes, CommonConstants.LAST_CONNECTION_ATTRIBUTE, user.getLastConnection());
+        put(attributes, CommonConstants.NB_FAILED_ATTEMPTS_ATTRIBUTE, user.getNbFailedAttempts());
+        put(attributes, CommonConstants.PASSWORD_EXPIRATION_DATE_ATTRIBUTE, user.getPasswordExpirationDate());
+        put(attributes, CommonConstants.GROUP_ID_ATTRIBUTE, user.getGroupId());
+        putJson(attributes, CommonConstants.ADDRESS_ATTRIBUTE, user.getAddress());
+        putJson(attributes, CommonConstants.ANALYTICS_ATTRIBUTE, user.getAnalytics());
+        put(attributes, CommonConstants.INTERNAL_CODE, user.getInternalCode());
+
+        if (subrogation) {
+            addSuperUserAttributes(attributes, request, superUser);
+        }
+        if (user instanceof AuthUserDto authUser && authUser.getProfileGroup() != null) {
+            addAuthenticatedUserAttributes(attributes, authUser);
+        }
+        return attributes;
+    }
+
+    private String otpEmail(final PrincipalAttributesRequestDto request, final boolean subrogation) {
+        return subrogation ? request.getSuperUserEmail() : request.getLoginEmail();
+    }
+
+    private String otpCustomerId(final PrincipalAttributesRequestDto request, final boolean subrogation) {
+        return subrogation ? request.getSuperUserCustomerId() : request.getLoginCustomerId();
+    }
+
+    /**
+     * Reproduit {@code IdentityProviderHelper.identifierMatchProviderPattern} : l'utilisateur s'authentifie
+     * bien par mot de passe, et non par délégation. L'OTP n'a de sens que dans ce cas.
+     */
+    private boolean authenticatesWithInternalProvider(final String email, final String customerId) {
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(customerId)) {
+            return false;
+        }
+        return StreamSupport.stream(identityProviderRepository.findAll().spliterator(), false)
+            .filter(provider -> customerId.equals(provider.getCustomerId()))
+            .filter(provider -> provider.getPatterns() != null)
+            .filter(provider -> matchesAnyPattern(provider, email))
+            .findFirst()
+            .map(provider -> Boolean.TRUE.equals(provider.getInternal()))
+            .orElse(false);
+    }
+
+    private void addSuperUserAttributes(
+        final Map<String, List<String>> attributes,
+        final PrincipalAttributesRequestDto request,
+        final UserDto superUser
+    ) {
+        put(attributes, CommonConstants.SUPER_USER_ATTRIBUTE, request.getSuperUserEmail());
+        put(attributes, CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE, request.getSuperUserCustomerId());
+        if (superUser != null) {
+            put(attributes, CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE, superUser.getIdentifier());
+            put(attributes, UserPrincipalAttributes.SUPER_USER_ID, superUser.getId());
+        }
+    }
+
+    private void addAuthenticatedUserAttributes(
+        final Map<String, List<String>> attributes,
+        final AuthUserDto authUser
+    ) {
+        putJson(attributes, CommonConstants.PROFILE_GROUP_ATTRIBUTE, authUser.getProfileGroup());
+        put(attributes, CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE, authUser.getCustomerIdentifier());
+        putJson(attributes, CommonConstants.BASIC_CUSTOMER_ATTRIBUTE, authUser.getBasicCustomer());
+        put(attributes, CommonConstants.AUTHTOKEN_ATTRIBUTE, authUser.getAuthToken());
+        put(attributes, CommonConstants.PROOF_TENANT_ID_ATTRIBUTE, authUser.getProofTenantIdentifier());
+        putJson(attributes, CommonConstants.TENANTS_BY_APP_ATTRIBUTE, authUser.getTenantsByApp());
+        put(attributes, CommonConstants.SITE_CODE, authUser.getSiteCode());
+        put(attributes, CommonConstants.CENTER_CODES, authUser.getCenterCodes());
+
+        final Set<String> roles = new HashSet<>();
+        authUser
+            .getProfileGroup()
+            .getProfiles()
+            .forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
+        attributes.put(CommonConstants.ROLES_ATTRIBUTE, new ArrayList<>(roles));
+    }
+
+    private void put(final Map<String, List<String>> attributes, final String name, final Object value) {
+        if (value != null) {
+            attributes.put(name, List.of(String.valueOf(value)));
+        }
+    }
+
+    private void putJson(final Map<String, List<String>> attributes, final String name, final Object value) {
+        if (value == null) {
+            return;
+        }
+        try {
+            attributes.put(name, List.of(JsonUtils.toJson(value)));
+        } catch (final JsonProcessingException e) {
+            throw new ApplicationServerException("Could not serialize the attribute " + name, e);
+        }
     }
 
     /**

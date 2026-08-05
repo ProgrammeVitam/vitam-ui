@@ -2644,6 +2644,33 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/HrdEntryDto"
                             example: null
+    /iam/v1/cas/users/principal-attributes:
+        post:
+            tags:
+                - Cas
+            summary: Build the authentication attributes of a user
+            operationId: cas_buildPrincipalAttributes
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PrincipalAttributesRequestDto"
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: object
+                                example: null
+                                additionalProperties:
+                                    type: array
+                                    example: null
+                                    items:
+                                        type: string
+                                        example: null
+                            example: null
     /iam/v1/cas/subrogations/validate:
         post:
             tags:
@@ -3769,6 +3796,34 @@ components:
                 tenantId:
                     type: integer
                     format: int32
+                    example: null
+            example: null
+        PrincipalAttributesRequestDto:
+            required:
+                - loginCustomerId
+                - loginEmail
+            type: object
+            properties:
+                loginEmail:
+                    type: string
+                    example: null
+                loginCustomerId:
+                    type: string
+                    example: null
+                identityProviderId:
+                    type: string
+                    example: null
+                userIdentifier:
+                    type: string
+                    example: null
+                superUserEmail:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+                apiContext:
+                    type: boolean
                     example: null
             example: null
         SubrogationValidateRequestDto:
