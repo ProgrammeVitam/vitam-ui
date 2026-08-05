@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.server.rest;
 
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
@@ -23,7 +24,7 @@ class SubrogationControllerTest extends ApiIamControllerTest<SubrogationDto> {
     @Test
     void testDeleteSubrogation() {
         super.performDelete(
-            RestApi.CAS_SUBROGATIONS_PATH,
+            AuthContractApi.SUBROGATIONS_PATH,
             ImmutableMap.of("superUser", "julien@vitamui.com", "surrogate", "pierre@vitamui.com")
         );
     }

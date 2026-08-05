@@ -16,6 +16,10 @@
     <dependencies>
         <!-- VITAMUI -->
         <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>iam-auth-contract</artifactId>
+        </dependency>
+        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
         </dependency>

@@ -14,6 +14,7 @@
     </parent>
 
     <modules>
+        <module>iam-auth-contract</module>
         <module>iam-commons</module>
         <module>iam-security</module>
         <module>iam</module>

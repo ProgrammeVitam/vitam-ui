@@ -187,6 +187,11 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>iam-auth-contract</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>iam-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>

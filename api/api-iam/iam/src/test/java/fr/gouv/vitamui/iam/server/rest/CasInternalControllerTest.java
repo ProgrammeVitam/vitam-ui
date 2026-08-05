@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
@@ -58,7 +58,7 @@ class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
         Mockito.when(casService.findUserByEmailAndCustomerId(anyString(), anyString())).thenReturn(user);
 
         ResultActions result =
-            this.performPost(getUriBuilder(RestApi.CAS_LOGIN_PATH), asJsonString(loginRequestDto), status().isOk());
+            this.performPost(getUriBuilder(AuthContractApi.LOGIN_PATH), asJsonString(loginRequestDto), status().isOk());
         result.andExpect(handler().methodCall(casController.login(null)));
         Mockito.verify(casService, Mockito.times(1)).findUserByEmailAndCustomerId(anyString(), anyString());
     }
@@ -66,7 +66,7 @@ class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
     @Test
     void testDeleteSubrogation() {
         super.performDelete(
-            RestApi.CAS_SUBROGATIONS_PATH,
+            AuthContractApi.SUBROGATIONS_PATH,
             ImmutableMap.of("superUser", "julien@vitamui.com", "surrogate", "pierre@vitamui.com")
         );
     }
@@ -86,7 +86,7 @@ class CasInternalControllerTest extends ApiIamControllerTest<IdDto> {
 
     @Override
     protected String getRessourcePrefix() {
-        return RestApi.V1_CAS_URL;
+        return AuthContractApi.V1_AUTH_URL;
     }
 
     @Override

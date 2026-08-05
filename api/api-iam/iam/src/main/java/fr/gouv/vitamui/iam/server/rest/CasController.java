@@ -45,10 +45,10 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
+import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.user.domain.User;
@@ -87,7 +87,7 @@ import java.util.Optional;
  * The controller for CAS operations.
  */
 @RestController
-@RequestMapping(RestApi.V1_CAS_URL)
+@RequestMapping(AuthContractApi.V1_AUTH_URL)
 @Tag(name = "Cas", description = "User authentication management for CAS")
 public class CasController {
 
@@ -119,7 +119,7 @@ public class CasController {
         this.userService = userService;
     }
 
-    @PostMapping(value = RestApi.CAS_LOGIN_PATH)
+    @PostMapping(value = AuthContractApi.LOGIN_PATH)
     @Operation(operationId = "cas_login", summary = "Performs the login of a user")
     @Secured(ServicesData.ROLE_CAS_LOGIN)
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
@@ -187,7 +187,7 @@ public class CasController {
         return null;
     }
 
-    @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
+    @PostMapping(AuthContractApi.CHANGE_PASSWORD_PATH)
     @Operation(operationId = "cas_changePassword", summary = "Change password of a user")
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
@@ -213,7 +213,7 @@ public class CasController {
         return "true";
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
+    @GetMapping(value = AuthContractApi.USERS_PATH, params = "email")
     @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
     @Secured(ServicesData.ROLE_CAS_USERS)
     public List<UserDto> getUsersByEmail(
@@ -225,7 +225,7 @@ public class CasController {
         return casService.getUsersByEmail(email, embedded.orElse(null));
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING)
+    @GetMapping(value = AuthContractApi.USERS_PATH + AuthContractApi.USERS_PROVISIONING_PATH)
     @Operation(
         operationId = "cas_getUser",
         summary = "Get a user by their loginEmail, loginCustomerId and optional idp"
@@ -256,7 +256,7 @@ public class CasController {
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH)
+    @GetMapping(value = AuthContractApi.SUBROGATIONS_PATH)
     @Operation(
         operationId = "getSubrogationsBySuperUserIdOrEmailAndCustomerId",
         summary = "Get available subrogations for a super user by super user id or by super user email and customerId"
@@ -290,7 +290,7 @@ public class CasController {
         return casService.getSubrogationsBySuperUser(email, customerId);
     }
 
-    @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
+    @GetMapping(value = AuthContractApi.LOGOUT_PATH)
     @Operation(
         operationId = "cas_logout",
         summary = "Logout a user, remove the token and delete the subrogation if needed"
@@ -321,7 +321,7 @@ public class CasController {
         }
     }
 
-    @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)
+    @GetMapping(value = AuthContractApi.CUSTOMERS_PATH)
     @Operation(operationId = "cas_getCustomersByIds", summary = "Get all customers by ids")
     @Secured(ServicesData.ROLE_CAS_CUSTOMER_IDS)
     public Collection<CustomerDto> getCustomersByIds(final @RequestParam List<String> customerIds) {
