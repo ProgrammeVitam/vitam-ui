@@ -42,4 +42,43 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!--
+                Le contrat ne vaut que par ce qu'il ne contient pas. Une dépendance ajoutée par
+                inadvertance vers iam-commons ou vers pac4j rendrait sa consommation aussi lourde que
+                celle d'IAM en entier, sans que rien ne le signale : le build échoue à la place.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>ban-administration-and-protocol-dependencies</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>fr.gouv.vitamui:iam-commons</exclude>
+                                        <exclude>fr.gouv.vitamui:iam-client</exclude>
+                                        <exclude>org.pac4j:*</exclude>
+                                        <exclude>org.apereo.cas:*</exclude>
+                                        <exclude>org.springframework.data:*</exclude>
+                                    </excludes>
+                                    <message>
+                                        iam-auth-contract ne porte que le contrat d'authentification : ni le modèle
+                                        d'administration d'IAM, ni la logique de protocole, ni l'accès aux données.
+                                    </message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
