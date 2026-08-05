@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
@@ -329,5 +330,26 @@ public class CasController {
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
         SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
+    }
+
+    /**
+     * Home Realm Discovery : les organisations et fournisseurs d'identité candidats pour un email.
+     *
+     * La cardinalité de la réponse porte la décision du serveur d'authentification — aucune entrée pour une
+     * configuration inexploitable, une pour enchaîner directement, plusieurs pour faire choisir
+     * l'organisation. La réponse a la même forme selon que le compte existe ou non, afin de ne pas révéler
+     * son existence.
+     */
+    @GetMapping(value = AuthContractApi.HRD_PATH, params = "email")
+    @Operation(
+        operationId = "cas_resolveHrd",
+        summary = "Resolve the organisations and identity providers for an email"
+    )
+    @Secured(ServicesData.ROLE_CAS_HRD)
+    public List<HrdEntryDto> resolveHrd(final @RequestParam String email) {
+        LOGGER.debug("resolve HRD entries");
+        ParameterChecker.checkParameter("The email is mandatory : ", email);
+        SanityChecker.checkSecureParameter(email);
+        return casService.resolveHrdEntries(email);
     }
 }
