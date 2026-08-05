@@ -36,36 +36,38 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
 /**
- * Chemins du contrat d'authentification exposé par IAM.
+ * La politique de mot de passe en vigueur, telle qu'IAM l'applique.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les changer romprait le contrat
- * REST avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de
- * nommer un produit, puisque le contrat n'est plus propre à Apereo CAS.
+ * Le serveur d'authentification affiche les contraintes à l'utilisateur et IAM les vérifie. Les deux
+ * lisent aujourd'hui leur propre configuration, si bien qu'un écart entre les deux fichiers se traduit
+ * par un formulaire qui accepte un mot de passe qu'IAM refusera. Publier la politique fait de la
+ * configuration d'IAM la seule qui compte.
+ *
+ * {@code messages} porte les libellés de contraintes déjà résolus, dans l'ordre où les afficher.
  */
-public final class AuthContractApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class PasswordPolicyDto {
 
-    public static final String V1_AUTH_URL = "/iam/v1/cas";
+    private Integer minLength;
 
-    public static final String LOGIN_PATH = "/login";
+    private String profile;
 
-    public static final String LOGOUT_PATH = "/logout";
+    private Integer maxOldPassword;
 
-    public static final String CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String USERS_PATH = "/users";
-
-    public static final String USERS_PROVISIONING_PATH = "/provisioning";
-
-    public static final String CUSTOMERS_PATH = "/customers";
-
-    public static final String SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String HRD_PATH = "/hrd";
-
-    public static final String PASSWORD_POLICY_PATH = "/password/policy";
-
-    private AuthContractApi() {
-        // constantes uniquement
-    }
+    private List<String> messages;
 }

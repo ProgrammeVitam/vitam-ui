@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -340,6 +341,18 @@ public class CasController {
      * l'organisation. La réponse a la même forme selon que le compte existe ou non, afin de ne pas révéler
      * son existence.
      */
+    /**
+     * La politique de mot de passe appliquée par IAM, pour que le serveur d'authentification affiche
+     * exactement les contraintes qui seront vérifiées plutôt que sa propre copie de la configuration.
+     */
+    @GetMapping(value = AuthContractApi.PASSWORD_POLICY_PATH)
+    @Operation(operationId = "cas_getPasswordPolicy", summary = "Get the password policy enforced by IAM")
+    @Secured(ServicesData.ROLE_CAS_PASSWORD_POLICY)
+    public PasswordPolicyDto getPasswordPolicy() {
+        LOGGER.debug("get the password policy");
+        return casService.getPasswordPolicy();
+    }
+
     @GetMapping(value = AuthContractApi.HRD_PATH, params = "email")
     @Operation(
         operationId = "cas_resolveHrd",
