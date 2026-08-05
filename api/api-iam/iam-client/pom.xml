@@ -84,6 +84,9 @@
                                 <importMapping>HrdEntryDto=fr.gouv.vitamui.iam.auth.contract.HrdEntryDto
                                 </importMapping>
                                 <importMapping>
+                                    PrincipalAttributesRequestDto=fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto
+                                </importMapping>
+                                <importMapping>
                                     SubrogationValidateRequestDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto
                                 </importMapping>
                                 <importMapping>
@@ -145,6 +148,9 @@
                                 <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.auth.contract.LoginRequestDto
                                 </typeMapping>
                                 <typeMapping>HrdEntryDto=fr.gouv.vitamui.iam.auth.contract.HrdEntryDto
+                                </typeMapping>
+                                <typeMapping>
+                                    PrincipalAttributesRequestDto=fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto
                                 </typeMapping>
                                 <typeMapping>
                                     SubrogationValidateRequestDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto

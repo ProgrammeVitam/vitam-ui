@@ -49,6 +49,7 @@ import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -85,6 +86,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -343,6 +345,23 @@ public class CasController {
      * l'organisation. La réponse a la même forme selon que le compte existe ou non, afin de ne pas révéler
      * son existence.
      */
+    /**
+     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
+     *
+     * Le serveur d'authentification n'a plus à connaître ni les noms d'attributs ni la façon dont chacun
+     * se dérive du modèle utilisateur : il recopie la table sans l'interpréter.
+     */
+    @PostMapping(value = AuthContractApi.PRINCIPAL_ATTRIBUTES_PATH)
+    @Operation(operationId = "cas_buildPrincipalAttributes", summary = "Build the authentication attributes of a user")
+    @Secured(ServicesData.ROLE_CAS_PRINCIPAL_ATTRIBUTES)
+    public Map<String, List<String>> buildPrincipalAttributes(
+        final @Valid @RequestBody PrincipalAttributesRequestDto request
+    ) throws InvalidParseOperationException {
+        LOGGER.debug("build the principal attributes");
+        SanityChecker.checkSecureParameter(request.getLoginEmail(), request.getLoginCustomerId());
+        return casService.buildPrincipalAttributes(request);
+    }
+
     /**
      * Valide qu'une subrogation autorise ce super-utilisateur à prendre la place de cet utilisateur.
      *

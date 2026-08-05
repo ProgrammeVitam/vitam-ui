@@ -37,39 +37,28 @@
 package fr.gouv.vitamui.iam.auth.contract;
 
 /**
- * Chemins du contrat d'authentification exposé par IAM.
+ * Les attributs d'authentification qui n'existent que dans le jeton, sans équivalent dans le modèle
+ * utilisateur.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les changer romprait le contrat
- * REST avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de
- * nommer un produit, puisque le contrat n'est plus propre à Apereo CAS.
+ * Les autres noms d'attributs viennent de {@code CommonConstants}, qui les partage avec les applications
+ * chargées de les relire. Ces deux-là étaient déclarés dans le serveur d'authentification, seul endroit
+ * qui les produisait ; ils appartiennent au contrat dès lors que c'est IAM qui les calcule.
  */
-public final class AuthContractApi {
+public final class UserPrincipalAttributes {
 
-    public static final String V1_AUTH_URL = "/iam/v1/cas";
+    /**
+     * Vrai lorsque l'utilisateur a l'authentification renforcée activée <em>et</em> qu'il se connecte par
+     * mot de passe. Une authentification déléguée relève de son fournisseur d'identité, à qui il revient
+     * d'exiger un second facteur s'il le souhaite.
+     */
+    public static final String COMPUTED_OTP = "computedOtp";
 
-    public static final String LOGIN_PATH = "/login";
+    /**
+     * L'identifiant technique du super-utilisateur, en subrogation seulement.
+     */
+    public static final String SUPER_USER_ID = "superUserId";
 
-    public static final String LOGOUT_PATH = "/logout";
-
-    public static final String CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String USERS_PATH = "/users";
-
-    public static final String USERS_PROVISIONING_PATH = "/provisioning";
-
-    public static final String CUSTOMERS_PATH = "/customers";
-
-    public static final String SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String HRD_PATH = "/hrd";
-
-    public static final String PASSWORD_POLICY_PATH = "/password/policy";
-
-    public static final String SUBROGATION_VALIDATE_PATH = "/subrogations/validate";
-
-    public static final String PRINCIPAL_ATTRIBUTES_PATH = "/users/principal-attributes";
-
-    private AuthContractApi() {
+    private UserPrincipalAttributes() {
         // constantes uniquement
     }
 }
