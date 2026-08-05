@@ -36,38 +36,38 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
- * Chemins du contrat d'authentification exposé par IAM.
+ * La subrogation dont on demande la validation : qui prend la place de qui, et dans quelles organisations.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les changer romprait le contrat
- * REST avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de
- * nommer un produit, puisque le contrat n'est plus propre à Apereo CAS.
+ * Les quatre valeurs comptent. Un même email peut exister dans plusieurs organisations, et une
+ * subrogation n'autorise qu'un couple précis — comparer les seuls emails ouvrirait la porte à une
+ * subrogation vers un homonyme d'une autre organisation.
  */
-public final class AuthContractApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class SubrogationValidateRequestDto {
 
-    public static final String V1_AUTH_URL = "/iam/v1/cas";
+    @NotNull
+    private String superUserEmail;
 
-    public static final String LOGIN_PATH = "/login";
+    @NotNull
+    private String superUserCustomerId;
 
-    public static final String LOGOUT_PATH = "/logout";
+    @NotNull
+    private String surrogateEmail;
 
-    public static final String CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String USERS_PATH = "/users";
-
-    public static final String USERS_PROVISIONING_PATH = "/provisioning";
-
-    public static final String CUSTOMERS_PATH = "/customers";
-
-    public static final String SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String HRD_PATH = "/hrd";
-
-    public static final String PASSWORD_POLICY_PATH = "/password/policy";
-
-    public static final String SUBROGATION_VALIDATE_PATH = "/subrogations/validate";
-
-    private AuthContractApi() {
-        // constantes uniquement
-    }
+    @NotNull
+    private String surrogateCustomerId;
 }

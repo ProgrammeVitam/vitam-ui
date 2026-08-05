@@ -2644,6 +2644,26 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/HrdEntryDto"
                             example: null
+    /iam/v1/cas/subrogations/validate:
+        post:
+            tags:
+                - Cas
+            summary: Validate a subrogation and resolve both users
+            operationId: cas_validateSubrogation
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SubrogationValidateRequestDto"
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationValidateResponseDto"
+                            example: null
     /iam/v1/cas/password/policy:
         get:
             tags:
@@ -3749,6 +3769,37 @@ components:
                 tenantId:
                     type: integer
                     format: int32
+                    example: null
+            example: null
+        SubrogationValidateRequestDto:
+            required:
+                - superUserCustomerId
+                - superUserEmail
+                - surrogateCustomerId
+                - surrogateEmail
+            type: object
+            properties:
+                superUserEmail:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+                surrogateEmail:
+                    type: string
+                    example: null
+                surrogateCustomerId:
+                    type: string
+                    example: null
+            example: null
+        SubrogationValidateResponseDto:
+            type: object
+            properties:
+                superUserId:
+                    type: string
+                    example: null
+                surrogateUserId:
+                    type: string
                     example: null
             example: null
         HrdEntryDto:
