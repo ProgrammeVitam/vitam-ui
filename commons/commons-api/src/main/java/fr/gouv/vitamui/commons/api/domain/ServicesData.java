@@ -220,6 +220,8 @@ public class ServicesData {
 
     public static final String ROLE_CAS_SUBROGATIONS = ROLE_PREFIX + "CAS_SUBROGATIONS";
 
+    public static final String ROLE_CAS_HRD = ROLE_PREFIX + "CAS_HRD";
+
     public static final String ROLE_LOGBOOKS = "ROLE_LOGBOOKS";
 
     //------------------------------------ TECHNICAL CHECKS -------------------------------------------
@@ -619,6 +621,7 @@ public class ServicesData {
         ROLE_CAS_CHANGE_PASSWORD,
         ROLE_CAS_USERS,
         ROLE_CAS_SUBROGATIONS,
+        ROLE_CAS_HRD,
 
         ROLE_CHECK_USERS,
         ROLE_CHECK_TENANTS,
@@ -786,6 +789,7 @@ public class ServicesData {
         ROLE_CAS_CHANGE_PASSWORD,
         ROLE_CAS_USERS,
         ROLE_CAS_SUBROGATIONS,
+        ROLE_CAS_HRD,
 
         ROLE_CHECK_USERS, ROLE_CHECK_TENANTS,
         ROLE_GET_ALL_ACCESS_CONTRACTS,
