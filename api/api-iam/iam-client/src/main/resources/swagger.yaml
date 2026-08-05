@@ -2620,6 +2620,44 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/CustomerDto"
                             example: null
+    /iam/v1/cas/hrd:
+        get:
+            tags:
+                - Cas
+            summary: Resolve the organisations and identity providers for an email
+            operationId: cas_resolveHrd
+            parameters:
+                - name: email
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/HrdEntryDto"
+                            example: null
+    /iam/v1/cas/password/policy:
+        get:
+            tags:
+                - Cas
+            summary: Get the password policy enforced by IAM
+            operationId: cas_getPasswordPolicy
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PasswordPolicyDto"
+                            example: null
     /iam/v1/applications:
         get:
             tags:
@@ -3712,6 +3750,55 @@ components:
                     type: integer
                     format: int32
                     example: null
+            example: null
+        HrdEntryDto:
+            type: object
+            properties:
+                customerId:
+                    type: string
+                    example: null
+                customerCode:
+                    type: string
+                    example: null
+                customerName:
+                    type: string
+                    example: null
+                identityProviderId:
+                    type: string
+                    example: null
+                identityProviderName:
+                    type: string
+                    example: null
+                internal:
+                    type: boolean
+                    example: null
+                protocoleType:
+                    type: string
+                    example: null
+                userStatus:
+                    type: string
+                    example: null
+            example: null
+        PasswordPolicyDto:
+            type: object
+            properties:
+                minLength:
+                    type: integer
+                    format: int32
+                    example: null
+                profile:
+                    type: string
+                    example: null
+                maxOldPassword:
+                    type: integer
+                    format: int32
+                    example: null
+                messages:
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
             example: null
         LoginRequestDto:
             required:
