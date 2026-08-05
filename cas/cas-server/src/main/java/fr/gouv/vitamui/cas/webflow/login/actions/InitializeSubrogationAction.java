@@ -41,11 +41,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Initialize the subrogation flow by populating the flow scope with required
- * parameters.
- * This action replaces the former CheckSubrogationAction to align with CAS 7 /
- * OIDC requirements
- * and allows the standard webflow to handle view selection.
+ * Initialise le flux de subrogation en remplissant le flow scope avec les paramètres
+ * requis.
+ * Cette action remplace l'ancienne CheckSubrogationAction pour s'aligner sur les exigences CAS 7 /
+ * OIDC
+ * et permet au webflow standard de gérer la sélection de la vue.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -94,7 +94,7 @@ public class InitializeSubrogationAction extends AbstractAction {
                 flowScope.put("superUserEmail", superUserEmail);
                 flowScope.put("superUserCustomerId", superUserCustomerId);
 
-                // Fetch surrogate customer info for display in subrogation validation mire
+                // Récupère les infos du client subrogé pour affichage dans la mire de validation de subrogation
                 CustomerDto surrogateCustomer = casApi
                     .getCustomersByIds(List.of(surrogateCustomerId))
                     .stream()
@@ -109,7 +109,7 @@ public class InitializeSubrogationAction extends AbstractAction {
                 return new Event(this, PROCEED);
             } catch (Exception e) {
                 LOGGER.error("Validation of subrogation parameters failed", e);
-                // If validation fails, we treat it as a normal login request
+                // Si la validation échoue, nous la traitons comme une requête de connexion normale
             }
         }
 

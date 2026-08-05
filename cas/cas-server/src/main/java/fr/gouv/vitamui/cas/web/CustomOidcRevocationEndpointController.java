@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 /**
- * Custom : Revoke token for all services without checking clientId : Global
- * Logout
+ * Custom : révoque le jeton pour tous les services sans vérifier le clientId : déconnexion
+ * globale
  */
 @Slf4j
 public class CustomOidcRevocationEndpointController extends OidcRevocationEndpointController {

@@ -50,7 +50,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Custom context initializer to pre-fill logo and favicon.
+ * Initialiseur de contexte personnalisé pour pré-remplir le logo et le favicon.
  */
 @Slf4j
 @RequiredArgsConstructor

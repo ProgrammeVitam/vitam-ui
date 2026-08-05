@@ -58,7 +58,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
 
 /**
- * Dynamic TGT factory.
+ * Fabrique dynamique de TGT.
  *
  *
  */

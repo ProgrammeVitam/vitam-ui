@@ -12,7 +12,7 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 /**
- * CUSTO: Full rewrite of {@link SurrogateInitialAuthenticationAction}
+ * CUSTO : Réécriture complète de {@link SurrogateInitialAuthenticationAction}
  */
 @Slf4j
 public class CustomSurrogateInitialAuthenticationAction extends BaseCasWebflowAction {

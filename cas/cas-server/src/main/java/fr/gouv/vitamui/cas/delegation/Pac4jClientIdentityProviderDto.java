@@ -42,7 +42,7 @@ import org.pac4j.core.client.IndirectClient;
 import java.util.Objects;
 
 /**
- * Pac4j client identity provider.
+ * Fournisseur d'identité client Pac4j.
  *
  *
  */

@@ -29,7 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link DispatcherAction}.
+ * Teste {@link DispatcherAction}.
  */
 @ContextConfiguration(classes = DispatcherActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")

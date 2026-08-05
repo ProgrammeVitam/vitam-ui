@@ -56,7 +56,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 /**
- * External authentication service
+ * Service d'authentification externe
  */
 @Service
 @Slf4j

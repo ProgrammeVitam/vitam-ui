@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link UserEmailService}.
+ * Teste {@link UserEmailService}.
  */
 final class UserEmailServiceTest {
 

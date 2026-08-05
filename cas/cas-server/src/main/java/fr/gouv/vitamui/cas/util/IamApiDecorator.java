@@ -20,17 +20,17 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
 /**
- * Decorator for IAM API beans that ensures an HttpContext is always available
- * during method execution.
+ * Décorateur pour les beans de l'API de l'IAM qui garantit qu'un HttpContext est toujours disponible
+ * pendant l'exécution d'une méthode.
  *
- * The HttpContext is positioned in the HttpContextHolder before invoking the
- * target method so that downstream components—especially IamApiClient—can
- * retrieve the correct contextual information (tenant, user token, identity,
- * application id, etc.) at the exact time HTTP headers are built.
+ * Le HttpContext est positionné dans le HttpContextHolder avant l'invocation de la
+ * méthode cible afin que les composants en aval — en particulier IamApiClient — puissent
+ * récupérer les bonnes informations contextuelles (tenant, jeton utilisateur, identité,
+ * identifiant d'application, etc.) au moment exact où les en-têtes HTTP sont construits.
  *
- * This guarantees that outgoing IAM requests are enriched with consistent and
- * properly scoped security and tenant data, whether the call originates from
- * an authenticated user or from a technical/service context.
+ * Cela garantit que les requêtes sortantes vers l'IAM sont enrichies de données de sécurité et de
+ * tenant cohérentes et correctement délimitées, que l'appel provienne d'un
+ * utilisateur authentifié ou d'un contexte technique/de service.
  */
 @Slf4j
 @RequiredArgsConstructor

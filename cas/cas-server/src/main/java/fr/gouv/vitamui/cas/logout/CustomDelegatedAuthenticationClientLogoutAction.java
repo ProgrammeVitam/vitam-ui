@@ -40,7 +40,7 @@ import org.pac4j.core.profile.UserProfile;
 import java.util.Optional;
 
 /**
- * Propagate the logout from CAS to the authn delegated server.
+ * Propage la déconnexion de CAS vers le serveur d'authentification déléguée.
  */
 @Slf4j
 public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAuthenticationClientLogoutAction {

@@ -41,7 +41,7 @@ import org.springframework.context.HierarchicalMessageSource;
 import java.util.Locale;
 
 /**
- * Message to send in the context of the password management.
+ * Message à envoyer dans le cadre de la gestion des mots de passe.
  *
  *
  */

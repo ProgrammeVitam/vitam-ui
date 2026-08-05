@@ -47,7 +47,7 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import java.util.Objects;
 
 /**
- * Custom context initializer for password complexity configuration.
+ * Initialiseur de contexte personnalisé pour la configuration de la complexité des mots de passe.
  */
 @Slf4j
 public class InitPasswordConstraintsConfiguration implements ServletContextInitializer {

@@ -43,7 +43,7 @@ import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +76,7 @@ import static fr.gouv.vitamui.cas.util.Constants.FLOW_SURROGATE_CUSTOMER_ID;
 import static fr.gouv.vitamui.cas.util.Constants.FLOW_SURROGATE_EMAIL;
 
 /**
- * Authentication handler to check the username/password on the IAM API.
+ * Gestionnaire d'authentification qui vérifie l'identifiant/mot de passe via l'API de l'IAM.
  */
 @Slf4j
 public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {

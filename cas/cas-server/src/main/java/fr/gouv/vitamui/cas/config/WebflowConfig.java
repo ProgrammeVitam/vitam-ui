@@ -113,7 +113,7 @@ import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
 
 /**
- * Webflow customizations.
+ * Personnalisations Webflow.
  */
 @Configuration
 public class WebflowConfig {

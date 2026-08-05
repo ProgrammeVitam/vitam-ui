@@ -42,7 +42,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
 import static org.apereo.cas.pm.PasswordManagementService.PARAMETER_DO_CHANGE_PASSWORD;
 
 /**
- * Check if the password change must be started, even authenticated.
+ * Vérifie si le changement de mot de passe doit être démarré, même authentifié.
  *
  *
  */
@@ -61,9 +61,9 @@ public class TriggerChangePasswordAction extends AbstractAction {
         final String doChangePassword = context.getRequestParameters().get(PARAMETER_DO_CHANGE_PASSWORD);
         LOGGER.debug("doChangePassword: {}", doChangePassword);
         if (doChangePassword != null) {
-            // we force to change the password and as the user is already authenticated,
-            // we must simulate the authentication process by providing the credentials
-            // and a specific property: pswdChangePostLogin in the flow
+            // nous forçons le changement de mot de passe et comme l'utilisateur est déjà authentifié,
+            // nous devons simuler le processus d'authentification en fournissant les identifiants
+            // et une propriété spécifique : pswdChangePostLogin dans le flow
             final RequestContext requestContext = RequestContextHolder.getRequestContext();
             final Principal principal = WebUtils.getPrincipalFromRequestContext(requestContext, ticketRegistrySupport);
             final String username = (String) utils.getAttributeValue(

@@ -79,7 +79,7 @@
                                 <importMapping>
                                     LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto
                                 </importMapping>
-                                <importMapping>LoginRequestDto=fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto
+                                <importMapping>LoginRequestDto=fr.gouv.vitamui.iam.auth.contract.LoginRequestDto
                                 </importMapping>
                                 <importMapping>OwnerDto=fr.gouv.vitamui.commons.api.domain.OwnerDto</importMapping>
                                 <importMapping>ProfileDto=fr.gouv.vitamui.commons.api.domain.ProfileDto</importMapping>
@@ -131,7 +131,7 @@
                                 <typeMapping>
                                     LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto
                                 </typeMapping>
-                                <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto
+                                <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.auth.contract.LoginRequestDto
                                 </typeMapping>
                                 <typeMapping>OwnerDto=fr.gouv.vitamui.commons.api.domain.OwnerDto</typeMapping>
                                 <typeMapping>ProfileDto=fr.gouv.vitamui.commons.api.domain.ProfileDto</typeMapping>

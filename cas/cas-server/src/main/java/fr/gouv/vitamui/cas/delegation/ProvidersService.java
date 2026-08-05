@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Retrieve all the identity providers from the IAM API.
+ * Récupère tous les fournisseurs d'identité depuis l'API de l'IAM.
  *
  *
  */
@@ -98,7 +98,7 @@ public class ProvidersService {
             null,
             embedded
         );
-        // sort by identifier. This is needed in order to take the internal provider first.
+        // tri par identifiant. Nécessaire afin de prendre le fournisseur interne en premier.
         temporaryProviders.sort(Comparator.comparing(IdentityProviderDto::getIdentifier));
         LOGGER.debug(
             "Reloaded {} providers: {}",

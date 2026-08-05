@@ -40,8 +40,8 @@ import java.util.List;
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 
 /**
- * This class persists user selected customerId into flow scope and redirect to
- * dispatcher
+ * Cette classe persiste le customerId sélectionné par l'utilisateur dans le flow scope et redirige vers
+ * le dispatcher
  */
 @Slf4j
 @RequiredArgsConstructor

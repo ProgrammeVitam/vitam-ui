@@ -51,7 +51,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link UserPrincipalResolver}.
+ * Teste {@link UserPrincipalResolver}.
  */
 @ContextConfiguration(classes = UserPrincipalResolverTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")

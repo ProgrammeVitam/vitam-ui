@@ -82,7 +82,7 @@ import java.util.Objects;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
 /**
- * Specific password management service based on the IAM API.
+ * Service spécifique de gestion des mots de passe basé sur l'API de l'IAM.
  */
 @Getter
 @Setter
@@ -136,13 +136,13 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final var requestContext = RequestContextHolder.getRequestContext();
         final var authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
-            // login/pwd subrogation
+            // subrogation par identifiant/mot de passe
             String superUsername = (String) utils.getAttributeValue(
                 authentication.getAttributes(),
                 SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL
             );
             if (superUsername == null) {
-                // authn delegation subrogation
+                // subrogation par authentification déléguée
                 superUsername = (String) utils.getAttributeValue(
                     authentication.getPrincipal().getAttributes(),
                     SUPER_USER_ATTRIBUTE
@@ -244,12 +244,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     @NotNull
     private UserLoginModel extractUserLoginAndCustomerIdModel(MutableAttributeMap<Object> flowScope, String username) {
-        // IMPORTANT: 2 possible workflows :
-        // -> If we came from password expiration workflow ==> We already have the
-        // username/customerId from flow scope
-        // -> If we came from password reset link by email ==> We use a dirty hack to
-        // encode a username+password pair as
-        // a json-serialized UserLoginModel encoded into the `username` field.
+        // IMPORTANT : 2 workflows possibles :
+        // -> Si l'on vient du workflow d'expiration de mot de passe ==> On dispose déjà du
+        // username/customerId dans le flow scope
+        // -> Si l'on vient du lien de réinitialisation de mot de passe par e-mail ==> On utilise une astuce peu propre pour
+        // encoder une paire username+password sous la forme
+        // d'un UserLoginModel sérialisé en json encodé dans le champ `username`.
 
         String loginEmailFromFlowScope = null;
         String loginCustomerIdFromFlowScope = null;
@@ -258,7 +258,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             loginCustomerIdFromFlowScope = flowScope.getString(Constants.FLOW_LOGIN_CUSTOMER_ID);
         }
         if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginCustomerIdFromFlowScope)) {
-            // User customerId already in the scope ==> We came from password expired flow
+            // Le customerId de l'utilisateur est déjà dans le scope ==> On vient du flux de mot de passe expiré
             Assert.isTrue(
                 Objects.equals(loginEmailFromFlowScope, username),
                 "Email does not match login email from flow"

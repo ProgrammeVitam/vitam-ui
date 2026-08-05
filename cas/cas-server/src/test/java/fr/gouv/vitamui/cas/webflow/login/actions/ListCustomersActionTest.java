@@ -65,7 +65,7 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testSubrogationThenNoCustomerSelection() throws IOException {
-        // Given
+        // Étant donné
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, EMAIL2);
@@ -80,17 +80,17 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
             .when(identityProviderHelper)
             .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
     }
 
     @Test
     public void shouldTriggerOrganizationSelectionWhenSubrogatedUserHasManyOrganizationOrIdentityProviders()
         throws IOException {
-        // Given
+        // Étant donné
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, EMAIL2);
@@ -110,32 +110,32 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
             .when(identityProviderHelper)
             .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then (Subrogation mode is deterministic and bypasses customer selection)
+        // Alors (le mode subrogation est déterministe et court-circuite la sélection du customer)
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
     }
 
     @Test
     public void testSubrogationWithInvalidProviderThenBadConfig() throws IOException {
-        // Given
+        // Étant donné
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL_UNKNOWN_DOMAIN);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, EMAIL2);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL_UNKNOWN_DOMAIN, "password"));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(BAD_CONFIGURATION);
     }
 
     @Test
     public void testLoginWithEmailMatchingASingleUser() throws IOException {
-        // Given
+        // Étant donné
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
         UserDto userDto = new UserDto();
@@ -147,10 +147,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
             .when(identityProviderHelper)
             .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
 
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
@@ -160,7 +160,7 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testLoginWithEmailMatchingMultipleUsers() throws IOException {
-        // Given
+        // Étant donné
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
         UserDto userDto1 = new UserDto();
@@ -177,10 +177,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
             .when(casApi)
             .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
 
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
@@ -205,10 +205,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "code2", "customer2");
         doReturn(List.of(customerDto2)).when(casApi).getCustomersByIds(eq(List.of(CUSTOMER_ID_2)));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
 
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL2);
@@ -231,10 +231,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
             .when(casApi)
             .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
 
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
@@ -259,10 +259,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
             .when(casApi)
             .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
 
-        // When
+        // Quand
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(BAD_CONFIGURATION);
     }
 

@@ -42,7 +42,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Specific surrogate service based on the IAM API.
+ * Service de subrogation spécifique basé sur l'API de l'IAM.
  */
 @Slf4j
 public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {

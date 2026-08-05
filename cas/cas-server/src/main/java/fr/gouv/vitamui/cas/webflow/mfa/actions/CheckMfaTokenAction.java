@@ -41,7 +41,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Check the MFA token.
+ * Vérifie le jeton MFA.
  */
 @Slf4j
 @RequiredArgsConstructor

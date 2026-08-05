@@ -92,7 +92,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link IamPasswordManagementService}.
+ * Teste {@link IamPasswordManagementService}.
  */
 @ContextConfiguration(classes = { PasswordConfiguration.class })
 @TestPropertySource(locations = "classpath:/application-test.properties")
@@ -442,7 +442,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     /*
-     * application properties are by default encod with
+     * les propriétés applicatives sont par défaut encodées avec
      */
     private String encode(String policyPattern) {
         return new String(policyPattern.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);

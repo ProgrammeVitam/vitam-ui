@@ -76,11 +76,11 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
                 if (identityProvider.isPresent()) {
                     String providerUrl = null;
                     final var provider = identityProvider.get();
-                    // SAML?
+                    // SAML ?
                     final var samlMetadata = provider.getIdpMetadata();
                     if (StringUtils.isNotBlank(samlMetadata)) {
                         providerUrl = getSamlProviderUrl(provider);
-                        // OIDC?
+                        // OIDC ?
                     } else {
                         final var discoveryUrl = provider.getDiscoveryUrl();
                         if (StringUtils.isNotBlank(discoveryUrl)) {

@@ -55,11 +55,11 @@ import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRAN
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
 
 /**
- * This class lists users matching provided login email:
- * - if a single user is found ==> continue to dispatcher
- * - if multiple users found ==> redirect to customer selection page
- * - if no user found : act as if it exists (to avoid account existence
- * disclosure)
+ * Cette classe liste les utilisateurs correspondant à l'e-mail de connexion fourni :
+ * - si un seul utilisateur est trouvé ==> continue vers le dispatcher
+ * - si plusieurs utilisateurs sont trouvés ==> redirige vers la page de sélection du client
+ * - si aucun utilisateur n'est trouvé : agit comme s'il existait (pour éviter la divulgation de
+ * l'existence du compte)
  */
 @Slf4j
 public class ListCustomersAction extends AbstractAction {
@@ -94,7 +94,7 @@ public class ListCustomersAction extends AbstractAction {
     }
 
     private Event processSubrogationRequest(MutableAttributeMap<Object> flowScope) throws IOException {
-        // We came from subrogation validation (emailForm)
+        // Nous venons de la validation de subrogation (emailForm)
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);

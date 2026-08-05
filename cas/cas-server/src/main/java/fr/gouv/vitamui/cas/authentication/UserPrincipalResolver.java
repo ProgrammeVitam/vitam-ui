@@ -121,7 +121,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.USER_INFO_ID;
 
 /**
- * Resolver to retrieve the user.
+ * Résolveur chargé de récupérer l'utilisateur.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -158,7 +158,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         final Optional<AuthenticationHandler> handler,
         final Optional<org.apereo.cas.authentication.principal.Service> service
     ) {
-        // OAuth 2 authorization code flow (client credentials authentication)
+        // Flux OAuth 2 par code d'autorisation (authentification par identifiants client)
         if (optPrincipal.isEmpty()) {
             return NullPrincipal.getInstance();
         }
@@ -175,7 +175,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
         String userProviderId;
         final Optional<String> technicalUserId;
-        // x509 certificate
+        // certificat x509
         if (credential instanceof X509CertificateCredential) {
             String emailFromCertificate;
             try {
@@ -187,15 +187,15 @@ public class UserPrincipalResolver implements PrincipalResolver {
             } catch (final CertificateParsingException e) {
                 throw new RuntimeException(e.getMessage());
             }
-            // In X509 cert authn mode, subrogation is ignored.
+            // En mode d'authentification par certificat X509, la subrogation est ignorée.
             subrogationCall = false;
             superUserEmail = null;
             superUserCustomerId = null;
 
             String userDomain;
 
-            // If the certificate does not contain the user mail, then we use the default
-            // domain configured
+            // Si le certificat ne contient pas l'e-mail de l'utilisateur, on utilise le domaine
+            // par défaut configuré
             if (
                 StringUtils.isBlank(emailFromCertificate) || !EMAIL_VALID_REGEXP.matcher(emailFromCertificate).matches()
             ) {
@@ -246,7 +246,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUserEmail = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_EMAIL).getFirst();
             superUserCustomerId = (String) principal.getAttributes().get(Constants.FLOW_LOGIN_CUSTOMER_ID).getFirst();
         } else if (credential instanceof UsernamePasswordCredential) {
-            // login/password
+            // identifiant/mot de passe
             userProviderId = null;
             technicalUserId = Optional.empty();
 
@@ -256,7 +256,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUserEmail = null;
             superUserCustomerId = null;
         } else {
-            // authentication delegation (+ surrogation)
+            // authentification déléguée (+ subrogation)
             final var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             final var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
             final var webContext = new JEEContext(request, response);

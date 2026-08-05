@@ -151,7 +151,7 @@ import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDAT
 import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_USER_INFO;
 
 /**
- * The service to read, create, update and delete the users.
+ * Le service pour lire, créer, mettre à jour et supprimer les utilisateurs.
  */
 @Getter
 @Setter
@@ -247,7 +247,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * This method must be only used by the Authentification Service during the authentication process
+     * Cette méthode ne doit être utilisée que par le service d'authentification pendant le processus d'authentification
      */
     public UserDto findUserById(final String id) {
         return super.getOneByPassSecurity(id, Optional.empty());
@@ -275,7 +275,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final String message = "Unable to create user " + dto.getEmail() + " (" + dto.getCustomerId() + ")";
 
         if (UserTypeEnum.GENERIC != dto.getType()) {
-            //allow making generic users read Only
+            //permet de rendre les utilisateurs génériques en lecture seule
             checkSetReadonly(dto.isReadonly(), message);
         }
         checkCustomer(dto.getCustomerId(), message);
@@ -428,8 +428,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * User Creation.
-     * Email sent to user is not mandatory for user creation.
+     * Création d'utilisateur.
+     * L'e-mail envoyé à l'utilisateur n'est pas obligatoire pour la création d'utilisateur.
      * Also we can't use {@link Transactional} because before sending an email, CAS check user existence and with the transaction the user isn't processed yet.
      * {@inheritDoc}
      */
@@ -479,7 +479,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         checkLevel(user.getLevel(), message);
 
         if (UserTypeEnum.GENERIC != dto.getType()) {
-            //allow making generic users read Only
+            //permet de rendre les utilisateurs génériques en lecture seule
             checkSetReadonly(dto.isReadonly(), message);
         }
         if (!StringUtils.equalsIgnoreCase(user.getEmail(), dto.getEmail())) {
@@ -506,7 +506,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * User Update.
+     * Mise à jour d'utilisateur.
      * We can't use {@link Transactional} because before sending an email, CAS check user existence and with the transaction the user isn't processed yet.
      * {@inheritDoc}
      */
@@ -601,7 +601,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * User Patch.
+     * Patch d'utilisateur.
      * We can't use {@link Transactional} because before sending an email, CAS check user existence and with the transaction the user isn't processed yet.
      * {@inheritDoc}
      */
@@ -886,8 +886,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     private User find(final String id, final String customerId, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
 
-        // We enforce session customerId (no cross customer allowed for user
-        // We make exception for cas user to be allowed for updating all users during provisioning process
+        // On impose le customerId de la session (pas de cross customer autorisé pour l'utilisateur
+        // On fait une exception pour l'utilisateur cas afin de l'autoriser à mettre à jour tous les utilisateurs pendant le processus de provisionnement
         if (!securityService.hasRole(ServicesData.ROLE_PROVISIONING_USER)) {
             Assert.isTrue(
                 StringUtils.equals(customerId, getSecurityService().getCustomerId()),
@@ -1211,10 +1211,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * Get levels matching the given criteria.
+     * Récupère les niveaux correspondant aux critères donnés.
      *
-     * @param criteriaJsonString criteria as json string
-     * @return Matching levels
+     * @param criteriaJsonString les critères sous forme de chaîne json
+     * @return Les niveaux correspondants
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
         final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
@@ -1327,8 +1327,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * If the user is not an admin, he can see only users with a sub LEVEL and himself
-     * Example : Users { id: 10, level: ROOT} can see only users with a LEVEL : ROOT..* and himself
+     * Si l'utilisateur n'est pas administrateur, il ne voit que les utilisateurs d'un LEVEL inférieur et lui-même
+     * Exemple : les utilisateurs { id: 10, level: ROOT} ne voient que les utilisateurs de LEVEL : ROOT..* et eux-mêmes
      *
      * @param query query
      */

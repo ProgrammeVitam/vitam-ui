@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Specific factory for access tokens using the auth token as identifier.
+ * Fabrique spécifique de jetons d'accès utilisant le auth token comme identifiant.
  *
  *
  */

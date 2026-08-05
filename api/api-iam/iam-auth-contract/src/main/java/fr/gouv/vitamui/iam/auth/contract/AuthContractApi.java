@@ -34,57 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.security.client.config.password;
+package fr.gouv.vitamui.iam.auth.contract;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+/**
+ * Chemins du contrat d'authentification exposé par IAM.
+ *
+ * Les valeurs d'URL conservent le segment historique {@code /cas} : les changer romprait le contrat
+ * REST avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de
+ * nommer un produit, puisque le contrat n'est plus propre à Apereo CAS.
+ */
+public final class AuthContractApi {
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+    public static final String V1_AUTH_URL = "/iam/v1/cas";
 
-@Data
-@Configuration
-@ConfigurationProperties(prefix = "password")
-public class PasswordConfiguration {
+    public static final String LOGIN_PATH = "/login";
 
-    public static String ANSSI = "anssi";
-    public static String CUSTOM = "custom";
+    public static final String LOGOUT_PATH = "/logout";
 
-    // le profil par défaut est anssi, custom sinon
-    private String profile = "anssi";
-    private Integer length = 12;
-    private boolean checkOccurrence = true;
-    private Integer occurrencesCharsNumber = 3;
-    private Integer maxOldPassword = 12;
-    private PasswordConstraints constraints;
+    public static final String CHANGE_PASSWORD_PATH = "/password/change";
 
-    @Data
-    public static class PasswordConstraints {
+    public static final String USERS_PATH = "/users";
 
-        private Map<String, PasswordDefaultConstraints> defaults = new HashMap<>();
-        private Map<String, PasswordCustomConstraints> customs = new HashMap<>();
-    }
+    public static final String USERS_PROVISIONING_PATH = "/provisioning";
 
-    @Data
-    public static class PasswordDefaultConstraints {
+    public static final String CUSTOMERS_PATH = "/customers";
 
-        private SpecialChars specialChars;
-        private List<String> messages;
-    }
+    public static final String SUBROGATIONS_PATH = "/subrogations";
 
-    @Data
-    public static class SpecialChars {
-
-        private String title;
-        private List<String> messages;
-    }
-
-    @Data
-    public static class PasswordCustomConstraints {
-
-        private String title;
-        private List<String> messages;
+    private AuthContractApi() {
+        // constantes uniquement
     }
 }

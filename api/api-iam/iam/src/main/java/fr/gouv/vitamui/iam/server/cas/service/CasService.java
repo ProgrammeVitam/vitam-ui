@@ -107,7 +107,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * Specific CAS service.
+ * Service CAS spécifique.
  */
 @Getter
 @Setter
@@ -200,11 +200,11 @@ public class CasService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CasService.class);
 
     /**
-     * Generate a unique ticket ID with the given prefix.
-     * Uses UUID for guaranteed uniqueness.
+     * Génère un identifiant de ticket unique avec le préfixe donné.
+     * Utilise un UUID pour garantir l'unicité.
      *
-     * @param prefix The prefix for the ticket ID
-     * @return A unique ticket ID in the format: prefix-uuid
+     * @param prefix Le préfixe de l'identifiant du ticket
+     * @return Un identifiant de ticket unique au format : prefix-uuid
      */
     private static String generateUniqueTicketId(String prefix) {
         return prefix + "-" + UUID.randomUUID().toString();
@@ -350,12 +350,12 @@ public class CasService {
     }
 
     /**
-     * Method to retrieve the user information
+     * Méthode pour récupérer les informations de l'utilisateur
      *
-     * @param loginEmail      email of the user
-     * @param loginCustomerId The customerId of the user
-     * @param idp             can be null
-     * @param userIdentifier  can be null
+     * @param loginEmail      l'e-mail de l'utilisateur
+     * @param loginCustomerId Le customerId de l'utilisateur
+     * @param idp             peut être null
+     * @param userIdentifier  peut être null
      * @param optEmbedded
      * @return
      */
@@ -367,7 +367,7 @@ public class CasService {
         final String userIdentifier,
         final String optEmbedded
     ) {
-        // if the user depends on an external idp
+        // si l'utilisateur dépend d'un idp externe
         if (StringUtils.isNotBlank(idp)) {
             Optional<ProvidedUserDto> providedUser =
                 this.provisionUser(loginEmail, loginCustomerId, idp, userIdentifier);
@@ -380,7 +380,7 @@ public class CasService {
     }
 
     /**
-     * Method to perform auto provisioning
+     * Méthode pour effectuer le provisionnement automatique
      *
      * @param loginEmail
      * @param loginCustomerId
@@ -403,7 +403,7 @@ public class CasService {
             identityProvider.getCustomerId()
         );
 
-        // Do nothing is autoProvisioning is disabled
+        // Ne rien faire si autoProvisioning est désactivé
         if (!identityProvider.isAutoProvisioningEnabled()) {
             return Optional.empty();
         }
@@ -416,14 +416,14 @@ public class CasService {
         }
 
         final boolean userExist = userRepository.existsByEmailIgnoreCaseAndCustomerId(loginEmail, loginCustomerId);
-        // Try to update user
+        // Tenter de mettre à jour l'utilisateur
         if (userExist) {
             final UserDto user = userService.findUserByEmailAndCustomerId(loginEmail, loginCustomerId);
             if (user.isAutoProvisioningEnabled()) {
                 updateUser(user, getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, user.getGroupId()));
             }
         }
-        // Try to create a new user
+        // Tenter de créer un nouvel utilisateur
         else {
             if (providedUser.isEmpty()) {
                 providedUser = Optional.of(getProvidedUser(loginEmail, loginCustomerId, idp, userIdentifier, null));

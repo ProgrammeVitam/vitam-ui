@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Send user email service.
+ * Service d'envoi d'e-mail aux utilisateurs.
  */
 @Getter
 @Setter

@@ -63,7 +63,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Locale;
 
 /**
- * Rest controller for CAS extra features.
+ * Contrôleur REST pour les fonctionnalités supplémentaires de CAS.
  */
 @RestController
 @RequestMapping("/extras")

@@ -76,7 +76,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link UserService}.
+ * Teste {@link UserService}.
  */
 public final class UserServiceTest {
 
@@ -559,8 +559,8 @@ public final class UserServiceTest {
     }
 
     /**
-     * Disable then Enable an user.
-     * An email should be sent to the user in order to change his password.
+     * Désactive puis réactive un utilisateur.
+     * Un e-mail doit être envoyé à l'utilisateur afin qu'il change son mot de passe.
      */
     @Test
     void testDisableThenEnableUser() {

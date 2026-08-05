@@ -27,7 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link ProvidersService}.
+ * Teste {@link ProvidersService}.
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ProvidersServiceTest.class)

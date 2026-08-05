@@ -81,7 +81,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 /**
- * Web customizations.
+ * Personnalisations web.
  */
 @Configuration
 public class WebConfig {

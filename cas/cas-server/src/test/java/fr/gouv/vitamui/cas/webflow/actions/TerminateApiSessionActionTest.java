@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests the customized {@link TerminateApiSessionAction}.
+ * Teste la version personnalisée de {@link TerminateApiSessionAction}.
  */
 @ContextConfiguration(classes = TerminateApiSessionActionTest.class)
 @TestPropertySource(locations = "classpath:/application-test.properties")
@@ -134,7 +134,7 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
             );
         }
 
-        // Expose protected method as public for testing
+        // Expose la méthode protégée en public pour les tests
         public List<SingleLogoutRequestContext> performGeneralLogoutPublic(String tgtId) {
             return performGeneralLogout(tgtId);
         }

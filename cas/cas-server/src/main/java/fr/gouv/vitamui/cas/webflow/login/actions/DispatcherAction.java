@@ -50,14 +50,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * This class can dispatch the user:
- * - either to customer selection page (if user have multiple accounts for
- * different customers)
- * - or to the password page
- * - or to an external IdP (authentication delegation)
- * - or to the bad configuration page if the user is not linked to any identity
- * provider
- * - or to the disabled account page if the user is disabled.
+ * Cette classe peut aiguiller l'utilisateur :
+ * - soit vers la page de sélection du client (si l'utilisateur a plusieurs comptes pour
+ * différents clients)
+ * - soit vers la page de mot de passe
+ * - soit vers un IdP externe (authentification déléguée)
+ * - soit vers la page de mauvaise configuration si l'utilisateur n'est lié à aucun fournisseur
+ * d'identité
+ * - soit vers la page de compte désactivé si l'utilisateur est désactivé.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -90,7 +90,7 @@ public class DispatcherAction extends AbstractAction {
 
     private Event processSubrogationRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
         throws IOException {
-        // We came from subrogation validation
+        // Nous venons de la validation de subrogation
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);

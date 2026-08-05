@@ -73,7 +73,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
-/** Terminate session action with custom IAM logout call. */
+/** Action de fin de session avec un appel de déconnexion personnalisé vers l'IAM. */
 @Slf4j
 public class TerminateApiSessionAction extends TerminateSessionAction {
 
@@ -157,16 +157,16 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
 
         final Event event = super.terminate(context);
 
-        // Remove IdP cookie
+        // Supprime le cookie IdP
         response.addCookie(utils.buildIdpCookie(null, casProperties.getTgc()));
 
-        // Fallback general logout
+        // Déconnexion générale de repli
         if (tgtId == null || ticket == null || ticket.isExpired()) {
             List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId != null ? tgtId : "nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
         }
 
-        // Front channel logout in login flow
+        // Déconnexion par canal frontal (front channel) dans le flux de connexion
         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
             LOGGER.debug("Computing front channel logout URLs");
             frontChannelLogoutAction.execute(context);

@@ -56,12 +56,12 @@ import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import java.util.Map;
 
 /**
- * A webflow configurer:
- * - to handle the change password action even if the user is already
- * authenticated
- * - with a username page
- * - with an optional customer selection page
- * - with a password page.
+ * Un configurateur de webflow :
+ * - pour gérer l'action de changement de mot de passe même si l'utilisateur est déjà
+ * authentifié
+ * - avec une page de nom d'utilisateur
+ * - avec une page facultative de sélection du client
+ * - avec une page de mot de passe.
  */
 public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
 
@@ -82,7 +82,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     public static final String TEMPLATE_CUSTOMER_FORM = "customerForm";
     public static final String TEMPLATE_EMAIL_FORM = "emailForm";
 
-    // FORMS FIELDS
+    // CHAMPS DES FORMULAIRES
     public static final String USERNAME = "username";
     public static final String PROCEED = "proceed";
     public static final String PASSWORD = "password";
@@ -114,7 +114,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK
         );
 
-        // CUSTO: instead of STATE_ID_GATEWAY_REQUEST_CHECK, send to
+        // CUSTO : au lieu de STATE_ID_GATEWAY_REQUEST_CHECK, rediriger vers
         // ACTION_STATE_CHECK_SUBROGATION
         createTransitionForState(
             action,
@@ -131,7 +131,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.STATE_ID_TERMINATE_SESSION
         );
 
-        // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to
+        // CUSTO : au lieu de STATE_ID_HAS_SERVICE_CHECK, rediriger vers
         // STATE_ID_TRIGGER_CHANGE_PASSWORD
         createTransitionForState(
             action,
@@ -169,7 +169,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_INIT_LOGIN_ACTION));
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
-        // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes
+        // CUSTO : CasWebflowConstants.STATE_ID_REAL_SUBMIT devient
         // ACTION_STATE_LIST_CUSTOMERS
         val transition = createTransitionForState(
             state,

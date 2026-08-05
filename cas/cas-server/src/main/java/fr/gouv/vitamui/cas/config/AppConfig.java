@@ -139,7 +139,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_EXTERN
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
 
 /**
- * Configure all beans to customize the CAS server.
+ * Configure tous les beans pour personnaliser le serveur d'authentification.
  */
 @Slf4j
 @Configuration
@@ -148,10 +148,10 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
 )
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
-    // overrides the CAS specific message converter to prevent
-    // the CasRestExternalClient to use the
+    // remplace le convertisseur de message spécifique à CAS pour empêcher
+    // le CasRestExternalClient d'utiliser le type de contenu
     // 'application/vnd.cas.services+yaml;charset=UTF-8'
-    // content type and to fail
+    // et d'échouer
     @Bean
     public HttpMessageConverter yamlHttpMessageConverter() {
         return null;
@@ -240,10 +240,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     /**
-     * We must define our customizer to replace X_ORIGIN header from
-     * IamApiClient.java for CAS usage.
+     * Nous devons définir notre customizer pour remplacer l'en-tête X_ORIGIN de
+     * IamApiClient.java pour l'usage de CAS.
      *
-     * @return a rest client customizer.
+     * @return un customizer de rest client.
      */
     @Bean
     @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER)
@@ -593,9 +593,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     /**
-     * Override the default CAS delegatedAuthenticationCredentialExtractor to avoid a NoClassDefFoundError
-     * on PasswordlessWebflowUtils when the passwordless module is not in the classpath.
-     * External surrogate feature is not supported.
+     * Surcharge le delegatedAuthenticationCredentialExtractor par défaut de CAS pour éviter une NoClassDefFoundError
+     * sur PasswordlessWebflowUtils lorsque le module passwordless n'est pas dans le classpath.
+     * La fonctionnalité de subrogation externe n'est pas supportée.
      */
     @Bean(
         name = { "delegatedAuthenticationCredentialExtractor", "surrogateDelegatedAuthenticationCredentialExtractor" }

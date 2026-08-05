@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * MongoDB repository for the subrogations.
+ * Repository MongoDB pour les subrogations.
  *
  *
  */

@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link IamSurrogateAuthenticationService}.
+ * Teste {@link IamSurrogateAuthenticationService}.
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = IamSurrogateAuthenticationServiceTest.class)
