@@ -49,6 +49,8 @@ import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -341,6 +343,28 @@ public class CasController {
      * l'organisation. La réponse a la même forme selon que le compte existe ou non, afin de ne pas révéler
      * son existence.
      */
+    /**
+     * Valide qu'une subrogation autorise ce super-utilisateur à prendre la place de cet utilisateur.
+     *
+     * Une réponse vaut autorisation ; un refus prend la forme d'un 404, jamais d'une réponse vide. Le
+     * serveur d'authentification n'a donc plus à récupérer les subrogations pour les filtrer lui-même.
+     */
+    @PostMapping(value = AuthContractApi.SUBROGATION_VALIDATE_PATH)
+    @Operation(operationId = "cas_validateSubrogation", summary = "Validate a subrogation and resolve both users")
+    @Secured(ServicesData.ROLE_CAS_SUBROGATION_VALIDATE)
+    public SubrogationValidateResponseDto validateSubrogation(
+        final @Valid @RequestBody SubrogationValidateRequestDto request
+    ) throws InvalidParseOperationException {
+        LOGGER.debug("validate a subrogation");
+        SanityChecker.checkSecureParameter(
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId(),
+            request.getSurrogateEmail(),
+            request.getSurrogateCustomerId()
+        );
+        return casService.validateSubrogation(request);
+    }
+
     /**
      * La politique de mot de passe appliquée par IAM, pour que le serveur d'authentification affiche
      * exactement les contraintes qui seront vérifiées plutôt que sa propre copie de la configuration.
