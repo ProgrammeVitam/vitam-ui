@@ -40,6 +40,7 @@ import { Subject, concat, merge, firstValueFrom, map, Observable, scan } from 'r
 import { EventSource } from 'eventsource';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { AuthService, BASE_URL, TenantSelectionService, VitamuiHttpHeaders } from '../../../app/modules';
+import { ConfigService } from '../../../app/modules/config.service';
 
 export interface DiscussionDto {
   discussion: Discussion;
@@ -87,6 +88,7 @@ export interface DiscussionEntity {
   providedIn: 'root',
 })
 export class DiscussionService {
+  private readonly configService = inject(ConfigService);
   private readonly httpClient = inject(HttpClient);
   private readonly authStorage = inject(OAuthStorage);
   private readonly tenantSelectionService = inject(TenantSelectionService);
@@ -105,7 +107,8 @@ export class DiscussionService {
             ...init,
             headers: {
               ...init.headers,
-              Authorization: `Bearer ${this.authStorage.getItem('access_token')}`,
+              [this.configService.config?.AUTHORIZATION_HEADER_NAME || 'Authorization']:
+                `Bearer ${this.authStorage.getItem('access_token')}`,
               [VitamuiHttpHeaders.X_TENANT_ID]: String(this.tenantSelectionService.getLastTenantIdentifier()),
             },
           }),
