@@ -25,11 +25,11 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 /**
- * Ce que valide une subrogation, et ce qu'elle refuse.
+ * What a subrogation validates, and what it refuses.
  *
- * Le serveur d'authentification demande aujourd'hui toutes les subrogations du super-utilisateur puis
- * cherche celle qui correspond exactement aux quatre valeurs. Ces cas figent cette règle, et le refus
- * supplémentaire des subrogations expirées, que le filtrage actuel ne fait pas.
+ * The authentication server today asks for every subrogation of the super user, then looks for the one
+ * matching all four values exactly. These cases pin that rule down, along with the additional refusal of
+ * expired subrogations, which the current filtering does not perform.
  */
 @ExtendWith(MockitoExtension.class)
 class CasServiceSubrogationValidationTest {
@@ -49,7 +49,7 @@ class CasServiceSubrogationValidationTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("une subrogation acceptée et valide résout les deux identifiants")
+    @DisplayName("an accepted and still valid subrogation resolves both identifiers")
     void acceptedSubrogationResolvesBothUsers() {
         givenSubrogation(SubrogationStatusEnum.ACCEPTED, inOneHour());
         givenBothUsersExist();
@@ -61,7 +61,7 @@ class CasServiceSubrogationValidationTest {
     }
 
     @Test
-    @DisplayName("l'absence de subrogation est un refus, pas une réponse vide")
+    @DisplayName("a missing subrogation is a refusal, not an empty response")
     void missingSubrogationIsRefused() {
         when(
             subrogationRepository.findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
@@ -76,7 +76,7 @@ class CasServiceSubrogationValidationTest {
     }
 
     @Test
-    @DisplayName("une subrogation seulement créée, non acceptée, est refusée")
+    @DisplayName("a subrogation merely created, not accepted, is refused")
     void pendingSubrogationIsRefused() {
         givenSubrogation(SubrogationStatusEnum.CREATED, inOneHour());
 
@@ -84,9 +84,9 @@ class CasServiceSubrogationValidationTest {
     }
 
     @Test
-    @DisplayName("une subrogation expirée est refusée, sans attendre la purge de Mongo")
+    @DisplayName("an expired subrogation is refused, without waiting for Mongo to purge it")
     void expiredSubrogationIsRefused() {
-        // L'index TTL ne passe qu'une fois par minute, et certains déploiements le désactivent.
+        // The TTL index only runs once a minute, and some deployments disable it altogether.
         givenSubrogation(SubrogationStatusEnum.ACCEPTED, anHourAgo());
 
         assertThatThrownBy(() -> casService.validateSubrogation(request()))
@@ -95,7 +95,7 @@ class CasServiceSubrogationValidationTest {
     }
 
     @Test
-    @DisplayName("une subrogation dont un des comptes a disparu est refusée")
+    @DisplayName("a subrogation whose accounts no longer both exist is refused")
     void unresolvableUserIsRefused() {
         givenSubrogation(SubrogationStatusEnum.ACCEPTED, inOneHour());
         lenient()

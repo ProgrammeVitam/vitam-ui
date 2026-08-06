@@ -725,31 +725,29 @@ public class CasService {
     }
 
     /**
-     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
+     * The authentication attributes of a user, ready to be carried as-is by the token.
      *
-     * Le serveur d'authentification construit aujourd'hui cette table lui-même, ce qui l'oblige à
-     * connaître les quelque soixante noms d'attributs de {@link CommonConstants} et la façon dont chacun
-     * se dérive du modèle utilisateur. Un attribut ajouté ici imposait jusqu'à présent de modifier aussi
-     * le serveur d'authentification.
+     * The authentication server builds this map itself today, which forces it to know the sixty-odd
+     * attribute names of {@link CommonConstants} and how each one derives from the user model. Adding an
+     * attribute here used to mean changing the authentication server as well.
      *
-     * Toutes les valeurs sont des chaînes, y compris les booléens et les dates. Ce n'est pas un
-     * appauvrissement : c'est la forme sous laquelle elles parviennent déjà aux applications, puisque
-     * {@code AuthUserDto.buildFromAttributes} les relit avec {@code Boolean.parseBoolean((String) value)}
-     * ou {@code OffsetDateTime.parse((String) value)}. Les attributs composés sont sérialisés en JSON avec
-     * le même {@link JsonUtils} que {@code CasJsonWrapper.toString()} employait, si bien que la chaîne
-     * transmise est identique.
+     * Every value is a string, booleans and dates included. That is not a loss of fidelity: it is the
+     * form in which they already reach the applications, since {@code AuthUserDto.buildFromAttributes}
+     * reads them back with {@code Boolean.parseBoolean((String) value)} or
+     * {@code OffsetDateTime.parse((String) value)}. Composite attributes are serialised to JSON with the
+     * very {@link JsonUtils} that {@code CasJsonWrapper.toString()} used, so the transmitted string is
+     * identical.
      *
-     * Un attribut dont la valeur est absente est omis plutôt que porté à {@code null} : la relecture
-     * procède par un aiguillage sur les clés présentes, une clé absente et une clé nulle y sont
-     * équivalentes.
+     * An attribute whose value is missing is omitted rather than set to {@code null}: the reader
+     * switches on the keys that are present, and an absent key is equivalent to a null one there.
      */
     public Map<String, List<String>> buildPrincipalAttributes(final PrincipalAttributesRequestDto request) {
         Assert.notNull(request, "request must not be null");
 
         final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
 
-        // Le jeton d'authentification est toujours demandé ; la subrogation et les appels hors navigateur
-        // réclament en plus leur propre bloc, comme le fait aujourd'hui le résolveur du serveur d'auth.
+        // The authentication token is always requested; subrogation and non-browser calls additionally
+        // require their own block, exactly as the authentication server's resolver does today.
         String embedded = CommonConstants.AUTH_TOKEN_PARAMETER;
         if (subrogation) {
             embedded += "," + CommonConstants.SURROGATION_PARAMETER;
@@ -783,9 +781,9 @@ public class CasService {
     }
 
     /**
-     * Traduit un utilisateur déjà résolu en table d'attributs. Séparée de la résolution, cette conversion
-     * se vérifie pour elle-même : c'est la forme des valeurs qui fait l'iso-fonctionnel, pas la façon dont
-     * l'utilisateur a été retrouvé.
+     * Turns an already resolved user into the attribute map. Kept apart from the resolution, this
+     * conversion can be checked on its own: what makes the behaviour identical is the shape of the
+     * values, not the way the user was looked up.
      */
     public Map<String, List<String>> toPrincipalAttributes(
         final UserDto user,
@@ -842,8 +840,8 @@ public class CasService {
     }
 
     /**
-     * Reproduit {@code IdentityProviderHelper.identifierMatchProviderPattern} : l'utilisateur s'authentifie
-     * bien par mot de passe, et non par délégation. L'OTP n'a de sens que dans ce cas.
+     * Mirrors {@code IdentityProviderHelper.identifierMatchProviderPattern}: the user really does
+     * authenticate with a password rather than through a delegation. OTP only makes sense in that case.
      */
     private boolean authenticatesWithInternalProvider(final String email, final String customerId) {
         if (StringUtils.isBlank(email) || StringUtils.isBlank(customerId)) {
@@ -910,19 +908,19 @@ public class CasService {
     }
 
     /**
-     * Valide qu'une subrogation autorise bien ce super-utilisateur à prendre la place de cet utilisateur,
-     * et résout les deux identifiants.
+     * Validates that a subrogation really lets this super user take this user's place, and resolves both
+     * identifiers.
      *
-     * Le serveur d'authentification demande aujourd'hui toutes les subrogations du super-utilisateur et
-     * filtre lui-même. Une requête ciblée suffit, et la liste des subrogations cesse de circuler.
+     * The authentication server today asks for every subrogation of the super user and filters them
+     * itself. A targeted query is enough, and the list of subrogations stops travelling over the wire.
      *
-     * La date d'expiration est vérifiée ici, ce que le filtrage actuel ne fait pas. L'index TTL de Mongo
-     * ({@code expireAfterSeconds = 0} sur {@code Subrogation.date}) est censé purger les entrées échues,
-     * mais il ne s'exécute qu'une fois par minute et peut être désactivé selon les déploiements : s'en
-     * remettre à lui laisse une fenêtre pendant laquelle une subrogation expirée reste utilisable.
+     * The expiry date is checked here, which the current filtering does not do. The Mongo TTL index
+     * ({@code expireAfterSeconds = 0} on {@code Subrogation.date}) is meant to purge stale entries, but
+     * it only runs once a minute and may be disabled depending on the deployment: relying on it leaves a
+     * window during which an expired subrogation stays usable.
      *
-     * @throws NotFoundException si aucune subrogation acceptée et valide ne correspond, ou si l'un des
-     *                           deux comptes est introuvable. Un refus n'est jamais une réponse vide.
+     * @throws NotFoundException when no accepted and still valid subrogation matches, or when either
+     *                           account cannot be found. A refusal is never an empty response.
      */
     public SubrogationValidateResponseDto validateSubrogation(final SubrogationValidateRequestDto request) {
         Assert.notNull(request, "request must not be null");
@@ -958,11 +956,11 @@ public class CasService {
     }
 
     /**
-     * La politique de mot de passe qu'IAM applique, pour que le serveur d'authentification affiche
-     * exactement les contraintes qui seront vérifiées.
+     * The password policy IAM enforces, so that the authentication server displays exactly the
+     * constraints that will be checked.
      *
-     * Les libellés sont aplatis dans l'ordre de la configuration : d'abord les contraintes par défaut, en
-     * intercalant celles des caractères spéciaux, puis les contraintes personnalisées.
+     * The labels are flattened in configuration order: the default constraints first, with the special
+     * character ones interleaved, then the custom constraints.
      */
     public PasswordPolicyDto getPasswordPolicy() {
         final List<String> messages = new ArrayList<>();
@@ -1003,38 +1001,37 @@ public class CasService {
     }
 
     /**
-     * Home Realm Discovery : résout un email vers les organisations par lesquelles son porteur peut
-     * s'authentifier, et le fournisseur d'identité à employer dans chacune.
+     * Home Realm Discovery: resolves an email to the customers its bearer may authenticate through, and
+     * to the identity provider to use in each of them.
      *
-     * Deux sources peuvent désigner une organisation, mais elles ne sont pas de même rang. Les comptes
-     * existants font autorité : dès qu'au moins un compte porte cette adresse, seules leurs organisations
-     * sont proposées. Les patterns des fournisseurs ne servent qu'en second rang, lorsqu'aucun compte
-     * n'existe — un fournisseur externe provisionne à la première connexion, et l'adresse est alors le
-     * seul indice disponible.
+     * Two sources can point at a customer, but they do not carry the same weight. Existing accounts have
+     * the final say: as soon as at least one account carries the address, only their customers are
+     * offered. Provider patterns only come second, when no account exists — an external provider
+     * provisions on first login, and the address is then the only clue available.
      *
-     * Cet ordre est ce qui préserve la non-divulgation. Une adresse inconnue dont le domaine correspond à
-     * un fournisseur est routée comme une adresse connue, et l'échec ne survient qu'après la saisie du mot
-     * de passe, sous une forme générique. Résoudre les deux sources en union, ou écarter les fournisseurs
-     * internes dépourvus de compte, rendrait l'absence de compte observable avant toute authentification.
+     * That ordering is what preserves non-disclosure. An unknown address whose domain matches a provider
+     * is routed just like a known one, and the failure only happens after the password is entered, in a
+     * generic form. Resolving both sources as a union, or dropping internal providers that have no
+     * account, would make the absence of an account observable before any authentication.
      *
-     * Le routage seul est indistinguable, pas la réponse entière : {@code userStatus} reste vide faute de
-     * compte. Ce champ s'adresse au serveur d'authentification, qui doit décider du sort d'un compte
-     * désactivé et disposait déjà de l'information ; il ne doit pas ressortir dans ce que l'utilisateur
-     * observe.
+     * Only the routing is indistinguishable, not the whole response: {@code userStatus} stays empty for
+     * want of an account. That field is meant for the authentication server, which has to decide the fate
+     * of a disabled account and already held the information; it must not surface in what the user
+     * observes.
      *
-     * Au sein d'une organisation, le fournisseur retenu est le premier dont un pattern correspond, pris
-     * dans l'ordre des identifiants — ordre par lequel le fournisseur interne passe avant les délégations.
-     * Une organisation n'apparaît donc qu'une fois. Le fournisseur peut être absent lorsqu'un compte existe
-     * dans une organisation dont aucun fournisseur ne couvre l'adresse : c'est au serveur
-     * d'authentification de traduire ce cas en erreur de configuration.
+     * Within a customer, the provider kept is the first one whose pattern matches, taken in identifier
+     * order — the very order that puts the internal provider ahead of the delegations. A customer
+     * therefore appears only once. The provider may be absent when an account exists in a customer where
+     * no provider covers the address: it is up to the authentication server to turn that case into a
+     * configuration error.
      *
-     * @return les entrées triées par code d'organisation, éventuellement vide si rien ne correspond.
+     * @return the entries sorted by customer code, possibly empty when nothing matches.
      */
     public List<HrdEntryDto> resolveHrdEntries(final String email) {
         Assert.hasText(email, "email must not be empty");
 
-        // L'ordre des identifiants place le fournisseur interne avant les délégations d'une même
-        // organisation ; il décide donc lequel est retenu quand plusieurs couvrent la même adresse.
+        // Identifier order puts the internal provider ahead of the delegations of a same customer; it
+        // therefore decides which one is kept when several of them cover the same address.
         final List<IdentityProvider> providers = StreamSupport.stream(
             identityProviderRepository.findAll().spliterator(),
             false

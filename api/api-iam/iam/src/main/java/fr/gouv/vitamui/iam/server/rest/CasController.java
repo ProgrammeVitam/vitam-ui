@@ -338,18 +338,10 @@ public class CasController {
     }
 
     /**
-     * Home Realm Discovery : les organisations et fournisseurs d'identité candidats pour un email.
+     * The authentication attributes of a user, ready to be carried as-is by the token.
      *
-     * La cardinalité de la réponse porte la décision du serveur d'authentification — aucune entrée pour une
-     * configuration inexploitable, une pour enchaîner directement, plusieurs pour faire choisir
-     * l'organisation. La réponse a la même forme selon que le compte existe ou non, afin de ne pas révéler
-     * son existence.
-     */
-    /**
-     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
-     *
-     * Le serveur d'authentification n'a plus à connaître ni les noms d'attributs ni la façon dont chacun
-     * se dérive du modèle utilisateur : il recopie la table sans l'interpréter.
+     * The authentication server no longer has to know the attribute names, nor how each one derives from
+     * the user model: it copies the map over without interpreting it.
      */
     @PostMapping(value = AuthContractApi.PRINCIPAL_ATTRIBUTES_PATH)
     @Operation(operationId = "cas_buildPrincipalAttributes", summary = "Build the authentication attributes of a user")
@@ -363,10 +355,10 @@ public class CasController {
     }
 
     /**
-     * Valide qu'une subrogation autorise ce super-utilisateur à prendre la place de cet utilisateur.
+     * Validates that a subrogation lets this super user take this user's place.
      *
-     * Une réponse vaut autorisation ; un refus prend la forme d'un 404, jamais d'une réponse vide. Le
-     * serveur d'authentification n'a donc plus à récupérer les subrogations pour les filtrer lui-même.
+     * A response amounts to authorisation; a refusal takes the form of a 404, never of an empty response.
+     * The authentication server therefore no longer fetches subrogations to filter them itself.
      */
     @PostMapping(value = AuthContractApi.SUBROGATION_VALIDATE_PATH)
     @Operation(operationId = "cas_validateSubrogation", summary = "Validate a subrogation and resolve both users")
@@ -385,8 +377,8 @@ public class CasController {
     }
 
     /**
-     * La politique de mot de passe appliquée par IAM, pour que le serveur d'authentification affiche
-     * exactement les contraintes qui seront vérifiées plutôt que sa propre copie de la configuration.
+     * The password policy IAM enforces, so that the authentication server displays exactly the
+     * constraints that will be checked rather than its own copy of the configuration.
      */
     @GetMapping(value = AuthContractApi.PASSWORD_POLICY_PATH)
     @Operation(operationId = "cas_getPasswordPolicy", summary = "Get the password policy enforced by IAM")
@@ -396,6 +388,14 @@ public class CasController {
         return casService.getPasswordPolicy();
     }
 
+    /**
+     * Home Realm Discovery: the customers and identity providers a given email may authenticate through.
+     *
+     * The cardinality of the response carries the authentication server's decision — no entry for an
+     * unusable configuration, one to carry on directly, several to have the customer chosen first. An
+     * unknown address is routed exactly like a known one, so that the flow never reveals whether an
+     * account exists.
+     */
     @GetMapping(value = AuthContractApi.HRD_PATH, params = "email")
     @Operation(
         operationId = "cas_resolveHrd",

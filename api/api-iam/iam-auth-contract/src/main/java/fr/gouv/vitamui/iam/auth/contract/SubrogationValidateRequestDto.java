@@ -45,11 +45,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * La subrogation dont on demande la validation : qui prend la place de qui, et dans quelles organisations.
+ * The subrogation being validated: who takes whose place, and in which customers.
  *
- * Les quatre valeurs comptent. Un même email peut exister dans plusieurs organisations, et une
- * subrogation n'autorise qu'un couple précis — comparer les seuls emails ouvrirait la porte à une
- * subrogation vers un homonyme d'une autre organisation.
+ * All four values matter. The same email can exist in several customers, and a subrogation only
+ * authorises one precise pair — matching on emails alone would open the door to subrogating towards a
+ * namesake belonging to another customer.
  */
 @Getter
 @Setter

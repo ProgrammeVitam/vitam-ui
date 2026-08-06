@@ -45,12 +45,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * L'utilisateur dont on demande les attributs d'authentification, et le contexte dans lequel il se
- * connecte.
+ * The user whose authentication attributes are being requested, and the context they are signing in
+ * from.
  *
- * {@code identityProviderId} n'est renseigné que pour une authentification déléguée : il déclenche le
- * provisionnement à la volée si le fournisseur l'autorise. Les deux champs de subrogation ne le sont que
- * lorsqu'un super-utilisateur prend la place de quelqu'un.
+ * {@code identityProviderId} is only set for a delegated authentication: it triggers just-in-time
+ * provisioning when the provider allows it. Both subrogation fields are only set when a super user takes
+ * someone else's place.
  */
 @Getter
 @Setter
@@ -75,8 +75,8 @@ public class PrincipalAttributesRequestDto {
     private String superUserCustomerId;
 
     /**
-     * Vrai lorsque la connexion ne vient pas d'un navigateur mais d'un appel programmatique. Les blocs
-     * embarqués dans la réponse en dépendent.
+     * True when the login does not come from a browser but from a programmatic call. The blocks embedded
+     * in the response depend on it.
      */
     private boolean apiContext;
 }

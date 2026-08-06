@@ -29,17 +29,17 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Le Home Realm Discovery confronté aux données de référence, dans un vrai MongoDB.
+ * Home Realm Discovery confronted with the reference data, in a real MongoDB.
  *
- * Les cas unitaires voisins valident la règle sur des fournisseurs construits pour elle. Ceux-ci la
- * confrontent au jeu de données livré avec le produit, où les patterns se chevauchent, où une même adresse
- * porte des comptes dans deux organisations, et où les identifiants ne sont pas tous du même type. Deux
- * écarts avec le webflow historique n'étaient visibles que par ce chemin : un fournisseur interne
- * s'ajoutait à une délégation pour la même organisation, et une adresse inconnue sur un domaine interne ne
- * renvoyait rien, ce qui révélait l'absence de compte.
+ * The neighbouring unit cases check the rule against providers built for it. These ones confront it with
+ * the data set shipped with the product, where patterns overlap, where a single address carries accounts
+ * in two customers, and where identifiers are not all of the same type. Two divergences from the historic
+ * webflow were only visible this way: an internal provider was added alongside a delegation for the same
+ * customer, and an unknown address on an internal domain resolved to nothing, which disclosed the absence
+ * of an account.
  *
- * Le jeu de données est un extrait de la base de développement, amputé des keystores, métadonnées et
- * secrets clients : le HRD n'en lit aucun.
+ * The data set is an extract of the development database, stripped of keystores, metadata and client
+ * secrets: HRD reads none of them.
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -88,14 +88,14 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
     }
 
     @Nested
-    @DisplayName("Les comptes existants font autorité")
+    @DisplayName("Existing accounts have the final say")
     class ExistingAccountsDecide {
 
         @Test
-        @DisplayName("un compte unique désigne son organisation, et elle seule")
+        @DisplayName("a single account points at its own customer, and only that one")
         void aSingleAccountResolvesToItsOwnCustomer() {
-            // Le pattern attrape-tout « .*@change-it.fr » de Client2 correspond aussi à cette adresse, mais
-            // aucun compte ne la porte chez Client2 : la rattacher là serait un faux positif.
+            // Client2's catch-all pattern ".*@change-it.fr" matches this address too, but no account
+            // there carries it: attaching it to Client2 would be a false positive.
             final List<HrdEntryDto> entries = casService.resolveHrdEntries("admin@change-it.fr");
 
             assertThat(entries)
@@ -109,9 +109,9 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
         }
 
         @Test
-        @DisplayName("une adresse portée par deux comptes propose les deux organisations, triées par code")
+        @DisplayName("an address carried by two accounts offers both customers, sorted by code")
         void twoAccountsResolveToTwoCustomers() {
-            // Le cas que le webflow traite par la page de sélection d'organisation.
+            // The case the webflow handles with its customer selection page.
             final List<HrdEntryDto> entries = casService.resolveHrdEntries("demo@change-it.fr");
 
             assertThat(entries)
@@ -123,7 +123,7 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
         }
 
         @Test
-        @DisplayName("la casse de l'adresse est indifférente")
+        @DisplayName("the case of the address makes no difference")
         void emailCaseIsIgnored() {
             assertThat(casService.resolveHrdEntries("ADMIN@GMAIL.COM")).isEqualTo(
                 casService.resolveHrdEntries("admin@gmail.com")
@@ -136,15 +136,15 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
     }
 
     @Nested
-    @DisplayName("Une organisation n'est proposée qu'une fois")
+    @DisplayName("A customer is offered only once")
     class OneEntryPerCustomer {
 
         @Test
-        @DisplayName("un compte fédéré ne se voit pas aussi proposer le mot de passe de son organisation")
+        @DisplayName("a federated account is not also offered its customer's password")
         void aFederatedAccountIsNotAlsoOfferedTheInternalProvider() {
-            // Client1 porte un fournisseur interne et deux délégations. Le webflow retient le premier
-            // fournisseur de l'organisation dont un pattern correspond : ici la délégation OIDC seule, le
-            // fournisseur interne ne couvrant que « .*@gmail.com ».
+            // Client1 carries an internal provider and two delegations. The webflow keeps the first
+            // provider of the customer whose pattern matches: here the OIDC delegation alone, the
+            // internal provider only covering ".*@gmail.com".
             final List<HrdEntryDto> entries = casService.resolveHrdEntries("demo.oidc@keycloak-oidc.fr");
 
             assertThat(entries)
@@ -158,7 +158,7 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
         }
 
         @Test
-        @DisplayName("le protocole de la délégation retenue est transmis tel quel")
+        @DisplayName("the protocol of the delegation kept is carried over as-is")
         void theDelegationProtocolIsCarried() {
             final List<HrdEntryDto> entries = casService.resolveHrdEntries("demo.saml@keycloak-saml.fr");
 
@@ -172,14 +172,14 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
     }
 
     @Nested
-    @DisplayName("Non-divulgation de l'existence d'un compte")
+    @DisplayName("Non-disclosure of account existence")
     class AccountExistenceIsNotDisclosed {
 
         @Test
-        @DisplayName("une adresse inconnue sur un domaine interne est routée comme une adresse connue")
+        @DisplayName("an unknown address on an internal domain is routed like a known one")
         void anUnknownAddressOnAnInternalDomainIsStillRouted() {
-            // Sans compte, seuls les patterns décident. Renvoyer une liste vide ici distinguerait un compte
-            // absent d'un compte présent avant toute saisie de mot de passe.
+            // With no account, patterns alone decide. Returning an empty list here would tell a missing
+            // account apart from an existing one before any password is entered.
             final List<HrdEntryDto> unknown = casService.resolveHrdEntries("inconnu@change-it.fr");
             final List<HrdEntryDto> known = casService.resolveHrdEntries("admin@client2.fr");
 
@@ -189,15 +189,15 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
                     assertThat(entry.getCustomerCode()).isEqualTo(CLIENT2_CODE);
                     assertThat(entry.isInternal()).isTrue();
                 });
-            // Même organisation, même fournisseur : rien dans le routage ne trahit l'absence de compte.
+            // Same customer, same provider: nothing in the routing betrays the absence of an account.
             assertThat(unknown.getFirst().getCustomerCode()).isEqualTo(known.getFirst().getCustomerCode());
             assertThat(unknown.getFirst().getIdentityProviderId()).isEqualTo(known.getFirst().getIdentityProviderId());
         }
 
         @Test
-        @DisplayName("une adresse inconnue sur un domaine délégué est routée vers cette délégation")
+        @DisplayName("an unknown address on a delegated domain is routed to that delegation")
         void anUnknownAddressOnADelegatedDomainIsRouted() {
-            // Le provisionnement à la première connexion en dépend : le compte n'existe pas encore.
+            // Just-in-time provisioning depends on it: the account does not exist yet.
             final List<HrdEntryDto> entries = casService.resolveHrdEntries("inconnu@keycloak-oidc.fr");
 
             assertThat(entries)
@@ -209,7 +209,7 @@ class CasServiceHrdIntegrationTest extends AbstractMongoTests {
         }
 
         @Test
-        @DisplayName("une adresse qu'aucun pattern ne couvre ne résout rien")
+        @DisplayName("an address no pattern covers resolves to nothing")
         void anAddressMatchedByNoPatternResolvesNothing() {
             assertThat(casService.resolveHrdEntries("inconnu@nowhere.xyz")).isEmpty();
         }

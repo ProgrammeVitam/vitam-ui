@@ -25,22 +25,22 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 /**
- * Table de vérité du Home Realm Discovery.
+ * Truth table of Home Realm Discovery.
  *
- * Ces cas décrivent le comportement que le serveur d'authentification produit aujourd'hui dans son
- * webflow, réparti entre {@code ListCustomersAction} (combien d'organisations proposer) et
- * {@code DispatcherAction} (mot de passe, délégation, ou refus). Les porter ici fige ce comportement
- * avant que la décision ne se déplace, et permet de démontrer qu'elle n'a pas changé.
+ * These cases describe the behaviour the authentication server produces today in its webflow, split
+ * between {@code ListCustomersAction} (how many customers to offer) and {@code DispatcherAction}
+ * (password, delegation, or refusal). Bringing them here pins that behaviour down before the decision
+ * moves, and makes it possible to show it has not changed.
  *
- * Correspondance avec les tests d'origine :
+ * Mapping to the original tests:
  * <ul>
- *   <li>{@code testLoginWithEmailMatchingASingleUser} → une entrée, l'organisation est déjà choisie</li>
- *   <li>{@code testLoginWithEmailMatchingMultipleUsers} → plusieurs entrées, il faut faire choisir</li>
- *   <li>{@code testLoginWithUnknownUserMatchingASingleCustomerMailDomain} → une entrée sans compte</li>
- *   <li>{@code testLoginWithUnknownUserMatchingMultipleCustomerMailDomain} → plusieurs entrées sans compte</li>
- *   <li>{@code testLoginWithUnknownUserMatchingNoValidCustomerMailDomain} → aucune entrée</li>
- *   <li>{@code testInternalAuthnOK} / {@code testExternal} → {@code internal} tranche le parcours</li>
- *   <li>{@code testInternalAuthnDisabled} / {@code testExternalDisabled} → {@code userStatus} refuse</li>
+ *   <li>{@code testLoginWithEmailMatchingASingleUser} -> one entry, the customer is already settled</li>
+ *   <li>{@code testLoginWithEmailMatchingMultipleUsers} -> several entries, a choice is needed</li>
+ *   <li>{@code testLoginWithUnknownUserMatchingASingleCustomerMailDomain} -> one entry, no account</li>
+ *   <li>{@code testLoginWithUnknownUserMatchingMultipleCustomerMailDomain} -> several entries, no account</li>
+ *   <li>{@code testLoginWithUnknownUserMatchingNoValidCustomerMailDomain} -> no entry at all</li>
+ *   <li>{@code testInternalAuthnOK} / {@code testExternal} -> {@code internal} settles the journey</li>
+ *   <li>{@code testInternalAuthnDisabled} / {@code testExternalDisabled} -> {@code userStatus} refuses</li>
  * </ul>
  */
 @ExtendWith(MockitoExtension.class)
@@ -69,11 +69,11 @@ class CasServiceHrdTest {
     }
 
     @Nested
-    @DisplayName("Cardinalité : combien d'organisations proposer")
+    @DisplayName("Cardinality: how many customers to offer")
     class Cardinality {
 
         @Test
-        @DisplayName("un compte unique donne une entrée, l'organisation est déjà déterminée")
+        @DisplayName("a single account gives one entry, the customer is already settled")
         void singleUser() {
             givenProviders(internalProvider("idpA", CUSTOMER_A));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED));
@@ -87,7 +87,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("des comptes dans plusieurs organisations imposent un choix")
+        @DisplayName("accounts in several customers force a choice")
         void multipleUsers() {
             givenProviders(internalProvider("idpA", CUSTOMER_A), internalProvider("idpB", CUSTOMER_B));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED), user(CUSTOMER_B, UserStatusEnum.ENABLED));
@@ -103,7 +103,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("aucun fournisseur correspondant ne donne aucune entrée")
+        @DisplayName("no matching provider gives no entry")
         void noMatch() {
             givenProviders(externalProvider("idpC", "customerC", ".*@autre-domaine\\.fr"));
             givenUsers();
@@ -112,7 +112,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("les entrées sont triées par code d'organisation")
+        @DisplayName("entries are sorted by customer code")
         void sortedByCustomerCode() {
             givenProviders(internalProvider("idpA", CUSTOMER_A), internalProvider("idpB", CUSTOMER_B));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED), user(CUSTOMER_B, UserStatusEnum.ENABLED));
@@ -128,11 +128,11 @@ class CasServiceHrdTest {
     }
 
     @Nested
-    @DisplayName("Non-divulgation : un compte inconnu ne se distingue pas d'un compte connu")
+    @DisplayName("Non-disclosure: an unknown account is not told apart from a known one")
     class AccountExistenceDisclosure {
 
         @Test
-        @DisplayName("un email sans compte reste résolu lorsqu'un fournisseur externe le couvre")
+        @DisplayName("an email with no account is still resolved when an external provider covers it")
         void unknownUserOnExternalProvider() {
             givenProviders(externalProvider("idpA", CUSTOMER_A, ".*@organisation-a\\.fr"));
             givenUsers();
@@ -146,7 +146,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("plusieurs fournisseurs externes couvrant l'email imposent un choix, sans compte")
+        @DisplayName("several external providers covering the email force a choice, with no account")
         void unknownUserOnSeveralExternalProviders() {
             givenProviders(
                 externalProvider("idpA", CUSTOMER_A, ".*@organisation-a\\.fr"),
@@ -163,11 +163,11 @@ class CasServiceHrdTest {
     }
 
     @Nested
-    @DisplayName("Nature du parcours et statut du compte")
+    @DisplayName("Nature of the journey and status of the account")
     class JourneyAndStatus {
 
         @Test
-        @DisplayName("un fournisseur interne mène au mot de passe")
+        @DisplayName("an internal provider leads to the password")
         void internalProviderLeadsToPassword() {
             givenProviders(internalProvider("idpA", CUSTOMER_A));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED));
@@ -176,7 +176,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("un fournisseur externe mène à la délégation")
+        @DisplayName("an external provider leads to the delegation")
         void externalProviderLeadsToDelegation() {
             givenProviders(externalProvider("idpA", CUSTOMER_A, ".*@organisation-a\\.fr"));
             givenUsers();
@@ -187,7 +187,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("un compte actif est signalé comme tel")
+        @DisplayName("an active account is reported as such")
         void enabledUser() {
             givenProviders(internalProvider("idpA", CUSTOMER_A));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED));
@@ -196,7 +196,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("un compte désactivé est signalé, et c'est ce qui fera refuser la connexion")
+        @DisplayName("a disabled account is reported, and that is what will have the login refused")
         void disabledUser() {
             givenProviders(internalProvider("idpA", CUSTOMER_A));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.DISABLED));
@@ -206,15 +206,15 @@ class CasServiceHrdTest {
     }
 
     @Nested
-    @DisplayName("Filtrage des fournisseurs")
+    @DisplayName("Provider filtering")
     class ProviderFiltering {
 
         @Test
-        @DisplayName("un fournisseur interne sans compte dans son organisation reste proposé")
+        @DisplayName("an internal provider with no account in its customer is still offered")
         void internalProviderWithoutUserIsStillOffered() {
-            // Répondre « rien » distinguerait une adresse inconnue d'une adresse connue avant toute saisie
-            // de mot de passe. Le webflow route les deux pareillement et laisse l'échec survenir à
-            // l'authentification, sous une forme générique.
+            // Answering "nothing" would tell an unknown address apart from a known one before any
+            // password is entered. The webflow routes both alike and lets the failure happen at
+            // authentication, in a generic form.
             givenProviders(internalProviderWithPattern("idpA", CUSTOMER_A, ".*@organisation-a\\.fr"));
             givenUsers();
 
@@ -227,11 +227,11 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("un fournisseur interne désactivé reste proposé, comme dans le webflow")
+        @DisplayName("a disabled internal provider is still offered, just as in the webflow")
         void disabledInternalProviderIsStillOffered() {
-            // Anomalie reprise à l'identique : ni ProvidersService ni IdentityProviderHelper ne consultent
-            // « enabled », si bien qu'un fournisseur désactivé continue d'être proposé. La corriger ici
-            // seulement écarterait IAM du comportement qu'il doit reproduire.
+            // An anomaly reproduced as-is: neither ProvidersService nor IdentityProviderHelper looks at
+            // "enabled", so a disabled provider keeps being offered. Fixing it here alone would move IAM
+            // away from the behaviour it has to reproduce.
             final IdentityProvider disabled = internalProvider("idpA", CUSTOMER_A);
             disabled.setEnabled(false);
             givenProviders(disabled);
@@ -244,9 +244,9 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("un fournisseur retenu deux fois n'apparaît qu'une fois")
+        @DisplayName("a provider matched twice appears only once")
         void deduplicatesProviderMatchedTwice() {
-            // Retenu par son pattern et par le compte existant de son organisation.
+            // Matched both by its pattern and by the existing account of its customer.
             givenProviders(internalProviderWithPattern("idpA", CUSTOMER_A, ".*@organisation-a\\.fr"));
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED));
 
@@ -254,7 +254,7 @@ class CasServiceHrdTest {
         }
 
         @Test
-        @DisplayName("la correspondance de pattern ignore la casse")
+        @DisplayName("pattern matching ignores case")
         void patternMatchingIsCaseInsensitive() {
             givenProviders(externalProvider("idpA", CUSTOMER_A, ".*@ORGANISATION-A\\.FR"));
             givenUsers();
@@ -276,8 +276,8 @@ class CasServiceHrdTest {
     }
 
     private static IdentityProvider internalProvider(final String id, final String customerId) {
-        // Un fournisseur sans pattern n'est retenu par aucun des deux chemins du webflow : le construire
-        // ainsi décrirait une organisation inatteignable plutôt qu'un cas nominal.
+        // A provider with no pattern is kept by neither of the webflow's two paths: building one this
+        // way would describe an unreachable customer rather than a nominal case.
         return internalProviderWithPattern(id, customerId, ".*@organisation-a\\.fr");
     }
 

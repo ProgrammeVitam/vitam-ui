@@ -44,11 +44,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Les deux identités résolues d'une subrogation validée.
+ * The two resolved identities of a validated subrogation.
  *
- * Recevoir cette réponse vaut autorisation : IAM ne la produit que si la subrogation existe, qu'elle est
- * acceptée et qu'elle n'a pas expiré. Un refus prend la forme d'une erreur, jamais d'une réponse vide,
- * pour qu'un appelant ne puisse pas confondre « pas autorisé » avec « rien à signaler ».
+ * Receiving this response amounts to authorisation: IAM only produces it when the subrogation exists, is
+ * accepted and has not expired. A refusal takes the form of an error, never of an empty response, so
+ * that a caller cannot mistake "not allowed" for "nothing to report".
  */
 @Getter
 @Setter

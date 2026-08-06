@@ -25,14 +25,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
 
 /**
- * La forme des attributs d'authentification.
+ * The shape of the authentication attributes.
  *
- * Ces cas ne décrivent pas seulement ce que porte la table, mais sous quelle forme. C'est ce qui compte
- * pour l'iso-fonctionnel : les applications relisent ces attributs avec
- * {@code Boolean.parseBoolean((String) value)}, {@code OffsetDateTime.parse((String) value)} ou un
- * {@code parseJson} qui ne fait rien si la valeur n'est pas une chaîne. Une valeur laissée sous forme de
- * booléen ou d'objet ne provoquerait pas une erreur visible ici, mais un échec de lecture chez le
- * consommateur.
+ * These cases describe not only what the map carries, but in which form. That is what keeps the
+ * behaviour identical: applications read these attributes back with
+ * {@code Boolean.parseBoolean((String) value)}, {@code OffsetDateTime.parse((String) value)} or a
+ * {@code parseJson} that does nothing unless the value is a string. A value left as a boolean or as an
+ * object would raise no visible error here, but would fail to be read by the consumer.
  */
 @ExtendWith(MockitoExtension.class)
 class CasServicePrincipalAttributesTest {
@@ -47,11 +46,11 @@ class CasServicePrincipalAttributesTest {
     private IdentityProviderRepository identityProviderRepository;
 
     @Nested
-    @DisplayName("Toute valeur est transmise comme une chaîne")
+    @DisplayName("Every value is carried as a string")
     class EverythingIsAString {
 
         @Test
-        @DisplayName("un booléen devient sa représentation textuelle, pas un booléen")
+        @DisplayName("a boolean becomes its textual representation, not a boolean")
         void booleansBecomeText() {
             final UserDto user = user();
             user.setOtp(true);
@@ -64,7 +63,7 @@ class CasServicePrincipalAttributesTest {
         }
 
         @Test
-        @DisplayName("un entier et une date deviennent du texte relisible par le consommateur")
+        @DisplayName("an integer and a date become text the consumer can read back")
         void numbersAndDatesBecomeText() {
             final OffsetDateTime lastConnection = OffsetDateTime.parse("2026-01-15T10:30:00Z");
             final UserDto user = user();
@@ -77,14 +76,14 @@ class CasServicePrincipalAttributesTest {
             assertThat(attributes.get(CommonConstants.LAST_CONNECTION_ATTRIBUTE)).containsExactly(
                 lastConnection.toString()
             );
-            // La forme doit survivre à la relecture que fait AuthUserDto.
+            // The shape must survive the round trip AuthUserDto performs.
             assertThat(
                 OffsetDateTime.parse(attributes.get(CommonConstants.LAST_CONNECTION_ATTRIBUTE).getFirst())
             ).isEqualTo(lastConnection);
         }
 
         @Test
-        @DisplayName("une énumération devient son nom")
+        @DisplayName("an enum becomes its name")
         void enumsBecomeTheirName() {
             final UserDto user = user();
             user.setStatus(UserStatusEnum.ENABLED);
@@ -97,7 +96,7 @@ class CasServicePrincipalAttributesTest {
         }
 
         @Test
-        @DisplayName("un objet devient du JSON, que le consommateur sait reparser")
+        @DisplayName("an object becomes JSON, which the consumer knows how to parse back")
         void compositesBecomeJson() {
             final AddressDto address = new AddressDto();
             address.setStreet("1 rue de la Paix");
@@ -114,11 +113,11 @@ class CasServicePrincipalAttributesTest {
     }
 
     @Nested
-    @DisplayName("Attributs absents")
+    @DisplayName("Missing attributes")
     class MissingValues {
 
         @Test
-        @DisplayName("une valeur nulle est omise plutôt que portée à la chaîne \"null\"")
+        @DisplayName("a null value is omitted rather than carried as the string \"null\"")
         void nullValuesAreOmitted() {
             final UserDto user = user();
             user.setPhone(null);
@@ -132,11 +131,11 @@ class CasServicePrincipalAttributesTest {
     }
 
     @Nested
-    @DisplayName("Authentification renforcée")
+    @DisplayName("Strong authentication")
     class ComputedOtp {
 
         @Test
-        @DisplayName("elle s'applique quand l'utilisateur l'a activée et se connecte par mot de passe")
+        @DisplayName("it applies when the user enabled it and signs in with a password")
         void appliesOnInternalProvider() {
             final UserDto user = user();
             user.setOtp(true);
@@ -148,7 +147,7 @@ class CasServicePrincipalAttributesTest {
         }
 
         @Test
-        @DisplayName("elle ne s'applique pas en authentification déléguée, où l'IdP décide")
+        @DisplayName("it does not apply on a delegated authentication, where the IdP decides")
         void doesNotApplyOnExternalProvider() {
             final UserDto user = user();
             user.setOtp(true);
@@ -160,7 +159,7 @@ class CasServicePrincipalAttributesTest {
         }
 
         @Test
-        @DisplayName("elle ne s'applique pas si l'utilisateur ne l'a pas activée")
+        @DisplayName("it does not apply when the user did not enable it")
         void doesNotApplyWhenDisabledOnTheUser() {
             final UserDto user = user();
             user.setOtp(false);
