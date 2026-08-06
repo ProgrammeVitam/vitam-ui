@@ -210,24 +210,37 @@ class CasServiceHrdTest {
     class ProviderFiltering {
 
         @Test
-        @DisplayName("un fournisseur interne sans compte dans son organisation est écarté")
-        void internalProviderWithoutUserIsDropped() {
-            // Le pattern attrape-tout rattacherait l'adresse à une organisation où elle n'a pas de compte.
+        @DisplayName("un fournisseur interne sans compte dans son organisation reste proposé")
+        void internalProviderWithoutUserIsStillOffered() {
+            // Répondre « rien » distinguerait une adresse inconnue d'une adresse connue avant toute saisie
+            // de mot de passe. Le webflow route les deux pareillement et laisse l'échec survenir à
+            // l'authentification, sous une forme générique.
             givenProviders(internalProviderWithPattern("idpA", CUSTOMER_A, ".*@organisation-a\\.fr"));
             givenUsers();
 
-            assertThat(casService.resolveHrdEntries(EMAIL)).isEmpty();
+            assertThat(casService.resolveHrdEntries(EMAIL))
+                .singleElement()
+                .satisfies(entry -> {
+                    assertThat(entry.getIdentityProviderId()).isEqualTo("idpA");
+                    assertThat(entry.getUserStatus()).isNull();
+                });
         }
 
         @Test
-        @DisplayName("un fournisseur interne désactivé ne résout pas un compte existant")
-        void disabledInternalProviderIsIgnored() {
+        @DisplayName("un fournisseur interne désactivé reste proposé, comme dans le webflow")
+        void disabledInternalProviderIsStillOffered() {
+            // Anomalie reprise à l'identique : ni ProvidersService ni IdentityProviderHelper ne consultent
+            // « enabled », si bien qu'un fournisseur désactivé continue d'être proposé. La corriger ici
+            // seulement écarterait IAM du comportement qu'il doit reproduire.
             final IdentityProvider disabled = internalProvider("idpA", CUSTOMER_A);
             disabled.setEnabled(false);
             givenProviders(disabled);
             givenUsers(user(CUSTOMER_A, UserStatusEnum.ENABLED));
 
-            assertThat(casService.resolveHrdEntries(EMAIL)).isEmpty();
+            assertThat(casService.resolveHrdEntries(EMAIL))
+                .singleElement()
+                .extracting(HrdEntryDto::getIdentityProviderId)
+                .isEqualTo("idpA");
         }
 
         @Test
@@ -263,6 +276,12 @@ class CasServiceHrdTest {
     }
 
     private static IdentityProvider internalProvider(final String id, final String customerId) {
+        // Un fournisseur sans pattern n'est retenu par aucun des deux chemins du webflow : le construire
+        // ainsi décrirait une organisation inatteignable plutôt qu'un cas nominal.
+        return internalProviderWithPattern(id, customerId, ".*@organisation-a\\.fr");
+    }
+
+    private static IdentityProvider bareInternalProvider(final String id, final String customerId) {
         final IdentityProvider provider = new IdentityProvider();
         provider.setId(id);
         provider.setName("Fournisseur " + id);
@@ -277,7 +296,7 @@ class CasServiceHrdTest {
         final String customerId,
         final String pattern
     ) {
-        final IdentityProvider provider = internalProvider(id, customerId);
+        final IdentityProvider provider = bareInternalProvider(id, customerId);
         provider.setPatterns(List.of(pattern));
         return provider;
     }
