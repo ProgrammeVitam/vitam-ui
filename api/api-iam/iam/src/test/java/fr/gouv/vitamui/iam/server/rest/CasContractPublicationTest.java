@@ -16,16 +16,15 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Le contrat publié doit décrire tout ce que le serveur expose.
+ * The published contract must describe everything the server exposes.
  *
- * La spécification que consomme {@code iam-client} est tenue à la main — son pom porte d'ailleurs
- * toujours le {@code TODO: Swagger file should be generated during build}. Rien ne relie donc un
- * endpoint ajouté dans {@link CasController} à sa déclaration dans le fichier : l'endpoint existe côté
- * serveur, le client généré l'ignore, et le serveur d'authentification ne peut pas l'appeler sans que
- * quoi que ce soit échoue.
+ * The specification {@code iam-client} consumes is maintained by hand — its pom still carries the
+ * {@code TODO: Swagger file should be generated during build}. Nothing therefore ties an endpoint added
+ * to {@link CasController} to its declaration in the file: the endpoint exists on the server, the
+ * generated client ignores it, and the authentication server cannot call it, without anything failing.
  *
- * Ce test est ce lien. Il ne vérifie pas la forme des schémas, seulement qu'aucune opération ne
- * manque — c'est la dérive qui coûte, et la seule qui passe aujourd'hui inaperçue.
+ * This test is that link. It does not check the shape of the schemas, only that no operation is
+ * missing — that is the drift that costs, and the only one that currently goes unnoticed.
  */
 class CasContractPublicationTest {
 
@@ -34,7 +33,7 @@ class CasContractPublicationTest {
     private static final Path SPECIFICATION = Path.of("..", "iam-client", "src", "main", "resources", "swagger.yaml");
 
     @Test
-    @DisplayName("chaque opération du contrôleur d'authentification figure dans la spécification publiée")
+    @DisplayName("every operation of the authentication controller appears in the published specification")
     void everyOperationIsPublished() throws IOException {
         final List<String> declaredOperations = Arrays.stream(CasController.class.getDeclaredMethods())
             .map(method -> method.getAnnotation(Operation.class))
@@ -47,15 +46,15 @@ class CasContractPublicationTest {
         assertThat(declaredOperations).isNotEmpty();
         assertThat(publishedOperations())
             .as(
-                "une opération exposée par CasController mais absente de swagger.yaml reste invisible du " +
-                "client généré : le serveur d'authentification ne peut pas l'appeler"
+                "an operation exposed by CasController but missing from swagger.yaml stays invisible to the " +
+                "generated client: the authentication server cannot call it"
             )
             .containsAll(declaredOperations);
     }
 
     /**
-     * Les identifiants d'opération déclarés dans la spécification, comparés en entier — un identifiant
-     * dont un autre est le préfixe ne doit pas passer pour lui.
+     * The operation identifiers declared in the specification, compared whole — an identifier that is a
+     * prefix of another must not pass for it.
      */
     private Set<String> publishedOperations() throws IOException {
         try (var lines = Files.lines(SPECIFICATION)) {

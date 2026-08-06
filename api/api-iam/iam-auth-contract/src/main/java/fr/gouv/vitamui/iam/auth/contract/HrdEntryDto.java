@@ -44,15 +44,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Une organisation candidate pour un email, et le fournisseur d'identité par lequel s'y authentifier.
+ * A candidate customer for an email address, along with the identity provider to authenticate against
+ * there.
  *
- * Le Home Realm Discovery renvoie zéro, une ou plusieurs entrées, et cette cardinalité porte à elle
- * seule la décision du serveur d'authentification : aucune entrée signale une configuration inexploitable,
- * une entrée permet d'enchaîner directement, plusieurs imposent de faire choisir l'organisation.
+ * Home Realm Discovery returns zero, one or several entries, and that cardinality alone carries the
+ * authentication server's decision: no entry signals an unusable configuration, one entry lets the flow
+ * carry on directly, several require the customer to be chosen first.
  *
- * {@code userStatus} est nul lorsqu'aucun compte ne porte cet email dans l'organisation. C'est un cas
- * normal et non une erreur : un fournisseur externe provisionne à la première connexion, et surtout la
- * réponse doit avoir la même forme selon que le compte existe ou non, pour ne pas révéler son existence.
+ * {@code userStatus} is null when no account in the customer carries this email. That is a normal case
+ * rather than an error: an external provider provisions on first login, and an unknown address must be
+ * routed exactly like a known one so that the flow never reveals whether an account exists.
  */
 @Getter
 @Setter
@@ -73,15 +74,17 @@ public class HrdEntryDto {
     private String identityProviderName;
 
     /**
-     * Vrai pour une authentification par mot de passe portée par VITAMUI, faux pour une délégation à un
-     * fournisseur externe.
+     * True for a password authentication carried by VITAMUI itself, false for a delegation to an
+     * external provider.
      */
     private boolean internal;
 
     private String protocoleType;
 
     /**
-     * Statut du compte dans cette organisation, ou nul si aucun compte n'y porte cet email.
+     * Status of the account in this customer, or null when no account there carries this email. It is
+     * meant for the authentication server, which has to decide the fate of a disabled account; it must
+     * not surface in what the end user observes.
      */
     private String userStatus;
 }

@@ -6,23 +6,23 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 /**
- * Garde-fous du contrat d'authentification.
+ * Guardrails of the authentication contract.
  *
- * Le contrat que le module IAM expose à un serveur d'authentification vit dans son propre module,
- * {@code iam-auth-contract}. Son intérêt tient entièrement à ce qu'il ne contient rien d'autre : dès
- * qu'un DTO d'administration ou un helper de protocole s'y invite, consommer le contrat redevient
- * consommer IAM en entier, et le découplage est perdu sans que rien ne le signale.
+ * The contract IAM exposes to an authentication server lives in its own module,
+ * {@code iam-auth-contract}. Its whole value lies in holding nothing else: the moment an administration
+ * DTO or a protocol helper slips in, consuming the contract becomes consuming the whole of IAM again,
+ * and the decoupling is lost without anything saying so.
  *
- * Le garde-fou qui mord aujourd'hui est ailleurs : le pom du module bannit ces dépendances, et le build
- * échoue avant la compilation. Les règles qui suivent en sont le doublon lisible — elles nomment
- * l'intention là où le pom ne dit qu'une liste d'artefacts, et elles couvrent le jour où le module
- * gagnerait une dépendance transitive que la liste n'anticipait pas.
+ * The guardrail that actually bites today is elsewhere: the module's pom bans these dependencies and the
+ * build fails before compilation. The rules below are its readable counterpart — they name the intent
+ * where the pom only lists artifacts, and they cover the day the module gains a transitive dependency
+ * the list did not anticipate.
  *
- * Deux règles manquent encore, et ce sont les plus utiles. Un serveur d'authentification ne devrait
- * dépendre d'IAM que par ce contrat, et le contrat REST d'authentification ne devrait exposer que des
- * types de ce module — {@code CasController} renvoie aujourd'hui des DTO d'administration. Ni l'une ni
- * l'autre ne passe en l'état ; elles s'activeront au raccordement de cas-server et d'auth-server, et
- * leur place sera ici.
+ * Two rules are still missing, and they are the most useful ones. An authentication server should only
+ * depend on IAM through this contract, and the authentication REST contract should only expose types
+ * from this module — {@code CasController} still returns administration DTOs. Neither passes as things
+ * stand; they will be switched on when cas-server and auth-server are wired to the contract, and this is
+ * where they belong.
  */
 public class AuthenticationContractRules {
 
@@ -35,9 +35,7 @@ public class AuthenticationContractRules {
         .should()
         .dependOnClassesThat()
         .resideInAPackage("fr.gouv.vitamui.iam.common..")
-        .because(
-            "le contrat d'authentification doit rester consommable sans embarquer le modèle d'administration d'IAM"
-        );
+        .because("the authentication contract must stay consumable without dragging in IAM's administration model");
 
     @ArchTest
     public static final ArchRule contract_does_not_depend_on_the_server_layer = noClasses()
@@ -46,7 +44,7 @@ public class AuthenticationContractRules {
         .should()
         .dependOnClassesThat()
         .resideInAPackage("fr.gouv.vitamui.iam.server..")
-        .because("le contrat est publié vers l'extérieur : il ne peut pas dépendre de l'implémentation du serveur");
+        .because("the contract is published outwards: it cannot depend on the server implementation");
 
     @ArchTest
     public static final ArchRule contract_does_not_depend_on_an_authentication_protocol = noClasses()
@@ -56,7 +54,7 @@ public class AuthenticationContractRules {
         .dependOnClassesThat()
         .resideInAnyPackage("org.pac4j..", "org.apereo..")
         .because(
-            "la logique de protocole appartient au serveur d'authentification ; l'y laisser entrer recrée le cycle " +
-            "qui a imposé de figer la version de pac4j lors de la montée en CAS 7.3.8"
+            "protocol logic belongs to the authentication server; letting it in recreates the cycle that forced " +
+            "the pac4j version to be pinned during the upgrade to CAS 7.3.8"
         );
 }

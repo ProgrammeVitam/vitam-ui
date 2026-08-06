@@ -11,17 +11,17 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * La politique publiée doit être exactement celle qu'IAM applique.
+ * The published policy must be exactly the one IAM enforces.
  *
- * Le serveur d'authentification affiche les contraintes, IAM les vérifie ; tant que chacun lit sa propre
- * configuration, un écart entre les deux fichiers produit un formulaire qui accepte ce qu'IAM refusera.
+ * The authentication server displays the constraints and IAM checks them; as long as each reads its own
+ * configuration, any drift between the two files yields a form that accepts what IAM will reject.
  */
 class CasServicePasswordPolicyTest {
 
     private final CasService casService = new CasService();
 
     @Test
-    @DisplayName("les valeurs publiées sont celles de la configuration d'IAM")
+    @DisplayName("the published values are the ones from IAM's configuration")
     void publishesConfiguredValues() {
         final PasswordConfiguration configuration = new PasswordConfiguration();
         configuration.setLength(14);
@@ -37,17 +37,17 @@ class CasServicePasswordPolicyTest {
     }
 
     @Test
-    @DisplayName("les libellés suivent l'ordre de la configuration, caractères spéciaux intercalés")
+    @DisplayName("labels follow configuration order, with special characters interleaved")
     void flattensMessagesInConfigurationOrder() {
         final var specialChars = new PasswordConfiguration.SpecialChars();
-        specialChars.setMessages(List.of("au moins un caractère spécial"));
+        specialChars.setMessages(List.of("at least one special character"));
 
         final var defaultConstraint = new PasswordConfiguration.PasswordDefaultConstraints();
-        defaultConstraint.setMessages(List.of("au moins 12 caractères"));
+        defaultConstraint.setMessages(List.of("at least 12 characters"));
         defaultConstraint.setSpecialChars(specialChars);
 
         final var customConstraint = new PasswordConfiguration.PasswordCustomConstraints();
-        customConstraint.setMessages(List.of("pas de mot du dictionnaire"));
+        customConstraint.setMessages(List.of("no dictionary word"));
 
         final var defaults = new LinkedHashMap<String, PasswordConfiguration.PasswordDefaultConstraints>();
         defaults.put("length", defaultConstraint);
@@ -63,14 +63,14 @@ class CasServicePasswordPolicyTest {
         casService.setPasswordConfiguration(configuration);
 
         assertThat(casService.getPasswordPolicy().getMessages()).containsExactly(
-            "au moins 12 caractères",
-            "au moins un caractère spécial",
-            "pas de mot du dictionnaire"
+            "at least 12 characters",
+            "at least one special character",
+            "no dictionary word"
         );
     }
 
     @Test
-    @DisplayName("une configuration absente donne une politique vide plutôt qu'une erreur")
+    @DisplayName("a missing configuration yields an empty policy rather than an error")
     void toleratesMissingConfiguration() {
         casService.setPasswordConfiguration(null);
 

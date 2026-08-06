@@ -37,28 +37,27 @@
 package fr.gouv.vitamui.iam.auth.contract;
 
 /**
- * Les attributs d'authentification qui n'existent que dans le jeton, sans équivalent dans le modèle
- * utilisateur.
+ * The authentication attributes that exist only in the token, with no counterpart in the user model.
  *
- * Les autres noms d'attributs viennent de {@code CommonConstants}, qui les partage avec les applications
- * chargées de les relire. Ces deux-là étaient déclarés dans le serveur d'authentification, seul endroit
- * qui les produisait ; ils appartiennent au contrat dès lors que c'est IAM qui les calcule.
+ * The other attribute names come from {@code CommonConstants}, which shares them with the applications
+ * that read them back. These two were declared in the authentication server, the only place that
+ * produced them; they belong to the contract now that IAM is the one computing them.
  */
 public final class UserPrincipalAttributes {
 
     /**
-     * Vrai lorsque l'utilisateur a l'authentification renforcée activée <em>et</em> qu'il se connecte par
-     * mot de passe. Une authentification déléguée relève de son fournisseur d'identité, à qui il revient
-     * d'exiger un second facteur s'il le souhaite.
+     * True when the user has strong authentication enabled <em>and</em> signs in with a password. A
+     * delegated authentication is the business of its identity provider, which is free to require a
+     * second factor of its own.
      */
     public static final String COMPUTED_OTP = "computedOtp";
 
     /**
-     * L'identifiant technique du super-utilisateur, en subrogation seulement.
+     * The technical identifier of the super user, in subrogation only.
      */
     public static final String SUPER_USER_ID = "superUserId";
 
     private UserPrincipalAttributes() {
-        // constantes uniquement
+        // constants only
     }
 }

@@ -37,11 +37,11 @@
 package fr.gouv.vitamui.iam.auth.contract;
 
 /**
- * Chemins du contrat d'authentification exposé par IAM.
+ * Chemins du contrat d'authentification exposé par l'IAM.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les changer romprait le contrat
- * REST avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de
- * nommer un produit, puisque le contrat n'est plus propre à Apereo CAS.
+ * Les valeurs d'URL conservent le segment historique {@code /cas} : les modifier casserait le contrat REST
+ * avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de nommer un produit,
+ * puisque le contrat n'est plus spécifique à Apereo CAS.
  */
 public final class AuthContractApi {
 

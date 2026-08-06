@@ -46,14 +46,13 @@ import lombok.ToString;
 import java.util.List;
 
 /**
- * La politique de mot de passe en vigueur, telle qu'IAM l'applique.
+ * The password policy in force, as IAM actually enforces it.
  *
- * Le serveur d'authentification affiche les contraintes à l'utilisateur et IAM les vérifie. Les deux
- * lisent aujourd'hui leur propre configuration, si bien qu'un écart entre les deux fichiers se traduit
- * par un formulaire qui accepte un mot de passe qu'IAM refusera. Publier la politique fait de la
- * configuration d'IAM la seule qui compte.
+ * The authentication server displays the constraints to the user and IAM checks them. Today both read
+ * their own configuration, so any drift between the two files shows up as a form that accepts a password
+ * IAM will reject. Publishing the policy makes IAM's configuration the only one that counts.
  *
- * {@code messages} porte les libellés de contraintes déjà résolus, dans l'ordre où les afficher.
+ * {@code messages} carries the constraint labels already resolved, in the order they should be shown.
  */
 @Getter
 @Setter
