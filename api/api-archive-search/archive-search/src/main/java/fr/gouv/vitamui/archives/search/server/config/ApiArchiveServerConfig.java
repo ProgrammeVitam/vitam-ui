@@ -26,9 +26,7 @@
 
 package fr.gouv.vitamui.archives.search.server.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
@@ -48,6 +46,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
+import fr.gouv.vitamui.commons.rest.config.Jackson2ObjectMapperFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
@@ -93,10 +92,7 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
+        return Jackson2ObjectMapperFactory.create();
     }
 
     @Bean
