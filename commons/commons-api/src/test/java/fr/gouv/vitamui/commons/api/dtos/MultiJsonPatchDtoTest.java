@@ -25,40 +25,34 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.commons.api.dtos;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import fr.gouv.vitamui.commons.api.dtos.JsonPatch;
-import fr.gouv.vitamui.commons.api.dtos.JsonPatchDto;
-import fr.gouv.vitamui.commons.api.dtos.MultiJsonPatchDto;
-import fr.gouv.vitamui.commons.api.dtos.PatchCommand;
-import fr.gouv.vitamui.commons.api.dtos.PatchOperation;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.JsonNodeFactory;
+import tools.jackson.databind.node.ObjectNode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MultiJsonPatchDtoTest {
 
     @Test
-    void testJsonPatchSerializationDeserialization() throws JsonProcessingException {
+    void testJsonPatchSerializationDeserialization() {
         // Création d'un exemple de MultiJsonPatchDto
-        ObjectMapper objectMapper = new ObjectMapper();
+        JsonMapper jsonMapper = new JsonMapper();
         JsonPatch jsonPatch = new JsonPatch();
         jsonPatch.add(
             new PatchCommand()
                 .setOp(PatchOperation.ADD)
                 .setPath("/name")
-                .setValue(objectMapper.readValue("{\"field\":\"John\"}", ObjectNode.class))
+                .setValue(jsonMapper.readValue("{\"field\":\"John\"}", ObjectNode.class))
         );
         MultiJsonPatchDto multiJsonPatchDto = new MultiJsonPatchDto();
         multiJsonPatchDto.add(new JsonPatchDto().setId("1").setJsonPatch(new JsonPatch()));
         multiJsonPatchDto.add(new JsonPatchDto().setId("2").setJsonPatch(jsonPatch));
 
         // Conversion de l'objet en JSON
-        String jsonString = objectMapper.writeValueAsString(multiJsonPatchDto);
+        String jsonString = jsonMapper.writeValueAsString(multiJsonPatchDto);
 
         // Vérification de la sérialisation
         assertEquals(
@@ -67,7 +61,7 @@ class MultiJsonPatchDtoTest {
         );
 
         // Conversion du JSON en objet MultiJsonPatchDto
-        MultiJsonPatchDto deserializedDto = objectMapper.readValue(jsonString, MultiJsonPatchDto.class);
+        MultiJsonPatchDto deserializedDto = jsonMapper.readValue(jsonString, MultiJsonPatchDto.class);
 
         // Vérification de la désérialisation
         assertEquals(2, deserializedDto.size());
@@ -78,7 +72,7 @@ class MultiJsonPatchDtoTest {
     }
 
     @Test
-    void testMultiJsonPatchWithAddInstruction() throws JsonProcessingException {
+    void testMultiJsonPatchWithAddInstruction() {
         // Création d'un exemple de MultiJsonPatchDto avec une instruction ADD
         MultiJsonPatchDto multiJsonPatchDto = new MultiJsonPatchDto();
         JsonPatch jsonPatch = new JsonPatch();
@@ -86,13 +80,13 @@ class MultiJsonPatchDtoTest {
             new PatchCommand()
                 .setOp(PatchOperation.ADD)
                 .setPath("/name")
-                .setValue(JsonNodeFactory.instance.textNode("bonjour"))
+                .setValue(JsonNodeFactory.instance.stringNode("bonjour"))
         );
         multiJsonPatchDto.add(new JsonPatchDto().setId("1").setJsonPatch(jsonPatch));
 
         // Conversion de l'objet en JSON
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(multiJsonPatchDto);
+        JsonMapper jsonMapper = new JsonMapper();
+        String jsonString = jsonMapper.writeValueAsString(multiJsonPatchDto);
 
         // Vérification de la sérialisation
         String expectedJson =
@@ -100,15 +94,15 @@ class MultiJsonPatchDtoTest {
         assertEquals(expectedJson, jsonString);
 
         // Conversion du JSON en objet MultiJsonPatchDto
-        MultiJsonPatchDto deserializedDto = objectMapper.readValue(jsonString, MultiJsonPatchDto.class);
+        MultiJsonPatchDto deserializedDto = jsonMapper.readValue(jsonString, MultiJsonPatchDto.class);
 
         // Vérification de la désérialisation
         assertEquals(1, deserializedDto.size());
-        JsonPatch deserializedJsonPatch = deserializedDto.get(0).getJsonPatch();
+        JsonPatch deserializedJsonPatch = deserializedDto.getFirst().getJsonPatch();
         assertEquals(1, deserializedJsonPatch.size());
-        PatchCommand deserializedPatchCommand = deserializedJsonPatch.get(0);
+        PatchCommand deserializedPatchCommand = deserializedJsonPatch.getFirst();
         assertEquals(PatchOperation.ADD, deserializedPatchCommand.getOp());
         assertEquals("/name", deserializedPatchCommand.getPath());
-        assertEquals(JsonNodeFactory.instance.textNode("bonjour"), deserializedPatchCommand.getValue());
+        assertEquals(JsonNodeFactory.instance.stringNode("bonjour"), deserializedPatchCommand.getValue());
     }
 }
