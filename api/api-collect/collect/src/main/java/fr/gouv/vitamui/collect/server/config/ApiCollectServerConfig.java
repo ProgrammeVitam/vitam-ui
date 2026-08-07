@@ -27,9 +27,7 @@
 
 package fr.gouv.vitamui.collect.server.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.collect.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.collect.server.service.ExternalParametersService;
@@ -39,6 +37,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
+import fr.gouv.vitamui.commons.rest.config.Jackson2ObjectMapperFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -75,10 +74,7 @@ public class ApiCollectServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
+        return Jackson2ObjectMapperFactory.create();
     }
 
     @Bean

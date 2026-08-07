@@ -42,7 +42,7 @@ class Jackson2CompatibilityConfigRegressionTest {
 
     @BeforeEach
     void setUp() {
-        // Register only the Jackson 3 converter — no Jackson2JsonNodeHttpMessageConverter
+        // Register only the Jackson 3 converter — no Jackson2GenericHttpMessageConverter
         mockMvc = MockMvcBuilders.standaloneSetup(new JsonNodeController())
             .setMessageConverters(new JacksonJsonHttpMessageConverter())
             .build();
@@ -66,7 +66,7 @@ class Jackson2CompatibilityConfigRegressionTest {
 
     @Test
     void whenOnlyJackson3ConverterPresent_thenJsonNodeDeserializationFails() {
-        // Without Jackson2JsonNodeHttpMessageConverter, the Jackson 3 converter (JacksonJsonHttpMessageConverter)
+        // Without Jackson2GenericHttpMessageConverter, the Jackson 3 converter (JacksonJsonHttpMessageConverter)
         // raises HttpMessageConversionException because it cannot construct the abstract Jackson 2 type
         // com.fasterxml.jackson.databind.JsonNode. The exception propagates out of MockMvc since
         // DefaultHandlerExceptionResolver does not handle HttpMessageConversionException.
@@ -82,7 +82,7 @@ class Jackson2CompatibilityConfigRegressionTest {
 
     @Test
     void whenOnlyJackson3ConverterPresent_thenJsonNodeSerializationReturnsMetadataInsteadOfData() throws Exception {
-        // Sans Jackson2JsonNodeHttpMessageConverter (canWrite actif), le converter Jackson 3 par défaut
+        // Sans Jackson2GenericHttpMessageConverter (canWrite actif), le converter Jackson 3 par défaut
         // traite le JsonNode Jackson 2 (abstrait pour lui) comme un POJO classique et sérialise ses
         // getters isXxx()/nodeType au lieu du contenu JSON réel.
         final MvcResult result = mockMvc.perform(get("/test/jsonNodeReturn")).andExpect(status().isOk()).andReturn();

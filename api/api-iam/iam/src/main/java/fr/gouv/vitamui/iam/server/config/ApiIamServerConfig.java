@@ -37,9 +37,7 @@
 
 package fr.gouv.vitamui.iam.server.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
@@ -49,6 +47,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
+import fr.gouv.vitamui.commons.rest.config.Jackson2ObjectMapperFactory;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -151,10 +150,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
+        return Jackson2ObjectMapperFactory.create();
     }
 
     @Bean

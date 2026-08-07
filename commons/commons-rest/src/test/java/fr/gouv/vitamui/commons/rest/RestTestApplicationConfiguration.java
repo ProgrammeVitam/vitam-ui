@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.commons.rest;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -38,6 +39,6 @@ public class RestTestApplicationConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 }
