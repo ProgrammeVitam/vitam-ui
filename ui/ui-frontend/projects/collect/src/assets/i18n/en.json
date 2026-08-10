@@ -237,7 +237,6 @@
       "DEFAULT_ATTACHMENT_TITLE": "Default attachment",
       "DEFAULT_ATTACHMENT_TOGGLE": "Define a default fixed attachment position",
       "DEFAULT_ATTACHMENT_TOOLTIP": "Define a default attachment position for archival units that are not eligible for any of the attachment rules defined above",
-      "ARCHIVE_POSITION_MSG_FOR_SIP": "For this import, reclassification within the transfer hierarchy will have to be carried out at a later stage, directly via the “Reclassify archival units” button.",
       "AUTO_INGEST": "Automatic transaction management:",
       "AUTO_INGEST_TRUE": "Yes",
       "AUTO_INGEST_FALSE": "No",

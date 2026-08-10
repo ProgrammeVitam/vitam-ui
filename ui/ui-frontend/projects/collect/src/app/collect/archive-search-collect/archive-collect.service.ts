@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpEvent, HttpHeaders } from '@angular/common/http';
-import { Injectable, LOCALE_ID, TemplateRef, inject } from '@angular/core';
+import { inject, Injectable, LOCALE_ID, TemplateRef } from '@angular/core';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
 import {
@@ -194,8 +194,8 @@ export class ArchiveCollectService extends SearchService<any> implements SearchA
     return this.projectsApiService.uploadZip(content, transactionId, `${transactionId}.zip`, attachmentId);
   }
 
-  uploadSip(content: Blob, transactionId: string): Observable<HttpEvent<any>> {
-    return this.projectsApiService.uploadSip(content, transactionId);
+  uploadSip(content: Blob, transactionId: string, attachmentId?: string): Observable<HttpEvent<any>> {
+    return this.projectsApiService.uploadSip(content, transactionId, attachmentId);
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string) {

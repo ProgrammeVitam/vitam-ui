@@ -237,7 +237,6 @@
       "DEFAULT_ATTACHMENT_TITLE": "Rattachement par défaut",
       "DEFAULT_ATTACHMENT_TOGGLE": "Définir une position fixe de rattachement par défaut",
       "DEFAULT_ATTACHMENT_TOOLTIP": "Définir une position de rattachement par défaut pour les unités archivistiques qui ne sont éligibles à aucune règle de rattachement définie précédemment",
-      "ARCHIVE_POSITION_MSG_FOR_SIP": "Pour cet import, le reclassement au sein de l'arborescence du versement devra être réalisé dans un second temps, directement via le bouton \"Reclasser des unités archivistiques\".",
       "AUTO_INGEST": "Gestion automatique des transactions :",
       "AUTO_INGEST_TRUE": "Oui",
       "AUTO_INGEST_FALSE": "Non",
