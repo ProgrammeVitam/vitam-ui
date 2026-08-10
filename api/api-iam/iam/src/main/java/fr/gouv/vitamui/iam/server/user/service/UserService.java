@@ -283,7 +283,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         checkGroupId(dto.getGroupId(), message);
         super.checkIdentifier(dto.getIdentifier(), message);
 
-        final GroupDto groupDto = getGroupDtoById(dto.getGroupId(), message);
+        final GroupDto groupDto = getGroupDtoByIdByPassSecurity(dto.getGroupId(), message);
         checkGroup(groupDto, dto.getCustomerId(), message);
         checkLevel(groupDto.getLevel(), message);
         checkOtp(dto);

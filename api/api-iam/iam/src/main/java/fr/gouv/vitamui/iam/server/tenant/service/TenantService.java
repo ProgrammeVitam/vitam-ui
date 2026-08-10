@@ -564,11 +564,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         final String[] apps = { CommonConstants.HIERARCHY_PROFILE_APPLICATIONS_NAME };
 
         final UserDto adminUserDto = userService.getDefaultAdminUser(customerId);
-        final GroupDto adminGroupDto = groupService.getOne(
-            adminUserDto.getGroupId(),
-            Optional.empty(),
-            Optional.empty()
-        );
+        final GroupDto adminGroupDto = groupService.getOneByPassSecurity(adminUserDto.getGroupId(), Optional.empty());
 
         for (final String app : apps) {
             final Profile profile = profiles
