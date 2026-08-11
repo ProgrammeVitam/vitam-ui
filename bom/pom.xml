@@ -620,6 +620,13 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson2-annotation.version}</version>
             </dependency>
+            <!-- Constructor parameter names: built into Jackson 3, a separate module in Jackson 2.
+                 Required by Jackson2ObjectMapperFactory so that DTOs with no no-arg constructor -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-parameter-names</artifactId>
+                <version>${jackson2.version}</version>
+            </dependency>
 
             <!-- Jackson 2 dataformats — no Jackson 3 equivalent exists yet -->
             <dependency>

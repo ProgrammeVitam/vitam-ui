@@ -61,7 +61,6 @@ public class JsonUtils {
 
     static {
         // Jackson 3: findAndRegisterModules() auto-registers JavaTimeModule,
-        // Jdk8Module is merged into Jackson core — no longer needed separately
 
         mapper = new ObjectMapper();
         mapper.findAndRegisterModules();

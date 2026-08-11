@@ -3,6 +3,7 @@ package fr.gouv.vitamui.commons.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.config.Jackson2ObjectMapperFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +39,6 @@ public class RestTestApplicationConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        return Jackson2ObjectMapperFactory.create();
     }
 }

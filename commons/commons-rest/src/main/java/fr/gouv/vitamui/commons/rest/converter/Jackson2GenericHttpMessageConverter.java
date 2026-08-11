@@ -26,39 +26,37 @@
  */
 package fr.gouv.vitamui.commons.rest.converter;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.AbstractHttpMessageConverter;
+import org.springframework.http.converter.AbstractGenericHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
-/**
- * Allows Jackson 2 / Jackson 3 coexistence for {@code @RequestBody com.fasterxml.jackson.databind.JsonNode}
- * parameters and DTOs containing a Jackson 2 {@link JsonNode}. Spring Boot 4 registers a Jackson 3
- * ({@code tools.jackson}) converter by default, which cannot instantiate the abstract Jackson 2 type.
- * <p>
- * The converter deliberately declines unrelated types so that they remain handled by the default Jackson 3 converter.
- * <p>
- * To remove once the controllers, their services and the Vitam SDK are migrated to Jackson 3.
- */
-public class Jackson2JsonNodeHttpMessageConverter extends AbstractHttpMessageConverter<Object> {
+public class Jackson2GenericHttpMessageConverter extends AbstractGenericHttpMessageConverter<Object> {
 
     private final ObjectMapper jackson2Mapper;
 
-    public Jackson2JsonNodeHttpMessageConverter(final ObjectMapper jackson2Mapper) {
+    public Jackson2GenericHttpMessageConverter(final ObjectMapper jackson2Mapper) {
         super(MediaType.APPLICATION_JSON, new MediaType("application", "*+json"));
         this.jackson2Mapper = jackson2Mapper;
     }
 
     @Override
     protected boolean supports(final Class<?> clazz) {
-        return requiresJackson2(clazz);
+        return true;
+    }
+
+    @Override
+    public Object read(final Type type, final Class<?> contextClass, final HttpInputMessage inputMessage)
+        throws IOException, HttpMessageNotReadableException {
+        final JavaType javaType = jackson2Mapper.getTypeFactory().constructType(type);
+        return jackson2Mapper.readValue(inputMessage.getBody(), javaType);
     }
 
     @Override
@@ -68,31 +66,8 @@ public class Jackson2JsonNodeHttpMessageConverter extends AbstractHttpMessageCon
     }
 
     @Override
-    protected void writeInternal(final Object value, final HttpOutputMessage outputMessage)
+    protected void writeInternal(final Object value, final Type type, final HttpOutputMessage outputMessage)
         throws IOException, HttpMessageNotWritableException {
         jackson2Mapper.writeValue(outputMessage.getBody(), value);
-    }
-
-    @Override
-    public boolean canWrite(final Class<?> clazz, final MediaType mediaType) {
-        return JsonNode.class.isAssignableFrom(clazz) && super.canWrite(clazz, mediaType);
-    }
-
-    private static boolean requiresJackson2(final Class<?> clazz) {
-        if (clazz == null) {
-            return false;
-        }
-        if (JsonNode.class.isAssignableFrom(clazz)) {
-            return true;
-        }
-
-        for (Class<?> current = clazz; current != null && current != Object.class; current = current.getSuperclass()) {
-            for (Field field : current.getDeclaredFields()) {
-                if (JsonNode.class.isAssignableFrom(field.getType())) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

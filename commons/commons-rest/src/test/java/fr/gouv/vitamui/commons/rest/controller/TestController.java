@@ -1,10 +1,6 @@
 package fr.gouv.vitamui.commons.rest.controller;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ParseOperationException;
@@ -100,11 +96,7 @@ public class TestController {
 
     public static final String REQUEST_TIMEOUT_ERROR = "/test/requestTimeOutException";
 
-    public static final String JACKSON2_JSON_NODE = "/test/jackson2JsonNode";
-
-    public static final String JACKSON2_JSON_NODE_RETURN = "/test/jackson2JsonNodeReturn";
-
-    public static final String JACKSON2_JSON_NODE_PROPERTY = "/test/jackson2JsonNodeProperty";
+    public static final String JACKSON2_NESTED_JSON_NODE = "/test/jackson2NestedJsonNode";
 
     @PostMapping(value = VITAMUI_EXCEPTION, consumes = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String vitamuiException(@RequestBody final VitamUIDto name) {
@@ -264,29 +256,12 @@ public class TestController {
         throw ApiErrorGenerator.getRequestTimeOutException();
     }
 
-    @PostMapping(value = JACKSON2_JSON_NODE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String jackson2JsonNode(@RequestBody final JsonNode body) {
-        return body.path("key").asText();
+    @PostMapping(value = JACKSON2_NESTED_JSON_NODE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody String jackson2NestedJsonNode(@RequestBody final Nested body) {
+        return body.nested().nested().payload().path("key").asText();
     }
 
-    @GetMapping(value = JACKSON2_JSON_NODE_RETURN, produces = MediaType.APPLICATION_JSON_VALUE)
-    public JsonNode jackson2JsonNodeReturn() {
-        final ObjectNode node = JsonNodeFactory.instance.objectNode();
-        node.put("key", "value");
-        return node;
-    }
-
-    @PostMapping(value = JACKSON2_JSON_NODE_PROPERTY, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody String jackson2JsonNodeProperty(@RequestBody final Jackson2JsonNodeContainer body) {
-        return body.jsonNode().path("key").asText();
-    }
-
-    public record Jackson2JsonNodeContainer(JsonNode jsonNode) {
-        @JsonCreator
-        public Jackson2JsonNodeContainer(@JsonProperty("jsonNode") final JsonNode jsonNode) {
-            this.jsonNode = jsonNode;
-        }
-    }
+    public record Nested(Nested nested, JsonNode payload) {}
 
     @Override
     public String toString() {
