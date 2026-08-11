@@ -37,7 +37,7 @@
 import { Component, ElementRef, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { EditableFieldComponent } from '../editable-field/editable-field.component';
+import { EditableFieldComponent } from '../editable-field';
 
 export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -89,7 +89,6 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
     }
     this.values.push(val);
     this.onChange(this.values);
-    this.originValue = this.values;
     this.editMode = false;
     this.control.reset();
   }
@@ -110,7 +109,6 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.reset?.currentValue) {
       this.values = [];
-      this.originValue = this.values;
       this.onChange(this.values);
       this.control.reset(this.values);
     }
