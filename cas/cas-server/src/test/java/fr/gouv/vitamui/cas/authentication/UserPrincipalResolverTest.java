@@ -288,6 +288,46 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     }
 
     @Test
+    public void testResolveAuthnDelegationIsCaseInsensitiveOnTheEmailReturnedByTheIdp() throws Throwable {
+        // the user typed "user@test.com" in the login form: the webflow stored it in lower case in the session
+        givenLoginInfoInSessionForDeleguatedAuthn();
+
+        final var provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        provider.setMailAttribute(MAIL);
+        when(
+            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
+        ).thenReturn(Optional.of(provider));
+
+        //  the IdP returns "USER@test.com"
+        final var princAttributes = new HashMap<String, List<Object>>();
+        princAttributes.put(MAIL, Collections.singletonList(USERNAME_EMAIL_WITH_OTHER_CASE));
+
+        // the user must be loaded from the lower case email of the session, not from the one of the IdP:
+        // this mock only answers to that value.
+        when(
+            casApi.getUser(
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PROVIDER_ID),
+                eq("fake"),
+                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
+            )
+        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
+
+        final var principal = resolver.resolve(
+            new ClientCredential(null, PROVIDER_NAME),
+            Optional.of(principalFactory.createPrincipal("fake", princAttributes)),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        // the authentication succeeds despite the difference of case
+        assertEquals(USERNAME_ID, principal.getId());
+        assertEquals(USERNAME, principal.getAttributes().get(CommonConstants.EMAIL_ATTRIBUTE).getFirst());
+    }
+
+    @Test
     public void testResolveAuthnDelegationIdentifierAttribute() throws Throwable {
         final var provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
