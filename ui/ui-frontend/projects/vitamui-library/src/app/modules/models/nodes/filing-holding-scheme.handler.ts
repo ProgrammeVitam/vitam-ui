@@ -44,7 +44,6 @@ import { UnitType } from '../units';
 import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';
-export const KEY_VALUE_NODE_ID = 'KEY_VALUE_NODE';
 export const PATH_SEPARATOR = '/';
 
 export class FilingHoldingSchemeHandler {
@@ -175,39 +174,6 @@ export class FilingHoldingSchemeHandler {
         parentNodes[0].count = orphansNumber;
       }
     }
-  }
-
-  public static addKeyValueNodeFromTree(
-    parentNodes: FilingHoldingSchemeNode[],
-    childrenNodes: FilingHoldingSchemeNode[],
-    nodeTitle: string,
-    count: number,
-  ): void {
-    const existingNode = parentNodes.find((node) => node.vitamId === 'KEY_VALUE_NODE');
-
-    if (!existingNode) {
-      const nodeWithKeyValue: FilingHoldingSchemeNode = {
-        checked: false,
-        children: childrenNodes,
-        id: KEY_VALUE_NODE_ID,
-        title: nodeTitle,
-        vitamId: KEY_VALUE_NODE_ID,
-        count: count,
-      };
-      parentNodes.unshift(nodeWithKeyValue);
-    } else {
-      existingNode.count = count;
-    }
-  }
-
-  public static removeWithKeyValueNodeFromTree(
-    source: FilingHoldingSchemeNode[],
-    toRemove: FilingHoldingSchemeNode[],
-  ): FilingHoldingSchemeNode[] {
-    if (!isEmpty(source) && !isEmpty(toRemove)) {
-      return source.filter((parent) => !toRemove.some((child) => parent.id === child.id));
-    }
-    return source;
   }
 
   public static removeOrphansNodeFromTree(parentNodes: FilingHoldingSchemeNode[]) {
