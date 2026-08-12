@@ -166,12 +166,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     if (this.firstToggle(node)) {
-      if (node.id === 'KEY_VALUE_NODE') {
-        node.canLoadMoreChildren = false;
-        node.canLoadMoreMatchingChildren = false;
-      } else {
-        await this.leavesTreeService.loadNodeChildrenOnFirstToggle(node, this.showEveryNodes);
-      }
+      await this.leavesTreeService.loadNodeChildrenOnFirstToggle(node, this.showEveryNodes);
       this.refreshTreeNodes();
     }
   }
