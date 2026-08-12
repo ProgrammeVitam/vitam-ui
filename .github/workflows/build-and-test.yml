@@ -38,13 +38,13 @@ jobs:
         run: npm run ci:test
       - name: Save JUnit report as artifact
         uses: mikepenz/action-junit-report@v4.3.1
-        if: success() || failure() # always run even if the previous step fails
+        if: always() # always run even if the previous step fails
         with:
           report_paths: |
             ui/ui-frontend/junit/*.xml
           check_name: Frontend Test Report
       - name: Save test & coverage reports as artifact
-        if: success() || failure() # always run even if the previous step fails
+        if: always() # always run even if the previous step fails
         uses: actions/upload-artifact@v4
         with:
           name: frontend-test-reports
@@ -98,13 +98,13 @@ jobs:
           CI_PSW: ${{ secrets.CI_PSW }}
       - name: Save JUnit report as artifact
         uses: mikepenz/action-junit-report@v4.3.1
-        if: success() || failure() # always run even if the previous step fails
+        if: always() # always run even if the previous step fails
         with:
           report_paths: |
             **/target/surefire-reports/*.xml
           check_name: Backend Test Report
       - name: Save test & coverage reports as artifact
-        if: success() || failure() # always run even if the previous step fails
+        if: always() # always run even if the previous step fails
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-reports
@@ -112,7 +112,6 @@ jobs:
             **/target/surefire-reports/*.xml
             **/target/site/jacoco/jacoco.xml
       - name: Save generated classes as (temporary) artifact for SonarCloud analysis
-        if: ${{ github.event_name == 'push' && github.ref_protected }} # only save generated classes when executing SonarCloud analysis
         uses: actions/upload-artifact@v4
         with:
           name: backend-generated-classes
@@ -121,8 +120,7 @@ jobs:
             **/target/test-classes/**/*
   sonarcloud:
     name: Run SonarCloud analysis
-    needs: [build-frontend, build-backend]
-    if: ${{ github.event_name == 'push' && github.ref_protected }} # only run SonarCloud analysis on protected branches
+    needs: [ build-frontend, build-backend ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -151,12 +149,12 @@ jobs:
         with:
           name: backend-generated-classes
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v3.0.0
+        uses: SonarSource/sonarqube-scan-action@v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Delete temporary artifact
         uses: geekyeggo/delete-artifact@v5.1.0
-        if: success() || failure() # always run even if the previous step fails
+        if: always() # always run even if the previous step fails
         with:
           name: backend-generated-classes
