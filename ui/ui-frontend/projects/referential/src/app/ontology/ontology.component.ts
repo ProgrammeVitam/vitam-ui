@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import {
   ApplicationId,
-  GlobalEventService,
-  SidenavPage,
-  SecurityService,
-  Role,
-  SchemaService,
-  Ontology,
-  SchemaElement,
   FileTypes,
+  GlobalEventService,
+  Ontology,
+  Role,
+  SchemaElement,
+  SchemaService,
+  SecurityService,
+  SidenavPage,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -182,7 +182,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
       'IMPORT_DIALOG.SCHEMA_TITLE',
       'IMPORT_DIALOG.SCHEMA_SUBTITLE',
       [FileTypes.CSV],
-      'IMPORT_DIALOG.SCHEMA_FORMAT_CSV',
+      'IMPORT_DIALOG.SCHEMA_FORMAT_CSV_SEMICOLON',
     );
     this.openImportDialog(params);
   }

@@ -20,8 +20,6 @@
       "CANCEL_UPDATE_TO_CONFIRM": "Are you sure you want to cancel the metadata update operation?",
       "ADD_FILE": "Drag and drop",
       "BROWSE": "or Browse",
-      "ACCEPTED_FORMAT": "Accepted format: csv",
-      "FILE_BAD_FORMAT": "The uploaded file is not in the correct format",
       "SUCCESS_MESSAGE": "The metadata update operation was successfully processed",
       "WAIT_MESSAGE": "The operation is in progress, please do not shut down or refresh your browser",
       "ACTION_DELETE": "Delete archive unit",
@@ -250,7 +248,8 @@
       "OR": "or",
       "BROWSE": "browse",
       "BROWSE_DIRECTORIES": "browse directories",
-      "BROWSE_FILES": "browse files"
+      "BROWSE_FILES": "browse files",
+      "POSSIBLE_METADATA_FILE_ADDITION": "Possible metadata file addition (metadata.csv or metadata.jsonl)"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {

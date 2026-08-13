@@ -45,6 +45,8 @@ import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CdkStep } from '@angular/cdk/stepper';
 
 const translations: any = { TEST: 'Mock translate test' };
 
@@ -97,8 +99,8 @@ describe('TransferAcknowledgmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransferAcknowledgmentComponent, MockDateTimePipe],
-      imports: [InjectorModule, LoggerModule.forRoot()],
+      declarations: [MockDateTimePipe],
+      imports: [TransferAcknowledgmentComponent, CdkStep, NoopAnimationsModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -125,77 +127,23 @@ describe('TransferAcknowledgmentComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('All the parameters must be initialized', () => {
-    // When
-    component.initializeParameters();
-
-    // Then
-    expect(component.transfertDetailsCode).toBeNull();
-    expect(component.isDisabled).toBeFalsy();
-    expect(component.hasFileSizeError).toBeFalsy();
-    expect(component.isAtrNotValid).toBeFalsy();
-    expect(component.transfertDetails).toEqual({});
-    expect(component.hasError).toBeFalsy();
-    expect(component.message).toBeNull();
-  });
-
-  it('Should return true when the file extension is xml ', () => {
-    // Given
-    const fileName = 'ATR_aeeaaaaaaghduohdabkogamdgezb2taaaaaq.xml';
-
-    // When
-    const response: boolean = component.checkFileExtension(fileName);
-
-    // Then
-    expect(response).toBeTruthy();
-  });
-
-  it('Should have an accessContract ', () => {
-    expect(component.data.accessContract).not.toBeNull();
-  });
-
-  it('Should return false when the file extension is not xml ', () => {
-    // Given
-    const fileName = 'SIP-recherche-perf.zip';
-    // When
-    const response: boolean = component.checkFileExtension(fileName);
-    // Then
-    expect(response).toBeFalsy();
-  });
-
-  it('Should have a tenant identifier ', () => {
-    expect(component.data.tenantIdentifier).not.toBeNull();
-  });
-
-  it('Should return true if the extension file is xml ', () => {
-    const contents = 'text for test';
-    const blob = new Blob([contents], { type: 'text/plain' });
-    const file = new File([blob], 'fileExample.xml', { type: 'text/plain' });
-    expect(component.checkFileExtension(file.name)).toBeTruthy();
-  });
-
   it('should call transferAcknowledgment()', () => {
     const archiveService = TestBed.inject(ArchiveService);
     const matDialogRef = TestBed.inject(MatDialogRef);
+
+    const file = new File([''], '');
+    component.atrControl.setValue([file]);
+    component.data.tenantIdentifier = '42';
+
     component.applyTransferAcknowledgment();
-    expect(archiveService.transferAcknowledgment).toHaveBeenCalled();
+    expect(archiveService.transferAcknowledgment).toHaveBeenCalledWith('42', file);
     expect(matDialogRef.close).toHaveBeenCalled();
   });
 
-  it('should return KO as status()', () => {
-    // Given
-    component.transfertDetails = { archiveTransferReply: '\n\t\tKO\n\t' };
-
-    // When
-    component.goToNextStep();
-
-    // Then
-    expect(component.transfertDetailsCode).not.toBeNull();
-    expect(component.transfertDetailsCode).toEqual('KO');
-  });
-
   it('should parseXmlToTransferDetails for valid XML', async () => {
-    const xmlOK = `<?xml version="1.0" encoding="UTF-8"?>
+    const xmlOK = new File(
+      [
+        `<?xml version="1.0" encoding="UTF-8"?>
 <ArchiveTransferReply xmlns="fr:gouv:culture:archivesdefrance:seda:v2.3"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="fr:gouv:culture:archivesdefrance:seda:v2.3 seda-2.3/seda-2.3-main.xsd">
@@ -209,10 +157,13 @@ describe('TransferAcknowledgmentComponent', () => {
     <TransferringAgency>
         <Identifier>Identifier5</Identifier>
     </TransferringAgency>
-</ArchiveTransferReply>`;
+</ArchiveTransferReply>`,
+      ],
+      'ok.xml',
+    );
 
-    await component.parseXmlToTransferDetails(xmlOK);
-    expect(component.isAtrNotValid).toBe(false);
+    const errors = await component.atrContentValidator(xmlOK);
+    expect(errors).toBeFalsy();
     expect(component.transfertDetails).toEqual({
       messageRequestIdentifier: 'SIP SEDA de test',
       date: '2024-06-04T12:56:58.824Z',
@@ -224,45 +175,30 @@ describe('TransferAcknowledgmentComponent', () => {
   });
 
   it('should parseXmlToTransferDetails for XML without ArchiveTransferReply', async () => {
-    const xmlNoArchiveTransferReply = '<toto></toto>';
+    const xmlNoArchiveTransferReply = new File(['<toto></toto>'], 'xmlNoArchiveTransferReply.xml');
 
-    await component.parseXmlToTransferDetails(xmlNoArchiveTransferReply);
-    expect(component.isAtrNotValid).toBe(true);
+    const errors = await component.atrContentValidator(xmlNoArchiveTransferReply);
+    expect(errors).toBeTruthy();
+    expect(errors.fileErrors.atrNotValid).toBeTruthy();
+    expect(errors.controlErrors.invalidFiles).toBeTruthy();
   });
 
   it('should parseXmlToTransferDetails for invalid XML', async () => {
-    const xmlBadFormat = 'This is not XML';
+    const xmlBadFormat = new File(['This is not XML'], 'xmlBadFormat.xml');
 
-    await component.parseXmlToTransferDetails(xmlBadFormat);
-    expect(component.hasError).toBe(true);
-    expect(component.message).toBeTruthy();
+    const errors = await component.atrContentValidator(xmlBadFormat);
+    expect(errors).toBeTruthy();
+    expect(errors.fileErrors.fileBadFormat).toBeTruthy();
+    expect(errors.controlErrors.invalidFiles).toBeTruthy();
   });
 
   describe('DOM', () => {
     it('should have 7 lines in the second step', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.detail-text');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.text.normal.bold.primary');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(7);
       expect(formTitlesHtmlElements[0].textContent).toContain('ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.OPERATION_MESSAGE_IDENTIFIER ');
-    });
-
-    it('should emit handleFileInput function when a file is added ', () => {
-      // Given
-      const contents = '<a>test</a>';
-      const blob = new Blob([contents], { type: 'text/plain' });
-      const file = new File([blob], 'atrFile.xml', { type: 'text/plain' });
-      component.fileToUpload = file;
-      vi.spyOn(component, 'handleFile');
-      const nativeElement = fixture.nativeElement;
-      const checkBox = nativeElement.querySelector('input[type=file]');
-
-      // When
-      checkBox.dispatchEvent(new Event('change'));
-      fixture.detectChanges();
-
-      // Then
-      expect(component.handleFile).toHaveBeenCalled();
     });
 
     it('should have an input file', () => {
@@ -277,11 +213,6 @@ describe('TransferAcknowledgmentComponent', () => {
       expect(matDialogSpyTest.close).toHaveBeenCalled();
     });
 
-    it('should have 3 cdk steps', () => {
-      const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(3);
-    });
-
     it('should call close for all open dialogs', () => {
       const matDialogSpyTest = TestBed.inject(MatDialogRef);
       component.onConfirm();
@@ -289,7 +220,7 @@ describe('TransferAcknowledgmentComponent', () => {
     });
 
     it('should have 2 lines in the last step', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.text-size');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('.text.medium.bold');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(2);

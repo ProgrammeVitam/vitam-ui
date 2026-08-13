@@ -83,7 +83,6 @@ import { SearchCriteriaListComponent } from './archive-search/search-criteria-li
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
 import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
-import { TransferAcknowledgmentComponent } from './archive-search/transfer-acknowledgment/transfer-acknowledgment.component';
 import { ArchiveComponent } from './archive.component';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { ClassificationTreeComponent } from './filing-holding-scheme/classification-tree/classification-tree.component';
@@ -152,7 +151,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     SearchStorageRulesFacetsComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
-    TransferAcknowledgmentComponent,
     TransferRequestModalComponent,
     UnlockCategoryInheritanceComponent,
     UnlockRulesInheritanceComponent,

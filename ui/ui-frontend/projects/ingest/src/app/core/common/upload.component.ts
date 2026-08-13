@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BytesPipe, StartupService, SnackBarService } from 'vitamui-library';
+import { SnackBarService, StartupService } from 'vitamui-library';
 
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+
+const FILE_MAX_SIZE = 10737418240;
 
 @Component({
   selector: 'app-upload',
@@ -53,73 +55,33 @@ import { TranslateService } from '@ngx-translate/core';
 export class UploadComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);
   dialogRef = inject<MatDialogRef<UploadComponent>>(MatDialogRef);
-  private formBuilder = inject(FormBuilder);
-  private uploadService = inject(UploadService);
-  private snackBarService = inject(SnackBarService);
-  private startupService = inject(StartupService);
-  private bytesPipe = inject(BytesPipe);
-  private translateService = inject(TranslateService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly uploadService = inject(UploadService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly startupService = inject(StartupService);
+  private readonly translateService = inject(TranslateService);
 
   IngestType = IngestType;
 
   sipForm: FormGroup;
-  hasSip: boolean;
-  fileToUpload: File = null;
-  hasError = false;
-  message: string;
-  fileName: string;
-  fileSize = 0;
-  fileSizeString: string;
-  extensions: string[];
+  extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
   contextId: IngestType;
-  tenantIdentifier: string;
-  isDisabled = true;
+
+  sipControl = new FormControl<File[]>(undefined, [Validators.required]);
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   private snackbarRef: MatSnackBarRef<unknown>;
 
   constructor() {
-    const data = this.data;
-
     this.sipForm = this.formBuilder.group({
       hasSip: null,
     });
-
-    this.tenantIdentifier = data.tenantIdentifier;
   }
 
   ngOnInit() {
     this.contextId = this.data.givenContextId;
-    this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.sipForm.get('hasSip').setValue(true);
-    this.hasSip = this.sipForm.get('hasSip').value;
-  }
-
-  private isFileList(files: FileList | File[]): files is FileList {
-    return files instanceof FileList;
-  }
-
-  handleFile(files: FileList | File[]) {
-    this.isDisabled = false;
-    this.hasError = false;
-    this.message = null;
-    this.fileToUpload = this.isFileList(files) ? files.item(0) : files[0];
-
-    this.fileName = this.fileToUpload.name;
-    this.fileSize = this.fileToUpload.size;
-
-    this.fileSizeString = this.bytesPipe.transform(this.fileSize);
-
-    if (!this.checkFileExtension(this.fileName)) {
-      this.message = "Le fichier déposé n'est pas au bon format";
-      this.hasError = true;
-      return;
-    }
-  }
-
-  addSip() {
-    this.fileSearch.nativeElement.click();
   }
 
   upload() {
@@ -128,42 +90,43 @@ export class UploadComponent implements OnInit {
     }
 
     this.uploadService
-      .uploadIngest(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, async (operationId) => {
-        this.snackbarRef?.dismiss();
-        if (
-          this.contextId === IngestType.HOLDING_SCHEME ||
-          this.contextId === IngestType.FILING_SCHEME ||
-          this.contextId === IngestType.BLANK_TEST
-        ) {
-          this.snackbarRef = await this.snackBarService.open({
-            icon: 'vitamui-icon-archive-ingest',
-            message:
-              this.contextId === IngestType.BLANK_TEST
-                ? 'INGEST_UPLOAD.BLANK_UPLOAD_COMPLETE_MESSAGE'
-                : 'INGEST_UPLOAD.UPLOAD_COMPLETE_MESSAGE',
-            translate: true,
-            buttons: [
-              {
-                url: `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.tenantIdentifier}?guid=${operationId}`,
-                label: this.translateService.instant('SNACK_BAR.TO_OPERATION_APP'),
-              },
-            ],
-          });
-        }
-      })
-      .subscribe(
-        async () => {
-          this.dialogRef.close();
-          this.snackbarRef = await this.snackBarService.open({
-            icon: 'vitamui-icon-archive-ingest',
-            message: 'INGEST_UPLOAD.ALERTE_MESSAGE',
-            translate: true,
-          });
+      .uploadIngest(
+        this.data.tenantIdentifier,
+        this.sipControl.value[0],
+        this.sipControl.value[0].name,
+        this.contextId,
+        async (operationId) => {
+          this.snackbarRef?.dismiss();
+          if (
+            this.contextId === IngestType.HOLDING_SCHEME ||
+            this.contextId === IngestType.FILING_SCHEME ||
+            this.contextId === IngestType.BLANK_TEST
+          ) {
+            this.snackbarRef = await this.snackBarService.open({
+              icon: 'vitamui-icon-archive-ingest',
+              message:
+                this.contextId === IngestType.BLANK_TEST
+                  ? 'INGEST_UPLOAD.BLANK_UPLOAD_COMPLETE_MESSAGE'
+                  : 'INGEST_UPLOAD.UPLOAD_COMPLETE_MESSAGE',
+              translate: true,
+              buttons: [
+                {
+                  url: `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.data.tenantIdentifier}?guid=${operationId}`,
+                  label: this.translateService.instant('SNACK_BAR.TO_OPERATION_APP'),
+                },
+              ],
+            });
+          }
         },
-        (error: any) => {
-          this.message = error.message;
-        },
-      );
+      )
+      .subscribe(async () => {
+        this.dialogRef.close();
+        this.snackbarRef = await this.snackBarService.open({
+          icon: 'vitamui-icon-archive-ingest',
+          message: 'INGEST_UPLOAD.ALERTE_MESSAGE',
+          translate: true,
+        });
+      });
   }
 
   isValidSIP() {
@@ -174,13 +137,5 @@ export class UploadComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  checkFileExtension(fileName: string): boolean {
-    this.fileName = fileName;
-    for (const extension of this.extensions) {
-      if (fileName.endsWith(extension)) {
-        return true;
-      }
-    }
-    return false;
-  }
+  protected readonly FILE_MAX_SIZE = FILE_MAX_SIZE;
 }

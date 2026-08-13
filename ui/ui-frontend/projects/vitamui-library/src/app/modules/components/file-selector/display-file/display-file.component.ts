@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { DisplayFile } from './display-file.interface';
 import { FormErrorComponent } from '../../../../../lib/components/form-errors/form-error/form-error.component';
 import { PipesModule } from '../../../pipes/pipes.module';
@@ -47,8 +47,9 @@ import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module'
   styleUrl: './display-file.component.scss',
 })
 export class DisplayFileComponent {
-  @Input() file: DisplayFile;
-  @Output() removeFile = new EventEmitter<DisplayFile>();
+  file = input<DisplayFile>();
+  errorMessageMap = input<{ [key: string]: string }>({});
+  removeFile = output<DisplayFile>();
 
   protected readonly Object = Object;
 }

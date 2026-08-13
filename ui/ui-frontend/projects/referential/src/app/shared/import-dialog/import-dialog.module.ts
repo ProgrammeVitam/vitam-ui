@@ -41,9 +41,18 @@ import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ImportDialogComponent } from './import-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule, VitamUICommonModule, MatProgressSpinnerModule, MatDialogModule, VitamUILibraryModule, TranslatePipe],
+  imports: [
+    CommonModule,
+    VitamUICommonModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    VitamUILibraryModule,
+    TranslatePipe,
+    ReactiveFormsModule,
+  ],
   declarations: [ImportDialogComponent],
 })
 export class ImportDialogModule {}

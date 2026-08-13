@@ -34,17 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'vitamui-library';
+import { ApplicationId, FileTypes, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { RuleCreateComponent } from './rule-create/rule-create.component';
 import { RuleListComponent } from './rule-list/rule-list.component';
-import { FileTypes } from 'vitamui-library';
 
 @Component({
   selector: 'app-rules',
@@ -137,6 +136,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     const params: ImportDialogParam = {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.RULES_SUBTITLE'),
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_CSV_COMMA'),
       allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.RULE,
       successMessage: 'SNACKBAR.IMPORT_REFERENTIAL_SUCCESSED',

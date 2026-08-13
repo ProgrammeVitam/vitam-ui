@@ -34,23 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
-import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
+import { environment } from '../../../environments/environment';
+import { ReferentialImportService } from './referential-import.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ReferentialImportApiService {
-  private http = inject(HttpClient);
-  private baseUrl = inject(BASE_URL);
+describe('ReferentialImportService', () => {
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }),
+  );
 
-  importReferential(referential: ReferentialTypes, file: File) {
-    const headers = new HttpHeaders().append(VitamuiHttpHeaders.X_BY_PASSED_ERROR, '400');
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' });
-  }
-}
+  it('should be created', () => {
+    const service: ReferentialImportService = TestBed.inject(ReferentialImportService);
+    expect(service).toBeTruthy();
+  });
+});

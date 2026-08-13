@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
-import { FileFormat, FileTypes } from 'vitamui-library';
+import { ApplicationId, FileFormat, FileTypes, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';

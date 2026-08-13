@@ -31,6 +31,8 @@
     "ONTOLOGY_FORMAT_JSON": "Le fichier d'import doit être au format json",
     "SCHEMA_SUBTITLE": "Import de vocabulaire(s) dans le schéma",
     "SCHEMA_FORMAT_CSV": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur de point virgule",
+    "SCHEMA_FORMAT_CSV_COMMA": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur « , »",
+    "SCHEMA_FORMAT_CSV_SEMICOLON": "Le fichier d'import doit être au format csv, encodé en UTF8, avec séparateur « ; »",
     "IMPORT": "Importer",
     "DRAG_DROP": "Glisser / Déposer ou ",
     "CHOOSE_FILE": "cliquer pour parcourir",

@@ -1455,7 +1455,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const dialogRef = this.dialog.open(TransferAcknowledgmentComponent, {
       disableClose: true,
       data: {
-        accessContract: this.accessContractId,
         tenantIdentifier: this.tenantIdentifier.toString(),
       },
     });
