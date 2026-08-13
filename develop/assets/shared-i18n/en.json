@@ -6170,7 +6170,9 @@
     "duplicatedFile": "Duplicated file",
     "duplicatedDirectory": "Duplicated directory",
     "directoryForbidden": "Directories are not authorized",
-    "invalidJson": "Invalid JSON"
+    "invalidJson": "Invalid JSON",
+    "invalidCsv": "Invalid CSV file",
+    "invalidCsvDetail": "Identified errors detail: <ul>{{detail}}</ul>"
   },
   "ACCESS_CONTRACT": {
     "HOME": {
