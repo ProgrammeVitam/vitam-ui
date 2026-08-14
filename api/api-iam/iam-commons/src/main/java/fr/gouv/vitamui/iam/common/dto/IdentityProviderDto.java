@@ -100,6 +100,10 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private String spMetadata;
 
+    private boolean hasIdpMetadata;
+
+    private boolean hasSpMetadata;
+
     private Integer maximumAuthenticationLifetime;
 
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;

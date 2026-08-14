@@ -137,10 +137,16 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     return this.domains.filter((domain) => !domain.disabled).length > 0;
   }
 
-  downloadFile(isInternalProvider: boolean, url: string): void {
-    if (!isInternalProvider) {
-      this.providerApi.getFileByUrl(url).subscribe((response: any) => DownloadUtils.loadFromBlob(response, response.body.type));
-    }
+  canDownloadIdpMetadata(provider: IdentityProvider): boolean {
+    return !provider?.internal && !!provider?.hasIdpMetadata;
+  }
+
+  canDownloadSpMetadata(provider: IdentityProvider): boolean {
+    return !provider?.internal && !!provider?.hasSpMetadata;
+  }
+
+  downloadFile(url: string): void {
+    this.providerApi.getFileByUrl(url).subscribe((response: any) => DownloadUtils.loadFromBlob(response, response.body.type));
   }
 
   private refreshAvailableDomains() {
