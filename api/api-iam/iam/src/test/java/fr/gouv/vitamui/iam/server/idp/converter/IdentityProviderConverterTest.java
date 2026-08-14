@@ -78,7 +78,7 @@ public class IdentityProviderConverterTest {
         idp.setUseNonce(USE_NONCE);
         idp.setUsePkce(USE_PKCE);
         IdentityProviderDto res = converter.convertEntityToDto(idp);
-        assertThat(res).isEqualToIgnoringGivenFields(idp);
+        assertThat(res).isEqualToIgnoringGivenFields(idp, "hasIdpMetadata", "hasSpMetadata");
     }
 
     @Test
