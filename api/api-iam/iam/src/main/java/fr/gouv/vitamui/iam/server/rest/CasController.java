@@ -271,7 +271,7 @@ public class CasController {
         String email = superUserEmail, customerId = superUserCustomerId;
         if (superUserId != null && !superUserId.isEmpty() && !superUserId.trim().isEmpty()) {
             SanityChecker.checkSecureParameter(superUserId);
-            final UserDto user = userService.getOne(superUserId, Optional.empty());
+            final UserDto user = userService.findUserById(superUserId);
             if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
                 email = user.getEmail();
                 customerId = user.getCustomerId();
