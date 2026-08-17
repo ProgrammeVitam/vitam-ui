@@ -388,22 +388,38 @@ La surcharge faite sur CAS nous empêche de lancer avec le plugin spring-boot
     ├── ui-frontend: 'npm run start:pastis'
 ```
 
-## 14 - Les certificats sont auto-signés, il faut les accepter dans le navigateur pour
+## 14 - Démarrer le reverse proxy, qui expose tout sous une origine unique
 
-* UI-Frontend
-* https://dev.vitamui.com:4200
-* https://dev.vitamui.com:4201/user
-* https://dev-vitamui.com:4208
-* Ui-Back
-* https://dev.vitamui.com:9000/
-* https://dev.vitamui.com:9001/
-* https://dev-vitamui.com:9008
+```
+└── tools/docker/nginx: './vitamui-nginx.sh up'
+```
+
+Les applications ne sont plus servies chacune sur son port, mais sous une seule origine,
+comme sur les environnements déployés :
+
+| | |
+|---|---|
+| portal | https://dev.vitamui.com/ |
+| identity | https://dev.vitamui.com/identity/ |
+| referential | https://dev.vitamui.com/referential/ |
+| ingest | https://dev.vitamui.com/ingest/ |
+| archive-search | https://dev.vitamui.com/archive-search/ |
+| collect | https://dev.vitamui.com/collect/ |
+| pastis | https://dev.vitamui.com/pastis/ |
+| design-system | https://dev.vitamui.com/design-system/ |
+| CAS | https://dev.vitamui.com/cas/login |
+
+Prérequis, utilisation, travail avec `ng serve` et tests :
+[`tools/docker/nginx/README.md`](tools/docker/nginx/README.md).
+
+Les certificats étant auto-signés, il faut accepter l'exception dans le navigateur — une
+seule origine désormais, https://dev.vitamui.com/
 
 > **Attention**: Sans cette étape, le logout sur toutes les applications par CAS ne fonctionne pas.
 
 ## 15 - Se connecter sur le portail via
 
-* https://dev.vitamui.com:4200
+* https://dev.vitamui.com/
 
 ## 16 - Se connecter sur la page de réception des mails smtp4dev via
 

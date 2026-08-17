@@ -84,4 +84,6 @@ logging:
     fr.gouv.vitamui: DEBUG
     fr.gouv.vitamui.iam.security: DEBUG
     #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
-cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
+# https://dev.vitamui.com est l'origine unique servie par le reverse proxy de dev
+# (tools/docker/nginx) ; le port 4251 reste pour un `ng serve` lance en direct.
+cors.allowed-origins: https://dev.vitamui.com,https://dev.vitamui.com:4251,https://localhost

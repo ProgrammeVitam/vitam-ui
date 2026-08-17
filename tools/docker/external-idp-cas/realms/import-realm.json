@@ -942,10 +942,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "QQXbm6947N5kYVL0yLDAHwlo3ZW2I8ui",
       "redirectUris": [
+        "https://dev.vitamui.com/*",
         "https://dev.vitamui.com:4200/*",
         "https://dev.vitamui.com:8080/*"
       ],
       "webOrigins": [
+        "https://dev.vitamui.com/*",
         "https://dev.vitamui.com:4200/*",
         "https://dev.vitamui.com:8080/*"
       ],
@@ -963,7 +965,7 @@
       "attributes": {
         "client.secret.creation.time": "1710948432",
         "login_theme": "keycloak",
-        "post.logout.redirect.uris": "https://dev.vitamui.com:4200/##https://dev.vitamui.com:8080/*",
+        "post.logout.redirect.uris": "https://dev.vitamui.com/##https://dev.vitamui.com:4200/##https://dev.vitamui.com:8080/*",
         "oauth2.device.authorization.grant.enabled": "false",
         "access.token.signed.response.alg": "ES256",
         "backchannel.logout.revoke.offline.tokens": "false",
@@ -1056,8 +1058,7 @@
             ]
           }
         ],
-        "policies": [
-        ],
+        "policies": [],
         "scopes": [],
         "decisionStrategy": "UNANIMOUS"
       }

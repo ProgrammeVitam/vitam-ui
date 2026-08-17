@@ -140,6 +140,17 @@ Client certificate needs to be imported into local browser certificate store (pa
 Nginx reverse proxy may be accessed using https://dev.vitamui.com:443/cas/login (instead of direct CAS access via
 https://dev.vitamui.com:8080/cas/login).
 
+**This proxy conflicts with the development reverse proxy** (`tools/docker/nginx`), which serves every front-end under a
+single origin and also listens on port 443. Only one of them can run at a time — stop the other one first:
+
+```
+cd tools/docker/nginx && ./vitamui-nginx.sh down
+```
+
+They are kept apart on purpose: `nginx-cas-x509` requires a client certificate on *every* request, so the browser pops up
+its certificate picker on each page load. That is fine for a focused x509 test, and unbearable for day-to-day work.
+See the "Pourquoi il y a deux nginx" section of `tools/docker/nginx/README.md`.
+
 **Warnings:**
 - For now, the above configuration is only available locally. VitamUI Ansible configuration must be updated to support
   these settings.

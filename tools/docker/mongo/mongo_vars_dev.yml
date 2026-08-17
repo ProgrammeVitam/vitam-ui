@@ -64,7 +64,10 @@ mongodb:
 
 mongod_replicaset_name: "rs0"
 
-url_prefix: ""
+# Origine unique servie par le reverse proxy de dev (tools/docker/nginx).
+# Les templates de deployment/scripts/mongod/ construisent les URL des
+# applications et les serviceId CAS a partir de cette valeur.
+url_prefix: "https://dev.vitamui.com"
 
 # Variables for users
 
@@ -88,36 +91,53 @@ vitamui_platform_informations:
 # cas services cert value override
 
 vitam_site_name: "dev"
+
+# Chaque application est identifiee par son prefixe sous l'origine unique, et
+# non plus par un port. C'est la meme forme d'URL que les environnements
+# deployes : https://<host>/archive-search/archive-search/tenant/1.
+#
+# Le serviceId est la regexp que CAS confronte a l'URL de service. Celui du
+# portail couvre la racine, donc toutes les autres applications : c'est
+# volontaire et sans danger, son service porte evaluationOrder 10000, donc CAS
+# ne le retient qu'apres avoir essaye les services plus specifiques (cf.
+# deployment/scripts/mongod/v7.1/003_TRV-399_...portal_service_ref.js.j2).
+#
+# Le quadruple antislash traverse deux niveaux d'echappement : YAML, puis la
+# chaine JavaScript du script mongo. Il aboutit a "\." dans la regexp.
+#
+# ui_identity et ui_identity_admin partagent la meme URL : en dev une seule
+# application Angular « identity » tient les deux roles, la ou la prod deploie
+# deux instances (/identity et /identity-admin).
 vitamui:
   ui_identity:
     clientId: identity
     name: Identity Access Management Application
-    base_url: "https://dev.vitamui.com:4201"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4201/.*|https://localhost:4201/.*"
+    base_url: "https://dev.vitamui.com/identity"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/identity/.*|https://localhost/identity/.*"
   ui_identity_admin:
     clientId: identityadmin
     name: Identity Admin Access Management Application
-    base_url: "https://dev.vitamui.com:4201"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4201/.*|https://localhost:4201/.*"
+    base_url: "https://dev.vitamui.com/identity"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/identity/.*|https://localhost/identity/.*"
   ui_portal:
     clientId: portal
     name: Portal Application
-    base_url: "https://dev.vitamui.com:4200"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4200/.*|https://localhost:4200/.*"
+    base_url: "https://dev.vitamui.com"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/.*|https://localhost/.*"
   ui_referential:
     clientId: referential
     name: Referential Application
-    base_url: "https://dev.vitamui.com:4202"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4202/.*|https://localhost:4202/.*"
+    base_url: "https://dev.vitamui.com/referential"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/referential/.*|https://localhost/referential/.*"
   ui_ingest:
-    base_url: "https://dev.vitamui.com:4208"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4208/.*|https://localhost:4208/.*"
+    base_url: "https://dev.vitamui.com/ingest"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/ingest/.*|https://localhost/ingest/.*"
   ui_archive_search:
-    base_url: "https://dev.vitamui.com:4209"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4209/.*|https://localhost:4209/.*"
+    base_url: "https://dev.vitamui.com/archive-search"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/archive-search/.*|https://localhost/archive-search/.*"
   ui_pastis:
-    base_url: "https://dev.vitamui.com:4251"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4251/.*|https://localhost:4251/.*"
+    base_url: "https://dev.vitamui.com/pastis"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/pastis/.*|https://localhost/pastis/.*"
   ui_collect:
-    base_url: "https://dev.vitamui.com:4210"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4210/.*|https://localhost:4210/.*"
+    base_url: "https://dev.vitamui.com/collect"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/collect/.*|https://localhost/collect/.*"

@@ -1,0 +1,247 @@
+## =====================================================================
+##  VitamUI — reverse proxy de developpement, origine unique
+## =====================================================================
+##
+## Toutes les applications sont servies sous UNE seule origine, sans port :
+##
+##   ${VITAMUI_PUBLIC_ORIGIN}/                              -> portal
+##   ${VITAMUI_PUBLIC_ORIGIN}/identity/...                  -> identity
+##   ${VITAMUI_PUBLIC_ORIGIN}/referential/...               -> referential
+##   ${VITAMUI_PUBLIC_ORIGIN}/ingest/...                    -> ingest
+##   ${VITAMUI_PUBLIC_ORIGIN}/archive-search/...            -> archive-search
+##   ${VITAMUI_PUBLIC_ORIGIN}/collect/...                   -> collect
+##   ${VITAMUI_PUBLIC_ORIGIN}/pastis/...                    -> pastis
+##   ${VITAMUI_PUBLIC_ORIGIN}/design-system/...             -> design-system
+##   ${VITAMUI_PUBLIC_ORIGIN}/<app>-api/...                 -> api-gateway (mTLS)
+##   ${VITAMUI_PUBLIC_ORIGIN}/cas/...                       -> cas-server
+##
+## C'est la forme d'URL des environnements deployes, par exemple
+## https://itrec-ui.env.programmevitam.fr/archive-search/archive-search/tenant/1
+## ou le premier segment est le prefixe du reverse proxy et le reste la route
+## Angular.
+##
+## Ce fichier fusionne les deux couches nginx de la prod :
+##   - deployment/roles/reverse/...      (la porte d'entree 443, le routage par chemin)
+##   - deployment/roles/nginx_webapp/... (le service des dist/ et le proxy /<app>-api)
+## En dev, une seule instance nginx joue les deux roles.
+
+## ---------------------------------------------------------------------
+## Redirection HTTP -> HTTPS
+## ---------------------------------------------------------------------
+server {
+    listen      ${VITAMUI_HTTP_PORT};
+    server_name ${VITAMUI_SERVER_NAME};
+
+    return 301 ${VITAMUI_PUBLIC_ORIGIN}$request_uri;
+}
+
+server {
+    listen      ${VITAMUI_HTTPS_PORT} ssl;
+    http2       on;
+    server_name ${VITAMUI_SERVER_NAME};
+
+    include /etc/nginx/snippets/ssl.conf;
+
+    ## Racine commune : les dist/ Angular, un sous-repertoire par application.
+    ## Le build pose deja les assets sous /<app>/ (--deploy-url=/<app>/), donc
+    ## $uri se resout directement sous cette racine.
+    root /usr/share/nginx/html/vitamui;
+
+    ## -----------------------------------------------------------------
+    ## Sonde locale — ne traverse aucun upstream. Sert aux tests et au
+    ## healthcheck docker pour distinguer "nginx est debout" de "la gateway
+    ## repond".
+    ## -----------------------------------------------------------------
+    location = /__vitamui/health {
+        access_log off;
+        default_type application/json;
+        return 200 '{"status":"UP","component":"vitamui-dev-reverse"}';
+    }
+
+    ## -----------------------------------------------------------------
+    ## Surcharges `ng serve` (optionnelles)
+    ##
+    ## Vide par defaut. `./vitamui-nginx.sh ng-serve <app>` y depose un bloc
+    ## `location ^~ /<app>/` qui proxifie vers le serveur de dev Angular au lieu
+    ## du dist/. Le modificateur ^~ court-circuite les locations regex
+    ## ci-dessous, donc l'ordre de declaration n'a pas d'importance.
+    ## -----------------------------------------------------------------
+    include /etc/nginx/ng-serve/*.conf;
+
+    ## -----------------------------------------------------------------
+    ## 1. APIs -> api-gateway, en mTLS
+    ##
+    ## Declare en premier : nginx evalue les locations regex dans l'ordre du
+    ## fichier et retient la premiere qui correspond. /archive-search-api doit
+    ## donc etre teste avant /archive-search.
+    ##
+    ## Le certificat client est choisi par requete via la map de
+    ## snippets/maps.conf. Les variables dans proxy_ssl_certificate demandent
+    ## nginx >= 1.21.0.
+    ## -----------------------------------------------------------------
+    ## 1a. Forme absolue : /<app>-api/...
+    ##
+    ## C'est celle du portail, qui declare BASE_URL = '/portal-api' — il est
+    ## servi a la racine, la question du prefixe ne se pose pas pour lui.
+    location ~ "^/(portal|identity|referential|ingest|archive-search|collect|pastis)-api(?:/|$)" {
+        set $vitamui_api $1;
+
+        proxy_pass https://${VITAMUI_GATEWAY};
+
+        include /etc/nginx/snippets/api-gateway.conf;
+    }
+
+    ## 1b. Forme relative au <base href> : /<app>/<app>-api/...
+    ##
+    ## Toutes les applications sauf le portail declarent une BASE_URL RELATIVE,
+    ## par exemple `{ provide: BASE_URL, useValue: './archive-search-api' }`
+    ## (projects/archive-search/src/app/core/core.module.ts). C'est delibere :
+    ## le front doit fonctionner sous n'importe quel prefixe de deploiement.
+    ##
+    ## Servie sous <base href="/archive-search/">, cette URL relative devient
+    ## donc /archive-search/archive-search-api/... — avec le prefixe repete.
+    ## La prod resout ce cas dans roles/reverse, dont le
+    ## `rewrite /archive-search/(.*) /$1 break;` retire le premier segment. On
+    ## reproduit ce retrait ici.
+    ##
+    ## Sans cette location, l'appel retombe sur le service des applications, qui
+    ## repond l'index.html : le front recoit alors du HTML en 200 la ou il
+    ## attend du JSON, et signale une HttpErrorResponse « status 200, ok: false »
+    ## — un symptome qui n'evoque pas sa cause.
+    ##
+    ## La backreference \1 impose que le prefixe et l'API designent la meme
+    ## application, comme en prod : le nginx_webapp d'archive-search n'expose
+    ## que /archive-search-api.
+    location ~ "^/(identity|referential|ingest|archive-search|collect|pastis)/(\1-api(?:/.*)?)$" {
+        ## Poser les variables AVANT le rewrite : celui-ci reevalue une regexp,
+        ## ce qui reinitialise les captures positionnelles $1 et $2.
+        set $vitamui_api  $1;
+        set $vitamui_tail $2;
+
+        rewrite ^ /$vitamui_tail break;
+
+        proxy_pass https://${VITAMUI_GATEWAY};
+
+        include /etc/nginx/snippets/api-gateway.conf;
+    }
+
+    ## -----------------------------------------------------------------
+    ## 2. CAS
+    ##
+    ## cas-server porte deja le context-path /cas (cf.
+    ## cas/cas-server/src/main/config/application-dev.yml), donc on transmet
+    ## l'URI telle quelle : proxy_pass sans partie URI preserve $request_uri.
+    ## -----------------------------------------------------------------
+    location = /cas {
+        return 302 ${VITAMUI_PUBLIC_ORIGIN}/cas/login;
+    }
+
+    location /cas/ {
+        proxy_pass https://${VITAMUI_CAS};
+
+        proxy_ssl_verify      off;
+        proxy_ssl_server_name on;
+
+        include /etc/nginx/snippets/proxy_params.conf;
+    }
+
+    ## -----------------------------------------------------------------
+    ## 3. Assets statiques
+    ##
+    ## Declares avant le service des applications pour qu'un asset absent
+    ## reponde 404 plutot que de retomber sur index.html — sinon un chemin de
+    ## build errone renvoie du HTML sous un nom .js, et le navigateur signale
+    ## une erreur de parsing sans rapport avec la cause.
+    ##
+    ## Deux blocs distincts, et non un seul avec repli : les assets d'une
+    ## application ne doivent jamais pouvoir etre servis depuis le dist/ d'une
+    ## autre. Un repli croise masquerait un front construit sans
+    ## --deploy-url=/<app>/ en lui servant les fichiers du portail.
+    ## -----------------------------------------------------------------
+
+    ## Assets d'une application : references sous /<app>/ grace au
+    ## --deploy-url des scripts build:<app> du package.json.
+    ##
+    ## Le repli /<app>/browser/... couvre les deux dispositions possibles de
+    ## dist/ : Angular >= 17 ecrit dans dist/<app>/browser/, alors que la prod
+    ## sert une arborescence plate (cf. role nginx_webapp, qui depose
+    ## assets/config.json directement sous <composant>/). Plutot que d'imposer
+    ## l'une des deux via angular.json — dont depend la chaine de packaging — on
+    ## accepte les deux ici.
+    location ~* "^/(identity|referential|ingest|archive-search|collect|pastis|design-system)(/.+\.(?:js|mjs|css|map|json|ico|png|jpe?g|gif|svg|webp|woff2?|ttf|eot))$" {
+        set $vitamui_app  $1;
+        set $vitamui_path $2;
+
+        include /etc/nginx/snippets/spa.conf;
+
+        try_files $uri /$vitamui_app/browser$vitamui_path =404;
+    }
+
+    ## Assets du portail : construit sans --base-href, il les reference depuis
+    ## la racine. L'anti-ancrage (?!/cas/) laisse a cas-server ses propres
+    ## feuilles de style et scripts, traites plus haut.
+    location ~* "^(?!/cas/)(/.+\.(?:js|mjs|css|map|json|ico|png|jpe?g|gif|svg|webp|woff2?|ttf|eot))$" {
+        set $vitamui_path $1;
+
+        root /usr/share/nginx/html/vitamui/portal;
+
+        include /etc/nginx/snippets/spa.conf;
+
+        try_files $uri /browser$vitamui_path =404;
+    }
+
+    ## -----------------------------------------------------------------
+    ## 4. Applications Angular (hors portal)
+    ##
+    ## try_files retombe sur le index.html de l'application pour que les routes
+    ## profondes fonctionnent au rechargement :
+    ##   /archive-search/archive-search/tenant/1 -> dist/archive-search/index.html
+    ## -----------------------------------------------------------------
+    location ~ "^/(identity|referential|ingest|archive-search|collect|pastis|design-system)(/.*)?$" {
+        set $vitamui_app  $1;
+        set $vitamui_path $2;
+
+        include /etc/nginx/snippets/spa.conf;
+
+        ## Le `=404` final change la nature des arguments precedents : ils sont
+        ## alors tous testes comme des fichiers, et le index.html est servi
+        ## directement au lieu de declencher une redirection interne.
+        ##
+        ## Sans lui, une application dont le dist/ n'a pas ete construit renvoie
+        ## 500 « rewrite or internal redirection cycle » : la redirection interne
+        ## vers /<app>/index.html retombe dans cette meme location, qui redirige
+        ## a nouveau. Un 404 dit bien plus clairement ce qui manque.
+        ##
+        ## Pas de `$uri/` non plus : il ferait correspondre le repertoire de
+        ## l'application, et le module index repondrait alors 403 « directory
+        ## index is forbidden » quand le index.html manque — ce qui evoque un
+        ## probleme de droits plutot qu'un build absent. Sans lui, /<app> sans
+        ## slash final sert directement le index.html au lieu d'une redirection
+        ## 301 ; le <base href="/<app>/"> du build fait le reste.
+        ##
+        ## Les candidats en browser/ couvrent la disposition d'Angular >= 17,
+        ## celle que produit `npm run build:<app>` aujourd'hui.
+        try_files $uri
+                  /$vitamui_app/browser$vitamui_path
+                  /$vitamui_app/index.html
+                  /$vitamui_app/browser/index.html
+                  =404;
+    }
+
+    ## -----------------------------------------------------------------
+    ## 5. Portal, a la racine
+    ##
+    ## Le portail est construit sans --base-href (cf. le script build:portal du
+    ## package.json), ses assets sont donc references depuis /. On bascule la
+    ## racine sur son dist/ plutot que sur la racine commune.
+    ## -----------------------------------------------------------------
+    location / {
+        root /usr/share/nginx/html/vitamui/portal;
+
+        include /etc/nginx/snippets/spa.conf;
+
+        ## Memes raisons que ci-dessus pour le `=404`, l'absence de `$uri/` et
+        ## les candidats en browser/.
+        try_files $uri /browser$uri /index.html /browser/index.html =404;
+    }
+}

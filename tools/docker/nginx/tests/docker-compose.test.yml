@@ -1,0 +1,25 @@
+## Doublures des services amont utilisees par run-tests.sh.
+##
+## Elles tiennent dans un seul conteneur nginx qui ecoute sur trois ports :
+## l'api-gateway (en mTLS), cas-server, et un serveur de dev Angular.
+
+services:
+  upstreams:
+    image: nginx:1.29-alpine
+    container_name: vitamui-nginx-test-upstreams
+    network_mode: host
+
+    environment:
+      NGINX_ENVSUBST_FILTER: '^STUB_'
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/conf.d
+      STUB_GATEWAY_PORT: ${STUB_GATEWAY_PORT:?}
+      STUB_CAS_PORT: ${STUB_CAS_PORT:?}
+      STUB_NG_SERVE_PORT: ${STUB_NG_SERVE_PORT:?}
+
+    volumes:
+      - ./stubs/upstreams.conf:/etc/nginx/templates/upstreams.conf.template:ro
+      - ../conf/disabled-default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${VITAMUI_CERTS_DIR:?}:/etc/nginx/certs:ro
+      ## Chaine de CA reconstituee par run-tests.sh (ca-root + ca-intermediate),
+      ## necessaire pour valider les certificats clients ui-*.
+      - ${TEST_WORK_DIR:?}/ca:/etc/nginx/ca:ro

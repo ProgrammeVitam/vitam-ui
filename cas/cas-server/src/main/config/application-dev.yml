@@ -53,7 +53,12 @@ management:
 
 # Root: cas - Apereo CAS technical and functional configuration
 cas:
-  server.prefix: https://dev.vitamui.com:8080/cas
+  # cas-server ecoute toujours sur 8080 (cf. server.port ci-dessus), mais il est
+  # atteint a travers le reverse proxy de dev (tools/docker/nginx), sur
+  # l'origine unique et sans port. C'est ce prefixe que CAS utilise pour
+  # construire ses propres URL : redirections du webflow, issuer OIDC,
+  # endpoints de decouverte. Il doit donc etre celui vu par le navigateur.
+  server.prefix: https://dev.vitamui.com/cas
   webflow.crypto:
     signing.key: =oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg
     encryption.key: 3FzNquczUjhmeJyqu251Ow
@@ -65,7 +70,7 @@ cas:
     #   sslHeaderName: x-ssl-cert
     pac4j:
       cas:
-        - login-url: https://dev.vitamui.com:8080/cas/login
+        - login-url: https://dev.vitamui.com/cas/login
       core.session-replication.cookie:
         crypto:
           encryption.key: T4LxS93IaaD-F-7kz66VEc2BD3g8uGGYKPECFkV9vBU
@@ -102,7 +107,9 @@ iam-client:
 
 # Root: vitamui - Global VITAM-UI environment settings
 vitamui:
-  portal.url: https://dev.vitamui.com:4200/
+  # Le portail est servi a la racine de l'origine unique par le reverse proxy
+  # de dev, comme en environnement deploye.
+  portal.url: https://dev.vitamui.com/
 
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
@@ -136,6 +143,11 @@ spring:
 
 cas.http-web-request.cors:
   allow-credentials: true
+  # Depuis le passage a l'origine unique (tools/docker/nginx), seules
+  # "https://dev.vitamui.com" et "https://localhost" sont effectivement
+  # utilisees : les fronts ne sont plus exposes par port. Les origines par port
+  # sont conservees pour ceux qui lancent encore un `ng serve` en direct, sans
+  # passer par le reverse proxy.
   allow-origins:
     - "https://dev.vitamui.com:4200"
     - "https://dev.vitamui.com:4201"
