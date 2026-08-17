@@ -69,7 +69,7 @@ mongodb:
 
 mongod_replicaset_name: "rs0"
 
-url_prefix: ""
+url_prefix: "https://dev.vitamui.com"
 
 # Variables for users
 
@@ -97,32 +97,32 @@ vitamui:
   ui_identity:
     clientId: identity
     name: Identity Access Management Application
-    base_url: "https://dev.vitamui.com:4201"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4201/.*|https://localhost:4201/.*"
+    base_url: "https://dev.vitamui.com/identity"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/identity/.*|https://localhost/identity/.*"
   ui_identity_admin:
     clientId: identityadmin
     name: Identity Admin Access Management Application
-    base_url: "https://dev.vitamui.com:4201"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4201/.*|https://localhost:4201/.*"
+    base_url: "https://dev.vitamui.com/identity"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/identity/.*|https://localhost/identity/.*"
   ui_portal:
     clientId: portal
     name: Portal Application
-    base_url: "https://dev.vitamui.com:4200"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4200/.*|https://localhost:4200/.*"
+    base_url: "https://dev.vitamui.com"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/.*|https://localhost/.*"
   ui_referential:
     clientId: referential
     name: Referential Application
-    base_url: "https://dev.vitamui.com:4202"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4202/.*|https://localhost:4202/.*"
+    base_url: "https://dev.vitamui.com/referential"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/referential/.*|https://localhost/referential/.*"
   ui_ingest:
-    base_url: "https://dev.vitamui.com:4208"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4208/.*|https://localhost:4208/.*"
+    base_url: "https://dev.vitamui.com/ingest"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/ingest/.*|https://localhost/ingest/.*"
   ui_archive_search:
-    base_url: "https://dev.vitamui.com:4209"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4209/.*|https://localhost:4209/.*"
+    base_url: "https://dev.vitamui.com/archive-search"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/archive-search/.*|https://localhost/archive-search/.*"
   ui_pastis:
-    base_url: "https://dev.vitamui.com:4251"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4251/.*|https://localhost:4251/.*"
+    base_url: "https://dev.vitamui.com/pastis"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/pastis/.*|https://localhost/pastis/.*"
   ui_collect:
-    base_url: "https://dev.vitamui.com:4210"
-    serviceId: "^https://dev\\\\.vitamui\\\\.com:4210/.*|https://localhost:4210/.*"
+    base_url: "https://dev.vitamui.com/collect"
+    serviceId: "^https://dev\\\\.vitamui\\\\.com/collect/.*|https://localhost/collect/.*"

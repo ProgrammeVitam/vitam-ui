@@ -84,4 +84,4 @@ logging:
     fr.gouv.vitamui: DEBUG
     fr.gouv.vitamui.iam.security: DEBUG
     #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
-cors.allowed-origins: https://dev.vitamui.com:4251,https://localhost
+cors.allowed-origins: https://dev.vitamui.com,https://localhost
