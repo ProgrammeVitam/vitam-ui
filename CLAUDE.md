@@ -105,7 +105,7 @@ Root modules:
 - **Security**: CAS-based SSO. `api-security` module handles auth. Frontend uses `angular-oauth2-oidc`.
 - **MongoDB**: Used for persistence. `commons-mongo` provides base repository/entity classes.
 - **VITAM integration**: `commons-vitam` module wraps VITAM API calls. Backend services translate between Vitam-UI domain and VITAM APIs.
-- **Frontend proxy**: `proxy.conf.js` in `ui/ui-frontend/` proxies API calls to backend services during development.
+- **Frontend proxy**: an nginx reverse proxy in `tools/docker/nginx/` proxies API calls to backend services during development (see its README).
 
 ### Configuration
 
