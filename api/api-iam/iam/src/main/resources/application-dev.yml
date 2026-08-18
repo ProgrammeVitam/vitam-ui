@@ -93,6 +93,12 @@ logbook:
     sendEventToVitamTasks:
       delay: 10000
 
+discussion:
+  scheduling:
+    purgeTransactionDiscussions:
+      enabled: true
+      cronExpression: 0 */5 * ? * *
+
 vitam.tenant.init.mandatory: true
 
 customer.init.config.file: src/main/resources/dev/customer-init.yml

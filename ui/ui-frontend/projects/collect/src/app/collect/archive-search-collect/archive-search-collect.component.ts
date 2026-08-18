@@ -438,7 +438,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.checkUpdateUnitPermissions();
 
     this.transaction$.subscribe((transaction) => {
-      if (transaction) {
+      if (
+        transaction &&
+        ![TransactionStatus.ACK_WARNING, TransactionStatus.ACK_OK, TransactionStatus.ABORTED].includes(transaction.status)
+      ) {
         const { id: transactionId, projectId } = transaction;
         this.discussionEntities = [
           {
