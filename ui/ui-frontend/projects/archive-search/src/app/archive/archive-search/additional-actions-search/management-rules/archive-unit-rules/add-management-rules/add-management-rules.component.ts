@@ -330,7 +330,7 @@ export class AddManagementRulesComponent implements OnDestroy {
           startDateSelected.setMonth(startDateSelected.getMonth() + Number(this.rule.ruleDuration));
           break;
         case 'DAY':
-          startDateSelected.setDate(startDateSelected.getDay() + Number(this.rule.ruleDuration));
+          startDateSelected.setDate(startDateSelected.getDate() + Number(this.rule.ruleDuration));
           break;
       }
 
