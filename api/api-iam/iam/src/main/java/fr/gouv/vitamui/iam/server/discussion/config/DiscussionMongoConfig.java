@@ -34,81 +34,71 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.server.config;
+package fr.gouv.vitamui.iam.server.discussion.config;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.IndexOptions;
+import com.mongodb.ConnectionString;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
-import jakarta.annotation.PostConstruct;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+import org.springframework.data.mongodb.core.SimpleReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
- * MongoDB configuration.
+ * Dedicated MongoDB configuration for the discussion feature.
  *
- * The primary factory and template are declared explicitly (instead of relying on Spring Boot
- * auto-configuration) because a second Mongo connection exists for discussions
- * ({@link fr.gouv.vitamui.iam.server.discussion.config.DiscussionMongoConfig}), which makes the
- * auto-configured beans back off. Discussion repositories are excluded from this scan and bound
- * to their own template.
+ * Discussions are stored in their own database, configured with {@code discussion.mongodb.uri}.
+ * When this property is not set, the main IAM database ({@code spring.mongodb.uri}) is used, so
+ * existing deployments keep working unchanged until their data is migrated.
  */
 @Configuration
 @EnableMongoRepositories(
-    basePackages = {
-        "fr.gouv.vitamui.commons.mongo.repository", "fr.gouv.vitamui.commons.mongo.dao", "fr.gouv.vitamui.iam.server",
-    },
-    excludeFilters = @ComponentScan.Filter(
-        type = FilterType.REGEX,
-        pattern = "fr\\.gouv\\.vitamui\\.iam\\.server\\.discussion\\..*"
-    ),
-    repositoryBaseClass = VitamUIRepositoryImpl.class
+    basePackages = "fr.gouv.vitamui.iam.server.discussion.dao",
+    repositoryBaseClass = VitamUIRepositoryImpl.class,
+    mongoTemplateRef = DiscussionMongoConfig.DISCUSSION_MONGO_TEMPLATE
 )
-public class MongoDbConfig {
+public class DiscussionMongoConfig {
 
-    @Autowired
-    private MongoDatabaseFactory mongoDbFactory;
+    public static final String DISCUSSION_MONGO_TEMPLATE = "discussionMongoTemplate";
+    public static final String DISCUSSION_REACTIVE_MONGO_TEMPLATE = "discussionReactiveMongoTemplate";
+    public static final String DISCUSSION_MONGO_DATABASE_FACTORY = "discussionMongoDatabaseFactory";
+    public static final String DISCUSSION_REACTIVE_MONGO_DATABASE_FACTORY = "discussionReactiveMongoDatabaseFactory";
 
-    @Bean
-    @Primary
-    public MongoDatabaseFactory mongoDatabaseFactory(@Value("${spring.mongodb.uri}") final String mongoUri) {
-        return new SimpleMongoClientDatabaseFactory(mongoUri);
+    @Value("${discussion.mongodb.uri:${spring.mongodb.uri}}")
+    private String discussionMongoUri;
+
+    @Bean(DISCUSSION_MONGO_DATABASE_FACTORY)
+    public MongoDatabaseFactory discussionMongoDatabaseFactory() {
+        return new SimpleMongoClientDatabaseFactory(discussionMongoUri);
     }
 
-    @Bean
-    @Primary
-    public MongoTemplate mongoTemplate(
-        final MongoDatabaseFactory mongoDatabaseFactory,
+    @Bean(DISCUSSION_MONGO_TEMPLATE)
+    public MongoTemplate discussionMongoTemplate(
+        @Qualifier(DISCUSSION_MONGO_DATABASE_FACTORY) final MongoDatabaseFactory discussionMongoDatabaseFactory,
         final MappingMongoConverter mappingMongoConverter
     ) {
-        return new MongoTemplate(mongoDatabaseFactory, mappingMongoConverter);
+        return new MongoTemplate(discussionMongoDatabaseFactory, mappingMongoConverter);
     }
 
-    @PostConstruct
-    public void afterPropertiesSet() {
-        setUpTenantIndexOnCustomerId();
+    @Bean(DISCUSSION_REACTIVE_MONGO_DATABASE_FACTORY)
+    public ReactiveMongoDatabaseFactory discussionReactiveMongoDatabaseFactory() {
+        return new SimpleReactiveMongoDatabaseFactory(new ConnectionString(discussionMongoUri));
     }
 
-    private void setUpTenantIndexOnCustomerId() {
-        final MongoDatabase db = mongoDbFactory.getMongoDatabase();
-        final MongoCollection tenantsCollection = db.getCollection(MongoDbCollections.TENANTS);
-        Document doc = new Document();
-        doc.append("customerId", -1);
-        IndexOptions options = new IndexOptions();
-        options.background(true);
-        options.name("idx_tenant_customerId");
-        tenantsCollection.createIndex(doc, options);
+    @Bean(DISCUSSION_REACTIVE_MONGO_TEMPLATE)
+    public ReactiveMongoTemplate discussionReactiveMongoTemplate(
+        @Qualifier(
+            DISCUSSION_REACTIVE_MONGO_DATABASE_FACTORY
+        ) final ReactiveMongoDatabaseFactory discussionReactiveMongoDatabaseFactory,
+        final MappingMongoConverter mappingMongoConverter
+    ) {
+        return new ReactiveMongoTemplate(discussionReactiveMongoDatabaseFactory, mappingMongoConverter);
     }
 }

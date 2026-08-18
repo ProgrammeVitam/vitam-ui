@@ -4,7 +4,7 @@
     <option name="VM_PARAMETERS" value="-Xmx512m -Dspring.config.additional-location=src/main/config/ -Dspring.profiles.active=dev,gateway" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/cas/cas-server" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="ALTERNATIVE_JRE_PATH" value="21" />
+    <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
     <module name="cas-server" />
     <method v="2" />
   </configuration>

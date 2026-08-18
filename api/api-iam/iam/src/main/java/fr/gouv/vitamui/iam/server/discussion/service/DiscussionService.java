@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.server.discussion.service;
 
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
+import fr.gouv.vitamui.iam.server.discussion.config.DiscussionMongoConfig;
 import fr.gouv.vitamui.iam.server.discussion.dao.DiscussionReadRepository;
 import fr.gouv.vitamui.iam.server.discussion.dao.DiscussionRepository;
 import fr.gouv.vitamui.iam.server.discussion.domain.Discussion;
@@ -13,6 +14,7 @@ import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.ChangeStreamEvent;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,7 @@ public class DiscussionService {
     public DiscussionService(
         DiscussionRepository discussionRepository,
         DiscussionReadRepository discussionReadRepository,
-        ReactiveMongoTemplate reactiveMongoTemplate,
+        @Qualifier(DiscussionMongoConfig.DISCUSSION_REACTIVE_MONGO_TEMPLATE) ReactiveMongoTemplate reactiveMongoTemplate,
         SecurityService securityService,
         UserRepository userRepository
     ) {

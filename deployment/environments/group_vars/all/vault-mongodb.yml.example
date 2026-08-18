@@ -47,3 +47,8 @@ mongodb:
         user: api-archive-search
         password: changeit_archivesearch
         roles: '[{ role: "readWrite", db: "archivesearch" }]'
+    discussions:
+        db: discussions
+        user: discussions
+        password: changeit_discussions
+        roles: '[{ role: "readWrite", db: "discussions" }]'

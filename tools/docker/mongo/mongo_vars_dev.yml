@@ -61,6 +61,11 @@ mongodb:
     user: "mongod_dbuser_archivesearch"
     password: "mongod_dbpwd_archivesearch"
     roles: '[{ role: "readWrite", db: "archivesearch" }]'
+  discussions:
+    db: discussions
+    user: "mongod_dbuser_discussions"
+    password: "mongod_dbpwd_discussions"
+    roles: '[{ role: "readWrite", db: "discussions" }]'
 
 mongod_replicaset_name: "rs0"
 
