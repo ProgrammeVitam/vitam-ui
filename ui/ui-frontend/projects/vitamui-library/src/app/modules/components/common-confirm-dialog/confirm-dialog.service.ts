@@ -42,7 +42,6 @@ import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
-import { DialogInputData } from './dialog-input-data.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -50,9 +49,9 @@ import { DialogInputData } from './dialog-input-data.interface';
 export class ConfirmDialogService {
   constructor(private matDialog: MatDialog) {}
 
-  public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>, data?: DialogInputData): Observable<boolean> {
+  public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
     return this.matDialog
-      .open(componentOrTemplateRef, { panelClass: 'small', data })
+      .open(componentOrTemplateRef)
       .afterClosed()
       .pipe(filter((result) => !!result));
   }
@@ -66,7 +65,7 @@ export class ConfirmDialogService {
   }
 
   // Opens a confirmation dialog before closing the dialog
-  public confirmBeforeClosing(matDialogRef: MatDialogRef<unknown>, data?: DialogInputData): void {
-    this.confirm(ClosePopupDialogComponent, data).subscribe(() => matDialogRef.close());
+  public confirmBeforeClosing(matDialogRef: MatDialogRef<unknown>): void {
+    this.confirm(ClosePopupDialogComponent).subscribe(() => matDialogRef.close());
   }
 }
