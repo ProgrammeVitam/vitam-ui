@@ -174,7 +174,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   onCancel(): void {
     if (this.form.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef, { subTitle: 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' });
+      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }

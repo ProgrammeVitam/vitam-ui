@@ -245,7 +245,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   onCancel() {
     if (this.form.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef, { subTitle: 'INGEST_CONTRACT.CREATE_DIALOG.TITLE' });
+      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }
