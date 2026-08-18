@@ -36,7 +36,7 @@
  */
 import { AbstractControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { DisplayObject } from '../../object-viewer/models';
+import { DisplayObject } from '../../object-viewer/models/display-object.model';
 import { DisplayObjectType, EffectiveCardinality } from '../../object-viewer/types';
 
 export interface Actions {

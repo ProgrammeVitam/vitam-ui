@@ -37,9 +37,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { VitamUICommonTestModule } from '../../../../../../testing/src';
+import { VitamUICommonTestModule } from '../../../../../../testing/src/vitamui-common-test.module';
 import { AuthService } from '../../../auth.service';
-import { IEvent } from '../../../models';
+import { IEvent } from '../../../models/logbook/event.interface';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
 

@@ -38,7 +38,7 @@ import { DialogModule } from '@angular/cdk/dialog';
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogData } from '../../../models/confirm-dialog-data.interface';
-import { ConfirmDialogModule } from '../../../../app/modules';
+import { ConfirmDialogModule } from '../../../../app/modules/components/common-confirm-dialog/confirm-dialog.module';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

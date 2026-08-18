@@ -74,7 +74,7 @@
 import { Component, Input } from '@angular/core';
 
 import { MatDialogModule } from '@angular/material/dialog';
-import { ConfirmDialogModule } from '../../../app/modules';
+import { ConfirmDialogModule } from '../../../app/modules/components/common-confirm-dialog/confirm-dialog.module';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

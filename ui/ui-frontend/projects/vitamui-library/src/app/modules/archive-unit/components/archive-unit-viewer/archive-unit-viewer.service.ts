@@ -34,12 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Logger } from '../../../logger/logger';
-import { Collection, Schema } from '../../../models';
+import { Collection } from '../../../models/schema/collection.enum';
+import { Schema } from '../../../models/schema/schema.interface';
 import { EditObjectService } from '../../../object-editor/services/edit-object.service';
-import { DisplayObject, DisplayObjectService, DisplayRule } from '../../../object-viewer/models';
+import { DisplayObjectService } from '../../../object-viewer/models/display-object-service';
+import { DisplayObject } from '../../../object-viewer/models/display-object.model';
+import { DisplayRule } from '../../../object-viewer/models/display-rule.model';
 import { SchemaService } from '../../../schema/schema.service';
 import { ArchiveUnitEditObjectService, SchemaElementByApiPath } from '../../archive-unit-edit-object.service';
 import { ArchiveUnitTemplateService } from '../../archive-unit-template.service';

@@ -40,7 +40,7 @@ import { BASE_URL } from '../../injection-tokens';
 import { Observable } from 'rxjs';
 import { CreateGriffin, Griffin } from './griffin.type';
 import { OperationId } from '../../../../lib/models/operation-id';
-import { addSkipErrorNotificationHeader } from '../../utils';
+import { addSkipErrorNotificationHeader } from '../../utils/http-header.util';
 
 @Injectable({
   providedIn: 'root',

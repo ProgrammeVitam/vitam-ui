@@ -42,9 +42,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
-import { CustomerCreateModule } from './customer-create';
-import { CustomerListModule } from './customer-list';
-import { CustomerPreviewModule } from './customer-preview';
+import { CustomerCreateModule } from './customer-create/customer-create.module';
+import { CustomerListModule } from './customer-list/customer-list.module';
+import { CustomerPreviewModule } from './customer-preview/customer-preview.module';
 import { CustomerPopupComponent } from './customer-preview/customer-popup.component';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';

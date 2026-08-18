@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../models';
+import { ProfiledSchemaElement, SchemaElement } from '../../models/schema/schema-element.model';
+import { DisplayRule } from '../models/display-rule.model';
 import { LayoutSize } from '../types';
 import { DatePatternConstants } from '../../dates.constants';
 

@@ -44,7 +44,7 @@ import { FormsModule } from '@angular/forms';
 import { DiscussionComponent } from './discussion/discussion.component';
 import { CdkDragMove, DragDropModule } from '@angular/cdk/drag-drop';
 import { DiscussionListComponent } from './discussion-list/discussion-list.component';
-import { VitamUICommonModule } from '../../../app/modules';
+import { VitamUICommonModule } from '../../../app/modules/vitamui-common.module';
 import { DiscussionTitleComponent } from './discussion-title/discussion-title.component';
 import { DiscussionPanelService } from './discussion-panel.service';
 import { DiscussionNewComponent } from './discussion-new/discussion-new.component';

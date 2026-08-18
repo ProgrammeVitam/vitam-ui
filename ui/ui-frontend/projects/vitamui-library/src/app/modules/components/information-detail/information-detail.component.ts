@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges } from '@angular/core';
-import type { ValidationError } from '../../models';
+import type { ValidationError } from '../../models/units/unit.interface';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

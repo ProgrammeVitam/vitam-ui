@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
-import type { DisplayObject } from '../../models';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import type { DisplayObject } from '../../models/display-object.model';
 import { DateDisplayService } from '../../services/date-display.service';
 
 @Component({

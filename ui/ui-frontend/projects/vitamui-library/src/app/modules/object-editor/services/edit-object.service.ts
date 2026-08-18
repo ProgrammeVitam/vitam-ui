@@ -34,14 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { orderedFields } from '../../archive-unit/archive-unit-fields';
 import { Logger } from '../../logger/logger';
-import { Schema } from '../../models';
-import { DisplayRule, ProfiledSchemaElement, SchemaElement } from '../../object-viewer/models';
+import { Schema } from '../../models/schema/schema.interface';
+import { ProfiledSchemaElement, SchemaElement } from '../../models/schema/schema-element.model';
+import { DisplayRule } from '../../object-viewer/models/display-rule.model';
 import { Template } from '../../object-viewer/models/template.model';
 import { DataStructureService } from '../../object-viewer/services/data-structure.service';
 import { TypeService } from '../../object-viewer/services/type.service';

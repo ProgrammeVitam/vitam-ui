@@ -45,7 +45,7 @@ import { VitamUICommonTestModule } from '../../../../testing/src/public_api';
 import { environment } from '../../../environments/environment';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { InjectorModule } from '../helper/injector.module';
-import { LoggerModule } from '../logger';
+import { LoggerModule } from '../logger/logger.module';
 import type { Account } from '../models/account/account.interface';
 import { ENVIRONMENT } from './../injection-tokens';
 import { AccountComponent } from './account.component';

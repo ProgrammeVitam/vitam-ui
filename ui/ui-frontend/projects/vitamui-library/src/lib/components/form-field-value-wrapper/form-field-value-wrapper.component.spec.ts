@@ -41,7 +41,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormFieldValueWrapperComponent } from './form-field-value-wrapper.component';
 import { SearchWithTypeSelectorComponent } from '../search-with-type-selector/search-with-type-selector.component';
 import { By } from '@angular/platform-browser';
-import { input } from '../../../../testing/src';
+import { input } from '../../../../testing/src/helpers';
 
 const types = [
   { label: 'Recherche approchante', value: 'approx' },

@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, ViewChild, inject } from '@angular/core';
+import { Component, forwardRef, inject, Input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MatSelectModule } from '@angular/material/select';
 import { SelectComponent } from '../select/select.component';
-import { Option } from '../../../app/modules';
+import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
 
 export const PATTERN_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

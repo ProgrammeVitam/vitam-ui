@@ -43,19 +43,16 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } fro
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { switchMap } from 'rxjs';
-import {
-  ArchiveUnit,
-  BadgeComponent,
-  ConfirmDialogService,
-  Logger,
-  Option,
-  PagedResult,
-  SearchCriteriaDto,
-  StartupService,
-  StepperComponent,
-  Unit,
-  SnackBarService,
-} from '../../../app/modules';
+import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
+import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
+import { BadgeComponent } from '../../../app/modules/components/badge/badge.component';
+import { ConfirmDialogService } from '../../../app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { SnackBarService } from '../../../app/modules/components/snack-bar/snack-bar.service';
+import { StepperComponent } from '../../../app/modules/components/stepper/stepper.component';
+import { Logger } from '../../../app/modules/logger/logger';
+import { PagedResult, SearchCriteriaDto } from '../../../app/modules/models/criteria/search-criteria.interface';
+import { Unit } from '../../../app/modules/models/units/unit.interface';
+import { StartupService } from '../../../app/modules/startup.service';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { DialogHeaderComponent } from '../dialog/dialog-header/dialog-header.component';
 import { FilingPlanModule } from '../filing-plan/filing-plan.module';

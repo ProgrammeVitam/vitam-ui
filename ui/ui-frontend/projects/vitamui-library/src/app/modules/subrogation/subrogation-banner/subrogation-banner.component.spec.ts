@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { EMPTY, of } from 'rxjs';
 
-import { VitamUICommonTestModule } from '../../../../../testing/src';
+import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-common-test.module';
 import { AuthService } from '../../auth.service';
 import { SubrogationService } from '../subrogation.service';
 import { SubrogationBannerComponent } from './subrogation-banner.component';

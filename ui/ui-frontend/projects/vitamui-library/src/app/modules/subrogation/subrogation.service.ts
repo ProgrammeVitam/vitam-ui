@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { formatDate } from '@angular/common';
-import { Injectable, LOCALE_ID, inject } from '@angular/core';
+import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
 
@@ -46,7 +46,7 @@ import { AuthService } from '../auth.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { SUBROGRATION_REFRESH_RATE_MS } from '../injection-tokens';
 import { Logger } from '../logger/logger';
-import { Subrogation } from '../models';
+import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogation-snack-bar.component';
 
 @Injectable({

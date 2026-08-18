@@ -42,7 +42,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { input } from '../../../../testing/src';
+import { input } from '../../../../testing/src/helpers';
 
 const placeholder = 'test';
 const searchBarPlaceHolder = 'search test';

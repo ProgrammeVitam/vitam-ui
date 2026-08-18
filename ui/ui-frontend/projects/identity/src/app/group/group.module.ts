@@ -43,9 +43,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
-import { GroupCreateModule } from './group-create';
-import { GroupListModule } from './group-list';
-import { GroupPreviewModule } from './group-preview';
+import { GroupCreateModule } from './group-create/group-create.module';
+import { GroupListModule } from './group-list/group-list.module';
+import { GroupPreviewModule } from './group-preview/group-preview.module';
 import { GroupRoutingModule } from './group-routing.module';
 import { GroupComponent } from './group.component';
 import { TranslatePipe } from '@ngx-translate/core';

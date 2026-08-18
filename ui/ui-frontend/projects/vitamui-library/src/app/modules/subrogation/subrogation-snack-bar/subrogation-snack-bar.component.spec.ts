@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { VitamUICommonTestModule } from '../../../../../testing/src';
+import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-common-test.module';
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';

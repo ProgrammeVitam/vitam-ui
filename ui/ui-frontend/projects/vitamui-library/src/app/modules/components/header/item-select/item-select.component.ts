@@ -36,7 +36,7 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import type { MenuOption } from '../../../models/menu-option.interface';
-import { Option } from '../../autocomplete';
+import { Option } from '../../autocomplete/utils/option.interface';
 
 @Component({
   selector: 'vitamui-common-item-select',

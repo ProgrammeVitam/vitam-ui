@@ -34,14 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  CriteriaDataType,
-  CriteriaOperator,
-  CriteriaValue,
-  Direction,
-  SearchCriteriaDto,
-  SearchCriteriaTypeEnum,
-} from '../../../app/modules';
+import { CriteriaDataType, CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
+import { CriteriaValue, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
+import { Direction } from '../../../app/modules/vitamui-table/direction.enum';
 
 export function deepCopy<T>(object: T): T {
   return JSON.parse(JSON.stringify(object));

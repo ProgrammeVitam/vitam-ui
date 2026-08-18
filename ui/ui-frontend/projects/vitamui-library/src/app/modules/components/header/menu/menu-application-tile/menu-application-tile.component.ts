@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import type { Application } from '../../../../models';
+import type { Application } from '../../../../models/application/application.interface';
 
 @Component({
   selector: 'vitamui-common-menu-application-tile',

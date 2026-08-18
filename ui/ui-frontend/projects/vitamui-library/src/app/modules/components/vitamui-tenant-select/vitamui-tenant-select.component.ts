@@ -39,7 +39,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { ApplicationId } from '../../application-id.enum';
 import { AuthService } from '../../auth.service';
-import { Tenant } from '../../models';
+import { Tenant } from '../../models/customer/tenant.interface';
 import { MenuOption } from '../../models/menu-option.interface';
 
 import { TenantSelectContentComponent } from './tenant-select-content/tenant-select-content.component';

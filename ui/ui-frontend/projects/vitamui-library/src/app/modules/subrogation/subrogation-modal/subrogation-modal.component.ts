@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
-import { Subrogation } from '../../models';
+import { Subrogation } from '../../models/subrogation/subrogation.interface';
 import { SubrogationService } from '../subrogation.service';
 
 @Component({

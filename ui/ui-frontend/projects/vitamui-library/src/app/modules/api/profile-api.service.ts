@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
-import { Profile } from '../models';
+import { Profile } from '../models/profile/profile.interface';
 import { CriteriaSearchQuery } from '../models/criteria/criteria.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
 

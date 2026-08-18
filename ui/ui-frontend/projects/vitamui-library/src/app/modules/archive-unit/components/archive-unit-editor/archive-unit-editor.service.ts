@@ -34,20 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { Logger } from '../../../logger/logger';
-import { Collection, Schema, SchemaElement } from '../../../models';
+import { Collection } from '../../../models/schema/collection.enum';
+import { SchemaElement } from '../../../models/schema/schema-element.model';
+import { Schema } from '../../../models/schema/schema.interface';
 import { EditObject } from '../../../object-editor/models/edit-object.model';
 import { EditObjectService } from '../../../object-editor/services/edit-object.service';
 import { SchemaService as SchemaUtils } from '../../../object-editor/services/schema.service';
 import { TemplateService } from '../../../object-editor/services/template.service';
-import { DisplayRule } from '../../../object-viewer/models';
+import { DisplayRule } from '../../../object-viewer/models/display-rule.model';
 import { internationalizedKeys } from '../../../object-viewer/services/display-object-helper.service';
 import { SedaVersion } from '../../../object-viewer/types';
-import { SchemaService } from '../../../schema';
-import { diff } from '../../../utils';
+import { SchemaService } from '../../../schema/schema.service';
+import { diff } from '../../../utils/diff.util';
 import { ArchiveUnitEditObjectService } from '../../archive-unit-edit-object.service';
 import { ArchiveUnitTemplateService } from '../../archive-unit-template.service';
 import { ArchiveUnit } from '../../models/archive-unit';

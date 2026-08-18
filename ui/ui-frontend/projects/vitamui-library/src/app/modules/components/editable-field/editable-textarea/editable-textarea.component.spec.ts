@@ -36,14 +36,15 @@
  */
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { AbstractControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
-import { input, VitamUIFieldErrorStubComponent } from '../../../../../../testing/src';
+import { input } from '../../../../../../testing/src/helpers';
+import { VitamUIFieldErrorStubComponent } from '../../../../../../testing/src/vitamui-common-test.module';
 import { EditableTextareaComponent } from './editable-textarea.component';
 
 @Component({

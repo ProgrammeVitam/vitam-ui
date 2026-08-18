@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ObjectQualifierType, ValidationError } from '../../../models';
-import type { VersionWithQualifierDto } from '../../../models';
+import { ObjectQualifierType } from '../../../models/units/object-qualifier.enums';
+import { ValidationError } from '../../../models/units/unit.interface';
+import type { VersionWithQualifierDto } from '../../../models/units/object-group.interface';
 
 interface Measurement {
   name: string;

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
-import { Injectable, Injector, inject } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, throwError, timeout } from 'rxjs';
 
@@ -45,11 +45,11 @@ import { AuthService } from './auth.service';
 import { SnackBarService } from './components/snack-bar/snack-bar.service';
 import { ErrorDialogComponent } from '../../lib/components/dialog/error-dialog/error-dialog.component';
 import { ENVIRONMENT } from './injection-tokens';
-import { Logger } from './logger';
+import { Logger } from './logger/logger';
 
 import { VitamUITimeoutError } from './models/http-interceptor/vitamui-timeout-error';
 import { StartupService } from './startup.service';
-import { SKIP_ERROR_NOTIFICATION } from './utils';
+import { SKIP_ERROR_NOTIFICATION } from './utils/http-header.util';
 import { VitamuiHttpHeaders } from './vitamui-http-headers.enum';
 import { ErrorsDetailsDialogComponent } from '../../lib/components/dialog/errors-details-dialog/errors-details-dialog.component';
 

@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import type { FilingHoldingSchemeNode } from '../../models';
+import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import type { FilingHoldingSchemeNode } from '../../models/nodes/node.interface';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
-import { UnitType } from '../../models';
+import { UnitType } from '../../models/units/unit-type.enum';
 import { CommonModule } from '@angular/common';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 

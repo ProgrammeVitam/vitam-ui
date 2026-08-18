@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { fadeInOutAnimation } from '../../animations';
+import { fadeInOutAnimation } from '../../animations/vitamui-common-animations';
 
 @Component({
   selector: 'vitamui-common-tooltip',

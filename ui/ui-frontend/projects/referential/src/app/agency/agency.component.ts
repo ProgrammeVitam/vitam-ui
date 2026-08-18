@@ -55,7 +55,7 @@ import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/imp
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyCreateModule } from './agency-create';
+import { AgencyCreateModule } from './agency-create/agency-create.module';
 import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
