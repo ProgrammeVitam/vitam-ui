@@ -39,6 +39,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { TraceabilityChainAuditRequest } from '../../models/audit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -90,6 +91,10 @@ export class OperationApiService extends PaginatedHttpClient<Event> {
 
   runAudit(audit: any, headers?: HttpHeaders): Observable<any> {
     return super.create(audit, headers);
+  }
+
+  runTraceabilityChainAudit(request: TraceabilityChainAuditRequest, headers?: HttpHeaders): Observable<{ operationId: string }> {
+    return this.http.post<{ operationId: string }>(`${this.apiUrl}/chainAudit`, request, { headers });
   }
 
   runProbativeValue(probativeValue: any, headers?: HttpHeaders): Observable<any> {

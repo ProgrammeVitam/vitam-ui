@@ -49,6 +49,7 @@ import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PipesModule } from '../../shared/pipes/pipes.module';
 import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
+import { AuditOperation } from '../../models/audit.interface';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -101,9 +102,16 @@ export class AuditPreviewComponent implements OnInit {
         'RECTIFICATION_AUDIT.OK',
         'RECTIFICATION_AUDIT.WARNING',
         'RECTIFICATION_AUDIT.KO',
+        'TRACEABILITY_CHAIN_AUDIT.OK',
+        'TRACEABILITY_CHAIN_AUDIT.WARNING',
+        'TRACEABILITY_CHAIN_AUDIT.KO',
       ].includes(status) || status?.endsWith('FATAL')
     );
   });
+
+  isChainAudit(): boolean {
+    return this.audit()?.type === AuditOperation.TRACEABILITY_CHAIN_AUDIT;
+  }
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
