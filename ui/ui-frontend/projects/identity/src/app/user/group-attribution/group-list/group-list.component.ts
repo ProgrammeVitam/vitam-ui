@@ -36,13 +36,32 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Profile } from 'vitamui-library';
+import {
+  Profile,
+  SearchBarComponent,
+  CollapseContainerDirective,
+  CollapseDirective,
+  CollapseTriggerForDirective,
+  EllipsisDirective,
+} from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
+import { GroupDetailComponent } from '../group-detail/group-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  standalone: false,
+  imports: [
+    SearchBarComponent,
+    GroupDetailComponent,
+    TranslatePipe,
+    CollapseContainerDirective,
+    CollapseDirective,
+    CollapseTriggerForDirective,
+    CommonModule,
+    EllipsisDirective,
+  ],
 })
 export class GroupListComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);

@@ -44,7 +44,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { GlobalEventService } from 'vitamui-library';
+import { DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurisationComponent } from './securisation.component';
@@ -63,7 +64,6 @@ describe('SecurisationComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [SecurisationComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
@@ -73,6 +73,7 @@ describe('SecurisationComponent', () => {
         DatepickerComponent,
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        SecurisationComponent,
       ],
       providers: [
         provideNativeDateAdapter(),

@@ -36,16 +36,18 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
-import { AccessContract, AccessContractService, ObjectQualifierType } from 'vitamui-library';
+import { Unit, VersionWithQualifierDto, AccessContract, AccessContractService } from 'vitamui-library';
+import { ObjectQualifierType, DataComponent, PipesModule } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
-  standalone: false,
+  imports: [DataComponent, AsyncPipe, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   private archiveService = inject(ArchiveService);

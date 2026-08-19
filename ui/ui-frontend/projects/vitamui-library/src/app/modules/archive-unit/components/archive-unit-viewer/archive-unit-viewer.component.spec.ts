@@ -97,9 +97,8 @@ describe('ArchiveUnitViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot()],
+      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot(), ArchiveUnitViewerComponent],
       providers: [
         {
           provide: BASE_URL,

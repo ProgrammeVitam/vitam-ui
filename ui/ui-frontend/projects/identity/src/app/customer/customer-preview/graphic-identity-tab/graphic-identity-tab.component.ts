@@ -38,17 +38,19 @@ import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import type { Customer, Theme } from 'vitamui-library';
-import { ThemeColorType, ThemeService } from 'vitamui-library';
+import { Customer, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
+import { PipesModule } from 'vitamui-library';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',
   styleUrls: ['./graphic-identity-tab.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   private customerService = inject(CustomerService);

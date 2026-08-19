@@ -40,7 +40,8 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
+import { AuthService, BASE_URL, ENVIRONMENT, StartupService } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../environments/environment.prod';
 
@@ -60,7 +61,7 @@ class FakeLoader implements TranslateLoader {
 @Component({
   selector: 'router-outlet',
   template: '',
-  standalone: false,
+  imports: [InjectorModule, VitamUICommonTestModule, BrowserAnimationsModule],
 })
 class RouterOutletStubComponent {}
 
@@ -76,8 +77,14 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AppComponent, RouterOutletStubComponent],
-      imports: [InjectorModule, VitamUICommonTestModule, BrowserAnimationsModule, LoggerModule.forRoot()],
+      imports: [
+        InjectorModule,
+        VitamUICommonTestModule,
+        BrowserAnimationsModule,
+        LoggerModule.forRoot(),
+        RouterOutletStubComponent,
+        AppComponent,
+      ],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },

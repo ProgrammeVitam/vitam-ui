@@ -43,7 +43,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractListComponent } from './management-contract-list.component';
@@ -77,7 +78,6 @@ describe('ManagementContractListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         ReactiveFormsModule,
@@ -88,6 +88,7 @@ describe('ManagementContractListComponent', () => {
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
         NoopAnimationsModule,
+        ManagementContractListComponent,
       ],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },

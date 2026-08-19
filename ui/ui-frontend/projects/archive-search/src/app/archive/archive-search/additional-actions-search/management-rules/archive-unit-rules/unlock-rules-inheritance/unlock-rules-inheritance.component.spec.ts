@@ -215,8 +215,7 @@ describe('UnlockRulesInheritanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UnlockRulesInheritanceComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, UnlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

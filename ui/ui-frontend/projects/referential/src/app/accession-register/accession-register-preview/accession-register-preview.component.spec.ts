@@ -62,10 +62,7 @@ describe('AccessionRegisterPreviewComponent', () => {
   let component: AccessionRegisterPreviewComponent;
   let fixture: ComponentFixture<AccessionRegisterPreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -95,8 +92,9 @@ describe('AccessionRegisterPreviewComponent', () => {
         RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
+        AccessionRegisterPreviewComponent,
+        MockTruncatePipe,
       ],
-      declarations: [AccessionRegisterPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: AccessionRegistersService, useValue: AccessionRegistersServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },

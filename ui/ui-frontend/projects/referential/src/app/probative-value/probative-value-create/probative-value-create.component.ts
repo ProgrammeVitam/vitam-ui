@@ -36,8 +36,8 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -50,15 +50,32 @@ import {
   SigningRoleType,
   SnackBarService,
   VitamuiHttpHeaders,
+  DialogHeaderComponent,
+  InputComponent,
+  SelectComponent,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 import { sizes } from '../../ontology/ontology-form-options';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-probative-value-create',
   templateUrl: './probative-value-create.component.html',
   styleUrls: ['./probative-value-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    InputComponent,
+    SelectComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProbativeValueCreateComponent>>(MatDialogRef);

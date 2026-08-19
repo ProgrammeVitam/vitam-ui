@@ -44,7 +44,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
+
 import { SubrogateUserListComponent } from './subrogate-user/subrogate-user-list/subrogate-user-list.component';
 import { SubrogateUserComponent } from './subrogate-user/subrogate-user.component';
 import { SubrogationRoutingModule } from './subrogation-routing.module';
@@ -61,11 +61,11 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     MatSidenavModule,
     ReactiveFormsModule,
-    SharedModule,
     SubrogationRoutingModule,
     VitamUICommonModule,
     TranslatePipe,
+    SubrogateUserListComponent,
+    SubrogateUserComponent,
   ],
-  declarations: [SubrogateUserListComponent, SubrogateUserComponent],
 })
 export class SubrogationModule {}

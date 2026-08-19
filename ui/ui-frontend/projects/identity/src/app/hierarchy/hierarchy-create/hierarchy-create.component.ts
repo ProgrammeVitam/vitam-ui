@@ -35,17 +35,43 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import { AuthService, ConfirmDialogService, CriteriaSearchQuery, Operators, Profile, buildValidators } from 'vitamui-library';
+import {
+  AuthService,
+  ConfirmDialogService,
+  CriteriaSearchQuery,
+  Operators,
+  Profile,
+  buildValidators,
+  DialogHeaderComponent,
+  SlideToggleComponent,
+  LevelInputComponent,
+} from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    SlideToggleComponent,
+    ProfilesFormComponent,
+    MatDialogActions,
+    TranslatePipe,
+    CommonModule,
+    FormsModule,
+    LevelInputComponent,
+  ],
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<HierarchyCreateComponent>>(MatDialogRef);

@@ -73,20 +73,14 @@ describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class UnitI18nStubPipe implements PipeTransform {
     transform(value: any, _attribute: string): string {
       return value?.Title ?? '';
     }
   }
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -141,8 +135,10 @@ describe('ArchiveUnitInformationTabComponent', () => {
         BrowserAnimationsModule,
         DataComponent,
         PipesModule,
+        ArchiveUnitInformationTabComponent,
+        UnitI18nStubPipe,
+        DateTimeStubPipe,
       ],
-      declarations: [ArchiveUnitInformationTabComponent, UnitI18nStubPipe, DateTimeStubPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },

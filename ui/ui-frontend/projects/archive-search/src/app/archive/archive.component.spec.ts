@@ -108,7 +108,6 @@ describe('ArchiveComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      declarations: [ArchiveComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatDatepickerModule,
@@ -122,6 +121,7 @@ describe('ArchiveComponent', () => {
         RouterTestingModule,
         NoopAnimationsModule,
         SearchBarComponent,
+        ArchiveComponent,
       ],
       providers: [
         FormBuilder,

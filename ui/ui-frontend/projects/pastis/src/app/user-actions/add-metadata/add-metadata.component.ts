@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef, inject, forwardRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FileService } from '../../core/services/file.service';
@@ -83,13 +83,28 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { VitamuiBannerComponent, TooltipDirective } from 'vitamui-library';
+import { MatDivider, MatList, MatSelectionList } from '@angular/material/list';
+import { NgStyle } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-metadata.component.html',
   styleUrls: ['./add-metadata.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiBannerComponent,
+    MatDivider,
+    MatList,
+    NgStyle,
+    MatSelectionList,
+    FormsModule,
+    TooltipDirective,
+    forwardRef(() => FilterByNamePipe),
+    TranslatePipe,
+  ],
 })
 export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
@@ -265,10 +280,7 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   }
 }
 
-@Pipe({
-  name: 'filterByName',
-  standalone: false,
-})
+@Pipe({ name: 'filterByName' })
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
     if (!listOfElements) {

@@ -48,9 +48,9 @@ import {
   input,
   Input,
 } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { merge, Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import {
@@ -63,14 +63,17 @@ import {
   OperationId,
   SpinnerOverlayService,
   SnackBarService,
+  ArchiveUnitModule,
+  DialogHeaderComponent,
 } from 'vitamui-library';
 import { ArchiveUnitService } from './archive-unit.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-description-tab',
   templateUrl: './archive-unit-description-tab.component.html',
   styleUrls: ['./archive-unit-description-tab.component.scss'],
-  standalone: false,
+  imports: [ArchiveUnitModule, NgClass, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy {
   private logger = inject(Logger);

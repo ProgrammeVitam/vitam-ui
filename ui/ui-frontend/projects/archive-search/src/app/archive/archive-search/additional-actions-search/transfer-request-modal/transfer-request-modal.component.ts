@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
   ApplicationId,
@@ -49,16 +49,43 @@ import {
   UsageVersionEnum,
   VitamuiSelectOptions,
   SnackBarService,
+  DialogHeaderComponent,
+  StepperComponent,
+  InputComponent,
+  NextStepComponent,
+  SelectComponent,
+  PreviousStepComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 
 @Component({
   selector: 'app-transfer-request-modal',
   templateUrl: './transfer-request-modal.component.html',
   styleUrls: ['./transfer-request-modal.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperComponent,
+    CdkStep,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    InputComponent,
+    MatDialogActions,
+    NextStepComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    SelectComponent,
+    MatRadioGroup,
+    MatRadioButton,
+    PreviousStepComponent,
+    TranslatePipe,
+  ],
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);

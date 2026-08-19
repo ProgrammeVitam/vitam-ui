@@ -46,15 +46,15 @@ import { environment } from '../../../environments/environment';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { InjectorModule } from '../helper/injector.module';
 import { LoggerModule } from '../logger/logger.module';
+import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../injection-tokens';
 import type { Account } from '../models/account/account.interface';
-import { ENVIRONMENT } from './../injection-tokens';
 import { AccountComponent } from './account.component';
 import { AccountService } from './account.service';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',
   template: '',
-  standalone: false,
+  imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class InformationTabStubComponent {
   @Input() account: Account;
@@ -74,13 +74,22 @@ describe('AccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
-      declarations: [AccountComponent, InformationTabStubComponent],
+      imports: [
+        InjectorModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule,
+        AccountComponent,
+        InformationTabStubComponent,
+      ],
       providers: [
         { provide: AccountService, useValue: accountServiceSpy },
         { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: WINDOW_LOCATION, useValue: location },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

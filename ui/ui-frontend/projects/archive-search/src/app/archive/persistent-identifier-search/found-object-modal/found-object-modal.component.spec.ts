@@ -41,7 +41,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, LoggerModule, ObjectQualifierType, VitamuiMissingTranslationHandler } from 'vitamui-library';
+import { BASE_URL, VitamuiMissingTranslationHandler } from 'vitamui-library';
+import { LoggerModule, ObjectQualifierType } from 'vitamui-library';
 import { FoundObjectModalComponent } from './found-object-modal.component';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -68,8 +69,7 @@ describe('ErrorResponseModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FoundObjectModalComponent],
-      imports: [LoggerModule.forRoot(), RouterTestingModule],
+      imports: [LoggerModule.forRoot(), RouterTestingModule, FoundObjectModalComponent],
       providers: [
         {
           provide: MatDialogRef,

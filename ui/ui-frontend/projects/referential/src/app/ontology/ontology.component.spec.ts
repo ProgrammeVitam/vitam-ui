@@ -40,7 +40,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SchemaService, SecurityService } from 'vitamui-library';
+import { SchemaService, SecurityService } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
@@ -49,7 +50,7 @@ import { OntologyService } from './ontology.service';
 @Component({
   selector: 'app-ontology-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class OntologyPreviewStub {
   @Input()
@@ -59,7 +60,7 @@ class OntologyPreviewStub {
 @Component({
   selector: 'app-ontology-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class OntologyListStub {}
 
@@ -69,7 +70,6 @@ describe('OntologyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OntologyComponent, OntologyListStub, OntologyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -78,6 +78,9 @@ describe('OntologyComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        OntologyComponent,
+        OntologyListStub,
+        OntologyPreviewStub,
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

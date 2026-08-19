@@ -37,8 +37,26 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  TableFilterDirective,
+  OrderByButtonComponent,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  PipesModule,
+  EllipsisDirective,
+  InfiniteScrollDirective,
+} from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -52,7 +70,22 @@ export class TraceabilityFilter {
   selector: 'app-securisation-list',
   templateUrl: './securisation-list.component.html',
   styleUrls: ['./securisation-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    EventTypeColorClassPipe,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   securisationService: SecurisationService;

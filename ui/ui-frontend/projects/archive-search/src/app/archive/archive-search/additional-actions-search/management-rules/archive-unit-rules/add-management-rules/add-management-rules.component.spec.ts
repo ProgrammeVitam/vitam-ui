@@ -215,8 +215,7 @@ describe('AddManagementRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddManagementRulesComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, AddManagementRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

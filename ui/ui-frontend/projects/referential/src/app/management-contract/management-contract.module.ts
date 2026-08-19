@@ -45,14 +45,13 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
-import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';
+
 import { ManagementContractRoutingModule } from './management-contract-routing.module';
 import { ManagementContractComponent } from './management-contract.component';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ManagementContractComponent, ManagementContractListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -65,9 +64,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     MatTabsModule,
     ManagementContractRoutingModule,
-    ManagementContractPreviewModule,
     ManagementContractCreateComponent,
     TranslatePipe,
+    ManagementContractComponent,
+    ManagementContractListComponent,
   ],
 })
 export class ManagementContractModule {}

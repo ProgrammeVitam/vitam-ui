@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -51,6 +51,10 @@ import {
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   VitamTenantConfigService,
+  SelectComponent,
+  DatepickerComponent,
+  InputComponent,
+  DialogHeaderComponent,
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
@@ -59,6 +63,9 @@ import { UpdateUnitManagementRuleService } from '../../../../../common-services/
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatMiniFabButton } from '@angular/material/button';
+import { NgStyle } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const MANAGEMENT_RULE_START_DATE = 'MANAGEMENT_RULE_START_DATE';
@@ -68,7 +75,19 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   selector: 'app-add-management-rules',
   templateUrl: './add-management-rules.component.html',
   styleUrls: ['./add-management-rules.component.css'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    DatepickerComponent,
+    MatMiniFabButton,
+    NgStyle,
+    InputComponent,
+    MatProgressSpinner,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class AddManagementRulesComponent implements OnDestroy, OnInit {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

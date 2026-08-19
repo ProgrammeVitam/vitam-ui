@@ -42,12 +42,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { FileFormatCreateModule } from './file-format-create/file-format-create.module';
+
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
-import { FileFormatPreviewModule } from './file-format-preview/file-format-preview.module';
+
 import { FileFormatRoutingModule } from './file-format-routing.module';
 import { FileFormatComponent } from './file-format.component';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
@@ -57,15 +57,13 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
     FileFormatRoutingModule,
-    FileFormatCreateModule,
-    FileFormatPreviewModule,
-    ImportDialogModule,
     MatMenuModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     TranslatePipe,
+    FileFormatComponent,
+    FileFormatListComponent,
   ],
-  declarations: [FileFormatComponent, FileFormatListComponent],
 })
 export class FileFormatModule {}

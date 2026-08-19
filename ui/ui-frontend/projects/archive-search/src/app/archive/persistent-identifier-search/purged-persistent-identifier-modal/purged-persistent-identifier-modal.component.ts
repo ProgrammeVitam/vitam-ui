@@ -35,18 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogActions } from '@angular/material/dialog';
 import {
   ObjectPurgedPersistentOperationType,
   PurgedPersistentIdentifierDto,
   UnitPurgedPersistentOperationType,
 } from '../../../core/api/persistent-identifier-response-dto.interface';
+import { DialogHeaderComponent } from 'vitamui-library';
+import { DatePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-purged-persistent-identifier-modal',
   templateUrl: './purged-persistent-identifier-modal.component.html',
   styleUrls: ['./purged-persistent-identifier-modal.component.scss'],
-  standalone: false,
+  imports: [DialogHeaderComponent, MatDialogActions, DatePipe, TranslatePipe],
 })
 export class PurgedPersistentIdentifierModalComponent implements OnInit {
   private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);

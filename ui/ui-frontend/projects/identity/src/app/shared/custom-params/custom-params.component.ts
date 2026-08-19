@@ -36,8 +36,11 @@
  */
 import { ENTER } from '@angular/cdk/keycodes';
 import { AfterContentInit, Component, ContentChildren, forwardRef, Input, QueryList } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { VitamUIFieldErrorComponent } from 'vitamui-library';
+import { InputComponent } from 'vitamui-library';
+import { KeyValuePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 export const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
@@ -50,7 +53,7 @@ export const LIST_INPUT_ACCESSOR: any = {
   templateUrl: './custom-params.component.html',
   styleUrls: ['./custom-params.component.scss'],
   providers: [LIST_INPUT_ACCESSOR],
-  standalone: false,
+  imports: [InputComponent, ReactiveFormsModule, KeyValuePipe, TranslatePipe],
 })
 export class CustomParamsComponent implements AfterContentInit, ControlValueAccessor {
   @Input() keyPlaceholder: string;

@@ -37,12 +37,32 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import type { Owner, Tenant } from 'vitamui-library';
+import { CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-owner-preview',
   templateUrl: './owner-preview.component.html',
   styleUrls: ['./owner-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    OwnerOperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class OwnerPreviewComponent {
   @Input() owner: Owner;

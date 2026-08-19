@@ -37,7 +37,7 @@
 
 import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -50,6 +50,11 @@ import {
   SnackBarService,
   ORIGIN_WAITING_RECALCULATE,
   WAITING_RECALCULATE,
+  ChipComponent,
+  TooltipDirective,
+  InputComponent,
+  ElementsComponent,
+  PipesModule,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
@@ -59,7 +64,16 @@ import { SearchCriteriaSaverService } from '../../services/search-criteria-saver
   templateUrl: './search-criteria-saver.component.html',
   styleUrls: ['./search-criteria-saver.component.css'],
   providers: [TranslatePipe],
-  standalone: false,
+  imports: [
+    ChipComponent,
+    TooltipDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    InputComponent,
+    ElementsComponent,
+    PipesModule,
+    TranslatePipe,
+  ],
 })
 export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   data = inject(MAT_DIALOG_DATA);

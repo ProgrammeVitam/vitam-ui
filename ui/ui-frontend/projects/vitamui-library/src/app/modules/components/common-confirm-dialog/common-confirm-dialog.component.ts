@@ -35,12 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-confirm-dialog',
   templateUrl: './common-confirm-dialog.component.html',
   styleUrls: ['./common-confirm-dialog.component.scss'],
-  standalone: false,
+  imports: [DialogHeaderComponent, CdkScrollable, MatDialogContent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class CommonConfirmDialogComponent {
   @Input() dialogTitle: string;

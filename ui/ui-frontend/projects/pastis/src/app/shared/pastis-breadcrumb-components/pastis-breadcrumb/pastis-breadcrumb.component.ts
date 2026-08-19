@@ -39,13 +39,14 @@ import { TenantSelectionService } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
 import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-breadcrumb',
   templateUrl: './pastis-breadcrumb.component.html',
   styleUrls: ['./pastis-breadcrumb.component.scss'],
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class PastisBreadcrumbComponent {
   private metadataLanguageService = inject(PastisPopupMetadataLanguageService);

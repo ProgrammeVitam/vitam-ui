@@ -35,17 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Group } from 'vitamui-library';
+import { DialogHeaderComponent } from 'vitamui-library';
 import { GroupService } from '../../../group.service';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { ProfilesFormComponent } from '../../../../shared/profiles-form/profiles-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profiles-edit',
   templateUrl: './profiles-edit.component.html',
   styleUrls: ['./profiles-edit.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    ProfilesFormComponent,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class ProfilesEditComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProfilesEditComponent>>(MatDialogRef);

@@ -34,24 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { CollapseModule, LevelInputModule, VitamUICommonModule } from 'vitamui-library';
-import { DomainsInputModule } from './domains-input/domains-input.module';
-import { EditableFieldModule } from './editable-field/editable-field.module';
-import { ProfilesFormModule } from './profiles-form/profiles-form.module';
+import { VitamUICommonModule, LevelInputComponent, CollapseComponent } from 'vitamui-library';
+import { DomainsInputComponent } from './domains-input/domains-input.component';
+import { EditableCustomParamsComponent } from './editable-field/editable-custom-params/editable-custom-params.component';
+import { EditableDomainInputComponent } from './editable-field/editable-domain-input/editable-domain-input.component';
+import { EditableKeystoreComponent } from './editable-field/editable-keystore/editable-keystore.component';
+import { EditablePatternsComponent } from './editable-field/editable-patterns/editable-patterns.component';
+import { ProfilesFormComponent } from './profiles-form/profiles-form.component';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
-    CommonModule,
-    CollapseModule,
-    DomainsInputModule,
-    EditableFieldModule,
-    ProfilesFormModule,
-    LevelInputModule,
     VitamUICommonModule,
+    DomainsInputComponent,
+    EditableDomainInputComponent,
+    EditablePatternsComponent,
+    EditableKeystoreComponent,
+    EditableCustomParamsComponent,
+    ProfilesFormComponent,
+    CommonModule,
+    FormsModule,
+    LevelInputComponent,
+    TranslatePipe,
+    CollapseComponent,
   ],
-  exports: [CollapseModule, DomainsInputModule, EditableFieldModule, ProfilesFormModule, LevelInputModule, VitamUICommonModule],
+  exports: [
+    CollapseComponent,
+    LevelInputComponent,
+    VitamUICommonModule,
+    DomainsInputComponent,
+    EditableDomainInputComponent,
+    EditablePatternsComponent,
+    EditableKeystoreComponent,
+    EditableCustomParamsComponent,
+    ProfilesFormComponent,
+  ],
 })
 export class SharedModule {}

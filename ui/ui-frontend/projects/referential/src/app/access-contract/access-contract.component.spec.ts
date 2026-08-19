@@ -39,7 +39,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AccessContractService, ApplicationService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AccessContractService, ApplicationService, BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -50,7 +51,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-access-contract-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class AccessContractPreviewStub {
   @Input()
@@ -60,7 +61,7 @@ class AccessContractPreviewStub {
 @Component({
   selector: 'app-access-contract-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class AccessContractListStub {}
 
@@ -78,7 +79,6 @@ describe('AccessContractComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -87,6 +87,9 @@ describe('AccessContractComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        AccessContractComponent,
+        AccessContractListStub,
+        AccessContractPreviewStub,
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },

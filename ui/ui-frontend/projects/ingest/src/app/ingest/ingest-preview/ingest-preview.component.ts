@@ -37,16 +37,46 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { LogbookService } from 'vitamui-library';
+import {
+  VitamuiMenuButtonComponent,
+  TooltipDirective,
+  PipesModule,
+  CommonTooltipComponent,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
 import { IngestStatus } from '../../models/logbook-event.interface';
 import type { LogbookOperation } from '../../models/logbook-event.interface';
 import { ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
+import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
   styleUrls: ['./ingest-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    TooltipDirective,
+    MatTabGroup,
+    MatTab,
+    IngestInformationTabComponent,
+    IngestErrorsDetailsTabComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class IngestPreviewComponent implements OnInit, OnChanges {
   private logbookService = inject(LogbookService);

@@ -59,10 +59,7 @@ import { SearchCriteriaSaverService } from '../../services/search-criteria-saver
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -99,8 +96,14 @@ describe('SearchCriteriaListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
-      declarations: [SearchCriteriaListComponent, MockTruncatePipe],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        SearchCriteriaListComponent,
+        MockTruncatePipe,
+      ],
       providers: [
         ArchiveSharedDataService,
         DatePipe,

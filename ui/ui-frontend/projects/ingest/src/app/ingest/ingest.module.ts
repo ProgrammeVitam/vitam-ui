@@ -43,10 +43,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
-import { IngestListModule } from './ingest-list/ingest-list.module';
-import { IngestPreviewModule } from './ingest-preview/ingest-preview.module';
 import { IngestRoutingModule } from './ingest-routing.module';
 import { IngestComponent } from './ingest.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -54,19 +50,15 @@ import { TranslatePipe } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    IngestListModule,
-    IngestPreviewModule,
     IngestRoutingModule,
     MatDatepickerModule,
     MatDialogModule,
     MatMenuModule,
     MatSidenavModule,
     ReactiveFormsModule,
-    UploadModule,
-    UploadTrackingModule,
     VitamUICommonModule,
     TranslatePipe,
+    IngestComponent,
   ],
-  declarations: [IngestComponent],
 })
 export class IngestModule {}

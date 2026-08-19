@@ -35,17 +35,43 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Colors, FacetDetails } from 'vitamui-library';
+import {
+  Colors,
+  FacetDetails,
+  LogbookOperationFacetComponent,
+  TableFilterDirective,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  TooltipDirective,
+  EventTypeLabelComponent,
+  PipesModule,
+  InfiniteScrollDirective,
+} from 'vitamui-library';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-logbook-management-operation-list',
   templateUrl: './logbook-management-operation-list.component.html',
   styleUrls: ['./logbook-management-operation-list.component.scss'],
-  standalone: false,
+  imports: [
+    LogbookOperationFacetComponent,
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    TooltipDirective,
+    EventTypeLabelComponent,
+    NgClass,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class LogbookManagementOperationListComponent implements OnInit {
   logbookManagementOperationService = inject(LogbookManagementOperationService);

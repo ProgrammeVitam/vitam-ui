@@ -52,8 +52,18 @@ import { AccordionComponent } from '../components/accordion/accordion.component'
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [CommonModule, PipesModule, MatProgressSpinnerModule, AccordionComponent, DataComponent, TranslatePipe],
-  declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent],
+  imports: [
+    CommonModule,
+    PipesModule,
+    MatProgressSpinnerModule,
+    AccordionComponent,
+    DataComponent,
+    TranslatePipe,
+    ObjectViewerComponent,
+    GroupComponent,
+    ListComponent,
+    PrimitiveComponent,
+  ],
   providers: [
     DisplayObjectHelperService,
     DisplayRuleHelperService,

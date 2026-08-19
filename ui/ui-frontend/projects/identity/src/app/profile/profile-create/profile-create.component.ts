@@ -35,21 +35,52 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Subscription } from 'rxjs';
-import { ApplicationId, AuthService, AuthUser, buildValidators, ConfirmDialogService, Profile, Role } from 'vitamui-library';
+import {
+  ApplicationId,
+  AuthService,
+  AuthUser,
+  buildValidators,
+  ConfirmDialogService,
+  Profile,
+  Role,
+  DialogHeaderComponent,
+  SlideToggleComponent,
+  InputComponent,
+  LevelInputComponent,
+  RoleComponent,
+  RoleToggleComponent,
+} from 'vitamui-library';
 
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
 import { ProfileValidators } from '../profile.validators';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    SlideToggleComponent,
+    InputComponent,
+    MatDialogActions,
+    TranslatePipe,
+    CommonModule,
+    FormsModule,
+    LevelInputComponent,
+    RoleComponent,
+    RoleToggleComponent,
+  ],
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProfileCreateComponent>>(MatDialogRef);

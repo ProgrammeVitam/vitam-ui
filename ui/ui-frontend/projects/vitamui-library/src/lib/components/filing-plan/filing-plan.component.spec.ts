@@ -50,7 +50,7 @@ import { FileType } from '../../../app/modules/file-type.enum';
 @Component({
   selector: 'lib-vitamui-library-node',
   template: '',
-  standalone: false,
+  imports: [MatTreeModule, MatProgressSpinnerModule],
 })
 class NodeStubComponent {
   @Input() tenantIdentifier: any;
@@ -71,8 +71,7 @@ describe('FilingPlanComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatTreeModule, MatProgressSpinnerModule],
-      declarations: [FilingPlanComponent, NodeStubComponent],
+      imports: [MatTreeModule, MatProgressSpinnerModule, FilingPlanComponent, NodeStubComponent],
       providers: [
         { provide: FilingPlanService, useValue: fillingPlanStub },
         { provide: AuthService, useValue: { user: { profileGroup: { profiles: [] } } } },

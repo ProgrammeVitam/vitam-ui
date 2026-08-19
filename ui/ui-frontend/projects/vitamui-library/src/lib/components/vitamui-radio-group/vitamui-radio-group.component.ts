@@ -51,7 +51,6 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-radio-group.component.html',
   styleUrls: ['./vitamui-radio-group.component.scss'],
   providers: [RADIO_GROUP_VALUE_ACCESSOR, VitamUIRadioGroupService],
-  standalone: false,
 })
 export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   private radioGroupService = inject(VitamUIRadioGroupService, { self: true });

@@ -151,12 +151,11 @@ describe('ArchiveSearchCollectComponent', () => {
 
     vi.spyOn(archiveCollectServiceStub, 'searchArchiveUnitsByCriteria');
 
-    const declarations = withSimpleCriteria
+    const extraImports = withSimpleCriteria
       ? [ArchiveSearchCollectComponent, SimpleCriteriaSearchComponent]
       : [ArchiveSearchCollectComponent];
 
     await TestBed.configureTestingModule({
-      declarations: declarations,
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
@@ -167,6 +166,7 @@ describe('ArchiveSearchCollectComponent', () => {
         MatMenuModule,
         MatSidenavModule,
         RouterTestingModule,
+        ...extraImports,
       ],
       providers: [
         ArchiveSearchHelperService,

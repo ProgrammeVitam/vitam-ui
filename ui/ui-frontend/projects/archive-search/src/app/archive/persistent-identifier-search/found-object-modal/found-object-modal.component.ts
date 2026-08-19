@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogActions } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import {
   AccessContract,
@@ -45,15 +45,17 @@ import {
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
   VersionWithQualifierDto,
+  DialogHeaderComponent,
 } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-found-object-modal',
   templateUrl: './found-object-modal.component.html',
   styleUrls: ['./found-object-modal.component.scss'],
-  standalone: false,
+  imports: [DialogHeaderComponent, MatDialogActions, TranslatePipe],
 })
 export class FoundObjectModalComponent {
   private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);

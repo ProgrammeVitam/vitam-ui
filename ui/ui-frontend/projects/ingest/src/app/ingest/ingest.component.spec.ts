@@ -38,9 +38,7 @@ import type { Mock } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { IngestComponent } from './ingest.component';
 
@@ -58,7 +56,7 @@ import { IngestService } from './ingest.service';
 @Component({
   selector: 'app-ingest-list',
   template: '',
-  standalone: false,
+  imports: [MatDatepickerModule, MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 export class IngestListStubComponent {
   emitOrderChange() {}
@@ -88,15 +86,12 @@ describe('IngestComponent test:', () => {
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
-        BrowserAnimationsModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
-        NoopAnimationsModule,
         SearchBarComponent,
+        IngestComponent,
+        IngestListStubComponent,
       ],
-      declarations: [IngestComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },

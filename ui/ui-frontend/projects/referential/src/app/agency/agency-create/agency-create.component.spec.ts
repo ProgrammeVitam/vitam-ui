@@ -46,7 +46,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, AgencyService } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
+import { AgencyService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AgencyCreateComponent } from './agency-create.component';
 import { AgencyCreateValidators } from './agency-create.validators';
@@ -61,7 +62,16 @@ import { AgencyCreateValidators } from './agency-create.validators';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    NoopAnimationsModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -133,8 +143,9 @@ describe('AgencyCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        AgencyCreateComponent,
+        DomainInputStubComponent,
       ],
-      declarations: [AgencyCreateComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

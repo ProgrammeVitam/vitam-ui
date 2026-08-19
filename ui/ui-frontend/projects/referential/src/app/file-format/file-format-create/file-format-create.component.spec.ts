@@ -110,8 +110,8 @@ describe.skip('  FileFormatCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        FileFormatCreateComponent,
       ],
-      declarations: [FileFormatCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

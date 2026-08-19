@@ -42,7 +42,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../models/ruleAction.interface';
@@ -149,8 +150,7 @@ describe('ManagementRulesComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ManagementRulesComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ManagementRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

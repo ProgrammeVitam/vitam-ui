@@ -56,8 +56,7 @@ describe('PastisPopupOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PastisPopupOptionComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, PastisPopupOptionComponent],
       providers: [
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },

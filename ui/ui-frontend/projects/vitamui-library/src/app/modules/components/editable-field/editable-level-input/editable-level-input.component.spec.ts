@@ -54,7 +54,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [ReactiveFormsModule, OverlayModule],
 })
 class LevelInputStubComponent implements ControlValueAccessor {
   @Input() prefix: string;
@@ -71,8 +71,7 @@ describe('EditableLevelInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditableLevelInputComponent, LevelInputStubComponent, SubLevelPipe],
-      imports: [ReactiveFormsModule, OverlayModule],
+      imports: [ReactiveFormsModule, OverlayModule, EditableLevelInputComponent, LevelInputStubComponent, SubLevelPipe],
       providers: [
         {
           provide: WINDOW_LOCATION,

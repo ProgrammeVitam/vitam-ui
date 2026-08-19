@@ -45,12 +45,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RuleCreateModule } from './rule-create/rule-create.module';
+
 import { RuleListComponent } from './rule-list/rule-list.component';
-import { RulePreviewModule } from './rule-preview/rule-preview.module';
+
 import { RuleRoutingModule } from './rule-routing.module';
 import { RuleComponent } from './rule.component';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
@@ -62,16 +62,14 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
     RuleRoutingModule,
-    RuleCreateModule,
-    RulePreviewModule,
-    ImportDialogModule,
     MatMenuModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatSelectModule,
     TranslatePipe,
+    RuleComponent,
+    RuleListComponent,
   ],
-  declarations: [RuleComponent, RuleListComponent],
 })
 export class RuleModule {}

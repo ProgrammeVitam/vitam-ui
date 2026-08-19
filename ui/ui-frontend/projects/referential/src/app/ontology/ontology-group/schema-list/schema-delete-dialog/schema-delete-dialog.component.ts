@@ -38,7 +38,8 @@ import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { I18nPluralPipe } from '@angular/common';
-import { SchemaService, StartupService, SnackBarService, VitamUILibraryModule } from 'vitamui-library';
+import { SchemaService, StartupService, SnackBarService } from 'vitamui-library';
+import { VitamUILibraryModule } from 'vitamui-library';
 import { finalize } from 'rxjs';
 
 export type SchemaDeleteDialogComponentData = string[];

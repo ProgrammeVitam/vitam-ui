@@ -34,16 +34,65 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, LOCALE_ID, TransferState, importProvidersFrom } from '@angular/core';
+import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
+import { ApplicationSvgLoaderFactory } from './app/app.module';
 import { environment } from './environments/environment';
+import {
+  provideI18n,
+  BASE_URL,
+  ENVIRONMENT,
+  WINDOW_LOCATION,
+  AuthenticationModule,
+  VitamUICommonModule,
+  InjectorModule,
+  LoggerModule,
+} from 'vitamui-library';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PortalModule } from './app/portal/portal.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AppRoutingModule } from './app/app-routing.module';
+import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
+import { HttpBackend } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppComponent } from './app/app.component';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.log(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      AuthenticationModule.forRoot(),
+      BrowserModule,
+      BrowserAnimationsModule,
+      PortalModule,
+      VitamUICommonModule.forRoot(),
+      InjectorModule,
+      MatDialogModule,
+      AppRoutingModule,
+      LoggerModule.forRoot(),
+      AngularSvgIconModule.forRoot({
+        loader: {
+          provide: SvgLoader,
+          useFactory: ApplicationSvgLoaderFactory,
+          deps: [HttpBackend, TransferState],
+        },
+      }),
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+    ),
+    provideI18n(),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: BASE_URL, useValue: '/portal-api' },
+    { provide: ENVIRONMENT, useValue: environment },
+    { provide: WINDOW_LOCATION, useValue: window.location },
+  ],
+}).catch((err) => console.log(err));

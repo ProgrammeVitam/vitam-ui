@@ -58,7 +58,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class UnitsFormStubComponent {
   writeValue() {}
@@ -78,9 +78,15 @@ describe('UnitsEditComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [UnitsEditComponent, UnitsFormStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        UnitsEditComponent,
+        UnitsFormStubComponent,
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

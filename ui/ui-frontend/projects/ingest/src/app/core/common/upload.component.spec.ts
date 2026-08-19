@@ -39,7 +39,8 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
+import { BASE_URL, BytesPipe, ConfirmDialogService, StartupService } from 'vitamui-library';
+import { LoggerModule } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
@@ -62,8 +63,7 @@ describe('UploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UploadComponent],
-      imports: [MatProgressBarModule, LoggerModule.forRoot()],
+      imports: [MatProgressBarModule, LoggerModule.forRoot(), UploadComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

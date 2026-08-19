@@ -35,15 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Option } from 'vitamui-library';
+import { SelectComponent, InputComponent } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-homepage-message-translation',
   templateUrl: './homepage-message-translation.html',
   styleUrls: ['./homepage-message-translation.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SelectComponent, InputComponent, TranslatePipe],
 })
 export class HomepageMessageTranslationComponent implements OnInit, OnDestroy {
   @Input()

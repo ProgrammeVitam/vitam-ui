@@ -60,7 +60,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
   @Input()
@@ -83,9 +83,15 @@ describe('ProfilesEditComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        ProfilesEditComponent,
+        ProfilesFormStubComponent,
+      ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

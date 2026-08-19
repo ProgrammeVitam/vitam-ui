@@ -47,8 +47,7 @@ describe('FileFormatPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [FileFormatPreviewComponent],
+      imports: [FileFormatPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: FileFormatService, useValue: {} },

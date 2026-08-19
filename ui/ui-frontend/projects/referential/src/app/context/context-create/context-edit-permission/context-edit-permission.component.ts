@@ -35,13 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output, inject } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AccessContractService, AuthService, ContextPermission, Option, Tenant } from 'vitamui-library';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AccessContractService, AuthService, ContextPermission, Option, Tenant, TooltipDirective, SelectComponent } from 'vitamui-library';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,7 +55,7 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   templateUrl: './context-edit-permission.component.html',
   styleUrls: ['./context-edit-permission.component.scss'],
   providers: [CONTEXT_PERMISSION_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [TooltipDirective, SelectComponent, ReactiveFormsModule, FormsModule, TranslatePipe],
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
   private customerApiService = inject(CustomerApiService);

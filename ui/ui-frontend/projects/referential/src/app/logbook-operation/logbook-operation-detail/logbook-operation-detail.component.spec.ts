@@ -41,17 +41,15 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
+import { AuthService, BASE_URL, ExternalParametersService, LogbookService } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -69,7 +67,6 @@ describe('LogbookOperationDetailComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationDetailComponent, LastEventPipe, MockTruncatePipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
@@ -79,6 +76,9 @@ describe('LogbookOperationDetailComponent', () => {
         NoopAnimationsModule,
         RouterTestingModule,
         VitamUICommonTestModule,
+        LogbookOperationDetailComponent,
+        LastEventPipe,
+        MockTruncatePipe,
       ],
       providers: [
         { provide: LogbookService, useValue: {} },

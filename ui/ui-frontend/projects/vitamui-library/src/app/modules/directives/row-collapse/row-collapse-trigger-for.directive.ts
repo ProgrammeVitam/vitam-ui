@@ -38,10 +38,7 @@ import { Directive, HostBinding, HostListener, Input } from '@angular/core';
 
 import { RowCollapseDirective } from './row-collapse.directive';
 
-@Directive({
-  selector: '[vitamuiCommonRowCollapseTriggerFor]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonRowCollapseTriggerFor]' })
 export class RowCollapseTriggerForDirective {
   @Input() vitamuiCommonRowCollapseTriggerFor: RowCollapseDirective;
 

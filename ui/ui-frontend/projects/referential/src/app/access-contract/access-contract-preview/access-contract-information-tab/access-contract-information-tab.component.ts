@@ -35,20 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { AccessContract, Option } from 'vitamui-library';
-import { AccessContractService, diff } from 'vitamui-library';
+import { AccessContract, Option, AccessContractService } from 'vitamui-library';
+import { diff, SlideToggleComponent, InputComponent, PipesModule } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
   styleUrls: ['./access-contract-information-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, FormsModule, PipesModule, TranslatePipe],
 })
 export class AccessContractInformationTabComponent {
   private formBuilder = inject(FormBuilder);

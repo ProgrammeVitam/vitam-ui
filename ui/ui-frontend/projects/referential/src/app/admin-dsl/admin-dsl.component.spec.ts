@@ -41,7 +41,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { AccessContractService, DslQueryType, InjectorModule, LoggerModule, SnackBarService, VitamUILibraryModule } from 'vitamui-library';
+import { AccessContractService } from 'vitamui-library';
+import { DslQueryType, InjectorModule, LoggerModule, SnackBarService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AdminDslComponent } from './admin-dsl.component';
 import { AdminDslService } from './admin-dsl.service';
@@ -86,8 +87,8 @@ describe('AdminDslComponent', () => {
         ReactiveFormsModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
+        AdminDslComponent,
       ],
-      declarations: [AdminDslComponent],
       providers: [
         FormBuilder,
         { provide: Router, useValue: {} },
