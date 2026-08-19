@@ -36,7 +36,8 @@
  */
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ObjectQualifierType, ValidationError, VersionWithQualifierDto } from '../../../models';
+import { ObjectQualifierType, ValidationError } from '../../../models';
+import type { VersionWithQualifierDto } from '../../../models';
 
 interface Measurement {
   name: string;

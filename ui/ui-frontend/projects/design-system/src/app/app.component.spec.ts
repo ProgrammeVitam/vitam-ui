@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
+
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 

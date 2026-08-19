@@ -43,9 +43,9 @@ import { BadgeComponent } from 'vitamui-library';
   styleUrl: './design-system-badges.component.scss',
 })
 export class DesignSystemBadgesComponent {
-  colors = ['secondary', 'orange', 'red'];
-  decorations = ['filled', 'bordered', 'default'];
-  letters = {
+  colors = ['secondary', 'orange', 'red'] as const;
+  decorations = ['filled', 'bordered', 'default'] as const;
+  letters: { [key: string]: string[] } = {
     filled: ['', 'P'],
     bordered: ['', 'H'],
     default: ['', 'A'],

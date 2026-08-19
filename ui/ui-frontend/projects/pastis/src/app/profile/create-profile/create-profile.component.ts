@@ -109,8 +109,8 @@ export class CreateProfileComponent implements OnInit {
 
   submit() {
     const result: CreateProfileFormResult = {
-      profileType: this.form.controls.profileType.value,
-      profileVersion: this.form.controls.profileVersion.value,
+      profileType: this.form.controls['profileType'].value,
+      profileVersion: this.form.controls['profileVersion'].value,
     };
     this.dialogRef.close(result);
   }

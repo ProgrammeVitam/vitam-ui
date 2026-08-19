@@ -70,7 +70,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   userService = inject(UserService);
   route: ActivatedRoute;
   customerService = inject(CustomerService);
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   groupService = inject(GroupService);
   private authService = inject(AuthService);
   private downloadSnackBarService = inject(DownloadSnackBarService);
@@ -101,7 +101,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
   }
 
-  public openCreateUserDialog(): void {
+  openCreateUserDialog(): void {
     const dialogRef = this.dialog.open(UserCreateComponent, {
       disableClose: true,
       data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups },
@@ -113,7 +113,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
     });
   }
 
-  public onSearchSubmit(search: string): void {
+  onSearchSubmit(search: string): void {
     this.search = search;
   }
 

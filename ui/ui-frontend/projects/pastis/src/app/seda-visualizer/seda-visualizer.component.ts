@@ -413,7 +413,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y2', 70)
       .style('stroke', 'var(--vitamui-secondary-300)')
       .style('stroke-width', '2.5');
-    // eslint-disable-next-line max-len
+
     svg_legend.append('text').attr('x', '190').attr('dy', '70').text('1-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
     svg_legend
@@ -424,7 +424,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y2', 70)
       .style('stroke', 'var(--vitamui-grey-800)')
       .style('stroke-width', '2.5');
-    // eslint-disable-next-line max-len
+
     svg_legend.append('text').attr('x', '280').attr('dy', '70').text('0-1').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
     svg_legend
@@ -435,7 +435,7 @@ export class SedaVisualizerComponent implements OnInit {
       .attr('y2', 70)
       .style('stroke', 'var(--vitamui-grey)')
       .style('stroke-width', '2.5');
-    // eslint-disable-next-line max-len
+
     svg_legend.append('text').attr('x', '360').attr('dy', '70').text('0-N').style('font-size', '15px').attr('alignment-baseline', 'middle');
 
     // Legend text

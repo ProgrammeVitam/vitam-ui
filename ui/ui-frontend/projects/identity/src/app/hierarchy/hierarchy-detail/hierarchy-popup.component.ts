@@ -50,7 +50,7 @@ export class HierarchyPopupComponent {
   profile: Profile;
 
   constructor() {
-    this.profile = this.route.snapshot.data.profile;
+    this.profile = this.route.snapshot.data['profile'];
   }
 
   closePopup() {

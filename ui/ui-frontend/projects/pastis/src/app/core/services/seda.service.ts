@@ -129,6 +129,7 @@ export class SedaService {
         }
       }
     }
+    return undefined;
   }
 
   checkSedaElementType(nodeName: string, sedaNode: SedaData): string {
@@ -140,6 +141,7 @@ export class SedaService {
     if (node) {
       return node.element;
     }
+    return undefined;
   }
 
   findSedaChildByName(nodeName: string, sedaNode: SedaData): SedaData {

@@ -13,12 +13,12 @@
       </div>
     }
     <ng-container>
-      @if (!!form.get('permissions')?.errors?.permissionsTenant) {
+      @if (!!form.get('permissions')?.errors?.['permissionsTenant']) {
         <span class="error-message">
           {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.TENANT_ERROR' | translate }}
         </span>
       }
-      @if (!!form.get('permissions')?.errors?.noPermissions) {
+      @if (!!form.get('permissions')?.errors?.['noPermissions']) {
         <span class="error-message">
           {{ 'CONTEXTS_APP.EDIT_DIALOG.PERMISSIONS.PERMISSION_ERROR' | translate }}
         </span>

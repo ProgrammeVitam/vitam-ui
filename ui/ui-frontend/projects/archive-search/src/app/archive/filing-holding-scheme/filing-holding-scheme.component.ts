@@ -96,7 +96,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
   }
 

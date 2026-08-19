@@ -80,7 +80,7 @@ export class DesignSystemDatepickerComponent {
   selectedFormat: keyof typeof this.formats = 'dd/MM/yyyy';
 
   configs: {
-    outputType: string;
+    outputType: 'String' | 'Date';
     description: string;
     items: {
       pickerType: PickerType;

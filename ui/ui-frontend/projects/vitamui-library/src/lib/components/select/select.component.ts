@@ -56,7 +56,8 @@ import {
 } from '@angular/core';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
-import { Option, SearchBarComponent } from '../../../app/modules';
+import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
+import { SearchBarComponent } from '../../../app/modules/components/search-bar/search-bar.component';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 import { AutocompletePositionDirectiveModule } from '../../../app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
 import { CommonModule } from '@angular/common';
@@ -320,7 +321,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     matSelectElement?.addEventListener('keydown', eventListener, { capture: true });
   }
 
-  writeValue(preselectedOptionKeys: string | string[]) {
+  override writeValue(preselectedOptionKeys: string | string[]) {
     this.preselectedOptionKeys = preselectedOptionKeys
       ? Array.isArray(preselectedOptionKeys)
         ? preselectedOptionKeys.sort()

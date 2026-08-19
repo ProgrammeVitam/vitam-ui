@@ -35,13 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import type { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaValue } from 'vitamui-library';
 import {
-  CriteriaSearchCriteria,
-  CriteriaValue,
   ORIGIN_WAITING_RECALCULATE,
   QueryParamsService,
   SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
   TranslateWithOptionalTypeSuffixPipe,
   WAITING_RECALCULATE,
 } from 'vitamui-library';

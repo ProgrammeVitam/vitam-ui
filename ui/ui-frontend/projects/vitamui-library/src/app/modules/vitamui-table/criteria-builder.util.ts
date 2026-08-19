@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Criterion } from '../';
+import { Criterion } from '../models/criteria/criterion.interface';
 import { QueryOperator, CriteriaSearchQuery } from '../models/criteria/criteria.interface';
 import { Operators } from './operators.enum';
 

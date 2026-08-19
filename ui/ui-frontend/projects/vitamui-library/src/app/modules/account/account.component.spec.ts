@@ -46,7 +46,7 @@ import { environment } from '../../../environments/environment';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { InjectorModule } from '../helper/injector.module';
 import { LoggerModule } from '../logger';
-import { Account } from '../models/account/account.interface';
+import type { Account } from '../models/account/account.interface';
 import { ENVIRONMENT } from './../injection-tokens';
 import { AccountComponent } from './account.component';
 import { AccountService } from './account.service';

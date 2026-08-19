@@ -36,7 +36,8 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { EMPTY, of, Subject } from 'rxjs';
-import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import type { Profile } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild, NgModule } from '@angular/core';

@@ -26,8 +26,8 @@
     <div class="col-6">
       <vitamui-common-editable-input
         formControlName="identifier"
-        maxlength="12"
-        disabled
+        [maxlength]="12"
+        [disabled]="true"
         [label]="'COMMON.ID' | translate"
         [validator]="form?.get('identifier')?.validator"
         [asyncValidator]="form?.get('identifier')?.asyncValidator"
@@ -56,7 +56,7 @@
     <div class="col-6">
       <vitamui-common-editable-input
         formControlName="name"
-        maxlength="100"
+        [maxlength]="100"
         [label]="'CUSTOMER.SSO.IDP_NAME' | translate"
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
@@ -68,13 +68,13 @@
 
   <div class="row">
     <div class="col-6">
-      <vitamui-common-editable-input formControlName="mailAttribute" maxlength="100" [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate">
+      <vitamui-common-editable-input formControlName="mailAttribute" [maxlength]="100" [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate">
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
       <vitamui-common-editable-input
         formControlName="identifierAttribute"
-        maxlength="100"
+        [maxlength]="100"
         [label]="'CUSTOMER.SSO.IDENTIFIER_ATTRIBUTE' | translate"
       >
       </vitamui-common-editable-input>

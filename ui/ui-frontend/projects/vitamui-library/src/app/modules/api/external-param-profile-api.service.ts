@@ -52,19 +52,19 @@ export class ExternalParamProfileApiService extends PaginatedHttpClient<External
     super(http, baseUrl + '/externalparamprofile');
   }
 
-  create(externalParamProfile: ExternalParamProfile, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  override create(externalParamProfile: ExternalParamProfile, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.create(externalParamProfile, headers);
   }
 
-  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  override patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.getHttp().patch<any>(super.getApiUrl() + '/me', data, { headers });
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 }

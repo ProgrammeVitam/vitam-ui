@@ -180,12 +180,14 @@ export class StartupService {
 
   getLogo(): string {
     if (this.configurationLoaded()) {
-      if (this.configurationData.APP_LOGO) {
-        return this.configurationData.APP_LOGO;
+      if (this.configurationData['APP_LOGO']) {
+        return this.configurationData['APP_LOGO'];
       } else {
         return this.configurationData.LOGO;
       }
     }
+
+    return null;
   }
 
   getAppLogoURL(): string {
@@ -254,7 +256,7 @@ export class StartupService {
 
   getArchivesSearchUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.ARCHIVES_SEARCH_URL;
+      return this.configurationData['ARCHIVES_SEARCH_URL'];
     }
 
     return null;
@@ -262,21 +264,21 @@ export class StartupService {
 
   getReferentialUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.REFERENTIAL_URL;
+      return this.configurationData['REFERENTIAL_URL'];
     }
     return null;
   }
 
   getPastisUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.PASTIS_URL;
+      return this.configurationData['PASTIS_URL'];
     }
     return null;
   }
 
   getCollectUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.COLLECT_URL;
+      return this.configurationData['COLLECT_URL'];
     }
 
     return null;
@@ -286,6 +288,8 @@ export class StartupService {
     if (this.configurationLoaded()) {
       return this.configurationData.UI?.hasSiteSelection;
     }
+
+    return false;
   }
 
   getConfigStringValue(key: string): string {
@@ -328,6 +332,8 @@ export class StartupService {
     if (this.configurationLoaded()) {
       return this.configurationData.CUSTOMER;
     }
+
+    return null;
   }
 
   isVitamEnabled(): boolean {

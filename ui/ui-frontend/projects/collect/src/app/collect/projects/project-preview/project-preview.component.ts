@@ -214,9 +214,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
     filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
     this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        // eslint-disable-next-line radix
-        this.tenantId = parseInt(params.tenantIdentifier);
+      if (params['tenantIdentifier']) {
+        this.tenantId = parseInt(params['tenantIdentifier']);
       }
     });
   }
@@ -239,7 +238,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       this.tenantId,
     );
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
 
     this.configForm();
@@ -379,7 +378,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   get unitUps(): FormArray<FormGroup> {
-    return this.form.controls.unitUps as FormArray<FormGroup>;
+    return this.form.controls['unitUps'] as FormArray<FormGroup>;
   }
 
   getName(item: SchemaElement): string {
@@ -604,6 +603,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     if (['attachment', 'configuration'].includes(currentTab)) {
       return await this.launchAttachmentsUpdate();
     }
+    return false;
   }
 
   private getCurrentTab() {

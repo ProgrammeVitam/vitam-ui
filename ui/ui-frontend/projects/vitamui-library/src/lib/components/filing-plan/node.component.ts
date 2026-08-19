@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @angular-eslint/component-selector */
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Node } from '../../models/node.interface';
+import type { Node } from '../../models/node.interface';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'vitamui-library-node',
@@ -49,7 +50,7 @@ export class NodeComponent {
   @Input() tenantIdentifier: number;
   @Input() node: Node;
   @Input() expanded: boolean;
-  @Input() disabled: boolean;
+  @Input({ transform: coerceBooleanProperty }) disabled: boolean;
 
   @Output() nodeToggle = new EventEmitter<void>();
   @Output() labelClick = new EventEmitter<void>();

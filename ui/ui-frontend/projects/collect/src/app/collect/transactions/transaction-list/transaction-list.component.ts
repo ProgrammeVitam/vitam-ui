@@ -103,7 +103,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     });
   }
 
-  onScroll() {
+  override onScroll() {
     this.loadMore();
   }
 

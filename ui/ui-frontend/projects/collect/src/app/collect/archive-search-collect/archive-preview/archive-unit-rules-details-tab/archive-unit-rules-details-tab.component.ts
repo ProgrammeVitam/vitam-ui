@@ -38,7 +38,8 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'vitamui-library';
+import type { SearchCriteriaEltDto, Unit } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 const PAGE_SIZE = 10;
@@ -68,8 +69,8 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy
   selectUnitWithInheritedRulesSubscription: Subscription;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.archiveUnit && this.archiveUnit['#opi']) {
-      this.selectUnitWithInheritedRules(changes.archiveUnit.currentValue);
+    if (changes['archiveUnit'] && this.archiveUnit['#opi']) {
+      this.selectUnitWithInheritedRules(changes['archiveUnit']['currentValue']);
     }
   }
 

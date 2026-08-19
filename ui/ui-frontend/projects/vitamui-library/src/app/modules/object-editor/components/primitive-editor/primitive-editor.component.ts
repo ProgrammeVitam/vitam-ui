@@ -38,7 +38,7 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { Logger } from '../../../logger/logger';
 import { DateDisplayService } from '../../../object-viewer/services/date-display.service';
 import { ComponentType } from '../../../object-viewer/types';
-import { EditObject } from '../../models/edit-object.model';
+import type { EditObject } from '../../models/edit-object.model';
 import { FormControl } from '@angular/forms';
 import { DatePatternConstants } from '../../../dates.constants';
 
@@ -66,6 +66,10 @@ export class PrimitiveEditorComponent implements OnInit {
   }
 
   protected readonly FormControl = FormControl;
+
+  get control(): FormControl {
+    return this.editObject.control as FormControl;
+  }
 
   getPickerType(editObject: EditObject) {
     if (editObject.pattern) {

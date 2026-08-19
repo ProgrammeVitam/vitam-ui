@@ -64,7 +64,7 @@ export class EditableTextareaComponent extends EditableFieldComponent {
     super(elementRef);
   }
 
-  enterEditMode() {
+  override enterEditMode() {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
   }

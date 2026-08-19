@@ -46,9 +46,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe, FormsModule, SelectComponent],
 })
 export class IconsComponent {
-  icons: (string | string[])[];
+  icons: string[];
   coloredIcons: { [key: string]: string[] };
-  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'light'];
+  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'light'] as const;
   selectedColor: string = '';
 
   colorOptions = { options: this.colors.map((color) => ({ key: color, label: color })) };

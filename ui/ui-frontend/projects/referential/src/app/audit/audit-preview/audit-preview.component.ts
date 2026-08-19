@@ -71,7 +71,7 @@ export class AuditPreviewComponent implements OnInit {
   private externalParameterService = inject(ExternalParametersService);
   private snackBarService = inject(SnackBarService);
 
-  audit: Signal<Event> = input.required<Event>();
+  audit = input.required<Event>();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   accessContractId: string;
@@ -95,10 +95,10 @@ export class AuditPreviewComponent implements OnInit {
         'PROCESS_AUDIT.OK',
         'PROCESS_AUDIT.WARNING',
         'PROCESS_AUDIT.KO',
-        'EVIDENCE_AUDIT.OK', //
+        'EVIDENCE_AUDIT.OK',
         'EVIDENCE_AUDIT.WARNING',
         'EVIDENCE_AUDIT.KO',
-        'RECTIFICATION_AUDIT.OK', //
+        'RECTIFICATION_AUDIT.OK',
         'RECTIFICATION_AUDIT.WARNING',
         'RECTIFICATION_AUDIT.KO',
       ].includes(status) || status?.endsWith('FATAL')

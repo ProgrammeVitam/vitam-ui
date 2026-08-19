@@ -76,11 +76,11 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
       endDate: null,
     });
 
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
+    this.dateRangeFilterForm.controls['startDate'].valueChanges.subscribe((value) => {
       this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
     });
 
-    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
+    this.dateRangeFilterForm.controls['endDate'].valueChanges.subscribe((value: Date) => {
       this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
     });
   }

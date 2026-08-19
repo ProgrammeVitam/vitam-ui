@@ -158,7 +158,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     if (this.accessContractLogbookIdentifier || this.doesNotHaveTenant()) {
       return;
     }
-    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
+    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
     if (!tenant) {
       return;
     }

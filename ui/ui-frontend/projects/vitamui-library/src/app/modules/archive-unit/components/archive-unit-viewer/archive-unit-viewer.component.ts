@@ -37,7 +37,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { DisplayObjectService, DisplayRule } from '../../../object-viewer/models';
 import { customTemplate } from '../../archive-unit-template';
-import { ArchiveUnitViewerService } from './archive-unit-viewer.service';
+import { ArchiveUnitViewerService, AUMode } from './archive-unit-viewer.service';
 
 @Component({
   selector: 'vitamui-common-archive-unit-viewer',
@@ -51,7 +51,7 @@ export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
 
   @Input() data!: any;
   @Input() template: DisplayRule[] = customTemplate;
-  mode = 'default';
+  mode: AUMode = AUMode.DEFAULT;
 
   ngOnInit(): void {
     this.displayObjectService.setMode(this.mode);

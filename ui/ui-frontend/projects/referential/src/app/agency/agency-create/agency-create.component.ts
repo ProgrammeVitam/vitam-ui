@@ -96,9 +96,9 @@ export class AgencyCreateComponent implements OnInit {
 
   public submitAndEdit(): void {
     const agency: Partial<Agency> = {
-      name: this.form.controls.name.value,
-      identifier: this.form.controls.identifier.value,
-      description: this.form.controls.description.value,
+      name: this.form.controls['name'].value,
+      identifier: this.form.controls['identifier'].value,
+      description: this.form.controls['description'].value,
     };
 
     this.isLoading = true;

@@ -49,7 +49,7 @@
           <div class="vitamui-mat-select-options">
             <ng-container *cdkVirtualFor="let option of selectedOptions; let last = last; let index = index">
               <mat-option
-                [id]="index"
+                [id]="index.toString()"
                 [value]="option.key"
                 (onSelectionChange)="onSelectionChange($event)"
                 [disabled]="option.disabled"

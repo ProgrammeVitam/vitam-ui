@@ -31,7 +31,7 @@
               <div class="col-2 actions">
                 <span vitamuiCommonEllipsis>{{ 'CUSTOMER.INFORMATIONS.OTP_' + customer?.otp | translate }}</span>
                 <div>
-                  <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateOwnerDialog(customer, tenants)">
+                  <button class="btn btn-circle primary" (click)="$event.stopPropagation(); openCreateOwnerDialog(customer)">
                     <i class="vitamui-icon vitamui-icon-key-plus btn-icon"></i>
                   </button>
                 </div>

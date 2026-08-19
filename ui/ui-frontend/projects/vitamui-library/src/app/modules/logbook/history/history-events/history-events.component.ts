@@ -63,5 +63,7 @@ export class HistoryEventsComponent {
         return event.data;
       }
     }
+
+    return null;
   }
 }

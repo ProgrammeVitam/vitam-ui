@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, input, output } from '@angular/core';
-import { DisplayFile } from './display-file.interface';
+import type { DisplayFile } from './display-file.interface';
 import { FormErrorComponent } from '../../../../../lib/components/form-errors/form-error/form-error.component';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { CommonTooltipModule } from '../../common-tooltip/common-tooltip.module';

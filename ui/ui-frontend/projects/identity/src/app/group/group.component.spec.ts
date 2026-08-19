@@ -38,7 +38,8 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, Group, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
+import { ENVIRONMENT, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
+import type { Group } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';

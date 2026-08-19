@@ -67,9 +67,9 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
   standalone: false,
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   private dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   private readonly accessContractService = inject(AccessContractService);
   private applicationService = inject(ApplicationService);
   private translateService = inject(TranslateService);
@@ -94,11 +94,11 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
+    this.route.params.subscribe((params) => (this.tenantIdentifier = params['tenantIdentifier']));
     this.globalEventService.tenantEvent.subscribe(() => this.refreshList());
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     super.ngOnDestroy();
   }
 
@@ -163,7 +163,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     });
   }
 
-  public onSearchSubmit(search: string) {
+  onSearchSubmit(search: string) {
     this.search = search || '';
   }
 

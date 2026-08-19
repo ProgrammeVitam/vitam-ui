@@ -39,18 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import {
-  AdminUserProfile,
-  CountryOption,
-  CountryService,
-  Customer,
-  diff,
-  Option,
-  OtpState,
-  StartupService,
-  User,
-  UserInfo,
-} from 'vitamui-library';
+import type { AdminUserProfile, CountryOption, Customer, User, UserInfo } from 'vitamui-library';
+import { CountryService, diff, Option, OtpState, StartupService } from 'vitamui-library';
 import { UserInfoService } from '../../user-info.service';
 
 import { UserCreateValidators } from '../../user-create/user-create.validators';
@@ -163,7 +153,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         filter((formData) => !isEmpty(formData)),
         map((formData) => {
           // centerCodes is used for auto-provisioning (Xelians) and should be an array
-          const centerCodes = formData.centerCodes?.split(',')?.map((v: string) => v.trim());
+          const centerCodes = formData['centerCodes']?.split(',')?.map((v: string) => v.trim());
           return { ...formData, id: this.user.id, centerCodes };
         }),
         switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null)))),

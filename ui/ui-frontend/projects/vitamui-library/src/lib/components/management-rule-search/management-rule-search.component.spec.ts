@@ -164,20 +164,20 @@ describe('ManagementRuleSearchComponent', () => {
   });
 
   it('should reset date inputs after adding criteria', () => {
-    component.criteriaForm.controls.ruleStartDate.setValue('2023-01-01');
+    component.criteriaForm.controls['ruleStartDate'].setValue('2023-01-01');
     component.addBeginDtCriteria();
-    expect(component.criteriaForm.controls.ruleStartDate.value).toBeNull();
+    expect(component.criteriaForm.controls['ruleStartDate'].value).toBeNull();
   });
 
   it('should reset ruleEliminationIdentifier after processing form update', () => {
     fixture.componentRef.setInput('type', ManagementRuleType.APPRAISAL);
     component.ngOnInit();
-    component.criteriaForm.controls.ruleEliminationIdentifier.setValue('ELIM-123');
+    component.criteriaForm.controls['ruleEliminationIdentifier'].setValue('ELIM-123');
 
     // @ts-ignore
     component.processFormUpdate(component.criteriaForm.value);
 
-    expect(component.criteriaForm.controls.ruleEliminationIdentifier.value).toBeNull();
+    expect(component.criteriaForm.controls['ruleEliminationIdentifier'].value).toBeNull();
   });
 
   it('should initialize ORIGIN_WAITING_RECALCULATE from hasWaitingToRecalculateCriteria input', () => {

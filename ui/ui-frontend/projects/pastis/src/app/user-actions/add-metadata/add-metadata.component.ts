@@ -241,10 +241,11 @@ export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
     this.popUpService.disableYesButton(!this.atLeastOneIsSelected);
   }
 
-  isElementComplex(element: SedaData) {
+  isElementComplex(element: SedaData): boolean {
     if (element) {
       return element.element === SedaElementConstants.COMPLEX;
     }
+    return false;
   }
 
   getDefinition(element: SedaData): string {

@@ -52,7 +52,6 @@ import { SecurityProfileComponent } from './security-profile.component';
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfilePreviewStub {
   @Input()
   accessContract: any;
@@ -63,7 +62,6 @@ class SecurityProfilePreviewStub {
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class SecurityProfileListStub {}
 
 describe('SecurityProfileComponent', () => {

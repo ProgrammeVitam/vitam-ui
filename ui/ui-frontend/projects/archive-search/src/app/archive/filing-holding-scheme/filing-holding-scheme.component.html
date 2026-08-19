@@ -5,7 +5,7 @@
     [nestedDataSourceFull]="nestedDataSourceFull"
     [nestedTreeControlFull]="nestedTreeControlFull"
     [showEveryNodes]="showEveryNodes"
-    [loadingNodeUnit]="loadingArchiveUnit.TREE"
+    [loadingNodeUnit]="loadingArchiveUnit['TREE']"
     (closePanel)="emitClose()"
     (addToSearchCriteria)="addToSearchCriteria($event)"
     (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'TREE')"
@@ -23,7 +23,7 @@
     <app-leaves-tree
       [nestedDataSourceLeaves]="nestedDataSourceLeaves"
       [searchRequestResultFacets]="requestResultFacets"
-      [loadingNodeUnit]="loadingArchiveUnit.LEAVE"
+      [loadingNodeUnit]="loadingArchiveUnit['LEAVE']"
       (addToSearchCriteria)="addToSearchCriteria($event)"
       (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')"
     >

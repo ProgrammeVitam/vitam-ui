@@ -42,7 +42,8 @@ import { FavoriteEntryService } from '../../../object-viewer/services/favorite-e
 import { LayoutService } from '../../../object-viewer/services/layout.service';
 import { TypeService } from '../../../object-viewer/services/type.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
-import { Action, EditObject } from '../../models/edit-object.model';
+import { Action } from '../../models/edit-object.model';
+import type { EditObject } from '../../models/edit-object.model';
 
 @Component({
   selector: 'vitamui-common-group-editor',
@@ -104,7 +105,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   computeActions() {
     if (!this.editObject?.actions) return;
 
-    const current: Action = this.editObject.actions.remove;
+    const current: Action = this.editObject.actions['remove'];
     if (current) {
       const next: Action = this.withValidation(current, () => this.typeService.isConsistent(this.editObject.control.value));
       this.replaceAction(current, next);

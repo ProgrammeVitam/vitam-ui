@@ -58,19 +58,19 @@ export class AgencyApiService extends PaginatedHttpClient<Agency> {
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Agency> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Agency> {
     return super.getOne(id, headers);
   }
 
-  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Agency> {
+  override patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Agency> {
     return super.patch(partialAgency, headers);
   }
 
-  create(agency: Agency, headers?: HttpHeaders): Observable<Agency> {
+  override create(agency: Agency, headers?: HttpHeaders): Observable<Agency> {
     return super.getHttp().post<any>(super.getApiUrl(), agency, { headers });
   }
 

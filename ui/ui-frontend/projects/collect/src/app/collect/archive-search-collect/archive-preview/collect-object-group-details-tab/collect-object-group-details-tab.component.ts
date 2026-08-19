@@ -89,7 +89,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.checkDownloadPermissions();
 
-    if (changes.archiveUnit) {
+    if (changes['archiveUnit']) {
       this.unitObject = null;
       this.versionsWithQualifiersOrdered = null;
       if (this.unitHasObject()) {

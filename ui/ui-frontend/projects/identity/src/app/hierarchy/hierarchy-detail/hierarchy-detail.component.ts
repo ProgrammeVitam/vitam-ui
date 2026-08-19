@@ -37,7 +37,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'vitamui-library';
+import type { Event, Profile } from 'vitamui-library';
+import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({
@@ -91,6 +92,7 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
     if (this.profile) {
       return !isLevelAllowed(this.authService.user, this.profile.level);
     }
+    return false;
   }
 
   filterEvents(event: Event): boolean {

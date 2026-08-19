@@ -50,7 +50,7 @@ export class AccessionRegisterSummaryApiService extends BaseHttpClient<Accession
     super(http, baseUrl + '/accession-register/summary');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<AccessionRegisterSummary[]> {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<AccessionRegisterSummary[]> {
     return super.getAllByParams(params, headers);
   }
 }

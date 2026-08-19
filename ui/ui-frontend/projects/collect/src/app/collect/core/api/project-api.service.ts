@@ -72,8 +72,12 @@ export class ProjectsApiService extends PaginatedHttpClient<any> {
 
   // Manage projects
 
-  public create(data: Project): Observable<Project> {
+  public override create(data: Project): Observable<Project> {
     return super.create(data);
+  }
+
+  public override getOne(id: string, headers?: HttpHeaders): Observable<Project> {
+    return super.getOne(id, headers);
   }
 
   public createTransaction(data: Transaction): Observable<Transaction> {

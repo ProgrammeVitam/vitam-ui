@@ -39,7 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, CountryService, Customer, diff, Option, OtpState, StartupService } from 'vitamui-library';
+import type { CountryOption, Customer, OtpState } from 'vitamui-library';
+import { CountryService, diff, Option, StartupService } from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';

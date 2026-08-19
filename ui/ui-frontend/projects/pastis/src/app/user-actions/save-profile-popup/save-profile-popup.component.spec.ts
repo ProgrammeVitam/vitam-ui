@@ -129,8 +129,8 @@ describe('SaveProfilePopupComponent', () => {
     component.gestionNotice.set(true);
     component.externalIdentifierEnabled = false;
 
-    component.noticeForm.controls.name.setValue('test-name');
-    component.noticeForm.controls.identifier.setValue('test-id');
+    component.noticeForm.controls['name'].setValue('test-name');
+    component.noticeForm.controls['identifier'].setValue('test-id');
 
     vi.spyOn(component as any, 'updateControlSchema');
 
@@ -164,9 +164,9 @@ describe('SaveProfilePopupComponent', () => {
     mockProfileService.profileType = ProfileType.PA;
     mockProfileService.checkPaProfile.mockReturnValue(of(false));
 
-    component.noticeForm.controls.identifier.setValue('UNIQUE_PA');
+    component.noticeForm.controls['identifier'].setValue('UNIQUE_PA');
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_PA' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBe(false);
+    expect(component.noticeForm.controls['identifier'].invalid).toBe(false);
   });
 
   it('should check PUA and alert if identifier is duplicated', async () => {
@@ -179,9 +179,9 @@ describe('SaveProfilePopupComponent', () => {
     mockProfileService.getAllProfilesPUA.mockReturnValue(of(MOCK_PROFILE_DESCRIPTIONS));
     fixture.detectChanges();
 
-    component.noticeForm.controls.identifier.setValue('DUPLICATE_PUA');
+    component.noticeForm.controls['identifier'].setValue('DUPLICATE_PUA');
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_PUA' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBe(true);
+    expect(component.noticeForm.controls['identifier'].invalid).toBe(true);
   });
 
   it('should set validators on identifier when external ID is enabled', async () => {
@@ -190,10 +190,10 @@ describe('SaveProfilePopupComponent', () => {
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
     mockProfileService.profileType = ProfileType.PA;
 
-    component.noticeForm.controls.identifier.setValue('');
+    component.noticeForm.controls['identifier'].setValue('');
     component['setUpIdentifierValidator']();
 
-    const ctrl = component.noticeForm.controls.identifier;
+    const ctrl = component.noticeForm.controls['identifier'];
 
     expect(ctrl?.hasValidator(Validators.required)).toBe(true);
     expect(ctrl.valid).toBe(false);
@@ -205,11 +205,11 @@ describe('SaveProfilePopupComponent', () => {
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(false));
     mockProfileService.profileType = ProfileType.PUA;
 
-    component.noticeForm.controls.identifier.setValidators([Validators.required]);
-    component.noticeForm.controls.identifier.setValue('');
+    component.noticeForm.controls['identifier'].setValidators([Validators.required]);
+    component.noticeForm.controls['identifier'].setValue('');
     component['setUpIdentifierValidator']();
 
-    const ctrl = component.noticeForm.controls.identifier;
+    const ctrl = component.noticeForm.controls['identifier'];
     expect(ctrl.validator).toBeNull();
     expect(ctrl.valid).toBe(true);
   });

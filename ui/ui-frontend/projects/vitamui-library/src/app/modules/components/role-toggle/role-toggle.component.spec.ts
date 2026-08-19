@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable no-magic-numbers */
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';

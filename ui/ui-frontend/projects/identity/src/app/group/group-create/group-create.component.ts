@@ -106,15 +106,15 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    const nameControl = this.form.controls.name;
-    const descriptionControl = this.form.controls.description;
-    const levelControl = this.form.controls.level;
+    const nameControl = this.form.controls['name'];
+    const descriptionControl = this.form.controls['description'];
+    const levelControl = this.form.controls['level'];
 
     return nameControl.invalid || nameControl.pending || descriptionControl.invalid || levelControl.invalid;
   }
 
   secondStepInvalid(): boolean {
-    const profileIdsControl = this.form.controls.profileIds;
+    const profileIdsControl = this.form.controls['profileIds'];
 
     return profileIdsControl.invalid || profileIdsControl.pending;
   }

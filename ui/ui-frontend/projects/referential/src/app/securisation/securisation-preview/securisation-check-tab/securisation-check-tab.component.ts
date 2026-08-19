@@ -35,16 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import {
-  ApiEvent,
-  ApplicationId,
-  Event,
-  ExternalParameters,
-  ExternalParametersService,
-  IEvent,
-  LogbookApiService,
-  SnackBarService,
-} from 'vitamui-library';
+import type { ApiEvent, Event, IEvent } from 'vitamui-library';
+import { ApplicationId, ExternalParameters, ExternalParametersService, LogbookApiService, SnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 
 @Component({

@@ -49,7 +49,7 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
   standalone: false,
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   dialog = inject(MatDialog);
   private formBuilder = inject(FormBuilder);
 
@@ -90,17 +90,17 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
       };
     });
     this.route.queryParams.subscribe((params) => {
-      if (params.guid) {
-        this.onSearchSubmit(params.guid);
+      if (params['guid']) {
+        this.onSearchSubmit(params['guid']);
         this.openOperationDetailAfterLoading = true;
       }
     });
   }
 
-  ngAfterViewInit() {
+  override ngAfterViewInit() {
     this.route.queryParams.subscribe((params) => {
-      if (params.guid) {
-        this.bannerComponent.setValue(params.guid);
+      if (params['guid']) {
+        this.bannerComponent.setValue(params['guid']);
       }
     });
   }

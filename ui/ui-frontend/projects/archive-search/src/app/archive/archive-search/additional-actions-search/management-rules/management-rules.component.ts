@@ -264,7 +264,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.ruleCategorySelected) {
+    if (changes['ruleCategorySelected']) {
       this.applyChanges();
     }
   }
@@ -364,7 +364,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     this.subscriptions.add(
       this.route.params.subscribe((params) => {
-        this.tenantIdentifier = params.tenantIdentifier;
+        this.tenantIdentifier = params['tenantIdentifier'];
         this.rules$ = this.ruleService.getAllForTenant(this.tenantIdentifier).pipe(
           map((rules) =>
             rules.sort((a, b) => {

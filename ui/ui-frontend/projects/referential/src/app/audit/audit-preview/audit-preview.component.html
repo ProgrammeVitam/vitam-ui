@@ -1,18 +1,14 @@
 <vitamui-common-sidenav-header
   [title]="audit()?.id | truncate: 30"
   (onclose)="emitClose()"
-  [badge]="audit() | eventTypeBadgeClass | slice: 13"
+  [badge]="audit() | eventTypeBadgeColor"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="audit()?.id"
   [toolTipTitleDuration]="300"
   [actionsBelowTitle]="true"
 >
   @if (hasReport()) {
-    <button
-      class="btn primary ml-1"
-      (click)="downloadReport()"
-      [disabled]="!(this.isAuditCompleted() && this.hasReport() && this.accessContractId)"
-    >
+    <button class="btn primary ml-1" (click)="downloadReport()" [disabled]="!(isAuditCompleted() && hasReport() && accessContractId)">
       {{ 'AUDIT.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
     </button>
   }

@@ -57,12 +57,6 @@ import { CustomerAlertingComponent } from './customer-alerting/customer-alerting
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
 import { TenantService } from '../tenant.service';
 
-interface CustomerInfo {
-  code: string;
-  name: string;
-  companyName: string;
-}
-
 @Component({
   selector: 'app-customer-create',
   templateUrl: './customer-create.component.html',
@@ -90,7 +84,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public hasError = true;
   public message: string;
   public isLoading = false;
-  public customerInfo: CustomerInfo = {
+  public customerInfo: any = {
     code: null,
     name: null,
     companyName: null,

@@ -78,7 +78,7 @@ interface ActionOption extends Option {
 }
 
 const atLeastOneFilingPlan: ValidatorFn = (control) => {
-  if (control.value?.included?.length > 0) return;
+  if (control.value?.included?.length > 0) return null;
 
   return { required: true };
 };

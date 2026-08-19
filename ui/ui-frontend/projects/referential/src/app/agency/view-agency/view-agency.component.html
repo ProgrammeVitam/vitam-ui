@@ -32,7 +32,7 @@
       <span class="sub-title">{{ agency.identifier }} - {{ agency.name }}</span>
     }
   </vitamui-title-breadcrumb>
-  <vitamui-common-object-viewer [data]="agency" [template]="agencyTemplate" mode="template-driven"></vitamui-common-object-viewer>
+  <vitamui-common-object-viewer [data]="agency" [template]="agencyTemplate" [mode]="$any('template-driven')"></vitamui-common-object-viewer>
   <button type="button" (click)="back()" class="btn link back">
     <i class="vitamui-icon vitamui-icon-chevron-left"></i>
     <span>{{ 'COMMON.BACK' | translate }}</span>

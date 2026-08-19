@@ -35,9 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
-import { EditObject } from '../../models/edit-object.model';
+import type { EditObject } from '../../models/edit-object.model';
 
 @Component({
   selector: 'vitamui-common-list-editor',
@@ -55,6 +56,10 @@ export class ListEditorComponent implements OnChanges {
 
   readonly DisplayObjectType = DisplayObjectType;
 
+  get formControl(): FormControl {
+    return this.editObject.control as FormControl;
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { editObject } = changes;
 
@@ -62,16 +67,16 @@ export class ListEditorComponent implements OnChanges {
   }
 
   addFirst(): void {
-    if (this.editObject.children.length === 0) this.editObject.actions.add.handler();
+    if (this.editObject.children.length === 0) this.editObject.actions['add'].handler();
   }
 
   add(event: Event): void {
-    this.editObject.actions.add.handler();
+    this.editObject.actions['add'].handler();
     event.stopPropagation();
   }
 
   removeAt(event: Event, i: number): void {
-    this.editObject.actions.removeAt.handler(i);
+    this.editObject.actions['removeAt'].handler(i);
     event.stopPropagation();
   }
 }

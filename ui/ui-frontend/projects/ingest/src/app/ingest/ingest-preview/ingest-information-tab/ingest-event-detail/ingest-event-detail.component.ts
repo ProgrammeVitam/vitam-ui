@@ -36,8 +36,8 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { LogbookOperation } from '../../../../models/logbook-event.interface';
-import { Event } from '../../event';
+import type { LogbookOperation } from '../../../../models/logbook-event.interface';
+import type { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
 
 @Component({
@@ -67,8 +67,8 @@ export class IngestEventDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.ingest) {
-      this.events = this.eventDisplayHelper.initEvents(changes.ingest.currentValue);
+    if (changes['ingest']) {
+      this.events = this.eventDisplayHelper.initEvents(changes['ingest'].currentValue);
     }
   }
 

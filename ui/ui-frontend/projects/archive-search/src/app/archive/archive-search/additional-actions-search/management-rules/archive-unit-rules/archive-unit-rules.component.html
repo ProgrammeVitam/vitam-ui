@@ -15,7 +15,7 @@
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [selectedItem]="Number(selectedItem)"
+                [selectedItem]="selectedItem"
                 [ruleCategory]="ruleCategory"
                 [hasExactCount]="hasExactCount"
                 [rulesList]="rules$"
@@ -37,7 +37,7 @@
           <div class="collapsible" [@collapse]="deleteRuleCollapsed">
             @if (actionName.actionType === action && action === 'DELETE_RULES') {
               <app-delete-unit-rules
-                [selectedItem]="Number(selectedItem)"
+                [selectedItem]="selectedItem"
                 [ruleCategory]="ruleCategory"
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
@@ -78,7 +78,7 @@
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [selectedItem]="Number(selectedItem)"
+                [selectedItem]="selectedItem"
                 [ruleCategory]="ruleCategory"
                 [hasExactCount]="hasExactCount"
                 [rulesList]="rules$"
@@ -113,7 +113,7 @@
           <app-unlock-category-inheritance
             [ruleCategory]="ruleCategory"
             [hasExactCount]="hasExactCount"
-            [selectedItem]="Number(selectedItem)"
+            [selectedItem]="selectedItem"
           ></app-unlock-category-inheritance>
         </div>
       </div>
@@ -157,7 +157,7 @@
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [selectedItem]="Number(selectedItem)"
+                [selectedItem]="selectedItem"
                 [ruleCategory]="ruleCategory"
                 [hasExactCount]="hasExactCount"
                 [rulesList]="rules$"

@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
   <div class="gap-3 align-items-stretch w-100">
-    <vitamui-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
+    <vitamui-slide-toggle [formControl]="statusControl" [checked]="form.controls['status'].value === 'ACTIVE'">
       {{ 'CONTEXTS_APP.TAB.INFORMATION.STATUS_TOGGLE' | translate }}
     </vitamui-slide-toggle>
 

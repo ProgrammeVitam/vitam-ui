@@ -36,7 +36,7 @@
  */
 import { WithPath } from '../../object-viewer/models';
 import { Cardinality, EffectiveCardinality, SedaVersion } from '../../object-viewer/types';
-import { Collection } from '../index';
+import { Collection } from './collection.enum';
 import { Control } from './control.model';
 
 export interface SchemaElement extends WithPath {

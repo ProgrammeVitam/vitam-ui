@@ -52,7 +52,6 @@ import { of } from 'rxjs';
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractPreviewStub {
   @Input()
   accessContract: any;
@@ -63,7 +62,6 @@ class AccessContractPreviewStub {
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AccessContractListStub {}
 
 describe('AccessContractComponent', () => {

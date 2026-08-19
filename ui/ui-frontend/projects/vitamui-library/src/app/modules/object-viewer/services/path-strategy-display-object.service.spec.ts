@@ -36,7 +36,7 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { LoggerModule } from '../../logger/logger.module';
-import { DisplayObject, DisplayRule } from '../models';
+import { DisplayObject, DisplayRule, Mode } from '../models';
 import { DisplayObjectType } from '../types';
 import { DataStructureService } from './data-structure.service';
 import { DisplayObjectHelperService } from './display-object-helper.service';
@@ -268,7 +268,7 @@ describe('PathStrategyDisplayObjectService', () => {
         },
       ];
 
-      service.setMode('data-driven');
+      service.setMode(Mode.DATA_DRIVEN);
 
       expect(service).toBeTruthy();
 
@@ -407,7 +407,7 @@ describe('PathStrategyDisplayObjectService', () => {
 
       expect(service).toBeTruthy();
 
-      service.setMode('template-driven');
+      service.setMode(Mode.TEMPLATE_DRIVEN);
 
       const { data, template, expected }: { data: any; template: DisplayRule[]; expected: DisplayObject } = inputs[0];
 
@@ -689,7 +689,7 @@ describe('PathStrategyDisplayObjectService', () => {
 
       expect(service).toBeTruthy();
 
-      service.setMode('mixed-driven');
+      service.setMode(Mode.MIXED_DRIVEN);
 
       const { data, template, expected }: { data: any; template: DisplayRule[]; expected: DisplayObject } = inputs[0];
 

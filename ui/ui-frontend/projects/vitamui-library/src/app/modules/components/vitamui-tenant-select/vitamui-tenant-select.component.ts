@@ -61,7 +61,7 @@ export class VitamUITenantSelectComponent implements OnInit {
 
   constructor() {
     this.route.data.subscribe((data) => {
-      this.appId = data.appId;
+      this.appId = data['appId'];
     });
   }
 

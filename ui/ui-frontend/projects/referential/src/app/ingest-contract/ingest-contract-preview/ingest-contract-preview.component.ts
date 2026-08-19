@@ -49,7 +49,8 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, IngestContract } from 'vitamui-library';
+import { ConfirmActionComponent } from 'vitamui-library';
+import type { IngestContract } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
@@ -94,7 +95,7 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
   @ViewChild('signatureTab', { static: false }) signatureTab: IngestContractSignatureTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
-  async beforeunloadHandler(event: any) {
+  async beforeunloadHandler(event: any): Promise<string | void> {
     const activeTab = this.getActiveTab();
     if (activeTab.updated === true) {
       event.preventDefault();
@@ -105,7 +106,7 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('ingestContract')) {
-      this.ingestContract = changes.ingestContract.currentValue;
+      this.ingestContract = changes['ingestContract'].currentValue;
     }
   }
 

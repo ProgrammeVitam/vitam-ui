@@ -38,7 +38,8 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleCha
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { ManagementContract, Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import type { ManagementContract, Option } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';
@@ -77,8 +78,8 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
   private subscriptions: Subscription = new Subscription();
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.managementContract) {
-      const managementConctract: ManagementContract = changes.managementContract.currentValue;
+    if (changes['managementContract']) {
+      const managementConctract: ManagementContract = changes['managementContract'].currentValue;
 
       this.resetForm(managementConctract);
     }

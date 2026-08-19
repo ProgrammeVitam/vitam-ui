@@ -41,7 +41,7 @@ export interface AccessionRegisterSearchDto {
   direction?: Direction;
 
   searchText?: string;
-  filters?: Map<string, Array<string>>;
+  filters?: Record<string, string[]>;
   endDateInterval?: EndDateInterval;
   opi?: string;
   originatingAgency?: string;

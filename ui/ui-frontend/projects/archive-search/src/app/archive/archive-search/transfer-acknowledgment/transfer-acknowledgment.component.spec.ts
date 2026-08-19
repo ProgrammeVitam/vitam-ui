@@ -38,8 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
@@ -47,14 +46,6 @@ import { DecimalPipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkStep } from '@angular/cdk/stepper';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 @Pipe({
   name: 'dateTime',
@@ -179,8 +170,8 @@ describe('TransferAcknowledgmentComponent', () => {
 
     const errors = await component.atrContentValidator(xmlNoArchiveTransferReply);
     expect(errors).toBeTruthy();
-    expect(errors.fileErrors.atrNotValid).toBeTruthy();
-    expect(errors.controlErrors.invalidFiles).toBeTruthy();
+    expect(errors.fileErrors['atrNotValid']).toBeTruthy();
+    expect(errors.controlErrors['invalidFiles']).toBeTruthy();
   });
 
   it('should parseXmlToTransferDetails for invalid XML', async () => {
@@ -188,8 +179,8 @@ describe('TransferAcknowledgmentComponent', () => {
 
     const errors = await component.atrContentValidator(xmlBadFormat);
     expect(errors).toBeTruthy();
-    expect(errors.fileErrors.fileBadFormat).toBeTruthy();
-    expect(errors.controlErrors.invalidFiles).toBeTruthy();
+    expect(errors.fileErrors['fileBadFormat']).toBeTruthy();
+    expect(errors.controlErrors['invalidFiles']).toBeTruthy();
   });
 
   describe('DOM', () => {

@@ -51,7 +51,7 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     super(http, baseUrl + '/providers');
   }
 
-  create(identityProvider: IdentityProvider, headers?: HttpHeaders): Observable<IdentityProvider> {
+  override create(identityProvider: IdentityProvider, headers?: HttpHeaders): Observable<IdentityProvider> {
     const formData = new FormData();
     if (identityProvider.keystore && identityProvider.idpMetadata) {
       formData.append('keystore', identityProvider.keystore, identityProvider.keystore.name);
@@ -90,7 +90,7 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
     return this.http.post<IdentityProvider>(this.apiUrl, formData, { headers });
   }
 
-  patch(partialIDP: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
+  override patch(partialIDP: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
     return super.patch(partialIDP, headers);
   }
 

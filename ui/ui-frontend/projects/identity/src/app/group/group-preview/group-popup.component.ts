@@ -50,7 +50,7 @@ export class GroupPopupComponent {
   group: Group;
 
   constructor() {
-    this.group = this.route.snapshot.data.group;
+    this.group = this.route.snapshot.data['group'];
   }
 
   closePopup() {

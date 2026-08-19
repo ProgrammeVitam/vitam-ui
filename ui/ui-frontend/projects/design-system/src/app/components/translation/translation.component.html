@@ -34,7 +34,7 @@
   </div>
 
   <div class="d-flex align-items-center">
-    <span class="text medium mb-3">{{ nbApples.value | i18nPlural: nbApplesTextMap | translate: { number: nbApples.value } }}</span>
+    <span class="text medium mb-3">{{ +nbApples.value | i18nPlural: nbApplesTextMap | translate: { number: +nbApples.value } }}</span>
     <vitamui-input class="ml-3" [formControl]="nbApples" [placeholder]="'TRANSLATION.NUMBER_OF_APPLE' | translate"></vitamui-input>
   </div>
 

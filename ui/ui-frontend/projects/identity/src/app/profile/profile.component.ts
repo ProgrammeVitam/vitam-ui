@@ -52,7 +52,7 @@ import { ProfileListComponent } from './profile-list/profile-list.component';
 export class ProfileComponent extends SidenavPage<Profile> {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
 
   public search: string;
 

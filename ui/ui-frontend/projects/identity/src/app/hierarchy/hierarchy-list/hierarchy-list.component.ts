@@ -133,7 +133,7 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
     this.updatedProfileSub.unsubscribe();
   }
 
-  search() {
+  override search() {
     const defaultCriteria: Criterion[] = [
       {
         key: 'applicationName',

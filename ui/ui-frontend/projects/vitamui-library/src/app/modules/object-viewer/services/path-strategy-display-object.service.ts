@@ -57,7 +57,7 @@ const MIXED_MODE_MESSAGE =
   'The mixed mode is enabled, the computed display object will follow the provided template structure and data structure otherwise';
 
 @Injectable()
-export class PathStrategyDisplayObjectService implements DisplayObjectService {
+export class PathStrategyDisplayObjectService implements DisplayObjectService<Mode> {
   private logger = inject(Logger);
   private displayObjectHelper = inject(DisplayObjectHelperService);
   private typeService = inject(TypeService);
@@ -124,7 +124,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
     this.template.next(template);
   }
 
-  setMode(mode: string): void {
-    this.mode.next(mode as Mode);
+  setMode(mode: Mode): void {
+    this.mode.next(mode);
   }
 }

@@ -61,7 +61,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
 
   ngOnInit() {
     if (!this.data) {
-      const appId = this.route.snapshot.data.appId;
+      const appId = this.route.snapshot.data['appId'];
       if (appId) {
         this.applicationService.getAppById(appId).subscribe((app: Application) => {
           this.data = [{ identifier: ApplicationId.PORTAL_APP }, { label: app.name, identifier: appId }];

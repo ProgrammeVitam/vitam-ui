@@ -89,7 +89,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
 
     this.archiveSharedDataService.getToggle().subscribe((hidden) => {

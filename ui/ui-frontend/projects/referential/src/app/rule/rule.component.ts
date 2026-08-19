@@ -82,9 +82,8 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     });
 
     this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        // eslint-disable-next-line radix
-        this.tenantId = parseInt(params.tenantIdentifier);
+      if (params['tenantIdentifier']) {
+        this.tenantId = parseInt(params['tenantIdentifier']);
       }
     });
   }

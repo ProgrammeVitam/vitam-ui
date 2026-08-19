@@ -6,7 +6,7 @@
       [firstChoice]="ProfileType.PA"
       [secondChoice]="ProfileType.PUA"
       [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
-      (changeStatusEvent)="form.controls.profileType.setValue($event)"
+      (changeStatusEvent)="form.controls['profileType'].setValue($event)"
     >
       <i
         class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable"

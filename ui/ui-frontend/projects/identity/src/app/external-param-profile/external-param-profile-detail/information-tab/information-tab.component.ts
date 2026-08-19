@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { of, skip, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEqual } from 'underscore';
-import { ExternalParamProfile } from 'vitamui-library';
+import type { ExternalParamProfile } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
 

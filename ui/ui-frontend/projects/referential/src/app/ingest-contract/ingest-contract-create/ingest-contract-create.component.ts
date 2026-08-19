@@ -208,28 +208,28 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
-    this.form.controls.name.valueChanges.subscribe((value) => {
+    this.form.controls['name'].valueChanges.subscribe((value) => {
       if (!this.isSlaveMode) {
-        this.form.controls.identifier.setValue(value);
+        this.form.controls['identifier'].setValue(value);
       }
     });
 
     this.linkParentIdControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
       if (value.included.length === 1) {
-        this.form.controls.linkParentId.setValue(value.included[0]);
+        this.form.controls['linkParentId'].setValue(value.included[0]);
       } else {
-        this.form.controls.linkParentId.setValue(null);
+        this.form.controls['linkParentId'].setValue(null);
       }
     });
 
     this.checkParentIdControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
       if (value.included.length > 0) {
-        this.form.controls.checkParentId.setValue(value.included);
+        this.form.controls['checkParentId'].setValue(value.included);
       } else {
-        this.form.controls.checkParentId.setValue([]);
+        this.form.controls['checkParentId'].setValue([]);
       }
     });
 
@@ -310,7 +310,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   get signaturePolicy(): FormGroup {
-    return this.form.controls.signaturePolicy as FormGroup;
+    return this.form.controls['signaturePolicy'] as FormGroup;
   }
 
   selectedSignedDocumentPolicyInvalid(): boolean {
@@ -318,6 +318,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     if (signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
       return signaturePolicy.declaredSignature || signaturePolicy.declaredTimestamp || signaturePolicy.declaredAdditionalProof;
     }
+    return false;
   }
 
   changeSignedDocumentPolicy(signedDocumentPolicyEnum: SignedDocumentPolicyEnum): void {

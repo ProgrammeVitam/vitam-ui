@@ -38,6 +38,7 @@ import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@an
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,7 +56,7 @@ export const EDITABLE_INPUT_VALUE_ACCESSOR: any = {
 export class EditableInputComponent extends EditableFieldComponent {
   @Input() maxlength: number;
   @Input() type = 'text';
-  @Input() writeDisabled: boolean;
+  @Input({ transform: coerceBooleanProperty }) writeDisabled: boolean;
   @ViewChild('input') private input: ElementRef;
 
   constructor() {
@@ -64,7 +65,7 @@ export class EditableInputComponent extends EditableFieldComponent {
     super(elementRef);
   }
 
-  enterEditMode() {
+  override enterEditMode() {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
   }

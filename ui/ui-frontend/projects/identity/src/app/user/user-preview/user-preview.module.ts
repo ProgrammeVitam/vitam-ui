@@ -43,7 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule, CommonTooltipModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
 import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
@@ -64,6 +64,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,
+    CommonTooltipModule,
   ],
   declarations: [UserPopupComponent, UserPreviewComponent, UserInfoTabComponent, UserGroupTabComponent],
   exports: [UserPreviewComponent],

@@ -188,7 +188,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       this.cdr.detectChanges(); // Force la détection de changements
     });
 
-    const otherCriteriaControl = this.form.controls.otherCriteria as FormGroup;
+    const otherCriteriaControl = this.form.controls['otherCriteria'] as FormGroup;
     this.otherCriteriaList.valueChanges.subscribe((schemaElements) => {
       const currentPaths = Object.keys(otherCriteriaControl.controls);
       const expectedPaths = schemaElements.map((element) => element.Path);
@@ -328,27 +328,27 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   get guid() {
-    return this.form.controls.guid;
+    return this.form.controls['guid'];
   }
 
   get archiveCriteria() {
-    return this.form.controls.archiveCriteria;
+    return this.form.controls['archiveCriteria'];
   }
 
   get title() {
-    return this.form.controls.title;
+    return this.form.controls['title'];
   }
 
   get beginDt() {
-    return this.form.controls.beginDt;
+    return this.form.controls['beginDt'];
   }
 
   get endDt() {
-    return this.form.controls.endDt;
+    return this.form.controls['endDt'];
   }
 
   get otherCriteriaList(): AbstractControl<SchemaElement[]> {
-    return this.form.controls.otherCriteriaList;
+    return this.form.controls['otherCriteriaList'];
   }
 
   private addMissingControls(expectedPaths: string[], currentPaths: string[], formGroup: FormGroup): void {

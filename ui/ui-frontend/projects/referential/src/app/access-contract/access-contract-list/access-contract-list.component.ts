@@ -141,8 +141,8 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
       criteria.Identifier = this._searchText;
     }
 
-    if (this.filterMap.status.length > 0) {
-      criteria.Status = this.filterMap.status;
+    if (this.filterMap['status'].length > 0) {
+      criteria['Status'] = this.filterMap['status'];
     }
 
     return criteria;

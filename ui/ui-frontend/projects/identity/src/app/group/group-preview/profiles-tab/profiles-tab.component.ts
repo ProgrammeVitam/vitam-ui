@@ -37,7 +37,7 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Group, Profile } from 'vitamui-library';
+import type { Group, Profile } from 'vitamui-library';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 

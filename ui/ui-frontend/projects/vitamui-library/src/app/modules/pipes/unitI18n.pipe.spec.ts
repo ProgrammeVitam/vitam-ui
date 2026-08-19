@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable no-magic-numbers */
 
 import { Unit } from '../models/units/unit.interface';
 import { UnitI18nPipe } from './unitI18n.pipe';
@@ -81,83 +80,83 @@ describe('UnitI18nPipe', () => {
     delete unit.Title;
     delete unit.Description;
 
-    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_.fr);
-    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_.fr);
+    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_['fr']);
+    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_['fr']);
   });
 
   it('should extract Title_.FR or Description_.FR if Title and Description are not set and no lower-case fr', () => {
     const pipe = new UnitI18nPipe();
 
     delete unit.Title;
-    delete unit.Title_.fr;
+    delete unit.Title_['fr'];
     delete unit.Description;
-    delete unit.Description_.fr;
+    delete unit.Description_['fr'];
 
-    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_.FR);
-    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_.FR);
+    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_['FR']);
+    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_['FR']);
   });
 
   it('should extract Title_.en or Description_.en if Title and Description are not set and no french', () => {
     const pipe = new UnitI18nPipe();
 
     delete unit.Title;
-    delete unit.Title_.fr;
-    delete unit.Title_.FR;
+    delete unit.Title_['fr'];
+    delete unit.Title_['FR'];
     delete unit.Description;
-    delete unit.Description_.fr;
-    delete unit.Description_.FR;
+    delete unit.Description_['fr'];
+    delete unit.Description_['FR'];
 
-    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_.en);
-    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_.en);
+    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_['en']);
+    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_['en']);
   });
 
   it('should extract Title_.EN or Description_.EN if Title and Description are not set, no french and no lower-case en', () => {
     const pipe = new UnitI18nPipe();
 
     delete unit.Title;
-    delete unit.Title_.fr;
-    delete unit.Title_.FR;
-    delete unit.Title_.en;
+    delete unit.Title_['fr'];
+    delete unit.Title_['FR'];
+    delete unit.Title_['en'];
     delete unit.Description;
-    delete unit.Description_.fr;
-    delete unit.Description_.FR;
-    delete unit.Description_.en;
+    delete unit.Description_['fr'];
+    delete unit.Description_['FR'];
+    delete unit.Description_['en'];
 
-    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_.EN);
-    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_.EN);
+    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_['EN']);
+    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_['EN']);
   });
 
   it('should extract Title_.es or Description_.es if Title and Description are not set, no french and no english', () => {
     const pipe = new UnitI18nPipe();
 
     delete unit.Title;
-    delete unit.Title_.fr;
-    delete unit.Title_.FR;
-    delete unit.Title_.en;
-    delete unit.Title_.EN;
+    delete unit.Title_['fr'];
+    delete unit.Title_['FR'];
+    delete unit.Title_['en'];
+    delete unit.Title_['EN'];
     delete unit.Description;
-    delete unit.Description_.fr;
-    delete unit.Description_.FR;
-    delete unit.Description_.en;
-    delete unit.Description_.EN;
+    delete unit.Description_['fr'];
+    delete unit.Description_['FR'];
+    delete unit.Description_['en'];
+    delete unit.Description_['EN'];
 
-    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_.es);
-    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_.es);
+    expect(pipe.transform(unit as Unit, 'Title')).toBe(unit.Title_['es']);
+    expect(pipe.transform(unit as Unit, 'Description')).toBe(unit.Description_['es']);
   });
 
   it('should return null if no Title/Description nor translated version of Title/Description', () => {
     const pipe = new UnitI18nPipe();
 
     delete unit.Title;
-    delete unit.Title_.fr;
-    delete unit.Title_.FR;
-    delete unit.Title_.en;
-    delete unit.Title_.EN;
+    delete unit.Title_['fr'];
+    delete unit.Title_['FR'];
+    delete unit.Title_['en'];
+    delete unit.Title_['EN'];
     delete unit.Description;
-    delete unit.Description_.fr;
-    delete unit.Description_.FR;
-    delete unit.Description_.en;
-    delete unit.Description_.EN;
+    delete unit.Description_['fr'];
+    delete unit.Description_['FR'];
+    delete unit.Description_['en'];
+    delete unit.Description_['EN'];
 
     expect(pipe.transform({} as Unit, 'Title')).toBe('');
     expect(pipe.transform({} as Unit, 'Description')).toBe('');

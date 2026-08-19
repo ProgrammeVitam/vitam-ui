@@ -28,7 +28,6 @@
           <button
             mat-icon-button
             [style.visibility]="!data.expandable ? 'hidden' : ''"
-            [disabled]="disabled"
             [style.marginLeft.px]="data.level * 32"
             disableRipple
             (click)="treeControl.toggle(data)"

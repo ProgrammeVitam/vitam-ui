@@ -40,7 +40,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Rule, RuleService, SecurityService, VitamuiRoles, diff } from 'vitamui-library';
+import type { Rule } from 'vitamui-library';
+import { RuleService, SecurityService, VitamuiRoles, diff } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 
 const RULES_APP = 'RULES_APP';
@@ -111,7 +112,7 @@ export class RuleInformationTabComponent implements OnInit {
   ngOnInit() {
     this.hasUpdateRuleRole$ = this.route.params.pipe(
       mergeMap((params) => {
-        this.tenantIdentifier = +params.tenantIdentifier;
+        this.tenantIdentifier = +params['tenantIdentifier'];
         return this.securityService.hasRole$(RULES_APP, VitamuiRoles.ROLE_UPDATE_RULES, this.tenantIdentifier);
       }),
     );

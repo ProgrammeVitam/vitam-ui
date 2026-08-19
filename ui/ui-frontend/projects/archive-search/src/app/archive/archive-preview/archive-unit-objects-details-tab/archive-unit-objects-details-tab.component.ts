@@ -38,14 +38,13 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
+import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
 import {
   AccessContract,
   AccessContractService,
   DescriptionLevel,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
-  Unit,
-  VersionWithQualifierDto,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
@@ -90,7 +89,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.archiveUnit) {
+    if (changes['archiveUnit']) {
       if (!this.accessContract) {
         this.getAccessContract();
       } else {

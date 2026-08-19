@@ -73,7 +73,7 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   orderKeyOperationCreationDate: keyof RegisterValueEventModel = 'CreationDate';
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.operations) {
+    if (changes['operations']) {
       this.reloadOperations();
     }
   }

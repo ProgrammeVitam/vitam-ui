@@ -38,11 +38,10 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
+import type { Ontology, Option } from 'vitamui-library';
 import {
   ApplicationId,
   diff,
-  Ontology,
-  Option,
   Role,
   SecurityService,
   setTypeDetailAndStringSize,

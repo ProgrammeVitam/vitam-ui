@@ -54,7 +54,7 @@ import { FileFormatListComponent } from './file-format-list/file-format-list.com
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
 
@@ -97,22 +97,22 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
 
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
+      if (params['tenantIdentifier']) {
         this.hasCreateRole = this.securityService.hasRole$(
           ApplicationId.FILE_FORMATS_APP,
           Role.ROLE_CREATE_FILE_FORMATS,
-          parseInt(params.tenantIdentifier),
+          parseInt(params['tenantIdentifier']),
         );
         this.hasImportRole = this.securityService.hasRole$(
           ApplicationId.FILE_FORMATS_APP,
           Role.ROLE_IMPORT_FILE_FORMATS,
-          parseInt(params.tenantIdentifier),
+          parseInt(params['tenantIdentifier']),
         );
       }
     });
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     this.tenantIdentifierSubscription.unsubscribe();
   }
 

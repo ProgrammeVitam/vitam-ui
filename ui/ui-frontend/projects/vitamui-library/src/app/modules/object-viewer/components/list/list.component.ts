@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { DisplayObject } from '../../models';
+import type { DisplayObject } from '../../models';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { TypeService } from '../../services/type.service';
 import { DisplayObjectType } from '../../types';

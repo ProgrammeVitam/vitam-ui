@@ -39,7 +39,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Context, Option, diff } from 'vitamui-library';
+import type { Context, Option } from 'vitamui-library';
+import { diff } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
@@ -120,7 +121,7 @@ export class ContextInformationTabComponent {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
+      this.form.controls['status'].setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
   }
 
@@ -142,14 +143,14 @@ export class ContextInformationTabComponent {
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the context status has changed before sending the data
-        if (formData.status) {
-          if (formData.status === 'ACTIVE') {
-            formData.activationDate = new Date();
-            formData.deactivationDate = '';
+        if (formData['status']) {
+          if (formData['status'] === 'ACTIVE') {
+            formData['activationDate'] = new Date();
+            formData['deactivationDate'] = '';
           } else {
-            formData.status = 'INACTIVE';
-            formData.activationDate = '';
-            formData.deactivationDate = new Date();
+            formData['status'] = 'INACTIVE';
+            formData['activationDate'] = '';
+            formData['deactivationDate'] = new Date();
           }
         }
         return this.contextService.patch(formData).pipe(catchError(() => of(null)));

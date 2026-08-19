@@ -59,7 +59,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
 
   @Input()
-  selectedItem: string;
+  selectedItem: number;
   @Input()
   ruleCategory: string;
   @Input()

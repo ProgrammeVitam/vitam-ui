@@ -175,6 +175,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       default:
         return null;
     }
+    return null;
   }
 
   launchDownloadReport(event: IEvent, accessContractId: string) {

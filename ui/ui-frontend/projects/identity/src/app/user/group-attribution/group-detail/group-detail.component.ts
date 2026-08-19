@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { Group, Profile } from 'vitamui-library';
+import type { Group, Profile } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
 
 @Component({
@@ -47,17 +47,17 @@ import { GroupService } from '../../../group/group.service';
 export class GroupDetailComponent implements OnInit {
   private groupService = inject(GroupService);
 
-  @Input() group: Group;
-  public displayedGroup: Group;
+  @Input() group: Pick<Group, 'id' | 'description' | 'level'>;
 
   public groupProfiles: Profile[];
+
   ngOnInit(): void {
-    this.getGroupProfiles(this.group);
+    this.getGroupProfiles();
   }
 
-  getGroupProfiles(group: Group) {
-    if (group) {
-      this.groupService.get(group.id).subscribe((groupRetrieved) => {
+  getGroupProfiles() {
+    if (this.group) {
+      this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
         this.groupProfiles = groupRetrieved.profiles;
       });
     }

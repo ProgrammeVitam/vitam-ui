@@ -71,14 +71,12 @@ export class EventDisplayHelperService {
   }
 
   initEvents(logbook: any): any[] {
-    // eslint-disable-next-line prefer-const
     let events = [];
     this.eventData = this.getEventData(logbook);
     let rootEvent = null; // Step event
     let actionEvent = null; // Action event
     let started = false;
     if (logbook.events.length > 0) {
-      // eslint-disable-next-line prefer-const
       for (let evt of logbook.events) {
         if (evt.outcome !== 'OK') {
           this.eventData = this.getEventData(evt);

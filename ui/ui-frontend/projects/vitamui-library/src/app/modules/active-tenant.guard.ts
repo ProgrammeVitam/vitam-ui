@@ -64,7 +64,7 @@ export class ActiveTenantGuard {
 
   checkTenants(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
     const tenantIdentifier = route.paramMap.get('tenantIdentifier');
-    const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);
+    const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data['appId']);
     if (tenantsByApp) {
       const result = tenantsByApp.tenants.find((tenant: Tenant) => tenant.identifier === +tenantIdentifier);
       if (result) {

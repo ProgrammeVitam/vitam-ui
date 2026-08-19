@@ -183,7 +183,7 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     this.searchSubscription?.unsubscribe();
   }
 
@@ -358,7 +358,7 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
     }
   }
 
-  writeValue(initialValues?: T | T[]) {
+  override writeValue(initialValues?: T | T[]) {
     const correspondingFlatNodes = this.treeControl.dataNodes
       .filter((n) => !n.expandable)
       .filter((n) => (Array.isArray(initialValues) ? initialValues : [initialValues])?.includes(n.item));
