@@ -38,7 +38,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AccessContractService, DslQueryType, InjectorModule, LoggerModule, SnackBarService, VitamUILibraryModule } from 'vitamui-library';
@@ -82,7 +81,6 @@ describe('AdminDslComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         MatSelectModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,

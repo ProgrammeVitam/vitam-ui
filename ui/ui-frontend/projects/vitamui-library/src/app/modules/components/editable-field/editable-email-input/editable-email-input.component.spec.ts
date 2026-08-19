@@ -65,7 +65,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EditableEmailInputComponent } from './editable-email-input.component';
 
@@ -75,7 +74,7 @@ describe('EditableEmailInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule, EditableEmailInputComponent],
+      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, EditableEmailInputComponent],
       providers: [{ provide: DOCUMENT, useValue: document }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

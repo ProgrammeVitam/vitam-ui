@@ -37,7 +37,6 @@
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 
@@ -54,7 +53,7 @@ import { AccountService } from './account.service';
 @Component({
   selector: 'vitamui-common-account-information-tab',
   template: '',
-  imports: [InjectorModule, MatTabsModule, NoopAnimationsModule, VitamUICommonTestModule],
+  imports: [InjectorModule, MatTabsModule, VitamUICommonTestModule],
 })
 class InformationTabStubComponent {
   @Input() account: Account;
@@ -77,7 +76,6 @@ describe('AccountComponent', () => {
       imports: [
         InjectorModule,
         MatTabsModule,
-        NoopAnimationsModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
         AccountComponent,

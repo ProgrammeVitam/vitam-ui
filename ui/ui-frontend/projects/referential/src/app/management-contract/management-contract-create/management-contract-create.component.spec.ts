@@ -41,7 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -100,7 +100,6 @@ describe('ManagementContractCreateComponent', () => {
         LoggerModule.forRoot(),
         MatSelectModule,
         MatSidenavModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         RouterTestingModule,
         VitamUICommonTestModule,

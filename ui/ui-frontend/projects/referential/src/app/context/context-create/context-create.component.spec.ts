@@ -44,7 +44,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, OtpState } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -68,7 +67,6 @@ import { ContextCreateValidators } from './context-create.validators';
     MatSelectModule,
     MatButtonToggleModule,
     MatProgressBarModule,
-    NoopAnimationsModule,
     MatProgressSpinnerModule,
     VitamUICommonTestModule,
   ],
@@ -161,7 +159,6 @@ describe.skip('ContextCreateComponent', () => {
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
         ContextCreateComponent,

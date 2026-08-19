@@ -79,7 +79,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
@@ -172,7 +171,6 @@ describe('GroupCreateComponent', () => {
       imports: [
         MatProgressBarModule,
         ReactiveFormsModule,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
         CommonModule,
         FormsModule,
