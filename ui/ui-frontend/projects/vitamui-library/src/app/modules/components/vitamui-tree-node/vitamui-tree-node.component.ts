@@ -50,7 +50,6 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
   imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, TooltipDirective],
-  standalone: true,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   private cdr = inject(ChangeDetectorRef);

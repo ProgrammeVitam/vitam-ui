@@ -40,22 +40,13 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../models/ruleAction.interface';
 import { ManagementRulesComponent } from './management-rules.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleActions: ActionsRules[] = [
   {
@@ -317,7 +308,7 @@ describe('ManagementRulesComponent', () => {
 
   describe('DOM', () => {
     it('should have 2 text titles', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('div.align-items-stretch > label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(2);

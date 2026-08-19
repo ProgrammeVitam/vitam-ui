@@ -43,7 +43,6 @@ import { environment } from './../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerComponent } from './customer.component';
@@ -68,7 +67,7 @@ let page: Page;
 @Component({
   selector: 'app-customer-list',
   template: '',
-  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerListStubComponent {
   search() {}
@@ -77,7 +76,7 @@ class CustomerListStubComponent {
 @Component({
   selector: 'app-customer-preview',
   template: '',
-  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerPreviewStubComponent {
   @Input()
@@ -91,7 +90,7 @@ class CustomerPreviewStubComponent {
 @Component({
   selector: 'app-owner-preview',
   template: '',
-  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule, InjectorModule],
 })
 class OwnerPreviewStubComponent {
   @Input()
@@ -117,7 +116,6 @@ describe('CustomerComponent', () => {
       imports: [
         MatMenuModule,
         MatSidenavModule,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
         InjectorModule,
         LoggerModule.forRoot(),

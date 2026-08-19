@@ -40,7 +40,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -75,7 +75,6 @@ describe('ManagementContractComponent', () => {
         RouterTestingModule,
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
-        NoopAnimationsModule,
         ManagementContractComponent,
       ],
       providers: [

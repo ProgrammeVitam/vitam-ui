@@ -38,7 +38,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 import {
@@ -124,7 +124,6 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         VitamUICommonTestModule,
         ArchiveUnitRulesInformationsTabComponent,
         DateTimeStubPipe,

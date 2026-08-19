@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
@@ -75,7 +74,7 @@ class CollapseStubDirective {
 @Component({
   selector: 'app-owner-list',
   template: '',
-  imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+  imports: [MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class OwnerListStubComponent {
   @Input()
@@ -280,7 +279,6 @@ describe('CustomerListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MatProgressSpinnerModule,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
         CustomerListComponent,
         CollapseStubDirective,

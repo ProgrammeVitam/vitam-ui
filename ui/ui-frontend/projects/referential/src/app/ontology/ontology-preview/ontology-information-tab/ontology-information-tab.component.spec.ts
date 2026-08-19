@@ -40,7 +40,6 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { Ontology, SecurityService, VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -75,15 +74,7 @@ describe('OntologyInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        VitamUILibraryModule,
-      ],
+      imports: [MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, VitamUICommonTestModule, VitamUILibraryModule],
       providers: [
         FormBuilder,
         { provide: OntologyService, useValue: ontologyServiceMock },

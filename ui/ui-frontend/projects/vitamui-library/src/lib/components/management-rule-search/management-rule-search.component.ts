@@ -87,7 +87,6 @@ type RuleForm = {
   selector: 'vitamui-management-rule-search',
   templateUrl: './management-rule-search.component.html',
   styleUrls: ['./management-rule-search.component.scss'],
-  standalone: true,
   imports: [
     ReactiveFormsModule,
     SelectComponent,

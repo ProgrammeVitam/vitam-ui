@@ -43,7 +43,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -67,7 +66,6 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
     MatSelectModule,
     MatButtonToggleModule,
     MatProgressBarModule,
-    NoopAnimationsModule,
     MatProgressSpinnerModule,
     VitamUICommonTestModule,
   ],
@@ -104,7 +102,6 @@ class DomainInputStubComponent implements ControlValueAccessor {
     MatSelectModule,
     MatButtonToggleModule,
     MatProgressBarModule,
-    NoopAnimationsModule,
     MatProgressSpinnerModule,
     VitamUICommonTestModule,
   ],
@@ -166,7 +163,6 @@ describe('SecurityProfileCreateComponent', () => {
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
         SecurityProfileEditPermissionStubComponent,

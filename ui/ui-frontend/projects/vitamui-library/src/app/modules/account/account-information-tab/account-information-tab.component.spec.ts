@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 import { VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
@@ -55,7 +54,7 @@ describe('AccountInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, SlideToggleComponent, NoopAnimationsModule, AccountInformationTabComponent],
+      imports: [ReactiveFormsModule, SlideToggleComponent, AccountInformationTabComponent],
       declarations: [VitamUIFieldErrorStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },

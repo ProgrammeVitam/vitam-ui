@@ -45,7 +45,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
@@ -69,7 +68,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   selector: 'app-rule-preview',
   template: '',
   imports: [
-    NoopAnimationsModule,
     RouterTestingModule,
     VitamUICommonTestModule,
     ReactiveFormsModule,
@@ -91,7 +89,6 @@ class RulePreviewStubComponent {
   selector: 'app-rule-list',
   template: '',
   imports: [
-    NoopAnimationsModule,
     RouterTestingModule,
     VitamUICommonTestModule,
     ReactiveFormsModule,
@@ -145,7 +142,6 @@ describe('RuleComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        NoopAnimationsModule,
         RouterTestingModule,
         VitamUICommonTestModule,
         ReactiveFormsModule,

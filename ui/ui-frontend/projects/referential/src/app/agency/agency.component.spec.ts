@@ -43,7 +43,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AgencyService, BASE_URL, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
@@ -80,7 +79,6 @@ describe('AgencyComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
         MatMenuModule,

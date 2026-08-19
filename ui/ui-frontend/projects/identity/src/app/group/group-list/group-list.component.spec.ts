@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
@@ -154,7 +153,7 @@ describe('GroupListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, OrderByButtonComponent, GroupListComponent],
+      imports: [MatProgressSpinnerModule, VitamUICommonTestModule, OrderByButtonComponent, GroupListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },

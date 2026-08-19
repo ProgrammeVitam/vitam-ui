@@ -38,7 +38,7 @@
 import { Directive, ElementRef, HostListener, inject, Input, OnInit, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-@Directive({ selector: '[vitamuiCommonResizeSidebar]', standalone: true })
+@Directive({ selector: '[vitamuiCommonResizeSidebar]' })
 export class ResizeSidebarDirective implements OnInit {
   private elementRef = inject(ElementRef);
   private renderer = inject(Renderer2);

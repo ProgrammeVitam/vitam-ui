@@ -37,7 +37,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService, StartupService } from 'vitamui-library';
@@ -61,7 +60,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent, AppComponent],
+      imports: [MatSidenavModule, SubrogationBannerStubComponent, RouterOutletStubComponent, AppComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },

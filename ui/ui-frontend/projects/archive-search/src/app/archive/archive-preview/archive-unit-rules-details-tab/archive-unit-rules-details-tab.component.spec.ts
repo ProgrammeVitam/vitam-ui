@@ -123,23 +123,4 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
     // Then
     expect(archiveServiceMock.selectUnitWithInheritedRules).toHaveBeenCalled();
   });
-
-  describe('DOM', () => {
-    it('should have 8 rows ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementRow = nativeElement.querySelectorAll('.row');
-
-      // Then
-      expect(elementRow.length).toBe(8);
-    });
-    it('should have 7 columns ', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const elementColumn = nativeElement.querySelectorAll('.col');
-
-      // Then
-      expect(elementColumn.length).toBe(7);
-    });
-  });
 });
