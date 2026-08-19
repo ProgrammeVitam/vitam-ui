@@ -36,22 +36,22 @@
  */
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
+  AccessContractService,
   AppRootComponent,
   DslQueryType,
-  Option,
-  SnackBarService,
-  AccessContractService,
-  VitamuiTitleBreadcrumbComponent,
-  SelectComponent,
   InputComponent,
+  Option,
+  SelectComponent,
+  SnackBarService,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { AdminDslService } from './admin-dsl.service';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-admin-dsl',

@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { Event, SearchService, SnackBarService } from 'vitamui-library';
-import { VitamuiHttpHeaders } from 'vitamui-library';
+import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
 import { OperationApiService } from '../core/api/operation-api.service';
 import { Observable } from 'rxjs';
 

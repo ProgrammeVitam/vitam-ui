@@ -36,9 +36,9 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, finalize, merge, Observable, of, Subject, Subscription, zip } from 'rxjs';
 import { debounceTime, filter, map, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
@@ -51,6 +51,7 @@ import {
   APPRAISAL_RULE,
   ArchiveSearchResultFacets,
   ArchiveUnit,
+  ArchiveUnitModule,
   BreadCrumbData,
   ConfirmDialogComponent,
   ConfirmDialogData,
@@ -58,20 +59,28 @@ import {
   CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
+  DialogHeaderComponent,
   Direction,
   DiscussionEntity,
+  DiscussionIconComponent,
+  DiscussionPanelComponent,
   DISSEMINATION_RULE,
   ExternalParameters,
   ExternalParametersService,
   FilingHoldingSchemeNode,
   GlobalEventService,
+  InfiniteScrollDirective,
   MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+  ManagementRuleSearchComponent,
   NODES,
+  OrderByButtonComponent,
   ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
+  PipesModule,
   QueryParamsService,
   ReclassificationDialogComponent,
+  ResizeSidebarDirective,
   REUSE_RULE,
   Rule,
   RuleService,
@@ -88,29 +97,19 @@ import {
   SidenavPage,
   SnackBarService,
   STORAGE_RULE,
-  VitamTenantConfigService,
   TermsFacet,
   toManagementRuleType,
+  TooltipDirective,
   Transaction,
   TransactionStatus,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
-  WAITING_RECALCULATE,
-  VitamuiTitleBreadcrumbComponent,
-  DiscussionIconComponent,
-  TooltipDirective,
-  DiscussionPanelComponent,
+  VitamTenantConfigService,
   VitamuiMenuButtonComponent,
-  ManagementRuleSearchComponent,
   VitamuiSupHeaderComponent,
-  ArchiveUnitModule,
-  DialogHeaderComponent,
-  OrderByButtonComponent,
-  PipesModule,
-  InfiniteScrollDirective,
-  ResizeSidebarDirective,
-  ResizeVerticalDirective,
+  VitamuiTitleBreadcrumbComponent,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
@@ -121,34 +120,33 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TransactionsService } from '../transactions/transactions.service';
 import { SipImportTrackingService } from '../shared/sip-import-tracking.service';
-import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
 import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
-import { NgClass, NgTemplateOutlet, AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
-import { MatMenuItem, MatMenuTrigger, MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { CriteriaSearchComponent } from './archive-search-criteria/components/criteria-search/criteria-search.component';
 import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ArchiveSearchRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/archive-search-rules-facets.component';
-import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatRowDef,
+  MatHeaderRowDef,
   MatRow,
+  MatRowDef,
+  MatTable,
 } from '@angular/material/table';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -203,7 +201,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    CdkScrollable,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
@@ -215,7 +212,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     CommonModule,
     InfiniteScrollDirective,
     ResizeSidebarDirective,
-    ResizeVerticalDirective,
   ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {

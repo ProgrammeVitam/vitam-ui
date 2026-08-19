@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
   getProjectIcon,
-  InfiniteScrollTable,
-  PageRequest,
-  Project,
-  OrderByButtonComponent,
-  VitamuiMenuButtonComponent,
-  PipesModule,
   InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  Project,
+  VitamuiMenuButtonComponent,
 } from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
 import { MatMenuItem } from '@angular/material/menu';

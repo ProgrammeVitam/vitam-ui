@@ -34,15 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import {
   ApplicationId,
   BreadCrumbData,
+  DialogHeaderComponent,
   Logger,
   Option,
   Rule,
@@ -53,7 +54,6 @@ import {
   SnackBarService,
   VitamTenantConfigService,
   VitamuiTitleBreadcrumbComponent,
-  DialogHeaderComponent,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
@@ -68,7 +68,7 @@ import {
 import { Location } from '@angular/common';
 import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatRadioButton } from '@angular/material/radio';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { ArchiveUnitRulesComponent } from './archive-unit-rules/archive-unit-rules.component';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';

@@ -35,49 +35,37 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
-  MatTableDataSource,
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatRowDef,
+  MatHeaderRowDef,
   MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource,
 } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { LangChangeEvent, TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { mergeMap, Subscription } from 'rxjs';
 import {
+  ChipComponent,
   DatePatternConstants,
+  EditableInputComponent,
+  EditableTextareaComponent,
+  InputComponent,
   Logger,
   Option,
+  SelectComponent,
   SnackBarService,
   StartupService,
-  ChipComponent,
   TooltipDirective,
   VitamuiBannerComponent,
-  SelectComponent,
-  InputComponent,
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
-  EditableFileComponent,
-  EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
-  EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  SubLevelPipe,
 } from 'vitamui-library';
 import { FileService } from '../../../core/services/file.service';
 import { ProfileService } from '../../../core/services/profile.service';
@@ -112,16 +100,16 @@ import { AllowAdditionalPropertiesComponent } from '../../../user-actions/allow-
 import { UserActionSaveProfileComponent } from '../../../user-actions/save-profile/save-profile.component';
 import { UserActionsDownloadDocComponent } from '../../../user-actions/download-doc/download-doc.component';
 import { PastisPopupMetadataLanguageComponent } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.component';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelect, MatOption, MatSelectModule } from '@angular/material/select';
+import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatIconButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/list';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatDialogTitle, MatDialogModule } from '@angular/material/dialog';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -202,20 +190,9 @@ function constantToTranslate() {
     SelectComponent,
     InputComponent,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
-    EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
-    EditableFileComponent,
     EditableInputComponent,
-    EditableLevelInputComponent,
     EditableTextareaComponent,
-    EditableToggleGroupComponent,
-    EllipsisDirective,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -224,7 +201,6 @@ function constantToTranslate() {
     MatSelectModule,
     OverlayModule,
     ReactiveFormsModule,
-    SubLevelPipe,
   ],
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {

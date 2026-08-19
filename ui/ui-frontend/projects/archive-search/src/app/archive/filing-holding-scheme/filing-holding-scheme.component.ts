@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -46,13 +46,12 @@ import {
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   PagedResult,
+  ResizeVerticalDirective,
   ResultFacet,
   SearchCriteriaDto,
   SearchCriteriaTypeEnum,
   Unit,
   UnitType,
-  ResizeSidebarDirective,
-  ResizeVerticalDirective,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -65,7 +64,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss'],
-  imports: [ClassificationTreeComponent, LeavesTreeComponent, CommonModule, ResizeSidebarDirective, ResizeVerticalDirective],
+  imports: [ClassificationTreeComponent, LeavesTreeComponent, CommonModule, ResizeVerticalDirective],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private translateService = inject(TranslateService);

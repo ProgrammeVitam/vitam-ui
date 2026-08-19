@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
 import { Subrogation } from '../../models/subrogation/subrogation.interface';
@@ -44,7 +44,6 @@ import { SubrogationService } from '../subrogation.service';
 import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
 import { StepperComponent } from '../../components/stepper/stepper.component';
 import { CdkStep } from '@angular/cdk/stepper';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { InputComponent } from '../../../../lib/components/input/input.component';
 import { SelectComponent } from '../../../../lib/components/select/select.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -58,7 +57,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     DialogHeaderComponent,
     StepperComponent,
     CdkStep,
-    CdkScrollable,
     MatDialogContent,
     FormsModule,
     ReactiveFormsModule,

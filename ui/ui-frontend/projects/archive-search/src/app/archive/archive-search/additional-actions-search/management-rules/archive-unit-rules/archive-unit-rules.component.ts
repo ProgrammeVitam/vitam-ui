@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';

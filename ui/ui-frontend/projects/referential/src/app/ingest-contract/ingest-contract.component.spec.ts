@@ -40,8 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ApplicationService, BASE_URL, GlobalEventService, WINDOW_LOCATION } from 'vitamui-library';
-import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { ApplicationService, BASE_URL, GlobalEventService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';

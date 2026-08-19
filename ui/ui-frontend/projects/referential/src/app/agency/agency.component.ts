@@ -68,7 +68,6 @@ import { map } from 'rxjs/operators';
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
   imports: [
-    AgencyCreateComponent,
     AgencyListComponent,
     AgencyPreviewComponent,
     MatMenuItem,

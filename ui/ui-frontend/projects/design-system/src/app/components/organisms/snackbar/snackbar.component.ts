@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { SnackBarService } from 'vitamui-library';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Component, inject, OnInit } from '@angular/core';
+import { SnackBarService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const INFINITE_DURATION = 0;

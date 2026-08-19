@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -43,14 +43,14 @@ import {
   GlobalEventService,
   ManagementContract,
   SidenavPage,
-  VitamuiTitleBreadcrumbComponent,
-  VitamuiBannerComponent,
   TooltipDirective,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { shareReplay } from 'rxjs/operators';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ManagementContractPreviewComponent } from './management-contract-preview/management-contract-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

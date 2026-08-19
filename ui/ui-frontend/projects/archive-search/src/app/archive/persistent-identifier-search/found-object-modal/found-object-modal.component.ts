@@ -35,17 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import {
   AccessContract,
   AccessContractService,
   ApiUnitObject,
+  DialogHeaderComponent,
   ObjectQualifierType,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
   VersionWithQualifierDto,
-  DialogHeaderComponent,
 } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../../core/api/persistent-identifier-response-dto.interface';
 import { ArchiveService } from '../../archive.service';

@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProfileType } from '../../models/profile-type.enum';
-import { ApplicationService, Option } from 'vitamui-library';
-import { MiscValidators, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { Notice } from '../../models/notice.model';
 import { ProfileService } from '../../core/services/profile.service';
 import { Subscription } from 'rxjs';
@@ -51,7 +50,6 @@ import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/p
 import { Router } from '@angular/router';
 import { FileService } from '../../core/services/file.service';
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
-import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   imports: [

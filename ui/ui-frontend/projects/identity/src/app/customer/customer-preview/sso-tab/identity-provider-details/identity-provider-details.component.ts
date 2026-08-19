@@ -34,34 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, inject, Input } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
-import { IdentityProvider, SnackBarService } from 'vitamui-library';
 import {
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
+  AuthnRequestBindingEnum,
   EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
   EditableFileComponent,
   EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
   EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  SubLevelPipe,
-  AuthnRequestBindingEnum,
-  newFile,
-  SlideToggleComponent,
-  VitamUIFieldErrorComponent,
   FormFieldValueWrapperComponent,
+  IdentityProvider,
+  newFile,
   SelectComponent,
+  SlideToggleComponent,
+  SnackBarService,
+  VitamUIFieldErrorComponent,
 } from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
@@ -94,21 +85,12 @@ const UPDATE_DEBOUNCE_TIME = 200;
     FormFieldValueWrapperComponent,
     SelectComponent,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
     EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
     EditableFileComponent,
     EditableInputComponent,
-    EditableLevelInputComponent,
-    EditableTextareaComponent,
     EditableToggleGroupComponent,
-    EllipsisDirective,
     FormsModule,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -116,7 +98,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    SubLevelPipe,
   ],
 })
 export class IdentityProviderDetailsComponent {

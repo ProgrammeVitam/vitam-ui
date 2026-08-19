@@ -49,7 +49,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-import { Rule } from 'vitamui-library';
 import {
   AuthService,
   BASE_URL,
@@ -57,6 +56,7 @@ import {
   GlobalEventService,
   InjectorModule,
   LoggerModule,
+  Rule,
   SecurityService,
   SnackBarService,
 } from 'vitamui-library';

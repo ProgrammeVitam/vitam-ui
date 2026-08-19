@@ -39,27 +39,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaValue } from 'vitamui-library';
-import {
-  CriteriaDataType,
-  CriteriaOperator,
-  diff,
-  SearchCriteriaTypeEnum,
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
-  EditableFileComponent,
-  EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
-  EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  SubLevelPipe,
-} from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, EditableInputComponent, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -80,20 +60,8 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
     FormsModule,
     ReactiveFormsModule,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
-    EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
-    EditableFileComponent,
     EditableInputComponent,
-    EditableLevelInputComponent,
-    EditableTextareaComponent,
-    EditableToggleGroupComponent,
-    EllipsisDirective,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -101,7 +69,6 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    SubLevelPipe,
   ],
 })
 export class TitleAndDescriptionCriteriaSearchCollectComponent {

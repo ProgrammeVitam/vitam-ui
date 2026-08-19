@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ContentChild, Input, TemplateRef, inject } from '@angular/core';
+import { Component, ContentChild, inject, Input, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 

@@ -42,21 +42,21 @@ import {
   CriteriaSearchQuery,
   Criterion,
   Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   Operators,
   PageRequest,
-  Profile,
   PipesModule,
-  EllipsisDirective,
-  InfiniteScrollDirective,
+  Profile,
 } from 'vitamui-library';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DEFAULT_PAGE_SIZE } from '../../core/customer.service';
 import { HierarchyService } from '../hierarchy.service';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 

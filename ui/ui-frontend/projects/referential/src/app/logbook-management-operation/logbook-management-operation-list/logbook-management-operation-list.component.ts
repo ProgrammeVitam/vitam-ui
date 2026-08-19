@@ -34,24 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
   Colors,
+  EventTypeLabelComponent,
   FacetDetails,
+  InfiniteScrollDirective,
   LogbookOperationFacetComponent,
-  TableFilterDirective,
+  PipesModule,
   TableFilterComponent,
+  TableFilterDirective,
   TableFilterOptionComponent,
   TooltipDirective,
-  EventTypeLabelComponent,
-  PipesModule,
-  InfiniteScrollDirective,
 } from 'vitamui-library';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({

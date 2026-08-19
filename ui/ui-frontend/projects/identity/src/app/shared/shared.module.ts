@@ -36,7 +36,7 @@
  */
 import { NgModule } from '@angular/core';
 
-import { VitamUICommonModule, LevelInputComponent, CollapseComponent } from 'vitamui-library';
+import { CollapseComponent, LevelInputComponent, VitamUICommonModule } from 'vitamui-library';
 import { DomainsInputComponent } from './domains-input/domains-input.component';
 import { EditableCustomParamsComponent } from './editable-field/editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-field/editable-domain-input/editable-domain-input.component';

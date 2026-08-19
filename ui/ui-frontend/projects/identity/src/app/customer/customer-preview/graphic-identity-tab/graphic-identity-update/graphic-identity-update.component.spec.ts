@@ -39,8 +39,7 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, Customer, ENVIRONMENT } from 'vitamui-library';
-import { InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
+import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 

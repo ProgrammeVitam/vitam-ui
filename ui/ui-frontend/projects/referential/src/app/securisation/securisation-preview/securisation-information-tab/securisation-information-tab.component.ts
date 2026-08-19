@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { Event } from 'vitamui-library';
-import { PipesModule } from 'vitamui-library';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { Event, PipesModule } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 import { TranslatePipe } from '@ngx-translate/core';
 

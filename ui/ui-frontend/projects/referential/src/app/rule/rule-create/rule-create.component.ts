@@ -34,24 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
+  DialogHeaderComponent,
+  InputComponent,
   ManagementRuleValidators,
   Rule,
   RuleService,
-  DialogHeaderComponent,
-  InputComponent,
-  TooltipDirective,
   SelectComponent,
+  TooltipDirective,
 } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateValidators } from './rule-create.validators';
 import { sizes } from '../../ontology/ontology-form-options';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -61,7 +60,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,
-    CdkScrollable,
     MatDialogContent,
     InputComponent,
     TooltipDirective,

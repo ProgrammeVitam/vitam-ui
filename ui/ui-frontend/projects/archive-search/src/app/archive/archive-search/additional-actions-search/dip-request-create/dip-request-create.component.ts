@@ -34,39 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ResourceRef, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, OnDestroy, OnInit, ResourceRef } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
   AgencyService,
   ApplicationId,
   ConfirmDialogService,
+  DialogHeaderComponent,
+  InputComponent,
   Logger,
+  NextStepComponent,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
+  PreviousStepComponent,
   SearchCriteriaEltDto,
+  SelectComponent,
+  SlideToggleComponent,
   SnackBarService,
+  StepperComponent,
   UsageVersionEnum,
   VitamuiSelectOptions,
-  DialogHeaderComponent,
-  StepperComponent,
-  InputComponent,
-  SelectComponent,
-  NextStepComponent,
-  SlideToggleComponent,
-  PreviousStepComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CdkStep } from '@angular/cdk/stepper';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
   selector: 'app-dip-request-create',
@@ -77,7 +76,6 @@ import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
     StepperComponent,
     CdkStep,
     ReactiveFormsModule,
-    CdkScrollable,
     MatDialogContent,
     InputComponent,
     SelectComponent,

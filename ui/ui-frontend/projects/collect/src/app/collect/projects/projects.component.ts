@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -43,13 +43,13 @@ import {
   Direction,
   PageRequest,
   SidenavPage,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsService } from './projects.service';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NgClass } from '@angular/common';
 import { ProjectPreviewComponent } from './project-preview/project-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';

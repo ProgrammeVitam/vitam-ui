@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  OrderByButtonComponent,
-  PipesModule,
   EllipsisDirective,
   InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
 } from 'vitamui-library';
 
 import { ProbativeValueService } from '../probative-value.service';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';

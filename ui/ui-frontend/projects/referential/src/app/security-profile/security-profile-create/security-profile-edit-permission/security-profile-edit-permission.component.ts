@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, inject } from '@angular/core';
+import { Component, forwardRef, inject, Input } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { PermissionStructure, PermissionUtils } from '../permission.utils';
-import { TooltipDirective, SlideToggleComponent } from 'vitamui-library';
+import { SlideToggleComponent, TooltipDirective } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 
 export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {

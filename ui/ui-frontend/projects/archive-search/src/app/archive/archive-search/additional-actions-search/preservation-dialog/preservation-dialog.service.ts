@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, filter, switchMap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
-import { ApplicationId } from 'vitamui-library';
+import { ApplicationId, SearchCriteriaDto, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { PreservationDialogComponent } from './preservation-dialog.component';
 import { PreservationRequestDto } from '../../../models/preservation-request.interface';

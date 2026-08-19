@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Color, Option, ThemeColorType } from 'vitamui-library';
-import { ThemeService, SelectComponent } from 'vitamui-library';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Color, Option, SelectComponent, ThemeColorType, ThemeService } from 'vitamui-library';
 import { Subscription } from 'rxjs';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputColorComponent } from './input-color/input-color.component';
 
 @Component({

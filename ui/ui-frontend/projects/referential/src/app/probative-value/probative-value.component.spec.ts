@@ -44,8 +44,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL } from 'vitamui-library';
-import { DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL, DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProbativeValueComponent } from './probative-value.component';

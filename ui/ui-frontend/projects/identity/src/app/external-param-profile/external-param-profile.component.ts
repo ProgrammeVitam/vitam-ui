@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
   ExternalParamProfile,
   GlobalEventService,
   SidenavPage,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

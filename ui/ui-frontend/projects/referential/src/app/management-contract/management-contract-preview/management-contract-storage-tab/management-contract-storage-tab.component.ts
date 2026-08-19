@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
+import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { ManagementContract, StorageStrategy } from 'vitamui-library';
-import { diff, InputComponent } from 'vitamui-library';
+import { diff, InputComponent, ManagementContract, StorageStrategy } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
