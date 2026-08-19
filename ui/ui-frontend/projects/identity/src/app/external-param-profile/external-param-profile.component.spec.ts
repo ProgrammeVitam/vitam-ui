@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -57,7 +56,6 @@ describe('ExternalParamProfileComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
         MatMenuModule,

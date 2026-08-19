@@ -46,7 +46,6 @@ const TEST_ELEMENT_ID = 'test';
 
 @Component({
   template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasAnyRole="roleConfig"> Lorem ipsum </span>`,
-  standalone: true,
   imports: [HasAnyRoleDirective],
 })
 class TestHostComponent {

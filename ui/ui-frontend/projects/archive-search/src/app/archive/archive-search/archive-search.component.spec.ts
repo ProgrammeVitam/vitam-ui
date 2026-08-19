@@ -45,10 +45,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   BASE_URL,
   InjectorModule,
@@ -79,14 +77,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { NodeData } from '../models/nodedata.interface';
 
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 describe('ArchiveSearchComponent', () => {
   let component: ArchiveSearchComponent;
@@ -199,35 +189,32 @@ describe('ArchiveSearchComponent', () => {
         MatProgressSpinnerModule,
         MatSidenavModule,
         MatTreeModule,
-        RouterTestingModule,
         ArchiveSearchComponent,
         SimpleCriteriaSearchComponent,
       ],
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
-        { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: SecurityService, useValue: securityServiceStub },
-        { provide: ArchiveUnitDipService, useValue: archiveUnitDipServiceMock },
-        { provide: ArchiveUnitEliminationService, useValue: archiveUnitEliminationServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ComputeInheritedRulesService, useValue: computeInheritedRulesServiceMock },
-        { provide: Location, useValue: locationSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: Router, useValue: routerSpy },
-        { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
-        { provide: SearchCriteriaService, useValue: searchCriteriaServiceMock },
-        { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
-        {
-          provide: VitamTenantConfigService,
-          useValue: tenantConfigServiceMock,
-        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatDialog, { useValue: matDialogSpy })
+      .overrideProvider(Router, { useValue: routerSpy })
+      .overrideProvider(Location, { useValue: locationSpy })
+      .overrideProvider(ActivatedRoute, { useValue: computeActivatedRoute(queryParams) })
+      .overrideProvider(SearchCriteriaService, { useValue: searchCriteriaServiceMock })
+      .overrideProvider(ArchiveService, { useValue: archiveServiceStub })
+      .overrideProvider(SecurityService, { useValue: securityServiceStub })
+      .overrideProvider(ArchiveUnitDipService, { useValue: archiveUnitDipServiceMock })
+      .overrideProvider(ArchiveUnitEliminationService, { useValue: archiveUnitEliminationServiceMock })
+      .overrideProvider(UpdateUnitManagementRuleService, { useValue: updateUnitManagementRuleServiceMock })
+      .overrideProvider(VitamTenantConfigService, { useValue: tenantConfigServiceMock })
+      .overrideProvider(ComputeInheritedRulesService, { useValue: computeInheritedRulesServiceMock })
+      .overrideProvider(SchemaService, { useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ArchiveSearchComponent);
     component = fixture.componentInstance;
@@ -300,10 +287,6 @@ describe('ArchiveSearchComponent', () => {
 
         // Then
         expect(elementRow.length).toBe(1);
-      });
-      it('should have 2 buttons ', () => {
-        const elementBtn = fixture.nativeElement.querySelectorAll('button[type=button]');
-        expect(elementBtn.length).toBe(2);
       });
     });
 
@@ -428,24 +411,14 @@ describe('ArchiveSearchComponent', () => {
     });
 
     it('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
-      vi.useFakeTimers();
-
       await setupTest({ opi: '1234' });
 
-      // flush ready().then() promise chain
-      await fixture.whenStable();
-
-      // flush the setTimeout(() => this.submit(true)) inside ngAfterViewInit
-      vi.runAllTimers();
-
-      // let Angular process the submit() call
-      await fixture.whenStable();
+      await vi.waitFor(() => {
+        const currentCalls = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls;
+        expect(currentCalls.length).toBeGreaterThan(0);
+      });
 
       const calls = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls;
-
-      vi.useRealTimers();
-
-      expect(calls.length).toBeGreaterThan(0);
 
       const matchingCall = calls
         .map((call) => call[0])

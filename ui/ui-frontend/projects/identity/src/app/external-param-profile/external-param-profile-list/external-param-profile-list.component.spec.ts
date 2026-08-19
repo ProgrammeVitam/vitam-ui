@@ -40,8 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of, Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProfileValidators } from '../../hierarchy/profile.validators';
 import { ProfileService } from '../../profile/profile.service';
@@ -49,14 +48,6 @@ import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileListComponent } from './external-param-profile-list.component';
 import { CollapseComponent } from 'vitamui-library';
 import { CommonModule } from '@angular/common';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 describe('ExternalParamProfileListComponent', () => {
   let component: ExternalParamProfileListComponent;

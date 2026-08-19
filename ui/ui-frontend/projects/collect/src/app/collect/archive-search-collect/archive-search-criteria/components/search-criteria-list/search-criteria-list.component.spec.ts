@@ -41,9 +41,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -63,14 +62,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
-  }
-}
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
   }
 }
 

@@ -38,7 +38,7 @@ import { Directive, inject, Input, OnDestroy, TemplateRef, ViewContainerRef } fr
 import { Subscription } from 'rxjs';
 import { SecurityService } from './security.service';
 
-@Directive({ selector: '[vitamuiCommonHasRole]', standalone: true })
+@Directive({ selector: '[vitamuiCommonHasRole]' })
 export class HasRoleDirective implements OnDestroy {
   private templateRef = inject<TemplateRef<any>>(TemplateRef);
   private viewContainer = inject(ViewContainerRef);

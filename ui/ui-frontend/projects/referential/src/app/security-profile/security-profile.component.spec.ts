@@ -39,7 +39,6 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -50,7 +49,7 @@ import { SecurityProfileComponent } from './security-profile.component';
 @Component({
   selector: 'app-SecurityProfile-preview',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class SecurityProfilePreviewStub {
   @Input()
@@ -60,7 +59,7 @@ class SecurityProfilePreviewStub {
 @Component({
   selector: 'app-SecurityProfile-list',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class SecurityProfileListStub {}
 
@@ -80,7 +79,6 @@ describe('SecurityProfileComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
         SecurityProfileComponent,

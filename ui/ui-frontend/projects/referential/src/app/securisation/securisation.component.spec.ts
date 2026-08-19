@@ -41,7 +41,6 @@ import { FormBuilder } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
@@ -70,7 +69,6 @@ describe('SecurisationComponent', () => {
         MatDatepickerModule,
         MatSidenavModule,
         DatepickerComponent,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
         SecurisationComponent,
       ],

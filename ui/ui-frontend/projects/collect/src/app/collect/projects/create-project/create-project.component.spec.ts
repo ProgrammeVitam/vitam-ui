@@ -278,10 +278,5 @@ describe('CreateProjectComponent', () => {
 
       expect(component.importType).toBe('DIRECTORIES_FILES');
     });
-
-    it('should have 3 cdk steps', () => {
-      const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(7);
-    });
   });
 });

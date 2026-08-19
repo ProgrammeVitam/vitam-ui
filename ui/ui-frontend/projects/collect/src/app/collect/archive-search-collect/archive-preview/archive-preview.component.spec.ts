@@ -52,6 +52,7 @@ import {
   InjectorModule,
   LoggerModule,
   StartupService,
+  TenantSelectionService,
   Unit,
   UnitType,
   WINDOW_LOCATION,
@@ -83,6 +84,7 @@ describe('ArchivePreviewComponent', () => {
       getBaseUrl: () => '/fake-api',
       buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
       receiveDownloadProgressSubject: () => of(true),
+      hasCollectRole: () => of(true),
     };
 
     await TestBed.configureTestingModule({
@@ -96,20 +98,27 @@ describe('ArchivePreviewComponent', () => {
         LoggerModule.forRoot(),
         RouterTestingModule,
         MatIconModule,
-        BrowserAnimationsModule,
         ArchivePreviewComponent,
         MockTruncatePipe,
         MockUnitI18nPipe,
       ],
       providers: [
-        { provide: ArchiveCollectService, useValue: archiveServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(ArchiveCollectService, { useValue: archiveServiceMock })
+      .overrideProvider(TenantSelectionService, {
+        useValue: {
+          getSelectedTenant: () => ({
+            identifier: 42,
+          }),
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -124,6 +133,7 @@ describe('ArchivePreviewComponent', () => {
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      DescriptionLevel: DescriptionLevel.OTHER_LEVEL,
     };
     fixture.detectChanges();
   });

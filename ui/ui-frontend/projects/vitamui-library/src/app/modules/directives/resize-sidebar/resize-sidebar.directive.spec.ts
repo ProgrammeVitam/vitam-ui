@@ -55,7 +55,6 @@ import { ResizeSidebarDirective } from './resize-sidebar.directive';
       }
     `,
   ],
-  standalone: true,
   imports: [ResizeSidebarDirective],
 })
 class ResizeSidebarTestComponent {}

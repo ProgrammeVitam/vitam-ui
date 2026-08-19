@@ -60,11 +60,6 @@ export const rotate90Animation = trigger('rotate90Animation', [
   transition('expanded <=> collapsed', animate('200ms ease-out')),
 ]);
 
-export const fadeInOutAnimation = trigger('fadeInOutAnimation', [
-  transition(':enter', [style({ opacity: 0 }), animate('200ms', style({ opacity: 1 }))]),
-  transition(':leave', [style({ opacity: 1 }), animate('200ms', style({ opacity: 0 }))]),
-]);
-
 export const slideDownAnimation = trigger('slideDownAnimation', [
   state('*', style({ opacity: 1, transform: 'translateX(0)' })),
   transition(':enter', [

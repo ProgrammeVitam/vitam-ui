@@ -81,7 +81,7 @@ const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
 
 const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
 
-@Directive({ selector: '[vitamuiTooltip]', standalone: true })
+@Directive({ selector: '[vitamuiTooltip]' })
 export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   private overlay = inject(Overlay);
   private overlayPositionBuilder = inject(OverlayPositionBuilder);

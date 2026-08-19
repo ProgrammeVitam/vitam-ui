@@ -37,11 +37,10 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, PagedResult, SearchCriteriaDto, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
@@ -50,14 +49,7 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
 import { UnlockCategoryInheritanceComponent } from './unlock-category-inheritance.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleCategoryAction: RuleCategoryAction = {
   rules: [],
@@ -222,12 +214,6 @@ describe('UnlockCategoryInheritanceComponent', () => {
   let component: UnlockCategoryInheritanceComponent;
   let fixture: ComponentFixture<UnlockCategoryInheritanceComponent>;
 
-  const matDialogRefSpy = {
-    open: vi.fn().mockName('MatDialogRef.open'),
-    close: vi.fn().mockName('MatDialogRef.close'),
-  };
-  matDialogRefSpy.open.mockReturnValue({ afterClosed: () => of(true) });
-
   const matDialogSpy = {
     open: vi.fn().mockName('MatDialog.open'),
     close: vi.fn().mockName('MatDialog.close'),
@@ -260,16 +246,15 @@ describe('UnlockCategoryInheritanceComponent', () => {
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(MatDialog, { useValue: matDialogSpy })
+      .compileComponents();
   });
 
   beforeEach(() => {

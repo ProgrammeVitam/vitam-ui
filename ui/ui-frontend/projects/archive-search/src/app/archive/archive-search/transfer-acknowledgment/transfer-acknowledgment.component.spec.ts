@@ -44,7 +44,6 @@ import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkStep } from '@angular/cdk/stepper';
 
 @Pipe({ name: 'dateTime' })
@@ -87,7 +86,7 @@ describe('TransferAcknowledgmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransferAcknowledgmentComponent, CdkStep, NoopAnimationsModule, InjectorModule, LoggerModule.forRoot(), MockDateTimePipe],
+      imports: [TransferAcknowledgmentComponent, CdkStep, InjectorModule, LoggerModule.forRoot(), MockDateTimePipe],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

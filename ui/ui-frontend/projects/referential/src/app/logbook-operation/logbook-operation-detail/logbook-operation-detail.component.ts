@@ -42,7 +42,6 @@ import {
   EventTypeLabelComponent,
   ExternalParameters,
   ExternalParametersService,
-  fadeInOutAnimation,
   HistoryEventsComponent,
   IEvent,
   LogbookOperationReportState,
@@ -74,7 +73,6 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
-  animations: [fadeInOutAnimation],
   imports: [
     MatTabGroup,
     MatTab,

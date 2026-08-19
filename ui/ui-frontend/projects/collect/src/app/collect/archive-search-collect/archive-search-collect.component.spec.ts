@@ -171,28 +171,23 @@ describe('ArchiveSearchCollectComponent', () => {
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
-        { provide: ArchiveCollectService, useValue: archiveCollectServiceStub },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ConfigService, useValue: { config$: of() } },
-        { provide: ExternalParametersService, useValue: externalParametersServiceStub },
-        { provide: Location, useValue: locationSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: Router, useValue: routerSpy },
-        { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
         { provide: environment, useValue: environment },
-        {
-          provide: VitamTenantConfigService,
-          useValue: tenantConfigServiceMock,
-        },
-        {
-          provide: DiscussionService,
-          useClass: DiscussionServiceMock,
-        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ConfigService, { useValue: { config$: of({ COLLECT: { OFFLINE_SERVICES: [] } }) } })
+      .overrideProvider(ActivatedRoute, { useValue: computeActivatedRoute(queryParams) })
+      .overrideProvider(ArchiveCollectService, { useValue: archiveCollectServiceStub })
+      .overrideProvider(ExternalParametersService, { useValue: externalParametersServiceStub })
+      .overrideProvider(Location, { useValue: locationSpy })
+      .overrideProvider(MatDialog, { useValue: matDialogSpy })
+      .overrideProvider(Router, { useValue: routerSpy })
+      .overrideProvider(SchemaService, { useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } })
+      .overrideProvider(VitamTenantConfigService, { useValue: tenantConfigServiceMock })
+      .overrideProvider(DiscussionService, { useFactory: () => new DiscussionServiceMock() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);
     component = fixture.componentInstance;
@@ -207,6 +202,8 @@ describe('ArchiveSearchCollectComponent', () => {
     beforeEach(async () => await setupTest({}));
 
     it('component should be created', () => {
+      fixture.detectChanges();
+      fixture.whenStable();
       expect(component).toBeTruthy();
     });
 
