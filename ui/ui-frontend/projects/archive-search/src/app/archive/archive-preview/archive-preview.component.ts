@@ -39,35 +39,35 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { Unit, AccessContract, AccessContractService } from 'vitamui-library';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
-  CommonTooltipComponent,
-  TooltipDirective,
-  VitamuiSidenavHeaderComponent,
-  unitToVitamuiIcon,
-  VitamuiMenuButtonComponent,
+  AccessContract,
+  AccessContractService,
   ClickOutsideDirective,
   PipesModule,
+  TooltipDirective,
+  Unit,
+  unitToVitamuiIcon,
+  VitamuiMenuButtonComponent,
+  VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { MatMenuItem } from '@angular/material/menu';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab/archive-unit-information-tab.component';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab/archive-unit-objects-details-tab.component';
-import { AddManagementRulesComponent } from '../archive-search/additional-actions-search/management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -87,11 +87,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ClickOutsideDirective,
     ArchiveUnitRulesDetailsTabComponent,
     ArchiveUnitObjectsDetailsTabComponent,
-    AddManagementRulesComponent,
     PipesModule,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,

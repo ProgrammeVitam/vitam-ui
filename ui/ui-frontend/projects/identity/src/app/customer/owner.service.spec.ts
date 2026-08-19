@@ -39,8 +39,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Owner } from 'vitamui-library';
-import { SnackBarService } from 'vitamui-library';
+import { BASE_URL, Owner, SnackBarService } from 'vitamui-library';
 import { OwnerService } from './owner.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, OnInit, inject } from '@angular/core';
+import { Component, forwardRef, inject, Input, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
   FormControl,
   NG_VALUE_ACCESSOR,
-  ValidationErrors,
   ReactiveFormsModule,
+  ValidationErrors,
 } from '@angular/forms';
 import { GroupValidators } from '../group.validators';
-import { InputComponent, EllipsisDirective } from 'vitamui-library';
+import { EllipsisDirective, InputComponent } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 

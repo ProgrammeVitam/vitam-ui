@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -44,13 +44,13 @@ import {
   Owner,
   SidenavPage,
   Tenant,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { CustomerPreviewComponent } from './customer-preview/customer-preview.component';
 import { OwnerPreviewComponent } from './owner-preview/owner-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';

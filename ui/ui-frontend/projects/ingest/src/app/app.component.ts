@@ -36,8 +36,7 @@
  */
 import { Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { StartupService } from 'vitamui-library';
-import { HeaderModule, VitamuiBodyComponent, FooterComponent, SubrogationModule } from 'vitamui-library';
+import { FooterComponent, HeaderModule, StartupService, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

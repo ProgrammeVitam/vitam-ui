@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { LogbookService, IEvent } from 'vitamui-library';
-import { EventTypeLabelComponent, PipesModule } from 'vitamui-library';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { EventTypeLabelComponent, IEvent, LogbookService, PipesModule } from 'vitamui-library';
 import type { OperationDetails } from '../../../models/operation-response.interface';
 import { TranslatePipe } from '@ngx-translate/core';
 

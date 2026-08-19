@@ -82,8 +82,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
 import {
-  VitamUICommonModule,
-  VitamUILibraryModule,
   ClosePopupDialogComponent,
   CommonConfirmDialogComponent,
   DialogHeaderComponent,
@@ -98,6 +96,8 @@ import {
   EllipsisDirective,
   LevelInputComponent,
   SubLevelPipe,
+  VitamUICommonModule,
+  VitamUILibraryModule,
 } from 'vitamui-library';
 import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';

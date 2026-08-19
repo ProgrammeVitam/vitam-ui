@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, LOCALE_ID, importProvidersFrom } from '@angular/core';
-import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
+import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
-import { WINDOW_LOCATION } from 'vitamui-library';
-import { provideI18n, AuthenticationModule, VitamUICommonModule } from 'vitamui-library';
+import { AuthenticationModule, provideI18n, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
 import { DatePipe } from '@angular/common';
 import { CoreModule } from './app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

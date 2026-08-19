@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {

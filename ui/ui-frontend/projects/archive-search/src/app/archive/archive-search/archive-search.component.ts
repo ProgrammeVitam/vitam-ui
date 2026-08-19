@@ -41,6 +41,7 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -48,11 +49,10 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  inject,
 } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
@@ -68,20 +68,27 @@ import {
   ARCHIVE_UNIT_WITH_OBJECTS,
   ARCHIVE_UNIT_WITHOUT_OBJECTS,
   ArchiveSearchResultFacets,
+  ArchiveUnitModule,
   ConfigService,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
+  DialogHeaderComponent,
   Direction,
   DISSEMINATION_RULE,
   FilingHoldingSchemeNode,
+  HasRoleDirective,
+  InfiniteScrollDirective,
   Logger,
   MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+  ManagementRuleSearchComponent,
   NODES,
+  OrderByButtonComponent,
   ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
+  PipesModule,
   QueryParamsService,
   ReclassificationDialogComponent,
   REUSE_RULE,
@@ -101,23 +108,15 @@ import {
   STORAGE_RULE,
   TermsFacet,
   toManagementRuleType,
+  TooltipDirective,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
-  VitamuiRoles,
-  WAITING_RECALCULATE,
   VitamTenantConfigService,
   VitamuiMenuButtonComponent,
-  ManagementRuleSearchComponent,
+  VitamuiRoles,
   VitamuiSupHeaderComponent,
-  ArchiveUnitModule,
-  TooltipDirective,
-  DialogHeaderComponent,
-  OrderByButtonComponent,
-  PipesModule,
-  HasAnyRoleDirective,
-  HasRoleDirective,
-  InfiniteScrollDirective,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -132,32 +131,31 @@ import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
-import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { ReassignmentDialogService } from './additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
 import { PreservationDialogService } from './additional-actions-search/preservation-dialog/preservation-dialog.service';
 import { ReassignmentMode } from '../models/reassign-request.interface';
 import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search/title-and-description-criteria-search.component';
-import { MatMenuItem, MatMenuTrigger, MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { CriteriaSearchComponent } from '../criteria-search/criteria-search.component';
 import { SearchCriteriaListComponent } from './search-criteria-list/search-criteria-list.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NgClass, NgTemplateOutlet, AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ArchiveSearchRulesFacetsComponent } from './archive-search-rules-facets/archive-search-rules-facets.component';
-import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
 import {
-  MatTable,
-  MatColumnDef,
-  MatHeaderCellDef,
-  MatHeaderCell,
-  MatCellDef,
   MatCell,
-  MatHeaderRowDef,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
   MatHeaderRow,
-  MatRowDef,
+  MatHeaderRowDef,
   MatRow,
+  MatRowDef,
+  MatTable,
 } from '@angular/material/table';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -210,14 +208,12 @@ const NON_TREE_UNIT_TYPES = [ARCHIVE_UNIT_FILING_UNIT, ARCHIVE_UNIT_WITH_OBJECTS
     DialogHeaderComponent,
     MatDialogActions,
     MatDialogClose,
-    CdkScrollable,
     MatDialogContent,
     OrderByButtonComponent,
     AsyncPipe,
     PipesModule,
     TranslatePipe,
     CommonModule,
-    HasAnyRoleDirective,
     HasRoleDirective,
     InfiniteScrollDirective,
   ],

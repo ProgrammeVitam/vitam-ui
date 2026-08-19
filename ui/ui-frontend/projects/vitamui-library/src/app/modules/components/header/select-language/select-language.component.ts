@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { LangChangeEvent, TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../auth.service';
@@ -43,7 +43,7 @@ import { FullLangString, LanguageService, MinLangString } from '../../../languag
 import { BaseUserInfoApiService } from './../../../api/base-user-info-api.service';
 import { ItemSelectComponent } from '../item-select/item-select.component';
 import { MatMiniFabButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'vitamui-common-select-language',

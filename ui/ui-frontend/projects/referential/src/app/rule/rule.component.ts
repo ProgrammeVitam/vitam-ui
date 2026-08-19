@@ -37,7 +37,7 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import {
   ApplicationId,
@@ -48,15 +48,15 @@ import {
   RuleService,
   SecurityService,
   SidenavPage,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
   VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { RuleCreateComponent } from './rule-create/rule-create.component';
 import { RuleListComponent } from './rule-list/rule-list.component';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { RulePreviewComponent } from './rule-preview/rule-preview.component';
 import { MatMenuItem } from '@angular/material/menu';
 import { AsyncPipe } from '@angular/common';

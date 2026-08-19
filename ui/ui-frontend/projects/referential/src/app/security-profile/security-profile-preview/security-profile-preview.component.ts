@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { SecurityProfile, ConfirmActionComponent } from 'vitamui-library';
-import { CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent, OperationHistoryTabComponent } from 'vitamui-library';
+import { ConfirmActionComponent, OperationHistoryTabComponent, SecurityProfile, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
@@ -62,10 +61,8 @@ import { CommonModule } from '@angular/common';
     forwardRef(() => SecurityProfilePreviewComponent),
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

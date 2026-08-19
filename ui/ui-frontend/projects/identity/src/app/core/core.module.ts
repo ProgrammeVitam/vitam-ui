@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule, inject } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 
-import { BASE_URL, ENVIRONMENT } from 'vitamui-library';
-import { InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 
 @NgModule({

@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { debounceTime, filter, map, share } from 'rxjs/operators';
 import {
@@ -49,6 +49,8 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
+  DatepickerComponent,
+  EditableInputComponent,
   ItemNode,
   Option,
   SchemaElement,
@@ -58,33 +60,18 @@ import {
   SearchCriteriaService,
   SearchCriteriaTypeEnum,
   SearchProvider,
-  VitamuiSelectOptions,
-  TooltipDirective,
   SelectComponent,
-  DatepickerComponent,
   SelectWithTreeComponent,
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
-  EditableFileComponent,
-  EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
-  EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  SubLevelPipe,
+  TooltipDirective,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ArchiveSearchHelperService } from '../../services/archive-search-helper.service';
-import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
-import { NgTemplateOutlet, AsyncPipe, CommonModule } from '@angular/common';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { AsyncPipe, CommonModule, NgTemplateOutlet } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -125,20 +112,8 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
     SelectWithTreeComponent,
     AsyncPipe,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
-    EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
-    EditableFileComponent,
     EditableInputComponent,
-    EditableLevelInputComponent,
-    EditableTextareaComponent,
-    EditableToggleGroupComponent,
-    EllipsisDirective,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -146,7 +121,6 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    SubLevelPipe,
   ],
 })
 export class SimpleCriteriaSearchComponent implements OnInit {

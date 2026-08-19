@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MatDialogContent } from '@angular/material/dialog';
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { Customer, Option, LanguageService, StartupService } from 'vitamui-library';
-import { DialogHeaderComponent, InputComponent } from 'vitamui-library';
-import { CdkScrollable } from '@angular/cdk/scrolling';
+import { Customer, DialogHeaderComponent, InputComponent, LanguageService, Option, StartupService } from 'vitamui-library';
 import { HomepageMessageTranslationComponent } from './homepage-message-translation/homepage-message-translation';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -51,7 +49,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./homepage-message.component.scss'],
   imports: [
     DialogHeaderComponent,
-    CdkScrollable,
     MatDialogContent,
     ReactiveFormsModule,
     InputComponent,

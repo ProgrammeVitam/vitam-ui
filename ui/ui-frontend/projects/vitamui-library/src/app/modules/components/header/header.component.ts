@@ -60,7 +60,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { SelectSiteComponent } from './select-site/select-site.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
 import { ItemSelectComponent } from './item-select/item-select.component';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { UserPhotoComponent } from './user-photo/user-photo.component';
 import { MatMiniFabButton } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';

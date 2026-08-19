@@ -38,11 +38,11 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
-  MatTreeNestedDataSource,
-  MatTree,
-  MatTreeNodeDef,
-  MatTreeNode,
   MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNode,
+  MatTreeNodeDef,
   MatTreeNodeOutlet,
 } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';

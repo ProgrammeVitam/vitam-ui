@@ -37,16 +37,16 @@
 
 /// <reference types="vitest/globals" />
 
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {TestBed} from '@angular/core/testing';
 import '@angular/compiler';
 import '@analogjs/vitest-angular/setup-zone';
 import 'zone.js/testing';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { provideRouter } from '@angular/router';
-import { BASE_URL, LoggerModule, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from 'vitamui-library';
-import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {provideRouter} from '@angular/router';
+import {BASE_URL, LoggerModule, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION} from 'vitamui-library';
+import {provideTranslateService, TranslatePipe} from '@ngx-translate/core';
 
 
 const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);

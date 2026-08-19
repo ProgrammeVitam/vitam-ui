@@ -71,8 +71,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { FileService } from '../../../core/services/file.service';
@@ -88,19 +88,18 @@ import { DuplicateMetadataComponent } from '../../../user-actions/duplicate-meta
 import { UserActionRemoveMetadataComponent } from '../../../user-actions/remove-metadata/remove-metadata.component';
 import { FileTreeMetadataService } from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
-import { Logger, SnackBarService } from 'vitamui-library';
-import { TooltipDirective } from 'vitamui-library';
+import { Logger, SnackBarService, TooltipDirective } from 'vitamui-library';
 import {
-  MatTreeNestedDataSource,
-  MatTree,
-  MatTreeNodeDef,
   MatNestedTreeNode,
-  MatTreeNodeToggle,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNodeDef,
   MatTreeNodeOutlet,
+  MatTreeNodeToggle,
 } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { filter, map, tap } from 'rxjs/operators';
-import { MatListItem, MatDivider } from '@angular/material/list';
+import { MatDivider, MatListItem } from '@angular/material/list';
 import { NgClass, NgStyle } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';

@@ -37,8 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { SchemaElement, SchemaService } from 'vitamui-library';
-import { Collection, VitamUILibraryModule } from 'vitamui-library';
+import { Collection, SchemaElement, SchemaService, VitamUILibraryModule } from 'vitamui-library';
 import { SchemaInformationTabComponent } from './schema-information-tab.component';
 import { of } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';

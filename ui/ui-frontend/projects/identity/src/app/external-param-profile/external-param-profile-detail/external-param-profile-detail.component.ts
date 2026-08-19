@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ExternalParamProfile } from 'vitamui-library';
-import { OperationHistoryTabComponent, CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { ExternalParamProfile, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { ThresholdsTabComponent } from './thresholds-tab/thresholds-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -60,10 +59,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     OperationHistoryTabComponent,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

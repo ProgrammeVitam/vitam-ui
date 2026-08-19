@@ -35,16 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { Route, Router, Routes, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
-import { VitamuiSelectOptions } from 'vitamui-library';
-import { SelectComponent, SelectLanguageComponent } from 'vitamui-library';
-import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Route, Router, RouterLink, RouterLinkActive, RouterOutlet, Routes } from '@angular/router';
+import { SelectComponent, SelectLanguageComponent, VitamuiSelectOptions } from 'vitamui-library';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { RouteData } from './app-routing.module';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatList } from '@angular/material/list';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
-import { NgTemplateOutlet, CommonModule } from '@angular/common';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';

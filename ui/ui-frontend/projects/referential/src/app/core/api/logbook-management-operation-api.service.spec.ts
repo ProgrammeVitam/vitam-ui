@@ -36,8 +36,7 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from 'vitamui-library';
-import { LoggerModule } from 'vitamui-library';
+import { BASE_URL, LoggerModule } from 'vitamui-library';
 import { LogbookManagementOperationApiService } from './logbook-management-operation-api.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

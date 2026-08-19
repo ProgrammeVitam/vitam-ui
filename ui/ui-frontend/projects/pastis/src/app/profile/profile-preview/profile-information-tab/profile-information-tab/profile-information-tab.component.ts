@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { ProfileType } from '../../../../models/profile-type.enum';
-import { SnackBarService } from 'vitamui-library';
-import { MiscValidators, SlideToggleComponent, InputComponent } from 'vitamui-library';
+import { InputComponent, MiscValidators, SlideToggleComponent, SnackBarService } from 'vitamui-library';
 import type { Profile } from '../../../../models/profile';
 import type { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import type { ProfileDescription } from '../../../../models/profile-description.model';

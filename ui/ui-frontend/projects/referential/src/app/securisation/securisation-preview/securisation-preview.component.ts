@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { Event, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import {
-  CommonTooltipComponent,
-  TooltipDirective,
-  VitamuiSidenavHeaderComponent,
+  Event,
   ExternalParameters,
+  ExternalParametersService,
   OperationHistoryTabComponent,
   PipesModule,
+  SnackBarService,
+  VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';
 import { SecurisationCheckTabComponent } from './securisation-check-tab/securisation-check-tab.component';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
@@ -68,10 +68,8 @@ import { CommonModule } from '@angular/common';
     EventTypeBadgeColorPipe,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

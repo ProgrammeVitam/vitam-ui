@@ -37,7 +37,7 @@
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TooltipDirective, InputComponent } from 'vitamui-library';
+import { InputComponent, TooltipDirective } from 'vitamui-library';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({

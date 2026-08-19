@@ -47,9 +47,9 @@ import {
   SecurityService,
   SidenavPage,
   SnackBarService,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
   VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { firstValueFrom, Observable, Subscription } from 'rxjs';
@@ -57,11 +57,11 @@ import { mergeMap, shareReplay } from 'rxjs/operators';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { IngestContractService } from './ingest-contract.service';
 import { HttpResponse } from '@angular/common/http';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { IngestContractPreviewComponent } from './ingest-contract-preview/ingest-contract-preview.component';
 import { MatMenuItem } from '@angular/material/menu';
 import { AsyncPipe } from '@angular/common';

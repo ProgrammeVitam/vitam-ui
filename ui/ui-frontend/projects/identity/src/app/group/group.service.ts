@@ -35,11 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Group, SearchService, SnackBarService } from 'vitamui-library';
-import { Operators } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Group, Operators, SearchService, SnackBarService } from 'vitamui-library';
 
 import { GroupApiService } from '../core/api/group-api.service';
 

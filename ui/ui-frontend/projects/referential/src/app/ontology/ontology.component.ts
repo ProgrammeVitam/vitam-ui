@@ -38,9 +38,10 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   ApplicationId,
+  ClickOutsideDirective,
   FileTypes,
   GlobalEventService,
   Ontology,
@@ -49,10 +50,9 @@ import {
   SchemaService,
   SecurityService,
   SidenavPage,
-  ClickOutsideDirective,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
   VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -60,7 +60,7 @@ import { OntologyCreateComponent } from './ontology-create/ontology-create.compo
 import { OntologyListComponent } from './ontology-group/ontology-list/ontology-list.component';
 import { Subscription } from 'rxjs';
 import { OntologyService } from './ontology.service';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.component';
 import { MatMenuItem } from '@angular/material/menu';
 import { OntologyGroupComponent } from './ontology-group/ontology-group.component';

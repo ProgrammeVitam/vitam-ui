@@ -34,21 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import {
+  AdminUserProfile,
   AuthService,
+  Customer,
+  Group,
   isLevelAllowed,
-  StartupService,
-  VitamuiMenuButtonComponent,
   MultiOperationHistoryTabComponent,
-  CommonTooltipComponent,
-  TooltipDirective,
+  StartupService,
+  User,
+  UserInfo,
+  VitamuiMenuButtonComponent,
   VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
-import { AdminUserProfile, Customer, Group, User, UserInfo } from 'vitamui-library';
 import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';
@@ -56,10 +58,9 @@ import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 import { MatMenuItem } from '@angular/material/menu';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
 import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -77,16 +78,13 @@ import { CommonModule } from '@angular/common';
     UserInfoTabComponent,
     UserGroupTabComponent,
     MultiOperationHistoryTabComponent,
-    CdkScrollable,
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

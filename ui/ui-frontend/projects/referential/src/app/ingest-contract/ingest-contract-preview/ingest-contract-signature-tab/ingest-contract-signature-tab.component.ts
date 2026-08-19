@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
-import { IngestContract, SignaturePolicy } from 'vitamui-library';
-import { SignedDocumentPolicyEnum } from 'vitamui-library';
+import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
 import { IngestContractService } from '../../ingest-contract.service';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { TranslatePipe } from '@ngx-translate/core';
 

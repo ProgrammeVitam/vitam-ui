@@ -38,7 +38,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   AccessContract,
   AccessContractService,
@@ -48,9 +48,9 @@ import {
   GlobalEventService,
   SidenavPage,
   SnackBarService,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
   VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -60,7 +60,7 @@ import { DownloadSnackBarService } from '../core/service/download-snack-bar.serv
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { finalize, shareReplay } from 'rxjs/operators';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { AccessContractPreviewComponent } from './access-contract-preview/access-contract-preview.component';
 import { MatMenuItem } from '@angular/material/menu';
 

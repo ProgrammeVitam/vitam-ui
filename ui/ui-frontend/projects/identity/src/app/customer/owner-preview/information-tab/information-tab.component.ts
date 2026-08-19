@@ -34,31 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, Owner, Tenant, CountryService, Option, StartupService } from 'vitamui-library';
 import {
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
-  EditableFileComponent,
-  EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
-  EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  SubLevelPipe,
+  CountryOption,
+  CountryService,
   diff,
-  VitamUIFieldErrorComponent,
+  EditableInputComponent,
   FormFieldValueWrapperComponent,
+  Option,
+  Owner,
   SelectComponent,
+  StartupService,
+  Tenant,
+  VitamUIFieldErrorComponent,
 } from 'vitamui-library';
 
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from '../../owner-form/owner-form.validators';
@@ -89,21 +81,9 @@ const UPDATE_DEBOUNCE_TIME = 200;
     SelectComponent,
     MatDivider,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
-    EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
-    EditableFileComponent,
     EditableInputComponent,
-    EditableLevelInputComponent,
-    EditableTextareaComponent,
-    EditableToggleGroupComponent,
-    EllipsisDirective,
     FormsModule,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -111,7 +91,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    SubLevelPipe,
   ],
 })
 export class InformationTabComponent implements OnChanges, OnInit {

@@ -41,8 +41,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY } from 'rxjs';
-import { BASE_URL, Context, ContextPermission, WINDOW_LOCATION } from 'vitamui-library';
-import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL, Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ContextService } from '../../context.service';

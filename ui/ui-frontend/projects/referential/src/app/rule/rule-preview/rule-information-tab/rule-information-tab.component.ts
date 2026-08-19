@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Rule, RuleService, SecurityService } from 'vitamui-library';
-import { VitamuiRoles, diff, SelectComponent, InputComponent } from 'vitamui-library';
+import { diff, InputComponent, Rule, RuleService, SecurityService, SelectComponent, VitamuiRoles } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 import { AsyncPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';

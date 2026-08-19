@@ -36,15 +36,14 @@
  */
 import { Component, Input } from '@angular/core';
 import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-confirm-dialog',
   templateUrl: './common-confirm-dialog.component.html',
   styleUrls: ['./common-confirm-dialog.component.scss'],
-  imports: [DialogHeaderComponent, CdkScrollable, MatDialogContent, MatDialogActions, MatDialogClose, TranslatePipe],
+  imports: [DialogHeaderComponent, MatDialogContent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class CommonConfirmDialogComponent {
   @Input() dialogTitle: string;
