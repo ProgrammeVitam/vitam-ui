@@ -35,19 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff } from 'vitamui-library';
-import type { ManagementContract } from 'vitamui-library';
+import { ManagementContract } from 'vitamui-library';
+import { diff, SlideToggleComponent, InputComponent, PipesModule } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-management-contract-information-tab',
   templateUrl: './management-contract-information-tab.component.html',
   styleUrls: ['./management-contract-information-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class ManagementContractInformationTabComponent {
   private formBuilder = inject(FormBuilder);

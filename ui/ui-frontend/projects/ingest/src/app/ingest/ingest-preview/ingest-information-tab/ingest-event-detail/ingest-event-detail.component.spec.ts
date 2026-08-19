@@ -55,8 +55,7 @@ describe('IngestEventDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestEventDetailComponent],
-      imports: [MatMenuModule, BrowserAnimationsModule],
+      imports: [MatMenuModule, BrowserAnimationsModule, IngestEventDetailComponent],
       providers: [
         { provide: IngestService, useValue: {} },
         {

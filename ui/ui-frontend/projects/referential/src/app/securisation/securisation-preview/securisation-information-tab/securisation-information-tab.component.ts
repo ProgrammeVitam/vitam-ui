@@ -35,14 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, inject } from '@angular/core';
-import type { Event } from 'vitamui-library';
+import { Event } from 'vitamui-library';
+import { PipesModule } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-securisation-information-tab',
   templateUrl: './securisation-information-tab.component.html',
   styleUrls: ['./securisation-information-tab.component.scss'],
-  standalone: false,
+  imports: [PipesModule, TranslatePipe],
 })
 export class SecurisationInformationTabComponent implements OnInit {
   private securisationService = inject(SecurisationService);

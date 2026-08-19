@@ -39,16 +39,17 @@ import type { FilingHoldingSchemeNode } from '../../models/nodes/node.interface'
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+
 import { UnitType } from '../../models/units/unit-type.enum';
 import { CommonModule } from '@angular/common';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { TooltipDirective } from '../common-tooltip/tooltip.directive';
 
 @Component({
   selector: 'vitamui-tree-node',
   templateUrl: './vitamui-tree-node.component.html',
   styleUrls: ['./vitamui-tree-node.component.scss'],
-  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, CommonTooltipModule],
+  imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, TooltipDirective],
   standalone: true,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {

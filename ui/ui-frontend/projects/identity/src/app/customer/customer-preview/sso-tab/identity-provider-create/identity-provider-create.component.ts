@@ -35,18 +35,54 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthnRequestBindingEnum, ConfirmDialogService, Customer, IdentityProvider } from 'vitamui-library';
+import {
+  AuthnRequestBindingEnum,
+  ConfirmDialogService,
+  Customer,
+  IdentityProvider,
+  DialogHeaderComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  InputComponent,
+  PatternComponent,
+  NextStepComponent,
+  PreviousStepComponent,
+  SelectComponent,
+} from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { CustomParamsComponent } from '../../../../shared/custom-params/custom-params.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-identity-provider-create',
   templateUrl: './identity-provider-create.component.html',
   styleUrls: ['./identity-provider-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    SlideToggleComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    InputComponent,
+    PatternComponent,
+    MatDialogActions,
+    NextStepComponent,
+    PreviousStepComponent,
+    SelectComponent,
+    CustomParamsComponent,
+    TranslatePipe,
+  ],
 })
 export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<IdentityProviderCreateComponent>>(MatDialogRef);

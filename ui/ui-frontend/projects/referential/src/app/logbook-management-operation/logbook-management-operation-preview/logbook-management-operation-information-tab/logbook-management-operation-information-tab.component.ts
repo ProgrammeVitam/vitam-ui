@@ -35,15 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { LogbookService } from 'vitamui-library';
-import type { IEvent } from 'vitamui-library';
+import { LogbookService, IEvent } from 'vitamui-library';
+import { EventTypeLabelComponent, PipesModule } from 'vitamui-library';
 import type { OperationDetails } from '../../../models/operation-response.interface';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-logbook-management-operation-information-tab',
   templateUrl: './logbook-management-operation-information-tab.component.html',
   styleUrls: ['./logbook-management-operation-information-tab.component.scss'],
-  standalone: false,
+  imports: [EventTypeLabelComponent, PipesModule, TranslatePipe],
 })
 export class LogbookManagementOperationInformationTabComponent implements OnInit, OnChanges {
   private logbookService = inject(LogbookService);

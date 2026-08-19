@@ -40,10 +40,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import DOMPurify from 'dompurify';
 import { normalizeString } from '../../../lib/utils/string.util';
 
-@Pipe({
-  name: 'highlight',
-  standalone: false,
-})
+@Pipe({ name: 'highlight' })
 export class HighlightPipe implements PipeTransform {
   private sanitizer: DomSanitizer;
 

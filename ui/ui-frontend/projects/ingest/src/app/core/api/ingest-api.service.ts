@@ -38,7 +38,8 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@an
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse } from 'vitamui-library';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
 
 @Injectable({

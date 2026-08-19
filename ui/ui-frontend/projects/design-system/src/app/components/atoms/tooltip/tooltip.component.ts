@@ -37,14 +37,14 @@
 import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonTooltipModule, InputComponent, TooltipDirective } from 'vitamui-library';
+import { TooltipDirective, InputComponent } from 'vitamui-library';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'design-system-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
-  imports: [ReactiveFormsModule, CommonTooltipModule, MatTooltipModule, FormsModule, InputComponent],
+  imports: [ReactiveFormsModule, TooltipDirective, MatTooltipModule, FormsModule, InputComponent],
 })
 export class TooltipComponent implements AfterViewInit {
   outlineValues = [true, false] as const;

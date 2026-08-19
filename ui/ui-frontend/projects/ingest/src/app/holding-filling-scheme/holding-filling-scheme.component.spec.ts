@@ -57,7 +57,19 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
 @Component({
   selector: 'app-ingest-list',
   template: '',
-  standalone: false,
+  imports: [
+    MatDatepickerModule,
+    MatMenuModule,
+    MatSidenavModule,
+    InjectorModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    BrowserAnimationsModule,
+    RouterTestingModule,
+    NoopAnimationsModule,
+    SearchBarComponent,
+    MatDialogModule,
+  ],
 })
 class IngestListStubComponent {}
 
@@ -89,8 +101,9 @@ describe('HoldingFilingSchemeComponent', () => {
         NoopAnimationsModule,
         SearchBarComponent,
         MatDialogModule,
+        HoldingFillingSchemeComponent,
+        IngestListStubComponent,
       ],
-      declarations: [HoldingFillingSchemeComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },

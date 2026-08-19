@@ -38,14 +38,27 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
+import { VitamuiTitleBreadcrumbComponent, VitamuiBannerComponent } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { HierarchyDetailComponent } from './hierarchy-detail/hierarchy-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hierarchy',
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    HierarchyDetailComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    HierarchyListComponent,
+    TranslatePipe,
+  ],
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   dialog = inject(MatDialog);

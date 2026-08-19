@@ -38,21 +38,22 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import type { AccessContract, Context, Customer, IngestContract, Tenant } from 'vitamui-library';
-import { ContextPermission } from 'vitamui-library';
-import { diff, AccessContractService, AuthService } from 'vitamui-library';
+import { AccessContract, Context, Customer, IngestContract, Tenant, AccessContractService, AuthService } from 'vitamui-library';
+import { ContextPermission, diff } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';
 import { ContextEditComponent } from '../../context-edit/context-edit.component';
 import { ContextService } from '../../context.service';
+import { MatDivider } from '@angular/material/divider';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-context-permission-tab',
   templateUrl: './context-permission-tab.component.html',
   styleUrls: ['./context-permission-tab.component.scss'],
-  standalone: false,
+  imports: [MatDivider, TranslatePipe],
 })
 export class ContextPermissionTabComponent implements OnInit {
   dialog = inject(MatDialog);

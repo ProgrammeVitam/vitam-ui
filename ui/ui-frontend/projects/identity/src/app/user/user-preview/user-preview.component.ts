@@ -35,23 +35,60 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
-import type { AdminUserProfile, Customer, Group, User, UserInfo } from 'vitamui-library';
+import {
+  AuthService,
+  isLevelAllowed,
+  StartupService,
+  VitamuiMenuButtonComponent,
+  MultiOperationHistoryTabComponent,
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
+import { AdminUserProfile, Customer, Group, User, UserInfo } from 'vitamui-library';
 import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { UserInfoTabComponent } from './user-information-tab/user-information-tab.component';
+import { UserGroupTabComponent } from './user-group-tab/user-group-tab.component';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-preview',
   templateUrl: './user-preview.component.html',
   styleUrls: ['./user-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    MatTabGroup,
+    MatTab,
+    UserInfoTabComponent,
+    UserGroupTabComponent,
+    MultiOperationHistoryTabComponent,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
   private matDialog = inject(MatDialog);

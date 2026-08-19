@@ -52,7 +52,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatDialogModule,
     VitamUILibraryModule,
     TranslatePipe,
+    PersistentIdentifierSearchComponent,
+    PurgedPersistentIdentifierModalComponent,
+    FoundObjectModalComponent,
   ],
-  declarations: [PersistentIdentifierSearchComponent, PurgedPersistentIdentifierModalComponent, FoundObjectModalComponent],
 })
 export class PersistentIdentifierSearchModule {}

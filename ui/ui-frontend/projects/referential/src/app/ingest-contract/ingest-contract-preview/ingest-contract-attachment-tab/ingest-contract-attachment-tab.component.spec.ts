@@ -93,9 +93,8 @@ describe('IngestContractAttachmentTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [IngestContractAttachmentTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), IngestContractAttachmentTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: {} },

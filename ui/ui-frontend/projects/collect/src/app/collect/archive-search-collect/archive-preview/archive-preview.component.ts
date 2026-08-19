@@ -47,17 +47,52 @@ import {
   inject,
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { TranslateService } from '@ngx-translate/core';
-import type { ArchiveUnit, Unit } from 'vitamui-library';
-import { unitToVitamuiIcon, addErrorStatusBadgeIfArchiveUnitHasErrors } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { ArchiveUnit, Unit } from 'vitamui-library';
+import {
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
+  unitToVitamuiIcon,
+  addErrorStatusBadgeIfArchiveUnitHasErrors,
+  VitamuiMenuButtonComponent,
+  ClickOutsideDirective,
+  PipesModule,
+} from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { NgClass, CommonModule } from '@angular/common';
+import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab/collect-object-group-details-tab.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    MatTabGroup,
+    NgClass,
+    MatTab,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitDescriptionTabComponent,
+    ClickOutsideDirective,
+    ArchiveUnitRulesDetailsTabComponent,
+    CollectObjectGroupDetailsTabComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   private translateService = inject(TranslateService);

@@ -59,7 +59,8 @@ import { ResizeVerticalDirective } from './resize-vertical.directive';
       }
     `,
   ],
-  standalone: false,
+  standalone: true,
+  imports: [ResizeVerticalDirective],
 })
 class ResizeVerticalBarTestComponent {}
 
@@ -68,7 +69,7 @@ describe('ResizeVerticalDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ResizeVerticalDirective, ResizeVerticalBarTestComponent],
+      imports: [ResizeVerticalBarTestComponent],
     }).createComponent(ResizeVerticalBarTestComponent);
     fixture.detectChanges();
   });

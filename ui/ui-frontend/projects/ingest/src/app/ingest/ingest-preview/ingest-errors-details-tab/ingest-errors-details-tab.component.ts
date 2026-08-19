@@ -36,16 +36,26 @@
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import {
+  MatTreeNestedDataSource,
+  MatTree,
+  MatTreeNodeDef,
+  MatTreeNode,
+  MatTreeNodeToggle,
+  MatNestedTreeNode,
+  MatTreeNodeOutlet,
+} from '@angular/material/tree';
 import type { LogbookOperation } from '../../../models/logbook-event.interface';
 import type { Event } from '../event';
 import { EventDisplayHelperService } from '../event-display-helper.service';
+import { NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-errors-details-tab',
   templateUrl: './ingest-errors-details-tab.component.html',
   styleUrls: ['./ingest-errors-details-tab.component.css'],
-  standalone: false,
+  imports: [MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, NgClass, MatNestedTreeNode, MatTreeNodeOutlet, TranslatePipe],
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   private eventDisplayHelper = inject(EventDisplayHelperService);

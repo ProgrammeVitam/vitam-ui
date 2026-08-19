@@ -43,7 +43,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateService } from '@ngx-translate/core';
 
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, LoggerModule, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
+import { LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { environment } from './../../../environments/environment';
@@ -53,7 +54,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-information-tab',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, VitamUICommonTestModule],
 })
 export class InformationTabStubComponent {
   @Input() owner: any;
@@ -67,9 +68,16 @@ describe('OwnerPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OwnerPreviewComponent, InformationTabStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
+      imports: [
+        MatMenuModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule,
+        OwnerPreviewComponent,
+        InformationTabStubComponent,
+      ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -48,7 +48,7 @@ import { ArchiveUnitEditorService } from './components/archive-unit-editor/archi
 import { EditorBannerComponent } from './components/archive-unit-editor/components/editor-banner/editor-banner.component';
 import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
 import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
-import { CommonTooltipModule } from '../components/common-tooltip/common-tooltip.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
@@ -60,17 +60,14 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     ObjectViewerModule,
     ObjectEditorModule,
-    CommonTooltipModule,
     TranslatePipe,
-  ],
-  providers: [ArchiveUnitEditorService],
-  declarations: [
     PhysicalArchiveViewerComponent,
     ArchiveUnitCountComponent,
     ArchiveUnitViewerComponent,
     ArchiveUnitEditorComponent,
     EditorBannerComponent,
   ],
+  providers: [ArchiveUnitEditorService],
   exports: [
     PhysicalArchiveViewerComponent,
     ArchiveUnitCountComponent,

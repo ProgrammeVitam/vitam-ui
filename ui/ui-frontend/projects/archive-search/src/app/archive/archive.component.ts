@@ -47,16 +47,40 @@ import {
   SidenavPage,
   SnackBarService,
   Unit,
+  VitamuiTitleBreadcrumbComponent,
+  TooltipDirective,
+  ResizeSidebarDirective,
+  ResizeVerticalDirective,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
+import { NgClass, CommonModule } from '@angular/common';
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
   styleUrls: ['./archive.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    FilingHoldingSchemeComponent,
+    NgClass,
+    ArchivePreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    TooltipDirective,
+    ArchiveSearchComponent,
+    TranslatePipe,
+    CommonModule,
+    ResizeSidebarDirective,
+    ResizeVerticalDirective,
+  ],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   private route: ActivatedRoute;

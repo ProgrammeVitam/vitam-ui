@@ -38,9 +38,24 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import { Direction, InfiniteScrollTable, PageRequest, DEFAULT_PAGE_SIZE } from 'vitamui-library';
+import {
+  Direction,
+  InfiniteScrollTable,
+  PageRequest,
+  DEFAULT_PAGE_SIZE,
+  TableFilterDirective,
+  OrderByButtonComponent,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  PipesModule,
+  EllipsisDirective,
+  InfiniteScrollDirective,
+} from 'vitamui-library';
 import type { Context, User, AdminUserProfile } from 'vitamui-library';
 import { ContextService } from '../context.service';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -48,7 +63,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-context-list',
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   contextService: ContextService;

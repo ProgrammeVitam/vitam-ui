@@ -35,10 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,7 +53,7 @@ export const EDITABLE_TEXTAREA_VALUE_ACCESSOR: any = {
   templateUrl: './editable-textarea.component.html',
   styleUrls: ['./editable-textarea.component.scss'],
   providers: [EDITABLE_TEXTAREA_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [CdkOverlayOrigin, FormsModule, ReactiveFormsModule, MatProgressSpinner, CdkConnectedOverlay],
 })
 export class EditableTextareaComponent extends EditableFieldComponent {
   @Input() maxlength: number;

@@ -36,7 +36,8 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
+import { AppConfiguration, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
+import { ApplicationId } from 'vitamui-library';
 import { StandaloneThemeService } from './standalone-theme.service';
 
 const WARNING_DURATION = 2000;

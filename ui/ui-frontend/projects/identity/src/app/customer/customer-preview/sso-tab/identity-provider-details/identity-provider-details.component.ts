@@ -35,15 +35,48 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
 import { extend, isEmpty, isEqual, isObject, mapObject, omit } from 'underscore';
-import type { IdentityProvider } from 'vitamui-library';
-import { AuthnRequestBindingEnum, newFile, SnackBarService } from 'vitamui-library';
+import { IdentityProvider, SnackBarService } from 'vitamui-library';
+import {
+  ClosePopupDialogComponent,
+  CommonConfirmDialogComponent,
+  DialogHeaderComponent,
+  EditableButtonToggleComponent,
+  EditableEmailInputComponent,
+  EditableFieldComponent,
+  EditableFileComponent,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  EditableTextareaComponent,
+  EditableToggleGroupComponent,
+  EllipsisDirective,
+  LevelInputComponent,
+  SubLevelPipe,
+  AuthnRequestBindingEnum,
+  newFile,
+  SlideToggleComponent,
+  VitamUIFieldErrorComponent,
+  FormFieldValueWrapperComponent,
+  SelectComponent,
+} from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
+import { EditablePatternsComponent } from '../../../../shared/editable-field/editable-patterns/editable-patterns.component';
+import { EditableKeystoreComponent } from '../../../../shared/editable-field/editable-keystore/editable-keystore.component';
+import { EditableCustomParamsComponent } from '../../../../shared/editable-field/editable-custom-params/editable-custom-params.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -51,7 +84,40 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-identity-provider-details',
   templateUrl: './identity-provider-details.component.html',
   styleUrls: ['./identity-provider-details.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    VitamUIFieldErrorComponent,
+    EditablePatternsComponent,
+    EditableKeystoreComponent,
+    EditableCustomParamsComponent,
+    FormFieldValueWrapperComponent,
+    SelectComponent,
+    TranslatePipe,
+    ClosePopupDialogComponent,
+    CommonConfirmDialogComponent,
+    CommonModule,
+    DialogHeaderComponent,
+    EditableButtonToggleComponent,
+    EditableEmailInputComponent,
+    EditableFieldComponent,
+    EditableFileComponent,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    EditableToggleGroupComponent,
+    EllipsisDirective,
+    FormsModule,
+    LevelInputComponent,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+    SubLevelPipe,
+  ],
 })
 export class IdentityProviderDetailsComponent {
   private formBuilder = inject(FormBuilder);

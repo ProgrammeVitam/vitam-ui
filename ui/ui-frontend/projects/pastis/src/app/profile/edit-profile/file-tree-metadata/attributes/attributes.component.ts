@@ -72,9 +72,21 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import {
+  MatTableDataSource,
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from '@angular/material/table';
 import { FileService } from 'projects/pastis/src/app/core/services/file.service';
 import { PopupService } from 'projects/pastis/src/app/core/services/popup.service';
 import { SedaService } from 'projects/pastis/src/app/core/services/seda.service';
@@ -85,13 +97,81 @@ import { AttributeData } from '../../../../models/edit-attribute-models';
 import { CardinalityConstants, DataTypeConstants, FileNode, TypeConstants, ValueOrDataConstants } from '../../../../models/file-node';
 import { SedaData } from '../../../../models/seda-data';
 import { FileTreeMetadataService } from '../file-tree-metadata.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgStyle, NgClass, CommonModule } from '@angular/common';
+import {
+  TooltipDirective,
+  ClosePopupDialogComponent,
+  CommonConfirmDialogComponent,
+  DialogHeaderComponent,
+  EditableButtonToggleComponent,
+  EditableEmailInputComponent,
+  EditableFieldComponent,
+  EditableFileComponent,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  EditableTextareaComponent,
+  EditableToggleGroupComponent,
+  EllipsisDirective,
+  LevelInputComponent,
+  SubLevelPipe,
+} from 'vitamui-library';
+import { MatSelect, MatOption, MatSelectModule } from '@angular/material/select';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-edit-attributes',
   templateUrl: './attributes.component.html',
   styleUrls: ['./attributes.component.scss'],
-  standalone: false,
+  imports: [
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCheckbox,
+    MatCellDef,
+    MatCell,
+    FormsModule,
+    NgStyle,
+    NgClass,
+    TooltipDirective,
+    MatSelect,
+    MatOption,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    TranslatePipe,
+    ClosePopupDialogComponent,
+    CommonConfirmDialogComponent,
+    CommonModule,
+    DialogHeaderComponent,
+    EditableButtonToggleComponent,
+    EditableEmailInputComponent,
+    EditableFieldComponent,
+    EditableFileComponent,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    EditableToggleGroupComponent,
+    EllipsisDirective,
+    LevelInputComponent,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+    ReactiveFormsModule,
+    SubLevelPipe,
+  ],
 })
 export class AttributesPopupComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<AttributesPopupComponent>>(MatDialogRef);

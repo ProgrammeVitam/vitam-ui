@@ -46,6 +46,10 @@ import {
   StartupService,
   Transaction,
   TransactionStatus,
+  VitamuiSupHeaderComponent,
+  OrderByButtonComponent,
+  VitamuiMenuButtonComponent,
+  InfiniteScrollDirective,
 } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
@@ -54,12 +58,23 @@ import { SipImportTrackingService } from '../../shared/sip-import-tracking.servi
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
+import { MatMenuItem } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
   styleUrls: ['./transaction-list.component.css'],
-  standalone: false,
+  imports: [
+    VitamuiSupHeaderComponent,
+    OrderByButtonComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
   private transactionService: TransactionsService;

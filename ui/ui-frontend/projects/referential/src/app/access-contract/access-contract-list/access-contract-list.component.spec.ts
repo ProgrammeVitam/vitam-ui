@@ -59,9 +59,8 @@ describe('AccessContractListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractListComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [VitamUICommonTestModule, MatProgressSpinnerModule],
+      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, AccessContractListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: AccessContractService, useValue: accessContractServiceMock },

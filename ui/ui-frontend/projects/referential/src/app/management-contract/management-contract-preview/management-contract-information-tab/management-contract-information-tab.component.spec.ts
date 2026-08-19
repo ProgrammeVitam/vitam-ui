@@ -42,7 +42,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, IntermediaryVersionEnum, LoggerModule } from 'vitamui-library';
 import { InputStubComponent, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab.component';
@@ -53,10 +54,7 @@ describe('ManagementContractInformationTabComponent', () => {
   let component: ManagementContractInformationTabComponent;
   let fixture: ComponentFixture<ManagementContractInformationTabComponent>;
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -108,9 +106,16 @@ describe('ManagementContractInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractInformationTabComponent, DateTimeStubPipe],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatSidenavModule, InjectorModule, VitamUICommonTestModule, RouterTestingModule, LoggerModule.forRoot()],
+      imports: [
+        MatSidenavModule,
+        InjectorModule,
+        VitamUICommonTestModule,
+        RouterTestingModule,
+        LoggerModule.forRoot(),
+        ManagementContractInformationTabComponent,
+        DateTimeStubPipe,
+      ],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

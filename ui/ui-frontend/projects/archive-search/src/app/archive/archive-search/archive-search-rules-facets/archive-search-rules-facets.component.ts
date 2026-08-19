@@ -37,12 +37,29 @@
 
 import { Component, Input } from '@angular/core';
 import { RuleFacets } from 'vitamui-library';
+import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
+import { SearchStorageRulesFacetsComponent } from './search-storage-rules-facets/search-storage-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchAccessRulesFacetsComponent } from './search-access-rules-facets/search-access-rules-facets.component';
+import { SearchDisseminationRulesFacetsComponent } from './search-dissemination-rules-facets/search-dissemination-rules-facets.component';
+import { SearchReuseRulesFacetsComponent } from './search-reuse-rules-facets/search-reuse-rules-facets.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-search-rules-facets',
   templateUrl: './archive-search-rules-facets.component.html',
   styleUrls: ['./archive-search-rules-facets.component.css'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    MatTabLabel,
+    SearchStorageRulesFacetsComponent,
+    SearchAppraisalRulesFacetsComponent,
+    SearchAccessRulesFacetsComponent,
+    SearchDisseminationRulesFacetsComponent,
+    SearchReuseRulesFacetsComponent,
+    TranslatePipe,
+  ],
 })
 export class ArchiveSearchRulesFacetsComponent {
   @Input()

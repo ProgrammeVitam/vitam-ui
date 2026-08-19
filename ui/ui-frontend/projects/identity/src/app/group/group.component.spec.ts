@@ -38,8 +38,8 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
-import type { Group } from 'vitamui-library';
+import { ENVIRONMENT, Group } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -69,7 +69,7 @@ let page: Page;
 @Component({
   selector: 'app-group-list',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, SearchBarComponent],
 })
 class GroupListStubComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -82,7 +82,7 @@ class GroupListStubComponent {
 @Component({
   selector: 'app-group-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, SearchBarComponent],
 })
 class GroupPreviewStubComponent {
   @Input()
@@ -110,8 +110,10 @@ describe('GroupComponent', () => {
         InjectorModule,
         SearchBarComponent,
         LoggerModule.forRoot(),
+        GroupComponent,
+        GroupListStubComponent,
+        GroupPreviewStubComponent,
       ],
-      declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },

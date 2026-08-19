@@ -38,7 +38,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
+import { CriteriaValue } from 'vitamui-library';
+import { CriteriaOperator, InjectorModule } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search.component';
 
@@ -56,13 +57,12 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      declarations: [TitleAndDescriptionCriteriaSearchComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
       ],
-      imports: [InjectorModule],
+      imports: [InjectorModule, TitleAndDescriptionCriteriaSearchComponent],
     }).compileComponents();
   });
 

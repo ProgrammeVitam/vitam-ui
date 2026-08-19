@@ -35,15 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import type { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
-import { Logger } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto, Logger } from 'vitamui-library';
+import { PipesModule } from 'vitamui-library';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',
   templateUrl: './archive-unit-rules-informations-tab.component.html',
   styleUrls: ['./archive-unit-rules-informations-tab.component.css'],
-  standalone: false,
+  imports: [NgClass, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   private translateService = inject(TranslateService);

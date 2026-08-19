@@ -43,7 +43,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'vitamui-library';
+import { FilingHoldingSchemeNode } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveApiService } from '../../core/api/archive-api.service';
 import { ArchiveService } from '../archive.service';
@@ -72,8 +73,8 @@ describe('FilingHoldingSchemeComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
+        FilingHoldingSchemeComponent,
       ],
-      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveApiService, useValue: archiveServiceMock },

@@ -92,8 +92,7 @@ describe('SimpleCriteriaSearchComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [SimpleCriteriaSearchComponent],
-      imports: [InjectorModule, AgenciesModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, AgenciesModule, LoggerModule.forRoot(), SimpleCriteriaSearchComponent],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },

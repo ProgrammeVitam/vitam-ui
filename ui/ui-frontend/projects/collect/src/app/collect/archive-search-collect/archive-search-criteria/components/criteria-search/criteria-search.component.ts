@@ -36,22 +36,25 @@
  */
 
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import type { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaValue } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaValue } from 'vitamui-library';
 import {
   ORIGIN_WAITING_RECALCULATE,
   QueryParamsService,
   SearchCriteriaTypeEnum,
   TranslateWithOptionalTypeSuffixPipe,
   WAITING_RECALCULATE,
+  TooltipDirective,
+  PipesModule,
 } from 'vitamui-library';
+import { NgClass, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',
   styleUrls: ['./criteria-search.component.scss'],
-  standalone: false,
   providers: [TranslateWithOptionalTypeSuffixPipe],
+  imports: [TooltipDirective, NgClass, DatePipe, PipesModule, TranslatePipe],
 })
 export class CriteriaSearchComponent {
   private queryParamsService = inject(QueryParamsService);

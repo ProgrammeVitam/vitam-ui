@@ -42,11 +42,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { SharedModule } from '../shared/shared.module';
-import { GroupAttributionModule } from './group-attribution/group-attribution.module';
-import { UserCreateModule } from './user-create/user-create.module';
-import { UserListModule } from './user-list/user-list.module';
-import { UserPreviewModule } from './user-preview/user-preview.module';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -55,18 +50,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
-    UserCreateModule,
-    UserListModule,
     MatDialogModule,
     MatMenuModule,
-    UserPreviewModule,
-    GroupAttributionModule,
     MatSidenavModule,
     FormsModule,
     UserRoutingModule,
     TranslatePipe,
+    UserComponent,
   ],
-  declarations: [UserComponent],
 })
 export class UserModule {}

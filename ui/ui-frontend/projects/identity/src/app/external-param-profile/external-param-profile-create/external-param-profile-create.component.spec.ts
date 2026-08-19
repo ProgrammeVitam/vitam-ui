@@ -44,12 +44,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CollapseModule, ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
+import { CollapseComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileCreateComponent', () => {
@@ -78,17 +79,18 @@ describe('ExternalParamProfileCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExternalParamProfileCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        CollapseModule,
         FormsModule,
         MatButtonToggleModule,
         MatProgressBarModule,
         MatSelectModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
+        ExternalParamProfileCreateComponent,
+        CollapseComponent,
+        CommonModule,
       ],
       providers: [
         DecimalPipe,

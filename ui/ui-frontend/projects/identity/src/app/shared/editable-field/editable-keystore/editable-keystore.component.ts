@@ -34,18 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EditableFieldComponent, newFile } from 'vitamui-library';
-import type { IdentityProvider } from 'vitamui-library';
+import { EditableFieldComponent, IdentityProvider } from 'vitamui-library';
+import { newFile } from 'vitamui-library';
 
 import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 /*eslint no-use-before-define: "error"*/
 @Component({
   selector: 'app-editable-keystore',
   templateUrl: './editable-keystore.component.html',
   styleUrls: ['./editable-keystore.component.scss'],
-  standalone: false,
+  imports: [CdkOverlayOrigin, ReactiveFormsModule, CdkConnectedOverlay, TranslatePipe],
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
   private identityProviderService = inject(IdentityProviderService);
