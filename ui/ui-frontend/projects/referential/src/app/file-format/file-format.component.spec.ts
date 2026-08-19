@@ -42,14 +42,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FileFormatComponent } from './file-format.component';
 import { of } from 'rxjs';
 
 @Component({
   selector: 'app-file-format-preview',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AgencyPreviewStub {
   @Input()
@@ -59,7 +58,7 @@ class AgencyPreviewStub {
 @Component({
   selector: 'app-file-format-list',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AgencyListStub {}
 
@@ -74,7 +73,6 @@ describe('FileFormatComponent', () => {
         RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
         FileFormatComponent,

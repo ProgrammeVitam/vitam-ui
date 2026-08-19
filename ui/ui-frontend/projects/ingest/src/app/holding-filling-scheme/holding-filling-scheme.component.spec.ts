@@ -38,7 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { Component } from '@angular/core';
@@ -66,7 +66,6 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     VitamUICommonTestModule,
     BrowserAnimationsModule,
     RouterTestingModule,
-    NoopAnimationsModule,
     MatDialogModule,
   ],
 })
@@ -97,7 +96,6 @@ describe('HoldingFilingSchemeComponent', () => {
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
-        NoopAnimationsModule,
         SearchBarComponent,
         MatDialogModule,
         HoldingFillingSchemeComponent,

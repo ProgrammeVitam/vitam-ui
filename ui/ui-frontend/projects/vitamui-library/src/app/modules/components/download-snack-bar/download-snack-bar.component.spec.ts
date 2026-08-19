@@ -69,38 +69,3 @@ describe('DownloadSnackBarComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
-// import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-// import {MatDialog} from '@angular/material/dialog';
-// import {MatProgressBarModule} from '@angular/material/progress-bar';
-// import {empty} from 'rxjs';
-
-// import {DownloadService} from '../download.service';
-// import {DownloadSnackBarComponent} from './download-snack-bar.component';
-
-// describe('DownloadSnackBarComponent', () => {
-//   let component: DownloadSnackBarComponent;
-//   let fixture: ComponentFixture<DownloadSnackBarComponent>;
-
-//   beforeEach(async(() => {
-//     await TestBed.configureTestingModule({
-//       imports: [MatProgressBarModule],
-//       declarations: [ DownloadSnackBarComponent ],
-//       providers: [
-//         { provide: MatDialog, useValue: {} },
-//         { provide: DownloadService, useValue: { downloadReady: empty(), startRefreshLoop: () => {}, stopRefreshLoop: () => {} } },
-//       ]
-//     })
-//     .compileComponents();
-//   }));
-
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(DownloadSnackBarComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });

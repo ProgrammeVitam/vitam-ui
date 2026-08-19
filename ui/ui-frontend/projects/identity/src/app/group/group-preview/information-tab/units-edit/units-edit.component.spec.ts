@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -58,7 +57,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class UnitsFormStubComponent {
   writeValue() {}
@@ -79,14 +78,7 @@ describe('UnitsEditComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        UnitsEditComponent,
-        UnitsFormStubComponent,
-      ],
+      imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, UnitsEditComponent, UnitsFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

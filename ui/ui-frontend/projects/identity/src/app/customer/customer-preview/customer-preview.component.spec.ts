@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 import type { Customer } from 'vitamui-library';
 import { ENVIRONMENT, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
@@ -120,7 +119,6 @@ describe('CustomerPreviewComponent', () => {
       imports: [
         MatMenuModule,
         MatTabsModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         LoggerModule.forRoot(),

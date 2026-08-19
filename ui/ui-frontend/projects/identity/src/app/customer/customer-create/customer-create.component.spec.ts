@@ -45,7 +45,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -74,7 +73,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    NoopAnimationsModule,
     ReactiveFormsModule,
     VitamUICommonTestModule,
   ],
@@ -113,7 +111,6 @@ class DomainInputStubComponent implements ControlValueAccessor {
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    NoopAnimationsModule,
     ReactiveFormsModule,
     VitamUICommonTestModule,
   ],
@@ -145,7 +142,6 @@ class OwnerFormStubComponent implements ControlValueAccessor {
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    NoopAnimationsModule,
     ReactiveFormsModule,
     VitamUICommonTestModule,
   ],
@@ -265,7 +261,6 @@ describe('CustomerCreateComponent', () => {
         MatProgressBarModule,
         MatProgressSpinnerModule,
         MatSelectModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         CustomerCreateComponent,

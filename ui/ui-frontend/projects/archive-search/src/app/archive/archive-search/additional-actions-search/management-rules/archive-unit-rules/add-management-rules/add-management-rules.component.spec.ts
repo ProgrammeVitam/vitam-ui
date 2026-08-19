@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -60,14 +59,7 @@ import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../.
 import { AddManagementRulesComponent } from './add-management-rules.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleCategoryAction: RuleCategoryAction = {
   rules: [],
@@ -265,7 +257,7 @@ describe('AddManagementRulesComponent', () => {
 
   describe('DOM', () => {
     it('should have 1 title ', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('div.align-items-stretch > label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);

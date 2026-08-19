@@ -34,14 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, LOCALE_ID } from '@angular/core';
-import { bootstrapApplication, Title } from '@angular/platform-browser';
+import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
-import { BASE_URL, BaseUserInfoApiService, ENVIRONMENT, provideI18n } from 'vitamui-library';
+import { BASE_URL, BaseUserInfoApiService, ENVIRONMENT, LoggerModule, provideI18n } from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { of } from 'rxjs';
 import { AppComponent } from './app/app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { PreloadAllModules, provideRouter, withHashLocation, withPreloading } from '@angular/router';
+import { routes } from './app/app.routes';
 
 if (environment.production) {
   enableProdMode();
@@ -49,9 +52,18 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideRouter(routes, withPreloading(PreloadAllModules), withHashLocation()),
+    importProvidersFrom(
+      LoggerModule.forRoot(),
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+    ),
     provideI18n(),
     provideNativeDateAdapter(),
-    Title,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },
     { provide: BASE_URL, useValue: '/FAKE' },

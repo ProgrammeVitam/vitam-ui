@@ -44,22 +44,13 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../../../../archive-search/src/environments/environment';
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
 import { TransactionListComponent } from './transaction-list.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 describe('TransactionListComponent', () => {
   let component: TransactionListComponent;

@@ -39,7 +39,6 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EMPTY } from 'rxjs';
 import { BASE_URL, ENVIRONMENT, LoggerModule, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
@@ -52,7 +51,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-information-tab',
   template: '',
-  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, VitamUICommonTestModule],
+  imports: [MatMenuModule, MatTabsModule, VitamUICommonTestModule],
 })
 export class InformationTabStubComponent {
   @Input() owner: any;
@@ -70,7 +69,6 @@ describe('OwnerPreviewComponent', () => {
       imports: [
         MatMenuModule,
         MatTabsModule,
-        NoopAnimationsModule,
         LoggerModule.forRoot(),
         VitamUICommonTestModule,
         OwnerPreviewComponent,

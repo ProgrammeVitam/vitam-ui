@@ -36,7 +36,6 @@
  */
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Type } from '@angular/core';
 import { BASE_URL, Owner, SnackBarService } from 'vitamui-library';
@@ -68,7 +67,6 @@ describe('OwnerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
       providers: [
         OwnerService,
         { provide: SnackBarService, useValue: snackBarSpy },

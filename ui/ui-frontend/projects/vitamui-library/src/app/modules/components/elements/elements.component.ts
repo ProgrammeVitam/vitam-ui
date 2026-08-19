@@ -44,7 +44,6 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
   selector: 'vitamui-elements',
   templateUrl: './elements.component.html',
   styleUrls: ['elements.component.scss'],
-  standalone: true,
   imports: [TooltipDirective, MatMenuModule, PipesModule],
 })
 export class ElementsComponent {

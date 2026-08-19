@@ -43,7 +43,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { BASE_URL, DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
@@ -78,7 +77,6 @@ describe('AuditComponent', () => {
         MatSelectModule,
         MatSidenavModule,
         DatepickerComponent,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         AuditComponent,

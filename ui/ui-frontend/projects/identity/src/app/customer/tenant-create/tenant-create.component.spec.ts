@@ -43,7 +43,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TenantService } from '../tenant.service';
 import { TenantCreateComponent } from './tenant-create.component';
@@ -78,7 +77,6 @@ describe('TenantCreateComponent', () => {
         MatSelectModule,
         MatOptionModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         TenantCreateComponent,

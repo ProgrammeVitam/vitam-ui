@@ -50,12 +50,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 const authServiceMock = { user: { proofTenantIdentifier: '1' } };
 const activatedRouteMock = { params: of({ tenantIdentifier: 1 }), paramMap: EMPTY };
 
-class FakeLoader implements TranslateLoader {
-  getTranslation() {
-    return of({});
-  }
-}
-
 describe('AgencyListComponent', () => {
   let component: AgencyListComponent;
   let fixture: ComponentFixture<AgencyListComponent>;

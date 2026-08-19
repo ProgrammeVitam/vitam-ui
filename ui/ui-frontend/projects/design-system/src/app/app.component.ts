@@ -36,10 +36,18 @@
  */
 import { Component, inject } from '@angular/core';
 import { Route, Router, RouterLink, RouterLinkActive, RouterOutlet, Routes } from '@angular/router';
-import { SelectComponent, SelectLanguageComponent, VitamuiSelectOptions } from 'vitamui-library';
+import {
+  AppConfiguration,
+  ApplicationApiService,
+  AuthService,
+  SelectComponent,
+  SelectLanguageComponent,
+  ThemeService,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { RouteData } from './app-routing.module';
+import { RouteData } from './app.routes';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatList } from '@angular/material/list';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
@@ -86,6 +94,28 @@ export class AppComponent {
   url: string;
 
   constructor() {
+    const authService = inject(AuthService);
+    const themeService = inject(ThemeService);
+    const applicationApiService = inject(ApplicationApiService);
+
+    authService.userInfo = { id: '42', language: 'FRENCH' };
+
+    applicationApiService.getLocalAsset('logo_USER.png').subscribe((userLogo) => {
+      themeService.init(
+        {
+          USER_LOGO: userLogo,
+          THEME_COLORS: {
+            'vitamui-primary': '#9C31B5',
+            'vitamui-secondary': '#296EBC',
+            'vitamui-tertiary': '#C22A40',
+            'vitamui-background': '#FCF7FD',
+            'vitamui-header-footer': '#ffffff',
+          },
+        } as AppConfiguration,
+        {},
+      );
+    });
+
     const router = this.router;
     const fb = inject(FormBuilder);
     const translateService = inject(TranslateService);
