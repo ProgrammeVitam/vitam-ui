@@ -38,14 +38,30 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParameters, PipesModule, CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-probative-value-preview',
   templateUrl: './probative-value-preview.component.html',
   styleUrls: ['./probative-value-preview.component.scss'],
-  standalone: false,
+  imports: [
+    PipesModule,
+    EventTypeBadgeColorPipe,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   private probativeValueService = inject(ProbativeValueService);

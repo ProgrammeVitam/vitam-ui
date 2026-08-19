@@ -38,16 +38,37 @@ import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  PageRequest,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+} from 'vitamui-library';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsService } from './projects.service';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { NgClass } from '@angular/common';
+import { ProjectPreviewComponent } from './project-preview/project-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    NgClass,
+    ProjectPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ProjectListComponent,
+    TranslatePipe,
+  ],
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   private dialog = inject(MatDialog);

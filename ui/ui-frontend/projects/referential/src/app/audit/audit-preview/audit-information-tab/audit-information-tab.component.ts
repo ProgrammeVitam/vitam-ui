@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import type { Event } from 'vitamui-library';
+import { Event } from 'vitamui-library';
 import { VitamUICommonModule, VitamUILibraryModule, PipesModule } from 'vitamui-library';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -35,18 +35,38 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage, VitamuiBannerComponent } from 'vitamui-library';
+import {
+  GlobalEventService,
+  SidenavPage,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+  DatepickerComponent,
+} from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-logbook-operation',
   templateUrl: './logbook-operation.component.html',
   styleUrls: ['./logbook-operation.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    LogbookOperationDetailComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ReactiveFormsModule,
+    DatepickerComponent,
+    LogbookOperationListComponent,
+    TranslatePipe,
+  ],
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   route: ActivatedRoute;

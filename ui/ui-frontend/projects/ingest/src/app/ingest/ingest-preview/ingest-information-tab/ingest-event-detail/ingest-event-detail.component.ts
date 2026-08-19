@@ -38,12 +38,13 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@ang
 import type { LogbookOperation } from '../../../../models/logbook-event.interface';
 import type { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
+import { EventDisplayComponent } from './event-display/event-display.component';
 
 @Component({
   selector: 'app-ingest-event-detail',
   templateUrl: './ingest-event-detail.component.html',
   styleUrls: ['./ingest-event-detail.component.scss'],
-  standalone: false,
+  imports: [EventDisplayComponent],
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
   private eventDisplayHelper = inject(EventDisplayHelperService);

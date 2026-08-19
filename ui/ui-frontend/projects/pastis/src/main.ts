@@ -34,11 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, LOCALE_ID, provideAppInitializer, inject, importProvidersFrom } from '@angular/core';
+import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
+import { PastisConfigurationFactory } from './app/app.module';
 import { environment } from './environments/environment';
+import {
+  provideI18n,
+  WINDOW_LOCATION,
+  BASE_URL,
+  ENVIRONMENT,
+  AuthenticationModule,
+  ThemeService,
+  StartupService,
+  InjectorModule,
+  LoggerModule,
+  VitamUICommonModule,
+} from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { PastisConfiguration } from './app/core/classes/pastis-configuration';
+import { NoAuthenticationModule } from './app/standalone/no-authentication.module';
+import { StandaloneThemeService } from './app/standalone/standalone-theme.service';
+import { StandaloneStartupService } from './app/standalone/standalone-startup.service';
+import { DatePipe } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app/app-routing.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppComponent } from './app/app.component';
+
+const startupServiceClass = environment.standalone ? StandaloneStartupService : StartupService;
+const themeServiceClass = environment.standalone ? StandaloneThemeService : ThemeService;
+const authenticationModuleClass = environment.standalone ? NoAuthenticationModule : AuthenticationModule.forRoot();
 
 if (environment.production) {
   enableProdMode();
@@ -48,6 +75,38 @@ if (environment.standalone) {
   document.title = 'PASTIS';
   document.getElementById('favicon').setAttribute('href', '../assets/favicon.ico');
 }
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      authenticationModuleClass,
+      InjectorModule,
+      LoggerModule.forRoot(),
+      BrowserAnimationsModule,
+      BrowserModule,
+      VitamUICommonModule.forRoot(),
+      AppRoutingModule,
+      MatToolbarModule,
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+    ),
+    provideI18n(),
+    provideNativeDateAdapter(),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: WINDOW_LOCATION, useValue: window.location },
+    PastisConfiguration,
+    { provide: BASE_URL, useValue: './pastis-api' },
+    { provide: ENVIRONMENT, useValue: environment },
+    provideAppInitializer(() => {
+      const initializerFn = PastisConfigurationFactory(inject(PastisConfiguration));
+      return initializerFn();
+    }),
+    { provide: StartupService, useClass: startupServiceClass },
+    { provide: ThemeService, useClass: themeServiceClass },
+    DatePipe,
+  ],
+}).catch((err) => console.error(err));

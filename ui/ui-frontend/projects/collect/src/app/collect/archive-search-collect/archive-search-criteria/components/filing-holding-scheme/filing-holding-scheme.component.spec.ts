@@ -44,7 +44,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment.prod';
 import { of } from 'rxjs';
-import { FilingHoldingSchemeNode, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
+import { FilingHoldingSchemeNode, StartupService } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../archive-collect.service';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -126,8 +127,8 @@ describe('FilingHoldingSchemeComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
+        FilingHoldingSchemeComponent,
       ],
-      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
         { provide: StartupService, useValue: StartupServiceMock },

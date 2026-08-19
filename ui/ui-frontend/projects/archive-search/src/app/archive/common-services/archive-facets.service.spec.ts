@@ -36,7 +36,8 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ResultFacet, ResultFacetList, LoggerModule, BASE_URL } from 'vitamui-library';
+import { ResultFacet, ResultFacetList, BASE_URL } from 'vitamui-library';
+import { LoggerModule } from 'vitamui-library';
 import { ArchiveFacetsService } from './archive-facets.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

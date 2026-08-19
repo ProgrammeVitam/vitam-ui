@@ -115,15 +115,17 @@ describe('CustomerPreviewComponent', () => {
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
     };
     await TestBed.configureTestingModule({
-      declarations: [
-        TestHostComponent,
-        CustomerPreviewComponent,
-        InformationTabStubComponent,
-        SsoTabStubComponent,
-        GraphicIdentityTabStubComponent,
-      ],
+      declarations: [TestHostComponent, InformationTabStubComponent, SsoTabStubComponent, GraphicIdentityTabStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule, LoggerModule.forRoot()],
+      imports: [
+        MatMenuModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        LoggerModule.forRoot(),
+        CustomerPreviewComponent,
+      ],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: StartupService, useValue: startupServiceStub },

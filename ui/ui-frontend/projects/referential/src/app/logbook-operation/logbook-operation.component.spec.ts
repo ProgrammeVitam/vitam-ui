@@ -41,7 +41,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { DatepickerComponent, ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
+import { ENVIRONMENT, GlobalEventService } from 'vitamui-library';
+import { DatepickerComponent, InjectorModule, LoggerModule, SearchBarComponent } from 'vitamui-library';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
@@ -58,8 +59,15 @@ describe('LogbookOperationComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, LoggerModule.forRoot(), MatMenuModule, DatepickerComponent, ReactiveFormsModule, SearchBarComponent],
-      declarations: [LogbookOperationComponent],
+      imports: [
+        InjectorModule,
+        LoggerModule.forRoot(),
+        MatMenuModule,
+        DatepickerComponent,
+        ReactiveFormsModule,
+        SearchBarComponent,
+        LogbookOperationComponent,
+      ],
       providers: [
         provideNativeDateAdapter(),
         DatePipe,

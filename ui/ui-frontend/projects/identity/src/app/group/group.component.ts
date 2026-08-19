@@ -75,16 +75,35 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { DownloadSnackBarService, GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
+import {
+ DownloadSnackBarService, GlobalEventService,
+  Group,
+  SidenavPage,
+  SnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+} from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { finalize } from 'rxjs/operators';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { GroupPreviewComponent } from './group-preview/group-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    GroupPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    GroupListComponent,
+    TranslatePipe,
+  ],
 })
 export class GroupComponent extends SidenavPage<Group> {
   route: ActivatedRoute;

@@ -40,7 +40,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PreservationComponent } from './preservation.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { BASE_URL, InjectorModule, LoggerModule, SecurityService, VitamUICommonModule } from 'vitamui-library';
+import { BASE_URL, SecurityService } from 'vitamui-library';
+import { InjectorModule, LoggerModule, VitamUICommonModule } from 'vitamui-library';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 

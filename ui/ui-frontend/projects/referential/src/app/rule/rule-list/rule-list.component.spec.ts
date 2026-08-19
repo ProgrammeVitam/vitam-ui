@@ -52,8 +52,7 @@ describe('RuleListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [RuleListComponent],
+      imports: [RuleListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: RuleService, useValue: ruleServiceMock },

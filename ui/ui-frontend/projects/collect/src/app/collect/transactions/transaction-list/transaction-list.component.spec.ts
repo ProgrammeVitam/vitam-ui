@@ -45,7 +45,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, StartupService, Transaction, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, TransactionStatus } from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
@@ -111,9 +112,15 @@ describe('TransactionListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionListComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [InjectorModule, MatSidenavModule, BrowserAnimationsModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [
+        InjectorModule,
+        MatSidenavModule,
+        BrowserAnimationsModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        TransactionListComponent,
+      ],
       providers: [
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

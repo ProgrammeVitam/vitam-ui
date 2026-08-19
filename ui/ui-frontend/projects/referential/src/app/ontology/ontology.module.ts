@@ -44,7 +44,7 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { OntologyRoutingModule } from './ontology-routing.module';
 import { OntologyComponent } from './ontology.component';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
+
 import { OntologyGroupComponent } from './ontology-group/ontology-group.component';
 import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -52,7 +52,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    ImportDialogModule,
     MatDialogModule,
     MatMenuModule,
     MatProgressSpinnerModule,
@@ -64,7 +63,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
+    OntologyComponent,
   ],
-  declarations: [OntologyComponent],
 })
 export class OntologyModule {}

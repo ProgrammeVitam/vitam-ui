@@ -38,7 +38,8 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
@@ -47,7 +48,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -62,7 +63,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressBarModule,
     MatSelectModule,
     ReactiveFormsModule,
-    SecurityProfileEditPermissionModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

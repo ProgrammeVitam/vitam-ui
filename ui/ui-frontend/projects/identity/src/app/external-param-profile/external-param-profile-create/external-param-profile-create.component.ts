@@ -35,21 +35,51 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { ConfirmDialogService, ExternalParamProfile, Option } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  ExternalParamProfile,
+  Option,
+  DialogHeaderComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  InputComponent,
+  SelectComponent,
+  NextStepComponent,
+  TooltipDirective,
+  PreviousStepComponent,
+} from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { map } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { DecimalPipe } from '@angular/common';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { DecimalPipe, AsyncPipe } from '@angular/common';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-external-param-profile-create',
   templateUrl: './external-param-profile-create.component.html',
   styleUrls: ['./external-param-profile-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    SlideToggleComponent,
+    InputComponent,
+    SelectComponent,
+    MatDialogActions,
+    NextStepComponent,
+    TooltipDirective,
+    PreviousStepComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   private formBuilder = inject(FormBuilder);

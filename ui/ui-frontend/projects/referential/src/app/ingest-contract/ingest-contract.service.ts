@@ -38,7 +38,8 @@ import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IngestContract, SearchService, VitamuiHttpHeaders, SnackBarService } from 'vitamui-library';
+import { IngestContract, SearchService, SnackBarService } from 'vitamui-library';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 
 import { IngestContractApiService } from '../core/api/ingest-contract-api.service';
 

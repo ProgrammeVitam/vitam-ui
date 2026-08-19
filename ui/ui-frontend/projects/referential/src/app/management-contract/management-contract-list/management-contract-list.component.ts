@@ -37,8 +37,23 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subject, Subscription, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, ManagementContract, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollTable,
+  ManagementContract,
+  PageRequest,
+  TableFilterDirective,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  OrderByButtonComponent,
+  PipesModule,
+  InfiniteScrollDirective,
+} from 'vitamui-library';
 import { ManagementContractService } from '../management-contract.service';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -46,7 +61,18 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-management-contract-list',
   templateUrl: './management-contract-list.component.html',
   styleUrls: ['./management-contract-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class ManagementContractListComponent extends InfiniteScrollTable<ManagementContract> implements OnDestroy, OnInit {
   managementContractService: ManagementContractService;

@@ -35,10 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ContentChildren, ElementRef, forwardRef, QueryList, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
 import { EditableButtonToggleComponent } from './editable-button-toggle.component';
+import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,7 +54,15 @@ export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   templateUrl: './editable-toggle-group.component.html',
   styleUrls: ['./editable-toggle-group.component.scss'],
   providers: [EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [
+    CdkOverlayOrigin,
+    MatButtonToggleGroup,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonToggle,
+    MatProgressSpinner,
+    CdkConnectedOverlay,
+  ],
 })
 export class EditableToggleGroupComponent extends EditableFieldComponent {
   @ContentChildren(EditableButtonToggleComponent) buttons: QueryList<EditableButtonToggleComponent>;

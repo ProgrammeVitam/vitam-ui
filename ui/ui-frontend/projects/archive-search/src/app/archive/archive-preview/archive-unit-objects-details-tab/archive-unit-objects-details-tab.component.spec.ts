@@ -87,8 +87,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [ArchiveUnitObjectsDetailsTabComponent],
+      imports: [ArchiveUnitObjectsDetailsTabComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceSpy },
         { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },

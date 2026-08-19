@@ -36,7 +36,8 @@
  */
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CriteriaSearchQuery, Criterion, Operators, Tenant, SnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Criterion, Tenant, SnackBarService } from 'vitamui-library';
+import { Operators } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';

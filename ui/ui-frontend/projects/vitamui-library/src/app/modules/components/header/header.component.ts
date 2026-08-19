@@ -37,7 +37,7 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApplicationService } from '../../application.service';
@@ -56,12 +56,32 @@ import { SubrogationService } from './../../subrogation/subrogation.service';
 import { TENANT_SELECTION_URL_CONDITION, TenantSelectionService } from './../../tenant-selection.service';
 import { MenuOverlayService } from './menu/menu-overlay.service';
 import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenant-dialog.component';
+import { MatToolbar } from '@angular/material/toolbar';
+import { SelectSiteComponent } from './select-site/select-site.component';
+import { SelectLanguageComponent } from './select-language/select-language.component';
+import { ItemSelectComponent } from './item-select/item-select.component';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { UserPhotoComponent } from './user-photo/user-photo.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  standalone: false,
+  imports: [
+    MatToolbar,
+    SelectSiteComponent,
+    SelectLanguageComponent,
+    ItemSelectComponent,
+    MatMenuTrigger,
+    UserPhotoComponent,
+    MatMenu,
+    MatMenuItem,
+    RouterLink,
+    MatMiniFabButton,
+    TranslatePipe,
+  ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private subrogationService = inject(SubrogationService);

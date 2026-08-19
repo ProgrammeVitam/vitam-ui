@@ -36,23 +36,24 @@
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, Option, VitamuiHttpHeaders } from 'vitamui-library';
-import type { IngestContract } from 'vitamui-library';
+import { Option, IngestContract } from 'vitamui-library';
+import { diff, VitamuiHttpHeaders, SlideToggleComponent, InputComponent, SelectComponent, PipesModule } from 'vitamui-library';
 
 import { ArchiveProfileApiService } from '../../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../../core/api/management-contract-api.service';
 import { IngestContractCreateValidators } from '../../ingest-contract-create/ingest-contract-create.validators';
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-information-tab',
   templateUrl: './ingest-contract-information-tab.component.html',
   styleUrls: ['./ingest-contract-information-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, FormsModule, PipesModule, TranslatePipe],
 })
 export class IngestContractInformationTabComponent implements OnInit {
   private formBuilder = inject(FormBuilder);

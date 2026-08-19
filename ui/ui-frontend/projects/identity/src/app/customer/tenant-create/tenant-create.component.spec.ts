@@ -74,9 +74,16 @@ describe('TenantCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatSelectModule, MatOptionModule, MatProgressBarModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [
+        MatSelectModule,
+        MatOptionModule,
+        MatProgressBarModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        TenantCreateComponent,
+      ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [TenantCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {

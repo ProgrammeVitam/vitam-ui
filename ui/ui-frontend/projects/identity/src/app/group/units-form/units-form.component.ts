@@ -35,8 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, forwardRef, Input, OnInit, inject } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { GroupValidators } from '../group.validators';
+import { InputComponent, EllipsisDirective } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 export const UNITS_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -52,7 +62,7 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './units-form.component.html',
   styleUrls: ['./units-form.component.scss'],
   providers: [UNITS_FORM_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [InputComponent, ReactiveFormsModule, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class UnitsFormComponent implements ControlValueAccessor, OnInit {
   private groupValidators = inject(GroupValidators);

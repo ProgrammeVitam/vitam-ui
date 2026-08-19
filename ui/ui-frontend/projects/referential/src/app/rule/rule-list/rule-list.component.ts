@@ -36,23 +36,36 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import type { AdminUserProfile, Rule } from 'vitamui-library';
 import {
-  ApplicationId,
+  AdminUserProfile,
+  Rule,
   AuthService,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
-  Direction,
   InfiniteScrollTable,
-  PageRequest,
-  Role,
   RuleService,
   SnackBarService,
 } from 'vitamui-library';
+import {
+  EllipsisDirective,
+  HasAnyRoleDirective,
+  HasRoleDirective,
+  InfiniteScrollDirective,
+  ApplicationId,
+  Direction,
+  PageRequest,
+  Role,
+  OrderByButtonComponent,
+  TableFilterDirective,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,7 +73,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-rule-list',
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss'],
-  standalone: false,
+  imports: [
+    OrderByButtonComponent,
+    TableFilterDirective,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasAnyRoleDirective,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   ruleService: RuleService;

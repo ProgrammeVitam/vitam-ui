@@ -85,8 +85,7 @@ describe('RuleInformationTabComponent', () => {
       data: of({ appId: 'RULES_APP' }),
     };
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [RuleInformationTabComponent],
+      imports: [RuleInformationTabComponent],
       providers: [
         FormBuilder,
         { provide: ActivatedRoute, useValue: activatedRouteMock },

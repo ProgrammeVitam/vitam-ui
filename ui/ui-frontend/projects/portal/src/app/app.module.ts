@@ -37,27 +37,8 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { LOCALE_ID, NgModule, TransferState } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { AngularSvgIconModule, SvgLoader } from 'angular-svg-icon';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { TransferState } from '@angular/core';
 import { ApplicationSvgLoader } from './application-svg-loader';
-import { PortalModule } from './portal/portal.module';
-import {
-  AuthenticationModule,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  provideI18n,
-  VitamUICommonModule,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -67,41 +48,3 @@ export function ApplicationSvgLoaderFactory(handler: HttpBackend, transferState:
     suffix: '.svg',
   });
 }
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    AuthenticationModule.forRoot(),
-    BrowserModule,
-    BrowserAnimationsModule,
-    PortalModule,
-    VitamUICommonModule.forRoot(),
-    InjectorModule,
-    MatDialogModule,
-    AppRoutingModule,
-    LoggerModule.forRoot(),
-    AngularSvgIconModule.forRoot({
-      loader: {
-        provide: SvgLoader,
-        useFactory: ApplicationSvgLoaderFactory,
-        deps: [HttpBackend, TransferState],
-      },
-    }),
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-  ],
-  providers: [
-    provideI18n(),
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: BASE_URL, useValue: '/portal-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-    { provide: WINDOW_LOCATION, useValue: window.location },
-  ],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}

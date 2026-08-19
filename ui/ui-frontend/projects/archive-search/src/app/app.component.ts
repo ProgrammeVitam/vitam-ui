@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
+import { HeaderModule, VitamuiBodyComponent, FooterComponent, SubrogationModule } from 'vitamui-library';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [HeaderModule, VitamuiBodyComponent, RouterOutlet, FooterComponent, SubrogationModule],
 })
 export class AppComponent {
   title = 'Archive Search Application';

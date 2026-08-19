@@ -35,19 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { Option, SecurityProfile } from 'vitamui-library';
-import { diff } from 'vitamui-library';
+import { Option } from 'vitamui-library';
+import { SecurityProfile, diff } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
+import { SecurityProfileEditPermissionComponent } from '../../security-profile-create/security-profile-edit-permission/security-profile-edit-permission.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-security-profile-permissions-tab',
   templateUrl: './security-profile-permissions-tab.component.html',
   styleUrls: ['./security-profile-permissions-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SecurityProfileEditPermissionComponent, TranslatePipe],
 })
 export class SecurityProfilePermissionsTabComponent {
   private formBuilder = inject(FormBuilder);

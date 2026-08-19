@@ -43,10 +43,7 @@ import localeFr from '@angular/common/locales/fr';
 
 registerLocaleData(localeFr, 'fr');
 
-@Pipe({
-  name: 'bytes',
-  standalone: false,
-})
+@Pipe({ name: 'bytes' })
 export class BytesPipe implements PipeTransform {
   private numberPipe = inject(DecimalPipe);
   private logger = inject(Logger, { optional: true });

@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, HostBinding, Input, forwardRef } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-collapse',
   templateUrl: './collapse.component.html',
   styleUrls: ['./collapse.component.scss'],
   exportAs: 'vitamuiCommonCollapse',
-  standalone: false,
+  imports: [forwardRef(() => CollapseComponent)],
 })
 export class CollapseComponent {
   @HostBinding('class.collapse-container') classCollapseContainer = true;

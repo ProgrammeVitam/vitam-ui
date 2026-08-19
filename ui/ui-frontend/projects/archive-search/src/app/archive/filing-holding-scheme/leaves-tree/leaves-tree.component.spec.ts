@@ -121,7 +121,6 @@ describe('LeavesTreeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LeavesTreeComponent],
       imports: [
         MatMenuModule,
         MatTreeModule,
@@ -130,6 +129,7 @@ describe('LeavesTreeComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
+        LeavesTreeComponent,
       ],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },

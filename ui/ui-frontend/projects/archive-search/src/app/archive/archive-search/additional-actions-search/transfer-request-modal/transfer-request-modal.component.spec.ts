@@ -41,7 +41,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, InjectorModule, LoggerModule, UsageVersionEnum, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, ConfirmDialogService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, UsageVersionEnum } from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { TransferRequestModalComponent } from './transfer-request-modal.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -73,8 +74,7 @@ describe('TransferRequestModalComponent tests', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransferRequestModalComponent],
-      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot(), TransferRequestModalComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

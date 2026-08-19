@@ -35,15 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import type { ApiEvent, Event, IEvent } from 'vitamui-library';
-import { ApplicationId, ExternalParameters, ExternalParametersService, LogbookApiService, SnackBarService } from 'vitamui-library';
+import { ApiEvent, Event, IEvent, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { CollapseComponent, ApplicationId, ExternalParameters, LogbookApiService, HistoryEventsComponent } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-securisation-check-tab',
   templateUrl: './securisation-check-tab.component.html',
   styleUrls: ['./securisation-check-tab.component.scss'],
-  standalone: false,
+  imports: [HistoryEventsComponent, TranslatePipe, CollapseComponent, CommonModule],
 })
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   private readonly securingService = inject(SecurisationService);

@@ -36,17 +36,19 @@
  */
 import { Component, OnDestroy, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogActions } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmDialogService, Customer } from 'vitamui-library';
 import { CustomerService } from '../../../../core/customer.service';
+import { HomepageMessageComponent } from '../homepage-message/homepage-message.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-homepage-message-update',
   templateUrl: './homepage-message-update.component.html',
   styleUrls: ['./homepage-message-update.component.scss'],
-  standalone: false,
+  imports: [HomepageMessageComponent, MatDialogActions, TranslatePipe],
 })
 export class HomepageMessageUpdateComponent implements OnDestroy {
   dialogRef = inject<MatDialogRef<HomepageMessageUpdateComponent>>(MatDialogRef);

@@ -41,11 +41,13 @@ import { AuthService } from '../../auth.service';
 import { Subrogation } from '../../models/subrogation/subrogation.interface';
 import { AuthUser } from '../../models/user/auth-user.interface';
 import { SubrogationService } from '../subrogation.service';
+import { DatePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
   templateUrl: './subrogation-banner.component.html',
-  standalone: false,
+  imports: [DatePipe, TranslatePipe],
 })
 export class SubrogationBannerComponent implements OnInit {
   authService = inject(AuthService);

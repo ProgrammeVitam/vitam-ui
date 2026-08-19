@@ -55,10 +55,7 @@ describe('LogbookManagementOperationPreviewComponent', () => {
     context: [],
   };
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -76,8 +73,7 @@ describe('LogbookManagementOperationPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
-      imports: [],
+      imports: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },

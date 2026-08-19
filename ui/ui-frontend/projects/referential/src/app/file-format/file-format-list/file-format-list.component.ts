@@ -36,21 +36,33 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import type { AdminUserProfile, FileFormat, User } from 'vitamui-library';
 import {
+  AdminUserProfile,
+  FileFormat,
+  User,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
-  Direction,
   FILE_FORMAT_EXTERNAL_PREFIX,
   InfiniteScrollTable,
-  PageRequest,
   StartupService,
   SnackBarService,
 } from 'vitamui-library';
+import {
+  EllipsisDirective,
+  HasAnyRoleDirective,
+  HasRoleDirective,
+  InfiniteScrollDirective,
+  Direction,
+  PageRequest,
+  OrderByButtonComponent,
+  PipesModule,
+} from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -58,7 +70,17 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-file-format-list',
   templateUrl: './file-format-list.component.html',
   styleUrls: ['./file-format-list.component.scss'],
-  standalone: false,
+  imports: [
+    OrderByButtonComponent,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasAnyRoleDirective,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   fileFormatService: FileFormatService;

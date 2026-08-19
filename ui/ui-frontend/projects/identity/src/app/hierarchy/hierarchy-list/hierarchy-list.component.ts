@@ -46,6 +46,9 @@ import {
   Operators,
   PageRequest,
   Profile,
+  PipesModule,
+  EllipsisDirective,
+  InfiniteScrollDirective,
 } from 'vitamui-library';
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
@@ -53,6 +56,9 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DEFAULT_PAGE_SIZE } from '../../core/customer.service';
 import { HierarchyService } from '../hierarchy.service';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,7 +66,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-hierarchy-list',
   templateUrl: './hierarchy-list.component.html',
   styleUrls: ['./hierarchy-list.component.scss'],
-  standalone: false,
+  imports: [NgClass, MatProgressSpinner, PipesModule, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
 export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
   hierarchyService: HierarchyService;

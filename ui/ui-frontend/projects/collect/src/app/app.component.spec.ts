@@ -65,8 +65,7 @@ describe('AppComponent', () => {
       printConfiguration: () => {},
     };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent],
-      declarations: [AppComponent],
+      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent, AppComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },

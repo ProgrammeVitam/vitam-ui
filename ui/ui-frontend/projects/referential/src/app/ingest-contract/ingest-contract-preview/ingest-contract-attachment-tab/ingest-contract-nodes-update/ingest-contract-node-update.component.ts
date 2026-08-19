@@ -35,16 +35,55 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilingPlanMode, IngestContract } from 'vitamui-library';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import {
+  FilingPlanMode,
+  IngestContract,
+  DialogHeaderComponent,
+  StepperComponent,
+  NextStepComponent,
+  TooltipDirective,
+  PreviousStepComponent,
+  FilingPlanComponent,
+} from 'vitamui-library';
 import { IngestContractService } from '../../../ingest-contract.service';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTreeModule } from '@angular/material/tree';
+import { CommonModule } from '@angular/common';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-ingest-contract-node-update',
   templateUrl: './ingest-contract-node-update.component.html',
   styleUrls: ['./ingest-contract-node-update.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    NextStepComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    TooltipDirective,
+    PreviousStepComponent,
+    TranslatePipe,
+    CommonModule,
+    FilingPlanComponent,
+    FormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatTreeModule,
+  ],
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<IngestContractNodeUpdateComponent>>(MatDialogRef);

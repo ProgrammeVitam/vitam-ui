@@ -38,11 +38,19 @@ import { Component, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { ApiUnitObject, ApplicationId, BreadCrumbData, TenantSelectionService } from 'vitamui-library';
+import {
+  ApiUnitObject,
+  ApplicationId,
+  BreadCrumbData,
+  TenantSelectionService,
+  VitamuiTitleBreadcrumbComponent,
+  SearchBarComponent,
+} from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../core/api/persistent-identifier-response-dto.interface';
 import { PersistentIdentifierService } from '../persistent-identifier.service';
 import { FoundObjectModalComponent } from './found-object-modal/found-object-modal.component';
 import { PurgedPersistentIdentifierModalComponent } from './purged-persistent-identifier-modal/purged-persistent-identifier-modal.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
 
@@ -50,7 +58,7 @@ const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
   selector: 'app-persistent-identifier-search',
   templateUrl: './persistent-identifier-search.component.html',
   styleUrls: ['./persistent-identifier-search.component.scss'],
-  standalone: false,
+  imports: [VitamuiTitleBreadcrumbComponent, SearchBarComponent, TranslatePipe],
 })
 export class PersistentIdentifierSearchComponent {
   private dialog = inject(MatDialog);

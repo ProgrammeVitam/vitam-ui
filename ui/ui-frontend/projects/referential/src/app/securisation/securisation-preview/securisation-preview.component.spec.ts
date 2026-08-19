@@ -38,15 +38,13 @@ import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParametersService } from 'vitamui-library';
+import { SnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -116,8 +114,7 @@ describe('SecurisationPreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, EventTypeBadgeColorPipe],
-      declarations: [SecurisationPreviewComponent, MockTruncatePipe],
+      imports: [BrowserAnimationsModule, EventTypeBadgeColorPipe, SecurisationPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

@@ -35,12 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { TooltipDirective } from '../common-tooltip/tooltip.directive';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'vitamui-common-sidenav-header',
   templateUrl: './vitamui-sidenav-header.component.html',
   styleUrls: ['./vitamui-sidenav-header.component.scss'],
-  standalone: false,
+  imports: [NgClass, TooltipDirective, NgTemplateOutlet, MatProgressSpinner],
 })
 export class VitamuiSidenavHeaderComponent {
   @Input() icon: string;

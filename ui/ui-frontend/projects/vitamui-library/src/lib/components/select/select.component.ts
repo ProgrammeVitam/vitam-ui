@@ -59,10 +59,9 @@ import { filter } from 'rxjs/operators';
 import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
 import { SearchBarComponent } from '../../../app/modules/components/search-bar/search-bar.component';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
-import { AutocompletePositionDirectiveModule } from '../../../app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
+
 import { CommonModule } from '@angular/common';
-import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
-import { EllipsisDirectiveModule } from '../../../app/modules/directives/ellipsis/ellipsis.directive.module';
+
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -76,6 +75,8 @@ import { PipesModule } from '../../../app/modules/pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
 import { normalizeString } from '../../utils/string.util';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TooltipDirective } from '../../../app/modules/components/common-tooltip/tooltip.directive';
+import { EllipsisDirective } from '../../../app/modules/directives/ellipsis/ellipsis.directive';
 
 export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -93,10 +94,9 @@ export interface VitamuiSelectOptions {
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
   imports: [
-    AutocompletePositionDirectiveModule,
     CommonModule,
-    CommonTooltipModule,
-    EllipsisDirectiveModule,
+    TooltipDirective,
+    EllipsisDirective,
     FormErrorsComponent,
     FormsModule,
     MatAutocompleteModule,

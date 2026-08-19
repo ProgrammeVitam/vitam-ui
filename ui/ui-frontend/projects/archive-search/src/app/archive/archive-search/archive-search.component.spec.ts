@@ -191,7 +191,6 @@ describe('ArchiveSearchComponent', () => {
     vi.spyOn(archiveServiceStub, 'searchArchiveUnitsByCriteria');
 
     await TestBed.configureTestingModule({
-      declarations: [ArchiveSearchComponent, SimpleCriteriaSearchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
@@ -201,6 +200,8 @@ describe('ArchiveSearchComponent', () => {
         MatSidenavModule,
         MatTreeModule,
         RouterTestingModule,
+        ArchiveSearchComponent,
+        SimpleCriteriaSearchComponent,
       ],
       providers: [
         ArchiveSearchHelperService,

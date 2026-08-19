@@ -46,8 +46,7 @@ describe('EventDisplayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EventDisplayComponent],
-      imports: [],
+      imports: [EventDisplayComponent],
       providers: [{ provide: IngestService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

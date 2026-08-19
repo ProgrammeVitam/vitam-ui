@@ -42,10 +42,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
-import { HierarchyCreateModule } from './hierarchy-create/hierarchy-create.module';
-import { HierarchyDetailModule } from './hierarchy-detail/hierarchy-detail.module';
-import { HierarchyListModule } from './hierarchy-list/hierarchy-list.module';
+
 import { HierarchyRoutingModule } from './hierarchy-routing.module';
 import { HierarchyComponent } from './hierarchy.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -54,17 +51,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
-    HierarchyListModule,
-    HierarchyDetailModule,
-    HierarchyCreateModule,
     MatButtonToggleModule,
     MatProgressBarModule,
     ReactiveFormsModule,
     MatSidenavModule,
     HierarchyRoutingModule,
     TranslatePipe,
+    HierarchyComponent,
   ],
-  declarations: [HierarchyComponent],
 })
 export class HierarchyModule {}

@@ -38,7 +38,8 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SearchUnitApiService, VitamuiHttpHeaders } from 'vitamui-library';
+import { SearchUnitApiService } from 'vitamui-library';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',

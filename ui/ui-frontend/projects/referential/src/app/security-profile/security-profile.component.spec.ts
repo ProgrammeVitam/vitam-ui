@@ -41,7 +41,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { ApplicationService } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { of } from 'rxjs';
@@ -50,7 +51,7 @@ import { SecurityProfileComponent } from './security-profile.component';
 @Component({
   selector: 'app-SecurityProfile-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class SecurityProfilePreviewStub {
   @Input()
@@ -60,7 +61,7 @@ class SecurityProfilePreviewStub {
 @Component({
   selector: 'app-SecurityProfile-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class SecurityProfileListStub {}
 
@@ -75,7 +76,6 @@ describe('SecurityProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SecurityProfileComponent, SecurityProfileListStub, SecurityProfilePreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -84,6 +84,9 @@ describe('SecurityProfileComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        SecurityProfileComponent,
+        SecurityProfileListStub,
+        SecurityProfilePreviewStub,
       ],
       providers: [{ provide: ApplicationService, useValue: applicationServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],

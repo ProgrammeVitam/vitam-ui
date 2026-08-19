@@ -34,16 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, LOCALE_ID } from '@angular/core';
+import { Title, bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { provideI18n, ENVIRONMENT, BASE_URL, BaseUserInfoApiService } from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { of } from 'rxjs';
+import { AppComponent } from './app/app.component';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.log(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideI18n(),
+    provideNativeDateAdapter(),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: ENVIRONMENT, useValue: environment },
+    { provide: BASE_URL, useValue: '/FAKE' },
+    { provide: BaseUserInfoApiService, useValue: { patchMyUserInfo: () => of(undefined) } }, // Make changing language work
+  ],
+}).catch((err) => console.log(err));

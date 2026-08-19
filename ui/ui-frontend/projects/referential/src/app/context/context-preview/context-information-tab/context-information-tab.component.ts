@@ -35,22 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { Context, Option } from 'vitamui-library';
-import { diff } from 'vitamui-library';
+import { Context, Option } from 'vitamui-library';
+import { diff, SlideToggleComponent, InputComponent, SelectComponent, DatepickerComponent } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
 import { ContextCreateValidators } from '../../context-create/context-create.validators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-context-information-tab',
   templateUrl: './context-information-tab.component.html',
   styleUrls: ['./context-information-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, DatepickerComponent, TranslatePipe],
 })
 export class ContextInformationTabComponent {
   private formBuilder = inject(FormBuilder);

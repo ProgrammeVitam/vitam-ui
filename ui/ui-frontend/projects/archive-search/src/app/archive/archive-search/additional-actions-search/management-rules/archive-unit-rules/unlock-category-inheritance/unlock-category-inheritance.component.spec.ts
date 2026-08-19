@@ -42,7 +42,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, PagedResult, SearchCriteriaDto, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, PagedResult, SearchCriteriaDto, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { RuleTypeEnum } from '../../../../../models/rule-type-enum';
@@ -256,8 +257,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UnlockCategoryInheritanceComponent],
-      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, UnlockCategoryInheritanceComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

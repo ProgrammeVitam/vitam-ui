@@ -44,10 +44,7 @@ const colorClassMap: { [key: string]: string } = {
   FATAL: 'text danger',
 };
 
-@Pipe({
-  name: 'eventTypeColorClass',
-  standalone: false,
-})
+@Pipe({ name: 'eventTypeColorClass' })
 export class EventTypeColorClassPipe implements PipeTransform {
   transform(event: IEvent): string {
     if (!event.events || event.events.length <= 0) {

@@ -48,9 +48,8 @@ describe('IngestErrorsDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestErrorsDetailsTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [],
+      imports: [IngestErrorsDetailsTabComponent],
       providers: [
         { provide: IngestService, useValue: {} },
         { provide: EventDisplayHelperService, useValue: {} },

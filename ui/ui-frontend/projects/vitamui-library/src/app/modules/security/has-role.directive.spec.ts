@@ -48,7 +48,8 @@ const TEST_ELEMENT_ID = 'test';
   template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasRole="{ appId: 'FAKE_APP', tenantIdentifier: 42, role: 'ROLE_UPDATE' }">
     Lorem ipsum
   </span>`,
-  standalone: false,
+  standalone: true,
+  imports: [HasRoleDirective],
 })
 class TestHostComponent {}
 
@@ -72,7 +73,7 @@ describe('HasRoleDirective', () => {
       }),
     };
     TestBed.configureTestingModule({
-      declarations: [TestHostComponent, HasRoleDirective],
+      imports: [TestHostComponent, HasRoleDirective],
       providers: [
         { provide: AuthService, useValue: authStubService },
         {

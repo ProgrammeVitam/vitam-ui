@@ -36,8 +36,8 @@
  */
 import { ComponentType } from '@angular/cdk/portal';
 import { Component, OnDestroy, OnInit, TemplateRef, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import {
@@ -50,18 +50,56 @@ import {
   OtpState,
   StartupService,
   VitamuiSelectOptions,
+  DialogHeaderComponent,
+  StepperComponent,
+  InputComponent,
+  SelectComponent,
+  SlideToggleComponent,
+  NextStepComponent,
+  PreviousStepComponent,
 } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
 import { TenantService } from '../tenant.service';
+import { CdkStep, CdkStepperNext } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { NgTemplateOutlet } from '@angular/common';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { DomainsInputComponent } from '../../shared/domains-input/domains-input.component';
+import { GraphicIdentityComponent } from '../customer-preview/graphic-identity-tab/graphic-identity/graphic-identity.component';
+import { HomepageMessageComponent } from '../customer-preview/homepage-message-tab/homepage-message/homepage-message.component';
+import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer-create',
   templateUrl: './customer-create.component.html',
   styleUrls: ['./customer-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    InputComponent,
+    SelectComponent,
+    SlideToggleComponent,
+    MatDialogActions,
+    NextStepComponent,
+    NgTemplateOutlet,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    DomainsInputComponent,
+    PreviousStepComponent,
+    GraphicIdentityComponent,
+    HomepageMessageComponent,
+    OwnerFormComponent,
+    CdkStepperNext,
+    TranslatePipe,
+  ],
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<CustomerCreateComponent>>(MatDialogRef);

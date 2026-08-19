@@ -38,16 +38,38 @@ import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { Customer, GlobalEventService, Owner, SidenavPage, Tenant } from 'vitamui-library';
+import {
+  Customer,
+  GlobalEventService,
+  Owner,
+  SidenavPage,
+  Tenant,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+} from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { CustomerPreviewComponent } from './customer-preview/customer-preview.component';
+import { OwnerPreviewComponent } from './owner-preview/owner-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    CustomerPreviewComponent,
+    OwnerPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    CustomerListComponent,
+    TranslatePipe,
+  ],
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
   private dialog = inject(MatDialog);

@@ -58,7 +58,6 @@ describe('CriteriaSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CriteriaSearchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
@@ -67,6 +66,7 @@ describe('CriteriaSearchComponent', () => {
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
+        CriteriaSearchComponent,
       ],
       providers: [
         TranslateWithOptionalTypeSuffixPipe,

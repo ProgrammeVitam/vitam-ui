@@ -72,9 +72,8 @@ describe('IngestContractComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [IngestContractComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot(), IngestContractComponent],
       providers: [
         GlobalEventService,
         { provide: ApplicationService, useValue: applicationServiceMock },

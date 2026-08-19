@@ -42,7 +42,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService, BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../context.service';
 import { ContextListComponent } from './context-list.component';
@@ -72,7 +73,6 @@ describe('ContextListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         VitamUICommonTestModule,
@@ -81,6 +81,7 @@ describe('ContextListComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
+        ContextListComponent,
       ],
       providers: [
         { provide: BASE_URL, useValue: '' },

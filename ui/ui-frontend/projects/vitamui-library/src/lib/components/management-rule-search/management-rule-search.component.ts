@@ -41,7 +41,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 
 import { DatepickerComponent } from '../../../app/modules/components/datepicker/datepicker.component';
-import { EditableFieldModule } from '../../../app/modules/components/editable-field/editable-field.module';
+
 import { CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
 import {
   ELIMINATION_TECHNICAL_ID,
@@ -74,6 +74,7 @@ import { ManagementRuleFormUtils } from './utils/management-rule-form.utils';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';
 import { ManagementRuleCheckboxComponent } from './management-rule-checkbox.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { EditableInputComponent } from '../../../app/modules/components/editable-field/editable-input/editable-input.component';
 
 type RuleForm = {
   ruleIdentifier: FormControl<any[]>;
@@ -87,7 +88,14 @@ type RuleForm = {
   templateUrl: './management-rule-search.component.html',
   styleUrls: ['./management-rule-search.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, SelectComponent, ManagementRuleCheckboxComponent, DatepickerComponent, EditableFieldModule, TranslatePipe],
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    ManagementRuleCheckboxComponent,
+    DatepickerComponent,
+    EditableInputComponent,
+    TranslatePipe,
+  ],
   providers: [
     ManagementRuleCriteriaService,
     {

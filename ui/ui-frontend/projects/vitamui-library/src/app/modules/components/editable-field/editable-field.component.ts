@@ -58,7 +58,6 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'editable-field-component',
-  standalone: false,
 })
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
   protected elementRef: ElementRef;

@@ -41,7 +41,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, BytesPipe, Transaction, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, TransactionStatus } from 'vitamui-library';
 import { AddUnitsComponent } from './add-units.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DecimalPipe } from '@angular/common';
@@ -103,8 +104,7 @@ describe('AddUnitsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddUnitsComponent],
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), AddUnitsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
