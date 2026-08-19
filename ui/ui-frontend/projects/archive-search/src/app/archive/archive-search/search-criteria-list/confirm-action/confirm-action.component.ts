@@ -72,7 +72,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { PipesModule, ClosePopupDialogComponent, CommonConfirmDialogComponent, DialogHeaderComponent } from 'vitamui-library';
+import { CommonConfirmDialogComponent, PipesModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -81,15 +81,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
-  imports: [
-    PipesModule,
-    TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
-    CommonModule,
-    DialogHeaderComponent,
-    MatDialogModule,
-  ],
+  imports: [PipesModule, TranslatePipe, CommonConfirmDialogComponent, CommonModule, MatDialogModule],
 })
 export class ConfirmActionComponent {
   // delete or changeTab

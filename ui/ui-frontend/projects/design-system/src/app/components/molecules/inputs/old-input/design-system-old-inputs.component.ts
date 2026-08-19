@@ -38,8 +38,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { CountryOption, CountryService, Option } from 'vitamui-library';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field/editable-field.module';
 
 import { TranslatePipe } from '@ngx-translate/core';

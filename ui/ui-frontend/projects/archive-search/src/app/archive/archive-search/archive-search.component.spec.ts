@@ -78,6 +78,7 @@ import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/trans
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../models/nodedata.interface';
+
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
 
 const translations: any = { TEST: 'Mock translate test' };

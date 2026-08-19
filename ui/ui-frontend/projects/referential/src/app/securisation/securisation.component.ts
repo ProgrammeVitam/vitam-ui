@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
+  DatepickerComponent,
   Event,
   GlobalEventService,
   SearchBarComponent,
   SidenavPage,
-  VitamuiTitleBreadcrumbComponent,
   VitamuiBannerComponent,
-  DatepickerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { SecurisationListComponent } from './securisation-list/securisation-list.component';
 import { DateTime } from 'luxon';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { SecurisationPreviewComponent } from './securisation-preview/securisation-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

@@ -34,14 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { Subject, merge } from 'rxjs';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { InfiniteScrollTable, DEFAULT_PAGE_SIZE } from 'vitamui-library';
-import { Direction, PageRequest, OrderByButtonComponent, PipesModule, InfiniteScrollDirective } from 'vitamui-library';
-import { IngestStatus } from '../../models/logbook-event.interface';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+} from 'vitamui-library';
 import type { LogbookOperation } from '../../models/logbook-event.interface';
-import { ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
+import { IngestStatus, ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';

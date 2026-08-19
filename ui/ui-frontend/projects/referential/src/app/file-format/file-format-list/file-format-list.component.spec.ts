@@ -38,7 +38,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService, BASE_URL, StartupService, SnackBarService } from 'vitamui-library';
+import { AuthService, BASE_URL, SnackBarService, StartupService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

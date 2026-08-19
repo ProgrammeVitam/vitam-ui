@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Customer, DEFAULT_PAGE_SIZE, Owner, PaginatedResponse, SearchService } from 'vitamui-library';
-import { Direction, PageRequest } from 'vitamui-library';
+import { Customer, DEFAULT_PAGE_SIZE, Direction, Owner, PageRequest, PaginatedResponse, SearchService } from 'vitamui-library';
 import { CustomerApiService } from '../../core/api/customer-api.service';
 
 @Injectable({

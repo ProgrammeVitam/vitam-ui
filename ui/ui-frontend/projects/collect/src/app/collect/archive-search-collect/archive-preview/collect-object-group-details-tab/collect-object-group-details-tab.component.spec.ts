@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { vi } from 'vitest';
-const createSpyObj = (name: string, methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 import { Clipboard } from '@angular/cdk/clipboard';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
@@ -62,6 +61,8 @@ import {
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
+const createSpyObj = (name: string, methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 
 describe('CollectObjectGroupDetailsTabComponent', () => {
   let component: CollectObjectGroupDetailsTabComponent;

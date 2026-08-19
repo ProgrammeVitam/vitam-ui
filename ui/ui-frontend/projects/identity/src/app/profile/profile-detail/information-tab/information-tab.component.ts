@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -44,28 +44,16 @@ import {
   AuthService,
   buildValidators,
   diff,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  Profile,
   Role,
+  RoleComponent,
+  RoleToggleComponent,
   SlideToggleComponent,
   TooltipDirective,
   VitamUIFieldErrorComponent,
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
-  EditableFileComponent,
-  EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
-  EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  RoleComponent,
-  RoleToggleComponent,
-  SubLevelPipe,
 } from 'vitamui-library';
-import { Profile } from 'vitamui-library';
 
 import { ProfileService } from '../../profile.service';
 import { ProfileValidators } from '../../profile.validators';
@@ -89,21 +77,10 @@ import { CommonModule } from '@angular/common';
     TooltipDirective,
     VitamUIFieldErrorComponent,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
-    EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
-    EditableFileComponent,
     EditableInputComponent,
     EditableLevelInputComponent,
-    EditableTextareaComponent,
-    EditableToggleGroupComponent,
-    EllipsisDirective,
     FormsModule,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -113,7 +90,6 @@ import { CommonModule } from '@angular/common';
     OverlayModule,
     RoleComponent,
     RoleToggleComponent,
-    SubLevelPipe,
   ],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {

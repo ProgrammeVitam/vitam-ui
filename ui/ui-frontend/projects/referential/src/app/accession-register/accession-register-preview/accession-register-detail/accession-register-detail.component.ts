@@ -36,7 +36,7 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import type { AccessionRegisterDetail } from 'vitamui-library';
-import { DataComponent, TooltipDirective } from 'vitamui-library';
+import { DataComponent } from 'vitamui-library';
 import { DatePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -44,7 +44,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-accession-register-detail',
   templateUrl: './accession-register-detail.component.html',
   styleUrls: ['./accession-register-detail.component.scss'],
-  imports: [DataComponent, DatePipe, TranslatePipe, TooltipDirective],
+  imports: [DataComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterDetailComponent implements OnInit {
   @Input()

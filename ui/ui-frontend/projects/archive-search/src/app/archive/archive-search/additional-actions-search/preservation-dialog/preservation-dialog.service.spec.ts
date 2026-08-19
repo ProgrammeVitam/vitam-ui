@@ -40,8 +40,7 @@ import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PreservationDialogService } from './preservation-dialog.service';
 import { ArchiveService } from '../../../archive.service';
-import { SearchCriteriaEltDto } from 'vitamui-library';
-import { SnackBarService, CriteriaOperator, CriteriaDataType, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, SnackBarService } from 'vitamui-library';
 import { PreservationUsage, PreservationVersion } from '../../../models/preservation-request.interface';
 
 describe('PreservationDialogService', () => {

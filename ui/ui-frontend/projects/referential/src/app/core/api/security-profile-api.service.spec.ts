@@ -36,8 +36,7 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { AgencyApiService, BASE_URL, ENVIRONMENT } from 'vitamui-library';
-import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { AgencyApiService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

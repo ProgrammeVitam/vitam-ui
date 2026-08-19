@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Customer, Owner, Tenant } from 'vitamui-library';
-import { EllipsisDirective, TooltipDirective } from 'vitamui-library';
+import { Customer, EllipsisDirective, Owner, Tenant, TooltipDirective } from 'vitamui-library';
 import { CustomerDataService } from '../../customer.data.service';
 import { OwnerCreateComponent } from '../../owner-create/owner-create.component';
 import { OwnerService } from '../../owner.service';

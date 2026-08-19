@@ -66,8 +66,7 @@
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from 'vitamui-library';
-import { LoggerModule } from 'vitamui-library';
+import { BASE_URL, LoggerModule } from 'vitamui-library';
 import { ManagementContractsApiService } from './management-contracts-api.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

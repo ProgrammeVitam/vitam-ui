@@ -35,29 +35,28 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   ConfirmDialogService,
+  DialogHeaderComponent,
   ExternalParameters,
   ExternalParametersService,
+  InputComponent,
   Option,
   SearchResponse,
   SearchUnitApiService,
+  SelectComponent,
   SigningRoleType,
   SnackBarService,
   VitamuiHttpHeaders,
-  DialogHeaderComponent,
-  InputComponent,
-  SelectComponent,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 import { sizes } from '../../ontology/ontology-form-options';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -67,7 +66,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,
-    CdkScrollable,
     MatDialogContent,
     InputComponent,
     SelectComponent,

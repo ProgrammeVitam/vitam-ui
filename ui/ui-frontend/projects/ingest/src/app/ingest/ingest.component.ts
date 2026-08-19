@@ -40,15 +40,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
   AdminUserProfile,
+  DatepickerComponent,
   Direction,
   GlobalEventService,
   SearchBarComponent,
   SidenavPage,
-  VitamuiTitleBreadcrumbComponent,
-  VitamuiBannerComponent,
   TooltipDirective,
+  VitamuiBannerComponent,
   VitamuiMenuButtonComponent,
-  DatepickerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { IngestList } from '../core/common/ingest-list';
 import { IngestType } from '../core/common/ingest-type.enum';
@@ -56,7 +56,7 @@ import { UploadComponent } from '../core/common/upload.component';
 import { UploadService } from '../core/common/upload.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 import { IngestListComponent } from './ingest-list/ingest-list.component';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { IngestPreviewComponent } from './ingest-preview/ingest-preview.component';
 import { NgStyle } from '@angular/common';
 import { MatMenuItem } from '@angular/material/menu';

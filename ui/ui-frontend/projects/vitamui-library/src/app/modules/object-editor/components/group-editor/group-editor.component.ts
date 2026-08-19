@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-import { Subscription, of } from 'rxjs';
+import { AfterViewInit, Component, inject, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig } from '@angular/material/dialog';
+import { of, Subscription } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { LayoutService } from '../../../object-viewer/services/layout.service';
 import { TypeService } from '../../../object-viewer/services/type.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
-import { Action } from '../../models/edit-object.model';
 import type { EditObject } from '../../models/edit-object.model';
+import { Action } from '../../models/edit-object.model';
 import { AccordionComponent } from '../../../components/accordion/accordion.component';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { VitamuiMenuButtonComponent } from '../../../components/vitamui-menu-button/vitamui-menu-button.component';

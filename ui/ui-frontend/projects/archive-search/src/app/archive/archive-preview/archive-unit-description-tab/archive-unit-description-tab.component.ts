@@ -36,35 +36,35 @@
  */
 import {
   Component,
+  computed,
   EventEmitter,
+  inject,
+  input,
+  Input,
   OnChanges,
   OnDestroy,
   Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  computed,
-  inject,
-  input,
-  Input,
 } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { merge, Observable, pipe, Subscription, UnaryFunction } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import {
   ApplicationId,
   ArchiveUnit,
   ArchiveUnitEditorComponent,
+  ArchiveUnitModule,
+  DialogHeaderComponent,
   EditObject,
   JsonPatch,
   Logger,
   OperationId,
-  SpinnerOverlayService,
   SnackBarService,
-  ArchiveUnitModule,
-  DialogHeaderComponent,
+  SpinnerOverlayService,
 } from 'vitamui-library';
 import { ArchiveUnitService } from './archive-unit.service';
 import { NgClass } from '@angular/common';

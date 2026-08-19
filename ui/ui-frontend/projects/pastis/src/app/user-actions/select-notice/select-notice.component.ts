@@ -34,17 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-import { LangChangeEvent, TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProfileService } from '../../core/services/profile.service';
 import { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileType } from '../../models/profile-type.enum';
 import { PastisDialogDataCreate } from '../save-profile/save-profile.component';
-import { Option } from 'vitamui-library';
-import { DialogHeaderComponent, SelectComponent } from 'vitamui-library';
+import { DialogHeaderComponent, Option, SelectComponent } from 'vitamui-library';
 import { FormsModule } from '@angular/forms';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION_NOTICE.CHOICE';
 
@@ -58,7 +56,7 @@ function constantToTranslate() {
   selector: 'select-notice',
   templateUrl: './select-notice.component.html',
   styleUrls: ['./select-notice.component.scss'],
-  imports: [DialogHeaderComponent, FormsModule, CdkScrollable, MatDialogContent, SelectComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, FormsModule, MatDialogContent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class SelectNoticeComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SelectNoticeComponent>>(MatDialogRef);

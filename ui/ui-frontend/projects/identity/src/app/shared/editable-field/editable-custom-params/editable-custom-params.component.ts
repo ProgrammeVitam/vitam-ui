@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, inject, Input, Output } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
-import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { CustomParamsComponent } from '../../custom-params/custom-params.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { KeyValuePipe } from '@angular/common';

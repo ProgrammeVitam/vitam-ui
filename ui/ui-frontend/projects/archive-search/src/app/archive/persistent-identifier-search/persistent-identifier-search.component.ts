@@ -42,9 +42,9 @@ import {
   ApiUnitObject,
   ApplicationId,
   BreadCrumbData,
+  SearchBarComponent,
   TenantSelectionService,
   VitamuiTitleBreadcrumbComponent,
-  SearchBarComponent,
 } from 'vitamui-library';
 import { PurgedPersistentIdentifierDto } from '../../core/api/persistent-identifier-response-dto.interface';
 import { PersistentIdentifierService } from '../persistent-identifier.service';

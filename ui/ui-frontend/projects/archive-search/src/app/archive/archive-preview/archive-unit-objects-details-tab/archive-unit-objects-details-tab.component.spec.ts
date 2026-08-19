@@ -51,9 +51,10 @@ import {
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import { vi } from 'vitest';
+import { ActivatedRoute } from '@angular/router';
+
 const createSpyObj = (methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 const anything = () => expect.anything();
-import { ActivatedRoute } from '@angular/router';
 
 describe('ArchiveUnitObjectsDetailsTabComponent', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;

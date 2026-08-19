@@ -41,7 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { OverlayModule } from '@angular/cdk/overlay';
 
-import { VitamUICommonModule, VitamUILibraryModule, LevelInputComponent } from 'vitamui-library';
+import { LevelInputComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CustomParamsComponent } from '../custom-params/custom-params.component';
 import { DomainsInputComponent } from '../domains-input/domains-input.component';
 import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
