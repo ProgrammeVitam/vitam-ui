@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AccessionRegisterDetail } from 'vitamui-library';
-import { CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { AccessionRegisterDetail, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { AccessionRegisterDetailComponent } from './accession-register-detail/accession-register-detail.component';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { AccessionRegisterOperationsListComponent } from './accession-register-operations-list/accession-register-operations-list.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -56,10 +55,8 @@ import { CommonModule } from '@angular/common';
     AccessionRegisterOperationsListComponent,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

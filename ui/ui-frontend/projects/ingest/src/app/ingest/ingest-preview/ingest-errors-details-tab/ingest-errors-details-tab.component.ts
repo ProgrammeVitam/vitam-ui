@@ -35,15 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
-  MatTreeNestedDataSource,
-  MatTree,
-  MatTreeNodeDef,
-  MatTreeNode,
-  MatTreeNodeToggle,
   MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNode,
+  MatTreeNodeDef,
   MatTreeNodeOutlet,
+  MatTreeNodeToggle,
 } from '@angular/material/tree';
 import type { LogbookOperation } from '../../../models/logbook-event.interface';
 import type { Event } from '../event';

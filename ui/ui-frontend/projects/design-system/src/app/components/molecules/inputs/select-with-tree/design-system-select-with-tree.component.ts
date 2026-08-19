@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { ItemNode, MockSchemaService, SchemaElement, SchemaService } from 'vitamui-library';
-import { SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
+import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';

@@ -44,7 +44,7 @@ import type {
   LogbookOperation,
 } from '../../../models/logbook-event.interface';
 import { ingestHasEvents, ingestLastEvent, ingestStatus } from '../../../models/logbook-event.interface';
-import { Observable, ReplaySubject, of } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { IngestReferentialService } from '../../../core/service/ingest-referential.service';
 import { IngestEventDetailComponent } from './ingest-event-detail/ingest-event-detail.component';

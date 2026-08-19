@@ -34,11 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { AdminUserProfile, SecurityProfile, DEFAULT_PAGE_SIZE, InfiniteScrollTable } from 'vitamui-library';
-import { InfiniteScrollDirective, Direction, PageRequest, OrderByButtonComponent } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  SecurityProfile,
+} from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -36,25 +36,25 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
+  ChipComponent,
   ConfirmDialogService,
   CriteriaSearchCriteria,
   Direction,
+  ElementsComponent,
+  InputComponent,
+  ORIGIN_WAITING_RECALCULATE,
+  PipesModule,
   SearchCriteriaHistory,
   SearchCriteriaTypeEnum,
   SnackBarService,
-  ORIGIN_WAITING_RECALCULATE,
-  WAITING_RECALCULATE,
-  ChipComponent,
   TooltipDirective,
-  InputComponent,
-  ElementsComponent,
-  PipesModule,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';

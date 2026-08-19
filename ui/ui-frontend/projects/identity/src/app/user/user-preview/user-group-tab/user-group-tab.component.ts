@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
-import { AuthService, AdminUserProfile, Group, Profile, User } from 'vitamui-library';
-import { isRootLevel, TooltipDirective } from 'vitamui-library';
+import { AdminUserProfile, AuthService, Group, isRootLevel, Profile, TooltipDirective, User } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
 import { GroupAttributionComponent } from '../../group-attribution/group-attribution.component';
 import { GroupSelection } from '../../group-selection.interface';

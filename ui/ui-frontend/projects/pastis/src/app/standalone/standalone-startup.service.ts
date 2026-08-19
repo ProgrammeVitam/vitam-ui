@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { AppConfiguration, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
-import { ApplicationId } from 'vitamui-library';
+import { AppConfiguration, ApplicationId, AuthService, AuthUser, Logger, WINDOW_LOCATION } from 'vitamui-library';
 import { StandaloneThemeService } from './standalone-theme.service';
 
 const WARNING_DURATION = 2000;

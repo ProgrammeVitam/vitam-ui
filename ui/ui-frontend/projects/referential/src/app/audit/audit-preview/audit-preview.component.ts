@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, input, OnInit, Output, Signal, inject } from '@angular/core';
+import { Component, computed, EventEmitter, inject, input, OnInit, Output, Signal } from '@angular/core';
 import {
   Event,
   ExternalParameters,

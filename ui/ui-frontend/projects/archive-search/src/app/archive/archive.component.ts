@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -43,21 +43,20 @@ import {
   ExternalParameters,
   ExternalParametersService,
   GlobalEventService,
+  ResizeSidebarDirective,
   SchemaService,
   SidenavPage,
   SnackBarService,
+  TooltipDirective,
   Unit,
   VitamuiTitleBreadcrumbComponent,
-  TooltipDirective,
-  ResizeSidebarDirective,
-  ResizeVerticalDirective,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -79,7 +78,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
     CommonModule,
     ResizeSidebarDirective,
-    ResizeVerticalDirective,
   ],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {

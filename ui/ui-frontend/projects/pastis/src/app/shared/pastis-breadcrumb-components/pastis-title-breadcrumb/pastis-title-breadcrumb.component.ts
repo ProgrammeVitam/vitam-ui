@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { PastisBreadcrumbComponent } from '../pastis-breadcrumb/pastis-breadcrumb.component';
 
 //TODO: delete ?

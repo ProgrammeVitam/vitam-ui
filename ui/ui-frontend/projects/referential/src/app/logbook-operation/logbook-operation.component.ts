@@ -34,20 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
+  DatepickerComponent,
   GlobalEventService,
   SidenavPage,
   VitamuiBannerComponent,
   VitamuiTitleBreadcrumbComponent,
-  DatepickerComponent,
 } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

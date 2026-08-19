@@ -38,7 +38,6 @@ import { Component, inject } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import {
   AuthService,
-  TooltipDirective,
   DiscussionComponent,
   DiscussionDto,
   DiscussionIconComponent,
@@ -46,6 +45,7 @@ import {
   DiscussionPanelComponent,
   DiscussionService,
   MessageComponent,
+  TooltipDirective,
 } from 'vitamui-library';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';

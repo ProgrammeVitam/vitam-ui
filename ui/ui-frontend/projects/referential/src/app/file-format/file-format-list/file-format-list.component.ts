@@ -34,31 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { Subject, merge } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { merge, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import {
   AdminUserProfile,
-  FileFormat,
-  User,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
-  FILE_FORMAT_EXTERNAL_PREFIX,
-  InfiniteScrollTable,
-  StartupService,
-  SnackBarService,
-} from 'vitamui-library';
-import {
+  Direction,
   EllipsisDirective,
-  HasAnyRoleDirective,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
   HasRoleDirective,
   InfiniteScrollDirective,
-  Direction,
-  PageRequest,
+  InfiniteScrollTable,
   OrderByButtonComponent,
+  PageRequest,
   PipesModule,
+  SnackBarService,
+  StartupService,
+  User,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -77,7 +74,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     TranslatePipe,
     CommonModule,
     EllipsisDirective,
-    HasAnyRoleDirective,
     HasRoleDirective,
     InfiniteScrollDirective,
   ],

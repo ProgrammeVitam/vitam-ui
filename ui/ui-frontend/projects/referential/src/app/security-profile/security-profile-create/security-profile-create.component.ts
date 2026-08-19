@@ -38,8 +38,7 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 

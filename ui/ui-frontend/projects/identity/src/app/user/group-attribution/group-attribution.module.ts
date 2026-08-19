@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { VitamUICommonModule, CollapseContainerDirective, CollapseDirective, CollapseTriggerForDirective } from 'vitamui-library';
+import { CollapseContainerDirective, CollapseDirective, CollapseTriggerForDirective, VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionComponent } from './group-attribution.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';

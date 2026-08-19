@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
@@ -44,10 +44,10 @@ import { filter } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
+  DialogHeaderComponent,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   VitamTenantConfigService,
-  DialogHeaderComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';

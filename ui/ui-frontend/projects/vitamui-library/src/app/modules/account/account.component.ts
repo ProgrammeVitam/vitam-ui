@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
@@ -45,7 +45,7 @@ import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
 import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
 import { UserPhotoComponent } from '../components/header/user-photo/user-photo.component';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

@@ -34,15 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
-import { SelectComponent, InputComponent, TooltipDirective } from 'vitamui-library';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputComponent, Option, PersistentIdentifierPolicyTypeEnum, SelectComponent, TooltipDirective } from 'vitamui-library';
 import { ManagementContractValidationErrors, ManagementContractValidators } from '../../validators/management-contract-validators';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { NgClass, NgStyle } from '@angular/common';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
   selector: 'app-create-persistent-identifier-policy-form',

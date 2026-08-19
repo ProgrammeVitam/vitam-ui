@@ -45,6 +45,7 @@ import {
   effect,
   forwardRef,
   HostListener,
+  inject,
   Injector,
   Input,
   QueryList,
@@ -52,7 +53,6 @@ import {
   Signal,
   ViewChild,
   ViewChildren,
-  inject,
 } from '@angular/core';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';

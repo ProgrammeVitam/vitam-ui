@@ -34,11 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { Rule, ConfirmActionComponent, RuleService } from 'vitamui-library';
-import { CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent, OperationHistoryTabComponent } from 'vitamui-library';
+import { ConfirmActionComponent, OperationHistoryTabComponent, Rule, RuleService, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 import { switchMap } from 'rxjs/operators';
 
@@ -59,10 +58,8 @@ import { CommonModule } from '@angular/common';
     forwardRef(() => RulePreviewComponent),
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { map, tap } from 'rxjs/operators';
 import { PastisApiService } from '../core/api/api.pastis.service';

@@ -35,16 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-import { SnackBarService, StartupService } from 'vitamui-library';
-import { DialogHeaderComponent, FileSelectorComponent } from 'vitamui-library';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { DialogHeaderComponent, FileSelectorComponent, SnackBarService, StartupService } from 'vitamui-library';
 
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { CdkScrollable } from '@angular/cdk/scrolling';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 const FILE_MAX_SIZE = 10737418240;
 
@@ -52,15 +50,7 @@ const FILE_MAX_SIZE = 10737418240;
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
-  imports: [
-    DialogHeaderComponent,
-    CdkScrollable,
-    MatDialogContent,
-    FileSelectorComponent,
-    ReactiveFormsModule,
-    MatDialogActions,
-    TranslatePipe,
-  ],
+  imports: [DialogHeaderComponent, MatDialogContent, FileSelectorComponent, ReactiveFormsModule, MatDialogActions, TranslatePipe],
 })
 export class UploadComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);

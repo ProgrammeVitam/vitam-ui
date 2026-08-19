@@ -34,30 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
-  ExternalParamProfile,
-  Option,
   DialogHeaderComponent,
-  StepperComponent,
-  SlideToggleComponent,
+  ExternalParamProfile,
   InputComponent,
-  SelectComponent,
   NextStepComponent,
-  TooltipDirective,
+  Option,
   PreviousStepComponent,
+  SelectComponent,
+  SlideToggleComponent,
+  StepperComponent,
+  TooltipDirective,
 } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { map } from 'rxjs/operators';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { DecimalPipe, AsyncPipe } from '@angular/common';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { CdkStep } from '@angular/cdk/stepper';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-external-param-profile-create',
@@ -68,7 +67,6 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
     ReactiveFormsModule,
     StepperComponent,
     CdkStep,
-    CdkScrollable,
     MatDialogContent,
     SlideToggleComponent,
     InputComponent,

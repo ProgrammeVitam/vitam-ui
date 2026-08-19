@@ -42,8 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegisterValueEventModel } from 'vitamui-library';
-import { InjectorModule, LoggerModule, RegisterValueEventType } from 'vitamui-library';
+import { InjectorModule, LoggerModule, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
 import { AccessionRegisterOperationsListComponent } from './accession-register-operations-list.component';
 
 export class AccessionRegisterFixtures {

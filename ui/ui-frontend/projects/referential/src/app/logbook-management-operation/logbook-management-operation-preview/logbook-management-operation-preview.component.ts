@@ -34,28 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import type { OperationDetails } from '../../models/operation-response.interface';
 import {
-  VitamuiMenuButtonComponent,
   DialogHeaderComponent,
   EventTypeLabelComponent,
   InputComponent,
   PipesModule,
-  CommonTooltipComponent,
-  TooltipDirective,
+  VitamuiMenuButtonComponent,
   VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { MatMenuItem } from '@angular/material/menu';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -70,7 +67,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTab,
     LogbookManagementOperationInformationTabComponent,
     DialogHeaderComponent,
-    CdkScrollable,
     MatDialogContent,
     EventTypeLabelComponent,
     NgClass,
@@ -81,9 +77,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PipesModule,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

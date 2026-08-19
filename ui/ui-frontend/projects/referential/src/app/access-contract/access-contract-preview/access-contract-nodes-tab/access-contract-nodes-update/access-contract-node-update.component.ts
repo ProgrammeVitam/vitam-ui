@@ -34,19 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import {
   AccessContract,
-  FilingPlanMode,
   AccessContractService,
   DialogHeaderComponent,
+  FilingPlanComponent,
+  FilingPlanMode,
   SlideToggleComponent,
   TooltipDirective,
-  FilingPlanComponent,
 } from 'vitamui-library';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,7 +60,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,
-    CdkScrollable,
     MatDialogContent,
     SlideToggleComponent,
     TooltipDirective,

@@ -36,8 +36,7 @@
  */
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BASE_URL } from 'vitamui-library';
-import { VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
 import { ReferentialImportInvalidFileError, ReferentialTypes } from './import-dialog-param.interface';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';

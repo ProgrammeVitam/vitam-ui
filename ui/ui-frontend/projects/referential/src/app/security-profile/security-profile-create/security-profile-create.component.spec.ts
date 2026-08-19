@@ -62,7 +62,6 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
     },
   ],
   imports: [
-    SecurityProfileCreateComponent,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -100,7 +99,6 @@ class DomainInputStubComponent implements ControlValueAccessor {
     },
   ],
   imports: [
-    SecurityProfileCreateComponent,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,

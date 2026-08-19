@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LangChangeEvent, TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
 import { NoticeService } from '../../core/services/notice.service';

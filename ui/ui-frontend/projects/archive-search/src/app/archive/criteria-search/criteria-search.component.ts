@@ -34,19 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { CriteriaSearchCriteria, CriteriaValue, SearchCriteriaValue } from 'vitamui-library';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {
+  CriteriaSearchCriteria,
+  CriteriaValue,
   ORIGIN_WAITING_RECALCULATE,
+  PipesModule,
   QueryParamsService,
   SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+  TooltipDirective,
   TranslateWithOptionalTypeSuffixPipe,
   WAITING_RECALCULATE,
-  TooltipDirective,
-  PipesModule,
 } from 'vitamui-library';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgClass } from '@angular/common';
+
 @Component({
   selector: 'app-criteria-search',
   templateUrl: './criteria-search.component.html',

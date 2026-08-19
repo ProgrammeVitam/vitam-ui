@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
@@ -89,7 +89,7 @@ import { ProfileVersion } from '../models/profile-version.enum';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { FileTreeMetadataComponent } from '../profile/edit-profile/file-tree-metadata/file-tree-metadata.component';
 
 @Component({

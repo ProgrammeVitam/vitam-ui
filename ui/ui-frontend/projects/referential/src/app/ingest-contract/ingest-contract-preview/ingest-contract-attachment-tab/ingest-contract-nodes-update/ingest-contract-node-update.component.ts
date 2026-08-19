@@ -34,23 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import {
+  DialogHeaderComponent,
+  FilingPlanComponent,
   FilingPlanMode,
   IngestContract,
-  DialogHeaderComponent,
-  StepperComponent,
   NextStepComponent,
-  TooltipDirective,
   PreviousStepComponent,
-  FilingPlanComponent,
+  StepperComponent,
+  TooltipDirective,
 } from 'vitamui-library';
 import { IngestContractService } from '../../../ingest-contract.service';
 import { CdkStep } from '@angular/cdk/stepper';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
@@ -67,7 +66,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     StepperComponent,
     CdkStep,
-    CdkScrollable,
     MatDialogContent,
     MatDialogActions,
     NextStepComponent,

@@ -34,19 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, input, InputSignal, OnChanges, Output, Signal, SimpleChanges, inject } from '@angular/core';
+import { Component, computed, EventEmitter, inject, input, InputSignal, OnChanges, Output, Signal, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  TenantSelectionService,
-  Unit,
-  getErrorsOnArchiveUnit,
-  getErrorOnTechnicalObjectsGroup,
-  getErrorOnObjectsGroup,
-  ValidationError,
   DataComponent,
+  getErrorOnObjectsGroup,
+  getErrorOnTechnicalObjectsGroup,
+  getErrorsOnArchiveUnit,
   InformationBlocComponent,
   InformationDetailComponent,
   PipesModule,
+  TenantSelectionService,
+  Unit,
+  ValidationError,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { AsyncPipe, UpperCasePipe } from '@angular/common';

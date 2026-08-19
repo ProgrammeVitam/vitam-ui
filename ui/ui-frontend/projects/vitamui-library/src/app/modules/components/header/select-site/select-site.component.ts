@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Operators } from '../../../vitamui-table/operators.enum';
 import { SiteApiService } from './../../../api/site-api.service';
 import { AuthService } from './../../../auth.service';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'vitamui-common-select-site',

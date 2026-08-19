@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, forwardRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, Customer, Owner, CountryService, Option, StartupService } from 'vitamui-library';
-import { InputComponent, SelectComponent } from 'vitamui-library';
+import { CountryOption, CountryService, Customer, InputComponent, Option, Owner, SelectComponent, StartupService } from 'vitamui-library';
 import {
   ALPHA_NUMERIC_REGEX,
   OWNER_CITY_MAX_LENGTH,

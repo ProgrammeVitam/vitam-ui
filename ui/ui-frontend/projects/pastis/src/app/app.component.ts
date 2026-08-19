@@ -36,7 +36,7 @@
  */
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
-import { HeaderModule, VitamuiBodyComponent, FooterComponent, SubrogationModule } from 'vitamui-library';
+import { FooterComponent, HeaderModule, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
 

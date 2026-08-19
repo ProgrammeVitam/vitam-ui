@@ -44,13 +44,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
-import { CollapseComponent } from 'vitamui-library';
+import { CollapseComponent, ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
-import { DecimalPipe, CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileCreateComponent', () => {

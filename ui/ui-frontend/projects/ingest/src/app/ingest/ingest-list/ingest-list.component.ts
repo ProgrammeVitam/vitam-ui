@@ -37,7 +37,16 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, IngestStatus, PageRequest, OrderByButtonComponent, PipesModule, InfiniteScrollDirective } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  IngestStatus,
+  PageRequest,
+  OrderByButtonComponent,
+  PipesModule,
+} from 'vitamui-library';
 import type { LogbookOperation } from '../../models/logbook-event.interface';
 import { ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';

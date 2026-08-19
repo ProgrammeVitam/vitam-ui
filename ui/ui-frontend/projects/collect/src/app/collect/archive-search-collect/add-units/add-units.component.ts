@@ -36,44 +36,42 @@
  */
 
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, Observable, of, switchMap } from 'rxjs';
 import {
   ApplicationId,
+  CommonProgressBarComponent,
   CriteriaDataType,
   CriteriaOperator,
+  DialogHeaderComponent,
   Direction,
+  FileSelectorComponent,
+  FilingPlanComponent,
   FilingPlanMode,
+  NextStepComponent,
   PagedResult,
+  PipesModule,
+  PreviousStepComponent,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  SelectComponent,
   SnackBarService,
   StartupService,
+  StepperComponent,
   Transaction,
   Unit,
   ZipFile,
   ZipFileStatus,
-  DialogHeaderComponent,
-  StepperComponent,
-  SelectComponent,
-  FileSelectorComponent,
-  NextStepComponent,
-  PreviousStepComponent,
-  CommonProgressBarComponent,
-  PipesModule,
-  FilingPlanComponent,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http';
 import { CdkStep } from '@angular/cdk/stepper';
-import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -92,7 +90,6 @@ export enum ImportType {
     DialogHeaderComponent,
     StepperComponent,
     CdkStep,
-    CdkScrollable,
     MatDialogContent,
     MatProgressSpinner,
     SelectComponent,

@@ -35,11 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse } from 'vitamui-library';
-import { VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL, PageRequest, PaginatedHttpClient, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
 import { IngestType } from '../common/ingest-type.enum';
 
 @Injectable({

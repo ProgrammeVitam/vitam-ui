@@ -42,8 +42,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL } from 'vitamui-library';
-import { InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL, InjectorModule, LoggerModule } from 'vitamui-library';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect.component';

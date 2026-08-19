@@ -37,15 +37,14 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
-  MatTreeNestedDataSource,
-  MatTree,
-  MatTreeNodeDef,
-  MatTreeNode,
   MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNode,
+  MatTreeNodeDef,
   MatTreeNodeOutlet,
 } from '@angular/material/tree';
-import { FilingHoldingSchemeNode } from 'vitamui-library';
-import { nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon, VitamuiTreeNodeComponent } from 'vitamui-library';
+import { FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch, nodeToVitamuiIcon, VitamuiTreeNodeComponent } from 'vitamui-library';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { DecimalPipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';

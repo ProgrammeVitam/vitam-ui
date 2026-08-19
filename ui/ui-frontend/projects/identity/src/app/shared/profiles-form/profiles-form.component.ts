@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges, inject } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { shareReplay } from 'rxjs/operators';
 import {
   ApplicationApiService,
+  EllipsisDirective,
   IdentifierName,
   Option,
   Profile,
   ProfileService,
   SelectComponent,
-  EllipsisDirective,
 } from 'vitamui-library';
 import { OptionTree } from './option-tree.interface';
 import { zip } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 export const PROFILES_FORM_VALUE_ACCESSOR: any = {

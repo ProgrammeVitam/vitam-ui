@@ -44,8 +44,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { WINDOW_LOCATION } from 'vitamui-library';
-import { ApplicationService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractComponent } from './management-contract.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -45,12 +45,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import {
-  VitamUICommonModule,
-  VitamUILibraryModule,
+  LevelInputComponent,
   RoleComponent,
   RoleToggleComponent,
   SlideToggleComponent,
-  LevelInputComponent,
+  VitamUICommonModule,
+  VitamUILibraryModule,
 } from 'vitamui-library';
 
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';

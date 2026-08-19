@@ -34,9 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { Logger, StartupService } from 'vitamui-library';
-import { HeaderModule, VitamuiBodyComponent, FooterComponent, SubrogationModule } from 'vitamui-library';
+import { Component, inject, OnInit } from '@angular/core';
+import { FooterComponent, HeaderModule, Logger, StartupService, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

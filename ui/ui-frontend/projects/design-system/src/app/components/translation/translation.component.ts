@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputComponent } from 'vitamui-library';
 import { I18nPluralPipe } from '@angular/common';
 

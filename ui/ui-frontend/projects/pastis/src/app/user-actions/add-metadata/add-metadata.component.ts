@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef, inject, forwardRef } from '@angular/core';
+import { Component, forwardRef, inject, OnDestroy, OnInit, Pipe, PipeTransform, TemplateRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FileService } from '../../core/services/file.service';
@@ -83,7 +83,7 @@ import { ProfileType } from '../../models/profile-type.enum';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { VitamuiBannerComponent, TooltipDirective } from 'vitamui-library';
+import { TooltipDirective, VitamuiBannerComponent } from 'vitamui-library';
 import { MatDivider, MatList, MatSelectionList } from '@angular/material/list';
 import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';

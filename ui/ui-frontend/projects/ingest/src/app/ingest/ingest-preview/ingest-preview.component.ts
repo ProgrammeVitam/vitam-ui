@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs/operators';
 import {
   CommonTooltipComponent,
@@ -49,7 +49,7 @@ import type { LogbookOperation } from '../../models/logbook-event.interface';
 import { ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { MatMenuItem } from '@angular/material/menu';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
 import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -72,7 +72,6 @@ import { CommonModule } from '@angular/common';
     PipesModule,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,

@@ -34,14 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, Option, AccessContractService } from 'vitamui-library';
-import { diff, SlideToggleComponent, TooltipDirective, SelectComponent } from 'vitamui-library';
-import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import {
+  AccessContract,
+  AccessContractService,
+  diff,
+  Option,
+  SelectComponent,
+  SlideToggleComponent,
+  TooltipDirective,
+} from 'vitamui-library';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

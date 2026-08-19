@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
 import {
@@ -42,15 +42,15 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogData,
   Direction,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   SnackBarService,
   StartupService,
   Transaction,
   TransactionStatus,
-  VitamuiSupHeaderComponent,
-  OrderByButtonComponent,
   VitamuiMenuButtonComponent,
-  InfiniteScrollDirective,
+  VitamuiSupHeaderComponent,
 } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';

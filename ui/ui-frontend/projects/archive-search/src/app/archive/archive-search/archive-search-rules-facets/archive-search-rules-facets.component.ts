@@ -37,7 +37,7 @@
 
 import { Component, Input } from '@angular/core';
 import { RuleFacets } from 'vitamui-library';
-import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { SearchStorageRulesFacetsComponent } from './search-storage-rules-facets/search-storage-rules-facets.component';
 import { SearchAppraisalRulesFacetsComponent } from './search-appraisal-rules-facets/search-appraisal-rules-facets.component';
 import { SearchAccessRulesFacetsComponent } from './search-access-rules-facets/search-access-rules-facets.component';

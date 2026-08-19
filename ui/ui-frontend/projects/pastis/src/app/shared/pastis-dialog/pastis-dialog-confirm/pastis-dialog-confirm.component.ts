@@ -71,15 +71,14 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ComponentPortal, CdkPortalOutlet } from '@angular/cdk/portal';
-import { Component, OnInit, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
+import { Component, inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { PopupService } from '../../../core/services/popup.service';
 import { SedaService } from '../../../core/services/seda.service';
 import { PastisDialogData } from '../classes/pastis-dialog-data';
 import { DialogHeaderComponent } from 'vitamui-library';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 
 const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
 
@@ -88,7 +87,7 @@ const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
   selector: 'pastis-pastis-dialog-confirm',
   templateUrl: './pastis-dialog-confirm.component.html',
   styleUrls: ['./pastis-dialog-confirm.component.scss'],
-  imports: [DialogHeaderComponent, CdkScrollable, MatDialogContent, CdkPortalOutlet, MatDialogActions, MatDialogClose],
+  imports: [DialogHeaderComponent, MatDialogContent, CdkPortalOutlet, MatDialogActions, MatDialogClose],
 })
 export class PastisDialogConfirmComponent implements OnInit {
   dialogConfirmRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);

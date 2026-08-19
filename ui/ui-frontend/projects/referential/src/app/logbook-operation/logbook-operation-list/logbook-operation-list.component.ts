@@ -34,24 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { DEFAULT_PAGE_SIZE, IEvent, InfiniteScrollTable } from 'vitamui-library';
 import {
+  DEFAULT_PAGE_SIZE,
   Direction,
-  PageRequest,
-  TableFilterDirective,
-  OrderByButtonComponent,
-  EventTypeLabelComponent,
-  TableFilterComponent,
-  TableFilterOptionComponent,
-  PipesModule,
   EllipsisDirective,
+  EventTypeLabelComponent,
+  IEvent,
   InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
 } from 'vitamui-library';
 
 import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -60,7 +63,6 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  inject,
 } from '@angular/core';
 
 import { merge, Subject, Subscription } from 'rxjs';
@@ -69,7 +71,7 @@ import { EventFilter } from '../event-filter.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
 import { LogbookSearchService } from '../logbook-search.service';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';

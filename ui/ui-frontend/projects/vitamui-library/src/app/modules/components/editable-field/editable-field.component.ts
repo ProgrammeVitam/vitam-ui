@@ -43,14 +43,14 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
+  inject,
   Input,
   Output,
   QueryList,
   ViewChild,
-  inject,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl } from '@angular/forms';
 import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { ControlValueAccessor, FormControl } from '@angular/forms';
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
