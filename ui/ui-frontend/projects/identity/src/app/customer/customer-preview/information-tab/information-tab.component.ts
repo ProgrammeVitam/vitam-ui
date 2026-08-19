@@ -34,32 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { CountryOption, Customer, OtpState, CountryService, Option, StartupService } from 'vitamui-library';
 import {
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  EditableButtonToggleComponent,
-  EditableEmailInputComponent,
-  EditableFieldComponent,
-  EditableFileComponent,
-  EditableInputComponent,
-  EditableLevelInputComponent,
-  EditableTextareaComponent,
-  EditableToggleGroupComponent,
-  EllipsisDirective,
-  LevelInputComponent,
-  SubLevelPipe,
+  CountryOption,
+  CountryService,
+  Customer,
   diff,
-  VitamUIFieldErrorComponent,
+  EditableButtonToggleComponent,
+  EditableInputComponent,
+  EditableToggleGroupComponent,
   FormFieldValueWrapperComponent,
+  Option,
+  OtpState,
   SelectComponent,
   SlideToggleComponent,
+  StartupService,
+  VitamUIFieldErrorComponent,
 } from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
@@ -89,21 +83,11 @@ const UPDATE_DEBOUNCE_TIME = 200;
     EditableDomainInputComponent,
     SlideToggleComponent,
     TranslatePipe,
-    ClosePopupDialogComponent,
-    CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
     EditableButtonToggleComponent,
-    EditableEmailInputComponent,
-    EditableFieldComponent,
-    EditableFileComponent,
     EditableInputComponent,
-    EditableLevelInputComponent,
-    EditableTextareaComponent,
     EditableToggleGroupComponent,
-    EllipsisDirective,
     FormsModule,
-    LevelInputComponent,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -111,7 +95,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    SubLevelPipe,
   ],
 })
 export class InformationTabComponent implements OnInit, OnDestroy {

@@ -42,24 +42,23 @@ import {
   buildValidators,
   collapseAnimation,
   ConfirmDialogService,
-  Profile,
-  Role,
   DialogHeaderComponent,
-  SlideToggleComponent,
   InputComponent,
   LevelInputComponent,
+  Profile,
+  Role,
   RoleComponent,
   RoleToggleComponent,
+  SlideToggleComponent,
 } from 'vitamui-library';
 
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
 import { ProfileValidators } from '../profile.validators';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 
@@ -71,7 +70,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,
-    CdkScrollable,
     MatDialogContent,
     SlideToggleComponent,
     InputComponent,

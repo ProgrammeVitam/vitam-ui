@@ -36,8 +36,7 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
-import { AccessionRegisterDetail, rotate90Animation } from 'vitamui-library';
-import { DataComponent, TooltipDirective } from 'vitamui-library';
+import { AccessionRegisterDetail, DataComponent, rotate90Animation } from 'vitamui-library';
 import { DatePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -59,7 +58,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     ]),
     rotate90Animation,
   ],
-  imports: [DataComponent, DatePipe, TranslatePipe, TooltipDirective],
+  imports: [DataComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterDetailComponent implements OnInit {
   @Input()

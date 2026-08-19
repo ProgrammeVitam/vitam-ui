@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
-import { EditableFieldComponent } from 'vitamui-library';
-import { PatternComponent } from 'vitamui-library';
-import { CdkOverlayOrigin, CdkConnectedOverlay } from '@angular/cdk/overlay';
+import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {

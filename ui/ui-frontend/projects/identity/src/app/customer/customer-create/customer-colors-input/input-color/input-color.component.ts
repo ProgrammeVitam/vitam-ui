@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
-import { FormControlWarn } from 'vitamui-library';
-import { hexToRgb, rgbToHsl, InputComponent, PipesModule } from 'vitamui-library';
+import { FormControlWarn, hexToRgb, InputComponent, PipesModule, rgbToHsl } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

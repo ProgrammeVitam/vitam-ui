@@ -34,33 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
-import { DialogHeaderComponent, InputComponent, SelectComponent } from 'vitamui-library';
+import { ConfirmDialogService, DialogHeaderComponent, InputComponent, Owner, SelectComponent, Tenant } from 'vitamui-library';
 
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { finalize, Subscription } from 'rxjs';
 import { TenantService } from '../tenant.service';
 import { TenantFormValidators } from './tenant-form.validators';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tenant-create',
   templateUrl: './tenant-create.component.html',
   styleUrls: ['./tenant-create.component.scss'],
-  imports: [
-    DialogHeaderComponent,
-    ReactiveFormsModule,
-    CdkScrollable,
-    MatDialogContent,
-    InputComponent,
-    SelectComponent,
-    MatDialogActions,
-    TranslatePipe,
-  ],
+  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<TenantCreateComponent>>(MatDialogRef);

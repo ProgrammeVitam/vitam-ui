@@ -36,38 +36,12 @@
  */
 import { registerLocaleData } from '@angular/common';
 import { default as localeFr } from '@angular/common/locales/fr';
-import { inject, isDevMode, LOCALE_ID, NgModule } from '@angular/core';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { ReactiveFormsModule } from '@angular/forms';
-import {
-  AppConfiguration,
-  ApplicationApiService,
-  AuthService,
-  BASE_URL,
-  BaseUserInfoApiService,
-  ENVIRONMENT,
-  LoggerModule,
-  provideI18n,
-  ThemeService,
-  VitamUICommonModule,
-  VitamUILibraryModule,
-} from 'vitamui-library';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { inject, NgModule } from '@angular/core';
+import { AppConfiguration, ApplicationApiService, AuthService, ThemeService } from 'vitamui-library';
 
 registerLocaleData(localeFr, 'fr');
 
-@NgModule(/* TODO(standalone-migration): clean up removed NgModule class manually. 
+@NgModule(/* TODO(standalone-migration): clean up removed NgModule class manually.
 {
   declarations: [AppComponent],
   imports: [

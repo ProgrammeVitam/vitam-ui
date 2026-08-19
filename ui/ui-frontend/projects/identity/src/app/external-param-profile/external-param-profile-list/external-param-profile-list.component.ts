@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
@@ -43,16 +43,16 @@ import {
   DEFAULT_PAGE_SIZE,
   Direction,
   ExternalParamProfile,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   PageRequest,
-  Profile,
   PipesModule,
-  InfiniteScrollDirective,
+  Profile,
 } from 'vitamui-library';
 import { ProfileService } from '../../profile/profile.service';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
-import { NgClass, DecimalPipe, CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 

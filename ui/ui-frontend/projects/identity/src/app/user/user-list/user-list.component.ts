@@ -37,6 +37,7 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
+  AdminUserProfile,
   ApplicationId,
   AuthService,
   buildCriteriaFromSearch,
@@ -44,28 +45,29 @@ import {
   CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
+  Group,
+  HasAnyRoleDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   PageRequest,
+  PipesModule,
   Role,
   rotateAnimation,
   SnackBarService,
-  TableFilterDirective,
   TableFilterComponent,
+  TableFilterDirective,
   TableFilterOptionComponent,
-  OrderByButtonComponent,
   TableFilterSearchComponent,
-  PipesModule,
-  EllipsisDirective,
-  HasAnyRoleDirective,
-  HasRoleDirective,
-  InfiniteScrollDirective,
+  User,
 } from 'vitamui-library';
-import { AdminUserProfile, Group, User } from 'vitamui-library';
 
 import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   LOCALE_ID,
   OnDestroy,
@@ -73,14 +75,13 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  inject,
 } from '@angular/core';
 
 import { CustomerService } from '../../core/customer.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { UpperCasePipe, DatePipe, CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, UpperCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -104,7 +105,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     CommonModule,
     EllipsisDirective,
     HasAnyRoleDirective,
-    HasRoleDirective,
     InfiniteScrollDirective,
   ],
 })

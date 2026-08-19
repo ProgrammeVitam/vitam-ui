@@ -67,7 +67,6 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     BrowserAnimationsModule,
     RouterTestingModule,
     NoopAnimationsModule,
-    SearchBarComponent,
     MatDialogModule,
   ],
 })

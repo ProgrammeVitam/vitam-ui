@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, Input, OnInit, Renderer2 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({ selector: '[vitamuiCommonResizeSidebar]', standalone: true })

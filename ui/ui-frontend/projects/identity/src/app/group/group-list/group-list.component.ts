@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 
 import {
@@ -43,22 +43,22 @@ import {
   CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
-  Group,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-  TableFilterDirective,
-  TableFilterComponent,
-  TableFilterOptionComponent,
-  OrderByButtonComponent,
-  TableFilterSearchComponent,
-  PipesModule,
   EllipsisDirective,
+  Group,
   InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  rotateAnimation,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+  TableFilterSearchComponent,
 } from 'vitamui-library';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 

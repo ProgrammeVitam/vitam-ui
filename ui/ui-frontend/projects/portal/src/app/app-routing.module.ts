@@ -36,8 +36,7 @@
  */
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AccountComponent, AnalyticsResolver, AppGuard, AuthGuard } from 'vitamui-library';
-import { ApplicationId } from 'vitamui-library';
+import { AccountComponent, AnalyticsResolver, AppGuard, ApplicationId, AuthGuard } from 'vitamui-library';
 import { PortalComponent } from './portal/portal.component';
 
 const routes: Routes = [

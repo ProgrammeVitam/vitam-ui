@@ -37,8 +37,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Option } from 'vitamui-library';
-import { SelectComponent, InputComponent } from 'vitamui-library';
+import { InputComponent, Option, SelectComponent } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

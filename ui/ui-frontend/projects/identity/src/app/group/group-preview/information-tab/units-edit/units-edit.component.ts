@@ -37,15 +37,13 @@
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { ConfirmDialogService, Group } from 'vitamui-library';
-import { DialogHeaderComponent } from 'vitamui-library';
+import { ConfirmDialogService, DialogHeaderComponent, Group } from 'vitamui-library';
 
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { GroupService } from '../../../group.service';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { UnitsFormComponent } from '../../../units-form/units-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -53,15 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-units-edit',
   templateUrl: './units-edit.component.html',
   styleUrls: ['./units-edit.component.css'],
-  imports: [
-    DialogHeaderComponent,
-    CdkScrollable,
-    MatDialogContent,
-    ReactiveFormsModule,
-    UnitsFormComponent,
-    MatDialogActions,
-    TranslatePipe,
-  ],
+  imports: [DialogHeaderComponent, MatDialogContent, ReactiveFormsModule, UnitsFormComponent, MatDialogActions, TranslatePipe],
 })
 export class UnitsEditComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<UnitsEditComponent>>(MatDialogRef);

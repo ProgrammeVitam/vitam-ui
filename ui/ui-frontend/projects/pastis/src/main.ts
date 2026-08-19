@@ -34,22 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, LOCALE_ID, provideAppInitializer, inject, importProvidersFrom } from '@angular/core';
-import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { enableProdMode, importProvidersFrom, inject, LOCALE_ID, provideAppInitializer } from '@angular/core';
+import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { PastisConfigurationFactory } from './app/app.module';
 import { environment } from './environments/environment';
 import {
-  provideI18n,
-  WINDOW_LOCATION,
+  AuthenticationModule,
   BASE_URL,
   ENVIRONMENT,
-  AuthenticationModule,
-  ThemeService,
-  StartupService,
   InjectorModule,
   LoggerModule,
+  provideI18n,
+  StartupService,
+  ThemeService,
   VitamUICommonModule,
+  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { PastisConfiguration } from './app/core/classes/pastis-configuration';

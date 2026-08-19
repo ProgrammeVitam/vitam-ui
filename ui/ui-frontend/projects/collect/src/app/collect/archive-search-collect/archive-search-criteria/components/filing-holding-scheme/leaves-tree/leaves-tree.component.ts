@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import {
-  MatTreeNestedDataSource,
-  MatTree,
-  MatTreeNodeDef,
   MatNestedTreeNode,
-  MatTreeNodeOutlet,
+  MatTree,
+  MatTreeNestedDataSource,
   MatTreeNode,
+  MatTreeNodeDef,
+  MatTreeNodeOutlet,
 } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
@@ -55,9 +55,9 @@ import {
   nodeToVitamuiIcon,
   ResultFacet,
   SearchCriteriaDto,
+  TooltipDirective,
   Unit,
   UnitType,
-  TooltipDirective,
   VitamuiTreeNodeComponent,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
@@ -65,7 +65,7 @@ import { Pair } from '../../../models/utils';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 import { first } from 'rxjs/operators';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NgClass, DecimalPipe } from '@angular/common';
+import { DecimalPipe, NgClass } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({

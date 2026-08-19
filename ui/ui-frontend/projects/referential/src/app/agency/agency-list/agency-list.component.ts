@@ -39,8 +39,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import { AdminUserProfile, Agency } from 'vitamui-library';
 import {
+  AdminUserProfile,
+  Agency,
   AgencyService,
   ApplicationId,
   DEFAULT_PAGE_SIZE,

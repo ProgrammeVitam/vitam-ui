@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'vitamui-library';
-import { ContextPermission, DialogHeaderComponent } from 'vitamui-library';
+import { ConfirmDialogService, ContextPermission, DialogHeaderComponent } from 'vitamui-library';
 import { ContextCreateValidators } from '../context-create/context-create.validators';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { ContextEditPermissionComponent } from '../context-create/context-edit-permission/context-edit-permission.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -49,15 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
   styleUrls: ['./context-edit.component.scss'],
-  imports: [
-    DialogHeaderComponent,
-    ReactiveFormsModule,
-    CdkScrollable,
-    MatDialogContent,
-    ContextEditPermissionComponent,
-    MatDialogActions,
-    TranslatePipe,
-  ],
+  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, ContextEditPermissionComponent, MatDialogActions, TranslatePipe],
 })
 export class ContextEditComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ContextEditComponent>>(MatDialogRef);

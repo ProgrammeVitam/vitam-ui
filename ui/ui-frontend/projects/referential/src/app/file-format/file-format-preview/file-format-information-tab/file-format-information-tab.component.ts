@@ -34,15 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { formatDate, AsyncPipe } from '@angular/common';
-import { Component, EventEmitter, Input, LOCALE_ID, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AsyncPipe, formatDate } from '@angular/common';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
-import { FileFormat, VitamuiSelectOptions, SecurityService, FILE_FORMAT_EXTERNAL_PREFIX } from 'vitamui-library';
-import { ApplicationId, Role, InputComponent, SelectComponent, diff } from 'vitamui-library';
+import {
+  ApplicationId,
+  diff,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  InputComponent,
+  Role,
+  SecurityService,
+  SelectComponent,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
 import { TranslatePipe } from '@ngx-translate/core';
 

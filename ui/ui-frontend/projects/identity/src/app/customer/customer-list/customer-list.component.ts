@@ -34,26 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import {
   collapseAnimation,
+  CollapseDirective,
   Customer,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   Owner,
   PageRequest,
   rotateAnimation,
   Tenant,
-  CollapseContainerDirective,
-  CollapseDirective,
-  CollapseTriggerForDirective,
-  EllipsisDirective,
-  InfiniteScrollDirective,
 } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
@@ -74,9 +72,7 @@ import { CommonModule } from '@angular/common';
     OwnerListComponent,
     MatProgressSpinner,
     TranslatePipe,
-    CollapseContainerDirective,
     CollapseDirective,
-    CollapseTriggerForDirective,
     CommonModule,
     EllipsisDirective,
     InfiniteScrollDirective,

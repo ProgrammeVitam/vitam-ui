@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 
 import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-group.service';
 import { NgClass } from '@angular/common';

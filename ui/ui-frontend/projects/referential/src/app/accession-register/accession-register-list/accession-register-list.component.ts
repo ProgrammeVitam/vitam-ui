@@ -34,26 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import {
   AccessionRegisterDetail,
   DEFAULT_PAGE_SIZE,
   Direction,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   OjectUtils,
-  PageRequest,
   OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
   TableFilterDirective,
   TableFilterSearchComponent,
   TooltipDirective,
-  PipesModule,
-  InfiniteScrollDirective,
 } from 'vitamui-library';
 import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
 import { AccessionRegistersService } from '../accession-register.service';
-import { NgClass, AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 

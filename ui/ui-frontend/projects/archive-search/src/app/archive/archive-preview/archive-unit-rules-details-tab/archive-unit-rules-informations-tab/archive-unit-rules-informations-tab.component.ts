@@ -35,10 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto, Logger } from 'vitamui-library';
-import { PipesModule } from 'vitamui-library';
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { InheritedPropertyDto, Logger, PipesModule, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
 import { NgClass } from '@angular/common';
 
 @Component({

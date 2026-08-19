@@ -34,12 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, forkJoin, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import { AccessContract, Context, Customer, IngestContract, Tenant, AccessContractService, AuthService } from 'vitamui-library';
-import { ContextPermission, diff } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractService,
+  AuthService,
+  Context,
+  ContextPermission,
+  Customer,
+  diff,
+  IngestContract,
+  Tenant,
+} from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';

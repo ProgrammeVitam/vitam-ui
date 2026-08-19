@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ObjectQualifierType } from '../../../models/units/object-qualifier.enums';
 import { ValidationError } from '../../../models/units/unit.interface';
 import type { VersionWithQualifierDto } from '../../../models/units/object-group.interface';

@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output, inject } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { AccessContractService, AuthService, ContextPermission, Option, Tenant, TooltipDirective, SelectComponent } from 'vitamui-library';
+import { Component, EventEmitter, forwardRef, inject, Input, OnInit, Output } from '@angular/core';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { AccessContractService, AuthService, ContextPermission, Option, SelectComponent, Tenant, TooltipDirective } from 'vitamui-library';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
 import { IngestContractService } from '../../../ingest-contract/ingest-contract.service';

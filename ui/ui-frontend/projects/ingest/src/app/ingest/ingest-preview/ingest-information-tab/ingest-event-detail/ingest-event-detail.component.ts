@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import type { LogbookOperation } from '../../../../models/logbook-event.interface';
 import type { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';

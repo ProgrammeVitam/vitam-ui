@@ -71,13 +71,12 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { EMPTY, filter, mergeMap, Observable, of, Subscription } from 'rxjs';
-import { SnackBarService, StartupService } from 'vitamui-library';
-import { ApplicationId } from 'vitamui-library';
+import { ApplicationId, SnackBarService, StartupService } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { NoticeService } from '../../core/services/notice.service';

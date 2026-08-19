@@ -36,24 +36,24 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges, inject } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
+  ArchiveUnitModule,
   DescriptionLevel,
   FileInfoDto,
   FormatIdentificationDto,
-  qualifiersToVersionsWithQualifier,
-  TenantSelectionService,
-  Unit,
-  VersionWithQualifierDto,
-  ValidationError,
-  getErrorOnTechnicalObjectsGroup,
   getErrorOnObjectsGroup,
+  getErrorOnTechnicalObjectsGroup,
   InformationBlocComponent,
   InformationDetailComponent,
-  ArchiveUnitModule,
-  TooltipDirective,
   PipesModule,
+  qualifiersToVersionsWithQualifier,
+  TenantSelectionService,
+  TooltipDirective,
+  Unit,
+  ValidationError,
+  VersionWithQualifierDto,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { NgClass, UpperCasePipe } from '@angular/common';

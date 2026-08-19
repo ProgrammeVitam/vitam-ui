@@ -42,12 +42,12 @@ import {
   Directive,
   ElementRef,
   HostListener,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
-  inject,
 } from '@angular/core';
 import type { TooltipPosition } from './TooltipPosition.enum';
 import { CommonTooltipComponent } from './common-tooltip.component';

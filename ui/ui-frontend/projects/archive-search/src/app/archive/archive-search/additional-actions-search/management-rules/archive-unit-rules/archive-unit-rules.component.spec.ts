@@ -47,9 +47,9 @@ import {
   InjectorModule,
   LoggerModule,
   SearchCriteriaDto,
-  WINDOW_LOCATION,
-  TenantSelectionService,
   Tenant,
+  TenantSelectionService,
+  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../common-services/update-unit-management-rule.service';

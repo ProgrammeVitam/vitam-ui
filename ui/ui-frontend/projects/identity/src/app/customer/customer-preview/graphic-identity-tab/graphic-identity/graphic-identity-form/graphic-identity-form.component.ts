@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
-import { VitamuiDragDropFileComponent } from 'vitamui-library';
+import { AttachmentType, Logo, ThemeService, VitamuiDragDropFileComponent } from 'vitamui-library';
 import { CustomerColorsInputComponent } from '../../../../customer-create/customer-colors-input/customer-colors-input.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

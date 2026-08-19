@@ -34,8 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Criterion, CriteriaSearchQuery } from 'vitamui-library';
-import { buildCriteriaFromFilters, Operators, QueryOperator } from 'vitamui-library';
+import { buildCriteriaFromFilters, CriteriaSearchQuery, Criterion, Operators, QueryOperator } from 'vitamui-library';
 
 const USER_FILTER_CONVERTER: Readonly<{ [key: string]: (values: any[]) => Array<Criterion | CriteriaSearchQuery> }> = {
   status: (statusList: string[]): CriteriaSearchQuery[] => {

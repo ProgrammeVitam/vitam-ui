@@ -40,11 +40,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateService } from '@ngx-translate/core';
 
-import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
-import { LoggerModule } from 'vitamui-library';
+import { EMPTY } from 'rxjs';
+import { BASE_URL, ENVIRONMENT, LoggerModule, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { environment } from './../../../environments/environment';

@@ -46,10 +46,10 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MatSelectionList, MatSelectionListChange, MatListOption } from '@angular/material/list';
-import { MatTabChangeEvent, MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
+import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { opacityAnimation, slideAnimation } from '../../../animations/vitamui-common-animations';

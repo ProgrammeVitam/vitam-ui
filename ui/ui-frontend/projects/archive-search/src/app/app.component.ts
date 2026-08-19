@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { HeaderModule, VitamuiBodyComponent, FooterComponent, SubrogationModule } from 'vitamui-library';
+import { FooterComponent, HeaderModule, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

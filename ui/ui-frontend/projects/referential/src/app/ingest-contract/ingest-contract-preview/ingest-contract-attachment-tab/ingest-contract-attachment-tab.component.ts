@@ -35,10 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IngestContract, ExternalParametersService, SearchUnitApiService, SnackBarService } from 'vitamui-library';
-import { ExternalParameters, VitamuiHttpHeaders } from 'vitamui-library';
+import {
+  ExternalParameters,
+  ExternalParametersService,
+  IngestContract,
+  SearchUnitApiService,
+  SnackBarService,
+  VitamuiHttpHeaders,
+} from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

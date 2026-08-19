@@ -44,23 +44,23 @@ import {
   Criterion,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
   Group,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   Operators,
   PageRequest,
   Profile,
   SubrogationModalService,
   SubrogationUser,
-  EllipsisDirective,
-  InfiniteScrollDirective,
 } from 'vitamui-library';
 
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { SubrogationService } from '../../subrogation.service';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 

@@ -34,13 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { SecurityService, TenantSelectionService } from 'vitamui-library';
-import { ApplicationId, Role } from 'vitamui-library';
+import { ApplicationId, Role, SecurityService, TenantSelectionService } from 'vitamui-library';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ROUTES, ERROR_MESSAGES } from './edit-agency.constants';
+import { ERROR_MESSAGES, ROUTES } from './edit-agency.constants';
 
 const accessDenied = (router: Router): Observable<boolean> => {
   router.navigateByUrl(ROUTES.ACCESS_DENIED);

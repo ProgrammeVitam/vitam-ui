@@ -38,8 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { CriteriaValue } from 'vitamui-library';
-import { CriteriaOperator, InjectorModule } from 'vitamui-library';
+import { CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search.component';
 

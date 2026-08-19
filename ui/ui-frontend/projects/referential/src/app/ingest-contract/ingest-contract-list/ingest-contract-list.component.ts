@@ -34,26 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { Subject, Subscription, merge } from 'rxjs';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
   DEFAULT_PAGE_SIZE,
   Direction,
-  InfiniteScrollTable,
-  IngestContract,
-  PageRequest,
-  TableFilterDirective,
-  OrderByButtonComponent,
-  TableFilterComponent,
-  TableFilterOptionComponent,
-  PipesModule,
   EllipsisDirective,
   InfiniteScrollDirective,
+  InfiniteScrollTable,
+  IngestContract,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
 } from 'vitamui-library';
 
 import { IngestContractService } from '../ingest-contract.service';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 

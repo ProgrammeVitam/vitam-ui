@@ -35,23 +35,22 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import {
   ApplicationId,
+  DialogHeaderComponent,
+  FileSelectorComponent,
   FileTypes,
   FileValidationErrors,
   FileValidatorFunction,
   SnackBarService,
-  DialogHeaderComponent,
-  FileSelectorComponent,
 } from 'vitamui-library';
 import { finalize, firstValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ImportDialogParam, ReferentialTypes } from './import-dialog-param.interface';
-import { FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ReferentialImportService } from './referential-import.service';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
@@ -60,7 +59,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   styleUrls: ['./import-dialog.component.scss'],
   imports: [
     DialogHeaderComponent,
-    CdkScrollable,
     MatDialogContent,
     FileSelectorComponent,
     ReactiveFormsModule,

@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Customer, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
-import { PipesModule } from 'vitamui-library';
+import { Customer, PipesModule, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';

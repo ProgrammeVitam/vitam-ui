@@ -34,25 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
-import { Observable, Subscription, forkJoin } from 'rxjs';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import {
   AuthService,
-  ConfirmDialogService,
-  CriteriaSearchQuery,
-  Operators,
-  Profile,
   buildValidators,
   collapseAnimation,
-  rotateAnimation,
+  ConfirmDialogService,
+  CriteriaSearchQuery,
   DialogHeaderComponent,
-  SlideToggleComponent,
   LevelInputComponent,
+  Operators,
+  Profile,
+  rotateAnimation,
+  SlideToggleComponent,
 } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
@@ -65,7 +64,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,
-    CdkScrollable,
     MatDialogContent,
     SlideToggleComponent,
     ProfilesFormComponent,

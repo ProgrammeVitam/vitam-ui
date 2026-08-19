@@ -37,18 +37,19 @@
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import { Unit, VersionWithQualifierDto } from 'vitamui-library';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import {
   AccessContract,
   AccessContractService,
+  ArchiveUnitModule,
   DescriptionLevel,
+  PipesModule,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
-  VitamuiHttpHeaders,
-  ArchiveUnitModule,
   TooltipDirective,
-  PipesModule,
+  Unit,
+  VersionWithQualifierDto,
+  VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { Subscription } from 'rxjs';

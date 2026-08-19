@@ -36,10 +36,9 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
-import { FacetDetails, RuleFacets, VitamTenantConfigService } from 'vitamui-library';
-import { Colors, VitamuiFacetComponent } from 'vitamui-library';
+import { Component, inject, Input, OnChanges } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 

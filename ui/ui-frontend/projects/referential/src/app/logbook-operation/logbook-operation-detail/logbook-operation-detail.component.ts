@@ -34,30 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   AuthService,
-  IEvent,
+  EventTypeLabelComponent,
   ExternalParameters,
   ExternalParametersService,
   fadeInOutAnimation,
+  HistoryEventsComponent,
+  IEvent,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
-  SnackBarService,
-  EventTypeLabelComponent,
-  HistoryEventsComponent,
   PipesModule,
-  CommonTooltipComponent,
-  TooltipDirective,
+  SnackBarService,
   VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -87,10 +85,8 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
     EventTypeBadgeColorPipe,
     TranslatePipe,
     CommonModule,
-    CommonTooltipComponent,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
-    TooltipDirective,
     VitamuiSidenavHeaderComponent,
   ],
 })

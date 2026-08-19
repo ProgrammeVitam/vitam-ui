@@ -71,27 +71,25 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, of, Subscription, switchMap } from 'rxjs';
 import {
+  CommonConfirmDialogComponent,
   Direction,
   GlobalEventService,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  PipesModule,
   SidenavPage,
   SnackBarService,
   StartupService,
-  VitamuiTitleBreadcrumbComponent,
-  VitamuiBannerComponent,
-  OrderByButtonComponent,
   TooltipDirective,
-  PipesModule,
-  ClosePopupDialogComponent,
-  CommonConfirmDialogComponent,
-  DialogHeaderComponent,
-  InfiniteScrollDirective,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
@@ -110,10 +108,10 @@ import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { NoticeService } from '../../core/services/notice.service';
 import { map } from 'rxjs/operators';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ProfilePreviewComponent } from '../profile-preview/profile-preview.component';
 import { PastisPopupOptionComponent } from '../../shared/pastis-popup-option/pastis-popup-option.component';
-import { NgClass, CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { MatMenuItem } from '@angular/material/menu';
 import { FilterByStringNamePipe } from './pipes/filterByStringName.pipe';
 import { FilterByTypePipe } from './pipes/filterByType.pipe';
@@ -143,10 +141,8 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
     TranslatePipe,
     FilterByStringNamePipe,
     FilterByTypePipe,
-    ClosePopupDialogComponent,
     CommonConfirmDialogComponent,
     CommonModule,
-    DialogHeaderComponent,
     InfiniteScrollDirective,
     MatDialogModule,
   ],

@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { enableProdMode, LOCALE_ID } from '@angular/core';
-import { Title, bootstrapApplication } from '@angular/platform-browser';
+import { bootstrapApplication, Title } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
-import { provideI18n, ENVIRONMENT, BASE_URL, BaseUserInfoApiService } from 'vitamui-library';
+import { BASE_URL, BaseUserInfoApiService, ENVIRONMENT, provideI18n } from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { of } from 'rxjs';
 import { AppComponent } from './app/app.component';
