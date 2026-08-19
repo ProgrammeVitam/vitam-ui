@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -60,7 +60,7 @@ const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
   selector: 'app-unlock-category-inheritance',
   templateUrl: './unlock-category-inheritance.component.html',
   styleUrls: ['./unlock-category-inheritance.component.css'],
-  imports: [MatProgressSpinner, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
+  imports: [MatProgressSpinner, DialogHeaderComponent, MatDialogModule, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class UnlockCategoryInheritanceComponent implements OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

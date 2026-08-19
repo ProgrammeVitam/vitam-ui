@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, Owner, Tenant } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -61,7 +60,7 @@ import { MatOptionModule } from '@angular/material/core';
       multi: true,
     },
   ],
-  imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
+  imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -128,7 +127,6 @@ describe('OwnerCreateComponent', () => {
         MatOptionModule,
         MatProgressBarModule,
         MatSelectModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         OwnerCreateComponent,

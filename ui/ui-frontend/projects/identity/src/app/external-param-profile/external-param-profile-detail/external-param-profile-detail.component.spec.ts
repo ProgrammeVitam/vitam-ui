@@ -35,38 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of, Subject } from 'rxjs';
-import { AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { of, Subject } from 'rxjs';
+import { AuthService, BASE_URL, ExternalParamProfile, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
-import { TestHostComponent } from '../../shared/domains-input/domains-input.component.spec';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { InformationTabComponent } from './information-tab/information-tab.component';
 
 @Component({
   selector: 'app-information-tab',
   template: '',
-  standalone: true,
-  imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule],
 })
 class InformationTabStubComponent {
-  // @Input() profile: ExternalParamProfile;
+  @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
   @Input() tenantIdentifier: string;
-}
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
 }
 
 describe('ExternalParamProfilDetailComponent', () => {
@@ -77,18 +63,9 @@ describe('ExternalParamProfilDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatMenuModule,
-        MatTabsModule,
-        NoopAnimationsModule,
-        LoggerModule.forRoot(),
-        TestHostComponent,
-        ExternalParamProfileDetailComponent,
-        InformationTabStubComponent,
-      ],
+      imports: [LoggerModule.forRoot(), ExternalParamProfileDetailComponent],
       providers: [
-        { provide: ExternalParamProfileService, useValue: { updated: new Subject() } },
+        { provide: ExternalParamProfileService, useValue: { updated: new Subject(), getAllActiveAccessContracts: of() } },
         { provide: AuthService, useValue: authServiceMock },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
@@ -96,7 +73,12 @@ describe('ExternalParamProfilDetailComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ExternalParamProfileDetailComponent, {
+        remove: { imports: [InformationTabComponent] },
+        add: { imports: [InformationTabStubComponent] },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

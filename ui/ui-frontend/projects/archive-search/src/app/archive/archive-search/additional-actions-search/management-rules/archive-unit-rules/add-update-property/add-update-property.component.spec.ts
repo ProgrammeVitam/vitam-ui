@@ -39,23 +39,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { RuleTypeEnum } from '../../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { AddUpdatePropertyComponent } from './add-update-property.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleCategoryAction: RuleCategoryAction = {
   rules: [],
@@ -523,7 +515,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   describe('DOM', () => {
     it('should have 1 title ', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('div.align-items-stretch > label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);

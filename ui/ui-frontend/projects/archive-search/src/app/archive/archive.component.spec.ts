@@ -42,9 +42,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
   AccessContract,
@@ -114,12 +112,8 @@ describe('ArchiveComponent', () => {
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
-        BrowserAnimationsModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
-        NoopAnimationsModule,
         SearchBarComponent,
         ArchiveComponent,
       ],
@@ -129,16 +123,20 @@ describe('ArchiveComponent', () => {
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: SecurityService, useValue: securityServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        {
-          provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
-        },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ActivatedRoute, {
+        useValue: {
+          params: of({ tenantIdentifier: 1 }),
+          data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+          snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

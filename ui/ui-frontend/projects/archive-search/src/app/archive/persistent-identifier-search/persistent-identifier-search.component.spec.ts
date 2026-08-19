@@ -38,20 +38,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
 import { BASE_URL } from 'vitamui-library';
 
 import { PersistentIdentifierSearchComponent } from './persistent-identifier-search.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 describe('PersistentIdentifierSearchComponent', () => {
   let component: PersistentIdentifierSearchComponent;

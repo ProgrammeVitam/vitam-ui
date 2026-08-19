@@ -37,11 +37,14 @@
 
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { ApplicationApiService } from 'vitamui-library';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [{ provide: ApplicationApiService, useValue: { getLocalAsset: () => of('') } }],
     })
       .overrideTemplate(AppComponent, '<div></div>')
       .compileComponents();

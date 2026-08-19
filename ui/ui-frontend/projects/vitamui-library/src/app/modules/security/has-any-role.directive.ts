@@ -40,7 +40,7 @@ import { Subscription } from 'rxjs';
 import { ApplicationId } from '../application-id.enum';
 import { SecurityService } from './security.service';
 
-@Directive({ selector: '[vitamuiCommonHasAnyRole]', standalone: true })
+@Directive({ selector: '[vitamuiCommonHasAnyRole]' })
 export class HasAnyRoleDirective implements OnDestroy {
   private templateRef = inject<TemplateRef<any>>(TemplateRef);
   private viewContainer = inject(ViewContainerRef);

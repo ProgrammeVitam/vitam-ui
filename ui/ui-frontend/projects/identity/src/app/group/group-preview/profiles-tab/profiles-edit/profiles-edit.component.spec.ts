@@ -42,7 +42,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -60,7 +59,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
   @Input()
@@ -84,14 +83,7 @@ describe('ProfilesEditComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        ProfilesEditComponent,
-        ProfilesFormStubComponent,
-      ],
+      imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, ProfilesEditComponent, ProfilesFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

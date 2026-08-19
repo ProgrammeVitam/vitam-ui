@@ -39,23 +39,14 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AuthService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../environments/environment.prod';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'This is a test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 @Component({
   selector: 'router-outlet',
