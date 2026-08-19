@@ -59,8 +59,7 @@ describe('PersistentIdentifierSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PersistentIdentifierSearchComponent],
-      imports: [MatDialogModule, RouterTestingModule],
+      imports: [MatDialogModule, RouterTestingModule, PersistentIdentifierSearchComponent],
       providers: [
         {
           provide: BASE_URL,

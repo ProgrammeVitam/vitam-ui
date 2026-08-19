@@ -74,38 +74,81 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../../../shared/shared.module';
+
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
 
 import { MatTableModule } from '@angular/material/table';
-import { PastisMaterialModule } from '../../../material.module';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material/core';
 
-import { EditableFieldModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import {
+  VitamUICommonModule,
+  VitamUILibraryModule,
+  ClosePopupDialogComponent,
+  CommonConfirmDialogComponent,
+  DialogHeaderComponent,
+  EditableButtonToggleComponent,
+  EditableEmailInputComponent,
+  EditableFieldComponent,
+  EditableFileComponent,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  EditableTextareaComponent,
+  EditableToggleGroupComponent,
+  EllipsisDirective,
+  LevelInputComponent,
+  SubLevelPipe,
+} from 'vitamui-library';
 import { CoreModule } from '../../../core/core.module';
 import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
 import { FileTreeComponent } from './file-tree.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   imports: [
     CommonModule,
     CoreModule,
-    EditableFieldModule,
     FormsModule,
     MatTableModule,
-    PastisMaterialModule,
     ReactiveFormsModule,
-    SharedModule,
     UserActionsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
+    FileTreeMetadataComponent,
+    FileTreeComponent,
+    AttributesPopupComponent,
+    ClosePopupDialogComponent,
+    CommonConfirmDialogComponent,
+    DialogHeaderComponent,
+    EditableButtonToggleComponent,
+    EditableEmailInputComponent,
+    EditableFieldComponent,
+    EditableFileComponent,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    EditableToggleGroupComponent,
+    EllipsisDirective,
+    LevelInputComponent,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+    SubLevelPipe,
   ],
   exports: [FileTreeComponent, FileTreeMetadataComponent],
   providers: [{ provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: { disabled: true } }],
-  declarations: [FileTreeMetadataComponent, FileTreeComponent, AttributesPopupComponent],
 })
 export class FileTreeModule {}

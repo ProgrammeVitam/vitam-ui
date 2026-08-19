@@ -35,14 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { SnackBarService, StartupService } from 'vitamui-library';
+import { DialogHeaderComponent, FileSelectorComponent } from 'vitamui-library';
 
 import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
 import { MatSnackBarRef } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { CdkScrollable } from '@angular/cdk/scrolling';
 
 const FILE_MAX_SIZE = 10737418240;
 
@@ -50,7 +52,15 @@ const FILE_MAX_SIZE = 10737418240;
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    CdkScrollable,
+    MatDialogContent,
+    FileSelectorComponent,
+    ReactiveFormsModule,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class UploadComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);

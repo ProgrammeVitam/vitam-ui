@@ -119,8 +119,7 @@ describe.skip('AccessContractNodeUpdateComponent', () => {
       open: vi.fn().mockName('SnackBarService.open'),
     };
     await TestBed.configureTestingModule({
-      declarations: [AccessContractNodeUpdateComponent],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), AccessContractNodeUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },

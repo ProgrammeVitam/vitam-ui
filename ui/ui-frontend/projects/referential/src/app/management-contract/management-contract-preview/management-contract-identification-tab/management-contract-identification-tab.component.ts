@@ -35,22 +35,31 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
-import { PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
-import type { ManagementContract, Option } from 'vitamui-library';
+import { ManagementContract, Option } from 'vitamui-library';
+import { PersistentIdentifierPolicyTypeEnum, SelectComponent, TooltipDirective } from 'vitamui-library';
 import { FormGroupToManagementContractConverterService } from '../../components/form-group-to-management-contract-converter.service';
 import { ManagementContractToFormGroupConverterService } from '../../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../../management-contract.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { UpdatePersistentIdentifierPolicyFormComponent } from '../../components/update-persistent-identifier-policy-form/update-persistent-identifier-policy-form.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-management-contract-identification-tab',
   templateUrl: './management-contract-identification-tab.component.html',
   styleUrls: ['./management-contract-identification-tab.component.scss'],
   providers: [ManagementContractToFormGroupConverterService],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    UpdatePersistentIdentifierPolicyFormComponent,
+    TooltipDirective,
+    MatProgressSpinner,
+    TranslatePipe,
+  ],
 })
 export class ManagementContractIdentificationTabComponent implements OnChanges, OnDestroy {
   private managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);

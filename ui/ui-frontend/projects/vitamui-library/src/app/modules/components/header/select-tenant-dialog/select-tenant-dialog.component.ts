@@ -41,13 +41,14 @@ import { MenuOption } from '../../../models/menu-option.interface';
 
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ItemSelectModule } from '../item-select/item-select.module';
+
+import { ItemSelectComponent } from '../item-select/item-select.component';
 
 @Component({
   selector: 'vitamui-common-select-tenant-dialog',
   templateUrl: './select-tenant-dialog.component.html',
   styleUrls: ['./select-tenant-dialog.component.scss'],
-  imports: [MatButtonModule, TranslatePipe, ItemSelectModule, MatDialogModule],
+  imports: [MatButtonModule, TranslatePipe, ItemSelectComponent, MatDialogModule],
 })
 export class SelectTenantDialogComponent implements OnInit {
   private dialogRef = inject<MatDialogRef<SelectTenantDialogComponent>>(MatDialogRef);

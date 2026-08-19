@@ -66,8 +66,7 @@ describe('SecurityProfileInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [SecurityProfileInformationTabComponent],
+      imports: [SecurityProfileInformationTabComponent],
       providers: [FormBuilder, { provide: SecurityProfileService, useValue: securityProfileServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

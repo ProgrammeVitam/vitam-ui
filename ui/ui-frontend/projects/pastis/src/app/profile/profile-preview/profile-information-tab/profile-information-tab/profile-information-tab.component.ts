@@ -35,22 +35,25 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { ProfileType } from '../../../../models/profile-type.enum';
-import { MiscValidators, SnackBarService } from 'vitamui-library';
+import { SnackBarService } from 'vitamui-library';
+import { MiscValidators, SlideToggleComponent, InputComponent } from 'vitamui-library';
 import type { Profile } from '../../../../models/profile';
 import type { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import type { ProfileDescription } from '../../../../models/profile-description.model';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
-  standalone: false,
+  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ProfileInformationTabComponent {
   private formBuilder = inject(FormBuilder);

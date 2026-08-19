@@ -39,12 +39,31 @@ import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
 import { Rule } from 'vitamui-library';
+import { AddManagementRulesComponent } from './add-management-rules/add-management-rules.component';
+import { DeleteUnitRulesComponent } from './delete-unit-rules/delete-unit-rules.component';
+import { AddUpdatePropertyComponent } from './add-update-property/add-update-property.component';
+import { UpdateUnitRulesComponent } from './update-unit-rules/update-unit-rules.component';
+import { BlockCategoryInheritanceComponent } from './block-category-inheritance/block-category-inheritance.component';
+import { UnlockCategoryInheritanceComponent } from './unlock-category-inheritance/unlock-category-inheritance.component';
+import { BlockRulesInheritanceComponent } from './block-rules-inheritance/block-rules-inheritance.component';
+import { UnlockRulesInheritanceComponent } from './unlock-rules-inheritance/unlock-rules-inheritance.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-rules',
   templateUrl: './archive-unit-rules.component.html',
   styleUrls: ['./archive-unit-rules.component.css'],
-  standalone: false,
+  imports: [
+    AddManagementRulesComponent,
+    DeleteUnitRulesComponent,
+    AddUpdatePropertyComponent,
+    UpdateUnitRulesComponent,
+    BlockCategoryInheritanceComponent,
+    UnlockCategoryInheritanceComponent,
+    BlockRulesInheritanceComponent,
+    UnlockRulesInheritanceComponent,
+    TranslatePipe,
+  ],
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

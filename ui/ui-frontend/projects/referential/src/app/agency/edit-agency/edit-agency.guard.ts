@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ApplicationId, Role, SecurityService, TenantSelectionService } from 'vitamui-library';
+import { SecurityService, TenantSelectionService } from 'vitamui-library';
+import { ApplicationId, Role } from 'vitamui-library';
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';

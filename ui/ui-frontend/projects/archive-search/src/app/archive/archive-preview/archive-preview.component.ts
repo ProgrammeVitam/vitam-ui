@@ -49,17 +49,53 @@ import {
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import type { Unit } from 'vitamui-library';
-import { AccessContract, AccessContractService, unitToVitamuiIcon } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { Unit, AccessContract, AccessContractService } from 'vitamui-library';
+import {
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
+  unitToVitamuiIcon,
+  VitamuiMenuButtonComponent,
+  ClickOutsideDirective,
+  PipesModule,
+} from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { NgClass, CommonModule } from '@angular/common';
+import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab/archive-unit-objects-details-tab.component';
+import { AddManagementRulesComponent } from '../archive-search/additional-actions-search/management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    TooltipDirective,
+    MatTabGroup,
+    NgClass,
+    MatTab,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitDescriptionTabComponent,
+    ClickOutsideDirective,
+    ArchiveUnitRulesDetailsTabComponent,
+    ArchiveUnitObjectsDetailsTabComponent,
+    AddManagementRulesComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);

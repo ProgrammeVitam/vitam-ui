@@ -121,8 +121,14 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CollectObjectGroupDetailsTabComponent],
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        BrowserAnimationsModule,
+        CollectObjectGroupDetailsTabComponent,
+      ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },

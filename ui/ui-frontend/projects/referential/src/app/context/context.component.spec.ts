@@ -40,7 +40,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { ApplicationService, GlobalEventService } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -52,7 +53,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-agency-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class ContextPreviewStub {
   @Input()
@@ -62,7 +63,7 @@ class ContextPreviewStub {
 @Component({
   selector: 'app-agency-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class ContextListStub {}
 
@@ -77,7 +78,6 @@ describe('ContextComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextComponent, ContextListStub, ContextPreviewStub],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         VitamUICommonTestModule,
@@ -87,6 +87,9 @@ describe('ContextComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        ContextComponent,
+        ContextListStub,
+        ContextPreviewStub,
       ],
       providers: [
         { provide: ApplicationService, useValue: applicationServiceMock },

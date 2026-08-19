@@ -35,14 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
+import { VitamuiDragDropFileComponent } from 'vitamui-library';
+import { CustomerColorsInputComponent } from '../../../../customer-create/customer-colors-input/customer-colors-input.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-graphic-identity-form',
   templateUrl: './graphic-identity-form.component.html',
   styleUrls: ['./graphic-identity-form.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, CustomerColorsInputComponent, VitamuiDragDropFileComponent, TranslatePipe],
 })
 export class GraphicIdentityFormComponent implements OnInit {
   private themeService = inject(ThemeService);

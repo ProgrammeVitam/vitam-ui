@@ -76,7 +76,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { EMPTY, filter, mergeMap, Observable, of, Subscription } from 'rxjs';
-import { ApplicationId, SnackBarService, StartupService } from 'vitamui-library';
+import { SnackBarService, StartupService } from 'vitamui-library';
+import { ApplicationId } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
 import { NoticeService } from '../../core/services/notice.service';
@@ -130,7 +131,6 @@ function constantToTranslate(edit: boolean) {
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
   styleUrls: ['./save-profile.component.scss'],
-  standalone: false,
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);

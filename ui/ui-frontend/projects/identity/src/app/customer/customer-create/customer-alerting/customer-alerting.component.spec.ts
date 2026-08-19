@@ -45,8 +45,7 @@ describe('CustomerAlertingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule],
-      declarations: [CustomerAlertingComponent],
+      imports: [MatDialogModule, CustomerAlertingComponent],
     }).compileComponents();
   });
 

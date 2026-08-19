@@ -40,12 +40,19 @@ import { internationalizedKeys } from '../../services/display-object-helper.serv
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { LayoutService } from '../../services/layout.service';
 import { DisplayObjectType } from '../../types';
+import { DataComponent } from '../../../components/data/data.component';
+import { NgTemplateOutlet } from '@angular/common';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { ListComponent } from '../list/list.component';
+import { PrimitiveComponent } from '../primitive/primitive.component';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
-  standalone: false,
+  imports: [DataComponent, NgTemplateOutlet, AccordionComponent, ListComponent, PrimitiveComponent, EmptyPipe, TranslatePipe],
 })
 export class GroupComponent implements OnInit, OnChanges {
   private layoutService = inject(LayoutService);

@@ -78,6 +78,5 @@ import { Component } from '@angular/core';
   selector: 'pastis-user-action-download-doc',
   templateUrl: './download-doc.component.html',
   styleUrls: ['./download-doc.component.scss'],
-  standalone: false,
 })
 export class UserActionsDownloadDocComponent {}

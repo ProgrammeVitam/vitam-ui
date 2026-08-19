@@ -38,7 +38,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse } from 'vitamui-library';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 import { TraceabilityChainAuditRequest } from '../../models/audit.interface';
 
 @Injectable({

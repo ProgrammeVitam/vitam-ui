@@ -36,6 +36,7 @@
  */
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 
 @Component({
   selector: 'app-logbook-operation-popup',
@@ -47,7 +48,7 @@ import { ActivatedRoute } from '@angular/router';
       [isPopup]="true"
     ></app-logbook-operation-detail>
   `,
-  standalone: false,
+  imports: [LogbookOperationDetailComponent],
 })
 export class LogbookOperationPopupComponent implements OnInit {
   private route = inject(ActivatedRoute);

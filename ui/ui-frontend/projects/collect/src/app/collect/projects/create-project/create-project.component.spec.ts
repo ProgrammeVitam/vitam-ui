@@ -64,10 +64,7 @@ import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({
-  name: 'fileSize',
-  standalone: false,
-})
+@Pipe({ name: 'fileSize' })
 export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -158,10 +155,16 @@ describe('CreateProjectComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [CreateProjectComponent, MockFileSizePipe],
       teardown: { destroyAfterEach: false },
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [BrowserAnimationsModule, InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        MatButtonToggleModule,
+        LoggerModule.forRoot(),
+        CreateProjectComponent,
+        MockFileSizePipe,
+      ],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

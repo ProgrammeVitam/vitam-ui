@@ -37,14 +37,20 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
+import { BASE_URL, ENVIRONMENT } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SnackBarService, FilingPlanComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+import { MatTreeModule } from '@angular/material/tree';
 
 // TODO fix tests
 
@@ -66,9 +72,21 @@ describe.skip('IngestContractNodeUpdateComponent', () => {
       open: vi.fn().mockName('SnackBarService.open'),
     };
     await TestBed.configureTestingModule({
-      declarations: [IngestContractNodeUpdateComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        IngestContractNodeUpdateComponent,
+        CommonModule,
+        FilingPlanComponent,
+        FormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatTreeModule,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {

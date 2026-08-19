@@ -71,12 +71,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'vitamui-library';
+import { AuthService, ConfirmDialogService, Group, ProfileService } from 'vitamui-library';
+import { LevelInputComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -84,6 +85,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
 import { GroupCreateComponent } from './group-create.component';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profiles-form',
@@ -167,8 +170,18 @@ describe('GroupCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputModule],
-      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent, GroupCreateComponent],
+      imports: [
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        CommonModule,
+        FormsModule,
+        LevelInputComponent,
+        TranslatePipe,
+        GroupCreateComponent,
+      ],
+      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -44,9 +44,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { LevelInputModule, RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
-import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
+import {
+  VitamUICommonModule,
+  VitamUILibraryModule,
+  RoleComponent,
+  RoleToggleComponent,
+  SlideToggleComponent,
+  LevelInputComponent,
+} from 'vitamui-library';
+
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
 import { InformationTabComponent } from './external-param-profile-detail/information-tab/information-tab.component';
@@ -61,8 +67,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     CommonModule,
     ExternalParamProfileRoutingModule,
-    GroupAttributionModule,
-    LevelInputModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatMenuModule,
@@ -72,19 +76,20 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSidenavModule,
     MatTabsModule,
     ReactiveFormsModule,
-    RoleToggleModule,
-    SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
-  ],
-  declarations: [
     ExternalParamProfileComponent,
     ExternalParamProfileListComponent,
     ExternalParamProfileCreateComponent,
     ExternalParamProfileDetailComponent,
     InformationTabComponent,
     ThresholdsTabComponent,
+    FormsModule,
+    RoleComponent,
+    RoleToggleComponent,
+    SlideToggleComponent,
+    LevelInputComponent,
   ],
 })
 export class ExternalParamProfileModule {}

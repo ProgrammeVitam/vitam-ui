@@ -39,7 +39,8 @@ import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
+import { BASE_URL, Customer, ENVIRONMENT } from 'vitamui-library';
+import { InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
@@ -101,7 +102,7 @@ const expectedCustomer: Customer = {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -128,8 +129,14 @@ describe('GraphicIdentityUpdateComponent', () => {
       open: vi.fn().mockName('SnackBarService.open'),
     };
     await TestBed.configureTestingModule({
-      declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        CustomerColorsInputStubComponent,
+        GraphicIdentityUpdateComponent,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },

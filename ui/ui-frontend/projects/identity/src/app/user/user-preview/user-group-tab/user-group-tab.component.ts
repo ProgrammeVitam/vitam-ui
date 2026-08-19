@@ -39,18 +39,19 @@ import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
-import { AuthService, isRootLevel } from 'vitamui-library';
-import type { AdminUserProfile, Group, Profile, User } from 'vitamui-library';
+import { AuthService, AdminUserProfile, Group, Profile, User } from 'vitamui-library';
+import { isRootLevel, TooltipDirective } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
 import { GroupAttributionComponent } from '../../group-attribution/group-attribution.component';
 import { GroupSelection } from '../../group-selection.interface';
 import { UserService } from '../../user.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-group-tab',
   templateUrl: './user-group-tab.component.html',
   styleUrls: ['./user-group-tab.component.scss'],
-  standalone: false,
+  imports: [TooltipDirective, TranslatePipe],
 })
 export class UserGroupTabComponent implements OnChanges, OnDestroy {
   groupAttrDialog = inject(MatDialog);

@@ -47,10 +47,11 @@ import { AuditService } from '../audit.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { PipesModule } from '../../shared/pipes/pipes.module';
+
 import { AuditInformationTabComponent } from './audit-information-tab/audit-information-tab.component';
 import { AuditOperation } from '../../models/audit.interface';
 import { TranslatePipe } from '@ngx-translate/core';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
 @Component({
   selector: 'app-audit-preview',
@@ -61,7 +62,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     MatTabsModule,
-    PipesModule,
+    EventTypeBadgeColorPipe,
     TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,

@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { InformationDetailComponent, ValidationError } from 'vitamui-library';
+import { ValidationError } from 'vitamui-library';
+import { InformationDetailComponent } from 'vitamui-library';
 
 @Component({
   imports: [InformationDetailComponent],

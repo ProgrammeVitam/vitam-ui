@@ -35,20 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
-import type { ExternalParamProfile } from 'vitamui-library';
-import { diff, Option } from 'vitamui-library';
+import { ExternalParamProfile, Option } from 'vitamui-library';
+import { diff, SlideToggleComponent, SelectComponent, TooltipDirective } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-thresholds-tab',
   templateUrl: './thresholds-tab.component.html',
   styleUrls: ['./thresholds-tab.component.css'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TooltipDirective, TranslatePipe],
 })
 export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
   private formBuilder = inject(FormBuilder);

@@ -47,8 +47,7 @@ describe('OwnerOperationHistoryTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule],
-      declarations: [OwnerOperationHistoryTabComponent],
+      imports: [VitamUICommonTestModule, OwnerOperationHistoryTabComponent],
       providers: [
         { provide: AuthService, useValue: {} },
         { provide: LogbookService, useValue: {} },

@@ -38,10 +38,7 @@
 import { Directive, ElementRef, HostListener, Input, OnInit, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-@Directive({
-  selector: '[vitamuiVerticalResizeSidebar]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiVerticalResizeSidebar]', standalone: true })
 export class ResizeVerticalDirective implements OnInit {
   private elementRef = inject(ElementRef);
   private document = inject(DOCUMENT);

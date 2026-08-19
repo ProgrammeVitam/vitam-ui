@@ -35,18 +35,40 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import {
+  Event,
+  GlobalEventService,
+  SearchBarComponent,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+  DatepickerComponent,
+} from 'vitamui-library';
 import { SecurisationListComponent } from './securisation-list/securisation-list.component';
 import { DateTime } from 'luxon';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { SecurisationPreviewComponent } from './securisation-preview/securisation-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-securisation',
   templateUrl: './securisation.component.html',
   styleUrls: ['./securisation.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    SecurisationPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ReactiveFormsModule,
+    DatepickerComponent,
+    SecurisationListComponent,
+    TranslatePipe,
+  ],
 })
 export class SecurisationComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);

@@ -55,8 +55,7 @@ describe('UploadTrackingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, NoopAnimationsModule, LoggerModule.forRoot()],
-      declarations: [UploadTrackingComponent],
+      imports: [MatProgressBarModule, NoopAnimationsModule, LoggerModule.forRoot(), UploadTrackingComponent],
       providers: [FormBuilder, { provide: UploadService, useValue: UploadServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

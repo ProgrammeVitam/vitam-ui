@@ -38,7 +38,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -48,9 +49,8 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesDetailsTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [InjectorModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, LoggerModule.forRoot(), ArchiveUnitRulesDetailsTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },

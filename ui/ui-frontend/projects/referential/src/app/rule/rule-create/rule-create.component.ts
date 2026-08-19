@@ -35,19 +35,40 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ManagementRuleValidators, Rule, RuleService } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  DialogHeaderComponent,
+  InputComponent,
+  TooltipDirective,
+  SelectComponent,
+} from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 import { RuleCreateValidators } from './rule-create.validators';
 import { sizes } from '../../ontology/ontology-form-options';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-rule-create',
   templateUrl: './rule-create.component.html',
   styleUrls: ['./rule-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    InputComponent,
+    TooltipDirective,
+    SelectComponent,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<RuleCreateComponent>>(MatDialogRef);

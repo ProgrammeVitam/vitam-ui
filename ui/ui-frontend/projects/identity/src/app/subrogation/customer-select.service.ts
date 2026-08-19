@@ -36,7 +36,8 @@
  */
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { CriteriaSearchQuery, Customer, MenuOption, Operators } from 'vitamui-library';
+import { CriteriaSearchQuery, Customer, MenuOption } from 'vitamui-library';
+import { Operators } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';

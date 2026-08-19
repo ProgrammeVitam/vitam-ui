@@ -56,6 +56,7 @@ import { ManagementContractCreateValidators } from '../validators/management-con
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { CreatePersistentIdentifierPolicyFormComponent } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -63,7 +64,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
-import { PersistentIdentifierPoliciesFormModule } from '../components/create-persistent-identifier-policy-form/create-persistent-identifier-policy-form.module';
 
 @Component({
   selector: 'app-management-contract-create',
@@ -79,8 +79,8 @@ import { PersistentIdentifierPoliciesFormModule } from '../components/create-per
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    PersistentIdentifierPoliciesFormModule,
     ReactiveFormsModule,
+    CreatePersistentIdentifierPolicyFormComponent,
     SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,

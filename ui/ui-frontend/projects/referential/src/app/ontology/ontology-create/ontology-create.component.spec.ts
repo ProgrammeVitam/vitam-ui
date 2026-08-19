@@ -45,7 +45,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
+import { VitamUILibraryModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyService } from '../ontology.service';

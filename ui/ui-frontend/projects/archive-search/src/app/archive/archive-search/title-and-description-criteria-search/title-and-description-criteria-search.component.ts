@@ -35,20 +35,74 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, CriteriaValue, diff, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaValue } from 'vitamui-library';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  diff,
+  SearchCriteriaTypeEnum,
+  ClosePopupDialogComponent,
+  CommonConfirmDialogComponent,
+  DialogHeaderComponent,
+  EditableButtonToggleComponent,
+  EditableEmailInputComponent,
+  EditableFieldComponent,
+  EditableFileComponent,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  EditableTextareaComponent,
+  EditableToggleGroupComponent,
+  EllipsisDirective,
+  LevelInputComponent,
+  SubLevelPipe,
+} from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 
 @Component({
   selector: 'app-title-and-description-criteria-search',
   templateUrl: './title-and-description-criteria-search.component.html',
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    ClosePopupDialogComponent,
+    CommonConfirmDialogComponent,
+    CommonModule,
+    DialogHeaderComponent,
+    EditableButtonToggleComponent,
+    EditableEmailInputComponent,
+    EditableFieldComponent,
+    EditableFileComponent,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    EditableToggleGroupComponent,
+    EllipsisDirective,
+    FormsModule,
+    LevelInputComponent,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+    SubLevelPipe,
+  ],
 })
 export class TitleAndDescriptionCriteriaSearchComponent {
   private formBuilder = inject(FormBuilder);
