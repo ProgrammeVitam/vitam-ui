@@ -99,6 +99,7 @@ import fr.gouv.vitamui.iam.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
+import fr.gouv.vitamui.iam.server.user.password.reset.ResetPasswordNotifier;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.MapUtils;
@@ -107,6 +108,7 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.MongoTransactionManager;
@@ -179,7 +181,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     private final UserRepository userRepository;
     private final GroupService groupService;
     private final ProfileService profileService;
-    private final UserEmailService userEmailService;
+    private final ResetPasswordNotifier<UserDto> laxResetPasswordNotifier;
+    private final ResetPasswordNotifier<UserDto> strictResetPasswordNotifier;
     private final TenantRepository tenantRepository;
     private final SecurityService securityService;
     private final CustomerRepository customerRepository;
@@ -200,7 +203,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final UserRepository userRepository,
         final GroupService groupService,
         final ProfileService profileService,
-        final UserEmailService userEmailService,
+        @Qualifier("laxResetPasswordNotifier") final ResetPasswordNotifier<UserDto> laxResetPasswordNotifier,
+        @Qualifier("strictResetPasswordNotifier") final ResetPasswordNotifier<UserDto> strictResetPasswordNotifier,
         final TenantRepository tenantRepository,
         final SecurityService securityService,
         final CustomerRepository customerRepository,
@@ -219,7 +223,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         this.userRepository = userRepository;
         this.groupService = groupService;
         this.profileService = profileService;
-        this.userEmailService = userEmailService;
+        this.laxResetPasswordNotifier = laxResetPasswordNotifier;
+        this.strictResetPasswordNotifier = strictResetPasswordNotifier;
         this.tenantRepository = tenantRepository;
         this.securityService = securityService;
         this.customerRepository = customerRepository;
@@ -458,7 +463,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             }
             throw e;
         }
-        userEmailService.sendCreationEmail(createdUserDto);
+        laxResetPasswordNotifier.notify(createdUserDto);
         return createdUserDto;
     }
 
@@ -572,7 +577,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         }
 
         if (sendMail) {
-            userEmailService.sendCreationEmail(updatedUser);
+            laxResetPasswordNotifier.notify(updatedUser);
         }
 
         return updatedUser;
@@ -661,7 +666,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         }
 
         if (sendMail) {
-            userEmailService.sendCreationEmail(dto);
+            laxResetPasswordNotifier.notify(dto);
         }
         return dto;
     }
@@ -1404,5 +1409,11 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     @Override
     protected String getVersionApiCriteria() {
         return CRITERIA_VERSION_V2;
+    }
+
+    public void sendResetPasswordEmail(final String userId) {
+        final UserDto user = this.findUserById(userId);
+
+        strictResetPasswordNotifier.notify(user);
     }
 }

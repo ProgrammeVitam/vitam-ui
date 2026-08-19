@@ -37,14 +37,22 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User, UserInfo } from 'vitamui-library';
+import { filter, switchMap } from 'rxjs/operators';
+import {
+  AdminUserProfile,
+  AuthService,
+  ConfirmDialogComponent,
+  Customer,
+  Group,
+  isLevelAllowed,
+  StartupService,
+  User,
+  UserInfo,
+} from 'vitamui-library';
 import { UserInfoService } from './../user-info.service';
-
-import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
-import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-preview',
@@ -53,13 +61,13 @@ import { UserService } from '../user.service';
   standalone: false,
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
-  private matDialog = inject(MatDialog);
+  private dialog = inject(MatDialog);
   private userService = inject(UserService);
   private authService = inject(AuthService);
-  userApi = inject(UserApiService);
   private startupService = inject(StartupService);
   groupService = inject(GroupService);
   private userInfoService = inject(UserInfoService);
+  private translateService = inject(TranslateService);
 
   @Input() isPopup: boolean;
 
@@ -68,6 +76,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   get user(): User {
     return this._user;
   }
+
   @Input()
   set user(user: User) {
     this._user = user;
@@ -92,17 +101,17 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       }
     }
   }
+
   @Input() customer: Customer;
 
   @Output() previewClose = new EventEmitter();
 
   @ViewChild('confirmDisabledUserDialog', { static: true }) confirmDisabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
-  @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
+  @ViewChild('confirmDeleteUserDialog', { static: true }) confirmDeleteUserDialog: TemplateRef<UserPreviewComponent>;
 
   public connectedUserInfo: AdminUserProfile;
   public userUpdatedSub: Subscription;
-  public attribaGroups: GroupSelection[];
   public userInfo: UserInfo;
   public collectionsMap: Map<string, string>;
   public identifiers: string[];
@@ -111,6 +120,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   get groups(): Group[] {
     return this._groups;
   }
+
   set groups(groupList: Group[]) {
     this._groups = groupList;
   }
@@ -132,15 +142,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this.userUpdatedSub.unsubscribe();
   }
 
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/user/' + this.user.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
-  }
-
   updateStatus(status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
@@ -148,8 +149,9 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     } else if (status === 'DISABLED') {
       dialogToOpen = this.confirmDisabledUserDialog;
     }
-    const dialogRef = this.matDialog.open(dialogToOpen);
-    dialogRef
+
+    this.dialog
+      .open(dialogToOpen)
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
@@ -184,10 +186,8 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       country: '',
     };
 
-    let dialogToOpen;
-    dialogToOpen = this.confirmdeleteUserDialog;
-    const dialogRef = this.matDialog.open(dialogToOpen);
-    dialogRef
+    this.dialog
+      .open(this.confirmDeleteUserDialog)
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
@@ -210,5 +210,29 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             this.emitClose();
           });
       });
+  }
+
+  canUpdate(): boolean {
+    return this.connectedUserInfo?.standardAttrsAllowed && !this.levelNotAllowed();
+  }
+
+  resetPassword() {
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        disableClose: false,
+        data: {
+          title: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.TITLE',
+          subTitle: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.SUBTITLE',
+          message: this.translateService.instant('USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.MESSAGE'),
+          confirmLabel: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.CONFIRM',
+          cancelLabel: 'USER.OTHER_ACTION.RESET_PASSWORD.DIALOG.CANCEL',
+        },
+      })
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        switchMap(() => this.userService.resetPassword(this.user)),
+      )
+      .subscribe();
   }
 }

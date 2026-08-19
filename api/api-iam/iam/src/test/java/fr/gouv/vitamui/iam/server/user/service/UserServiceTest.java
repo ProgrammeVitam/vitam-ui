@@ -30,7 +30,6 @@ import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
-import fr.gouv.vitamui.iam.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.server.profile.service.ProfileService;
 import fr.gouv.vitamui.iam.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
@@ -39,6 +38,7 @@ import fr.gouv.vitamui.iam.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.ApplicationAnalytics;
 import fr.gouv.vitamui.iam.server.user.domain.User;
+import fr.gouv.vitamui.iam.server.user.password.reset.ResetPasswordNotifier;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
 import org.bson.Document;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,25 +96,11 @@ public final class UserServiceTest {
 
     private GroupService groupService;
 
-    private ProfileService profileService;
-
     private SecurityService securityService;
-
-    private UserEmailService userEmailService;
-
-    private AddressService addressService;
 
     private CustomerRepository customerRepository;
 
     private GroupRepository groupRepository;
-
-    private SequenceGeneratorService sequenceGeneratorService;
-
-    private ConnectionHistoryService connectionHistoryService;
-
-    private ProfileRepository profileRepository;
-
-    private TenantRepository tenantRepository;
 
     private AddressConverter addressConverter;
 
@@ -122,33 +108,30 @@ public final class UserServiceTest {
 
     private ApplicationService applicationService;
 
-    private UserExportService userExportService;
-
-    private UserInfoService userInfoService;
-
     @BeforeEach
     public void setUp() {
-        sequenceGeneratorService = mock(SequenceGeneratorService.class);
+        SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
         userRepository = mock(UserRepository.class);
-        profileService = mock(ProfileService.class);
+        ProfileService profileService = mock(ProfileService.class);
         securityService = mock(SecurityService.class);
         customerRepository = mock(CustomerRepository.class);
         groupRepository = mock(GroupRepository.class);
-        userEmailService = mock(UserEmailService.class);
-        profileRepository = mock(ProfileRepository.class);
-        tenantRepository = mock(TenantRepository.class);
+        ResetPasswordNotifier<UserDto> laxResetPasswordService = mock(ResetPasswordNotifier.class);
+        ResetPasswordNotifier<UserDto> strictResetPasswordService = mock(ResetPasswordNotifier.class);
+        TenantRepository tenantRepository = mock(TenantRepository.class);
         groupService = mock(GroupService.class);
-        addressService = mock(AddressService.class);
+        AddressService addressService = mock(AddressService.class);
         applicationService = mock(ApplicationService.class);
-        userExportService = mock(UserExportService.class);
-        userInfoService = mock(UserInfoService.class);
-        connectionHistoryService = mock(ConnectionHistoryService.class);
+        UserExportService userExportService = mock(UserExportService.class);
+        UserInfoService userInfoService = mock(UserInfoService.class);
+        ConnectionHistoryService connectionHistoryService = mock(ConnectionHistoryService.class);
         userService = new UserService(
             sequenceGeneratorService,
             userRepository,
             groupService,
             profileService,
-            userEmailService,
+            laxResetPasswordService,
+            strictResetPasswordService,
             tenantRepository,
             securityService,
             customerRepository,
@@ -178,7 +161,7 @@ public final class UserServiceTest {
     void testGetUserByToken() {
         when(securityService.getLevel()).thenReturn("DSI");
         when(securityService.userIsRootLevel()).thenReturn(true);
-        when(groupService.getMany(GROUP_ID)).thenReturn(Arrays.asList(buildGroupDto()));
+        when(groupService.getMany(GROUP_ID)).thenReturn(List.of(buildGroupDto()));
         when(groupService.getOne(GROUP_ID, Optional.empty(), Optional.empty())).thenReturn(buildGroupDto());
 
         final Token token = new Token();
@@ -190,7 +173,7 @@ public final class UserServiceTest {
         user.setGroupId(GROUP_ID);
 
         when(userRepository.findOne(any(Query.class))).thenReturn(Optional.of(user));
-        when(groupService.getMany(any(String.class))).thenReturn(Arrays.asList(buildGroupDto()));
+        when(groupService.getMany(any(String.class))).thenReturn(List.of(buildGroupDto()));
         Mockito.when(securityService.userIsRootLevel()).thenReturn(true);
 
         final Customer customer = new Customer();

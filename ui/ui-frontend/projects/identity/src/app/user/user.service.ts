@@ -148,4 +148,16 @@ export class UserService extends SearchService<User> {
   prepareSignedExport(): Observable<string> {
     return this.userApi.prepareSignedExport();
   }
+
+  resetPassword(user: User): Observable<void> {
+    return this.userApi.resetPassword(user.id).pipe(
+      tap(() => {
+        this.snackBarService.open({
+          message: 'SHARED.SNACKBAR.USER_RESET_PASSWORD',
+          translateParams: { param1: user.firstname, param2: user.lastname },
+          icon: 'vitamui-icon-key',
+        });
+      }),
+    );
+  }
 }
