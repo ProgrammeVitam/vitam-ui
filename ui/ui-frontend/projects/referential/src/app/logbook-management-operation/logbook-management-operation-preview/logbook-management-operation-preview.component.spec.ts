@@ -88,6 +88,8 @@ describe('LogbookManagementOperationPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookManagementOperationPreviewComponent);
     component = fixture.componentInstance;
+    component.tenant = {};
+    component.tenantIdentifier = 42;
     component.operation = {
       globalState: 'PAUSE',
       nextStep: '',
