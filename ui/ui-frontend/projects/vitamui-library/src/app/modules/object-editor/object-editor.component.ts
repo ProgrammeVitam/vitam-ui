@@ -35,15 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DisplayObjectType } from '../object-viewer/types';
 import type { EditObject } from './models/edit-object.model';
+import { GroupEditorComponent } from './components/group-editor/group-editor.component';
+import { ListEditorComponent } from './components/list-editor/list-editor.component';
+import { PrimitiveEditorComponent } from './components/primitive-editor/primitive-editor.component';
 
 @Component({
   selector: 'vitamui-common-object-editor',
   templateUrl: './object-editor.component.html',
   styles: [],
-  standalone: false,
+  imports: [FormsModule, ReactiveFormsModule, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })
 export class ObjectEditorComponent {
   @Input() editObject!: EditObject;

@@ -49,7 +49,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-import type { Rule } from 'vitamui-library';
+import { Rule } from 'vitamui-library';
 import {
   AuthService,
   BASE_URL,
@@ -68,7 +68,19 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-rule-preview',
   template: '',
-  standalone: false,
+  imports: [
+    NoopAnimationsModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
 })
 class RulePreviewStubComponent {
   @Input()
@@ -78,7 +90,19 @@ class RulePreviewStubComponent {
 @Component({
   selector: 'app-rule-list',
   template: '',
-  standalone: false,
+  imports: [
+    NoopAnimationsModule,
+    RouterTestingModule,
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
 })
 class RuleListStubComponent {
   @Input()
@@ -120,7 +144,6 @@ describe('RuleComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [RuleComponent, RuleListStubComponent, RulePreviewStubComponent],
       imports: [
         NoopAnimationsModule,
         RouterTestingModule,
@@ -134,6 +157,9 @@ describe('RuleComponent', () => {
         MatDialogModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        RuleComponent,
+        RuleListStubComponent,
+        RulePreviewStubComponent,
       ],
       providers: [
         GlobalEventService,

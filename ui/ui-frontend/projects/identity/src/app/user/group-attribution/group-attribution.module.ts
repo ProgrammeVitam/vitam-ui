@@ -34,19 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CollapseDirectiveModule, VitamUICommonModule } from 'vitamui-library';
+import { VitamUICommonModule, CollapseContainerDirective, CollapseDirective, CollapseTriggerForDirective } from 'vitamui-library';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupAttributionComponent } from './group-attribution.component';
 import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [CommonModule, SharedModule, CollapseDirectiveModule, VitamUICommonModule, MatDialogModule, TranslatePipe],
-  declarations: [GroupAttributionComponent, GroupDetailComponent, GroupListComponent],
+  imports: [
+    SharedModule,
+    VitamUICommonModule,
+    MatDialogModule,
+    TranslatePipe,
+    GroupAttributionComponent,
+    GroupDetailComponent,
+    GroupListComponent,
+    CollapseContainerDirective,
+    CollapseDirective,
+    CollapseTriggerForDirective,
+    CommonModule,
+  ],
   exports: [GroupAttributionComponent, GroupDetailComponent, GroupListComponent],
 })
 export class GroupAttributionModule {}

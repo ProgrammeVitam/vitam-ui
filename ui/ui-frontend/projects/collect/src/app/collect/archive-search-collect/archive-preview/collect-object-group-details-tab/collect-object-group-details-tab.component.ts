@@ -49,8 +49,15 @@ import {
   ValidationError,
   getErrorOnTechnicalObjectsGroup,
   getErrorOnObjectsGroup,
+  InformationBlocComponent,
+  InformationDetailComponent,
+  ArchiveUnitModule,
+  TooltipDirective,
+  PipesModule,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { NgClass, UpperCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-collect-object-group-details-tab',
@@ -64,7 +71,16 @@ import { ArchiveCollectService } from '../../archive-collect.service';
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
-  standalone: false,
+  imports: [
+    InformationBlocComponent,
+    InformationDetailComponent,
+    ArchiveUnitModule,
+    NgClass,
+    TooltipDirective,
+    UpperCasePipe,
+    PipesModule,
+    TranslatePipe,
+  ],
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   private archiveCollectService = inject(ArchiveCollectService);

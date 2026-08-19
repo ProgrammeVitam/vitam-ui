@@ -46,7 +46,8 @@ const TEST_ELEMENT_ID = 'test';
 
 @Component({
   template: ` <span id="${TEST_ELEMENT_ID}" *vitamuiCommonHasAnyRole="roleConfig"> Lorem ipsum </span>`,
-  standalone: false,
+  standalone: true,
+  imports: [HasAnyRoleDirective],
 })
 class TestHostComponent {
   public roles: string[] = ['ROLE_GET', 'ROLE_CREATE'];
@@ -63,7 +64,7 @@ describe('HasAnyRoleDirective', () => {
       user$: new Subject(),
     };
     TestBed.configureTestingModule({
-      declarations: [TestHostComponent, HasAnyRoleDirective],
+      imports: [TestHostComponent, HasAnyRoleDirective],
       providers: [
         { provide: AuthService, useValue: authStubService },
         {

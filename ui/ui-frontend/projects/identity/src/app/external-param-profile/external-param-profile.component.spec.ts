@@ -52,7 +52,6 @@ describe('ExternalParamProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExternalParamProfileComponent],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -62,6 +61,7 @@ describe('ExternalParamProfileComponent', () => {
         MatSidenavModule,
         MatDialogModule,
         MatMenuModule,
+        ExternalParamProfileComponent,
       ],
       providers: [{ provide: ExternalParamProfileService, useValue: {} }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

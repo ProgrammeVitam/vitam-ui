@@ -39,18 +39,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import type { Customer, Owner, Tenant } from 'vitamui-library';
+import { Customer, Owner, Tenant } from 'vitamui-library';
+import { EllipsisDirective, TooltipDirective } from 'vitamui-library';
 import { CustomerDataService } from '../../customer.data.service';
 import { OwnerCreateComponent } from '../../owner-create/owner-create.component';
 import { OwnerService } from '../../owner.service';
 import { TenantCreateComponent } from '../../tenant-create/tenant-create.component';
 import { TenantService } from '../../tenant.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-owner-list',
   templateUrl: './owner-list.component.html',
   styleUrls: ['./owner-list.component.scss'],
-  standalone: false,
+  imports: [TooltipDirective, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
   private dialog = inject(MatDialog);

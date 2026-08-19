@@ -42,12 +42,13 @@ import { map, switchMap } from 'rxjs/operators';
 import { Operators } from '../../../vitamui-table/operators.enum';
 import { SiteApiService } from './../../../api/site-api.service';
 import { AuthService } from './../../../auth.service';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 
 @Component({
   selector: 'vitamui-common-select-site',
   templateUrl: './select-site.component.html',
   styleUrls: ['./select-site.component.scss'],
-  standalone: false,
+  imports: [MatMenuTrigger, MatMenu, MatMenuItem],
 })
 export class SelectSiteComponent implements OnInit {
   protected http = inject(HttpClient);

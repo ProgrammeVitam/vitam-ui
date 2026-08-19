@@ -47,8 +47,7 @@ describe('DownloadSnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DownloadSnackBarComponent],
-      imports: [MatDialogModule, MatProgressBarModule],
+      imports: [MatDialogModule, MatProgressBarModule, DownloadSnackBarComponent],
       providers: [
         {
           provide: MatDialog,
@@ -71,13 +70,13 @@ describe('DownloadSnackBarComponent', () => {
   });
 });
 
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { MatDialog } from '@angular/material/dialog';
-// import { MatProgressBarModule } from '@angular/material/progress-bar';
-// import { empty } from 'rxjs';
+// import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+// import {MatDialog} from '@angular/material/dialog';
+// import {MatProgressBarModule} from '@angular/material/progress-bar';
+// import {empty} from 'rxjs';
 
-// import { DownloadService } from '../download.service';
-// import { DownloadSnackBarComponent } from './download-snack-bar.component';
+// import {DownloadService} from '../download.service';
+// import {DownloadSnackBarComponent} from './download-snack-bar.component';
 
 // describe('DownloadSnackBarComponent', () => {
 //   let component: DownloadSnackBarComponent;

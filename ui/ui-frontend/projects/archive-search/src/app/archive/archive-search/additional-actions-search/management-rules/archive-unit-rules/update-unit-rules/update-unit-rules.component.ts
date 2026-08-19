@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -52,6 +52,10 @@ import {
   SearchCriteriaEltDto,
   VitamuiSelectOptions,
   VitamTenantConfigService,
+  SelectComponent,
+  SlideToggleComponent,
+  DatepickerComponent,
+  DialogHeaderComponent,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -59,6 +63,9 @@ import { UpdateUnitManagementRuleService } from '../../../../../common-services/
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatMiniFabButton } from '@angular/material/button';
+import { NgStyle } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
@@ -85,7 +92,19 @@ const LocalValidators = {
   selector: 'app-update-unit-rules',
   templateUrl: './update-unit-rules.component.html',
   styleUrls: ['./update-unit-rules.component.css'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    SlideToggleComponent,
+    DatepickerComponent,
+    MatMiniFabButton,
+    NgStyle,
+    MatProgressSpinner,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   private archiveService = inject(ArchiveService);

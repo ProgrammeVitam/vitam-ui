@@ -49,14 +49,14 @@ import { AppComponent } from './app.component';
 @Component({
   selector: 'router-outlet',
   template: '',
-  standalone: false,
+  imports: [MatSidenavModule, NoopAnimationsModule],
 })
 class RouterOutletStubComponent {}
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
   template: '',
-  standalone: false,
+  imports: [MatSidenavModule, NoopAnimationsModule],
 })
 class SubrogationBannerStubComponent {}
 
@@ -64,8 +64,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule],
-      declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
+      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent, AppComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },

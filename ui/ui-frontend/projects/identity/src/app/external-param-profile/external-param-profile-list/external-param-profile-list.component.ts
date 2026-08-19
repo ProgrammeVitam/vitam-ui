@@ -46,16 +46,21 @@ import {
   InfiniteScrollTable,
   PageRequest,
   Profile,
+  PipesModule,
+  InfiniteScrollDirective,
 } from 'vitamui-library';
 import { ProfileService } from '../../profile/profile.service';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
+import { NgClass, DecimalPipe, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-external-param-profile-list',
   templateUrl: './external-param-profile-list.component.html',
   styleUrls: ['./external-param-profile-list.component.css'],
-  standalone: false,
+  imports: [NgClass, MatProgressSpinner, DecimalPipe, PipesModule, TranslatePipe, CommonModule, InfiniteScrollDirective],
 })
 export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnDestroy, OnInit {
   externalParamProfileServiceService: ExternalParamProfileService;

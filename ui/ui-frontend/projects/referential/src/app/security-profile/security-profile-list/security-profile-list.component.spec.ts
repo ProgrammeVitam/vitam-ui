@@ -52,8 +52,7 @@ describe('SecurityProfileListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SecurityProfileListComponent],
-      imports: [],
+      imports: [SecurityProfileListComponent],
       providers: [
         { provide: BASE_URL, useValue: '' },
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },

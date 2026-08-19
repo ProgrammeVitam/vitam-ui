@@ -38,11 +38,12 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Group } from 'vitamui-library';
+import { GroupPreviewComponent } from './group-preview.component';
 
 @Component({
   selector: 'app-group-popup',
   template: '<app-group-preview (previewClose)="closePopup()" [group]="group" [isPopup]="true"></app-group-preview>',
-  standalone: false,
+  imports: [GroupPreviewComponent],
 })
 export class GroupPopupComponent {
   private route = inject(ActivatedRoute);

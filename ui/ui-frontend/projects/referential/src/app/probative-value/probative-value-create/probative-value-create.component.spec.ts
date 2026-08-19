@@ -78,8 +78,8 @@ describe('ProbativeValueCreateComponent', () => {
         MatProgressBarModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
+        ProbativeValueCreateComponent,
       ],
-      declarations: [ProbativeValueCreateComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: {} },

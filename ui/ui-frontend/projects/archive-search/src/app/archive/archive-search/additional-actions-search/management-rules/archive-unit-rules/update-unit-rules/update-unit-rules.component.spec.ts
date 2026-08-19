@@ -215,8 +215,7 @@ describe('UpdateUnitRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UpdateUnitRulesComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, UpdateUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

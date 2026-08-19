@@ -36,8 +36,10 @@
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { extractSubLevel } from '../../../utils/level.util';
+
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,7 +52,7 @@ export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './level-input.component.html',
   styleUrls: ['./level-input.component.scss'],
   providers: [LEVEL_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [FormsModule, forwardRef(() => LevelInputComponent), TranslatePipe],
 })
 export class LevelInputComponent implements OnInit, ControlValueAccessor {
   @Input() prefix: string;

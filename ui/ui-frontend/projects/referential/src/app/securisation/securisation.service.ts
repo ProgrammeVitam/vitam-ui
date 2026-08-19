@@ -36,7 +36,8 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Event, SearchService, SnackBarService, VitamuiHttpHeaders } from 'vitamui-library';
+import { Event, SearchService, SnackBarService } from 'vitamui-library';
+import { VitamuiHttpHeaders } from 'vitamui-library';
 
 import { OperationApiService } from '../core/api/operation-api.service';
 

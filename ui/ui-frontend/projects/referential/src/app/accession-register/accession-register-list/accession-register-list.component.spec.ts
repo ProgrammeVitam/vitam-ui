@@ -39,7 +39,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Direction, InfiniteScrollTable, PageRequest, SearchService } from 'vitamui-library';
+import { SearchService } from 'vitamui-library';
+import { Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterListComponent } from './accession-register-list.component';
@@ -77,9 +78,8 @@ describe('AccessionRegisterListComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AccessionRegisterListComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, MatProgressSpinnerModule],
+      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, AccessionRegisterListComponent],
       providers: [
         { provide: AccessionRegistersService, useValue: accessionRegistersService },
         { provide: SearchService, useValue: searchService },

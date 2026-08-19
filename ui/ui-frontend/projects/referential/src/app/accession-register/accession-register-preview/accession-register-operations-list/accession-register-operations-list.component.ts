@@ -36,8 +36,17 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import {
+  Direction,
+  RegisterValueEventModel,
+  RegisterValueEventType,
+  TableFilterDirective,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  OrderByButtonComponent,
+} from 'vitamui-library';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-operations-list',
@@ -51,7 +60,7 @@ import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vita
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
-  standalone: false,
+  imports: [TableFilterDirective, TableFilterComponent, TableFilterOptionComponent, OrderByButtonComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
   private translateService = inject(TranslateService);

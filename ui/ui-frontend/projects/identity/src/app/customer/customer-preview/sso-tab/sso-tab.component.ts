@@ -39,11 +39,13 @@ import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
-import type { Customer, IdentityProvider } from 'vitamui-library';
-import { DownloadUtils } from 'vitamui-library';
+import { Customer, IdentityProvider } from 'vitamui-library';
+import { DownloadUtils, TooltipDirective } from 'vitamui-library';
 import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
+import { IdentityProviderDetailsComponent } from './identity-provider-details/identity-provider-details.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sso-tab',
@@ -66,7 +68,7 @@ import { ProviderApiService } from './provider-api.service';
       transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' }))]),
     ]),
   ],
-  standalone: false,
+  imports: [TooltipDirective, IdentityProviderDetailsComponent, TranslatePipe],
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
   dialog = inject(MatDialog);

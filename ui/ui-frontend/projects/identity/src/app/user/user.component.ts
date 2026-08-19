@@ -52,18 +52,32 @@ import {
   SidenavPage,
   User,
   SnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
 } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserService } from './user.service';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { UserPreviewComponent } from './user-preview/user-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    UserPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    UserListComponent,
+    TranslatePipe,
+  ],
 })
 export class UserComponent extends SidenavPage<User> implements OnInit {
   dialog = inject(MatDialog);

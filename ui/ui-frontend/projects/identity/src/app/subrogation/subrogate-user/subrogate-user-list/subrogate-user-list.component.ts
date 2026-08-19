@@ -51,6 +51,8 @@ import {
   Profile,
   SubrogationModalService,
   SubrogationUser,
+  EllipsisDirective,
+  InfiniteScrollDirective,
 } from 'vitamui-library';
 
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
@@ -58,6 +60,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { SubrogationService } from '../../subrogation.service';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const MINIMUM_CRITICALITY = 0;
 const AVERAGE_CRITICALITY = 1;
@@ -67,7 +72,7 @@ const MAXIMUM_CRITICALITY = 2;
   selector: 'app-subrogate-user-list',
   templateUrl: './subrogate-user-list.component.html',
   styleUrls: ['./subrogate-user-list.component.scss'],
-  standalone: false,
+  imports: [NgClass, MatProgressSpinner, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
   subrogationService: SubrogationService;

@@ -46,7 +46,17 @@ import {
   PageRequest,
   rotateAnimation,
   AccessContractService,
+  TableFilterDirective,
+  OrderByButtonComponent,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  PipesModule,
+  EllipsisDirective,
+  InfiniteScrollDirective,
 } from 'vitamui-library';
+import { NgClass, CommonModule } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -55,7 +65,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
   accessContractService: AccessContractService;

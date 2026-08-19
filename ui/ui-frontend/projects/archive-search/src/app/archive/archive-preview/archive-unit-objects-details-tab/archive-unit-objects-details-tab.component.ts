@@ -38,7 +38,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
+import { Unit, VersionWithQualifierDto } from 'vitamui-library';
 import {
   AccessContract,
   AccessContractService,
@@ -46,10 +46,15 @@ import {
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
   VitamuiHttpHeaders,
+  ArchiveUnitModule,
+  TooltipDirective,
+  PipesModule,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { Subscription } from 'rxjs';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
@@ -63,7 +68,7 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
-  standalone: false,
+  imports: [ArchiveUnitModule, NgClass, TooltipDirective, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
   private archiveService = inject(ArchiveService);

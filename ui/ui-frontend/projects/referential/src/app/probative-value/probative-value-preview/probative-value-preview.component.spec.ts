@@ -38,15 +38,13 @@ import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { ExternalParameters } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -68,8 +66,7 @@ describe('ProbativeValuePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProbativeValuePreviewComponent, MockTruncatePipe],
-      imports: [EventTypeBadgeColorPipe],
+      imports: [EventTypeBadgeColorPipe, ProbativeValuePreviewComponent, MockTruncatePipe],
       providers: [
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: ProbativeValueService, useValue: {} },

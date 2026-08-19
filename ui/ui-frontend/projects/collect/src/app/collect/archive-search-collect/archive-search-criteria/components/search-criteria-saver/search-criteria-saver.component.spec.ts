@@ -60,10 +60,7 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -102,8 +99,14 @@ describe('SearchCriteriaSaverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
-      declarations: [SearchCriteriaSaverComponent, MockTruncatePipe],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        RouterTestingModule,
+        SearchCriteriaSaverComponent,
+        MockTruncatePipe,
+      ],
       providers: [
         FormBuilder,
         ArchiveSharedDataService,

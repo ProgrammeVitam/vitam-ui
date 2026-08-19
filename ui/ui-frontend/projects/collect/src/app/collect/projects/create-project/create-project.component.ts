@@ -36,9 +36,9 @@
  */
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { finalize, forkJoin, Observable, of, throwError } from 'rxjs';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
@@ -73,7 +73,31 @@ import {
   Workflow,
   ZipFile,
   ZipFileStatus,
+  DialogHeaderComponent,
+  StepperComponent,
+  NextStepComponent,
+  SlideToggleComponent,
+  SelectComponent,
+  PreviousStepComponent,
+  InputComponent,
+  FileSelectorComponent,
+  AccordionComponent,
+  TooltipDirective,
+  SelectWithTreeComponent,
+  DatepickerComponent,
+  CommonProgressBarComponent,
+  DialogContentWithStateComponent,
+  PipesModule,
+  FilingPlanComponent,
 } from 'vitamui-library';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
@@ -99,7 +123,39 @@ export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
       transition('expand <=> collapse', animate('200ms ease-out')),
     ]),
   ],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatDialogActions,
+    NextStepComponent,
+    SlideToggleComponent,
+    SelectComponent,
+    PreviousStepComponent,
+    InputComponent,
+    FileSelectorComponent,
+    AccordionComponent,
+    TooltipDirective,
+    SelectWithTreeComponent,
+    DatepickerComponent,
+    CommonProgressBarComponent,
+    DialogContentWithStateComponent,
+    AsyncPipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    FilingPlanComponent,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatTreeModule,
+  ],
 })
 export class CreateProjectComponent implements OnInit, AfterViewChecked {
   private formBuilder = inject(FormBuilder);

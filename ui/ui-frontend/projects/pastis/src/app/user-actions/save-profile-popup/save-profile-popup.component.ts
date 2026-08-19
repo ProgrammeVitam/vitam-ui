@@ -36,15 +36,16 @@
  */
 import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ProfileType } from '../../models/profile-type.enum';
-import { ApplicationService, MiscValidators, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ApplicationService, Option } from 'vitamui-library';
+import { MiscValidators, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { Notice } from '../../models/notice.model';
 import { ProfileService } from '../../core/services/profile.service';
 import { Subscription } from 'rxjs';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { PastisMaterialModule } from '../../material.module';
+
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
 
 import { Router } from '@angular/router';
@@ -58,9 +59,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     ReactiveFormsModule,
     FormsModule,
     VitamUICommonModule,
-    PastisMaterialModule,
     PastisGenericPopupComponent,
     TranslatePipe,
+    MatDialogModule,
   ],
   selector: 'app-save-profile-popup',
   templateUrl: './save-profile-popup.component.html',

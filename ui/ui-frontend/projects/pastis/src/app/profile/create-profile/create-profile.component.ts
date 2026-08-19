@@ -72,11 +72,16 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnInit, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileVersion, ProfileVersionOptions } from '../../models/profile-version.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogHeaderComponent, TooltipDirective } from 'vitamui-library';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export interface CreateProfileFormResult {
   profileType: ProfileType;
@@ -88,7 +93,19 @@ export interface CreateProfileFormResult {
   selector: 'pastis-create-profile',
   templateUrl: './create-profile.component.html',
   styleUrls: ['./create-profile.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    ReactiveFormsModule,
+    PastisGenericPopupComponent,
+    TooltipDirective,
+    MatRadioGroup,
+    MatRadioButton,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class CreateProfileComponent implements OnInit {
   private fb = inject(FormBuilder);

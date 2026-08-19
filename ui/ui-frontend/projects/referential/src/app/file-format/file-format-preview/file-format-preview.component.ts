@@ -34,20 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject, forwardRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent } from 'vitamui-library';
-import type { FileFormat } from 'vitamui-library';
+import { ConfirmActionComponent, FileFormat } from 'vitamui-library';
+import { OperationHistoryTabComponent, CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
+
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-file-format-preview',
   templateUrl: './file-format-preview.component.html',
   styleUrls: ['./file-format-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    FileFormatInformationTabComponent,
+    OperationHistoryTabComponent,
+    forwardRef(() => FileFormatPreviewComponent),
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class FileFormatPreviewComponent implements AfterViewInit {
   private matDialog = inject(MatDialog);

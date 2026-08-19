@@ -47,10 +47,23 @@ import {
   LogbookOperationTypeProc,
   LogbookService,
   SnackBarService,
+  EventTypeLabelComponent,
+  HistoryEventsComponent,
+  PipesModule,
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const msgForDownload: { [key: string]: string } = {
   EXPORT_DIP: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP',
@@ -64,7 +77,22 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
   animations: [fadeInOutAnimation],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    EventTypeLabelComponent,
+    HistoryEventsComponent,
+    PipesModule,
+    LastEventPipe,
+    EventTypeBadgeColorPipe,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   private logbookService = inject(LogbookService);

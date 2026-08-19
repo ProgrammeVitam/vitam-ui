@@ -37,10 +37,7 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-@Pipe({
-  name: 'yesNo',
-  standalone: false,
-})
+@Pipe({ name: 'yesNo' })
 export class YesNoPipe implements PipeTransform {
   private translateService = inject(TranslateService);
 

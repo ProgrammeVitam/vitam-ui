@@ -35,14 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { Rule } from 'vitamui-library';
-import { RuleService, SecurityService, VitamuiRoles, diff } from 'vitamui-library';
+import { Rule, RuleService, SecurityService } from 'vitamui-library';
+import { VitamuiRoles, diff, SelectComponent, InputComponent } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const RULES_APP = 'RULES_APP';
 
@@ -50,7 +52,7 @@ const RULES_APP = 'RULES_APP';
   selector: 'app-rule-information-tab',
   templateUrl: './rule-information-tab.component.html',
   styleUrls: ['./rule-information-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SelectComponent, InputComponent, AsyncPipe, TranslatePipe],
 })
 export class RuleInformationTabComponent implements OnInit {
   private route = inject(ActivatedRoute);

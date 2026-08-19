@@ -106,8 +106,7 @@ describe('LeavesTreeComponent', () => {
     (archiveSharedDataServiceStub as any).selectedUnit$ = of();
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule],
-      declarations: [LeavesTreeComponent],
+      imports: [BrowserAnimationsModule, LeavesTreeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceStub },

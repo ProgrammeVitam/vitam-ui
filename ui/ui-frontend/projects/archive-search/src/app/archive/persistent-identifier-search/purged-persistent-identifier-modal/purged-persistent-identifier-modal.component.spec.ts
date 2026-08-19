@@ -71,8 +71,7 @@ describe('ErrorResponseModalComponent', () => {
 
   async function init(type: any, operationType: any) {
     await TestBed.configureTestingModule({
-      declarations: [PurgedPersistentIdentifierModalComponent],
-      imports: [],
+      imports: [PurgedPersistentIdentifierModalComponent],
       providers: [
         {
           provide: MatDialogRef,

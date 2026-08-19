@@ -35,14 +35,27 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MatSidenav } from '@angular/material/sidenav';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService, DateService, FrenchDate, QueryParamsService, Tenant } from 'vitamui-library';
+import {
+  AuthService,
+  DateService,
+  FrenchDate,
+  QueryParamsService,
+  Tenant,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+  TooltipDirective,
+  DatepickerComponent,
+} from 'vitamui-library';
 import { OperationDetails } from '../models/operation-response.interface';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
 import { tap } from 'rxjs/operators';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
+import { NgStyle } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface FormData {
   startDateMin?: Date;
@@ -60,7 +73,20 @@ interface OperationSearch {
   selector: 'app-logbook-management-operation',
   templateUrl: './logbook-management-operation.component.html',
   styleUrls: ['./logbook-management-operation.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    LogbookManagementOperationPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    TooltipDirective,
+    ReactiveFormsModule,
+    NgStyle,
+    DatepickerComponent,
+    LogbookManagementOperationListComponent,
+    TranslatePipe,
+  ],
 })
 export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);

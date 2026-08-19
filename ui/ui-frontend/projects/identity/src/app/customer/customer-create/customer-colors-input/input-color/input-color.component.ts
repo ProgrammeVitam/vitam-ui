@@ -35,15 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
-import { hexToRgb, rgbToHsl, FormControlWarn } from 'vitamui-library';
+import { FormControlWarn } from 'vitamui-library';
+import { hexToRgb, rgbToHsl, InputComponent, PipesModule } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-input-color',
   templateUrl: './input-color.component.html',
   styleUrls: ['./input-color.component.scss'],
-  standalone: false,
+  imports: [InputComponent, ColorPickerDirective, ReactiveFormsModule, PipesModule, TranslatePipe],
 })
 export class InputColorComponent implements OnInit {
   @Input() placeholder: string;

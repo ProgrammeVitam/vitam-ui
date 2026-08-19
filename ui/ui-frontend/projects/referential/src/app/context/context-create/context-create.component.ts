@@ -38,18 +38,19 @@ import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Context, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ConfirmDialogService, Context, Option } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile/security-profile.service';
 import { ContextService } from '../context.service';
 import { ContextCreateValidators } from './context-create.validators';
 
-import { ContextEditPermissionModule } from './context-edit-permission/context-edit-permission.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { ContextEditPermissionComponent } from './context-edit-permission/context-edit-permission.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -57,7 +58,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './context-create.component.html',
   styleUrls: ['./context-create.component.scss'],
   imports: [
-    ContextEditPermissionModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -66,6 +66,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     ReactiveFormsModule,
     SharedModule,
+    ContextEditPermissionComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

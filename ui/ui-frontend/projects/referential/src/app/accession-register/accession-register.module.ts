@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -51,7 +51,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule, RoleComponent, RoleToggleComponent, SlideToggleComponent } from 'vitamui-library';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
@@ -81,7 +81,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     GroupAttributionModule,
     MatProgressBarModule,
     MatTabsModule,
-    RoleToggleModule,
     MatCheckboxModule,
     MatCardModule,
     MatPseudoCheckboxModule,
@@ -89,8 +88,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     MatRadioModule,
     TranslatePipe,
-  ],
-  declarations: [
     AccessionRegisterComponent,
     AccessionRegisterListComponent,
     AccessionRegisterFacetsComponent,
@@ -98,6 +95,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     AccessionRegisterPreviewComponent,
     AccessionRegisterDetailComponent,
     AccessionRegisterOperationsListComponent,
+    FormsModule,
+    RoleComponent,
+    RoleToggleComponent,
+    SlideToggleComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

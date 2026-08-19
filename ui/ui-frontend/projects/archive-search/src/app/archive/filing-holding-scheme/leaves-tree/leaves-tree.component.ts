@@ -36,7 +36,7 @@
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
   ConfigurationsApiService,
@@ -50,16 +50,32 @@ import {
   SearchCriteriaDto,
   Unit,
   UnitType,
+  TooltipDirective,
+  VitamuiTreeNodeComponent,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { first } from 'rxjs/operators';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NgClass, DecimalPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
   styleUrls: ['./leaves-tree.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    TooltipDirective,
+    MatTree,
+    MatTreeNodeDef,
+    MatNestedTreeNode,
+    NgClass,
+    VitamuiTreeNodeComponent,
+    MatTreeNodeOutlet,
+    DecimalPipe,
+    TranslatePipe,
+  ],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private archiveSharedDataService = inject(ArchiveSharedDataService);

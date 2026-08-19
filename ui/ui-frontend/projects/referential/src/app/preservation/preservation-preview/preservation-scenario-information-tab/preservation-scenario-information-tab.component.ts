@@ -37,7 +37,8 @@
 
 import { Component, effect, inject, input } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActionType, Option, PreservationScenario, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { ActionType, Option, PreservationScenario } from 'vitamui-library';
+import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({

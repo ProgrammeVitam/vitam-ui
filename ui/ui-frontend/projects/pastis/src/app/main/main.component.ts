@@ -86,12 +86,26 @@ import { SpinnerOverlayService } from 'vitamui-library';
 import { tap } from 'rxjs/operators';
 import { ProfileType } from '../models/profile-type.enum';
 import { ProfileVersion } from '../models/profile-version.enum';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { FileTreeMetadataComponent } from '../profile/edit-profile/file-tree-metadata/file-tree-metadata.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    MatButton,
+    MatIcon,
+    MatSidenavContainer,
+    MatSidenav,
+    EditProfileComponent,
+    MatSidenavContent,
+    FileTreeMetadataComponent,
+  ],
 })
 export class MainComponent implements OnInit, OnDestroy {
   fileService = inject(FileService);

@@ -37,15 +37,39 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import type { Event, Profile } from 'vitamui-library';
-import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
+import { Event, Profile, AuthService, StartupService } from 'vitamui-library';
+import {
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
+  isLevelAllowed,
+  OperationHistoryTabComponent,
+} from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-hierarchy-detail',
   templateUrl: './hierarchy-detail.component.html',
   styleUrls: ['./hierarchy-detail.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    OperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
   private hierarchyService = inject(HierarchyService);

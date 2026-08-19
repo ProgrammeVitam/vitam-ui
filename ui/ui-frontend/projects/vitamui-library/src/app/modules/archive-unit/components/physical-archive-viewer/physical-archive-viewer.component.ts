@@ -35,10 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ObjectQualifierType } from '../../../models/units/object-qualifier.enums';
 import { ValidationError } from '../../../models/units/unit.interface';
 import type { VersionWithQualifierDto } from '../../../models/units/object-group.interface';
+import { NgClass, UpperCasePipe } from '@angular/common';
+import { BytesPipe } from '../../../pipes/bytes.pipe';
 
 interface Measurement {
   name: string;
@@ -66,7 +68,7 @@ type MeasurementDisplayMode = 'SYMBOL' | 'NAME';
   selector: 'vitamui-common-physical-archive-viewer',
   templateUrl: './physical-archive-viewer.component.html',
   styleUrls: ['./physical-archive-viewer.component.scss'],
-  standalone: false,
+  imports: [NgClass, UpperCasePipe, BytesPipe, TranslatePipe],
 })
 export class PhysicalArchiveViewerComponent implements OnInit {
   private translateService = inject(TranslateService);

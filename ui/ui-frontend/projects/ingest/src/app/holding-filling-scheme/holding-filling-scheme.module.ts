@@ -43,8 +43,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { UploadModule } from '../core/common/upload.module';
-import { UploadTrackingModule } from '../shared/upload-tracking/upload-tracking.module';
 import { HoldingFillingSchemeRoutingModule } from './holding-filling-scheme-routing.module';
 import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -58,11 +56,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressBarModule,
     MatSidenavModule,
     ReactiveFormsModule,
-    UploadModule,
-    UploadTrackingModule,
     VitamUICommonModule,
     TranslatePipe,
+    HoldingFillingSchemeComponent,
   ],
-  declarations: [HoldingFillingSchemeComponent],
 })
 export class HoldingFillingSchemeModule {}

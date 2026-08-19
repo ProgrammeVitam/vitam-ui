@@ -39,12 +39,13 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../../auth.service';
 import { ThemeDataType } from '../../../models/customer/theme/themeDataType.enum';
 import { ThemeService } from '../../../theme.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-user-photo',
   templateUrl: './user-photo.component.html',
   styleUrls: ['./user-photo.component.scss'],
-  standalone: false,
+  imports: [NgClass],
 })
 export class UserPhotoComponent implements OnInit {
   private themeService = inject(ThemeService);

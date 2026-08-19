@@ -46,20 +46,17 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { ProbativeValueCreateModule } from './probative-value-create/probative-value-create.module';
-import { ProbativeValuePreviewModule } from './probative-value-preview/probative-value-preview.module';
 import { ProbativeValueRoutingModule } from './probative-value-routing.module';
 import { ProbativeValueComponent } from './probative-value.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { PipesModule } from '../shared/pipes/pipes.module';
+
 import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ProbativeValueComponent, ProbativeValueListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -67,8 +64,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     ReactiveFormsModule,
     VitamUICommonModule,
     ProbativeValueRoutingModule,
-    ProbativeValueCreateModule,
-    ProbativeValuePreviewModule,
     MatMenuModule,
     MatDialogModule,
     MatSidenavModule,
@@ -77,8 +72,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
     TranslatePipe,
+    ProbativeValueComponent,
+    ProbativeValueListComponent,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

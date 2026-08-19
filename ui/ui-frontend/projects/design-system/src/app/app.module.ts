@@ -45,8 +45,7 @@ import { of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TranslationModule } from './components/translation/translation.module';
-import { DesignSystemModule } from './components/design-system/design-system.module';
+
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -68,7 +67,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 registerLocaleData(localeFr, 'fr');
 
-@NgModule({
+@NgModule(/* TODO(standalone-migration): clean up removed NgModule class manually. 
+{
   declarations: [AppComponent],
   imports: [
     AppRoutingModule,
@@ -101,7 +101,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: BaseUserInfoApiService, useValue: { patchMyUserInfo: () => of(undefined) } }, // Make changing language work
   ],
   bootstrap: [AppComponent],
-})
+} */)
 export class AppModule {
   constructor() {
     const authService = inject(AuthService);

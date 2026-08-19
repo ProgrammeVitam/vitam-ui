@@ -39,7 +39,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -49,7 +50,7 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-file-format-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class AgencyPreviewStub {
   @Input()
@@ -59,7 +60,7 @@ class AgencyPreviewStub {
 @Component({
   selector: 'app-file-format-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, NoopAnimationsModule, MatSidenavModule, MatDialogModule],
 })
 class AgencyListStub {}
 
@@ -69,7 +70,6 @@ describe('FileFormatComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileFormatComponent, AgencyListStub, AgencyPreviewStub],
       imports: [
         VitamUICommonTestModule,
         RouterTestingModule,
@@ -78,6 +78,9 @@ describe('FileFormatComponent', () => {
         NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        FileFormatComponent,
+        AgencyListStub,
+        AgencyPreviewStub,
       ],
       providers: [
         {

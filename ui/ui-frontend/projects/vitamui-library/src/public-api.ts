@@ -44,14 +44,13 @@ export * from './lib/api/search-unit-api.service';
 /* COMPONENTS */
 export * from './lib/components/confirm-action/confirm-action.component';
 export * from './lib/components/filing-plan/filing-plan.component';
-export * from './lib/components/filing-plan/filing-plan.module';
+
 export * from './lib/components/filing-plan/filing-plan.service';
 export * from './lib/components/filing-plan/node.component';
 export * from './lib/components/form-errors/form-control-warn';
 export * from './lib/components/vitamui-radio-group/vitamui-radio-group.component';
-export * from './lib/components/vitamui-radio-group/vitamui-radio-group.module';
+
 export * from './lib/components/vitamui-radio/vitamui-radio.component';
-export * from './lib/components/vitamui-radio/vitamui-radio.module';
 
 export * from './lib/components/dialog/alert-dialog/alert-dialog.component';
 export * from './lib/components/dialog/confirm-dialog/confirm-dialog.component';
@@ -145,16 +144,16 @@ export * from './app/modules/base-http-client';
 export * from './app/modules/components/application-card/application-card.component';
 export * from './app/modules/components/autocomplete/utils/item-node.interface';
 export * from './app/modules/components/autocomplete/utils/option.interface';
-export * from './app/modules/components/collapse/collapse.module';
+
 export * from './app/modules/components/common-confirm-dialog/close-popup-dialog.component';
 export * from './app/modules/components/common-confirm-dialog/common-confirm-dialog.component';
-export * from './app/modules/components/common-confirm-dialog/confirm-dialog.module';
+
 export * from './app/modules/components/common-confirm-dialog/confirm-dialog.service';
 export * from './app/modules/components/data/data.component';
 export * from './app/modules/components/download-snack-bar/download-snack-bar.component';
 export * from './app/modules/components/editable-field/editable-email-input/editable-email-input.component';
 export * from './app/modules/components/editable-field/editable-field.component';
-export * from './app/modules/components/editable-field/editable-field.module';
+
 export * from './app/modules/components/editable-field/editable-file/editable-file.component';
 export * from './app/modules/components/editable-field/editable-input/editable-input.component';
 export * from './app/modules/components/editable-field/editable-level-input/editable-level-input.component';
@@ -163,11 +162,11 @@ export * from './app/modules/components/editable-field/editable-textarea/editabl
 export * from './app/modules/components/editable-field/editable-toggle-group/editable-button-toggle.component';
 export * from './app/modules/components/editable-field/editable-toggle-group/editable-toggle-group.component';
 export * from './app/modules/components/editable-field/level-input/level-input.component';
-export * from './app/modules/components/editable-field/level-input/level-input.module';
+
 export * from './app/modules/components/header/select-tenant-dialog/select-tenant-dialog.component';
 export * from './app/modules/components/order-by-button/order-by-button.component';
 export * from './app/modules/components/role-toggle/role-toggle.component';
-export * from './app/modules/components/role-toggle/role-toggle.module';
+
 export * from './app/modules/components/role-toggle/role.component';
 export * from './app/modules/components/search-bar/search-bar.component';
 export * from './app/modules/components/stepper/stepper.component';
@@ -183,11 +182,11 @@ export * from './app/modules/country.service';
 export * from './app/modules/customer-selection.service';
 export * from './app/modules/directives/collapse/collapse-container.directive';
 export * from './app/modules/directives/collapse/collapse-trigger-for.directive';
-export * from './app/modules/directives/collapse/collapse.directive.module';
+
 export * from './app/modules/directives/collapse/collapse.directive';
 export * from './app/modules/directives/drag-and-drop/drag-and-drop.directive';
 export * from './app/modules/directives/infinite-scroll/infinite-scroll.directive';
-export * from './app/modules/directives/infinite-scroll/infinite-scroll.module';
+
 export * from './app/modules/directives/row-collapse/row-collapse-container.directive';
 export * from './app/modules/directives/row-collapse/row-collapse-trigger-for.directive';
 export * from './app/modules/directives/row-collapse/row-collapse.directive';
@@ -341,7 +340,6 @@ export * from './app/modules/vitamui-table/paginated-response.interface';
 export * from './app/modules/vitamui-table/request-param.model';
 export * from './app/modules/vitamui-table/search.service';
 
-export * from './app/modules/account/account.module';
 export * from './app/modules/archive-unit/components/archive-unit-count/archive-unit-count.component';
 export * from './app/modules/archive-unit/components/archive-unit-viewer/archive-unit-viewer.component';
 export * from './app/modules/archive-unit/components/physical-archive-viewer/physical-archive-viewer.component';
@@ -355,16 +353,16 @@ export * from './app/modules/components/collapse/collapse.component';
 export * from './app/modules/components/common-progress-bar/common-progress-bar.component';
 export * from './app/modules/components/common-tooltip/common-tooltip.component';
 export * from './app/modules/components/common-tooltip/tooltip.directive';
-export * from './app/modules/components/common-tooltip/common-tooltip.module';
+
 export * from './app/modules/components/file-selector/file-selector.component';
 export * from './app/modules/components/file-selector/file-selector-validators';
 export * from './app/modules/components/footer/footer.component';
 export * from './app/modules/components/header/header.component';
 export * from './app/modules/components/header/header.module';
 export * from './app/modules/components/header/select-language/select-language.component';
-export * from './app/modules/components/header/select-language/select-language.module';
+
 export * from './app/modules/components/header/user-photo/user-photo.component';
-export * from './app/modules/components/header/user-photo/user-photo.module';
+
 export * from './app/modules/components/logbook-operation-facet/logbook-operation-facet.component';
 export * from './app/modules/components/datepicker/datepicker.component';
 export * from './app/modules/components/datepicker/datepicker.interface';
@@ -381,20 +379,20 @@ export * from './app/modules/components/vitamui-interval-date-picker/vitamui-int
 export * from './app/modules/components/vitamui-menu-button/vitamui-menu-button.component';
 export * from './lib/components/input/input.component';
 export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.component';
-export * from './app/modules/components/vitamui-sidenav-header/vitamui-sidenav-header.module';
+
 export * from './app/modules/components/snack-bar/snack-bar.interface';
 export * from './app/modules/components/snack-bar/snack-bar.component';
 export * from './app/modules/components/snack-bar/snack-bar.service';
 export * from './app/modules/components/vitamui-sup-header/vitamui-sup-header.component';
 export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive';
-export * from './app/modules/directives/autocomplete-position/autocomplete-position.directive.module';
+
 export * from './app/modules/directives/click-outside/click-outside.directive';
 export * from './app/modules/directives/ellipsis/ellipsis.directive';
-export * from './app/modules/directives/ellipsis/ellipsis.directive.module';
+
 export * from './app/modules/directives/resize-sidebar/resize-sidebar.directive';
-export * from './app/modules/directives/resize-sidebar/resize-sidebar.module';
+
 export * from './app/modules/directives/resize-sidebar/resize-vertical.directive';
-export * from './app/modules/directives/row-collapse/row-collapse.module';
+
 export * from './app/modules/logbook/event-type-label/event-type-label.component';
 export * from './app/modules/logbook/history/history-events/history-events.component';
 export * from './app/modules/logbook/history/multi-operation-history-tab/multi-operation-history-tab.component';
@@ -422,7 +420,7 @@ export * from './app/modules/pipes/yes-no.pipe';
 export * from './lib/components/reclassification-dialog/reclassification-dialog.component';
 export * from './app/modules/security/has-any-role.directive';
 export * from './app/modules/security/has-role.directive';
-export * from './app/modules/security/security.module';
+
 export * from './app/modules/subrogation/subrogation-banner/subrogation-banner.component';
 export * from './app/modules/subrogation/subrogation.module';
 export * from './app/modules/object-viewer/services/type.service';

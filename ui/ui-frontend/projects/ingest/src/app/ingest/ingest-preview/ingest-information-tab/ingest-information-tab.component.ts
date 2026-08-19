@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, inject } from '@angular/core';
-import { ApplicationId, ApplicationService } from 'vitamui-library';
+import { ApplicationService } from 'vitamui-library';
+import { ApplicationId, DataComponent, PipesModule } from 'vitamui-library';
 import { IngestStatus } from '../../../models/logbook-event.interface';
 import type {
   AgIdExtDeflateJson,
@@ -47,12 +48,15 @@ import { ingestHasEvents, ingestLastEvent, ingestStatus } from '../../../models/
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { IngestReferentialService } from '../../../core/service/ingest-referential.service';
+import { IngestEventDetailComponent } from './ingest-event-detail/ingest-event-detail.component';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-information-tab',
   templateUrl: './ingest-information-tab.component.html',
   styleUrls: ['./ingest-information-tab.component.scss'],
-  standalone: false,
+  imports: [DataComponent, IngestEventDetailComponent, AsyncPipe, PipesModule, TranslatePipe],
 })
 export class IngestInformationTabComponent implements OnChanges {
   private applicationService = inject(ApplicationService);

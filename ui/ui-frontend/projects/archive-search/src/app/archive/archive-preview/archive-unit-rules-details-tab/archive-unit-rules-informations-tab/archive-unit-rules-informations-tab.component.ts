@@ -36,9 +36,10 @@
  */
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import type { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
-import { Logger } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto, Logger } from 'vitamui-library';
+import { PipesModule } from 'vitamui-library';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',
@@ -52,7 +53,7 @@ import { Logger } from 'vitamui-library';
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
-  standalone: false,
+  imports: [NgClass, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
   private translateService = inject(TranslateService);

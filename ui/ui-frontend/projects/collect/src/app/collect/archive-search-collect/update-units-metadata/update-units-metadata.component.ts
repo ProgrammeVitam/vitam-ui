@@ -35,16 +35,40 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
-import { Logger, SnackBarService, Transaction, VitamErrorDetails } from 'vitamui-library';
+import {
+  Logger,
+  SnackBarService,
+  Transaction,
+  VitamErrorDetails,
+  DialogHeaderComponent,
+  StepperComponent,
+  TooltipDirective,
+  FileSelectorComponent,
+} from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-update-units-metadata',
   templateUrl: './update-units-metadata.component.html',
   styleUrls: ['./update-units-metadata.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    TooltipDirective,
+    MatProgressSpinner,
+    FileSelectorComponent,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
   data = inject<{

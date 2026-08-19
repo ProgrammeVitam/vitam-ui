@@ -67,20 +67,14 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -100,7 +94,6 @@ describe('ArchivePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatMenuModule,
@@ -115,6 +108,9 @@ describe('ArchivePreviewComponent', () => {
         VitamUICommonModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        ArchivePreviewComponent,
+        MockTruncatePipe,
+        MockUnitI18nPipe,
       ],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceMock },

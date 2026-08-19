@@ -35,20 +35,58 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, MiscValidators, rotateAnimation } from 'vitamui-library';
+import {
+  AuthService,
+  buildValidators,
+  collapseAnimation,
+  ConfirmDialogService,
+  MiscValidators,
+  rotateAnimation,
+  DialogHeaderComponent,
+  StepperComponent,
+  SlideToggleComponent,
+  InputComponent,
+  NextStepComponent,
+  PreviousStepComponent,
+  LevelInputComponent,
+} from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
+import { UnitsFormComponent } from '../units-form/units-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    CdkScrollable,
+    MatDialogContent,
+    SlideToggleComponent,
+    InputComponent,
+    MatDialogActions,
+    NextStepComponent,
+    ProfilesFormComponent,
+    PreviousStepComponent,
+    UnitsFormComponent,
+    TranslatePipe,
+    CommonModule,
+    FormsModule,
+    LevelInputComponent,
+  ],
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<GroupCreateComponent>>(MatDialogRef);

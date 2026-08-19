@@ -56,8 +56,7 @@ describe('AuditListComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AuditListComponent],
-      imports: [VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule, AuditListComponent],
       providers: [{ provide: AuditService, useValue: auditServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

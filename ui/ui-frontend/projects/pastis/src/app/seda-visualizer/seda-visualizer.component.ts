@@ -88,7 +88,6 @@ interface ExtendedHierachyNode<T> extends d3.HierarchyNode<T> {
   selector: 'pastis-seda-visualizer',
   templateUrl: './seda-visualizer.component.html',
   styleUrls: ['./seda-visualizer.component.scss'],
-  standalone: false,
 })
 export class SedaVisualizerComponent implements OnInit {
   private pastisService = inject(PastisApiService);

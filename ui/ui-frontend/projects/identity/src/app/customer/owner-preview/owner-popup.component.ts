@@ -39,11 +39,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Owner, Tenant } from 'vitamui-library';
 import { OwnerService } from '../owner.service';
+import { OwnerPreviewComponent } from './owner-preview.component';
 
 @Component({
   selector: 'app-owner-popup',
   template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>',
-  standalone: false,
+  imports: [OwnerPreviewComponent],
 })
 export class OwnerPopupComponent {
   private route = inject(ActivatedRoute);

@@ -36,16 +36,40 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
-import type { Event, Profile } from 'vitamui-library';
+import { AuthService, StartupService, Event, Profile } from 'vitamui-library';
+import {
+  isLevelAllowed,
+  OperationHistoryTabComponent,
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
 
 import { ProfileService } from '../profile.service';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
   styleUrls: ['./profile-detail.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    OperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
   private rngProfileService = inject(ProfileService);

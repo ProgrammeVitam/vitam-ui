@@ -38,7 +38,7 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { finalize, Subscription } from 'rxjs';
 import {
   ClickOutsideDirective,
-  CommonTooltipModule,
+  TooltipDirective,
   ItemFlatNode,
   ItemNode,
   ItemNodeUtils,
@@ -68,7 +68,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
     MatButtonToggleModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    CommonTooltipModule,
+    TooltipDirective,
     ClickOutsideDirective,
   ],
   selector: 'app-schema-list',

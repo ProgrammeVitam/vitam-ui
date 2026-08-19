@@ -37,15 +37,33 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ExternalParamProfile, GlobalEventService, SidenavPage } from 'vitamui-library';
+import {
+  ExternalParamProfile,
+  GlobalEventService,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+} from 'vitamui-library';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-external-param-profile',
   templateUrl: './external-param-profile.component.html',
   styleUrls: ['./external-param-profile.component.css'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ExternalParamProfileDetailComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ExternalParamProfileListComponent,
+    TranslatePipe,
+  ],
 })
 export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProfile> implements OnInit {
   dialog = inject(MatDialog);

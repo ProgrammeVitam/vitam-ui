@@ -35,18 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MatDialogContent } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import type { Customer, Option } from 'vitamui-library';
-import { LanguageService, StartupService } from 'vitamui-library';
+import { Customer, Option, LanguageService, StartupService } from 'vitamui-library';
+import { DialogHeaderComponent, InputComponent } from 'vitamui-library';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { HomepageMessageTranslationComponent } from './homepage-message-translation/homepage-message-translation';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-homepage-message',
   templateUrl: './homepage-message.component.html',
   styleUrls: ['./homepage-message.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    CdkScrollable,
+    MatDialogContent,
+    ReactiveFormsModule,
+    InputComponent,
+    HomepageMessageTranslationComponent,
+    TranslatePipe,
+  ],
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   dialogRef = inject<MatDialogRef<HomepageMessageComponent>>(MatDialogRef);

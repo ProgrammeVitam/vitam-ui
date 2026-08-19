@@ -50,8 +50,7 @@ import { VitamUICommonModule } from 'vitamui-library';
 
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FR_DATE_FORMAT } from '../helpers/dates.constants';
-import { SecurisationListModule } from './securisation-list/securisation-list.module';
-import { SecurisationPreviewModule } from './securisation-preview/securisation-preview.module';
+
 import { SecurisationRoutingModule } from './securisation-routing.module';
 import { SecurisationComponent } from './securisation.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -64,8 +63,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     ReactiveFormsModule,
     VitamUICommonModule,
     SecurisationRoutingModule,
-    SecurisationPreviewModule,
-    SecurisationListModule,
     MatMenuModule,
     MatDialogModule,
     MatSidenavModule,
@@ -75,8 +72,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatFormFieldModule,
     MatInputModule,
     TranslatePipe,
+    SecurisationComponent,
   ],
-  declarations: [SecurisationComponent],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })
 export class SecurisationModule {}

@@ -36,13 +36,17 @@
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { AuthService, IEvent, LogbookService } from 'vitamui-library';
+import { HistoryEventsComponent, CollapseComponent } from 'vitamui-library';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 const EVENT_LIMIT = 100;
 @Component({
   selector: 'app-owner-operation-history-tab',
   templateUrl: './owner-operation-history-tab.component.html',
   styleUrls: ['./owner-operation-history-tab.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, HistoryEventsComponent, TranslatePipe, CollapseComponent, CommonModule],
 })
 export class OwnerOperationHistoryTabComponent implements OnChanges {
   private authService = inject(AuthService);

@@ -38,16 +38,37 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  GlobalEventService,
+  ManagementContract,
+  SidenavPage,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+  TooltipDirective,
+} from 'vitamui-library';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { shareReplay } from 'rxjs/operators';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { ManagementContractPreviewComponent } from './management-contract-preview/management-contract-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-management-contract',
   templateUrl: './management-contract.component.html',
   styleUrls: ['./management-contract.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ManagementContractPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    TooltipDirective,
+    ManagementContractListComponent,
+    TranslatePipe,
+  ],
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> {
   dialog = inject(MatDialog);

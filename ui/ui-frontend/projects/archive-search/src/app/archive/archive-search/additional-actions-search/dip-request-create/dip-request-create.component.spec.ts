@@ -87,8 +87,7 @@ describe('DipRequestCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DipRequestCreateComponent],
-      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot(), DipRequestCreateComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

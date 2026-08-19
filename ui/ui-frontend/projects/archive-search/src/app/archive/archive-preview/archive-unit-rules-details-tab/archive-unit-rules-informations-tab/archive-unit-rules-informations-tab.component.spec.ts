@@ -75,10 +75,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     @Input() vitamuiCommonCollapse: any;
   }
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -121,7 +118,6 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesInformationsTabComponent, DateTimeStubPipe],
       imports: [
         CollapseStubDirective,
         CollapseTriggerForStubDirective,
@@ -130,6 +126,8 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         LoggerModule.forRoot(),
         NoopAnimationsModule,
         VitamUICommonTestModule,
+        ArchiveUnitRulesInformationsTabComponent,
+        DateTimeStubPipe,
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },

@@ -43,12 +43,17 @@ import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
+import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
+import { UserPhotoComponent } from '../components/header/user-photo/user-photo.component';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  standalone: false,
+  imports: [VitamuiTitleBreadcrumbComponent, UserPhotoComponent, MatTabGroup, MatTab, AccountInformationTabComponent, TranslatePipe],
 })
 export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
   private accountService = inject(AccountService);

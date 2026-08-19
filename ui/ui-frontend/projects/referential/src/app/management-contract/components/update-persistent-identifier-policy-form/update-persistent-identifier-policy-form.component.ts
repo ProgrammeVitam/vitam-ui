@@ -35,19 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import {
   ManagementContractValidationErrors,
   ManagementContractValidators,
 } from 'projects/referential/src/app/management-contract/validators/management-contract-validators';
 import { Option } from 'vitamui-library';
-import { TranslateService } from '@ngx-translate/core';
+import { InputComponent, SelectComponent, TooltipDirective } from 'vitamui-library';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { NgClass, NgStyle } from '@angular/common';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 
 @Component({
   selector: 'app-update-persistent-identifier-policy-form',
   templateUrl: './update-persistent-identifier-policy-form.component.html',
   styleUrls: ['./update-persistent-identifier-policy-form.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    InputComponent,
+    MatCheckbox,
+    NgClass,
+    NgStyle,
+    SelectComponent,
+    TooltipDirective,
+    MatRadioGroup,
+    MatRadioButton,
+    TranslatePipe,
+  ],
 })
 export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges {
   private formBuilder = inject(FormBuilder);

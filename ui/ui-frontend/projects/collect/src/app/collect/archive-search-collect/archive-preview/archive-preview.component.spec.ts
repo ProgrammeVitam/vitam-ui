@@ -64,20 +64,14 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -103,8 +97,10 @@ describe('ArchivePreviewComponent', () => {
         RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
+        ArchivePreviewComponent,
+        MockTruncatePipe,
+        MockUnitI18nPipe,
       ],
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },

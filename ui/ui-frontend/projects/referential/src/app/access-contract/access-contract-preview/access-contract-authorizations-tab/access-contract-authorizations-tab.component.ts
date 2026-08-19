@@ -36,18 +36,19 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import type { AccessContract, AccessContractDisplay, Option, VitamuiSelectOptions } from 'vitamui-library';
-import { AccessRightType } from 'vitamui-library';
-import { accessRightTypeOf, AgencyService } from 'vitamui-library';
+import { AccessContract, AccessContractDisplay, Option, VitamuiSelectOptions, AccessRightType, AgencyService } from 'vitamui-library';
+import { accessRightTypeOf } from 'vitamui-library';
 import { MatDialog } from '@angular/material/dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { RULE_TYPES } from '../../../rule/rules.constants';
+import { NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-authorizations-tab',
   templateUrl: './access-contract-authorizations-tab.component.html',
   styleUrls: ['./access-contract-authorizations-tab.component.scss'],
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
 })
 export class AccessContractAuthorizationsTabComponent implements OnInit {
   private agencyService = inject(AgencyService);

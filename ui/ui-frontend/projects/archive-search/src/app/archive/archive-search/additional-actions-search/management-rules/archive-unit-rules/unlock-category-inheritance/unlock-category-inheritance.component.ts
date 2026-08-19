@@ -35,16 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaDto, SearchCriteriaEltDto, VitamTenantConfigService } from 'vitamui-library';
+import {
+  CriteriaDataType,
+  CriteriaOperator,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  VitamTenantConfigService,
+  DialogHeaderComponent,
+} from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { UpdateUnitManagementRuleService } from '../../../../../common-services/update-unit-management-rule.service';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
@@ -52,7 +60,7 @@ const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
   selector: 'app-unlock-category-inheritance',
   templateUrl: './unlock-category-inheritance.component.html',
   styleUrls: ['./unlock-category-inheritance.component.css'],
-  standalone: false,
+  imports: [MatProgressSpinner, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class UnlockCategoryInheritanceComponent implements OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

@@ -43,14 +43,20 @@ import {
   getErrorOnTechnicalObjectsGroup,
   getErrorOnObjectsGroup,
   ValidationError,
+  DataComponent,
+  InformationBlocComponent,
+  InformationDetailComponent,
+  PipesModule,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
-  standalone: false,
+  imports: [DataComponent, InformationBlocComponent, InformationDetailComponent, AsyncPipe, UpperCasePipe, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
   private archiveService = inject(ArchiveCollectService);

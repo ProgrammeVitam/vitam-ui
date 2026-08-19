@@ -50,17 +50,46 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ConfirmActionComponent } from 'vitamui-library';
-import type { ManagementContract } from 'vitamui-library';
+import {
+  ConfirmActionComponent,
+  VitamuiMenuButtonComponent,
+  OperationHistoryTabComponent,
+  PipesModule,
+  CommonTooltipComponent,
+  TooltipDirective,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
+import { ManagementContract } from 'vitamui-library';
 import { ManagementContractIdentificationTabComponent } from './management-contract-identification-tab/management-contract-identification-tab.component';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab/management-contract-information-tab.component';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
+
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-management-contract-preview',
   templateUrl: './management-contract-preview.component.html',
   styleUrls: ['./management-contract-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatTabGroup,
+    MatTab,
+    ManagementContractInformationTabComponent,
+    ManagementContractStorageTabComponent,
+    ManagementContractIdentificationTabComponent,
+    OperationHistoryTabComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
   private matDialog = inject(MatDialog);

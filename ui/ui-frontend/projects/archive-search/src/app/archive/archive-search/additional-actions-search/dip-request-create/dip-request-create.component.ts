@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit, ResourceRef, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { finalize, Subscription } from 'rxjs';
 import * as uuid from 'uuid';
 import {
@@ -51,17 +51,46 @@ import {
   SnackBarService,
   UsageVersionEnum,
   VitamuiSelectOptions,
+  DialogHeaderComponent,
+  StepperComponent,
+  InputComponent,
+  SelectComponent,
+  NextStepComponent,
+  SlideToggleComponent,
+  PreviousStepComponent,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { CdkStep } from '@angular/cdk/stepper';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 
 @Component({
   selector: 'app-dip-request-create',
   templateUrl: './dip-request-create.component.html',
   styleUrls: ['./dip-request-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperComponent,
+    CdkStep,
+    ReactiveFormsModule,
+    CdkScrollable,
+    MatDialogContent,
+    InputComponent,
+    SelectComponent,
+    MatDialogActions,
+    NextStepComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatRadioGroup,
+    MatRadioButton,
+    SlideToggleComponent,
+    PreviousStepComponent,
+    TranslatePipe,
+  ],
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);

@@ -44,11 +44,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL, DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
+import { BASE_URL } from 'vitamui-library';
+import { DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProbativeValueComponent } from './probative-value.component';
-import { PipesModule } from '../shared/pipes/pipes.module';
 import { DatePipe } from '@angular/common';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -70,11 +70,10 @@ describe('ProbativeValueComponent', () => {
         MatSidenavModule,
         DatepickerComponent,
         NoopAnimationsModule,
-        PipesModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
+        ProbativeValueComponent,
       ],
-      declarations: [ProbativeValueComponent],
       providers: [
         provideNativeDateAdapter(),
         { provide: BASE_URL, useValue: '/pastis-api' },

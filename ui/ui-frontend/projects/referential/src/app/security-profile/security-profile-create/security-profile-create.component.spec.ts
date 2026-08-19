@@ -61,7 +61,17 @@ import { SecurityProfileCreateValidators } from './security-profile-create.valid
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    SecurityProfileCreateComponent,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    NoopAnimationsModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -89,7 +99,17 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    SecurityProfileCreateComponent,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    NoopAnimationsModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class SecurityProfileEditPermissionStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -151,8 +171,9 @@ describe('SecurityProfileCreateComponent', () => {
         NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        SecurityProfileEditPermissionStubComponent,
+        DomainInputStubComponent,
       ],
-      declarations: [SecurityProfileEditPermissionStubComponent, DomainInputStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -36,15 +36,36 @@
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import type { ExternalParamProfile } from 'vitamui-library';
+import { ExternalParamProfile } from 'vitamui-library';
+import { OperationHistoryTabComponent, CommonTooltipComponent, TooltipDirective, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { ThresholdsTabComponent } from './thresholds-tab/thresholds-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-external-param-profile-detail',
   templateUrl: './external-param-profile-detail.component.html',
   styleUrls: ['./external-param-profile-detail.component.css'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    ThresholdsTabComponent,
+    OperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    CommonTooltipComponent,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
   private sharedService = inject(SharedService);

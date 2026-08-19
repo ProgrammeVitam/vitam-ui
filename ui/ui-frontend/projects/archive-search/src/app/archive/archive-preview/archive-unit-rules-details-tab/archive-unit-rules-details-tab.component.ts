@@ -38,9 +38,10 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import type { SearchCriteriaEltDto, Unit } from 'vitamui-library';
+import { SearchCriteriaEltDto, Unit } from 'vitamui-library';
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaTypeEnum } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
+import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 
 const PAGE_SIZE = 10;
 const CURRENT_PAGE = 0;
@@ -57,7 +58,7 @@ const CURRENT_PAGE = 0;
       transition('true => false', animate(300 + 'ms ease-out')),
     ]),
   ],
-  standalone: false,
+  imports: [ArchiveUnitRulesInformationsTabComponent],
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy {
   private archiveSearchService = inject(ArchiveService);

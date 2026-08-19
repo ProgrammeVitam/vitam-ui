@@ -38,7 +38,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import {
   AccessContract,
   AccessContractService,
@@ -48,6 +48,9 @@ import {
   GlobalEventService,
   SidenavPage,
   SnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -57,6 +60,9 @@ import { DownloadSnackBarService } from '../core/service/download-snack-bar.serv
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { finalize, shareReplay } from 'rxjs/operators';
+import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
+import { AccessContractPreviewComponent } from './access-contract-preview/access-contract-preview.component';
+import { MatMenuItem } from '@angular/material/menu';
 
 const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
 
@@ -64,7 +70,18 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
   styleUrls: ['./access-contract.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    AccessContractPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    AccessContractListComponent,
+    TranslatePipe,
+  ],
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
   override globalEventService: GlobalEventService;

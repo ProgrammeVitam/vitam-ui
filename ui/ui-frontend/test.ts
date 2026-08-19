@@ -42,6 +42,10 @@ import { TestBed } from '@angular/core/testing';
 import '@angular/compiler';
 import '@analogjs/vitest-angular/setup-zone';
 import 'zone.js/testing';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideRouter } from '@angular/router';
+import { BASE_URL, LoggerModule, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from 'vitamui-library';
 import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
 
 
@@ -49,7 +53,16 @@ const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
 TestBed.configureTestingModule = ((moduleDef: any) =>
   configureTestingModule({
     ...moduleDef,
-    imports: [...(moduleDef?.imports ?? []), TranslatePipe],
+    imports: [...(moduleDef?.imports ?? []), LoggerModule.forRoot(), TranslatePipe],
     schemas: [...(moduleDef?.schemas ?? []), CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-    providers: [provideTranslateService({ fallbackLang: 'fr' }), ...(moduleDef?.providers ?? [])],
+    providers: [
+      provideTranslateService({ fallbackLang: 'fr' }),
+      { provide: BASE_URL, useValue: '/fake-api' },
+      { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
+      { provide: WINDOW_LOCATION, useValue: typeof location !== 'undefined' ? location : ({} as Location) },
+      provideAnimations(),
+      provideNativeDateAdapter(),
+      provideRouter([]),
+      ...(moduleDef?.providers ?? []),
+    ],
   })) as typeof TestBed.configureTestingModule;

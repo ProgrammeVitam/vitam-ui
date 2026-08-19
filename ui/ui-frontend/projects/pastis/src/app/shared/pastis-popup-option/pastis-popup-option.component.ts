@@ -37,7 +37,7 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { Subscription } from 'rxjs';
 import { NoticeService } from '../../core/services/notice.service';
@@ -47,6 +47,8 @@ import { Profile } from '../../models/profile';
 import { ProfileType } from '../../models/profile-type.enum';
 import { SnackBarService } from 'vitamui-library';
 import { CreateProfilNoticeComponent } from '../../profile/create-profil-notice/create-profil-notice.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatDivider } from '@angular/material/list';
 
 function constantToTranslate(edit: boolean) {
   if (edit) {
@@ -73,7 +75,7 @@ function constantToTranslate(edit: boolean) {
   selector: 'pastis-popup-option',
   templateUrl: './pastis-popup-option.component.html',
   styleUrls: ['./pastis-popup-option.component.scss'],
-  standalone: false,
+  imports: [MatMenuItem, MatDivider, TranslatePipe],
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   private router = inject(Router);

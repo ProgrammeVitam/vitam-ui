@@ -205,8 +205,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesComponent],
-      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ArchiveUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: BASE_URL, useValue: '/fake-api' },

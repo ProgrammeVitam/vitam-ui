@@ -46,7 +46,9 @@ import { DomainsInputComponent } from './domains-input.component';
 
 @Component({
   template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
-  standalone: false,
+  standalone: true,
+  imports: [DomainsInputComponent],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {
   @ViewChild(DomainsInputComponent, { static: false })
@@ -58,9 +60,6 @@ export class TestHostComponent {
 let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
-
 describe('DomainsInputComponent', () => {
   beforeEach(async () => {
     const customerCreateValidatorsSpy = {
@@ -68,8 +67,7 @@ describe('DomainsInputComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
-      declarations: [TestHostComponent, DomainsInputComponent],
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, DomainsInputComponent, TestHostComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

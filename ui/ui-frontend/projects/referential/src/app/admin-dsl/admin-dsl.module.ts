@@ -68,7 +68,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
+    AdminDslComponent,
   ],
-  declarations: [AdminDslComponent],
 })
 export class AdminDslModule {}

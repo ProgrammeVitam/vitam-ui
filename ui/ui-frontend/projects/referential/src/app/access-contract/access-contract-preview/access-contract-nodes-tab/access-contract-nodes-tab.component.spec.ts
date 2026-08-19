@@ -95,9 +95,8 @@ describe('AccessContractNodesTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AccessContractNodesTabComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), AccessContractNodesTabComponent],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

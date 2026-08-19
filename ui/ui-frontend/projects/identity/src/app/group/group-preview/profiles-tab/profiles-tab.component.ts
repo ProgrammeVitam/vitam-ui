@@ -37,15 +37,17 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import type { Group, Profile } from 'vitamui-library';
+import { Group, Profile } from 'vitamui-library';
+import { TooltipDirective } from 'vitamui-library';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profiles-tab',
   templateUrl: './profiles-tab.component.html',
   styleUrls: ['./profiles-tab.component.scss'],
-  standalone: false,
+  imports: [TooltipDirective, TranslatePipe],
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);

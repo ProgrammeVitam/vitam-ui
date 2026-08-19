@@ -37,7 +37,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
+import { ENVIRONMENT } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -68,7 +69,7 @@ let page: Page;
 @Component({
   selector: 'app-customer-list',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerListStubComponent {
   search() {}
@@ -77,7 +78,7 @@ class CustomerListStubComponent {
 @Component({
   selector: 'app-customer-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
 })
 class CustomerPreviewStubComponent {
   @Input()
@@ -91,7 +92,7 @@ class CustomerPreviewStubComponent {
 @Component({
   selector: 'app-owner-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule],
 })
 class OwnerPreviewStubComponent {
   @Input()
@@ -114,8 +115,18 @@ describe('CustomerComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-      declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+      imports: [
+        MatMenuModule,
+        MatSidenavModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        CustomerComponent,
+        CustomerListStubComponent,
+        CustomerPreviewStubComponent,
+        OwnerPreviewStubComponent,
+      ],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: MatDialog, useValue: matDialogSpy },

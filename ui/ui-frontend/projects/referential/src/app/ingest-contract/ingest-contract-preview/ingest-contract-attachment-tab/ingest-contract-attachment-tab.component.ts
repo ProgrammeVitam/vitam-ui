@@ -37,16 +37,16 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import type { IngestContract } from 'vitamui-library';
+import { IngestContract, ExternalParametersService, SearchUnitApiService, SnackBarService } from 'vitamui-library';
 import { ExternalParameters, VitamuiHttpHeaders } from 'vitamui-library';
-import { ExternalParametersService, SearchUnitApiService, SnackBarService } from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-attachment-tab',
   templateUrl: './ingest-contract-attachment-tab.component.html',
   styleUrls: ['./ingest-contract-attachment-tab.component.scss'],
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class IngestContractAttachmentTabComponent {
   private unitService = inject(SearchUnitApiService);

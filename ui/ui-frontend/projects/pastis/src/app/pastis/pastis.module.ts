@@ -57,7 +57,7 @@ import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
 import { ProfileModule } from '../profile/profile.module';
 import { SedaVisualizerComponent } from '../seda-visualizer/seda-visualizer.component';
-import { SharedModule } from '../shared/shared.module';
+
 import { UserActionAddMetadataComponent } from '../user-actions/add-metadata/add-metadata.component';
 import { UserActionRemoveMetadataComponent } from '../user-actions/remove-metadata/remove-metadata.component';
 import { UserActionsModule } from '../user-actions/user-actions.module';
@@ -68,7 +68,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     CoreModule,
     ProfileModule,
-    SharedModule,
     UserActionsModule,
     FileTreeModule,
     CommonModule,
@@ -93,8 +92,11 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatIconModule,
     MatTabsModule,
     TranslatePipe,
+    MainComponent,
+    UserActionRemoveMetadataComponent,
+    UserActionAddMetadataComponent,
+    SedaVisualizerComponent,
   ],
-  declarations: [MainComponent, UserActionRemoveMetadataComponent, UserActionAddMetadataComponent, SedaVisualizerComponent],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

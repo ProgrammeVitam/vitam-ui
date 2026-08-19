@@ -35,21 +35,31 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, ManagementRuleValidators, Rule, RuleService, SearchCriteriaDto, VitamuiSelectOptions } from 'vitamui-library';
+import {
+  diff,
+  ManagementRuleValidators,
+  Rule,
+  RuleService,
+  SearchCriteriaDto,
+  VitamuiSelectOptions,
+  SelectComponent,
+  DialogHeaderComponent,
+} from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-block-rules-inheritance',
   templateUrl: './block-rules-inheritance.component.html',
   styleUrls: ['./block-rules-inheritance.component.css'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SelectComponent, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   private managementRulesValidatorService = inject(ManagementRulesValidatorService);

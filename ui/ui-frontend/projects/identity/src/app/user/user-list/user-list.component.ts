@@ -49,8 +49,18 @@ import {
   Role,
   rotateAnimation,
   SnackBarService,
+  TableFilterDirective,
+  TableFilterComponent,
+  TableFilterOptionComponent,
+  OrderByButtonComponent,
+  TableFilterSearchComponent,
+  PipesModule,
+  EllipsisDirective,
+  HasAnyRoleDirective,
+  HasRoleDirective,
+  InfiniteScrollDirective,
 } from 'vitamui-library';
-import type { AdminUserProfile, Group, User } from 'vitamui-library';
+import { AdminUserProfile, Group, User } from 'vitamui-library';
 
 import {
   Component,
@@ -69,6 +79,9 @@ import {
 import { CustomerService } from '../../core/customer.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { UpperCasePipe, DatePipe, CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -77,7 +90,23 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
   animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    OrderByButtonComponent,
+    TableFilterSearchComponent,
+    MatProgressSpinner,
+    UpperCasePipe,
+    DatePipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasAnyRoleDirective,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
   private customerService = inject(CustomerService);

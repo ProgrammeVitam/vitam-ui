@@ -61,7 +61,7 @@ import { MatOptionModule } from '@angular/material/core';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -124,8 +124,16 @@ describe('OwnerCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, NoopAnimationsModule, ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [OwnerCreateComponent, OwnerFormStubComponent],
+      imports: [
+        MatOptionModule,
+        MatProgressBarModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        OwnerCreateComponent,
+        OwnerFormStubComponent,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },
