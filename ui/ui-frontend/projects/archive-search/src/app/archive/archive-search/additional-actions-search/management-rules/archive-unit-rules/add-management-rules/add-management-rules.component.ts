@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -50,8 +50,8 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  VitamuiSelectOptions,
   VitamTenantConfigService,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -341,7 +341,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
           startDateSelected.setMonth(startDateSelected.getMonth() + Number(this.rule.ruleDuration));
           break;
         case 'DAY':
-          startDateSelected.setDate(startDateSelected.getDay() + Number(this.rule.ruleDuration));
+          startDateSelected.setDate(startDateSelected.getDate() + Number(this.rule.ruleDuration));
           break;
       }
 
