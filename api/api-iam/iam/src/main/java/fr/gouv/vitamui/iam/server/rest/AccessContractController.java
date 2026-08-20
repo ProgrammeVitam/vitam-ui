@@ -94,7 +94,9 @@ public class AccessContractController {
 
     @GetMapping("/accesscontracts")
     @Operation(operationId = "accessContracts_getAll", summary = "Get all access contracts")
-    @Secured(ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
+    @Secured(
+        { ServicesData.ROLE_GET_ACCESS_CONTRACTS, ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE }
+    )
     public List<AccessContractDto> getAll() {
         final RequestResponse<AccessContractModel> requestResponse;
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
