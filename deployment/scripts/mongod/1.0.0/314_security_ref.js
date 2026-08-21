@@ -13,7 +13,7 @@ dbSecurity.contexts.updateOne(
     }
 );
 
-dbSecurity.contexts.updateOne(
+dbSecurity.contexts.updateMany(
     {
         "_id": {
             $in: [
