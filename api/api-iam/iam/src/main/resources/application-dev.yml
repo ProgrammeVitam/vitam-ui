@@ -5,6 +5,20 @@ spring:
     error:
       path: /error
 
+  # set port to 1025 for local development with MailHog container
+  mail:
+    host: localhost
+    port: 2525
+    username: no-reply@vitamui.com
+    password: password
+    testConnection: false
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
   config:
     use-legacy-processing: true
   servlet:
