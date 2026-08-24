@@ -125,6 +125,12 @@ logbook:
     sendEventToVitamTasks:
       delay: {{ vitamui_struct.logbook.delay | default(60000) }}
 
+discussion:
+  scheduling:
+    purgeTransactionDiscussions:
+      enabled: {{ vitamui_struct.discussion.enabled | default('true') | lower }}
+      cronExpression: {{ vitamui_struct.discussion.cron_expression | default('0 0 * ? * *') }}
+
 customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml
 
 {% if inventory_hostname == groups['hosts_vitamui_iam'] | first %}

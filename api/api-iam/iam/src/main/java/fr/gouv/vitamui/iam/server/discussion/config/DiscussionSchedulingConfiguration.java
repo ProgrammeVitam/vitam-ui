@@ -1,5 +1,5 @@
-/*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
+/**
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,15 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export enum TransactionStatus {
-  OPEN = 'OPEN',
-  READY = 'READY',
-  VALIDATED = 'VALIDATED',
-  SENDING = 'SENDING',
-  SENT = 'SENT',
-  KO = 'KO',
-  ACK_OK = 'ACK_OK',
-  ACK_WARNING = 'ACK_WARNING',
-  ACK_KO = 'ACK_KO',
-  ABORTED = 'ABORTED',
+package fr.gouv.vitamui.iam.server.discussion.config;
+
+import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
+import fr.gouv.vitamui.iam.server.discussion.dao.DiscussionReadRepository;
+import fr.gouv.vitamui.iam.server.discussion.dao.DiscussionRepository;
+import fr.gouv.vitamui.iam.server.discussion.scheduler.PurgeTransactionDiscussionsTask;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@Configuration
+@EnableScheduling
+@Import({ VitamCollectConfig.class })
+public class DiscussionSchedulingConfiguration {
+
+    @Bean
+    @ConditionalOnProperty(
+        name = "discussion.scheduling.purgeTransactionDiscussions.enabled",
+        havingValue = "true",
+        matchIfMissing = true
+    )
+    PurgeTransactionDiscussionsTask purgeTransactionDiscussionsTask(
+        final DiscussionRepository discussionRepository,
+        final DiscussionReadRepository discussionReadRepository,
+        final CollectService collectService,
+        final @Qualifier("discussionMongoTemplate") MongoTemplate mongoTemplate
+    ) {
+        return new PurgeTransactionDiscussionsTask(
+            discussionRepository,
+            discussionReadRepository,
+            collectService,
+            mongoTemplate
+        );
+    }
 }

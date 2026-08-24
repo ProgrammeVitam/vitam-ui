@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Repository for Discussions.
@@ -19,4 +20,5 @@ public interface DiscussionRepository extends VitamUIRepository<Discussion, Stri
         String entityId,
         EntityType entityType
     );
+    Stream<Discussion> findByEntitiesEntityType(EntityType entityType);
 }
