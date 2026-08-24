@@ -31,7 +31,6 @@ import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialException;
-import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
@@ -176,7 +175,7 @@ public final class LoginPwdAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         final var user = basicUser(UserStatusEnum.ENABLED);
-        user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
+        user.setMustChangePassword(true);
         when(casApi.login(eq(userCredentials()))).thenReturn(user);
 
         // When / Then
@@ -222,7 +221,6 @@ public final class LoginPwdAuthenticationHandlerTest {
         final var user = new UserDto();
         user.setStatus(status);
         user.setType(UserTypeEnum.NOMINATIVE);
-        user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));
         return user;
     }
 
