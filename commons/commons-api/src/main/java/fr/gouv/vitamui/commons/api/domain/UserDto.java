@@ -110,6 +110,8 @@ public class UserDto extends CustomerIdDto {
 
     private OffsetDateTime passwordExpirationDate;
 
+    private boolean mustChangePassword;
+
     private AddressDto address = new AddressDto();
 
     private String internalCode;

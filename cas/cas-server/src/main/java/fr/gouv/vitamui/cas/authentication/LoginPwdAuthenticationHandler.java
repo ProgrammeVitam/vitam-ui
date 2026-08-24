@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
@@ -64,7 +63,6 @@ import javax.security.auth.login.AccountLockedException;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
 import java.security.GeneralSecurityException;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,7 +105,7 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
             final var user = casApi.login(login);
 
             if (user != null) {
-                if (mustChangePassword(user)) {
+                if (user.isMustChangePassword()) {
                     LOGGER.info("Password expired for: {} ({})", login.getLoginEmail(), login.getLoginCustomerId());
                     throw new AccountPasswordMustChangeException("Password expired for: " + login.getLoginEmail());
                 } else if (user.getStatus() == UserStatusEnum.ENABLED && user.getType() == UserTypeEnum.NOMINATIVE) {
@@ -160,11 +158,6 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
             );
             throw new PreventedException(e);
         }
-    }
-
-    protected boolean mustChangePassword(final UserDto user) {
-        var pwdExpirationDate = user.getPasswordExpirationDate();
-        return (pwdExpirationDate == null || pwdExpirationDate.isBefore(OffsetDateTime.now()));
     }
 
     private LoginRequestDto buildLoginRequestFromFlowScopeData(String originalPassword) {
