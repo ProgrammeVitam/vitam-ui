@@ -5,19 +5,18 @@ spring:
     error:
       path: /error
 
-  # set port to 1025 for local development with MailHog container
   mail:
-    host: localhost
-    port: 2525
-    username: no-reply@vitamui.com
-    password: password
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME:no-reply@vitamui.com}
+    password: ${MAIL_PASSWORD:password}
     testConnection: false
     properties:
       mail:
         smtp:
-          auth: false
+          auth: ${MAIL_AUTH:false}
           starttls:
-            enable: false
+            enable: ${MAIL_STARTTLS:false}
 
   config:
     use-legacy-processing: true
@@ -86,6 +85,7 @@ cas-client:
     hostname-verification: false
 
 cas.password-reset-url.path: /cas/extras/passwordResetUrl
+mail.sender: ${MAIL_SENDER:noreply@change-it.fr}
 cas.tenant.identifier: -1
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
