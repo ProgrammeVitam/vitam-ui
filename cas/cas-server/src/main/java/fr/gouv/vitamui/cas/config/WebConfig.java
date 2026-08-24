@@ -133,27 +133,9 @@ public class WebConfig {
     @Bean
     public ResetPasswordController resetPasswordController(
         @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
-        @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
-        @Qualifier(
-            CasBeans.PASSWORD_MANAGEMENT_SERVICE_DEFAULT
-        ) final PasswordManagementService passwordManagementService,
-        @Qualifier(CasBeans.MESSAGE_SOURCE) final HierarchicalMessageSource messageSource,
-        final CasConfigurationProperties casProperties,
-        final IdentityProviderHelper identityProviderHelper,
-        final ProvidersService providersService,
         final Utils utils
     ) {
-        return new ResetPasswordController(
-            casProperties,
-            passwordManagementService,
-            communicationsManager,
-            messageSource,
-            utils,
-            passwordResetUrlBuilder,
-            identityProviderHelper,
-            providersService,
-            new ObjectMapper()
-        );
+        return new ResetPasswordController(utils, passwordResetUrlBuilder, new ObjectMapper());
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)

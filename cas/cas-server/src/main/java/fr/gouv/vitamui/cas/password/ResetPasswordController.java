@@ -37,30 +37,19 @@
 package fr.gouv.vitamui.cas.password;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
-import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.common.dto.cas.PasswordResetUrlDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.support.Beans;
-import org.apereo.cas.notifications.CommunicationsManager;
-import org.apereo.cas.pm.PasswordManagementQuery;
-import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.HierarchicalMessageSource;
-import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Locale;
 
 /**
  * Rest controller for CAS extra features.
@@ -71,118 +60,48 @@ import java.util.Locale;
 @Slf4j
 public class ResetPasswordController {
 
-    private final CasConfigurationProperties casProperties;
-
-    private final PasswordManagementService passwordManagementService;
-
-    private final CommunicationsManager communicationsManager;
-
-    private final HierarchicalMessageSource messageSource;
+    private static final long ACCOUNT_CREATION_EXPIRATION_IN_MINUTES = 24 * 60L;
 
     private final Utils utils;
 
     private final PasswordResetUrlBuilder passwordResetUrlBuilder;
 
-    private final IdentityProviderHelper identityProviderHelper;
-
-    private final ProvidersService providersService;
-
     private final ObjectMapper objectMapper;
 
-    @Value("${theme.vitamui-platform-name:VITAM-UI}")
-    private String vitamuiPlatformName;
-
-    @GetMapping("/resetPassword")
-    public boolean resetPassword(
-        @RequestParam(value = "username", defaultValue = "") final String username,
-        @RequestParam(value = "firstname", defaultValue = "") final String firstname,
-        @RequestParam(value = "lastname", defaultValue = "") final String lastname,
+    @GetMapping("/passwordResetUrl")
+    public ResponseEntity<PasswordResetUrlDto> buildPasswordResetUrl(
+        @RequestParam(value = "email", defaultValue = "") final String email,
         @RequestParam(value = "customerId", defaultValue = "") final String customerId,
-        @RequestParam(value = "ttl", defaultValue = "") final String ttl,
-        @RequestParam(value = "language", defaultValue = "en") final String language,
-        final HttpServletRequest request
+        final HttpServletRequest httpRequest
     ) {
-        if (!communicationsManager.isMailSenderDefined()) {
-            LOGGER.warn(
-                "CAS is unable to send password-reset emails given no settings are defined to account for email servers"
-            );
-            return false;
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(customerId)) {
+            LOGGER.warn("No email or no customerId is provided");
+            return ResponseEntity.badRequest().build();
         }
 
-        if (StringUtils.isBlank(username)) {
-            LOGGER.warn("No username is provided");
-            return false;
-        }
-
-        final var usernameLower = username.toLowerCase().trim();
-        LinkedMultiValueMap<String, Object> customerIdMapElt = new LinkedMultiValueMap<>();
-        customerIdMapElt.add(Constants.RESET_PWD_CUSTOMER_ID_ATTR, customerId);
-        final var query = PasswordManagementQuery.builder().username(usernameLower).record(customerIdMapElt).build();
-
-        String email;
-        try {
-            email = passwordManagementService.findEmail(query);
-        } catch (final Throwable e) {
-            LOGGER.error("Error finding email", e);
-            return false;
-        }
-        if (StringUtils.isBlank(email)) {
-            LOGGER.warn("No recipient is provided");
-            return false;
-        } else if (
-            !identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), email, customerId)
-        ) {
-            LOGGER.warn("Recipient: {} is not internal; ignoring and returning to the success page", email);
-            return false;
-        }
-
-        final Locale locale = new Locale(language);
-        final var duration = Beans.newDuration(casProperties.getAuthn().getPm().getReset().getExpiration());
-        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : duration.toMinutes();
-        request.setAttribute(
+        httpRequest.setAttribute(
             PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE,
-            expMinutes
+            ACCOUNT_CREATION_EXPIRATION_IN_MINUTES
         );
+
         try {
-            var userLoginModel = new UserLoginModel();
-            userLoginModel.setUserEmail(query.getUsername());
+            final var userLoginModel = new UserLoginModel();
+            userLoginModel.setUserEmail(email.toLowerCase().trim());
             userLoginModel.setCustomerId(customerId);
-            String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
+            final String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
 
             final var url = passwordResetUrlBuilder.build(userLoginModelToToken).toString();
-            final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
-                messageSource,
-                firstname,
-                lastname,
-                String.valueOf(expMinutes),
-                url,
-                vitamuiPlatformName,
-                locale
-            );
 
             LOGGER.debug(
-                "Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)",
+                "Generated password reset URL [{}]; link is only active for the next [{}] minute(s)",
                 utils.sanitizePasswordResetUrl(url),
-                email,
-                messageToSend.getSubject(),
-                expMinutes
+                ACCOUNT_CREATION_EXPIRATION_IN_MINUTES
             );
 
-            return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
+            return ResponseEntity.ok(new PasswordResetUrlDto(url, ACCOUNT_CREATION_EXPIRATION_IN_MINUTES));
         } catch (final Throwable e) {
-            LOGGER.error("Cannot reset password", e);
-            return false;
+            LOGGER.error("Cannot build the password reset URL", e);
+            return ResponseEntity.internalServerError().build();
         }
-    }
-
-    protected boolean sendPasswordResetEmailToAccount(final String to, final String subject, final String msg) {
-        return utils.htmlEmail(
-            msg,
-            casProperties.getAuthn().getPm().getReset().getMail().getFrom(),
-            subject,
-            to,
-            null,
-            null
-        );
     }
 }

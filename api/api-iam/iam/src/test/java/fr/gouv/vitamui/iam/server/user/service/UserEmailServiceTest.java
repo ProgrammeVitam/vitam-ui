@@ -6,22 +6,30 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.cas.PasswordResetUrlDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.utils.IamServerUtilsTest;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.springframework.context.MessageSource;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,14 +39,19 @@ import static org.mockito.Mockito.when;
  */
 final class UserEmailServiceTest {
 
-    private static final String LASTNAME = "John";
+    private static final String FIRSTNAME = "John";
 
-    private static final String FIRSTNAME = "Doe";
-    private static final String CUSTOMER_ID = "CustomerId";
+    private static final String LASTNAME = "Doe";
+
+    private static final String CUSTOMER_ID = "customerId";
 
     private static final String EMAIL = "john.doe@vitamui.com";
 
     private static final String BASE_URL = "http://mycassserver";
+
+    private static final String RESET_URL = "https://cas.vitamui.com/cas/login?pswdrst=PWDRST-1";
+
+    private static final String PATH = "/cas/extras/passwordResetUrl";
 
     private IdentityProviderHelper identityProviderHelper;
 
@@ -52,12 +65,13 @@ final class UserEmailServiceTest {
 
     private RestClient.ResponseSpec responseSpec;
 
+    private MessageSource messageSource;
+
+    private JavaMailSender mailSender;
+
     private UserEmailService userEmailService;
 
     private UserInfoService userInfoService;
-
-    private final String casResetPasswordUrl =
-        "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day";
 
     @BeforeEach
     public void setUp() {
@@ -68,19 +82,28 @@ final class UserEmailServiceTest {
         restClient = mock(RestClient.class);
         uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
         responseSpec = mock(RestClient.ResponseSpec.class);
+        messageSource = mock(MessageSource.class);
+        mailSender = mock(JavaMailSender.class);
 
         when(vitamuiRestClientFactory.getRestClient()).thenReturn(restClient);
         when(vitamuiRestClientFactory.getBaseUrl()).thenReturn(BASE_URL);
         when(restClient.get()).thenReturn(uriSpec);
         when(uriSpec.uri(any(String.class), any(Map.class))).thenReturn(uriSpec);
         when(uriSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.body(Boolean.class)).thenReturn(true);
+        when(responseSpec.body(PasswordResetUrlDto.class)).thenReturn(new PasswordResetUrlDto(RESET_URL, 24 * 60L));
+        when(messageSource.getMessage(any(), any(), any(Locale.class))).thenReturn("message");
+        when(mailSender.createMimeMessage()).thenReturn(new MimeMessage((jakarta.mail.Session) null));
 
         userEmailService = new UserEmailService(vitamuiRestClientFactory);
         userEmailService.setInternalIdentityProviderService(identityProviderService);
         userEmailService.setIdentityProviderHelper(identityProviderHelper);
         userEmailService.setUserInfoService(userInfoService);
-        userEmailService.setCasResetPasswordUrl(casResetPasswordUrl);
+        userEmailService.setCasPasswordResetUrlPath(PATH);
+        userEmailService.setIamMessageSource(messageSource);
+        userEmailService.setMailSender(mailSender);
+        userEmailService.setMailSenderAddress("noreply@vitamui.com");
+        userEmailService.setPlatformName("VITAM-UI");
+
         final List<IdentityProviderDto> providers = new ArrayList<>();
         when(identityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(providers);
         when(identityProviderHelper.identifierMatchProviderPattern(providers, EMAIL, CUSTOMER_ID)).thenReturn(true);
@@ -95,42 +118,56 @@ final class UserEmailServiceTest {
 
         verify(restClient).get();
         verify(uriSpec).uri(
-            BASE_URL + casResetPasswordUrl,
-            Map.of(
-                "username",
-                EMAIL,
-                "firstname",
-                FIRSTNAME,
-                "lastname",
-                LASTNAME,
-                "language",
-                "fr",
-                "customerId",
-                CUSTOMER_ID
-            )
+            BASE_URL + PATH + "?email={email}&customerId={customerId}",
+            Map.of("email", EMAIL, "customerId", CUSTOMER_ID)
         );
-        verify(uriSpec).retrieve();
-        verify(responseSpec).body(Boolean.class);
+        verify(mailSender).send(any(MimeMessage.class));
     }
 
     @Test
-    void testSendEmailWhenCasReportsFailure() {
-        final UserDto user = buildUser();
-        when(responseSpec.body(Boolean.class)).thenReturn(false);
+    void testTheEmailIsBuiltFromTheLinkReturnedByCas() {
+        userEmailService.sendCreationEmail(buildUser());
 
-        assertThatCode(() -> userEmailService.sendCreationEmail(user)).doesNotThrowAnyException();
+        final ArgumentCaptor<Object[]> captor = ArgumentCaptor.forClass(Object[].class);
+        verify(messageSource).getMessage(
+            eq("iam.password.initialization.text"),
+            captor.capture(),
+            eq(Locale.forLanguageTag("fr"))
+        );
 
-        verify(responseSpec).body(Boolean.class);
+        assertThat(captor.getValue()).containsExactly(FIRSTNAME, LASTNAME, 24L, RESET_URL, "VITAM-UI");
     }
 
     @Test
     void testSendEmailWhenCasIsUnreachable() {
-        final UserDto user = buildUser();
-        when(responseSpec.body(Boolean.class)).thenThrow(new RuntimeException("CAS is down"));
+        when(responseSpec.body(PasswordResetUrlDto.class)).thenThrow(new RuntimeException("CAS is down"));
 
-        assertThatCode(() -> userEmailService.sendCreationEmail(user)).doesNotThrowAnyException();
+        assertThatCode(() -> userEmailService.sendCreationEmail(buildUser())).doesNotThrowAnyException();
 
-        verify(responseSpec).body(Boolean.class);
+        verify(mailSender, never()).send(any(MimeMessage.class));
+    }
+
+    @Test
+    void testSendEmailWhenCasReturnsNoUrl() {
+        when(responseSpec.body(PasswordResetUrlDto.class)).thenReturn(null);
+
+        assertThatCode(() -> userEmailService.sendCreationEmail(buildUser())).doesNotThrowAnyException();
+
+        verify(mailSender, never()).send(any(MimeMessage.class));
+    }
+
+    @Test
+    void testSendEmailWhenNoMailSenderIsConfigured() {
+        userEmailService.setMailSender(null);
+
+        assertThatCode(() -> userEmailService.sendCreationEmail(buildUser())).doesNotThrowAnyException();
+    }
+
+    @Test
+    void testSendEmailWhenSendingFails() {
+        org.mockito.Mockito.doThrow(new RuntimeException("smtp down")).when(mailSender).send(any(MimeMessage.class));
+
+        assertThatCode(() -> userEmailService.sendCreationEmail(buildUser())).doesNotThrowAnyException();
     }
 
     @Test
