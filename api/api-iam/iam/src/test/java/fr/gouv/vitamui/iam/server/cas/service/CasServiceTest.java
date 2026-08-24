@@ -10,6 +10,7 @@ import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfigura
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
@@ -78,6 +79,9 @@ class CasServiceTest {
     private CustomerRepository customerRepository;
 
     @Mock
+    private IdentityProviderHelper identityProviderHelper;
+
+    @Mock
     private PasswordValidator passwordValidator;
 
     @Mock
@@ -86,6 +90,7 @@ class CasServiceTest {
     @Test
     void should_reject_a_password_not_matching_the_policy() {
         givenAnEnabledUserAndCustomer();
+        givenAnInternalIdentityProvider();
         when(passwordConfiguration.getPolicyPattern()).thenReturn(POLICY_PATTERN);
         when(passwordValidator.isValid(POLICY_PATTERN, "weak")).thenReturn(false);
 
@@ -96,6 +101,7 @@ class CasServiceTest {
     @Test
     void should_reject_a_password_containing_the_user_name() {
         final User user = givenAnEnabledUserAndCustomer();
+        givenAnInternalIdentityProvider();
         when(passwordConfiguration.getPolicyPattern()).thenReturn(POLICY_PATTERN);
         when(passwordValidator.isValid(POLICY_PATTERN, "Dupont2026!")).thenReturn(true);
         when(passwordConfiguration.isCheckOccurrence()).thenReturn(true);
@@ -104,6 +110,35 @@ class CasServiceTest {
 
         assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Dupont2026!", CUSTOMER_ID))
             .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void should_reject_a_password_change_for_a_user_without_identity_provider() {
+        givenAnEnabledUserAndCustomer();
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString()))
+            .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID))
+            .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void should_reject_a_password_change_for_a_user_behind_an_external_provider() {
+        givenAnEnabledUserAndCustomer();
+        final IdentityProviderDto externalProvider = new IdentityProviderDto();
+        externalProvider.setInternal(false);
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString()))
+            .thenReturn(Optional.of(externalProvider));
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID))
+            .isInstanceOf(BadRequestException.class);
+    }
+
+    private void givenAnInternalIdentityProvider() {
+        final IdentityProviderDto internalProvider = new IdentityProviderDto();
+        internalProvider.setInternal(true);
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString()))
+            .thenReturn(Optional.of(internalProvider));
     }
 
     private User givenAnEnabledUserAndCustomer() {
