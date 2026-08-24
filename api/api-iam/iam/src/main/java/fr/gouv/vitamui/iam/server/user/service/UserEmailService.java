@@ -53,7 +53,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -104,20 +106,43 @@ public class UserEmailService {
             ) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
-                vitamuiRestClientFactory
-                    .getRestClient()
-                    .get()
-                    .uri(
-                        vitamuiRestClientFactory.getBaseUrl() + casResetPasswordUrl,
-                        userDto.getEmail(),
-                        userDto.getFirstname(),
-                        userDto.getLastname(),
-                        LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(),
-                        userDto.getCustomerId()
-                    )
-                    .retrieve()
-                    .body(Boolean.class);
+                sendPasswordInitializationEmail(userDto, userInfoDto);
             }
+        }
+    }
+
+    private void sendPasswordInitializationEmail(final UserDto userDto, final UserInfoDto userInfoDto) {
+        final Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("username", userDto.getEmail());
+        uriVariables.put("firstname", userDto.getFirstname());
+        uriVariables.put("lastname", userDto.getLastname());
+        uriVariables.put("language", LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
+        uriVariables.put("customerId", userDto.getCustomerId());
+
+        final Boolean sent;
+        try {
+            sent = vitamuiRestClientFactory
+                .getRestClient()
+                .get()
+                .uri(vitamuiRestClientFactory.getBaseUrl() + casResetPasswordUrl, uriVariables)
+                .retrieve()
+                .body(Boolean.class);
+        } catch (final Exception e) {
+            LOGGER.error(
+                "Cannot send the password initialization email to {} (customerId {})",
+                userDto.getEmail(),
+                userDto.getCustomerId(),
+                e
+            );
+            return;
+        }
+
+        if (!Boolean.TRUE.equals(sent)) {
+            LOGGER.error(
+                "The password initialization email to {} (customerId {}) has not been sent",
+                userDto.getEmail(),
+                userDto.getCustomerId()
+            );
         }
     }
 }

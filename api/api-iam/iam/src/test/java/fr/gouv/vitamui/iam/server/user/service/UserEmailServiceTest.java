@@ -15,8 +15,10 @@ import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -70,7 +72,7 @@ final class UserEmailServiceTest {
         when(vitamuiRestClientFactory.getRestClient()).thenReturn(restClient);
         when(vitamuiRestClientFactory.getBaseUrl()).thenReturn(BASE_URL);
         when(restClient.get()).thenReturn(uriSpec);
-        when(uriSpec.uri(any(String.class), any(), any(), any(), any(), any())).thenReturn(uriSpec);
+        when(uriSpec.uri(any(String.class), any(Map.class))).thenReturn(uriSpec);
         when(uriSpec.retrieve()).thenReturn(responseSpec);
         when(responseSpec.body(Boolean.class)).thenReturn(true);
 
@@ -92,8 +94,42 @@ final class UserEmailServiceTest {
         userEmailService.sendCreationEmail(user);
 
         verify(restClient).get();
-        verify(uriSpec).uri(BASE_URL + casResetPasswordUrl, EMAIL, FIRSTNAME, LASTNAME, "fr", CUSTOMER_ID);
+        verify(uriSpec).uri(
+            BASE_URL + casResetPasswordUrl,
+            Map.of(
+                "username",
+                EMAIL,
+                "firstname",
+                FIRSTNAME,
+                "lastname",
+                LASTNAME,
+                "language",
+                "fr",
+                "customerId",
+                CUSTOMER_ID
+            )
+        );
         verify(uriSpec).retrieve();
+        verify(responseSpec).body(Boolean.class);
+    }
+
+    @Test
+    void testSendEmailWhenCasReportsFailure() {
+        final UserDto user = buildUser();
+        when(responseSpec.body(Boolean.class)).thenReturn(false);
+
+        assertThatCode(() -> userEmailService.sendCreationEmail(user)).doesNotThrowAnyException();
+
+        verify(responseSpec).body(Boolean.class);
+    }
+
+    @Test
+    void testSendEmailWhenCasIsUnreachable() {
+        final UserDto user = buildUser();
+        when(responseSpec.body(Boolean.class)).thenThrow(new RuntimeException("CAS is down"));
+
+        assertThatCode(() -> userEmailService.sendCreationEmail(user)).doesNotThrowAnyException();
+
         verify(responseSpec).body(Boolean.class);
     }
 
