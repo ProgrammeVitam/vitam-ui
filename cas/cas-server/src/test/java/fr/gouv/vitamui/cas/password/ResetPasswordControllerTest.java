@@ -98,7 +98,9 @@ public final class ResetPasswordControllerTest {
     public void testTheTokenIsBoundToTheLowercasedEmail() throws Throwable {
         controller.buildPasswordResetUrl("  JOHN.DOE@VITAMUI.COM ", CUSTOMER_ID, httpRequest);
 
-        verify(passwordResetUrlBuilder).build("{\"userEmail\":\"" + EMAIL + "\",\"customerId\":\"" + CUSTOMER_ID + "\"}");
+        verify(passwordResetUrlBuilder).build(
+            "{\"userEmail\":\"" + EMAIL + "\",\"customerId\":\"" + CUSTOMER_ID + "\"}"
+        );
     }
 
     @Test
