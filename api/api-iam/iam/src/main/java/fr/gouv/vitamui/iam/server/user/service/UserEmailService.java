@@ -57,6 +57,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +113,21 @@ public class UserEmailService {
 
     public UserEmailService(final VitamuiRestClientFactory vitamuiRestClientFactory) {
         this.vitamuiRestClientFactory = vitamuiRestClientFactory;
+    }
+
+    public void sendCreationEmailAfterCommit(final UserDto userDto) {
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+            sendCreationEmail(userDto);
+            return;
+        }
+        TransactionSynchronizationManager.registerSynchronization(
+            new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    sendCreationEmail(userDto);
+                }
+            }
+        );
     }
 
     public void sendCreationEmail(final UserDto userDto) {

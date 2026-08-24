@@ -122,7 +122,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -409,7 +408,6 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final GroupService groupService,
         final IamLogbookService iamLogbookService,
         final UserConverter userConverter,
-        final MongoTransactionManager mongoTransactionManager,
         final LogbookService logbookService,
         final AddressService addressService,
         final ApplicationService applicationService,
@@ -429,7 +427,6 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             customerRepository,
             iamLogbookService,
             userConverter,
-            mongoTransactionManager,
             logbookService,
             addressService,
             applicationService,
