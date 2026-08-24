@@ -147,6 +147,8 @@ opentracing:
 # Password configuration
 password:
   max-old-password: {{ vitamui_password_configurations.password.max_old_password | default('12') }}
+  length: {{ vitamui_password_configurations.password.length | default('12') }}
+  policy-pattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
 
 address:
   max-street-length: {{ vitamui_platform_informations.address.max_street_length | default(250) }}

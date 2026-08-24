@@ -58,6 +58,7 @@ public class PasswordConfiguration {
     private boolean checkOccurrence = true;
     private Integer occurrencesCharsNumber = 3;
     private Integer maxOldPassword = 12;
+    private String policyPattern;
     private PasswordConstraints constraints;
 
     @Data

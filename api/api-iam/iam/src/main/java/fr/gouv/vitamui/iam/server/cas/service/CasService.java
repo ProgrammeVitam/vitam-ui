@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
@@ -234,6 +235,8 @@ public class CasService {
             }
         }
 
+        checkPasswordPolicy(rawPassword, user);
+
         final String encodedPassword = passwordEncoder.encode(rawPassword);
         userService.saveCurrentPasswordInOldPasswords(
             user,
@@ -256,6 +259,28 @@ public class CasService {
             iamLogbookService.createPasswordEvent(user);
         } else {
             iamLogbookService.updatePasswordEvent(user);
+        }
+    }
+
+    private void checkPasswordPolicy(final String rawPassword, final User user) {
+        final String policyPattern = passwordConfiguration != null ? passwordConfiguration.getPolicyPattern() : null;
+        if (StringUtils.isNotBlank(policyPattern) && !passwordValidator.isValid(policyPattern, rawPassword)) {
+            throw new BadRequestException("The given password does not match the password policy");
+        }
+
+        if (
+            passwordConfiguration != null &&
+            passwordConfiguration.isCheckOccurrence() &&
+            passwordConfiguration.getOccurrencesCharsNumber() != null &&
+            passwordConfiguration.getOccurrencesCharsNumber() > 0 &&
+            StringUtils.isNotBlank(user.getLastname()) &&
+            passwordValidator.isContainsUserOccurrences(
+                user.getLastname(),
+                rawPassword,
+                passwordConfiguration.getOccurrencesCharsNumber()
+            )
+        ) {
+            throw new BadRequestException("The given password contains an occurrence of the user name");
         }
     }
 
