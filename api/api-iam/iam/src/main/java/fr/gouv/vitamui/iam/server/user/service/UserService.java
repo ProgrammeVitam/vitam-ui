@@ -430,7 +430,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     public UserDto create(final UserDto userDto) {
         final UserDto createdUserDto = super.create(userDto);
         iamLogbookService.createUserEvent(createdUserDto);
-        userEmailService.sendCreationEmailAfterCommit(createdUserDto);
+        userEmailService.sendCreationEmail(createdUserDto);
         return createdUserDto;
     }
 
@@ -524,7 +524,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final UserDto updatedUser = convertFromEntityToDto(savedEntity);
 
         if (sendMail) {
-            userEmailService.sendCreationEmailAfterCommit(updatedUser);
+            userEmailService.sendCreationEmail(updatedUser);
         }
 
         return updatedUser;
@@ -593,7 +593,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final UserDto dto = convertFromEntityToDto(savedEntity);
 
         if (sendMail) {
-            userEmailService.sendCreationEmailAfterCommit(dto);
+            userEmailService.sendCreationEmail(dto);
         }
         return dto;
     }

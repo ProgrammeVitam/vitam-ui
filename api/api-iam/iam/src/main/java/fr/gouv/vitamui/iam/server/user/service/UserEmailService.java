@@ -115,21 +115,6 @@ public class UserEmailService {
         this.vitamuiRestClientFactory = vitamuiRestClientFactory;
     }
 
-    public void sendCreationEmailAfterCommit(final UserDto userDto) {
-        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
-            sendCreationEmail(userDto);
-            return;
-        }
-        TransactionSynchronizationManager.registerSynchronization(
-            new TransactionSynchronization() {
-                @Override
-                public void afterCommit() {
-                    sendCreationEmail(userDto);
-                }
-            }
-        );
-    }
-
     public void sendCreationEmail(final UserDto userDto) {
         if (
             userDto != null &&
@@ -149,9 +134,24 @@ public class UserEmailService {
             ) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
-                sendPasswordInitializationEmail(userDto, userInfoDto);
+                onceChangesArePersisted(() -> sendPasswordInitializationEmail(userDto, userInfoDto));
             }
         }
+    }
+
+    private void onceChangesArePersisted(final Runnable action) {
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+            action.run();
+            return;
+        }
+        TransactionSynchronizationManager.registerSynchronization(
+            new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    action.run();
+                }
+            }
+        );
     }
 
     private void sendPasswordInitializationEmail(final UserDto userDto, final UserInfoDto userInfoDto) {
