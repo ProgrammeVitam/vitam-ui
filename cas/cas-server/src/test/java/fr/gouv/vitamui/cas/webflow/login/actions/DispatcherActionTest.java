@@ -125,6 +125,20 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
     }
 
     @Test
+    public void testUnknownUserIsNotBlockedSoThatAccountExistenceIsNotDisclosed() throws IOException {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
+        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
+        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
+        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(null);
+
+        final Event event = action.doExecute(context);
+
+        assertEquals("success", event.getId());
+    }
+
+    @Test
     public void testInternalSubrogation() throws IOException {
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
         flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);

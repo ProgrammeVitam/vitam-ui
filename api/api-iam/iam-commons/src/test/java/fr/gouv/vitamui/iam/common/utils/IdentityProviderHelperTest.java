@@ -118,6 +118,41 @@ final class IdentityProviderHelperTest {
         assertFalse(helper.identifierMatchProviderPattern(providers, BAD_EMAIL, CUSTOMER_ID_1));
     }
 
+    @Test
+    void testTheFirstMatchingProviderWinsEvenWhenItIsNotTheInternalOne() {
+        final List<IdentityProviderDto> providers = buildTwoProvidersOfTheSameCustomer();
+
+        final Optional<IdentityProviderDto> result = helper.findByUserIdentifierAndCustomerId(
+            providers,
+            GOOD_EMAIL,
+            CUSTOMER_ID_1
+        );
+
+        assertTrue(result.isPresent());
+        assertEquals(NAME_1, result.get().getTechnicalName());
+        assertFalse(result.get().getInternal());
+    }
+
+    private List<IdentityProviderDto> buildTwoProvidersOfTheSameCustomer() {
+        final List<IdentityProviderDto> providers = new ArrayList<>();
+
+        final IdentityProviderDto external = new IdentityProviderDto();
+        external.setTechnicalName(NAME_1);
+        external.setPatterns(List.of(PATTERN));
+        external.setInternal(false);
+        external.setCustomerId(CUSTOMER_ID_1);
+        providers.add(external);
+
+        final IdentityProviderDto internal = new IdentityProviderDto();
+        internal.setTechnicalName(NAME_2);
+        internal.setPatterns(List.of(PATTERN));
+        internal.setInternal(true);
+        internal.setCustomerId(CUSTOMER_ID_1);
+        providers.add(internal);
+
+        return providers;
+    }
+
     private List<IdentityProviderDto> buildProviders(final boolean internal) {
         final List<IdentityProviderDto> providers = new ArrayList<>();
 

@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,10 +50,12 @@ public final class ProvidersServiceTest {
 
     private IdentityProviderHelper identityProviderHelper;
 
+    private Pac4jClientBuilder builder;
+
     @Before
     public void setUp() {
         final var clients = new Clients();
-        final var builder = mock(Pac4jClientBuilder.class);
+        builder = mock(Pac4jClientBuilder.class);
         identityProvidersApi = mock(IdentityProvidersApi.class);
         service = new ProvidersService(clients, identityProvidersApi, builder);
 
@@ -94,6 +98,41 @@ public final class ProvidersServiceTest {
         assertTrue(userProvider.isPresent());
         assertEquals(PROVIDER_ID, userProvider.get().getId());
         assertEquals(saml2Client, ((Pac4jClientIdentityProviderDto) userProvider.get()).getClient());
+    }
+
+    @Test
+    public void testProvidersAreOrderedByTheTextualSortOfTheirIdentifier() {
+        final var internalProvider = buildProvider("internalProvider", "2", true);
+        final var externalProvider = buildProvider("externalProvider", "10", false);
+        when(builder.buildClient(any())).thenReturn(Optional.empty());
+        when(identityProvidersApi.getAll(eq(null), any()))
+            .thenReturn(new ArrayList<>(List.of(internalProvider, externalProvider)));
+
+        service.loadData();
+
+        assertEquals(
+            List.of("externalProvider", "internalProvider"),
+            service.getProviders().stream().map(IdentityProviderDto::getId).toList()
+        );
+
+        final var resolved = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            service.getProviders(),
+            "user1@company.com",
+            CUSTOMER_ID
+        );
+        assertTrue(resolved.isPresent());
+        assertEquals("externalProvider", resolved.get().getId());
+        assertFalse(resolved.get().getInternal());
+    }
+
+    private IdentityProviderDto buildProvider(final String id, final String identifier, final boolean internal) {
+        final var newProvider = new IdentityProviderDto();
+        newProvider.setId(id);
+        newProvider.setIdentifier(identifier);
+        newProvider.setInternal(internal);
+        newProvider.setPatterns(List.of(".*@company.com"));
+        newProvider.setCustomerId(CUSTOMER_ID);
+        return newProvider;
     }
 
     @Test
