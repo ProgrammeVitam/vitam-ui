@@ -8,6 +8,7 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
@@ -58,6 +59,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -148,6 +150,42 @@ public class ProfileServiceIntegrationTest extends AbstractLogbookIntegrationTes
     @AfterEach
     public void cleanUp() {
         repository.deleteAll();
+    }
+
+    @Test
+    void getOne_shouldNotFindProfileOfAnotherCustomerNorAnotherTenant() {
+        final String profileOfAnotherCustomerId = "IdProfileOfAnotherCustomer";
+        final String profileOfAnotherTenantId = "IdProfileOfAnotherTenant";
+
+        repository.save(
+            IamServerUtilsTest.buildProfile(
+                profileOfAnotherCustomerId,
+                "901",
+                "profile of another customer",
+                "anotherCustomerId",
+                TENANT_IDENTIFIER,
+                CommonConstants.USERS_APPLICATIONS_NAME,
+                ""
+            )
+        );
+        repository.save(
+            IamServerUtilsTest.buildProfile(
+                profileOfAnotherTenantId,
+                "902",
+                "profile of another tenant",
+                IamServerUtilsTest.CUSTOMER_ID,
+                11,
+                CommonConstants.USERS_APPLICATIONS_NAME,
+                ""
+            )
+        );
+
+        assertThatThrownBy(
+            () -> service.getOne(profileOfAnotherCustomerId, Optional.empty(), Optional.empty())
+        ).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(
+            () -> service.getOne(profileOfAnotherTenantId, Optional.empty(), Optional.empty())
+        ).isInstanceOf(NotFoundException.class);
     }
 
     @Test

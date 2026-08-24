@@ -277,7 +277,7 @@ public class CasController {
         LOGGER.debug("getSubrogationsBySuperUserId: {}", superUserId);
         ParameterChecker.checkParameter("The superUserId is mandatory : ", superUserId);
         SanityChecker.checkSecureParameter(superUserId);
-        final UserDto user = userService.getOne(superUserId, Optional.empty());
+        final UserDto user = userService.findUserById(superUserId);
         if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
             final String email = user.getEmail();
             final String customerId = user.getCustomerId();

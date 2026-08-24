@@ -168,7 +168,7 @@ public final class TenantCrudControllerTest implements CrudControllerTest {
 
         when(ownerService.getOne(tenantDto.getOwnerId(), Optional.empty())).thenReturn(buildOwnerDto());
 
-        when(groupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty())).thenReturn(
+        when(groupService.getOneByPassSecurity(buildUserDto().getGroupId(), Optional.empty())).thenReturn(
             buildGroupDto()
         );
         when(ownerRepository.findById(tenantDto.getOwnerId())).thenReturn(Optional.of(buildOwner()));
