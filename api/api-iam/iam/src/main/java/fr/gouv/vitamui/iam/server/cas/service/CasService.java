@@ -71,6 +71,7 @@ import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
@@ -182,6 +183,9 @@ public class CasService {
     private IdentityProviderRepository identityProviderRepository;
 
     @Autowired
+    private IdentityProviderHelper identityProviderHelper;
+
+    @Autowired
     private GroupService groupService;
 
     @Autowired
@@ -253,6 +257,7 @@ public class CasService {
             }
         }
 
+        checkPasswordChangeAllowedForProvider(email, customerId);
         checkPasswordPolicy(rawPassword, user);
 
         final String encodedPassword = passwordEncoder.encode(rawPassword);
@@ -277,6 +282,20 @@ public class CasService {
             iamLogbookService.createPasswordEvent(user);
         } else {
             iamLogbookService.updatePasswordEvent(user);
+        }
+    }
+
+    private void checkPasswordChangeAllowedForProvider(final String email, final String customerId) {
+        final Optional<IdentityProviderDto> provider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            identityProviderService.getAll(Optional.empty(), Optional.empty()),
+            email,
+            customerId
+        );
+        if (provider.isEmpty()) {
+            throw new BadRequestException("No identity provider found for user " + email);
+        }
+        if (!Boolean.TRUE.equals(provider.get().getInternal())) {
+            throw new BadRequestException("Only a user linked to an internal identity provider can change password");
         }
     }
 
