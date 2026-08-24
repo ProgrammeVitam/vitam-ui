@@ -1,10 +1,10 @@
 package fr.gouv.vitamui.iam.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;

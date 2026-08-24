@@ -507,9 +507,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
         final UserStatusEnum existingStatus = existingUser.getStatus();
         final UserStatusEnum newStatus = dto.getStatus();
-        if (
-            statusEquals(newStatus, UserStatusEnum.ENABLED) && statusEquals(existingStatus, UserStatusEnum.DISABLED)
-        ) {
+        if (statusEquals(newStatus, UserStatusEnum.ENABLED) && statusEquals(existingStatus, UserStatusEnum.DISABLED)) {
             saveCurrentPasswordInOldPasswords(entity, entity.getPassword(), maxOldPassword);
             entity.setPassword(null);
             entity.setPasswordExpirationDate(OffsetDateTime.now());
@@ -577,9 +575,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         );
 
         final UserStatusEnum newStatus = entity.getStatus();
-        if (
-            statusEquals(existingStatus, UserStatusEnum.DISABLED) && statusEquals(newStatus, UserStatusEnum.ENABLED)
-        ) {
+        if (statusEquals(existingStatus, UserStatusEnum.DISABLED) && statusEquals(newStatus, UserStatusEnum.ENABLED)) {
             entity.setPassword(null);
             entity.setPasswordExpirationDate(OffsetDateTime.now());
             entity.setNbFailedAttempts(0);

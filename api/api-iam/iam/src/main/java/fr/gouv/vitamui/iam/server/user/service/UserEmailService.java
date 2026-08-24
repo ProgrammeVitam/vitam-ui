@@ -86,11 +86,11 @@ public class UserEmailService {
     @Setter
     private String casPasswordResetUrlPath;
 
-    @Value("${iam.mail.sender}")
+    @Value("${mail.sender}")
     @Setter
     private String mailSenderAddress;
 
-    @Value("${iam.mail.platform-name:VITAM-UI}")
+    @Value("${mail.platform-name:VITAM-UI}")
     @Setter
     private String platformName;
 
@@ -165,9 +165,7 @@ public class UserEmailService {
             return;
         }
 
-        final Locale locale = Locale.forLanguageTag(
-            LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage()
-        );
+        final Locale locale = Locale.forLanguageTag(LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
         final Object[] arguments = new Object[] {
             userDto.getFirstname(),
             userDto.getLastname(),

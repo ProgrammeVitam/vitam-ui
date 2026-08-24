@@ -42,8 +42,8 @@ customer.init.config.file: src/test/resources/customer-init.yml
 
 cas.password-reset-url.path: /extras/passwordResetUrl
 
-iam.mail.sender: noreply@change-it.fr
-iam.mail.platform-name: VITAM-UI
+mail.sender: noreply@change-it.fr
+mail.platform-name: VITAM-UI
 cas.tenant.identifier: -1
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 

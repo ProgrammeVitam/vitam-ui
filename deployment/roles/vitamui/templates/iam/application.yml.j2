@@ -106,8 +106,8 @@ cas-client:
 
 cas.password-reset-url.path: {{ vitamui.cas_server.base_url | default('/cas') }}/extras/passwordResetUrl
 
-iam.mail.sender: {{ smtp.cas.sender }}
-iam.mail.platform-name: {{ vitamui_platform_informations.platform_name }}
+mail.sender: {{ smtp.cas.sender }}
+mail.platform-name: {{ vitamui_platform_informations.platform_name }}
 
 spring.mail.host: {{ smtp.host }}
 spring.mail.port: {{ smtp.port }}

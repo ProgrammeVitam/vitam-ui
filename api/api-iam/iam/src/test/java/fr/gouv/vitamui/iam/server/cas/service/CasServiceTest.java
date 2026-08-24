@@ -1,17 +1,17 @@
 package fr.gouv.vitamui.iam.server.cas.service;
 
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
@@ -94,8 +94,9 @@ class CasServiceTest {
         when(passwordConfiguration.getPolicyPattern()).thenReturn(POLICY_PATTERN);
         when(passwordValidator.isValid(POLICY_PATTERN, "weak")).thenReturn(false);
 
-        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "weak", CUSTOMER_ID))
-            .isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "weak", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -108,18 +109,21 @@ class CasServiceTest {
         when(passwordConfiguration.getOccurrencesCharsNumber()).thenReturn(3);
         when(passwordValidator.isContainsUserOccurrences(user.getLastname(), "Dupont2026!", 3)).thenReturn(true);
 
-        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Dupont2026!", CUSTOMER_ID))
-            .isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Dupont2026!", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
     void should_reject_a_password_change_for_a_user_without_identity_provider() {
         givenAnEnabledUserAndCustomer();
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString()))
-            .thenReturn(Optional.empty());
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.empty()
+        );
 
-        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID))
-            .isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     @Test
@@ -127,18 +131,21 @@ class CasServiceTest {
         givenAnEnabledUserAndCustomer();
         final IdentityProviderDto externalProvider = new IdentityProviderDto();
         externalProvider.setInternal(false);
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString()))
-            .thenReturn(Optional.of(externalProvider));
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.of(externalProvider)
+        );
 
-        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID))
-            .isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     private void givenAnInternalIdentityProvider() {
         final IdentityProviderDto internalProvider = new IdentityProviderDto();
         internalProvider.setInternal(true);
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString()))
-            .thenReturn(Optional.of(internalProvider));
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.of(internalProvider)
+        );
     }
 
     private User givenAnEnabledUserAndCustomer() {

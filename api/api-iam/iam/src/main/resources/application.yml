@@ -41,8 +41,8 @@ subrogation.ttl: 30
 
 cas.password-reset-url.path: /extras/passwordResetUrl
 
-iam.mail.sender: noreply@change-it.fr
-iam.mail.platform-name: VITAM-UI
+mail.sender: noreply@change-it.fr
+mail.platform-name: VITAM-UI
 
 user.connection.tracing.enabled: false
 
