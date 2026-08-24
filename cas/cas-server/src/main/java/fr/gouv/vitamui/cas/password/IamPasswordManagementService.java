@@ -193,14 +193,9 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
 
         if (
-            (passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
-                passwordConfiguration.isCheckOccurrence() &&
-                passwordConfiguration.getOccurrencesCharsNumber() != null &&
-                passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
-            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
-                passwordConfiguration.isCheckOccurrence() &&
-                passwordConfiguration.getOccurrencesCharsNumber() != null &&
-                passwordConfiguration.getOccurrencesCharsNumber() > 0)
+            passwordConfiguration.isCheckOccurrence() &&
+            passwordConfiguration.getOccurrencesCharsNumber() != null &&
+            passwordConfiguration.getOccurrencesCharsNumber() > 0
         ) {
             String userLastName = user.getLastname();
             Assert.notNull(userLastName, "user last name can not be null");
