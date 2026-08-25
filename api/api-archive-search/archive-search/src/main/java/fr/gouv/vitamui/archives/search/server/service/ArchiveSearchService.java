@@ -72,6 +72,7 @@ import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
@@ -79,6 +80,7 @@ import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
@@ -618,6 +620,36 @@ public class ArchiveSearchService {
             .collect(Collectors.toSet());
 
         return operationIds.stream().collect(Collectors.toMap(id -> id, existingOperationIds::contains));
+    }
+
+    /**
+     * Retrieve the lifecycle logbook of an archive unit.
+     *
+     * @param unitId the archive unit identifier
+     * @return the unit lifecycle logbook
+     */
+    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(String unitId)
+        throws VitamClientException, PreconditionFailedException {
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
+        return VitamRestUtils.responseMapping(
+            logbookService.findUnitLifeCyclesByUnitId(unitId, vitamContext).toJsonNode(),
+            LogbookLifeCycleResponseDto.class
+        );
+    }
+
+    /**
+     * Retrieve the lifecycle logbook of an object group.
+     *
+     * @param objectGroupId the object group identifier
+     * @return the object group lifecycle logbook
+     */
+    public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(String objectGroupId)
+        throws VitamClientException, PreconditionFailedException {
+        VitamContext vitamContext = externalParametersService.buildVitamContextFromExternalParam();
+        return VitamRestUtils.responseMapping(
+            logbookService.findObjectGroupLifeCyclesByUnitId(objectGroupId, vitamContext).toJsonNode(),
+            LogbookLifeCycleResponseDto.class
+        );
     }
 
     private JsonNode buildReassignmentDsl(JsonNode searchDsl, Long threshold) {

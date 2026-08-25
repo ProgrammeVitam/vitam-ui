@@ -1,0 +1,52 @@
+<div
+  class="lifecycle-event-item"
+  [class.event-error]="isKo()"
+  [class.event-warning]="isWarning()"
+  [class.no-line]="suppressLine()"
+  [class.no-incoming-line]="isFirstInList()"
+  [class.bridge-row]="bridgeRow()"
+  [class.has-visible-children]="hasVisibleChildren()"
+>
+  <div class="lifecycle-event">
+    <div class="lifecycle-event-main">
+      <div class="lifecycle-event-date">{{ event().evDateTime | dateTime: 'dd/MM/yyyy - HH:mm:ss' }}</div>
+
+      <div class="lifecycle-event-title">
+        @if (event().children.length) {
+          <button type="button" class="lifecycle-event-chevron" (click)="toggleChildren()" [attr.aria-expanded]="childrenExpanded()">
+            <i class="material-icons">{{ childrenExpanded() ? 'expand_more' : 'chevron_right' }}</i>
+          </button>
+        }
+        <vitamui-common-event-type-label [key]="event().evType"></vitamui-common-event-type-label>
+      </div>
+
+      @if (isWarning() || isKo()) {
+        <div class="lifecycle-event-message">{{ event().outMessg }}</div>
+      }
+
+      @if (hasMeaningfulDetail()) {
+        <button type="button" class="lifecycle-event-detail-toggle" (click)="toggleDetail()">
+          <i class="material-icons">{{ detailExpanded() ? 'expand_more' : 'chevron_right' }}</i>
+          <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SHOW_HIDE_DETAIL' | translate }}</span>
+        </button>
+        @if (detailExpanded()) {
+          <div class="lifecycle-event-details">{{ detailText() }}</div>
+        }
+      }
+    </div>
+
+    <div class="text medium col-1">{{ event().origin }}</div>
+  </div>
+
+  @if (childrenExpanded()) {
+    <div class="lifecycle-event-children">
+      @for (child of event().children; track child.evId; let lastChild = $last) {
+        <app-lifecycle-event-node
+          [event]="child"
+          [isLastInList]="lastChild"
+          [bridgeToNextRow]="lastChild && childBridgeToNextRow()"
+        ></app-lifecycle-event-node>
+      }
+    </div>
+  }
+</div>

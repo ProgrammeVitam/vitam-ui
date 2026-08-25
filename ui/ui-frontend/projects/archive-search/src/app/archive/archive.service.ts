@@ -106,7 +106,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
   }
 
   public static fetchTitle(title: string, titleInLanguages: any) {
-    return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
+    return title ?? titleInLanguages?.fr ?? titleInLanguages?.en;
   }
 
   public static fetchAuTitle(unit: any) {

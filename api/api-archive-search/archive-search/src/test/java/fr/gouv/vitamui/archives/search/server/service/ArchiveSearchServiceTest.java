@@ -47,6 +47,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.archives.search.common.dto.ReassignRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReassignmentMode;
@@ -60,6 +61,7 @@ import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.PersistentIdentifierService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -136,6 +138,8 @@ class ArchiveSearchServiceTest {
     public final String LOGBOOK_OPERATIONS_NON_INGEST_RESPONSE = "data/logbook_operations_non_ingest_response.json";
     public final String LOGBOOK_OPERATIONS_INGEST_RESPONSE = "data/logbook_operations_ingest_response.json";
     public final String LOGBOOK_OPERATIONS_EMPTY_RESPONSE = "data/logbook_operations_empty_response.json";
+    public final String LOGBOOK_UNIT_LIFECYCLE_RESPONSE = "data/logbook_unit_lifecycle_response.json";
+    public final String LOGBOOK_OBJECT_GROUP_LIFECYCLE_RESPONSE = "data/logbook_object_group_lifecycle_response.json";
 
     @BeforeEach
     public void setUp() {
@@ -196,6 +200,18 @@ class ArchiveSearchServiceTest {
             objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
         );
         return (RequestResponse<LogbookOperation>) (RequestResponse<?>) response;
+    }
+
+    @SuppressWarnings("unchecked")
+    private RequestResponse<LogbookLifecycle> responseFromFileLifecycle(String filename) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream = ArchiveSearchServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        assertThat(inputStream).isNotNull();
+        RequestResponse<JsonNode> response = RequestResponseOK.getFromJsonNode(
+            objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class)
+        );
+        return (RequestResponse<LogbookLifecycle>) (RequestResponse<?>) response;
     }
 
     @Test
@@ -833,5 +849,39 @@ class ArchiveSearchServiceTest {
         searchCriteria.setPageNumber(pageNumber);
         searchCriteria.setSize(size);
         return searchCriteria;
+    }
+
+    @Test
+    void shouldReturnUnitLifeCyclesWhenFindUnitLifeCyclesByUnitId() throws Exception {
+        // Given
+        String unitId = "aeaqaaaaa4ecgoguawzpoam6kaj6m3yaaaca";
+        when(logbookService.findUnitLifeCyclesByUnitId(eq(unitId), eq(defaultVitamContext))).thenReturn(
+            responseFromFileLifecycle(LOGBOOK_UNIT_LIFECYCLE_RESPONSE)
+        );
+
+        // When
+        LogbookLifeCycleResponseDto response = archiveSearchService.findUnitLifeCyclesByUnitId(unitId);
+
+        // Then
+        assertThat(response.getResults()).hasSize(1);
+        assertThat(response.getResults().getFirst().getEvents()).hasSize(1);
+        assertThat(response.getResults().getFirst().getEvents().getFirst().getEvType()).isEqualTo("LFC.LFC_CREATION");
+    }
+
+    @Test
+    void shouldReturnObjectGroupLifeCyclesWhenFindObjectGroupLifeCyclesByUnitId() throws Exception {
+        // Given
+        String objectGroupId = "aebqaaaaacec2k2dac3ssam7lpe5k4qaaaba";
+        when(logbookService.findObjectGroupLifeCyclesByUnitId(eq(objectGroupId), eq(defaultVitamContext))).thenReturn(
+            responseFromFileLifecycle(LOGBOOK_OBJECT_GROUP_LIFECYCLE_RESPONSE)
+        );
+
+        // When
+        LogbookLifeCycleResponseDto response = archiveSearchService.findObjectGroupLifeCyclesByUnitId(objectGroupId);
+
+        // Then
+        assertThat(response.getResults()).hasSize(1);
+        assertThat(response.getResults().getFirst().getEvents()).hasSize(1);
+        assertThat(response.getResults().getFirst().getEvents().getFirst().getEvType()).isEqualTo("LFC.LFC_CREATION");
     }
 }

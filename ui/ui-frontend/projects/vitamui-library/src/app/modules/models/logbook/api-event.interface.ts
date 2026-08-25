@@ -41,6 +41,7 @@ export interface ApiEvent extends Id {
   obIdIn?: string;
   evId: string;
   evIdReq: string;
+  evIdProc: string;
   evParentId: string;
   evType: string;
   evTypeProc: string;

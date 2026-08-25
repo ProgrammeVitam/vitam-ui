@@ -64,4 +64,7 @@ public class RestApi {
 
     public static final String PRESERVATION = "/preservation";
     public static final String PRESERVATION_OBJECT_GROUPS_COUNT = "/preservation/object-groups-count";
+
+    public static final String ARCHIVE_UNIT_LIFECYCLES = ARCHIVE_UNIT_INFO + "/unitlifecycles";
+    public static final String OBJECT_GROUP_LIFECYCLES = OBJECTGROUP + "/objectslifecycles";
 }

@@ -2370,6 +2370,9 @@
     "CHECK_HEADER.KO": "Failed general check of transfer slip",
     "STP_IMPORT_INGEST_CONTRACT.PROFILE_NOT_FOUND.KO": "Failed to import entry contract: archive profile not found",
     "LFC.UNIT_DETACHMENT": "Modification of the archival unit tree",
+    "LFC.UNIT_DETACHMENT.OK": "Archival unit detachment succeeded",
+    "LFC.UNIT_ATTACHMENT": "Archival unit attachment",
+    "LFC.UNIT_ATTACHMENT.OK": "Archival unit attachment succeeded",
     "ELIMINATION_ACTION_REPORT_GENERATION.WARNING": "Warning when generating the final disposal report for archival units",
     "LFC.CHECK_UNIT_SCHEMA.CONSISTENCY": "Checking the consistency between the Start date and End date fields",
     "OG_OBJECTS_FORMAT_CHECK.UNKNOWN.KO": "Failed to identify formats: the format of the object (s) cannot be identified",
@@ -3190,7 +3193,9 @@
     "CHECK_DATAOBJECTPACKAGE.CHECK_MANIFEST_OBJECTNUMBER.INVALID_URI.KO": "At least one object declares a URI to which a file does not correspond or declares a URI already used by another object",
     "LFC.CHECK_ARCHIVE_UNIT_PROFILE.INVALID_AU_PROFILE.KO": "Failed to verify compliance with archival unit profiles: archival unit profile not compliant",
     "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE": "Checking the size of a binary file",
+    "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE.OK": "Binary file size check succeeded",
     "LFC.CHECK_OBJECT_SIZE": "Checking File Size",
+    "LFC.CHECK_OBJECT_SIZE.OK": "File size check succeeded",
     "CHECK_OBJECT_SIZE.CHECK_SIZE": "Checking the size of a binary file",
     "CHECK_OBJECT_SIZE.KO": "Failed to check the size of a binary object",
     "CHECK_OBJECT_SIZE.OK": "Success of checking the size of a binary object",
@@ -3874,6 +3879,10 @@
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_UNITS.KO": "Archive units originating agency reassignment process failed",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_UNITS.WARNING": "Warning during archive units originating agency reassignment process",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_UNITS.FATAL": "Technical error during archive units originating agency reassignment process",
+    "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_OBJECT_GROUPS": "Object groups originating agency reassignment process",
+    "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_OBJECT_GROUPS.OK": "Object groups originating agencies reassignment process succeeded",
+    "LFC.DELETE_GOT_VERSIONS_ACTION": "Deletion of object group versions",
+    "LFC.DELETE_GOT_VERSIONS_ACTION.OK": "Object group versions deletion succeeded",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_CHILD_UNITS": "Inherited archive units originating agencies reassignment process",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_CHILD_UNITS.STARTED": "Inherited archive units originating agencies reassignment process started",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_CHILD_UNITS.STARTED.OK": "Inherited archive units originating agencies reassignment process start succeeded",
@@ -4063,12 +4072,27 @@
         "USAGE": "Usage",
         "USAGE_VERSION": "Usage version",
         "PHYSICAL_ID": "Physical object identifier",
-        "PhysicalDimensions": "PHYSICAL CHARACTERISTICS"
+        "PhysicalDimensions": "PHYSICAL CHARACTERISTICS",
+        "SHOW_HIDE_DETAIL": "Show/Hide detail"
       },
       "TABS": {
-        "INFORMATIONS": "Informations",
+        "INFORMATIONS": "Information",
         "OBJECTS": "Objects",
-        "RULES": "Rules"
+        "RULES": "Rules",
+        "HISTORY": "History"
+      },
+      "HISTORY": {
+        "TITLE": "Archival unit and object group lifecycle logbooks",
+        "OPERATION_COLUMN": "Operation",
+        "EVENT_COLUMN": "Event",
+        "JOURNAL_COLUMN": "Logbook",
+        "JOURNAL_UNIT": "Archival unit lifecycle",
+        "JOURNAL_OBJECT_GROUP": "Object group lifecycle",
+        "OUTCOME_OK": "Success",
+        "OUTCOME_WARNING": "Warning",
+        "OUTCOME_KO": "Failure",
+        "ACCESS_OPERATIONS_LOG": "Go to the operations logbook",
+        "LOAD_ERROR": "An error occurred while loading the archival unit history."
       }
     },
     "ARCHIVE_UNIT_RULES_DETAILS": {
