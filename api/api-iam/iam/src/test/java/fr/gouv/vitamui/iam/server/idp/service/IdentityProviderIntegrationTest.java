@@ -157,11 +157,28 @@ public class IdentityProviderIntegrationTest extends AbstractLogbookIntegrationT
         assertThat(events).hasSize(8);
     }
 
+    @Test
+    void testGetOneKeepsTheMetadataPresenceWhenTheContentIsMasked() {
+        final IdentityProviderDto created = createIdp("<xml></xml>");
+
+        final IdentityProviderDto dto = service.getOne(created.getId(), Optional.empty(), Optional.empty());
+
+        assertThat(dto.getIdpMetadata()).isNull();
+        assertThat(dto.isHasIdpMetadata()).isTrue();
+        assertThat(dto.isHasSpMetadata()).isTrue();
+    }
+
     private IdentityProviderDto createIdp() {
+        return createIdp(null);
+    }
+
+    private IdentityProviderDto createIdp(final String idpMetadata) {
         final String customerId = "customerId";
         final IdentityProviderDto dto = IamServerUtilsTest.buildIdentityProviderDto();
         dto.setCustomerId(customerId);
         dto.setId(null);
+        dto.setIdpMetadata(idpMetadata);
+        Mockito.when(spMetadataGenerator.generate(any())).thenReturn("<sp></sp>");
 
         final Customer customer = new Customer();
         customer.setEnabled(true);
