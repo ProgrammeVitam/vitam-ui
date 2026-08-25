@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.server.cas.service;
 
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
@@ -22,6 +23,10 @@ import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
+import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
+import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
+import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
+import fr.gouv.vitamui.iam.server.token.domain.Token;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.server.user.domain.User;
@@ -31,8 +36,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -43,6 +51,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,6 +100,18 @@ class CasServiceTest {
 
     @Mock
     private CustomerService customerService;
+
+    @Mock
+    private TokenRepository tokenRepository;
+
+    @Mock
+    private MongoTemplate mongoTemplate;
+
+    @Mock
+    private SubrogationRepository subrogationRepository;
+
+    @Mock
+    private IamLogbookService iamLogbookService;
 
     @Mock
     private PasswordValidator passwordValidator;
@@ -167,6 +188,57 @@ class CasServiceTest {
         assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "whatever", CUSTOMER_ID)).isInstanceOf(
             InvalidAuthenticationException.class
         );
+    }
+
+    @Test
+    void should_issue_a_token_only_when_the_embedded_option_asks_for_it() {
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(buildAuthUser(false));
+
+        casService.getUser(USER_EMAIL, CUSTOMER_ID, null, null, null);
+
+        verify(tokenRepository, never()).save(any());
+    }
+
+    @Test
+    void should_issue_a_token_when_the_embedded_option_contains_authtoken() {
+        final AuthUserDto authUser = buildAuthUser(false);
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
+        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
+        givenTheTokenLifetimes();
+
+        casService.getUser(USER_EMAIL, CUSTOMER_ID, null, null, CommonConstants.AUTH_TOKEN_PARAMETER);
+
+        final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
+        verify(tokenRepository).save(issuedToken.capture());
+        assertThat(issuedToken.getValue().isSurrogation()).isFalse();
+        assertThat(issuedToken.getValue().getRefId()).isEqualTo(authUser.getId());
+    }
+
+    @Test
+    void should_mark_the_token_as_a_surrogation_when_the_embedded_option_says_so() {
+        final AuthUserDto authUser = buildAuthUser(false);
+        authUser.setType(UserTypeEnum.NOMINATIVE);
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
+        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
+        givenTheTokenLifetimes();
+
+        casService.getUser(
+            USER_EMAIL,
+            CUSTOMER_ID,
+            null,
+            null,
+            CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER
+        );
+
+        final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
+        verify(tokenRepository).save(issuedToken.capture());
+        assertThat(issuedToken.getValue().isSurrogation()).isTrue();
+    }
+
+    private void givenTheTokenLifetimes() {
+        ReflectionTestUtils.setField(casService, "tokenTtl", 60);
+        ReflectionTestUtils.setField(casService, "subrogationTokenTtl", 15);
+        ReflectionTestUtils.setField(casService, "apiTokenTtl", 5);
     }
 
     private User givenAnEnabledUserAndCustomer() {

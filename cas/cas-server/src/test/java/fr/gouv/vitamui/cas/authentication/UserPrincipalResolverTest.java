@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cas.authentication;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
+import org.springframework.webflow.execution.RequestContextHolder;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
@@ -43,6 +44,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -698,6 +700,77 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             .getAttributes()
             .put(Constants.FLOW_SURROGATE_CUSTOMER_ID, List.of(UserPrincipalResolverTest.CUSTOMER_ID));
         return principal;
+    }
+
+    @Test
+    public void testTheIdpCannotReturnAnIdentityOtherThanTheAnnouncedOne() throws Throwable {
+        final var provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        givenLoginInfoInSessionForDeleguatedAuthn();
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        when(
+            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
+        ).thenReturn(Optional.of(provider));
+
+        assertThatThrownBy(() ->
+            resolver.resolve(
+                new ClientCredential(null, PROVIDER_NAME),
+                Optional.of(principalFactory.createPrincipal("someone.else@vitamui.com")),
+                Optional.empty(),
+                Optional.empty()
+            )
+        )
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid user from Idp");
+    }
+
+    @Test
+    public void testTheAnnouncedIdentityIsComparedWithItsCase() throws Throwable {
+        final var provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        givenLoginInfoInSessionForDeleguatedAuthn();
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        when(
+            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
+        ).thenReturn(Optional.of(provider));
+
+        assertThatThrownBy(() ->
+            resolver.resolve(
+                new ClientCredential(null, PROVIDER_NAME),
+                Optional.of(principalFactory.createPrincipal(USERNAME.toUpperCase())),
+                Optional.empty(),
+                Optional.empty()
+            )
+        )
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid user from Idp");
+    }
+
+    @Test
+    public void testAServerToServerCallAsksForAnApiToken() throws Throwable {
+        when(
+            casApi.getUser(
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(null),
+                eq(null),
+                eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.API_PARAMETER)
+            )
+        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
+
+        RequestContextHolder.setRequestContext(null);
+        try {
+            final var principal = resolver.resolve(
+                new UsernamePasswordCredential(USERNAME, PWD),
+                Optional.of(createLoginPrincipal()),
+                Optional.empty(),
+                Optional.empty()
+            );
+
+            assertEquals(USERNAME_ID, principal.getId());
+        } finally {
+            RequestContextHolder.setRequestContext(context);
+        }
     }
 
     private void givenLoginInfoInSessionForDeleguatedAuthn() {
