@@ -66,6 +66,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProvidersService {
 
+    private static final Comparator<IdentityProviderDto> BY_TEXTUAL_ORDER_OF_IDENTIFIER = Comparator.comparing(
+        IdentityProviderDto::getIdentifier
+    );
+
     @Getter
     private List<IdentityProviderDto> providers = new ArrayList<>();
 
@@ -98,8 +102,7 @@ public class ProvidersService {
             null,
             embedded
         );
-        // sort by identifier. This is needed in order to take the internal provider first.
-        temporaryProviders.sort(Comparator.comparing(IdentityProviderDto::getIdentifier));
+        temporaryProviders.sort(BY_TEXTUAL_ORDER_OF_IDENTIFIER);
         LOGGER.debug(
             "Reloaded {} providers: {}",
             temporaryProviders.size(),
