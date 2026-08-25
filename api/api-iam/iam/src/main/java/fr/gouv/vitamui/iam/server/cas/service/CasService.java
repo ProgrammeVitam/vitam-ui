@@ -54,11 +54,12 @@ import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfigura
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
-import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -277,17 +278,26 @@ public class CasService {
             customerId
         );
         if (provider.isEmpty()) {
-            throw new BadRequestException("No identity provider found for user " + email);
+            throw new BadRequestException(
+                "No identity provider found for user " + email,
+                PasswordChangeErrorKeys.NO_IDENTITY_PROVIDER
+            );
         }
         if (!Boolean.TRUE.equals(provider.get().getInternal())) {
-            throw new BadRequestException("Only a user linked to an internal identity provider can change password");
+            throw new BadRequestException(
+                "Only a user linked to an internal identity provider can change password",
+                PasswordChangeErrorKeys.EXTERNAL_IDENTITY_PROVIDER
+            );
         }
     }
 
     private void checkPasswordPolicy(final String rawPassword, final User user) {
         final String policyPattern = passwordConfiguration != null ? passwordConfiguration.getPolicyPattern() : null;
         if (StringUtils.isNotBlank(policyPattern) && !passwordValidator.isValid(policyPattern, rawPassword)) {
-            throw new BadRequestException("The given password does not match the password policy");
+            throw new BadRequestException(
+                "The given password does not match the password policy",
+                PasswordChangeErrorKeys.POLICY_NOT_MATCHED
+            );
         }
 
         if (
@@ -302,7 +312,10 @@ public class CasService {
                 passwordConfiguration.getOccurrencesCharsNumber()
             )
         ) {
-            throw new BadRequestException("The given password contains an occurrence of the user name");
+            throw new BadRequestException(
+                "The given password contains an occurrence of the user name",
+                PasswordChangeErrorKeys.CONTAINS_USER_NAME
+            );
         }
     }
 
@@ -769,22 +782,20 @@ public class CasService {
             .stream()
             .map(customersById::get)
             .filter(Objects::nonNull)
-            .map(customer ->
-                new OrganizationCandidateDto(customer.getId(), customer.getCode(), customer.getName())
-            )
+            .map(customer -> new OrganizationCandidateDto(customer.getId(), customer.getCode(), customer.getName()))
             .toList();
     }
 
     public ResolvedIdentityProviderDto resolveIdentityProvider(final String identifier, final String customerId) {
         final String normalizedIdentifier = identifier.toLowerCase().trim();
-        final List<IdentityProviderDto> providers = identityProviderService.getAll(
-            Optional.empty(),
-            Optional.empty()
-        );
+        final List<IdentityProviderDto> providers = identityProviderService.getAll(Optional.empty(), Optional.empty());
 
         return identityProviderHelper
             .findByUserIdentifierAndCustomerId(providers, normalizedIdentifier, customerId)
-            .map(provider -> new ResolvedIdentityProviderDto(provider.getId(), Boolean.TRUE.equals(provider.getInternal())))
+            .map(
+                provider ->
+                    new ResolvedIdentityProviderDto(provider.getId(), Boolean.TRUE.equals(provider.getInternal()))
+            )
             .orElseGet(() -> new ResolvedIdentityProviderDto(null, false));
     }
 
@@ -794,10 +805,7 @@ public class CasService {
             return users.stream().map(UserDto::getCustomerId).toList();
         }
 
-        final List<IdentityProviderDto> providers = identityProviderService.getAll(
-            Optional.empty(),
-            Optional.empty()
-        );
+        final List<IdentityProviderDto> providers = identityProviderService.getAll(Optional.empty(), Optional.empty());
 
         if (users.size() == 1) {
             final String customerId = users.getFirst().getCustomerId();

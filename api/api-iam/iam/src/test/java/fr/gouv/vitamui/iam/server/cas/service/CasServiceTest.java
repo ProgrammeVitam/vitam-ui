@@ -13,6 +13,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
@@ -275,8 +276,9 @@ class CasServiceTest {
         final IdentityProviderDto provider = buildProviderOf(CUSTOMER_ID);
         when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of(buildUserOf(CUSTOMER_ID)));
         when(identityProviderService.getAll(any(), any())).thenReturn(List.of(provider));
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(Optional.of(provider));
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(Optional.of(provider));
         givenTheCustomers(buildCustomer(CUSTOMER_ID, "code1", "Organisation 1"));
 
         assertThat(casService.resolveOrganizations(USER_EMAIL))
@@ -288,8 +290,9 @@ class CasServiceTest {
     void should_resolve_nothing_when_a_known_user_is_covered_by_no_provider() {
         when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of(buildUserOf(CUSTOMER_ID)));
         when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(Optional.empty());
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(Optional.empty());
 
         assertThat(casService.resolveOrganizations(USER_EMAIL)).isEmpty();
     }
@@ -356,13 +359,55 @@ class CasServiceTest {
     }
 
     @Test
+    void should_key_the_refusal_when_the_password_does_not_match_the_policy() {
+        givenAnEnabledUserAndCustomer();
+        givenAnInternalIdentityProvider();
+        when(passwordConfiguration.getPolicyPattern()).thenReturn(POLICY_PATTERN);
+        when(passwordValidator.isValid(POLICY_PATTERN, "weak")).thenReturn(false);
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "weak", CUSTOMER_ID))
+            .isInstanceOf(BadRequestException.class)
+            .extracting("key")
+            .isEqualTo(PasswordChangeErrorKeys.POLICY_NOT_MATCHED);
+    }
+
+    @Test
+    void should_key_the_refusal_when_the_user_has_no_identity_provider() {
+        givenAnEnabledUserAndCustomer();
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.empty()
+        );
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "whatever", CUSTOMER_ID))
+            .isInstanceOf(BadRequestException.class)
+            .extracting("key")
+            .isEqualTo(PasswordChangeErrorKeys.NO_IDENTITY_PROVIDER);
+    }
+
+    @Test
+    void should_key_the_refusal_when_the_user_is_behind_an_external_provider() {
+        givenAnEnabledUserAndCustomer();
+        final IdentityProviderDto externalProvider = buildIDP(false);
+        externalProvider.setInternal(false);
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.of(externalProvider)
+        );
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "whatever", CUSTOMER_ID))
+            .isInstanceOf(BadRequestException.class)
+            .extracting("key")
+            .isEqualTo(PasswordChangeErrorKeys.EXTERNAL_IDENTITY_PROVIDER);
+    }
+
+    @Test
     void should_resolve_the_internal_provider_covering_an_identifier_in_an_organization() {
         final IdentityProviderDto provider = buildProviderOf(CUSTOMER_ID);
         provider.setId(IDP);
         provider.setInternal(true);
         when(identityProviderService.getAll(any(), any())).thenReturn(List.of(provider));
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(Optional.of(provider));
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(Optional.of(provider));
 
         final ResolvedIdentityProviderDto resolved = casService.resolveIdentityProvider(USER_EMAIL, CUSTOMER_ID);
 
@@ -376,8 +421,9 @@ class CasServiceTest {
         provider.setId(IDP);
         provider.setInternal(false);
         when(identityProviderService.getAll(any(), any())).thenReturn(List.of(provider));
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(Optional.of(provider));
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(Optional.of(provider));
 
         final ResolvedIdentityProviderDto resolved = casService.resolveIdentityProvider(USER_EMAIL, CUSTOMER_ID);
 
@@ -388,8 +434,9 @@ class CasServiceTest {
     @Test
     void should_resolve_no_provider_when_none_covers_the_identifier() {
         when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(Optional.empty());
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(Optional.empty());
 
         final ResolvedIdentityProviderDto resolved = casService.resolveIdentityProvider(USER_EMAIL, CUSTOMER_ID);
 
@@ -400,8 +447,9 @@ class CasServiceTest {
     @Test
     void should_normalize_the_identifier_before_resolving_the_provider() {
         when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
-        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
-            .thenReturn(Optional.empty());
+        when(
+            identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID))
+        ).thenReturn(Optional.empty());
 
         casService.resolveIdentityProvider("  " + USER_EMAIL.toUpperCase() + " ", CUSTOMER_ID);
 
