@@ -46,10 +46,12 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
-import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
+import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
@@ -329,16 +331,26 @@ public class CasController {
     }
 
     @GetMapping(value = RestApi.CAS_ORGANIZATIONS_PATH)
-    @Operation(
-        operationId = "cas_resolveOrganizations",
-        summary = "Get the organizations claiming a given identifier"
-    )
+    @Operation(operationId = "cas_resolveOrganizations", summary = "Get the organizations claiming a given identifier")
     @Secured(ServicesData.ROLE_CAS_CUSTOMER_IDS)
     public List<OrganizationCandidateDto> resolveOrganizations(final @RequestParam String identifier) {
         LOGGER.debug("resolve organizations claiming identifier={}", identifier);
         ParameterChecker.checkParameter("The identifier is mandatory : ", identifier);
         SanityChecker.checkSecureParameter(identifier);
         return casService.resolveOrganizations(identifier);
+    }
+
+    @PostMapping(value = RestApi.CAS_AUTHENTICATION_PATH)
+    @Operation(
+        operationId = "cas_authenticate",
+        summary = "Resolve an authenticated user and issue an authentication token"
+    )
+    @Secured(ServicesData.ROLE_CAS_USERS)
+    public AuthUserDto authenticate(final @Valid @RequestBody AuthenticationRequestDto request) {
+        LOGGER.debug("authenticate {}", request);
+        ParameterChecker.checkParameter("The customerId is mandatory : ", request.getCustomerId());
+        SanityChecker.checkSecureParameter(request.getIdentifier(), request.getCustomerId());
+        return casService.authenticate(request);
     }
 
     @GetMapping(value = RestApi.CAS_IDENTITY_PROVIDER_PATH)

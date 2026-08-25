@@ -57,6 +57,7 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
@@ -382,6 +383,36 @@ public class CasService {
         checkStatus(userDto.getStatus(), userDto.getEmail());
 
         return loadFullUserProfileIfRequired(userDto, loadFullProfile, isSubrogation, isApi);
+    }
+
+    @Transactional
+    public AuthUserDto authenticate(final AuthenticationRequestDto request) {
+        String identifier = request.getIdentifier();
+
+        if (StringUtils.isNotBlank(request.getIdentityProviderId())) {
+            final Optional<ProvidedUserDto> providedUser = this.provisionUser(
+                identifier,
+                request.getCustomerId(),
+                request.getIdentityProviderId(),
+                request.getTechnicalIdentifier()
+            );
+            if (identifier.isBlank() && providedUser.isPresent()) {
+                identifier = providedUser.get().getEmail();
+            }
+        }
+
+        final UserDto userDto = userService.findUserByEmailAndCustomerId(identifier, request.getCustomerId());
+        if (userDto == null) {
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + identifier);
+        }
+        checkStatus(userDto.getStatus(), userDto.getEmail());
+
+        return (AuthUserDto) loadFullUserProfileIfRequired(
+            userDto,
+            true,
+            request.isSubrogation(),
+            request.isServerToServer()
+        );
     }
 
     private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {

@@ -8,12 +8,14 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
@@ -233,6 +235,60 @@ class CasServiceTest {
         final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
         verify(tokenRepository).save(issuedToken.capture());
         assertThat(issuedToken.getValue().isSurrogation()).isTrue();
+    }
+
+    @Test
+    void should_authenticate_and_issue_a_token_without_any_textual_convention() {
+        final AuthUserDto authUser = buildAuthUser(false);
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
+        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
+        givenTheTokenLifetimes();
+
+        final AuthUserDto authenticated = casService.authenticate(
+            new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, false, false)
+        );
+
+        final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
+        verify(tokenRepository).save(issuedToken.capture());
+        assertThat(issuedToken.getValue().isSurrogation()).isFalse();
+        assertThat(authenticated.getAuthToken()).isEqualTo(issuedToken.getValue().getId());
+    }
+
+    @Test
+    void should_authenticate_a_subrogation_the_same_way_the_embedded_option_did() {
+        final AuthUserDto authUser = buildAuthUser(false);
+        authUser.setType(UserTypeEnum.NOMINATIVE);
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
+        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
+        givenTheTokenLifetimes();
+
+        casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, true, false));
+
+        final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
+        verify(tokenRepository).save(issuedToken.capture());
+        assertThat(issuedToken.getValue().isSurrogation()).isTrue();
+    }
+
+    @Test
+    void should_refuse_to_authenticate_an_unknown_user() {
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(null);
+
+        assertThatThrownBy(() ->
+            casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, false, false))
+        ).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void should_provision_the_user_when_an_identity_provider_is_given() {
+        final AuthUserDto authUser = buildAuthUser(false);
+        when(identityProviderService.getOne(IDP)).thenReturn(buildIDP(false));
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
+        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
+        givenTheTokenLifetimes();
+
+        casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, IDP, null, false, false));
+
+        verify(identityProviderService).getOne(IDP);
     }
 
     private void givenTheTokenLifetimes() {
