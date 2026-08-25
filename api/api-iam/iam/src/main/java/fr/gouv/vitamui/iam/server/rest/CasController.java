@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -324,6 +325,19 @@ public class CasController {
                 principal.getCustomerId()
             );
         }
+    }
+
+    @GetMapping(value = RestApi.CAS_ORGANIZATIONS_PATH)
+    @Operation(
+        operationId = "cas_resolveOrganizations",
+        summary = "Get the organizations claiming a given identifier"
+    )
+    @Secured(ServicesData.ROLE_CAS_CUSTOMER_IDS)
+    public List<OrganizationCandidateDto> resolveOrganizations(final @RequestParam String identifier) {
+        LOGGER.debug("resolve organizations claiming identifier={}", identifier);
+        ParameterChecker.checkParameter("The identifier is mandatory : ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        return casService.resolveOrganizations(identifier);
     }
 
     @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)

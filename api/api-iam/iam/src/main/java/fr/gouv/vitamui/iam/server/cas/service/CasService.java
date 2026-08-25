@@ -54,6 +54,7 @@ import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfigura
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
@@ -106,6 +107,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -748,6 +750,54 @@ public class CasService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerService.getAllById(customerIds);
+    }
+
+    public List<OrganizationCandidateDto> resolveOrganizations(final String identifier) {
+        final String normalizedIdentifier = identifier.toLowerCase().trim();
+        final List<String> claimingCustomerIds = findCustomerIdsClaiming(normalizedIdentifier);
+        if (claimingCustomerIds.isEmpty()) {
+            return List.of();
+        }
+
+        final Map<String, CustomerDto> customersById = customerService
+            .getAllById(claimingCustomerIds.stream().distinct().toList())
+            .stream()
+            .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
+
+        return claimingCustomerIds
+            .stream()
+            .map(customersById::get)
+            .filter(Objects::nonNull)
+            .map(customer ->
+                new OrganizationCandidateDto(customer.getId(), customer.getCode(), customer.getName())
+            )
+            .toList();
+    }
+
+    private List<String> findCustomerIdsClaiming(final String identifier) {
+        final List<UserDto> users = userService.findUsersByEmail(identifier);
+        if (users.size() > 1) {
+            return users.stream().map(UserDto::getCustomerId).toList();
+        }
+
+        final List<IdentityProviderDto> providers = identityProviderService.getAll(
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        if (users.size() == 1) {
+            final String customerId = users.getFirst().getCustomerId();
+            return identityProviderHelper
+                .findByUserIdentifierAndCustomerId(providers, identifier, customerId)
+                .map(provider -> List.of(customerId))
+                .orElseGet(List::of);
+        }
+
+        return identityProviderHelper
+            .findAllProvidersByUserIdentifier(providers, identifier)
+            .stream()
+            .map(IdentityProviderDto::getCustomerId)
+            .toList();
     }
 
     @Getter

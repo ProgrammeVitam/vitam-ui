@@ -9,11 +9,14 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
@@ -29,12 +32,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -80,6 +85,9 @@ class CasServiceTest {
 
     @Mock
     private IdentityProviderHelper identityProviderHelper;
+
+    @Mock
+    private CustomerService customerService;
 
     @Mock
     private PasswordValidator passwordValidator;
@@ -259,6 +267,116 @@ class CasServiceTest {
         providedUser.setLastname("Dupont");
         providedUser.setUnit(unit);
         return providedUser;
+    }
+
+    @Test
+    void should_resolve_the_organization_of_a_single_known_user_covered_by_a_provider() {
+        final IdentityProviderDto provider = buildProviderOf(CUSTOMER_ID);
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of(buildUserOf(CUSTOMER_ID)));
+        when(identityProviderService.getAll(any(), any())).thenReturn(List.of(provider));
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
+            .thenReturn(Optional.of(provider));
+        givenTheCustomers(buildCustomer(CUSTOMER_ID, "code1", "Organisation 1"));
+
+        assertThat(casService.resolveOrganizations(USER_EMAIL))
+            .extracting(OrganizationCandidateDto::getCustomerId)
+            .containsExactly(CUSTOMER_ID);
+    }
+
+    @Test
+    void should_resolve_nothing_when_a_known_user_is_covered_by_no_provider() {
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of(buildUserOf(CUSTOMER_ID)));
+        when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), eq(USER_EMAIL), eq(CUSTOMER_ID)))
+            .thenReturn(Optional.empty());
+
+        assertThat(casService.resolveOrganizations(USER_EMAIL)).isEmpty();
+    }
+
+    @Test
+    void should_resolve_every_organization_of_a_user_known_in_several_of_them() {
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(
+            List.of(buildUserOf(CUSTOMER_ID), buildUserOf("customerID2"))
+        );
+        givenTheCustomers(
+            buildCustomer(CUSTOMER_ID, "code1", "Organisation 1"),
+            buildCustomer("customerID2", "code2", "Organisation 2")
+        );
+
+        assertThat(casService.resolveOrganizations(USER_EMAIL))
+            .extracting(OrganizationCandidateDto::getCustomerId)
+            .containsExactly(CUSTOMER_ID, "customerID2");
+    }
+
+    @Test
+    void should_fall_back_on_the_providers_covering_the_address_when_no_user_is_known() {
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of());
+        when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), eq(USER_EMAIL))).thenReturn(
+            List.of(buildProviderOf(CUSTOMER_ID))
+        );
+        givenTheCustomers(buildCustomer(CUSTOMER_ID, "code1", "Organisation 1"));
+
+        assertThat(casService.resolveOrganizations(USER_EMAIL))
+            .extracting(OrganizationCandidateDto::getCustomerId)
+            .containsExactly(CUSTOMER_ID);
+    }
+
+    @Test
+    void should_repeat_an_organization_covering_an_unknown_address_with_two_providers() {
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of());
+        when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), eq(USER_EMAIL))).thenReturn(
+            List.of(buildProviderOf(CUSTOMER_ID), buildProviderOf(CUSTOMER_ID))
+        );
+        givenTheCustomers(buildCustomer(CUSTOMER_ID, "code1", "Organisation 1"));
+
+        assertThat(casService.resolveOrganizations(USER_EMAIL))
+            .extracting(OrganizationCandidateDto::getCustomerId)
+            .containsExactly(CUSTOMER_ID, CUSTOMER_ID);
+    }
+
+    @Test
+    void should_resolve_nothing_when_neither_a_user_nor_a_provider_matches() {
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of());
+        when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), eq(USER_EMAIL))).thenReturn(List.of());
+
+        assertThat(casService.resolveOrganizations(USER_EMAIL)).isEmpty();
+    }
+
+    @Test
+    void should_normalize_the_identifier_before_resolving() {
+        when(userService.findUsersByEmail(USER_EMAIL)).thenReturn(List.of());
+        when(identityProviderService.getAll(any(), any())).thenReturn(List.of());
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), eq(USER_EMAIL))).thenReturn(List.of());
+
+        assertThat(casService.resolveOrganizations("  " + USER_EMAIL.toUpperCase() + " ")).isEmpty();
+    }
+
+    private void givenTheCustomers(final CustomerDto... customers) {
+        when(customerService.getAllById(any())).thenReturn(List.of(customers));
+    }
+
+    private UserDto buildUserOf(final String customerId) {
+        final UserDto user = new UserDto();
+        user.setEmail(USER_EMAIL);
+        user.setCustomerId(customerId);
+        return user;
+    }
+
+    private IdentityProviderDto buildProviderOf(final String customerId) {
+        final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setCustomerId(customerId);
+        return provider;
+    }
+
+    private CustomerDto buildCustomer(final String id, final String code, final String name) {
+        final CustomerDto customer = new CustomerDto();
+        customer.setId(id);
+        customer.setCode(code);
+        customer.setName(name);
+        return customer;
     }
 
     private IdentityProviderDto buildIDP(final boolean autoProvisioningEnabled) {
