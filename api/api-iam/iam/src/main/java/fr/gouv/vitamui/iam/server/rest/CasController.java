@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -338,6 +339,22 @@ public class CasController {
         ParameterChecker.checkParameter("The identifier is mandatory : ", identifier);
         SanityChecker.checkSecureParameter(identifier);
         return casService.resolveOrganizations(identifier);
+    }
+
+    @GetMapping(value = RestApi.CAS_IDENTITY_PROVIDER_PATH)
+    @Operation(
+        operationId = "cas_resolveIdentityProvider",
+        summary = "Get the identity provider handling an identifier within an organization"
+    )
+    @Secured(ServicesData.ROLE_CAS_USERS)
+    public ResolvedIdentityProviderDto resolveIdentityProvider(
+        final @RequestParam String identifier,
+        final @RequestParam String customerId
+    ) {
+        LOGGER.debug("resolve identity provider for identifier={} customerId={}", identifier, customerId);
+        ParameterChecker.checkParameter("The identifier and the customerId are mandatory : ", identifier, customerId);
+        SanityChecker.checkSecureParameter(identifier, customerId);
+        return casService.resolveIdentityProvider(identifier, customerId);
     }
 
     @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)

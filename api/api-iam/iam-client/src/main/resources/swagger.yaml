@@ -2644,6 +2644,33 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/OrganizationCandidateDto"
                             example: null
+    /iam/v1/cas/identity-provider:
+        get:
+            tags:
+                - Cas
+            summary: Get the identity provider handling an identifier within an organization
+            operationId: cas_resolveIdentityProvider
+            parameters:
+                - name: identifier
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: customerId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/ResolvedIdentityProviderDto"
+                            example: null
     /iam/v1/applications:
         get:
             tags:
@@ -3132,6 +3159,16 @@ components:
                     example: null
                 value:
                     type: string
+                    example: null
+            example: null
+        ResolvedIdentityProviderDto:
+            type: object
+            properties:
+                identityProviderId:
+                    type: string
+                    example: null
+                internal:
+                    type: boolean
                     example: null
             example: null
         OrganizationCandidateDto:

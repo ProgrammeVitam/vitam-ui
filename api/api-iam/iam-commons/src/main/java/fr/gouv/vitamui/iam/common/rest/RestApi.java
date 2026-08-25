@@ -81,6 +81,8 @@ public abstract class RestApi {
 
     public static final String CAS_ORGANIZATIONS_PATH = "/organizations";
 
+    public static final String CAS_IDENTITY_PROVIDER_PATH = "/identity-provider";
+
     public static final String USERS_PROVISIONING = "/provisioning";
 
     public static final String CAS_SUBROGATIONS_PATH = "/subrogations";

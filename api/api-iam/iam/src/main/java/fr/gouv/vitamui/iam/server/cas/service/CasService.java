@@ -55,6 +55,7 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
@@ -772,6 +773,19 @@ public class CasService {
                 new OrganizationCandidateDto(customer.getId(), customer.getCode(), customer.getName())
             )
             .toList();
+    }
+
+    public ResolvedIdentityProviderDto resolveIdentityProvider(final String identifier, final String customerId) {
+        final String normalizedIdentifier = identifier.toLowerCase().trim();
+        final List<IdentityProviderDto> providers = identityProviderService.getAll(
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        return identityProviderHelper
+            .findByUserIdentifierAndCustomerId(providers, normalizedIdentifier, customerId)
+            .map(provider -> new ResolvedIdentityProviderDto(provider.getId(), Boolean.TRUE.equals(provider.getInternal())))
+            .orElseGet(() -> new ResolvedIdentityProviderDto(null, false));
     }
 
     private List<String> findCustomerIdsClaiming(final String identifier) {

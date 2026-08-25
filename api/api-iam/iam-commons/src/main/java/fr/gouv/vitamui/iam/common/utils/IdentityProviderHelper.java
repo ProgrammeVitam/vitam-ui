@@ -61,6 +61,12 @@ public class IdentityProviderHelper {
         return Optional.empty();
     }
 
+    public Optional<IdentityProviderDto> findById(final List<IdentityProviderDto> providers, final String id) {
+        if (CollectionUtils.isEmpty(providers) || id == null) return Optional.empty();
+
+        return providers.stream().filter(provider -> id.equals(provider.getId())).findFirst();
+    }
+
     public List<IdentityProviderDto> findAllProvidersByUserIdentifier(
         final List<IdentityProviderDto> providers,
         final String identifier

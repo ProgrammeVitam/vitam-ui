@@ -68,6 +68,9 @@
                                     OrganizationCandidateDto=fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto
                                 </importMapping>
                                 <importMapping>
+                                    ResolvedIdentityProviderDto=fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto
+                                </importMapping>
+                                <importMapping>
                                     CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData
                                 </importMapping>
                                 <importMapping>
