@@ -4,10 +4,8 @@ import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.extern.slf4j.Slf4j;
@@ -134,55 +132,37 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     }
 
     @Test
-    public void testLoginWithEmailMatchingASingleUser() throws IOException {
-        // Given
+    public void testLoginWhenASingleOrganizationClaimsTheEmail() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_1);
-        userDto.setStatus(UserStatusEnum.ENABLED); // Added status just in case
+        doReturn(List.of(organization(CUSTOMER_ID_1, "MyCode1", "MyCustomer1")))
+            .when(casApi)
+            .resolveOrganizations(eq(EMAIL1));
 
-        doReturn(List.of(userDto)).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
-        doReturn(Optional.of(providerDto1))
-            .when(identityProviderHelper)
-            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
-
-        // When
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
-
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_1);
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST)).isNull();
     }
 
     @Test
-    public void testLoginWithEmailMatchingMultipleUsers() throws IOException {
-        // Given
+    public void testLoginWhenSeveralOrganizationsClaimTheEmail() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        UserDto userDto1 = new UserDto();
-        userDto1.setCustomerId(CUSTOMER_ID_1);
-
-        UserDto userDto2 = new UserDto();
-        userDto2.setCustomerId(CUSTOMER_ID_2);
-
-        doReturn(List.of(userDto1, userDto2)).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
-
-        CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
-        CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
-        doReturn(List.of(customerDto1, customerDto2))
+        doReturn(
+            List.of(
+                organization(CUSTOMER_ID_1, "MyCode1", "MyCustomer1"),
+                organization(CUSTOMER_ID_2, "MyCode2", "MyCustomer2")
+            )
+        )
             .when(casApi)
-            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .resolveOrganizations(eq(EMAIL1));
 
-        // When
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
-
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isNull();
         assertThat((List<CustomerModel>) flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST))
@@ -194,94 +174,48 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     }
 
     @Test
-    public void testLoginWithUnknownUserMatchingASingleCustomerMailDomain() throws IOException {
-        flowParameters.put("credential", new UsernamePasswordCredential(EMAIL2, "password"));
-
-        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL2), eq(null));
-        doReturn(List.of(providerDto2))
-            .when(identityProviderHelper)
-            .findAllProvidersByUserIdentifier(any(), eq(EMAIL2));
-
-        CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "code2", "customer2");
-        doReturn(List.of(customerDto2)).when(casApi).getCustomersByIds(eq(List.of(CUSTOMER_ID_2)));
-
-        // When
-        Event event = listCustomersAction.doExecute(context);
-
-        // Then
-        assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
-
-        assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL2);
-        assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo(CUSTOMER_ID_2);
-        assertThat(flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST)).isNull();
-    }
-
-    @Test
-    public void testLoginWithUnknownUserMatchingMultipleCustomerMailDomain() throws IOException {
+    public void testTheOrganizationsAreOfferedSortedByCode() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
-        doReturn(List.of(providerDto1, providerDto2))
-            .when(identityProviderHelper)
-            .findAllProvidersByUserIdentifier(any(), eq(EMAIL1));
-
-        CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
-        CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
-        doReturn(List.of(customerDto1, customerDto2))
+        doReturn(
+            List.of(
+                organization(CUSTOMER_ID_2, "MyCode2", "MyCustomer2"),
+                organization(CUSTOMER_ID_1, "MyCode1", "MyCustomer1")
+            )
+        )
             .when(casApi)
-            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
+            .resolveOrganizations(eq(EMAIL1));
 
-        // When
-        Event event = listCustomersAction.doExecute(context);
+        listCustomersAction.doExecute(context);
 
-        // Then
-        assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
-
-        assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
-        assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isNull();
         assertThat((List<CustomerModel>) flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST))
-            .usingFieldByFieldElementComparator()
-            .containsExactly(
-                new CustomerModel().setCustomerId(CUSTOMER_ID_1).setName("MyCustomer1").setCode("MyCode1"),
-                new CustomerModel().setCustomerId(CUSTOMER_ID_2).setName("MyCustomer2").setCode("MyCode2")
-            );
+            .extracting(CustomerModel::getCode)
+            .containsExactly("MyCode1", "MyCode2");
     }
 
     @Test
-    public void testLoginWithUnknownUserMatchingNoValidCustomerMailDomain() throws IOException {
+    public void testLoginWhenNoOrganizationClaimsTheEmail() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL_UNKNOWN_DOMAIN, "password"));
 
-        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL_UNKNOWN_DOMAIN), eq(null));
+        doReturn(List.of()).when(casApi).resolveOrganizations(eq(EMAIL_UNKNOWN_DOMAIN));
 
-        CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
-        CustomerDto customerDto2 = getCustomerDto(CUSTOMER_ID_2, "MyCode2", "MyCustomer2");
-        doReturn(List.of(customerDto1, customerDto2))
-            .when(casApi)
-            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_2)));
-
-        // When
         Event event = listCustomersAction.doExecute(context);
 
-        // Then
         assertThat(event.getId()).isEqualTo(BAD_CONFIGURATION);
     }
 
     @Test
-    public void testUnknownUserOfAnOrganizationHavingTwoProvidersGetsASingleChoiceSelectionScreen() throws IOException {
+    public void testAnOrganizationClaimingTwiceIsOfferedOnlyOnce() throws IOException {
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        IdentityProviderDto federation = getIdentityProvider(CUSTOMER_ID_1, false, EMAIL_DOMAIN_1);
-        IdentityProviderDto internalProvider = getIdentityProvider(CUSTOMER_ID_1, true, EMAIL_DOMAIN_1);
-
-        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
-        doReturn(List.of(federation, internalProvider))
-            .when(identityProviderHelper)
-            .findAllProvidersByUserIdentifier(any(), eq(EMAIL1));
-
-        CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
-        doReturn(List.of(customerDto1))
+        doReturn(
+            List.of(
+                organization(CUSTOMER_ID_1, "MyCode1", "MyCustomer1"),
+                organization(CUSTOMER_ID_1, "MyCode1", "MyCustomer1")
+            )
+        )
             .when(casApi)
-            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_1)));
+            .resolveOrganizations(eq(EMAIL1));
 
         Event event = listCustomersAction.doExecute(context);
 
@@ -294,21 +228,21 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     }
 
     @Test
-    public void testKnownUserOfTheSameOrganizationGetsNoSelectionScreen() throws IOException {
-        flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
+    public void testTheEmailIsNormalizedBeforeBeingResolved() throws IOException {
+        flowParameters.put("credential", new UsernamePasswordCredential("  " + EMAIL1.toUpperCase() + " ", "pwd"));
 
-        UserDto user = new UserDto();
-        user.setCustomerId(CUSTOMER_ID_1);
-        user.setStatus(UserStatusEnum.ENABLED);
-        doReturn(List.of(user)).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
-        doReturn(Optional.of(providerDto1))
-            .when(identityProviderHelper)
-            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
+        doReturn(List.of(organization(CUSTOMER_ID_1, "MyCode1", "MyCustomer1")))
+            .when(casApi)
+            .resolveOrganizations(eq(EMAIL1));
 
         Event event = listCustomersAction.doExecute(context);
 
         assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
-        assertThat(flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST)).isNull();
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo(EMAIL1);
+    }
+
+    private static OrganizationCandidateDto organization(String customerId, String code, String name) {
+        return new OrganizationCandidateDto(customerId, code, name);
     }
 
     private static IdentityProviderDto getIdentityProvider(String customerId, boolean internal, String... patterns) {
@@ -320,11 +254,4 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         return providerDto1;
     }
 
-    private static CustomerDto getCustomerDto(String customerId, String code, String name) {
-        CustomerDto customerDto = new CustomerDto();
-        customerDto.setId(customerId);
-        customerDto.setCode(code);
-        customerDto.setName(name);
-        return customerDto;
-    }
 }

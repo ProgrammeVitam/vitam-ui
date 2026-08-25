@@ -2620,6 +2620,30 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/CustomerDto"
                             example: null
+    /iam/v1/cas/organizations:
+        get:
+            tags:
+                - Cas
+            summary: Get the organizations claiming a given identifier
+            operationId: cas_resolveOrganizations
+            parameters:
+                - name: identifier
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/OrganizationCandidateDto"
+                            example: null
     /iam/v1/applications:
         get:
             tags:
@@ -3107,6 +3131,19 @@ components:
                     type: string
                     example: null
                 value:
+                    type: string
+                    example: null
+            example: null
+        OrganizationCandidateDto:
+            type: object
+            properties:
+                customerId:
+                    type: string
+                    example: null
+                code:
+                    type: string
+                    example: null
+                name:
                     type: string
                     example: null
             example: null

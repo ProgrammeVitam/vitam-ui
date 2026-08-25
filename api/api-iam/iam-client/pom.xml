@@ -65,6 +65,9 @@
                                 </importMapping>
                                 <importMapping>CustomerDto=fr.gouv.vitamui.iam.common.dto.CustomerDto</importMapping>
                                 <importMapping>
+                                    OrganizationCandidateDto=fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto
+                                </importMapping>
+                                <importMapping>
                                     CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData
                                 </importMapping>
                                 <importMapping>
