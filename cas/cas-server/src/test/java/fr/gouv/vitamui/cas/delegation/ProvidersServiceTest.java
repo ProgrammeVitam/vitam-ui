@@ -26,6 +26,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 /**
@@ -138,6 +139,33 @@ public final class ProvidersServiceTest {
     @Test
     public void testReloadDoesNotThrowException() {
         service.reloadData();
+    }
+
+    @Test
+    public void testStartupSucceedsWhenTheIamIsUnreachable() {
+        when(identityProvidersApi.getAll(eq(null), any())).thenThrow(new RuntimeException(ERROR_MESSAGE));
+
+        service.afterPropertiesSet();
+
+        assertTrue(service.getProviders().isEmpty());
+    }
+
+    @Test
+    public void testProvidersBecomeAvailableWithoutRestartingOnceTheIamAnswers() {
+        when(identityProvidersApi.getAll(eq(null), any())).thenThrow(new RuntimeException(ERROR_MESSAGE));
+        service.afterPropertiesSet();
+        assertTrue(service.getProviders().isEmpty());
+
+        reset(identityProvidersApi);
+        when(builder.buildClient(any())).thenReturn(Optional.empty());
+        when(identityProvidersApi.getAll(eq(null), any())).thenReturn(
+            new ArrayList<>(List.of(buildProvider(PROVIDER_ID, "1", true)))
+        );
+
+        service.reloadData();
+
+        assertEquals(1, service.getProviders().size());
+        assertEquals(PROVIDER_ID, service.getProviders().getFirst().getId());
     }
 
     @Test
