@@ -52,6 +52,49 @@ public class CustomerSelectedActionTest extends BaseWebflowActionTest {
     }
 
     @Test
+    public void testAnExistingButNotOfferedCustomerIdIsRejected() {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
+        flowParameters.put(
+            Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST,
+            List.of(new CustomerModel().setCustomerId(CUSTOMER_ID_1))
+        );
+        requestParameters.put(Constants.SELECT_CUSTOMER_ID_PARAM, CUSTOMER_ID_2);
+
+        CustomerSelectedAction customerSelectedAction = new CustomerSelectedAction();
+        assertThatThrownBy(() -> customerSelectedAction.doExecute(context))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid customerId");
+
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isNull();
+    }
+
+    @Test
+    public void testNoCustomerIdCanBeSelectedWithoutHavingBeenOfferedAList() {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
+        flowParameters.remove(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST);
+        requestParameters.put(Constants.SELECT_CUSTOMER_ID_PARAM, CUSTOMER_ID_1);
+
+        CustomerSelectedAction customerSelectedAction = new CustomerSelectedAction();
+        assertThatThrownBy(() -> customerSelectedAction.doExecute(context)).isInstanceOf(
+            IllegalArgumentException.class
+        );
+
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isNull();
+    }
+
+    @Test
+    public void testAMissingCustomerIdIsRejected() {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
+
+        CustomerSelectedAction customerSelectedAction = new CustomerSelectedAction();
+        assertThatThrownBy(() -> customerSelectedAction.doExecute(context))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Invalid customerId");
+
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isNull();
+    }
+
+    @Test
     public void testSelectedCustomerIdInvalid() {
         flowParameters.put(Constants.FLOW_LOGIN_EMAIL, EMAIL);
         requestParameters.put(Constants.SELECT_CUSTOMER_ID_PARAM, "Invalid");
