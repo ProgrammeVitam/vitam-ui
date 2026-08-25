@@ -6,6 +6,7 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
@@ -155,6 +156,16 @@ class CasServiceTest {
         internalProvider.setInternal(true);
         when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
             Optional.of(internalProvider)
+        );
+    }
+
+    @Test
+    void should_refuse_a_password_change_for_a_non_nominative_user() {
+        final User genericUser = givenAnEnabledUserAndCustomer();
+        genericUser.setType(UserTypeEnum.GENERIC);
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "whatever", CUSTOMER_ID)).isInstanceOf(
+            InvalidAuthenticationException.class
         );
     }
 

@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import jakarta.validation.constraints.NotNull;
@@ -171,10 +172,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             throw new PasswordConfirmException();
         }
 
-        if (!passwordValidator.isValid(getProperties().getCore().getPasswordPolicyPattern(), password)) {
-            throw new PasswordNotMatchRegexException();
-        }
-
         final var username = bean.getUsername();
         LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
         Assert.notNull(username, "username can not be null");
@@ -190,26 +187,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         if (user.getStatus() != UserStatusEnum.ENABLED) {
             LOGGER.debug("User cannot login: {} - User {}", userLogin.getUserEmail(), user.toString());
             throw new InvalidPasswordException();
-        }
-
-        if (
-            passwordConfiguration.isCheckOccurrence() &&
-            passwordConfiguration.getOccurrencesCharsNumber() != null &&
-            passwordConfiguration.getOccurrencesCharsNumber() > 0
-        ) {
-            String userLastName = user.getLastname();
-            Assert.notNull(userLastName, "user last name can not be null");
-            if (
-                passwordValidator.isContainsUserOccurrences(
-                    userLastName,
-                    password,
-                    passwordConfiguration.getOccurrencesCharsNumber()
-                )
-            ) {
-                throw new PasswordContainsUserDictionaryException(
-                    "Invalid password containing an occurence of user name !"
-                );
-            }
         }
 
         final var identityProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
@@ -232,6 +209,10 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
         } catch (final VitamUIException e) {
+            final InvalidPasswordException refusal = toPasswordScreenRefusal(e);
+            if (refusal != null) {
+                throw refusal;
+            }
             LOGGER.error("Cannot change password", e);
             return false;
         }
@@ -373,6 +354,16 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         public String getMessage() {
             return "Invalid password containing an occurence of user name !";
         }
+    }
+
+    private InvalidPasswordException toPasswordScreenRefusal(final VitamUIException e) {
+        if (PasswordChangeErrorKeys.POLICY_NOT_MATCHED.equals(e.getKey())) {
+            return new PasswordNotMatchRegexException();
+        }
+        if (PasswordChangeErrorKeys.CONTAINS_USER_NAME.equals(e.getKey())) {
+            return new PasswordContainsUserDictionaryException("Invalid password containing an occurence of user name !");
+        }
+        return null;
     }
 
     private UserDto findUserByEmailAndCustomerId(String email, String customerId) {
