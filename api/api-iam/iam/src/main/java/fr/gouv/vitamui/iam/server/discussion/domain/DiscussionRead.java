@@ -13,7 +13,7 @@ import java.time.Instant;
  * Discussion Read status document.
  */
 @Document(collection = "discussions_read")
-@CompoundIndex(def = "{'userId': 1, 'discussionId': 1}", unique = true)
+@CompoundIndex(name = "idx_discussions_read_user_discussion", def = "{'userId': 1, 'discussionId': 1}", unique = true)
 @Getter
 @Setter
 @ToString

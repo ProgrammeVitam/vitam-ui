@@ -19,6 +19,10 @@ spring:
   mongodb:
     uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
 
+discussion:
+  mongodb:
+    uri: "mongodb://{{ mongodb.discussions.user }}:{{ mongodb.discussions.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.discussions.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:

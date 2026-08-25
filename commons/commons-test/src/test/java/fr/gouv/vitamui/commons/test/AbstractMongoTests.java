@@ -56,5 +56,6 @@ public class AbstractMongoTests {
         registry.add("spring.data.mongodb.uri", () -> uri);
         // Also set the old property just in case
         registry.add("spring.mongodb.uri", () -> uri);
+        registry.add("discussion.mongodb.uri", () -> mongoDBContainer.getReplicaSetUrl("discussions"));
     }
 }

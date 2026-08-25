@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.config;
 
+import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
@@ -57,8 +58,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * MongoDB configuration routing the {@code discussion} package to a dedicated database.
  *
  * <p>All repositories under {@code fr.gouv.vitamui.iam.server.discussion.dao} are bound to the
- * {@value #DISCUSSION_DB} database (same Mongo server, different database name). Every other
- * repository keeps using the default {@code iam} database.</p>
+ * database configured by {@link DiscussionMongoProperties}. Every other repository keeps using
+ * the default {@code iam} database.</p>
  *
  * <p>Because Spring Boot auto-configures the default {@code MongoDatabaseFactory}/{@code MongoTemplate}
  * conditionally on the absence of such a bean, declaring the discussion factory suppresses the
@@ -73,8 +74,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
     repositoryBaseClass = VitamUIRepositoryImpl.class
 )
 public class DiscussionMongoConfig {
-
-    static final String DISCUSSION_DB = "discussions";
 
     @Bean
     @Primary
@@ -116,15 +115,13 @@ public class DiscussionMongoConfig {
     }
 
     @Bean
-    public MongoDatabaseFactory discussionMongoDatabaseFactory(MongoClient mongoClient) {
-        return new SimpleMongoClientDatabaseFactory(mongoClient, DISCUSSION_DB);
+    public MongoDatabaseFactory discussionMongoDatabaseFactory(DiscussionMongoProperties properties) {
+        return new SimpleMongoClientDatabaseFactory(new ConnectionString(properties.getUri()));
     }
 
     @Bean
-    public ReactiveMongoDatabaseFactory discussionReactiveMongoDatabaseFactory(
-        com.mongodb.reactivestreams.client.MongoClient reactiveClient
-    ) {
-        return new SimpleReactiveMongoDatabaseFactory(reactiveClient, DISCUSSION_DB);
+    public ReactiveMongoDatabaseFactory discussionReactiveMongoDatabaseFactory(DiscussionMongoProperties properties) {
+        return new SimpleReactiveMongoDatabaseFactory(new ConnectionString(properties.getUri()));
     }
 
     @Bean
