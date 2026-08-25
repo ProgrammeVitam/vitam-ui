@@ -1024,10 +1024,13 @@
   "AUDIT": {
     "HOME": {
       "TITLE": "Audits",
-      "START_AUDIT": "Lancer un audit",
+      "START_AUDIT": "Lancer un audit des archives",
       "SEARCH_PLACEHOLDER": "Nom, identifiant",
       "START_DATE": "Date de début",
       "END_DATE": "Date de fin",
+      "SECONDARY_ACTIONS": {
+        "START_CHAIN_AUDIT": "Lancer un audit de chaînage"
+      },
       "ARRAY": {
         "IDENTIFIER": "Identifiant",
         "CATEGORY": "Catégorie",
@@ -1037,9 +1040,13 @@
       }
     },
     "OPERATIONS_CATEGORIES": {
-      "PROCESS_AUDIT": "Intégrité et existence",
+      "AUDIT_FILE_EXISTING": "Existence",
+      "AUDIT_FILE_INTEGRITY": "Intégrité",
       "EVIDENCE_AUDIT": "Cohérence",
-      "RECTIFICATION_AUDIT": "Correctif"
+      "RECTIFICATION_AUDIT": "Correctif",
+      "TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP": "Chainage du journal du cycle de vie des objets",
+      "TRACEABILITY_CHAIN_AUDIT_UNIT": "Chainage du journal du cycle de vie des unités archivistiques",
+      "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Chainage du journal des opérations"
     },
     "TAB": {
       "INFORMATIONS": {
@@ -1060,6 +1067,28 @@
       "DETAILS": {
         "TITLE": "Détails"
       }
+    },
+    "CHAIN_CREATE_DIALOG": {
+      "SUBHEAD": "Paramétrer un audit",
+      "STEP1_TITLE": "Sélectionner la chaîne de sécurisation",
+      "STEP2_TITLE": "Choisir une période à auditer",
+      "CHAIN_TYPE_PLACEHOLDER": "Chaîne de sécurisation",
+      "CHAIN_TYPES": {
+        "UNIT": "Journal du cycle de vie des unités archivistiques (métadonnées descriptives et de gestion)",
+        "OBJECT_GROUP": "Journal du cycle de vie des objets (métadonnées techniques et binaires)",
+        "LOGBOOK_OPERATION": "Journal des opérations"
+      },
+      "VERSION_TITLE": "Choisir la version à auditer",
+      "VERSION_PLACEHOLDER": "Version de la chaîne",
+      "CURRENT_VERSION": "Version courante",
+      "WHOLE_CHAIN_TOGGLE": "Auditer la totalité de la chaîne sélectionnée",
+      "WHOLE_CHAIN_WARNING": "La chaîne sera auditée dans sa totalité. L'audit peut prendre du temps et mobiliser d'importantes ressources système.",
+      "PERIOD_FROM": "Période du :",
+      "PERIOD_TO": "Au :",
+      "SECURING_OPERATION_DATE_PLACEHOLDER": "Date d'opération de sécurisation",
+      "DATE_GMT_TIME_CAPTION": "Date à l'heure GMT",
+      "START_AUDIT": "Lancer l'audit",
+      "SNACKBAR_SUCCESS": "La demande d'audit a bien été lancée"
     },
     "CREATE_DIALOG": {
       "TITLE": "Paramétrer un audit",

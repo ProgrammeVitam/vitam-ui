@@ -57,9 +57,12 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.chainAudit.TraceabilityChainAuditRequest;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -73,6 +76,7 @@ import fr.gouv.vitamui.referential.common.dto.LogbookOperationModel;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
+import fr.gouv.vitamui.referential.common.model.TraceabilityChainAuditOptions;
 import fr.gouv.vitamui.referential.common.service.OperationCommonService;
 import fr.gouv.vitamui.referential.server.service.AbstractService;
 import fr.gouv.vitamui.referential.server.service.probativevalue.ProbativeValueService;
@@ -359,6 +363,35 @@ public class OperationService extends AbstractService {
         ) {
             throw new InternalServerException("Unable to check traceability operation", e);
         }
+    }
+
+    public ResponseEntity<OperationIdDto> runTraceabilityChainAudit(
+        VitamContext vitamContext,
+        TraceabilityChainAuditOptions options
+    ) {
+        try {
+            TraceabilityChainAuditRequest request = new TraceabilityChainAuditRequest().setType(options.getChainType());
+            if (!options.isWholeChain()) {
+                if (StringUtils.isNotEmpty(options.getStartDate())) {
+                    request.setStartDate(options.getStartDate());
+                }
+                if (StringUtils.isNotEmpty(options.getEndDate())) {
+                    request.setEndDate(options.getEndDate());
+                }
+            }
+            externalParametersService.retrieveProfilThreshold().ifPresent(request::setThreshold);
+
+            RequestResponse<JsonNode> response = logbookService.traceabilityChainAudit(vitamContext, request);
+            String operationId = response.getVitamHeaders().get(CommonConstants.X_REQUEST_ID_HEADER);
+            return ResponseEntity.status(response.getHttpCode()).body(new OperationIdDto(operationId));
+        } catch (AccessExternalClientServerException | InvalidParseOperationException e) {
+            throw new InternalServerException("Unable to run traceability chain audit", e);
+        }
+    }
+
+    public ResponseEntity<OperationIdDto> runTraceabilityChainAudit(TraceabilityChainAuditOptions options) {
+        VitamContext vitamContext = buildVitamContext();
+        return runTraceabilityChainAudit(vitamContext, options);
     }
 
     public List<HistoryEventDto> findHistoryByIdentifier(VitamContext vitamContext, String id) {

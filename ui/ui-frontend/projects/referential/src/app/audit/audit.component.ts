@@ -39,6 +39,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import { AuditChainCreateComponent } from './audit-chain-create/audit-chain-create.component';
 import { AuditCreateComponent } from './audit-create/audit-create.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
 import { DateTime } from 'luxon';
@@ -92,6 +93,15 @@ export class AuditComponent extends SidenavPage<Event> {
   openCreateAuditDialog() {
     const dialogRef = this.dialog.open(AuditCreateComponent, { disableClose: true });
     dialogRef.componentInstance.tenantIdentifier = +this.tenantIdentifier;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined && result.success) {
+        this.refreshList();
+      }
+    });
+  }
+
+  openCreateChainAuditDialog() {
+    const dialogRef = this.dialog.open(AuditChainCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined && result.success) {
         this.refreshList();

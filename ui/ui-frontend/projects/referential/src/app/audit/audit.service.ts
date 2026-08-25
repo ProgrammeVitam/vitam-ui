@@ -54,6 +54,7 @@ import {
 import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
 import { OperationApiService } from '../core/api/operation-api.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TraceabilityChainAuditRequest } from '../models/audit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -100,6 +101,29 @@ export class AuditService extends SearchService<Event> {
     );
   }
 
+  createChainAudit(request: TraceabilityChainAuditRequest, headers: HttpHeaders): Observable<{ operationId: string }> {
+    for (const header in this.headers) {
+      if (this.headers.hasOwnProperty(header)) {
+        headers.set(header, this.headers.get(header));
+      }
+    }
+    return this.operationApiService.runTraceabilityChainAudit(request, headers).pipe(
+      tap(
+        (response) => {
+          this.snackBarService.open(
+            this.snackBarService.buildSnackBarForOperationsLog('AUDIT.CHAIN_CREATE_DIALOG.SNACKBAR_SUCCESS', response.operationId),
+          );
+        },
+        (error: any) => {
+          if (!error || !error.error) {
+            return;
+          }
+          this.snackBarService.open({ message: error.error.message, translate: false });
+        },
+      ),
+    );
+  }
+
   download(id: string, eventType: string, accessContractId: string) {
     const headers: HttpHeaders = new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, accessContractId);
     let downloadType: LogbookDownloadType;
@@ -107,7 +131,7 @@ export class AuditService extends SearchService<Event> {
     if (eventType === 'EXPORT_PROBATIVE_VALUE' || eventType === 'RECTIFICATION_AUDIT') {
       downloadType = 'report';
       this.launchSignedDownload(id, downloadType, headers);
-    } else if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT') {
+    } else if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT' || eventType === 'TRACEABILITY_CHAIN_AUDIT') {
       downloadType = 'batchreport';
       this.launchSignedDownload(id, downloadType, headers);
     } else {

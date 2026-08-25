@@ -1,0 +1,91 @@
+<vitamui-dialog-header
+  [stepper]="stepper"
+  [subhead]="'AUDIT.CHAIN_CREATE_DIALOG.SUBHEAD' | translate"
+  [title]="['AUDIT.CHAIN_CREATE_DIALOG.STEP1_TITLE' | translate, 'AUDIT.CHAIN_CREATE_DIALOG.STEP2_TITLE' | translate]"
+></vitamui-dialog-header>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+  <vitamui-stepper #stepper>
+    <cdk-step>
+      <mat-dialog-content>
+        <vitamui-select
+          formControlName="chainType"
+          [placeholder]="'AUDIT.CHAIN_CREATE_DIALOG.CHAIN_TYPE_PLACEHOLDER' | translate"
+          [options]="chainTypeOptions"
+          [multiple]="false"
+          [enableSearch]="false"
+        ></vitamui-select>
+
+        @if (showVersionParagraph()) {
+          <div class="mt-4">
+            <div class="text large bold mb-3">{{ 'AUDIT.CHAIN_CREATE_DIALOG.VERSION_TITLE' | translate }}</div>
+            <vitamui-select
+              [formControl]="versionControl"
+              [placeholder]="'AUDIT.CHAIN_CREATE_DIALOG.VERSION_PLACEHOLDER' | translate"
+              [options]="versionOptions"
+              [multiple]="false"
+              [enableSearch]="false"
+            ></vitamui-select>
+          </div>
+        }
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div>
+          <vitamui-next-step [stepper]="stepper" [disabled]="!isStepOneValid()"></vitamui-next-step>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+      </mat-dialog-actions>
+    </cdk-step>
+
+    <cdk-step>
+      <mat-dialog-content>
+        <vitamui-slide-toggle formControlName="wholeChain">
+          <span>{{ 'AUDIT.CHAIN_CREATE_DIALOG.WHOLE_CHAIN_TOGGLE' | translate }}</span>
+        </vitamui-slide-toggle>
+
+        @if (form.value.wholeChain) {
+          <div class="whole-chain-warning d-flex flex-row align-items-center hgap-2 pl-4 pr-4 pt-2 pb-2 mt-2">
+            <i class="vitamui-icon vitamui-icon-anomalie"></i>
+            <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.WHOLE_CHAIN_WARNING' | translate }}</div>
+          </div>
+        }
+
+        <div class="hgap-2 mt-4">
+          <div class="start-date">
+            <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
+            <vitamui-datepicker
+              formControlName="startDate"
+              [label]="'AUDIT.CHAIN_CREATE_DIALOG.SECURING_OPERATION_DATE_PLACEHOLDER' | translate"
+              [hint]="'AUDIT.CHAIN_CREATE_DIALOG.DATE_GMT_TIME_CAPTION' | translate"
+              [disabled]="form.value.wholeChain"
+              outputType="String"
+              format="yyyy-MM-dd"
+            ></vitamui-datepicker>
+          </div>
+          <div class="end-date">
+            <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_TO' | translate }}</p>
+            <vitamui-datepicker
+              formControlName="endDate"
+              [label]="'AUDIT.CHAIN_CREATE_DIALOG.SECURING_OPERATION_DATE_PLACEHOLDER' | translate"
+              [hint]="'AUDIT.CHAIN_CREATE_DIALOG.DATE_GMT_TIME_CAPTION' | translate"
+              [disabled]="form.value.wholeChain"
+              outputType="String"
+              format="yyyy-MM-dd"
+            ></vitamui-datepicker>
+          </div>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions>
+        <div>
+          <button type="submit" class="btn primary" [disabled]="!canSubmit() || isDisabledButton">
+            {{ 'AUDIT.CHAIN_CREATE_DIALOG.START_AUDIT' | translate }}
+          </button>
+          <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+        </div>
+        <vitamui-previous-step [stepper]="stepper"></vitamui-previous-step>
+      </mat-dialog-actions>
+    </cdk-step>
+  </vitamui-stepper>
+</form>

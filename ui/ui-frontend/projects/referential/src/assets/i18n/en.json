@@ -1024,10 +1024,13 @@
   "AUDIT": {
     "HOME": {
       "TITLE": "Audits",
-      "START_AUDIT": "Start an audit",
+      "START_AUDIT": "Start an archives audit",
       "SEARCH_PLACEHOLDER": "Name, identifier",
       "START_DATE": "Start date",
       "END_DATE": "End date",
+      "SECONDARY_ACTIONS": {
+        "START_CHAIN_AUDIT": "Start a chain audit"
+      },
       "ARRAY": {
         "IDENTIFIER": "Identifier",
         "CATEGORY": "Category",
@@ -1037,9 +1040,13 @@
       }
     },
     "OPERATIONS_CATEGORIES": {
-      "PROCESS_AUDIT": "Integrity and Existence",
+      "AUDIT_FILE_EXISTING": "Existence",
+      "AUDIT_FILE_INTEGRITY": "Integrity",
       "EVIDENCE_AUDIT": "Consistency",
-      "RECTIFICATION_AUDIT": "Correct"
+      "RECTIFICATION_AUDIT": "Correct",
+      "TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP": "Object group lifecycle log chaining",
+      "TRACEABILITY_CHAIN_AUDIT_UNIT": "Archive unit lifecycle log chaining",
+      "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Operations log chaining"
     },
     "TAB": {
       "INFORMATIONS": {
@@ -1060,6 +1067,28 @@
       "DETAILS": {
         "TITLE": "Details"
       }
+    },
+    "CHAIN_CREATE_DIALOG": {
+      "SUBHEAD": "Configure an audit",
+      "STEP1_TITLE": "Select the securing chain",
+      "STEP2_TITLE": "Choose a period to audit",
+      "CHAIN_TYPE_PLACEHOLDER": "Securing chain",
+      "CHAIN_TYPES": {
+        "UNIT": "Archive units lifecycle log (descriptive and management metadata)",
+        "OBJECT_GROUP": "Objects lifecycle log (technical and binary metadata)",
+        "LOGBOOK_OPERATION": "Operations log"
+      },
+      "VERSION_TITLE": "Choose the version to audit",
+      "VERSION_PLACEHOLDER": "Chain version",
+      "CURRENT_VERSION": "Current version",
+      "WHOLE_CHAIN_TOGGLE": "Audit the entire selected chain",
+      "WHOLE_CHAIN_WARNING": "The whole chain will be audited. The audit may take some time and use significant system resources.",
+      "PERIOD_FROM": "Period from :",
+      "PERIOD_TO": "To :",
+      "SECURING_OPERATION_DATE_PLACEHOLDER": "Securing operation date",
+      "DATE_GMT_TIME_CAPTION": "GMT hour date",
+      "START_AUDIT": "Start audit",
+      "SNACKBAR_SUCCESS": "The audit request has been started"
     },
     "CREATE_DIALOG": {
       "TITLE": "Configure an audit",

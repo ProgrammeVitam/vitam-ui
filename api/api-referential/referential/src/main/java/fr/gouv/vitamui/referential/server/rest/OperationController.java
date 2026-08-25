@@ -51,6 +51,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.download.DownloadClaims;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
+import fr.gouv.vitamui.commons.api.dtos.OperationIdDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -61,6 +62,7 @@ import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.model.AuditCreateOptions;
+import fr.gouv.vitamui.referential.common.model.TraceabilityChainAuditOptions;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.operation.OperationService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -238,6 +240,20 @@ public class OperationController {
         SanityChecker.sanitizeCriteria(auditCreateOptions);
         LOGGER.debug("Create {}", auditCreateOptions);
         return operationService.runAudit(auditCreateOptions);
+    }
+
+    @Secured(ServicesData.ROLE_RUN_AUDITS)
+    @PostMapping("/chainAudit")
+    public ResponseEntity<OperationIdDto> runTraceabilityChainAudit(
+        final @Valid @RequestBody TraceabilityChainAuditOptions traceabilityChainAuditOptions
+    ) throws PreconditionFailedException {
+        ParameterChecker.checkParameter(
+            "Traceability chain audit options is a mandatory parameter : ",
+            traceabilityChainAuditOptions
+        );
+        SanityChecker.sanitizeCriteria(traceabilityChainAuditOptions);
+        LOGGER.debug("Run traceability chain audit {}", traceabilityChainAuditOptions);
+        return operationService.runTraceabilityChainAudit(traceabilityChainAuditOptions);
     }
 
     @PostMapping(value = "/timestamp")

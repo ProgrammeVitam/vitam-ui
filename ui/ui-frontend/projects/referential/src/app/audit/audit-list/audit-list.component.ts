@@ -38,16 +38,24 @@ import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } fro
 import { merge, Subject, Subscription, timer } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'vitamui-library';
-import { AuditOperation } from '../../models/audit.interface';
+import { AUDIT_CATEGORY_FILTER_EV_TYPE, AuditCategoryFilter, AuditChainType, AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const POLLING_INTERVAL_MS = 5000;
 
+// The operation's own evDetData (audit.parsedData.type) carries the actual chain type, as stored
+// by the chainAudit workflow.
+const CHAIN_AUDIT_TYPE_BY_CATEGORY: Partial<Record<AuditCategoryFilter, AuditChainType>> = {
+  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_UNIT]: AuditChainType.UNIT,
+  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP]: AuditChainType.OBJECT_GROUP,
+  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION]: AuditChainType.LOGBOOK_OPERATION,
+};
+
 export class AuditFilters {
   startDate: string;
   endDate: string;
-  types: string[];
+  types: AuditCategoryFilter[];
 }
 
 @Component({
@@ -135,12 +143,40 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   public getOperationCategories(): string[] {
-    return Object.keys(AuditOperation);
+    return Object.keys(AuditCategoryFilter);
   }
 
-  public onFilterCategoryChange(values: AuditOperation[]): void {
+  public onFilterCategoryChange(values: AuditCategoryFilter[]): void {
     this._filters.types = values;
     this.filterChange.next(this.filterMap);
+  }
+
+  /**
+   * The 3 chain audit filter entries share the same evType server-side, but the operation's
+   * evDetData (audit.parsedData.type) does carry the actual chain type when populated, so this
+   * narrows the already evType-filtered rows down further. Rows without that data (e.g. audits
+   * launched before this data was tracked) are kept rather than silently hidden.
+   */
+  public get filteredDataSource(): any[] {
+    if (!this.dataSource) {
+      return this.dataSource;
+    }
+
+    const selectedChainCategories = (this._filters?.types || []).filter((category) => CHAIN_AUDIT_TYPE_BY_CATEGORY[category] !== undefined);
+
+    if (selectedChainCategories.length === 0 || selectedChainCategories.length === 3) {
+      return this.dataSource;
+    }
+
+    const wantedChainTypes = new Set(selectedChainCategories.map((category) => CHAIN_AUDIT_TYPE_BY_CATEGORY[category]));
+
+    return this.dataSource.filter((item) => {
+      if (item.type !== AuditOperation.TRACEABILITY_CHAIN_AUDIT) {
+        return true;
+      }
+      const chainType = item.parsedData?.type;
+      return !chainType || wantedChainTypes.has(chainType);
+    });
   }
 
   private buildCriteriaFromSearch() {
@@ -160,16 +196,20 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
       }
 
       if (this._filters.types && this._filters.types.length > 0) {
-        criteria.evType = this._filters.types;
+        criteria.evType = this.toEvTypes(this._filters.types);
       }
     }
 
     // Default type filter used to exclude the other types
     if (!criteria.evType) {
-      criteria.evType = this.getOperationCategories();
+      criteria.evType = Object.values(AuditOperation);
     }
 
     return criteria;
+  }
+
+  private toEvTypes(categories: AuditCategoryFilter[]): string[] {
+    return Array.from(new Set(categories.map((category) => AUDIT_CATEGORY_FILTER_EV_TYPE[category])));
   }
 
   private restartPolling(): void {

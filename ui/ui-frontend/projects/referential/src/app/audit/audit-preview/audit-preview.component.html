@@ -20,8 +20,10 @@
     </mat-tab>
 
     <mat-tab label="{{ 'AUDIT.TAB.DETAILS.TITLE' | translate }}">
-      <vitamui-common-operation-history-tab [id]="audit()?.id" [identifier]="audit()?.id" collectionName="operation">
-      </vitamui-common-operation-history-tab>
+      @if (!isChainAudit()) {
+        <vitamui-common-operation-history-tab [id]="audit()?.id" [identifier]="audit()?.id" collectionName="operation">
+        </vitamui-common-operation-history-tab>
+      }
     </mat-tab>
   </mat-tab-group>
 </div>

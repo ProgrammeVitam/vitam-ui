@@ -53,6 +53,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.external.client.IngestCollection;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.chainAudit.TraceabilityChainAuditRequest;
 import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
@@ -317,6 +318,16 @@ public class LogbookService {
     public RequestResponse checkTraceability(final VitamContext context, final JsonNode query)
         throws AccessExternalClientServerException, InvalidParseOperationException, AccessUnauthorizedException {
         return adminExternalClient.checkTraceabilityOperation(context, query);
+    }
+
+    /**
+     * Launch a traceability chain audit on the given chain type and period.
+     */
+    public RequestResponse<JsonNode> traceabilityChainAudit(
+        final VitamContext context,
+        final TraceabilityChainAuditRequest request
+    ) throws AccessExternalClientServerException, InvalidParseOperationException {
+        return adminExternalClient.traceabilityChainAudit(context, request);
     }
 
     /**
