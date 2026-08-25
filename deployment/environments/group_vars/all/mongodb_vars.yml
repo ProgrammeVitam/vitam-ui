@@ -38,5 +38,11 @@ mongo_backup_reinstall:
         "users",
         "providers"
       ]
+  - db: "discussions"
+    collections:
+      [
+        "discussions",
+        "discussions_read"
+      ]
   #- db: "admin"
   #  collections: []

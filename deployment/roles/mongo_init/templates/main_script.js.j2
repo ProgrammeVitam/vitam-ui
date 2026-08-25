@@ -1,6 +1,7 @@
 // Init databases connections
 dbAdmin = db.getSiblingDB('{{ mongodb.admin.db | default('admin') }}')
 dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
+dbDiscussions = db.getSiblingDB('{{ mongodb.discussions.db | default('discussions') }}')
 dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
 dbCas = db.getSiblingDB('{{ mongodb.cas.db | default('cas') }}')
 dbArchiveSearch = db.getSiblingDB('{{ mongodb.archivesearch.db | default('archivesearch') }}')

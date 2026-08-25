@@ -1,0 +1,20 @@
+// Create discussions user
+
+if (! dbDiscussions.getUser("{{ mongodb.discussions.user }}")) {
+    dbDiscussions.createUser(
+        {
+            user: "{{ mongodb.discussions.user }}",
+            pwd: "{{ mongodb.discussions.password }}",
+            roles: {{ mongodb.discussions.roles }}
+        }
+    )
+}
+else {
+    dbDiscussions.updateUser(
+        "{{ mongodb.discussions.user }}",
+        {
+            pwd: "{{ mongodb.discussions.password }}",
+            roles: {{ mongodb.discussions.roles }}
+        }
+    )
+}

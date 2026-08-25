@@ -45,6 +45,11 @@ mongodb:
     user: "mongod_dbuser_iam"
     password: "mongod_dbpwd_iam"
     roles: '[{ role: "readWrite", db: "iam" }]'
+  discussions:
+    db: discussions
+    user: "mongod_dbuser_discussions"
+    password: "mongod_dbpwd_discussions"
+    roles: '[{ role: "readWrite", db: "discussions" }]'
   cas:
     db: cas
     user: "mongod_dbuser_cas"

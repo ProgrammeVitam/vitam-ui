@@ -21,6 +21,10 @@ spring:
   mongodb:
     uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
 
+discussion:
+  mongodb:
+    uri: mongodb://mongod_dbuser_discussions:mongod_dbpwd_discussions@localhost:27018/discussions?connectTimeoutMS=2000
+
 server:
   host:
   port: 8083
