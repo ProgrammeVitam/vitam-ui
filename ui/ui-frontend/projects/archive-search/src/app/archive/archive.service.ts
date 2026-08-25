@@ -322,6 +322,19 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     );
   }
 
+  existsArchiveUnitByCriteria(criteriaElts: SearchCriteriaEltDto[]): Observable<boolean> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: false,
+      includedFields: ['#id'],
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult: PagedResult) => (pagedResult.results ?? []).length > 0),
+    );
+  }
+
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto): Observable<Unit> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
