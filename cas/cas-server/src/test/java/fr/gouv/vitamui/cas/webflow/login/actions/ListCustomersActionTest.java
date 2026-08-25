@@ -266,6 +266,51 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         assertThat(event.getId()).isEqualTo(BAD_CONFIGURATION);
     }
 
+    @Test
+    public void testUnknownUserOfAnOrganizationHavingTwoProvidersGetsASingleChoiceSelectionScreen() throws IOException {
+        flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
+
+        IdentityProviderDto federation = getIdentityProvider(CUSTOMER_ID_1, false, EMAIL_DOMAIN_1);
+        IdentityProviderDto internalProvider = getIdentityProvider(CUSTOMER_ID_1, true, EMAIL_DOMAIN_1);
+
+        doReturn(emptyList()).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
+        doReturn(List.of(federation, internalProvider))
+            .when(identityProviderHelper)
+            .findAllProvidersByUserIdentifier(any(), eq(EMAIL1));
+
+        CustomerDto customerDto1 = getCustomerDto(CUSTOMER_ID_1, "MyCode1", "MyCustomer1");
+        doReturn(List.of(customerDto1))
+            .when(casApi)
+            .getCustomersByIds(eq(List.of(CUSTOMER_ID_1, CUSTOMER_ID_1)));
+
+        Event event = listCustomersAction.doExecute(context);
+
+        assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTION_VIEW);
+        assertThat((List<CustomerModel>) flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST))
+            .usingFieldByFieldElementComparator()
+            .containsExactly(
+                new CustomerModel().setCustomerId(CUSTOMER_ID_1).setName("MyCustomer1").setCode("MyCode1")
+            );
+    }
+
+    @Test
+    public void testKnownUserOfTheSameOrganizationGetsNoSelectionScreen() throws IOException {
+        flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
+
+        UserDto user = new UserDto();
+        user.setCustomerId(CUSTOMER_ID_1);
+        user.setStatus(UserStatusEnum.ENABLED);
+        doReturn(List.of(user)).when(casApi).getUsersByEmail(eq(EMAIL1), eq(null));
+        doReturn(Optional.of(providerDto1))
+            .when(identityProviderHelper)
+            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
+
+        Event event = listCustomersAction.doExecute(context);
+
+        assertThat(event.getId()).isEqualTo(TRANSITION_TO_CUSTOMER_SELECTED);
+        assertThat(flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST)).isNull();
+    }
+
     private static IdentityProviderDto getIdentityProvider(String customerId, boolean internal, String... patterns) {
         IdentityProviderDto providerDto1 = new IdentityProviderDto();
         providerDto1.setId(customerId); // Use customerId as provider Id for uniqueness
