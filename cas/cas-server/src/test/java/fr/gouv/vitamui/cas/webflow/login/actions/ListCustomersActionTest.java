@@ -6,6 +6,7 @@ import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
     private static final String CUSTOMER_ID_2 = "customer2";
     public static final String EMAIL_DOMAIN_1 = ".*@vitamui.com";
     public static final String EMAIL_DOMAIN_2 = ".*@vitamui.fr";
+    private static final String PROVIDER_ID = "providerId";
     private CasApi casApi;
     private IdentityProviderHelper identityProviderHelper;
     private ListCustomersAction listCustomersAction;
@@ -54,7 +56,7 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         casApi = mock(CasApi.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);
 
-        listCustomersAction = new ListCustomersAction(providersService, identityProviderHelper, casApi);
+        listCustomersAction = new ListCustomersAction(casApi);
 
         providerDto1 = getIdentityProvider(CUSTOMER_ID_1, false, EMAIL_DOMAIN_1);
         providerDto2 = getIdentityProvider(CUSTOMER_ID_2, true, EMAIL_DOMAIN_1, EMAIL_DOMAIN_2);
@@ -70,13 +72,9 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        // Ensure multiple providers match to trigger selection view
-        doReturn(List.of(getIdentityProvider("c1", false, ".*@vitamui.com")))
-            .when(identityProviderHelper)
-            .findAllProvidersByUserIdentifier(any(), any());
-        doReturn(Optional.of(providerDto1))
-            .when(identityProviderHelper)
-            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
+        doReturn(new ResolvedIdentityProviderDto(PROVIDER_ID, true))
+            .when(casApi)
+            .resolveIdentityProvider(eq(EMAIL1), eq(CUSTOMER_ID_1));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -95,18 +93,9 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL1, "password"));
 
-        // Ensure multiple providers match to trigger selection view
-        doReturn(
-            List.of(
-                getIdentityProvider("c1", false, ".*@vitamui.com"),
-                getIdentityProvider("c2", false, ".*@vitamui.com")
-            )
-        )
-            .when(identityProviderHelper)
-            .findAllProvidersByUserIdentifier(any(), any());
-        doReturn(Optional.of(providerDto1))
-            .when(identityProviderHelper)
-            .findByUserIdentifierAndCustomerId(any(), eq(EMAIL1), eq(CUSTOMER_ID_1));
+        doReturn(new ResolvedIdentityProviderDto(PROVIDER_ID, true))
+            .when(casApi)
+            .resolveIdentityProvider(eq(EMAIL1), eq(CUSTOMER_ID_1));
 
         // When
         Event event = listCustomersAction.doExecute(context);
@@ -123,6 +112,10 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, EMAIL2);
         flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
         flowParameters.put("credential", new UsernamePasswordCredential(EMAIL_UNKNOWN_DOMAIN, "password"));
+
+        doReturn(new ResolvedIdentityProviderDto(null, false))
+            .when(casApi)
+            .resolveIdentityProvider(eq(EMAIL_UNKNOWN_DOMAIN), eq(CUSTOMER_ID_1));
 
         // When
         Event event = listCustomersAction.doExecute(context);

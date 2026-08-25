@@ -119,12 +119,8 @@ import org.springframework.webflow.execution.Action;
 public class WebflowConfig {
 
     @Bean
-    public ListCustomersAction listCustomersAction(
-        ProvidersService providersService,
-        IdentityProviderHelper identityProviderHelper,
-        CasApi casApi
-    ) {
-        return new ListCustomersAction(providersService, identityProviderHelper, casApi);
+    public ListCustomersAction listCustomersAction(CasApi casApi) {
+        return new ListCustomersAction(casApi);
     }
 
     @Bean

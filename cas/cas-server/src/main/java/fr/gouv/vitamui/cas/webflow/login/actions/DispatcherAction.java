@@ -34,6 +34,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.RequiredArgsConstructor;
@@ -145,22 +146,17 @@ public class DispatcherAction extends AbstractAction {
         String surrogateEmail,
         String surrogateCustomerId
     ) throws IOException {
-        Optional<IdentityProviderDto> providerOpt = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            providersService.getProviders(),
-            loginEmail,
-            loginCustomerId
-        );
-        if (providerOpt.isEmpty()) {
+        ResolvedIdentityProviderDto resolvedProvider = casApi.resolveIdentityProvider(loginEmail, loginCustomerId);
+        if (resolvedProvider.getIdentityProviderId() == null) {
             LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
             return new Event(this, BAD_CONFIGURATION);
         }
-        var identityProviderDto = providerOpt.get();
 
         var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         var webContext = new JEEContext(request, response);
 
-        if (identityProviderDto.getInternal()) {
+        if (resolvedProvider.isInternal()) {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
@@ -182,9 +178,22 @@ public class DispatcherAction extends AbstractAction {
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, surrogateEmail);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_CUSTOMER_ID, surrogateCustomerId);
 
+            Optional<IdentityProviderDto> cachedProvider = identityProviderHelper.findById(
+                providersService.getProviders(),
+                resolvedProvider.getIdentityProviderId()
+            );
+            if (cachedProvider.isEmpty()) {
+                LOGGER.error(
+                    "No delegation client known for provider {} of customer {}",
+                    resolvedProvider.getIdentityProviderId(),
+                    loginCustomerId
+                );
+                return new Event(this, BAD_CONFIGURATION);
+            }
+
             return utils.performClientRedirection(
                 this,
-                ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(),
+                ((Pac4jClientIdentityProviderDto) cachedProvider.get()).getClient(),
                 requestContext
             );
         }

@@ -26,13 +26,11 @@
  */
 package fr.gouv.vitamui.cas.webflow.login.actions;
 
-import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -47,7 +45,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
@@ -63,19 +60,9 @@ public class ListCustomersAction extends AbstractAction {
 
     public static final String BAD_CONFIGURATION = "badConfiguration";
 
-    private final ProvidersService providersService;
-
-    private final IdentityProviderHelper identityProviderHelper;
-
     private final CasApi casApi;
 
-    public ListCustomersAction(
-        final ProvidersService providersService,
-        final IdentityProviderHelper identityProviderHelper,
-        final CasApi casApi
-    ) {
-        this.providersService = providersService;
-        this.identityProviderHelper = identityProviderHelper;
+    public ListCustomersAction(final CasApi casApi) {
         this.casApi = casApi;
     }
 
@@ -112,12 +99,11 @@ public class ListCustomersAction extends AbstractAction {
             superUserCustomerId
         );
 
-        Optional<IdentityProviderDto> providerDto = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            providersService.getProviders(),
+        ResolvedIdentityProviderDto resolvedProvider = casApi.resolveIdentityProvider(
             superUserEmail,
             superUserCustomerId
         );
-        if (providerDto.isEmpty()) {
+        if (resolvedProvider.getIdentityProviderId() == null) {
             LOGGER.error(
                 "No provider found for superUserEmail: {} / superUserCustomerId: {}",
                 superUserEmail,
