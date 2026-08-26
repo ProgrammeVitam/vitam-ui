@@ -50,6 +50,8 @@ export interface IdentityProvider extends Id {
   enabled: boolean;
   idpMetadataUrl?: string;
   spMetadataUrl?: string;
+  hasIdpMetadata?: boolean;
+  hasSpMetadata?: boolean;
   readonly: boolean;
   mailAttribute?: string;
   identifierAttribute?: string;
