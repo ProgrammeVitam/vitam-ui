@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.cas.logout.TerminateApiSessionAction;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
@@ -101,7 +102,85 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
         verify(logoutManager, times(1)).performLogout(any());
     }
 
+    @Test
+    public void testTheIamTokenIsRevokedWithTheSessionTgt() {
+        final Fixture f = new Fixture();
+        final TicketGrantingTicket tgt = tgtCarrying("TOK-123", "super@user.fr", "customer1", f);
+
+        f.action.revokeIamSessionPublic("TGT-1", tgt);
+
+        verify(f.casApi).logout("TOK-123", "super@user.fr", "customer1");
+    }
+
+    @Test
+    public void testNothingIsRevokedWhenTheTgtIsGone() {
+        final Fixture f = new Fixture();
+
+        f.action.revokeIamSessionPublic("TGT-1", null);
+
+        verify(f.casApi, times(0)).logout(any(), any(), any());
+    }
+
+    @Test
+    public void testASessionWithoutIamTokenDoesNotBreakTheLogout() {
+        final Fixture f = new Fixture();
+        final TicketGrantingTicket tgt = tgtCarrying(null, null, null, f);
+
+        f.action.revokeIamSessionPublic("TGT-1", tgt);
+
+        verify(f.casApi, times(0)).logout(any(), any(), any());
+    }
+
+    private TicketGrantingTicket tgtCarrying(
+        final String authToken,
+        final String superUser,
+        final String superUserCustomerId,
+        final Fixture f
+    ) {
+        final TicketGrantingTicket tgt = mock(TicketGrantingTicket.class);
+        final Authentication authentication = mock(Authentication.class);
+        when(tgt.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(() -> "userId");
+        when(f.utils.getAttributeValue(any(), org.mockito.ArgumentMatchers.eq(CommonConstants.AUTHTOKEN_ATTRIBUTE))).thenReturn(authToken);
+        when(f.utils.getAttributeValue(any(), org.mockito.ArgumentMatchers.eq(CommonConstants.SUPER_USER_ATTRIBUTE))).thenReturn(superUser);
+        when(
+            f.utils.getAttributeValue(any(), org.mockito.ArgumentMatchers.eq(CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE))
+        ).thenReturn(superUserCustomerId);
+        return tgt;
+    }
+
+    private static class Fixture {
+
+        final Utils utils = mock(Utils.class);
+        final CasApi casApi = mock(CasApi.class);
+        final TestableTerminateApiSessionAction action;
+
+        Fixture() {
+            final CasConfigurationProperties casProperties = mock(CasConfigurationProperties.class);
+            when(casProperties.getLogout()).thenReturn(new LogoutProperties());
+            action = new TestableTerminateApiSessionAction(
+                mock(CentralAuthenticationService.class),
+                mock(CasCookieBuilder.class),
+                mock(CasCookieBuilder.class),
+                casProperties.getLogout(),
+                mock(LogoutManager.class),
+                mock(ConfigurableApplicationContext.class),
+                utils,
+                casApi,
+                mock(ServicesManager.class),
+                casProperties,
+                mock(Action.class),
+                mock(TicketRegistry.class)
+            );
+        }
+    }
+
     private static class TestableTerminateApiSessionAction extends TerminateApiSessionAction {
+
+        public void revokeIamSessionPublic(final String tgtId, final TicketGrantingTicket ticket) {
+            revokeIamSession(tgtId, ticket);
+        }
+
 
         public TestableTerminateApiSessionAction(
             CentralAuthenticationService cas,
