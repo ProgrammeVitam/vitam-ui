@@ -358,32 +358,14 @@ public class CasService {
     }
 
     @Transactional
-    public List<UserDto> getUsersByEmail(final String email, final String optEmbedded) {
-        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
-        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
-        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
-
-        final List<UserDto> usersDto = userService.findUsersByEmail(email);
-
-        return usersDto
-            .stream()
-            .map(user -> loadFullUserProfileIfRequired(user, loadFullProfile, isSubrogation, isApi))
-            .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public UserDto getUserByEmailAndCustomerId(final String email, final String customerId, final String optEmbedded) {
-        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
-        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
-        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
-
+    public UserDto getUserByEmailAndCustomerId(final String email, final String customerId) {
         UserDto userDto = userService.findUserByEmailAndCustomerId(email, customerId);
         if (userDto == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
         }
         checkStatus(userDto.getStatus(), userDto.getEmail());
 
-        return loadFullUserProfileIfRequired(userDto, loadFullProfile, isSubrogation, isApi);
+        return userDto;
     }
 
     @Transactional
@@ -410,12 +392,7 @@ public class CasService {
         }
         checkStatus(userDto.getStatus(), userDto.getEmail());
 
-        return (AuthUserDto) loadFullUserProfileIfRequired(
-            userDto,
-            true,
-            request.isSubrogation(),
-            request.isServerToServer()
-        );
+        return loadFullUserProfile(userDto, request.isSubrogation(), request.isServerToServer());
     }
 
     private void checkFederatedIdentityConsistency(final AuthenticationRequestDto request) {
@@ -433,23 +410,7 @@ public class CasService {
         }
     }
 
-    private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {
-        if (optEmbedded == null) {
-            return false;
-        }
-        final Set<String> values = splitIntoValues(optEmbedded);
-        return values.contains(authTokenParameter);
-    }
-
-    private UserDto loadFullUserProfileIfRequired(
-        UserDto user,
-        boolean loadFullProfile,
-        boolean subrogation,
-        boolean api
-    ) {
-        if (!loadFullProfile) {
-            return user;
-        }
+    private AuthUserDto loadFullUserProfile(final UserDto user, final boolean subrogation, final boolean api) {
         final AuthUserDto authUserDto = userService.loadGroupAndProfiles(user);
         userService.addBasicCustomerAndProofTenantIdentifierInformation(authUserDto);
         userService.addTenantsByAppInformation(authUserDto);
@@ -465,7 +426,6 @@ public class CasService {
      * @param loginCustomerId The customerId of the user
      * @param idp             can be null
      * @param userIdentifier  can be null
-     * @param optEmbedded
      * @return
      */
     @Transactional
@@ -473,8 +433,7 @@ public class CasService {
         String loginEmail,
         final String loginCustomerId,
         final String idp,
-        final String userIdentifier,
-        final String optEmbedded
+        final String userIdentifier
     ) {
         // if the user depends on an external idp
         if (StringUtils.isNotBlank(idp)) {
@@ -485,7 +444,7 @@ public class CasService {
             }
         }
 
-        return getUserByEmailAndCustomerId(loginEmail, loginCustomerId, optEmbedded);
+        return getUserByEmailAndCustomerId(loginEmail, loginCustomerId);
     }
 
     /**

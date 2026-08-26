@@ -224,6 +224,6 @@ public class DispatcherAction extends AbstractAction {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(casApi.getUser(login, customerId, provider.getId(), null, null));
+        return Optional.ofNullable(casApi.getUser(login, customerId, provider.getId(), null));
     }
 }

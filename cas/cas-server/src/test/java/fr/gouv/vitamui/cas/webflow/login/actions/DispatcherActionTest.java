@@ -81,8 +81,8 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
             identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_2), eq(CUSTOMER_ID_2))
         ).thenReturn(Optional.of(provider));
         when(identityProviderHelper.findById(anyList(), eq(PROVIDER_ID))).thenReturn(Optional.of(provider));
-        when(casApi.resolveIdentityProvider(anyString(), anyString())).thenAnswer(invocation ->
-            new ResolvedIdentityProviderDto(PROVIDER_ID, provider.getInternal())
+        when(casApi.resolveIdentityProvider(anyString(), anyString())).thenAnswer(
+            invocation -> new ResolvedIdentityProviderDto(PROVIDER_ID, provider.getInternal())
         );
     }
 
@@ -127,7 +127,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null))).thenReturn(
             new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
         );
 
@@ -143,7 +143,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
         flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
 
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(null);
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null))).thenReturn(null);
 
         final Event event = action.doExecute(context);
 
@@ -172,7 +172,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_2);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(PROVIDER_ID), eq(null))).thenReturn(
             new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
         );
 
@@ -191,7 +191,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null))).thenReturn(
             new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
         );
 
@@ -226,7 +226,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null))).thenReturn(
             new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
         );
 
@@ -261,7 +261,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_2);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(PROVIDER_ID), eq(null))).thenReturn(
             new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
         );
 
@@ -282,7 +282,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         UserDto userDto = new UserDto();
         userDto.setCustomerId(CUSTOMER_ID_1);
         userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(PROVIDER_ID), eq(null))).thenReturn(
             new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
         );
 

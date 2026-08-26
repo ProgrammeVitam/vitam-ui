@@ -19,14 +19,11 @@ import org.springframework.webflow.execution.Event;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
 import static fr.gouv.vitamui.cas.webflow.login.actions.ListCustomersAction.BAD_CONFIGURATION;
-import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -246,5 +243,4 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         providerDto1.setPatterns(List.of(patterns));
         return providerDto1;
     }
-
 }

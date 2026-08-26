@@ -106,8 +106,9 @@ public final class ProvidersServiceTest {
         final var internalProvider = buildProvider("internalProvider", "2", true);
         final var externalProvider = buildProvider("externalProvider", "10", false);
         when(builder.buildClient(any())).thenReturn(Optional.empty());
-        when(identityProvidersApi.getAll(eq(null), any()))
-            .thenReturn(new ArrayList<>(List.of(internalProvider, externalProvider)));
+        when(identityProvidersApi.getAll(eq(null), any())).thenReturn(
+            new ArrayList<>(List.of(internalProvider, externalProvider))
+        );
 
         service.loadData();
 

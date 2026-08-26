@@ -355,7 +355,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(
             casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
 
@@ -382,7 +382,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(
             casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -410,7 +410,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(
             casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();
@@ -443,7 +443,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         when(
             casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
-        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
+        when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
         );
         givenSubrogationInfoInSessionForDeleguatedAuthn();

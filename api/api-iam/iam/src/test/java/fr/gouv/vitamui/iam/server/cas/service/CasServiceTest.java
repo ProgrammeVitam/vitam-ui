@@ -194,49 +194,15 @@ class CasServiceTest {
     }
 
     @Test
-    void should_issue_a_token_only_when_the_embedded_option_asks_for_it() {
+    void should_never_issue_a_token_when_merely_reading_a_user() {
         when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(buildAuthUser(false));
 
-        casService.getUser(USER_EMAIL, CUSTOMER_ID, null, null, null);
+        casService.getUser(USER_EMAIL, CUSTOMER_ID, null, null);
 
         verify(tokenRepository, never()).save(any());
     }
 
-    @Test
-    void should_issue_a_token_when_the_embedded_option_contains_authtoken() {
-        final AuthUserDto authUser = buildAuthUser(false);
-        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
-        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
-        givenTheTokenLifetimes();
 
-        casService.getUser(USER_EMAIL, CUSTOMER_ID, null, null, CommonConstants.AUTH_TOKEN_PARAMETER);
-
-        final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
-        verify(tokenRepository).save(issuedToken.capture());
-        assertThat(issuedToken.getValue().isSurrogation()).isFalse();
-        assertThat(issuedToken.getValue().getRefId()).isEqualTo(authUser.getId());
-    }
-
-    @Test
-    void should_mark_the_token_as_a_surrogation_when_the_embedded_option_says_so() {
-        final AuthUserDto authUser = buildAuthUser(false);
-        authUser.setType(UserTypeEnum.NOMINATIVE);
-        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
-        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
-        givenTheTokenLifetimes();
-
-        casService.getUser(
-            USER_EMAIL,
-            CUSTOMER_ID,
-            null,
-            null,
-            CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER
-        );
-
-        final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
-        verify(tokenRepository).save(issuedToken.capture());
-        assertThat(issuedToken.getValue().isSurrogation()).isTrue();
-    }
 
     @Test
     void should_authenticate_and_issue_a_token_without_any_textual_convention() {
@@ -360,7 +326,7 @@ class CasServiceTest {
     void should_return_the_user_known_in_database_when_idp_auto_provisioning_is_disabled(String idp) {
         when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(buildAuthUser(false));
 
-        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, idp, null, null);
+        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, idp, null);
         assertThat(user).isNotNull();
     }
 
@@ -383,7 +349,7 @@ class CasServiceTest {
         customer.setLanguage("fr");
         when(customerRepository.findById(anyString())).thenReturn(Optional.of(customer));
 
-        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
+        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null);
         verify(userService, times(1)).create(any());
         verify(userService, times(0)).patch(any());
         assertThat(user).isNotNull();
@@ -409,7 +375,7 @@ class CasServiceTest {
         when(userRepository.existsByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(buildAuthUser(true));
 
-        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
+        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null);
         verify(userService, times(1)).patch(any());
         verify(userService, times(0)).create(any());
         assertThat(user).isNotNull();
@@ -422,7 +388,7 @@ class CasServiceTest {
         when(userRepository.existsByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(true);
         when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(buildAuthUser(false));
 
-        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null, null);
+        final UserDto user = casService.getUser(USER_EMAIL, CUSTOMER_ID, IDP, null);
         verify(userService, times(0)).patch(any());
         verify(userService, times(0)).create(any());
         assertThat(user).isNotNull();

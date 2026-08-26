@@ -2453,36 +2453,6 @@ paths:
                                 type: boolean
                                 example: null
                             example: null
-    /iam/v1/cas/users:
-        get:
-            tags:
-                - Cas
-            summary: Get all users having a given email address
-            operationId: cas_getUsersByEmail
-            parameters:
-                - name: email
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        '*/*':
-                            schema:
-                                type: array
-                                example: null
-                                items:
-                                    $ref: "#/components/schemas/UserDto"
-                            example: null
     /iam/v1/cas/users/provisioning:
         get:
             tags:
@@ -2509,12 +2479,6 @@ paths:
                       type: string
                       example: null
                 - name: userIdentifier
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
                   in: query
                   required: false
                   schema:

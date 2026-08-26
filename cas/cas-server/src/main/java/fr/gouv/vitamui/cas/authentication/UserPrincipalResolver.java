@@ -85,9 +85,7 @@ import java.util.regex.Pattern;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.ADDRESS_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODES;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
@@ -115,7 +113,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUBROGEABLE_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
@@ -431,7 +428,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         if (subrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUserEmail));
             attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(superUserCustomerId));
-            superUser = casApi.getUser(superUserEmail, superUserCustomerId, null, null, null);
+            superUser = casApi.getUser(superUserEmail, superUserCustomerId, null, null);
             if (superUser == null) {
                 LOGGER.debug("No super user found for: {}", superUserEmail);
                 return NullPrincipal.getInstance();

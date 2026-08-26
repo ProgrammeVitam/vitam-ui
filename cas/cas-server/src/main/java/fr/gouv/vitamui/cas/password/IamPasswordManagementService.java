@@ -367,6 +367,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     private UserDto findUserByEmailAndCustomerId(String email, String customerId) {
-        return this.casApi.getUser(email, customerId, null, null, null);
+        return this.casApi.getUser(email, customerId, null, null);
     }
 }

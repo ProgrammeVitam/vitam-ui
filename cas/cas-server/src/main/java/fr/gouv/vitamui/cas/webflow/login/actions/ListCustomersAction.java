@@ -132,11 +132,7 @@ public class ListCustomersAction extends AbstractAction {
         }
 
         if (claimingOrganizations.size() == 1) {
-            return handleSingleOrganization(
-                flowScope,
-                username,
-                claimingOrganizations.getFirst().getCustomerId()
-            );
+            return handleSingleOrganization(flowScope, username, claimingOrganizations.getFirst().getCustomerId());
         }
 
         return handleSeveralOrganizations(flowScope, username, claimingOrganizations);
@@ -182,15 +178,16 @@ public class ListCustomersAction extends AbstractAction {
 
     private List<CustomerModel> toDistinctCustomerModels(final List<OrganizationCandidateDto> claimingOrganizations) {
         Map<String, CustomerModel> byCustomerId = new LinkedHashMap<>();
-        claimingOrganizations.forEach(organization ->
-            byCustomerId.computeIfAbsent(
-                organization.getCustomerId(),
-                customerId ->
-                    new CustomerModel()
-                        .setCustomerId(customerId)
-                        .setCode(organization.getCode())
-                        .setName(organization.getName())
-            )
+        claimingOrganizations.forEach(
+            organization ->
+                byCustomerId.computeIfAbsent(
+                    organization.getCustomerId(),
+                    customerId ->
+                        new CustomerModel()
+                            .setCustomerId(customerId)
+                            .setCode(organization.getCode())
+                            .setName(organization.getName())
+                )
         );
         return byCustomerId.values().stream().sorted(Comparator.comparing(CustomerModel::getCode)).toList();
     }

@@ -222,17 +222,6 @@ public class CasController {
         return "true";
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
-    @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
-    @Secured(ServicesData.ROLE_CAS_USERS)
-    public List<UserDto> getUsersByEmail(
-        @RequestParam final String email,
-        @RequestParam final Optional<String> embedded
-    ) {
-        LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
-        ParameterChecker.checkParameter("The email is mandatory : ", email);
-        return casService.getUsersByEmail(email, embedded.orElse(null));
-    }
 
     @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING)
     @Operation(
@@ -244,8 +233,7 @@ public class CasController {
         @RequestParam String loginEmail,
         @RequestParam String loginCustomerId,
         @RequestParam(required = false) String idp,
-        @RequestParam(required = false) String userIdentifier,
-        @RequestParam(required = false) String embedded
+        @RequestParam(required = false) String userIdentifier
     ) throws InvalidParseOperationException {
         SanityChecker.checkSecureParameter(idp, loginEmail, loginCustomerId);
 
@@ -254,15 +242,14 @@ public class CasController {
         }
 
         LOGGER.debug(
-            "getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}, embedded options : {}",
+            "getUser - email : {}, customerId : {}, idp : {}, userIdentifier : {}",
             loginEmail,
             loginCustomerId,
             idp,
-            userIdentifier,
-            embedded
+            userIdentifier
         );
 
-        return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
+        return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier);
     }
 
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH)

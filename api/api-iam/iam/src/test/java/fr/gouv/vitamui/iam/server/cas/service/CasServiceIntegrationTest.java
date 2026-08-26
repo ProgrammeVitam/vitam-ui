@@ -174,73 +174,8 @@ public class CasServiceIntegrationTest extends AbstractMongoTests {
         assertThat(events).hasSize(1);
     }
 
-    @Test
-    @Disabled
-    public void testGetUserByEmailWithGenericUsers() {
-        final UserDto user = new UserDto();
-        user.setType(UserTypeEnum.GENERIC);
-        user.setId("ID");
-        user.setEmail(jsonNode.findValue("EMAIL").textValue());
-        user.setCustomerId(jsonNode.findValue("CUSTOMER_ID").textValue());
-        final Subrogation subro = getUsersByEmail(user);
 
-        final Criteria criteria = Criteria.where("obId")
-            .is(subro.getId())
-            .and("obIdReq")
-            .is(MongoDbCollections.SUBROGATIONS)
-            .and("evType")
-            .is(EventType.EXT_VITAMUI_START_SURROGATE_GENERIC);
-        final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
-        assertThat(events).hasSize(1);
-    }
 
-    @Test
-    @Disabled
-    public void testGetUserByEmailWithNominativecUsers() {
-        final UserDto user = new UserDto();
-        user.setType(UserTypeEnum.NOMINATIVE);
-        user.setId("ID");
-        user.setEmail(jsonNode.findValue("EMAIL").textValue());
-        user.setCustomerId(jsonNode.findValue("CUSTOMER_ID").textValue());
-        final Subrogation subro = getUsersByEmail(user);
-
-        final Criteria criteria = Criteria.where("obId")
-            .is(subro.getId())
-            .and("obIdReq")
-            .is(MongoDbCollections.SUBROGATIONS)
-            .and("evType")
-            .is(EventType.EXT_VITAMUI_START_SURROGATE_USER);
-        final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
-        assertThat(events).hasSize(1);
-    }
-
-    private Subrogation getUsersByEmail(final UserDto user) {
-        final String email = user.getEmail();
-        final String customerId = user.getCustomerId();
-        final AuthUserDto authUser = new AuthUserDto();
-        authUser.setId("ID");
-        final Subrogation subro = new Subrogation();
-        subro.setSuperUser("superuser@vitamui.com");
-        subro.setSuperUserCustomerId("customer_system");
-        subro.setSurrogate(email);
-        subro.setSurrogateCustomerId(customerId);
-        Mockito.when(userService.findUserByEmailAndCustomerId(email, customerId)).thenReturn(user);
-        Mockito.when(userService.findUsersByEmail(email)).thenReturn(List.of(user));
-        Mockito.when(userService.loadGroupAndProfiles(ArgumentMatchers.any())).thenReturn(authUser);
-        Mockito.when(subrogationRepository.findOneBySurrogateAndSurrogateCustomerId(email, customerId)).thenReturn(
-            subro
-        );
-        Mockito.when(userRepository.findAllByEmailIgnoreCase(email)).thenReturn(List.of(new User()));
-        Mockito.when(userRepository.findByEmailIgnoreCaseAndCustomerId(email, customerId)).thenReturn(new User());
-        Mockito.when(
-            userRepository.findByEmailIgnoreCaseAndCustomerId("superuser@vitamui.com", "customer_system")
-        ).thenReturn(new User());
-        casService.getUsersByEmail(
-            email,
-            CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER
-        );
-        return subro;
-    }
 
     private User prepareUserPwd(final String pwd) {
         final User user = new User();
