@@ -36,9 +36,11 @@
  */
 package fr.gouv.vitamui.iam.server.security;
 
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.token.domain.Token;
@@ -55,6 +57,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,19 +96,27 @@ class IamUserAuthentificationServiceTest {
     void the_shared_secret_resolves_the_cas_service_account_without_any_database_lookup() {
         givenTheCasServiceAccount();
 
-        final AuthUserDto user = service.getUserFromHttpContext(callWithToken(SECRET));
+        final AuthUserDto user = service.getUserFromHttpContext(callFromTheCasApplication(SECRET));
 
         assertThat(user.getAuthToken()).isEqualTo(IamUserAuthentificationService.INTERNAL_CAS_USER_NAME);
         verify(tokenRepository, never()).findById(any());
     }
 
     @Test
-    void the_shared_secret_is_accepted_whatever_authenticated_the_caller() {
-        givenTheCasServiceAccount();
+    void the_shared_secret_is_refused_when_nothing_proves_the_caller_is_the_cas_application() {
+        assertThatThrownBy(() -> service.getUserFromHttpContext(callWithToken(SECRET))).isInstanceOf(
+            BadCredentialsException.class
+        );
+    }
 
-        final AuthUserDto user = service.getUserFromHttpContext(callWithToken(SECRET));
+    @Test
+    void the_shared_secret_is_refused_when_the_caller_is_another_certified_application() {
+        final PreAuthenticatedAuthenticationToken call = callWithToken(SECRET);
+        final ContextDto anotherContext = new ContextDto();
+        anotherContext.setRoleNames(List.of(ServicesData.ROLE_GET_USERS));
+        call.setDetails(anotherContext);
 
-        assertThat(user).isNotNull();
+        assertThatThrownBy(() -> service.getUserFromHttpContext(call)).isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
@@ -161,6 +172,14 @@ class IamUserAuthentificationServiceTest {
         userDto.setId(userId);
         when(userService.findUserById(userId)).thenReturn(userDto);
         when(userService.loadGroupAndProfiles(userDto)).thenReturn(new AuthUserDto(userDto));
+    }
+
+    private PreAuthenticatedAuthenticationToken callFromTheCasApplication(final String userToken) {
+        final PreAuthenticatedAuthenticationToken call = callWithToken(userToken);
+        final ContextDto casContext = new ContextDto();
+        casContext.setRoleNames(List.of(ServicesData.ROLE_CAS_LOGIN));
+        call.setDetails(casContext);
+        return call;
     }
 
     private PreAuthenticatedAuthenticationToken callWithToken(final String userToken) {

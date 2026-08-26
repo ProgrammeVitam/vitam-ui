@@ -36,10 +36,12 @@
  */
 package fr.gouv.vitamui.iam.server.security;
 
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
+import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
@@ -100,13 +102,18 @@ public class IamUserAuthentificationService implements UserAuthenticationService
             throw new BadCredentialsException("Usertoken not found in header");
         }
 
-        final Token token = getToken(userToken);
+        final Token token = getToken(userToken, preAuthenticatedAuthenticationToken);
 
         return getUserByToken(token);
     }
 
-    private Token getToken(String userToken) {
+    private Token getToken(String userToken, PreAuthenticatedAuthenticationToken authentication) {
         if (this.casSecretToken.equals(userToken)) {
+            if (!callerIsTheCasApplication(authentication)) {
+                throw new BadCredentialsException(
+                    "The CAS service token can only be used by the CAS application"
+                );
+            }
             log.debug("Granted access to CAS token");
             Token token = new Token();
             token.setRefId(INTERNAL_CAS_USER_NAME);
@@ -136,6 +143,13 @@ public class IamUserAuthentificationService implements UserAuthenticationService
             }
         }
         return token;
+    }
+
+    private boolean callerIsTheCasApplication(final PreAuthenticatedAuthenticationToken authentication) {
+        return (
+            authentication.getDetails() instanceof ContextDto context &&
+            context.getRoleNames().contains(ServicesData.ROLE_CAS_LOGIN)
+        );
     }
 
     private AuthUserDto getUserByToken(final Token token) {
