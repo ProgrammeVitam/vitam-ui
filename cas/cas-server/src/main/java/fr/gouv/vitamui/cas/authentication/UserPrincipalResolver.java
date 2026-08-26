@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
@@ -168,6 +169,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
         final var requestContext = RequestContextHolder.getRequestContext();
 
         final boolean subrogationCall;
+        String announcedIdentifier = null;
+        String identifierReturnedByProvider = null;
         String loginEmail;
         String loginCustomerId;
         String superUserEmail;
@@ -331,10 +334,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
 
-            Assert.isTrue(
-                email.equals(loginEmailFromSession),
-                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email)
-            );
+            announcedIdentifier = loginEmailFromSession;
+            identifierReturnedByProvider = email;
 
             if (surrogateEmailFromSession != null && surrogateCustomerIdFromSession != null) {
                 userProviderId = null;
@@ -367,20 +368,17 @@ public class UserPrincipalResolver implements PrincipalResolver {
             subrogationCall
         );
 
-        String embedded = AUTH_TOKEN_PARAMETER;
-        if (subrogationCall) {
-            embedded += "," + SURROGATION_PARAMETER;
-        } else if (requestContext == null) {
-            embedded += "," + API_PARAMETER;
-        }
-        LOGGER.debug("Computed embedded: {}", embedded);
-
-        final AuthUserDto user = casApi.getUser(
-            loginEmail,
-            loginCustomerId,
-            userProviderId,
-            technicalUserId.orElse(null),
-            embedded
+        final AuthUserDto user = casApi.authenticate(
+            new AuthenticationRequestDto(
+                loginEmail,
+                loginCustomerId,
+                userProviderId,
+                technicalUserId.orElse(null),
+                subrogationCall,
+                requestContext == null,
+                announcedIdentifier,
+                identifierReturnedByProvider
+            )
         );
 
         if (user == null) {

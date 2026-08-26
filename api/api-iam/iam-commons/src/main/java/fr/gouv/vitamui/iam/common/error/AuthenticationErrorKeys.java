@@ -34,36 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.dto.cas;
+package fr.gouv.vitamui.iam.common.error;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+public final class AuthenticationErrorKeys {
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class AuthenticationRequestDto {
+    public static final String FEDERATED_IDENTITY_MISMATCH = "iam.authentication.federated-identity-mismatch";
 
-    private String identifier;
-
-    private String customerId;
-
-    private String identityProviderId;
-
-    private String technicalIdentifier;
-
-    private boolean subrogation;
-
-    private boolean serverToServer;
-
-    private String announcedIdentifier;
-
-    private String identifierReturnedByProvider;
+    private AuthenticationErrorKeys() {}
 }

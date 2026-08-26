@@ -2644,6 +2644,26 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/OrganizationCandidateDto"
                             example: null
+    /iam/v1/cas/authentication:
+        post:
+            tags:
+                - Cas
+            summary: Resolve an authenticated user and issue an authentication token
+            operationId: cas_authenticate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/AuthenticationRequestDto"
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/AuthUserDto"
+                            example: null
     /iam/v1/cas/identity-provider:
         get:
             tags:
@@ -3158,6 +3178,34 @@ components:
                     type: string
                     example: null
                 value:
+                    type: string
+                    example: null
+            example: null
+        AuthenticationRequestDto:
+            type: object
+            properties:
+                identifier:
+                    type: string
+                    example: null
+                customerId:
+                    type: string
+                    example: null
+                identityProviderId:
+                    type: string
+                    example: null
+                technicalIdentifier:
+                    type: string
+                    example: null
+                subrogation:
+                    type: boolean
+                    example: null
+                serverToServer:
+                    type: boolean
+                    example: null
+                announcedIdentifier:
+                    type: string
+                    example: null
+                identifierReturnedByProvider:
                     type: string
                     example: null
             example: null

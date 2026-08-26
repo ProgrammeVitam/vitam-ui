@@ -15,6 +15,8 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
+import org.mockito.ArgumentCaptor;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
@@ -50,6 +52,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -108,7 +111,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveUserSuccessfully() {
         when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
 
         final var principal = resolver.resolve(
@@ -138,13 +141,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         ).thenReturn(List.of(provider));
 
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(IDENTIFIER),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         final var cert = mock(X509Certificate.class);
         final var subjectDn = mock(java.security.Principal.class);
@@ -187,13 +184,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         ).thenReturn(List.of(provider));
 
         when(
-            casApi.getUser(
-                eq(USERNAME_EMAIL_WITH_OTHER_CASE),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(IDENTIFIER),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         final var cert = mock(X509Certificate.class);
         final var subjectDn = mock(java.security.Principal.class);
@@ -223,13 +214,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         final var provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(USERNAME),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(providersService.getProviders()).thenReturn(new ArrayList<>());
@@ -258,13 +243,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq("fake"),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(
@@ -295,13 +274,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setIdentifierAttribute(IDENTIFIER);
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(IDENTIFIER_VALUE),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(
@@ -331,13 +304,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setMailAttribute(MAIL);
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq("fake"),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(
@@ -363,13 +330,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         provider.setId(PROVIDER_ID);
         provider.setIdentifierAttribute(IDENTIFIER_ATTRIBUTE);
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq("fake"),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         givenLoginInfoInSessionForDeleguatedAuthn();
         when(
@@ -392,13 +353,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveSurrogateUser() {
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
@@ -425,13 +380,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationSurrogate() throws Throwable {
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
@@ -459,13 +408,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationSurrogateMailAttribute() throws Throwable {
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
@@ -498,13 +441,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     @Test
     public void testResolveAuthnDelegationSurrogateMailAttributeNoMail() throws Throwable {
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.SURROGATION_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         when(casApi.getUser(eq(ADMIN), eq(ADMIN_CUSTOMER_ID), eq(null), eq(null), eq(null))).thenReturn(
             infoProfile(UserStatusEnum.ENABLED, ADMIN_ID)
@@ -530,7 +467,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     public void testResolveAddressDeserializeSuccessfully() {
         AuthUserDto userProfile = userProfile(UserStatusEnum.ENABLED);
         when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile);
 
         final var principal = resolver.resolve(
@@ -562,13 +499,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(Optional.of(provider));
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(null);
 
         assertNull(
@@ -593,13 +524,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(Optional.of(provider));
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.DISABLED));
 
         assertNull(
@@ -624,13 +549,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             )
         ).thenReturn(Optional.of(provider));
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.BLOCKED));
 
         assertNull(
@@ -702,60 +621,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         return principal;
     }
 
-    @Test
-    public void testTheIdpCannotReturnAnIdentityOtherThanTheAnnouncedOne() throws Throwable {
-        final var provider = new IdentityProviderDto();
-        provider.setId(PROVIDER_ID);
-        givenLoginInfoInSessionForDeleguatedAuthn();
-        when(providersService.getProviders()).thenReturn(new ArrayList<>());
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
 
-        assertThatThrownBy(() ->
-            resolver.resolve(
-                new ClientCredential(null, PROVIDER_NAME),
-                Optional.of(principalFactory.createPrincipal("someone.else@vitamui.com")),
-                Optional.empty(),
-                Optional.empty()
-            )
-        )
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Invalid user from Idp");
-    }
-
-    @Test
-    public void testTheAnnouncedIdentityIsComparedWithItsCase() throws Throwable {
-        final var provider = new IdentityProviderDto();
-        provider.setId(PROVIDER_ID);
-        givenLoginInfoInSessionForDeleguatedAuthn();
-        when(providersService.getProviders()).thenReturn(new ArrayList<>());
-        when(
-            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
-        ).thenReturn(Optional.of(provider));
-
-        assertThatThrownBy(() ->
-            resolver.resolve(
-                new ClientCredential(null, PROVIDER_NAME),
-                Optional.of(principalFactory.createPrincipal(USERNAME.toUpperCase())),
-                Optional.empty(),
-                Optional.empty()
-            )
-        )
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Invalid user from Idp");
-    }
 
     @Test
     public void testAServerToServerCallAsksForAnApiToken() throws Throwable {
         when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(null),
-                eq(null),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER + "," + CommonConstants.API_PARAMETER)
-            )
+            casApi.authenticate(any(AuthenticationRequestDto.class))
         ).thenReturn(userProfile(UserStatusEnum.ENABLED));
 
         RequestContextHolder.setRequestContext(null);
@@ -771,6 +642,55 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         } finally {
             RequestContextHolder.setRequestContext(context);
         }
+    }
+
+    @Test
+    public void testBothTheAnnouncedAndTheReturnedIdentityAreSentToTheIam() throws Throwable {
+        final var provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        givenLoginInfoInSessionForDeleguatedAuthn();
+        when(providersService.getProviders()).thenReturn(new ArrayList<>());
+        when(
+            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
+        ).thenReturn(Optional.of(provider));
+        when(casApi.authenticate(any(AuthenticationRequestDto.class))).thenReturn(
+            userProfile(UserStatusEnum.ENABLED)
+        );
+
+        resolver.resolve(
+            new ClientCredential(null, PROVIDER_NAME),
+            Optional.of(principalFactory.createPrincipal(USERNAME.toUpperCase())),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        final ArgumentCaptor<AuthenticationRequestDto> request = ArgumentCaptor.forClass(
+            AuthenticationRequestDto.class
+        );
+        verify(casApi).authenticate(request.capture());
+        assertEquals(USERNAME, request.getValue().getAnnouncedIdentifier());
+        assertEquals(USERNAME.toUpperCase(), request.getValue().getIdentifierReturnedByProvider());
+    }
+
+    @Test
+    public void testAPasswordLoginSendsNoFederatedIdentityToCompare() throws Throwable {
+        when(casApi.authenticate(any(AuthenticationRequestDto.class))).thenReturn(
+            userProfile(UserStatusEnum.ENABLED)
+        );
+
+        resolver.resolve(
+            new UsernamePasswordCredential(USERNAME, PWD),
+            Optional.of(createLoginPrincipal()),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        final ArgumentCaptor<AuthenticationRequestDto> request = ArgumentCaptor.forClass(
+            AuthenticationRequestDto.class
+        );
+        verify(casApi).authenticate(request.capture());
+        assertNull(request.getValue().getAnnouncedIdentifier());
+        assertNull(request.getValue().getIdentifierReturnedByProvider());
     }
 
     private void givenLoginInfoInSessionForDeleguatedAuthn() {

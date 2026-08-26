@@ -17,6 +17,7 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.error.AuthenticationErrorKeys;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -245,7 +246,7 @@ class CasServiceTest {
         givenTheTokenLifetimes();
 
         final AuthUserDto authenticated = casService.authenticate(
-            new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, false, false)
+            new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, false, false, null, null)
         );
 
         final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
@@ -262,7 +263,7 @@ class CasServiceTest {
         when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
         givenTheTokenLifetimes();
 
-        casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, true, false));
+        casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, true, false, null, null));
 
         final ArgumentCaptor<Token> issuedToken = ArgumentCaptor.forClass(Token.class);
         verify(tokenRepository).save(issuedToken.capture());
@@ -274,7 +275,7 @@ class CasServiceTest {
         when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(null);
 
         assertThatThrownBy(() ->
-            casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, false, false))
+            casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, null, null, false, false, null, null))
         ).isInstanceOf(NotFoundException.class);
     }
 
@@ -286,9 +287,53 @@ class CasServiceTest {
         when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
         givenTheTokenLifetimes();
 
-        casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, IDP, null, false, false));
+        casService.authenticate(new AuthenticationRequestDto(USER_EMAIL, CUSTOMER_ID, IDP, null, false, false, null, null));
 
         verify(identityProviderService).getOne(IDP);
+    }
+
+    @Test
+    void should_refuse_an_identity_the_provider_did_not_return_as_announced() {
+        assertThatThrownBy(() ->
+            casService.authenticate(
+                new AuthenticationRequestDto(
+                    USER_EMAIL,
+                    CUSTOMER_ID,
+                    null,
+                    null,
+                    false,
+                    false,
+                    "dupont@ministere.fr",
+                    "directeur@ministere.fr"
+                )
+            )
+        )
+            .isInstanceOf(BadRequestException.class)
+            .extracting("key")
+            .isEqualTo(AuthenticationErrorKeys.FEDERATED_IDENTITY_MISMATCH);
+    }
+
+    @Test
+    void should_accept_an_identity_returned_with_a_different_case() {
+        final AuthUserDto authUser = buildAuthUser(false);
+        when(userService.findUserByEmailAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(authUser);
+        when(userService.loadGroupAndProfiles(authUser)).thenReturn(authUser);
+        givenTheTokenLifetimes();
+
+        casService.authenticate(
+            new AuthenticationRequestDto(
+                USER_EMAIL,
+                CUSTOMER_ID,
+                null,
+                null,
+                false,
+                false,
+                "dupont@ministere.fr",
+                "Dupont@Ministere.FR"
+            )
+        );
+
+        verify(tokenRepository).save(any());
     }
 
     private void givenTheTokenLifetimes() {

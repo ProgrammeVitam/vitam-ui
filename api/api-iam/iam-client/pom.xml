@@ -71,6 +71,9 @@
                                     ResolvedIdentityProviderDto=fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto
                                 </importMapping>
                                 <importMapping>
+                                    AuthenticationRequestDto=fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto
+                                </importMapping>
+                                <importMapping>
                                     CustomerPatchFormData=fr.gouv.vitamui.iam.common.dto.CustomerPatchFormData
                                 </importMapping>
                                 <importMapping>

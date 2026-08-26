@@ -59,6 +59,7 @@ import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.error.AuthenticationErrorKeys;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -387,6 +388,8 @@ public class CasService {
 
     @Transactional
     public AuthUserDto authenticate(final AuthenticationRequestDto request) {
+        checkFederatedIdentityConsistency(request);
+
         String identifier = request.getIdentifier();
 
         if (StringUtils.isNotBlank(request.getIdentityProviderId())) {
@@ -413,6 +416,21 @@ public class CasService {
             request.isSubrogation(),
             request.isServerToServer()
         );
+    }
+
+    private void checkFederatedIdentityConsistency(final AuthenticationRequestDto request) {
+        final String announced = request.getAnnouncedIdentifier();
+        final String returned = request.getIdentifierReturnedByProvider();
+
+        if (StringUtils.isBlank(announced) || StringUtils.isBlank(returned)) {
+            return;
+        }
+        if (!returned.equalsIgnoreCase(announced)) {
+            throw new BadRequestException(
+                "Invalid user from Idp : Expected: '%s', actual: '%s'".formatted(announced, returned),
+                AuthenticationErrorKeys.FEDERATED_IDENTITY_MISMATCH
+            );
+        }
     }
 
     private boolean checkEmbeddedOption(String optEmbedded, String authTokenParameter) {
