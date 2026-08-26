@@ -38,13 +38,23 @@ import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
-import { BASE_URL, BaseUserInfoApiService, ENVIRONMENT, LoggerModule, provideI18n } from 'vitamui-library';
+import {
+  BASE_URL,
+  BaseUserInfoApiService,
+  ConfigService,
+  ENVIRONMENT,
+  loadConfigFactory,
+  LoggerModule,
+  provideI18n,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { of } from 'rxjs';
 import { AppComponent } from './app/app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { PreloadAllModules, provideRouter, withHashLocation, withPreloading } from '@angular/router';
 import { routes } from './app/app.routes';
+import { inject, provideAppInitializer } from '@angular/core';
 
 if (environment.production) {
   enableProdMode();
@@ -62,11 +72,20 @@ bootstrapApplication(AppComponent, {
         registrationStrategy: 'registerWhenStable:30000',
       }),
     ),
+    provideAppInitializer(async () => {
+      const configService = inject(ConfigService);
+      const environment = inject(ENVIRONMENT);
+      await loadConfigFactory(configService, environment)();
+    }),
     provideI18n(),
     provideNativeDateAdapter(),
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: ENVIRONMENT, useValue: environment },
     { provide: BASE_URL, useValue: '/FAKE' },
+    {
+      provide: WINDOW_LOCATION,
+      useValue: window.location,
+    },
     { provide: BaseUserInfoApiService, useValue: { patchMyUserInfo: () => of(undefined) } }, // Make changing language work
   ],
 }).catch((err) => console.log(err));
