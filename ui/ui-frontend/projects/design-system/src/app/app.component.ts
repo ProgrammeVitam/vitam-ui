@@ -40,6 +40,7 @@ import {
   AppConfiguration,
   ApplicationApiService,
   AuthService,
+  ConfigService,
   SelectComponent,
   SelectLanguageComponent,
   ThemeService,
@@ -95,22 +96,17 @@ export class AppComponent {
 
   constructor() {
     const authService = inject(AuthService);
+    const configService = inject(ConfigService);
     const themeService = inject(ThemeService);
     const applicationApiService = inject(ApplicationApiService);
 
     authService.userInfo = { id: '42', language: 'FRENCH' };
 
-    applicationApiService.getLocalAsset('logo_USER.png').subscribe((userLogo) => {
+    applicationApiService.getLocalAsset(configService.config.USER_LOGO).subscribe((userLogo) => {
       themeService.init(
         {
           USER_LOGO: userLogo,
-          THEME_COLORS: {
-            'vitamui-primary': '#9C31B5',
-            'vitamui-secondary': '#296EBC',
-            'vitamui-tertiary': '#C22A40',
-            'vitamui-background': '#FCF7FD',
-            'vitamui-header-footer': '#ffffff',
-          },
+          THEME_COLORS: configService.config.THEME_COLORS,
         } as AppConfiguration,
         {},
       );

@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { ApplicationId, VitamUICommonModule } from 'vitamui-library';
+import { ApplicationId, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 
 @Component({
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.scss'],
-  imports: [VitamUICommonModule],
+  imports: [VitamuiTitleBreadcrumbComponent],
 })
 export class BreadcrumbsComponent {
   public breadCrumbData = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.CUSTOMERS_APP }, { label: 'Client n°1' }];
