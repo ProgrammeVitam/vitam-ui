@@ -53,7 +53,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, tap } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   AccessContract,
   AccessContractService,
@@ -108,6 +108,15 @@ import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-up
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+
+const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
+const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
+const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
+const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+
+const TREE_UNIT_TYPES = [ARCHIVE_UNIT_HOLDING_UNIT];
+const NON_TREE_UNIT_TYPES = [ARCHIVE_UNIT_FILING_UNIT, ARCHIVE_UNIT_WITH_OBJECTS, ARCHIVE_UNIT_WITHOUT_OBJECTS];
 
 @Component({
   selector: 'app-archive-search',
@@ -1182,85 +1191,83 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   async launchEliminationModal() {
     const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
     listAUHoldingUnit.push({
-      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
-      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+      criteria: ALL_ARCHIVE_UNIT_TYPES,
+      values: TREE_UNIT_TYPES.map((unitType) => ({ value: unitType, id: unitType })),
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
       dataType: CriteriaDataType.STRING,
     });
 
-    this.archiveService
-      .getTotalTrackHitsByCriteria(listAUHoldingUnit)
-      .pipe(
-        tap((value: number) => {
-          if (value !== 0) {
-            const dialogConfig = new MatDialogConfig();
+    this.archiveService.existsArchiveUnitByCriteria(listAUHoldingUnit).subscribe({
+      next: (hasTreeUnit: boolean) => {
+        if (hasTreeUnit) {
+          const dialogConfig = new MatDialogConfig();
 
-            dialogConfig.data = {
-              title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
-              icon: 'cancel',
-              message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
-              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
-            };
+          dialogConfig.data = {
+            title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+            icon: 'cancel',
+            message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+            cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+          };
 
-            this.dialog.open(AlertDialogComponent, dialogConfig);
-          } else {
-            this.launchBulkOperationWorkflow(
-              () =>
-                this.archiveUnitEliminationService.launchEliminationModal(
-                  this.listOfUACriteriaSearch,
-                  this.tenantIdentifier,
-                  this.currentPage,
-                  this.confirmSecondActionBigNumberOfResultsActionDialog,
-                  true,
-                ),
-              this.DEFAULT_ELIMINATION_THRESHOLD,
-            );
-          }
-        }),
-      )
-      .subscribe();
+          this.dialog.open(AlertDialogComponent, dialogConfig);
+        } else {
+          this.launchBulkOperationWorkflow(
+            () =>
+              this.archiveUnitEliminationService.launchEliminationModal(
+                this.listOfUACriteriaSearch,
+                this.tenantIdentifier,
+                this.currentPage,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                true,
+              ),
+            this.DEFAULT_ELIMINATION_THRESHOLD,
+          );
+        }
+      },
+      error: (error: HttpErrorResponse) => this.logger.error('Error message :', error.message),
+    });
   }
 
   async launchDeleteUnitTreeModal() {
-    const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
-    listAUHoldingUnit.push({
-      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
-      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+    const listAUNonHoldingUnit = this.prepareListOfUACriteriaSearch();
+    listAUNonHoldingUnit.push({
+      criteria: ALL_ARCHIVE_UNIT_TYPES,
+      values: NON_TREE_UNIT_TYPES.map((unitType) => ({ value: unitType, id: unitType })),
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
       dataType: CriteriaDataType.STRING,
     });
-    this.archiveService
-      .getTotalTrackHitsByCriteria(listAUHoldingUnit)
-      .pipe(
-        tap((value: number) => {
-          if (value === this.selectedItemCount) {
-            this.launchBulkOperationWorkflow(
-              () =>
-                this.archiveUnitEliminationService.launchEliminationModal(
-                  this.listOfUACriteriaSearch,
-                  this.tenantIdentifier,
-                  this.currentPage,
-                  this.confirmSecondActionBigNumberOfResultsActionDialog,
-                  false,
-                ),
-              this.DEFAULT_ELIMINATION_THRESHOLD,
-            );
-          } else {
-            const dialogConfig = new MatDialogConfig();
-            dialogConfig.data = {
-              title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
-              icon: 'cancel',
-              message: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
-              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
-            };
 
-            this.dialog.open(AlertDialogComponent, dialogConfig);
-          }
-        }),
-      )
-      .subscribe();
+    this.archiveService.existsArchiveUnitByCriteria(listAUNonHoldingUnit).subscribe({
+      next: (hasNonTreeUnit: boolean) => {
+        if (hasNonTreeUnit) {
+          const dialogConfig = new MatDialogConfig();
+
+          dialogConfig.data = {
+            title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+            icon: 'cancel',
+            message: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+            cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+          };
+
+          this.dialog.open(AlertDialogComponent, dialogConfig);
+        } else {
+          this.launchBulkOperationWorkflow(
+            () =>
+              this.archiveUnitEliminationService.launchEliminationModal(
+                this.listOfUACriteriaSearch,
+                this.tenantIdentifier,
+                this.currentPage,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                false,
+              ),
+            this.DEFAULT_ELIMINATION_THRESHOLD,
+          );
+        }
+      },
+      error: (error: HttpErrorResponse) => this.logger.error('Error message :', error.message),
+    });
   }
 
   async launchExportDipModal() {
