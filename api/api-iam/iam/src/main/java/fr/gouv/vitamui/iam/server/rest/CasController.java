@@ -252,6 +252,37 @@ public class CasController {
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier);
     }
 
+    @GetMapping(value = RestApi.CAS_SUBROGATION_PERMISSION_PATH)
+    @Operation(
+        operationId = "cas_canImpersonate",
+        summary = "Tell whether a super user is allowed to impersonate a given identity right now"
+    )
+    @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
+    public boolean canImpersonate(
+        @RequestParam final String superUserId,
+        @RequestParam final String superUserEmail,
+        @RequestParam final String superUserCustomerId,
+        @RequestParam final String surrogateEmail,
+        @RequestParam final String surrogateCustomerId
+    ) throws InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(
+            superUserId,
+            superUserEmail,
+            superUserCustomerId,
+            surrogateEmail,
+            surrogateCustomerId
+        );
+        LOGGER.debug("canImpersonate: superUser {} ({}) -> surrogate {} ({})",
+            superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId);
+        return casService.canImpersonate(
+            superUserId,
+            superUserEmail,
+            superUserCustomerId,
+            surrogateEmail,
+            surrogateCustomerId
+        );
+    }
+
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH)
     @Operation(
         operationId = "getSubrogationsBySuperUserIdOrEmailAndCustomerId",

@@ -28,7 +28,6 @@ package fr.gouv.vitamui.cas.surrogation;
 
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Principal;
@@ -84,19 +83,11 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
         final var id = principal.getId();
         boolean canAuthenticate = false;
         try {
-            final var subrogations = casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(id, null, null);
-            canAuthenticate = subrogations
-                .stream()
-                .filter(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)
-                .anyMatch(
-                    s ->
-                        s.getSuperUser().equals(superUserEmail) &&
-                        s.getSuperUserCustomerId().equals(superUserCustomerId) &&
-                        s.getSurrogate().equals(surrogateEmail) &&
-                        s.getSurrogateCustomerId().equals(surrogateCustomerId)
-                );
+            canAuthenticate = Boolean.TRUE.equals(
+                casApi.canImpersonate(id, superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId)
+            );
         } catch (final VitamUIException e) {
-            LOGGER.error("Cannot retrieve subrogations: {}", id, e);
+            LOGGER.error("Cannot check the impersonation permission for: {}", id, e);
         }
         LOGGER.debug("{} can surrogate: {}? -> {}", id, surrogate, canAuthenticate);
         return canAuthenticate;

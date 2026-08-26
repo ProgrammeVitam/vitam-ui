@@ -15,8 +15,10 @@ import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.common.error.AuthenticationErrorKeys;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.dto.cas.ResolvedIdentityProviderDto;
@@ -28,6 +30,8 @@ import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
+import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
+import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.token.domain.Token;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
@@ -115,6 +119,9 @@ class CasServiceTest {
 
     @Mock
     private IamLogbookService iamLogbookService;
+
+    @Mock
+    private SubrogationService subrogationService;
 
     @Mock
     private PasswordValidator passwordValidator;
@@ -300,6 +307,77 @@ class CasServiceTest {
         );
 
         verify(tokenRepository).save(any());
+    }
+
+    @Test
+    void should_allow_impersonation_when_an_accepted_subrogation_matches() {
+        givenTheSuperUser(UserStatusEnum.ENABLED);
+        givenASubrogation(SubrogationStatusEnum.ACCEPTED, USER_EMAIL);
+
+        assertThat(
+            casService.canImpersonate("superId", "super@x.fr", CUSTOMER_ID, USER_EMAIL, CUSTOMER_ID)
+        ).isTrue();
+    }
+
+    @Test
+    void should_refuse_impersonation_when_the_subrogation_is_not_accepted_yet() {
+        givenTheSuperUser(UserStatusEnum.ENABLED);
+        givenASubrogation(SubrogationStatusEnum.CREATED, USER_EMAIL);
+
+        assertThat(
+            casService.canImpersonate("superId", "super@x.fr", CUSTOMER_ID, USER_EMAIL, CUSTOMER_ID)
+        ).isFalse();
+    }
+
+    @Test
+    void should_refuse_impersonation_of_somebody_else_than_the_accepted_surrogate() {
+        givenTheSuperUser(UserStatusEnum.ENABLED);
+        givenASubrogation(SubrogationStatusEnum.ACCEPTED, "somebody.else@x.fr");
+
+        assertThat(
+            casService.canImpersonate("superId", "super@x.fr", CUSTOMER_ID, USER_EMAIL, CUSTOMER_ID)
+        ).isFalse();
+    }
+
+    @Test
+    void should_refuse_impersonation_when_the_super_user_is_disabled() {
+        givenTheSuperUser(UserStatusEnum.DISABLED);
+
+        assertThat(
+            casService.canImpersonate("superId", "super@x.fr", CUSTOMER_ID, USER_EMAIL, CUSTOMER_ID)
+        ).isFalse();
+    }
+
+    @Test
+    void should_refuse_impersonation_when_the_super_user_is_unknown() {
+        when(userService.findUserById("superId")).thenReturn(null);
+
+        assertThat(
+            casService.canImpersonate("superId", "super@x.fr", CUSTOMER_ID, USER_EMAIL, CUSTOMER_ID)
+        ).isFalse();
+    }
+
+    private void givenTheSuperUser(final UserStatusEnum status) {
+        final UserDto superUser = new UserDto();
+        superUser.setId("superId");
+        superUser.setEmail("super@x.fr");
+        superUser.setCustomerId(CUSTOMER_ID);
+        superUser.setStatus(status);
+        when(userService.findUserById("superId")).thenReturn(superUser);
+    }
+
+    private void givenASubrogation(final SubrogationStatusEnum status, final String surrogate) {
+        final Subrogation entity = new Subrogation();
+        when(subrogationRepository.findBySuperUserAndSuperUserCustomerId("super@x.fr", CUSTOMER_ID)).thenReturn(
+            List.of(entity)
+        );
+        final SubrogationDto dto = new SubrogationDto();
+        dto.setStatus(status);
+        dto.setSuperUser("super@x.fr");
+        dto.setSuperUserCustomerId(CUSTOMER_ID);
+        dto.setSurrogate(surrogate);
+        dto.setSurrogateCustomerId(CUSTOMER_ID);
+        when(subrogationService.internalConvertFromEntityToDto(entity)).thenReturn(dto);
     }
 
     private void givenTheTokenLifetimes() {

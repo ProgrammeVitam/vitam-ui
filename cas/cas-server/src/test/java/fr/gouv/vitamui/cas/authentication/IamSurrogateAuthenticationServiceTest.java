@@ -61,35 +61,32 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testCanAuthenticateOk() {
         givenSubrogationInRequestContext();
 
-        when(casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(SU_ID), eq(null), eq(null))).thenReturn(
-            List.of(surrogation())
-        );
+        when(
+            casApi.canImpersonate(
+                eq(SU_ID),
+                eq(SU_EMAIL),
+                eq(SU_CUSTOMER_ID),
+                eq(SURROGATE),
+                eq(SURROGATE_CUSTOMER_ID)
+            )
+        ).thenReturn(true);
 
         assertTrue(service.canImpersonateInternal(SURROGATE, principal(), Optional.empty()));
     }
 
     @Test
-    public void testCanAuthenticateCannotSurrogate() {
+    public void testTheIamRefusalIsRespected() {
         givenSubrogationInRequestContext();
 
-        final var subrogation = surrogation();
-        subrogation.setSurrogate("anotherUser");
-        when(casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(SU_ID), eq(null), eq(null))).thenReturn(
-            List.of(subrogation)
-        );
-
-        assertFalse(service.canImpersonateInternal(SURROGATE, principal(), Optional.empty()));
-    }
-
-    @Test
-    public void testCanAuthenticateNotAccepted() {
-        givenSubrogationInRequestContext();
-
-        final var subrogation = surrogation();
-        subrogation.setStatus(SubrogationStatusEnum.CREATED);
-        when(casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(SU_ID), eq(null), eq(null))).thenReturn(
-            List.of(subrogation)
-        );
+        when(
+            casApi.canImpersonate(
+                eq(SU_ID),
+                eq(SU_EMAIL),
+                eq(SU_CUSTOMER_ID),
+                eq(SURROGATE),
+                eq(SURROGATE_CUSTOMER_ID)
+            )
+        ).thenReturn(false);
 
         assertFalse(service.canImpersonateInternal(SURROGATE, principal(), Optional.empty()));
     }
@@ -97,10 +94,6 @@ public final class IamSurrogateAuthenticationServiceTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAccounts() {
         givenSubrogationInRequestContext();
-
-        when(
-            casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(null), eq(SU_EMAIL), eq(SU_CUSTOMER_ID))
-        ).thenReturn(List.of(surrogation()));
 
         service.getImpersonationAccounts(SU_EMAIL);
     }

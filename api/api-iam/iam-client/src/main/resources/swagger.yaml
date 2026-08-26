@@ -2608,6 +2608,51 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/OrganizationCandidateDto"
                             example: null
+    /iam/v1/cas/subrogations/permission:
+        get:
+            tags:
+                - Cas
+            summary: Tell whether a super user is allowed to impersonate a given identity right now
+            operationId: cas_canImpersonate
+            parameters:
+                - name: superUserId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: superUserEmail
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: superUserCustomerId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: surrogateEmail
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+                - name: surrogateCustomerId
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: boolean
+                                example: null
     /iam/v1/cas/authentication:
         post:
             tags:

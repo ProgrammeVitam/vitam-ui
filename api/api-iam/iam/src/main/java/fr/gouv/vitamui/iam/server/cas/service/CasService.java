@@ -58,6 +58,7 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.AuthenticationRequestDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.common.dto.cas.OrganizationCandidateDto;
 import fr.gouv.vitamui.iam.common.error.AuthenticationErrorKeys;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
@@ -710,6 +711,30 @@ public class CasService {
         final Query query = new Query(Criteria.where(ID).is(user.getId()));
         final Update update = Update.update(LAST_CONNECTION, user.getLastConnection());
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
+    }
+
+    public boolean canImpersonate(
+        final String superUserId,
+        final String superUserEmail,
+        final String superUserCustomerId,
+        final String surrogateEmail,
+        final String surrogateCustomerId
+    ) {
+        final UserDto superUser = userService.findUserById(superUserId);
+        if (superUser == null || superUser.getStatus() != UserStatusEnum.ENABLED) {
+            return false;
+        }
+
+        return getSubrogationsBySuperUser(superUser.getEmail(), superUser.getCustomerId())
+            .stream()
+            .filter(subrogation -> subrogation.getStatus() == SubrogationStatusEnum.ACCEPTED)
+            .anyMatch(
+                subrogation ->
+                    subrogation.getSuperUser().equals(superUserEmail) &&
+                    subrogation.getSuperUserCustomerId().equals(superUserCustomerId) &&
+                    subrogation.getSurrogate().equals(surrogateEmail) &&
+                    subrogation.getSurrogateCustomerId().equals(surrogateCustomerId)
+            );
     }
 
     public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
