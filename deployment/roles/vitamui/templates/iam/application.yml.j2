@@ -22,6 +22,10 @@ spring:
 discussion:
   mongodb:
     uri: "mongodb://{{ mongodb.discussions.user }}:{{ mongodb.discussions.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.discussions.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+  scheduling:
+    purgeTransactionDiscussions:
+      enabled: {{ vitamui_struct.discussion.enabled | default('true') | lower }}
+      cronExpression: {{ vitamui_struct.discussion.cron_expression | default('0 0 * ? * *') }}
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
@@ -128,12 +132,6 @@ logbook:
     enabled: {{ vitamui_struct.logbook.enabled | default('true') | lower }}
     sendEventToVitamTasks:
       delay: {{ vitamui_struct.logbook.delay | default(60000) }}
-
-discussion:
-  scheduling:
-    purgeTransactionDiscussions:
-      enabled: {{ vitamui_struct.discussion.enabled | default('true') | lower }}
-      cronExpression: {{ vitamui_struct.discussion.cron_expression | default('0 0 * ? * *') }}
 
 customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml
 
