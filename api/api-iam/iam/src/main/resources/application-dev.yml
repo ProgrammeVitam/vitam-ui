@@ -24,6 +24,10 @@ spring:
 discussion:
   mongodb:
     uri: mongodb://mongod_dbuser_discussions:mongod_dbpwd_discussions@localhost:27018/discussions?connectTimeoutMS=2000
+  scheduling:
+    purgeTransactionDiscussions:
+      enabled: true
+      cronExpression: 0 */5 * ? * *
 
 server:
   host:
@@ -96,12 +100,6 @@ logbook:
     enabled: false
     sendEventToVitamTasks:
       delay: 10000
-
-discussion:
-  scheduling:
-    purgeTransactionDiscussions:
-      enabled: true
-      cronExpression: 0 */5 * ? * *
 
 vitam.tenant.init.mandatory: true
 
