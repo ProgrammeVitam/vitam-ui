@@ -155,19 +155,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
 
             FilingHoldingSchemeHandler.setCountRecursively(this.nestedDataSourceLeaves.data, facets);
 
-            const withKeyValueNodes = this.nestedDataSourceLeaves.data.filter((node) => node.unitType === UnitType.WITH_KEY_VALUE);
-            if (!isEmpty(withKeyValueNodes)) {
-              this.nestedDataSourceLeaves.data = FilingHoldingSchemeHandler.removeWithKeyValueNodeFromTree(
-                this.nestedDataSourceLeaves.data,
-                withKeyValueNodes,
-              );
-              FilingHoldingSchemeHandler.addKeyValueNodeFromTree(
-                this.nestedDataSourceLeaves.data,
-                withKeyValueNodes,
-                this.translateService.instant('COLLECT.FILING_SCHEMA.KEY_VALUE_NODE'),
-                withKeyValueNodes.length,
-              );
-            }
             this.addOrRemoveOrphansNode(numberOfOrphanNodes);
           }),
         )
