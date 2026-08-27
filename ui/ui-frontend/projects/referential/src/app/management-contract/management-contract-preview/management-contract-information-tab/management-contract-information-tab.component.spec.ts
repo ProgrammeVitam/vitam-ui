@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -46,7 +45,6 @@ import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, Manage
 import { InputStubComponent, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 
 describe('ManagementContractInformationTabComponent', () => {
@@ -117,8 +115,6 @@ describe('ManagementContractInformationTabComponent', () => {
       ],
       providers: [
         FormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },

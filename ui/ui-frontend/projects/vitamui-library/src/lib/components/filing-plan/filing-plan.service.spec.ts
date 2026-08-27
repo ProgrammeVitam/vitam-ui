@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { SnackBarService } from '../../../app/modules/components/snack-bar/snack-bar.service';
@@ -50,7 +50,6 @@ import { FilingPlanService } from './filing-plan.service';
 import { Node } from '../../models/node.interface';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { EMPTY, firstValueFrom, of } from 'rxjs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FilingPlanService', () => {
   let httpTestingController: HttpTestingController;
@@ -63,8 +62,6 @@ describe('FilingPlanService', () => {
       imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         FilingPlanService,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         { provide: AccessContractService, useValue: accessContractServiceMock },

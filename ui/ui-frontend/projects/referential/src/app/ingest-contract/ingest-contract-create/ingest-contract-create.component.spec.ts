@@ -35,8 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -57,7 +55,6 @@ import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
@@ -102,8 +99,6 @@ describe('IngestContractCreateComponent', () => {
       imports: [IngestContractCreateComponent, VitamUICommonTestModule, LoggerModule.forRoot(), MatButtonToggleModule],
       providers: [
         FormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },

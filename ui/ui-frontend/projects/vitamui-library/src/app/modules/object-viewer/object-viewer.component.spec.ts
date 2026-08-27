@@ -35,8 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateLoader } from '@ngx-translate/core';
@@ -103,8 +101,6 @@ describe('ObjectViewerComponent', () => {
         LayoutService,
         FavoriteEntryService,
         DatePipe,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
       ],

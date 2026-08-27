@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { InjectorModule } from 'vitamui-library';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { SearchCriteriaListService } from './search-criteria-list.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SearchCriteriaListService', () => {
   let service: SearchCriteriaListService;
@@ -77,8 +75,6 @@ describe('SearchCriteriaListService', () => {
           provide: ArchiveApiService,
           useValue: archiveApiServiceMock,
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(SearchCriteriaListService);

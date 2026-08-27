@@ -46,8 +46,6 @@ import { PagedResult } from '../../../app/modules/models/criteria/search-criteri
 import { BaseReclassificationDialogService } from './reclassification-dialog.service';
 import { VitamTenantConfigService } from '../../../app/modules/vitam-tenant-config.service';
 import { tenantConfigServiceMock } from '../../../../testing/src/tenant-config.service.mock';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 const fakeArchiveUnits = (count: number): ArchiveUnit[] => {
   return [...Array(count).keys()].map((n): ArchiveUnit => ({ '#id': `${n}`, '#unitups': [] }));
@@ -74,8 +72,6 @@ describe('ReclassificationDialogService', () => {
         BaseReclassificationDialogService,
         { provide: ReclassificationService, useValue: reclassificationServiceSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: VitamTenantConfigService,
