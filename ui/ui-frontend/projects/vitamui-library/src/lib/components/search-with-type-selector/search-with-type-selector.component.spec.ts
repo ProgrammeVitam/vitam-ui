@@ -42,7 +42,7 @@ import { MatMenuHarness } from '@angular/material/menu/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { input } from '../../../../testing/src';
+import { input } from '../../../../testing/src/helpers';
 
 const types: SearchType[] = [
   { label: 'Recherche approchante', value: 'approx' },

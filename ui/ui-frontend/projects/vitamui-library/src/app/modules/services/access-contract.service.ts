@@ -35,12 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable, Subject, switchMap } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { AccessContractApiService } from '../api/access-contract-api.service';
 import { AccessContract } from '../../../lib/models/access-contract.interface';
-import { SearchService } from '../vitamui-table';
+import { SearchService } from '../vitamui-table/search.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { ExternalParametersService } from '../externalParameters.service';
 import { ExternalParameters } from '../externalParameters.enum';

@@ -35,13 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
-import { Group, Subrogation } from '../models';
+import { Group } from '../models/group/group.interface';
+import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({

@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../auth.service';
-import { HistoryEvent } from '../../../models';
+import { HistoryEvent } from '../../../models/logbook/event.interface';
 import { LogbookService } from '../../logbook.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CollapseModule } from '../../../components/collapse/collapse.module';

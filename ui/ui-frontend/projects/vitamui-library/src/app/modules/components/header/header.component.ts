@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -44,7 +44,9 @@ import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
 import { GlobalEventService } from '../../global-event.service';
-import { Application, AuthUser, ThemeDataType } from '../../models';
+import { Application } from '../../models/application/application.interface';
+import { ThemeDataType } from '../../models/customer/theme/themeDataType.enum';
+import { AuthUser } from '../../models/user/auth-user.interface';
 import { Tenant } from '../../models/customer/tenant.interface';
 import { StartupService } from '../../startup.service';
 import { ThemeService } from '../../theme.service';

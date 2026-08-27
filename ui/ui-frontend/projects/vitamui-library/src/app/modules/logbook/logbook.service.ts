@@ -35,13 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { LogbookApiService } from '../api/logbook-api.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { Logger } from '../logger/logger';
-import { IEvent } from '../models';
+import { IEvent } from '../models/logbook/event.interface';
 import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 

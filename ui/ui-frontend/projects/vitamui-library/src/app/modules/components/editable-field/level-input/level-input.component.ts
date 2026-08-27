@@ -37,7 +37,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { extractSubLevel } from '../../../utils';
+import { extractSubLevel } from '../../../utils/level.util';
 
 export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

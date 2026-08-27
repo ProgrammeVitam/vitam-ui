@@ -56,7 +56,7 @@ import { DisplayFile } from './display-file/display-file.interface';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
-import { BytesPipe } from '../../pipes';
+import { BytesPipe } from '../../pipes/bytes.pipe';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 import { DisplayFileComponent } from './display-file/display-file.component';
 

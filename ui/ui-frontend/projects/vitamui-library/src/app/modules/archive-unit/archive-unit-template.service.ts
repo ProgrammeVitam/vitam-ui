@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Logger } from '../logger/logger';
-import { Schema, SchemaElement } from '../models';
-import { DisplayObject, DisplayRule } from '../object-viewer/models';
+import { SchemaElement } from '../models/schema/schema-element.model';
+import { Schema } from '../models/schema/schema.interface';
+import { DisplayObject } from '../object-viewer/models/display-object.model';
+import { DisplayRule } from '../object-viewer/models/display-rule.model';
 import { DisplayObjectHelperService } from '../object-viewer/services/display-object-helper.service';
 import { DisplayRuleHelperService } from '../object-viewer/services/display-rule-helper.service';
 import { SchemaElementToDisplayRuleService } from '../object-viewer/services/schema-element-to-display-rule.service';

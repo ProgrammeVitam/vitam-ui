@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { DisplayRule } from '../../object-viewer/models';
+import { DisplayRule } from '../../object-viewer/models/display-rule.model';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';
 import { TemplateService } from './template.service';
 

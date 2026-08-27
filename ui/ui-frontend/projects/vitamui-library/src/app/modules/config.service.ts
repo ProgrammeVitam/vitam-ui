@@ -38,11 +38,11 @@ import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { HttpBackend, HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy, inject } from '@angular/core';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 
 import { ApplicationApiService } from './api/application-api.service';
 import { Logger } from './logger/logger';
-import { AppConfiguration } from './models';
+import { AppConfiguration } from './models/app.configuration.interface';
 
 @Injectable({
   providedIn: 'root',

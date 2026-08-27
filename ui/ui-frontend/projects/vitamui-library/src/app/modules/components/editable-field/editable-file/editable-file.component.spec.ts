@@ -46,7 +46,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 import { WINDOW_LOCATION } from '../../../injection-tokens';
-import { newFile } from '../../../models';
+import { newFile } from '../../../models/customer/identity-provider.interface';
 import { VitamUIFieldErrorComponent } from '../../vitamui-field-error/vitamui-field-error.component';
 import { EditableFileComponent } from './editable-file.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

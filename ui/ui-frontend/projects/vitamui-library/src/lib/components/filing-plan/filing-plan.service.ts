@@ -35,11 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Injectable, LOCALE_ID, inject } from '@angular/core';
+import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, of, switchMap } from 'rxjs';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { AccessContractService, FileType, Unit, UnitType, VitamuiHttpHeaders } from '../../../app/modules';
+import { FileType } from '../../../app/modules/file-type.enum';
+import { UnitType } from '../../../app/modules/models/units/unit-type.enum';
+import { Unit } from '../../../app/modules/models/units/unit.interface';
+import { AccessContractService } from '../../../app/modules/services/access-contract.service';
+import { VitamuiHttpHeaders } from '../../../app/modules/vitamui-http-headers.enum';
 import { SearchUnitApiService } from '../../api/search-unit-api.service';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { Node } from '../../models/node.interface';

@@ -35,21 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { customTemplate } from '../archive-unit/archive-unit-template';
 import { BASE_URL } from '../injection-tokens';
 import { LoggerModule } from '../logger/logger.module';
-import { VitamuiMissingTranslationHandler } from '../missing-translation-handler';
 import { EmptyPipe } from '../pipes/empty.pipe';
 import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
 import { PrimitiveComponent } from './components/primitive/primitive.component';
-import { DisplayObjectService } from './models';
+import { DisplayObjectService } from './models/display-object-service';
 import { ObjectViewerComponent } from './object-viewer.component';
 import { DataStructureService } from './services/data-structure.service';
 import { DateDisplayService } from './services/date-display.service';
@@ -60,7 +59,8 @@ import { LayoutService } from './services/layout.service';
 import { PathStrategyDisplayObjectService } from './services/path-strategy-display-object.service';
 import { SchemaElementToDisplayRuleService } from './services/schema-element-to-display-rule.service';
 import { TypeService } from './services/type.service';
-import { Unit, UnitType } from '../models';
+import { UnitType } from '../models/units/unit-type.enum';
+import { Unit } from '../models/units/unit.interface';
 import { DescriptionLevel } from '../../../lib/models/description-level.enum';
 
 class FakeTranslateLoader implements TranslateLoader {

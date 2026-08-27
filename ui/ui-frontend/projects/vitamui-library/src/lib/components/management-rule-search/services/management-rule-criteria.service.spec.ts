@@ -37,20 +37,16 @@
 import { TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { Params } from '@angular/router';
+import { CriteriaOperator } from '../../../../app/modules/models/criteria/criteria.enums';
+import { ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_INHERITE_AT_LEAST_ONE } from '../../../../app/modules/models/criteria/search-criteria-configs';
 import {
-  CriteriaOperator,
   CriteriaSearchCriteria,
   SearchCriteriaTypeEnum,
   SearchCriteriaValue,
-  ORIGIN_HAS_AT_LEAST_ONE,
-  ORIGIN_INHERITE_AT_LEAST_ONE,
-} from '../../../../app/modules';
+} from '../../../../app/modules/models/criteria/search-criteria.interface';
 import { QueryParamsService } from '../../../../app/modules/url/query-params.service';
 import { SearchCriteriaService } from '../../../../app/modules/models/criteria/search-criteria.service';
-import {
-  MANAGEMENT_RULE_SHARED_DATA_SERVICE,
-  ManagementRuleSharedDataService,
-} from '../../../models/management-rule-shared-data-service.interface';
+import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../../models/management-rule-shared-data-service.interface';
 import { ManagementRuleCriteriaService } from './management-rule-criteria.service';
 
 describe('ManagementRuleCriteriaService', () => {

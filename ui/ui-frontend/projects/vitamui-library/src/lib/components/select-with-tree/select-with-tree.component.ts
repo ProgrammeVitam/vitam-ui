@@ -41,16 +41,17 @@ import {
   ChangeDetectorRef,
   Component,
   forwardRef,
+  inject,
   Injector,
   Input,
   OnDestroy,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { ItemFlatNode, ItemNode, SearchBarComponent } from '../../../app/modules';
+import { ItemFlatNode, ItemNode } from '../../../app/modules/components/autocomplete/utils/item-node.interface';
+import { SearchBarComponent } from '../../../app/modules/components/search-bar/search-bar.component';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';

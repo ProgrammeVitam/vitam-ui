@@ -36,7 +36,11 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { SearchCriteriaAddAction, SearchCriteriaRemoveAction, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria';
+import {
+  SearchCriteriaAddAction,
+  SearchCriteriaRemoveAction,
+  SearchCriteriaTypeEnum,
+} from '../../../app/modules/models/criteria/search-criteria.interface';
 import { ManagementRuleSearchHelper } from '../management-rule-search/utils/management-rule-search.helper';
 import { TranslatePipe } from '@ngx-translate/core';
 

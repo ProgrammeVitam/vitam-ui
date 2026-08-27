@@ -37,7 +37,7 @@
 import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { EditableFieldComponent } from '../editable-field';
+import { EditableFieldComponent } from '../editable-field/editable-field.component';
 
 export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,

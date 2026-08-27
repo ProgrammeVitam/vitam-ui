@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { VitamUICommonTestModule } from '../../../../../testing/src';
+import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-common-test.module';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
 

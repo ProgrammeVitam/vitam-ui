@@ -40,7 +40,7 @@ import { ResultFacet } from '../criteria/search-criteria.interface';
 import { Unit } from '../units/unit.interface';
 import { FilingHoldingSchemeNode, MatchingNodesNumbers } from './node.interface';
 import { copyNodeWithoutChildren } from './node.utils';
-import { UnitType } from '../units';
+import { UnitType } from '../units/unit-type.enum';
 import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export const ORPHANS_NODE_ID = 'ORPHANS_NODE';

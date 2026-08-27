@@ -38,7 +38,7 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
-import { Application } from '../../../models';
+import { Application } from '../../../models/application/application.interface';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';

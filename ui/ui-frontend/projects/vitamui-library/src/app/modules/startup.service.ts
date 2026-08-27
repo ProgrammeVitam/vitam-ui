@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
@@ -46,7 +46,10 @@ import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AttachmentType, AuthUser, UserInfo } from './models';
+import { AppConfiguration } from './models/app.configuration.interface';
+import { AttachmentType } from './models/customer/theme/attachmentType.enum';
+import { AuthUser } from './models/user/auth-user.interface';
+import { UserInfo } from './models/user/user-info.interface';
 import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;

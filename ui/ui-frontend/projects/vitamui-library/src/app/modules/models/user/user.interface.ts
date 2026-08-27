@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Address } from '../customer';
+import { Address } from '../customer/address.interface';
 import { Id } from '../id.interface';
 import { Analytics } from './analytics.interface';
 

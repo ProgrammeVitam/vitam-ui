@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
-import { DisplayObject, DisplayRule } from '../models';
+import { inject, Injectable } from '@angular/core';
+import { DisplayObject } from '../models/display-object.model';
+import { DisplayRule } from '../models/display-rule.model';
 import { ComponentType, DisplayObjectType } from '../types';
 import { DataStructureService } from './data-structure.service';
 import { DisplayRuleHelperService } from './display-rule-helper.service';

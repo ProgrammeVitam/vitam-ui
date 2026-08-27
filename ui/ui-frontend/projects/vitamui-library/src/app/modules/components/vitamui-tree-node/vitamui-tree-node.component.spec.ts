@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FilingHoldingSchemeNode, UnitType } from '../../models';
+import { FilingHoldingSchemeNode } from '../../models/nodes/node.interface';
+import { UnitType } from '../../models/units/unit-type.enum';
 import { VitamuiTreeNodeComponent } from './vitamui-tree-node.component';
 
 describe('VitamuiTreeNodeComponent', () => {

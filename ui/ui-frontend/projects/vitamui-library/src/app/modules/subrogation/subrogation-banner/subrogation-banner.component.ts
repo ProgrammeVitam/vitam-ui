@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '../../auth.service';
-import { AuthUser, Subrogation } from '../../models';
+import { Subrogation } from '../../models/subrogation/subrogation.interface';
+import { AuthUser } from '../../models/user/auth-user.interface';
 import { SubrogationService } from '../subrogation.service';
 
 @Component({

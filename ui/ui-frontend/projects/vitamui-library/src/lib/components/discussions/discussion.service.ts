@@ -36,10 +36,13 @@
  */
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, concat, merge, firstValueFrom, map, Observable, scan } from 'rxjs';
+import { concat, firstValueFrom, map, merge, Observable, scan, Subject } from 'rxjs';
 import { EventSource } from 'eventsource';
 import { OAuthStorage } from 'angular-oauth2-oidc';
-import { AuthService, BASE_URL, TenantSelectionService, VitamuiHttpHeaders } from '../../../app/modules';
+import { AuthService } from '../../../app/modules/auth.service';
+import { BASE_URL } from '../../../app/modules/injection-tokens';
+import { TenantSelectionService } from '../../../app/modules/tenant-selection.service';
+import { VitamuiHttpHeaders } from '../../../app/modules/vitamui-http-headers.enum';
 import { ConfigService } from '../../../app/modules/config.service';
 
 export interface DiscussionDto {

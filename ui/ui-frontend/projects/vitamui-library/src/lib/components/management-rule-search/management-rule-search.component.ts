@@ -40,21 +40,23 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angul
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 
+import { DatepickerComponent } from '../../../app/modules/components/datepicker/datepicker.component';
+import { EditableFieldModule } from '../../../app/modules/components/editable-field/editable-field.module';
+import { CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
 import {
-  CriteriaOperator,
-  DatepickerComponent,
-  EditableFieldModule,
   ELIMINATION_TECHNICAL_ID,
   INTERVAL_DATE_ACCESS,
   ORIGIN_HAS_AT_LEAST_ONE,
   ORIGIN_INHERITE_AT_LEAST_ONE,
   ORIGIN_WAITING_RECALCULATE,
   RULE_END_DATE,
+} from '../../../app/modules/models/criteria/search-criteria-configs';
+import {
   SearchCriteriaAddAction,
   SearchCriteriaRemoveAction,
   SearchCriteriaTypeEnum,
-  StartupService,
-} from '../../../app/modules';
+} from '../../../app/modules/models/criteria/search-criteria.interface';
+import { StartupService } from '../../../app/modules/startup.service';
 import {
   MANAGEMENT_RULE_SHARED_DATA_SERVICE,
   ManagementRuleSharedDataService,

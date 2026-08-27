@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { AppConfiguration } from './models/app.configuration.interface';
-import { convertToDarkColor, convertToLightColor, setLuminosity } from './utils/colors.util';
+import { convertToDarkColor, convertToLightColor, getColorFromMaps, hexToRgb, hexToRgbString, setLuminosity } from './utils/colors.util';
 import { ThemeDataType } from './models/customer/theme/themeDataType.enum';
 import { AuthUser } from './models/user/auth-user.interface';
 import { GraphicIdentity } from './models/customer/graphic-identity.interface';
 import { Color } from './models/customer/theme/color.interface';
-import { getColorFromMaps, hexToRgb, hexToRgbString, ThemeColorType } from './utils';
+import { ThemeColorType } from './utils/theme-color-type.enum';
 
 export interface Theme {
   colors: { [colorId: string]: string };

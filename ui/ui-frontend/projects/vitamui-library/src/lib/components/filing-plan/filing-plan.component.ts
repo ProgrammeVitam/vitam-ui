@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Injector, Input, OnInit, inject } from '@angular/core';
+import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
 
 import { Node } from '../../models/node.interface';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
-import { Unit } from '../../../app/modules';
+import { Unit } from '../../../app/modules/models/units/unit.interface';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {

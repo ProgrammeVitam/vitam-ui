@@ -38,9 +38,10 @@
 import { TestBed } from '@angular/core/testing';
 import { SchemaService } from './schema.service';
 import { of } from 'rxjs';
-import { Schema, SchemaElement } from '../models';
+import { SchemaElement } from '../models/schema/schema-element.model';
+import { Schema } from '../models/schema/schema.interface';
 import { SchemaApiService } from '../api/schema-api.service';
-import { ItemNode } from '../components/autocomplete';
+import { ItemNode } from '../components/autocomplete/utils/item-node.interface';
 
 describe('SchemaService', () => {
   const schema: Schema[] = [

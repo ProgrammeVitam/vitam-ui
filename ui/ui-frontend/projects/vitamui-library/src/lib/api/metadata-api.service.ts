@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BASE_URL } from '../../app/modules';
+import { BASE_URL } from '../../app/modules/injection-tokens';
 
 import { Metadata } from '../models/metadata.interface';
 

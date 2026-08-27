@@ -42,7 +42,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DisplayObjectService } from '../object-viewer/models';
+import { DisplayObjectService } from '../object-viewer/models/display-object-service';
 import { PathStrategyDisplayObjectService } from '../object-viewer/services/path-strategy-display-object.service';
 import { PipesModule } from '../pipes/pipes.module';
 import { GroupEditorComponent } from './components/group-editor/group-editor.component';

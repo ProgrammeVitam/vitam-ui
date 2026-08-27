@@ -39,17 +39,11 @@ import { ReclassificationDialogComponent } from './reclassification-dialog.compo
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  CriteriaDataType,
-  CriteriaOperator,
-  LoggerModule,
-  PagedResult,
-  SearchCriteriaDto,
-  SearchCriteriaTypeEnum,
-  WINDOW_LOCATION,
-} from '../../../app/modules';
+import { ConfirmDialogService } from '../../../app/modules/components/common-confirm-dialog/confirm-dialog.service';
+import { BASE_URL, WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
+import { LoggerModule } from '../../../app/modules/logger/logger.module';
+import { CriteriaDataType, CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
+import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
