@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
@@ -47,7 +46,6 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
 import { SsoTabComponent } from './sso-tab/sso-tab.component';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
 import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-information-tab',
@@ -129,8 +127,6 @@ describe('CustomerPreviewComponent', () => {
         { provide: StartupService, useValue: startupServiceStub },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(CustomerPreviewComponent, {

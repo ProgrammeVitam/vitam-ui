@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
@@ -48,7 +47,6 @@ import { LoggerModule } from '../logger/logger.module';
 import { environment } from './../../../environments/environment';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
 import { SubrogationService } from './subrogation.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SubrogationService', () => {
   beforeEach(() => {
@@ -65,8 +63,6 @@ describe('SubrogationService', () => {
             url: 'subrogations/customers/customerId',
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: 'fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },

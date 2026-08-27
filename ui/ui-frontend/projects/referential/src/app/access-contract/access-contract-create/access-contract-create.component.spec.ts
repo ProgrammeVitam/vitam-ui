@@ -56,8 +56,6 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -136,8 +134,6 @@ describe('AccessContractCreateComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: AgencyService, useValue: agencyServiceSpy },

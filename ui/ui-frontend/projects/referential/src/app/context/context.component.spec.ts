@@ -41,12 +41,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Application, ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import { ContextComponent } from './context.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ContextListComponent } from './context-list/context-list.component';
 
 @Component({
@@ -87,8 +84,6 @@ describe('ContextComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY, paramMap: EMPTY, snapshot: { data: { appId: 'App Id' } } } },
         { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideProvider(ApplicationService, { useValue: applicationServiceMock })

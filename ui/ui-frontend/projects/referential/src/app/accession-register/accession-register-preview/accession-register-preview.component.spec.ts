@@ -57,8 +57,6 @@ import {
 import { environment } from '../../../environments/environment.prod';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('AccessionRegisterPreviewComponent', () => {
   let component: AccessionRegisterPreviewComponent;
@@ -100,8 +98,6 @@ describe('AccessionRegisterPreviewComponent', () => {
       ],
       providers: [
         { provide: AccessionRegistersService, useValue: AccessionRegistersServiceMock },
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },

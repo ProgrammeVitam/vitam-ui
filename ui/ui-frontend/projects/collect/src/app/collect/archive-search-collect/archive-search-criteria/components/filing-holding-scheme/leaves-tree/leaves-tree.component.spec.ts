@@ -51,7 +51,6 @@ import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 export function newNode(
   currentId: string,
@@ -113,7 +112,6 @@ describe('LeavesTreeComponent', () => {
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
         { provide: ArchiveFacetsService, useValue: archiveFacetsServicStube },
         { provide: ConfigurationsApiService, useValue: configurationsApiServiceStube },
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

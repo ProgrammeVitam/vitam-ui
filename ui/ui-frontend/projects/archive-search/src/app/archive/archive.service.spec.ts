@@ -37,8 +37,6 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ArchiveService } from './archive.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { BASE_URL, LoggerModule, Unit } from 'vitamui-library';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { vi } from 'vitest';
@@ -54,8 +52,6 @@ describe('ArchiveService', () => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ArchiveApiService, useValue: archiveApiService },
       ],

@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -56,7 +55,6 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { UnlockRulesInheritanceComponent } from './unlock-rules-inheritance.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const accessContract = 'AccessContract';
 
@@ -197,8 +195,6 @@ describe('UnlockRulesInheritanceComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, UnlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },

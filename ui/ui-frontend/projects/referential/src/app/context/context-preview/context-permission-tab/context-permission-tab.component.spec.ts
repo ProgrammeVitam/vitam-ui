@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -46,7 +45,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ContextService } from '../../context.service';
 import { ContextPermissionTabComponent } from './context-permission-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const permissions: ContextPermission[] = [
   {
@@ -165,8 +163,6 @@ describe('ContextPermissionTabComponent', () => {
       ],
       providers: [
         FormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

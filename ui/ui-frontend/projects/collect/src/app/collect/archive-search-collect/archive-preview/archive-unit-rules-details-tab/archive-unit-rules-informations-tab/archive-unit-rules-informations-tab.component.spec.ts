@@ -34,8 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -128,12 +126,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         ArchiveUnitRulesInformationsTabComponent,
         DateTimeStubPipe,
       ],
-      providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideI18n(),
-      ],
+      providers: [{ provide: BASE_URL, useValue: '/fake-api' }, provideI18n()],
     }).compileComponents();
   });
 

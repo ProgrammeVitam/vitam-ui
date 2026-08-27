@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -50,7 +49,6 @@ import { environment } from '../../../../../../archive-search/src/environments/e
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
 import { TransactionListComponent } from './transaction-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('TransactionListComponent', () => {
   let component: TransactionListComponent;
@@ -140,8 +138,6 @@ describe('TransactionListComponent', () => {
             },
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },

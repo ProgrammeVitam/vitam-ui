@@ -40,8 +40,6 @@ import { of } from 'rxjs';
 import { AccessContractService, BASE_URL, ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 import { SecurisationCheckTabComponent } from './securisation-check-tab.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SecurisationCheckTabComponent', () => {
   let component: SecurisationCheckTabComponent;
@@ -109,8 +107,6 @@ describe('SecurisationCheckTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SecurisationCheckTabComponent],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: SecurisationService, useValue: {} },

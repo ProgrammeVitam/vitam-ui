@@ -46,8 +46,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-agency-preview',
@@ -102,8 +100,6 @@ describe('AgencyComponent', () => {
           },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

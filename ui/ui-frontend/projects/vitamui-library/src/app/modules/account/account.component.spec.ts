@@ -49,8 +49,6 @@ import { BASE_URL, ENVIRONMENT, WINDOW_LOCATION } from '../injection-tokens';
 import type { Account } from '../models/account/account.interface';
 import { AccountComponent } from './account.component';
 import { AccountService } from './account.service';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',
@@ -88,8 +86,6 @@ describe('AccountComponent', () => {
         { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment },
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: location },
       ],

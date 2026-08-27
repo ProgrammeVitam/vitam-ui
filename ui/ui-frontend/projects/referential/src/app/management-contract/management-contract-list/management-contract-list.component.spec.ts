@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +46,6 @@ import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchServi
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractListComponent } from './management-contract-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractListComponent', () => {
   let component: ManagementContractListComponent;
@@ -91,8 +89,6 @@ describe('ManagementContractListComponent', () => {
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
         { provide: SearchService, useValue: searchServiceeMock },

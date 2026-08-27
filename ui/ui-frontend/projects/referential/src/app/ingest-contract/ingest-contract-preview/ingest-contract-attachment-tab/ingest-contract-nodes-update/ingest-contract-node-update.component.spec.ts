@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,7 +43,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -92,8 +90,6 @@ describe.skip('IngestContractNodeUpdateComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },

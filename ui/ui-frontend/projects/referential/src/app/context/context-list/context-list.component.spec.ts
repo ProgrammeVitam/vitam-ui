@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,7 +45,6 @@ import { AuthService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../context.service';
 import { ContextListComponent } from './context-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ContextListComponent', () => {
   let component: ContextListComponent;
@@ -83,8 +81,6 @@ describe('ContextListComponent', () => {
         ContextListComponent,
       ],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

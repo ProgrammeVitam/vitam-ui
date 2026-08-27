@@ -60,8 +60,6 @@ import {
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
@@ -115,8 +113,6 @@ describe('ArchivePreviewComponent', () => {
         MockUnitI18nPipe,
       ],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
