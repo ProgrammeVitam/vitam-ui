@@ -86,12 +86,10 @@ describe('AppComponent', () => {
           },
         },
         { provide: ENVIRONMENT, useValue: environment },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideTemplate(AppComponent, '<div></div>')

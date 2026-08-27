@@ -62,11 +62,11 @@ describe('AccessContractListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [VitamUICommonTestModule, MatProgressSpinnerModule, AccessContractListComponent],
       providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

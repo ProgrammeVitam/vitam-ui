@@ -65,12 +65,10 @@ describe('ArchiveUnitViewerService', () => {
         DisplayObjectHelperService,
         DisplayRuleHelperService,
         SchemaElementToDisplayRuleService,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SchemaService, useClass: MockSchemaService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
     service = TestBed.inject(ArchiveUnitViewerService);

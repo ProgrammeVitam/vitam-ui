@@ -272,7 +272,7 @@ describe('CustomerCreateComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
@@ -285,8 +285,6 @@ describe('CustomerCreateComponent', () => {
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
         { provide: MatDialog, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(CustomerCreateComponent, {

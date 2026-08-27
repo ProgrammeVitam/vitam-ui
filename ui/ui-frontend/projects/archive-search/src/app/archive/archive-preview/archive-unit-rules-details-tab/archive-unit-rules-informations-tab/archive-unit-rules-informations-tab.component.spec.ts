@@ -129,12 +129,10 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         DateTimeStubPipe,
       ],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideI18n(),
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

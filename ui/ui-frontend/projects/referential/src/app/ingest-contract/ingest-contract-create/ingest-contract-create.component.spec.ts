@@ -102,7 +102,7 @@ describe('IngestContractCreateComponent', () => {
       imports: [IngestContractCreateComponent, VitamUICommonTestModule, LoggerModule.forRoot(), MatButtonToggleModule],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: {} },
@@ -115,8 +115,6 @@ describe('IngestContractCreateComponent', () => {
         { provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: AccessContractService, useValue: accessContractServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

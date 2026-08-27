@@ -50,6 +50,8 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditComponent } from './audit.component';
 import { DatePipe } from '@angular/common';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AuditComponent', () => {
   let component: AuditComponent;
@@ -84,6 +86,8 @@ describe('AuditComponent', () => {
       ],
       providers: [
         provideNativeDateAdapter(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/pastis-api' },
         DatePipe,
         FormBuilder,

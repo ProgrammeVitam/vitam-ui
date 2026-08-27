@@ -102,7 +102,7 @@ describe('DipRequestCreateComponent', () => {
             selectedItemCountKnown: true,
           },
         },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
@@ -110,8 +110,6 @@ describe('DipRequestCreateComponent', () => {
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: StartupService, useValue: startupServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

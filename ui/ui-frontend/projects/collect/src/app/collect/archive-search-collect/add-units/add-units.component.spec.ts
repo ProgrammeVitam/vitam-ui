@@ -97,7 +97,7 @@ describe('AddUnitsComponent', () => {
       imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), AddUnitsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -108,8 +108,6 @@ describe('AddUnitsComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         DecimalPipe,
         BytesPipe,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

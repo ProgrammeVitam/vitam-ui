@@ -70,9 +70,9 @@ describe('PreservationScenariosApiService', () => {
     TestBed.configureTestingModule({
       providers: [
         PreservationScenariosApiService,
-        { provide: BASE_URL, useValue: baseUrl },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: baseUrl },
       ],
     });
 

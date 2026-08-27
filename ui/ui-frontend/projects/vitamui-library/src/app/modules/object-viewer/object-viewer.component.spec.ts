@@ -103,12 +103,10 @@ describe('ObjectViewerComponent', () => {
         LayoutService,
         FavoriteEntryService,
         DatePipe,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(ObjectViewerComponent, {

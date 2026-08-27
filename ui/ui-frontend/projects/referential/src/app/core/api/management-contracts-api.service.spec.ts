@@ -74,14 +74,7 @@ describe('ManagementContractsApiService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(), { provide: BASE_URL, useValue: '' }],
     }).compileComponents();
   });
 

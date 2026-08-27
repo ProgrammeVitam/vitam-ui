@@ -76,13 +76,11 @@ describe('OwnerPreviewComponent', () => {
       ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

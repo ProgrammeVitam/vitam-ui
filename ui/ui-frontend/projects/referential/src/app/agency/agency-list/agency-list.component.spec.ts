@@ -58,15 +58,13 @@ describe('AgencyListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LoggerModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: AuthService, useValue: authServiceMock },
         { provide: MatDialog, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
 
