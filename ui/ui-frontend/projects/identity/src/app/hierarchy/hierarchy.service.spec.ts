@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, SnackBarService } from 'vitamui-library';
+import { SnackBarService } from 'vitamui-library';
 import { TestBed } from '@angular/core/testing';
 
 import { HierarchyService } from './hierarchy.service';

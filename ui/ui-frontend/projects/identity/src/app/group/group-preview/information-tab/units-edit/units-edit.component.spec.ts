@@ -40,7 +40,7 @@ import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { UnitsEditComponent } from './units-edit.component';

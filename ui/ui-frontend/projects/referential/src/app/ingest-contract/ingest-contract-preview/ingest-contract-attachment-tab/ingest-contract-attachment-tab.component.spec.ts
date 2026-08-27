@@ -38,14 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  IngestContract,
-  LoggerModule,
-  SearchUnitApiService,
-} from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, IngestContract, LoggerModule, SearchUnitApiService } from 'vitamui-library';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
 
 describe('IngestContractAttachmentTabComponent', () => {

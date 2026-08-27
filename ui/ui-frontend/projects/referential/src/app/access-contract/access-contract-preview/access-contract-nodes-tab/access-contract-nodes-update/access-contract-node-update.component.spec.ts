@@ -37,16 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  AccessContractService,
-  BASE_URL,
-  Customer,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  OtpState,
-  SnackBarService,
-} from 'vitamui-library';
+import { AccessContractService, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../../../../environments/environment';
 

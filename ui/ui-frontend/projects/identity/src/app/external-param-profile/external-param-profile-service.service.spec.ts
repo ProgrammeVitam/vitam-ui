@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, LoggerModule, SnackBarService } from 'vitamui-library';
+import { LoggerModule, SnackBarService } from 'vitamui-library';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
 describe('ExternalParamProfileService', () => {

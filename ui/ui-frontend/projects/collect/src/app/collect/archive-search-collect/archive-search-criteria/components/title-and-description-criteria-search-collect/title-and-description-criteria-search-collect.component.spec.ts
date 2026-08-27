@@ -38,8 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BASE_URL, InjectorModule, LoggerModule } from 'vitamui-library';
+import { InjectorModule, LoggerModule } from 'vitamui-library';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect.component';
@@ -57,13 +56,7 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        TitleAndDescriptionCriteriaSearchCollectComponent,
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), TitleAndDescriptionCriteriaSearchCollectComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [FormBuilder, { provide: MatDialogRef, useValue: matDialogRefSpy }, { provide: MatDialog, useValue: matDialogSpy }],
     }).compileComponents();

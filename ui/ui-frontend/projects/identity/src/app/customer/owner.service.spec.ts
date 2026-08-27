@@ -38,7 +38,7 @@ import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
-import { BASE_URL, Owner, SnackBarService } from 'vitamui-library';
+import { Owner, SnackBarService } from 'vitamui-library';
 import { OwnerService } from './owner.service';
 
 const expectedOwner: Owner = {

@@ -41,7 +41,7 @@ import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-comm
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
-import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar.component';
 
 describe('SubrogationSnackBarComponent', () => {
@@ -53,7 +53,6 @@ describe('SubrogationSnackBarComponent', () => {
       imports: [VitamUICommonTestModule, SubrogationSnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
-        { provide: BASE_URL, useValue: '/fakeapi' },
         {
           provide: MatSnackBarRef,
           useValue: {

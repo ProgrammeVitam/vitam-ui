@@ -37,7 +37,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ArchiveService } from './archive.service';
-import { BASE_URL, LoggerModule, Unit } from 'vitamui-library';
+import { LoggerModule, Unit } from 'vitamui-library';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { vi } from 'vitest';
 import { of } from 'rxjs';

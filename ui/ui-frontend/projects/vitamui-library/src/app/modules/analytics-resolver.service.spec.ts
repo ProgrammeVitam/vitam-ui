@@ -40,7 +40,7 @@ import { UserApiService } from './api/user-api.service';
 
 import { Router, RouterModule } from '@angular/router';
 import { AnalyticsResolver } from './analytics-resolver.service';
-import { BASE_URL, WINDOW_LOCATION } from './injection-tokens';
+import { WINDOW_LOCATION } from './injection-tokens';
 import { LoggerModule } from './logger/logger.module';
 
 const expectedUser = { id: 10 };

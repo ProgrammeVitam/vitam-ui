@@ -39,9 +39,8 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ContextService } from '../context.service';
 import { ContextListComponent } from './context-list.component';
@@ -77,11 +76,9 @@ describe('ContextListComponent', () => {
         ReactiveFormsModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         ContextListComponent,
       ],
       providers: [
-        { provide: BASE_URL, useValue: '' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ContextService, useValue: contextServiceMock },

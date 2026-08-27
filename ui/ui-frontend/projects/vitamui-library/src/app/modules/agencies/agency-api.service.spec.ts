@@ -38,7 +38,7 @@ import { TestBed } from '@angular/core/testing';
 import { AgencyApiService } from './agency-api.service';
 import { InjectorModule } from '../helper/injector.module';
 import { LoggerModule } from '../logger/logger.module';
-import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
+import { ENVIRONMENT } from '../injection-tokens';
 import { environment } from '../../../environments/environment';
 
 describe('AgencyApiService', () => {

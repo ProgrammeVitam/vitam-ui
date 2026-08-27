@@ -38,9 +38,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY } from 'rxjs';
-import { BASE_URL, Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ContextService } from '../../context.service';
@@ -153,14 +152,7 @@ describe('ContextPermissionTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        ContextPermissionTabComponent,
-      ],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), ContextPermissionTabComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
