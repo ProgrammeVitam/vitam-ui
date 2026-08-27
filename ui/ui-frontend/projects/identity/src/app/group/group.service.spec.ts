@@ -57,12 +57,9 @@ describe('GroupService', () => {
       providers: [
         GroupService,
         { provide: SnackBarService, useValue: snackBarSpy },
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     });
 

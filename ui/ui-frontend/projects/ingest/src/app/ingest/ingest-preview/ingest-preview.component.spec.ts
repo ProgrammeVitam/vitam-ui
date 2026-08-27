@@ -77,11 +77,9 @@ describe('IngestPreviewComponent test:', () => {
             logbookOperationsReloaded: of([logbookOperation]),
           },
         },
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
   });

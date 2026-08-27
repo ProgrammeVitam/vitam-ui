@@ -115,7 +115,7 @@ describe('ArchivePreviewComponent', () => {
         MockUnitI18nPipe,
       ],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -128,8 +128,6 @@ describe('ArchivePreviewComponent', () => {
             setTenantIdentifier: () => {},
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideProvider(ArchiveService, { useValue: archiveServiceMock })

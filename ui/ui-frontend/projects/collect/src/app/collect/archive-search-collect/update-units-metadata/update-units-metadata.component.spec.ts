@@ -72,15 +72,13 @@ describe('UpdateUaMetadataComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UpdateUnitsMetadataComponent],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

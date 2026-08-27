@@ -210,8 +210,8 @@ describe('AddManagementRulesComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, AddManagementRulesComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(),
         provideHttpClientTesting(),
+        provideHttpClient(withInterceptorsFromDi()),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
@@ -220,8 +220,6 @@ describe('AddManagementRulesComponent', () => {
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

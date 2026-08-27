@@ -117,15 +117,13 @@ describe('ManagementContractInformationTabComponent', () => {
       ],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

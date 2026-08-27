@@ -109,7 +109,7 @@ describe('SecurisationCheckTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SecurisationCheckTabComponent],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
@@ -121,8 +121,6 @@ describe('SecurisationCheckTabComponent', () => {
           },
         },
         { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

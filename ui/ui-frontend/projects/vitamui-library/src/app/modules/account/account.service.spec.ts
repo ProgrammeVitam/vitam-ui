@@ -49,10 +49,10 @@ describe('AccountService', () => {
       imports: [],
       providers: [
         AccountService,
-        { provide: BASE_URL, useValue: {} },
-        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: {} },
+        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
       ],
     });
   });

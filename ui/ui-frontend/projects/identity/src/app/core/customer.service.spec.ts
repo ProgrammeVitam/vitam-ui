@@ -101,13 +101,11 @@ describe('CustomerService', () => {
       imports: [LoggerModule.forRoot()],
       providers: [
         CustomerService,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
 

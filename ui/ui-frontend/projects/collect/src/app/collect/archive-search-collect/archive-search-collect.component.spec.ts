@@ -172,13 +172,11 @@ describe('ArchiveSearchCollectComponent', () => {
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideProvider(ConfigService, { useValue: { config$: of({ COLLECT: { OFFLINE_SERVICES: [] } }) } })

@@ -75,12 +75,10 @@ describe('ApplicationService', () => {
         { provide: AuthService, useValue: authStubService },
         { provide: LOCALE_ID, useValue: 'fr' },
         { provide: StartupService, useValue: startupServiceStub },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfigService, useValue: configServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
 
