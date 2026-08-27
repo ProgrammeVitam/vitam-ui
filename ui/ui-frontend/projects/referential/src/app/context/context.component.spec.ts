@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { Application, ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -47,6 +47,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import { ContextComponent } from './context.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ContextListComponent } from './context-list/context-list.component';
 
 @Component({
   selector: 'app-agency-preview',
@@ -58,13 +59,6 @@ class ContextPreviewStub {
   accessContract: any;
 }
 
-@Component({
-  selector: 'app-agency-list',
-  template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
-})
-class ContextListStub {}
-
 describe('ContextComponent', () => {
   let component: ContextComponent;
   let fixture: ComponentFixture<ContextComponent>;
@@ -72,6 +66,10 @@ describe('ContextComponent', () => {
   const applicationServiceMock = {
     applications: new Array<any>(),
     isApplicationExternalIdentifierEnabled: () => of(true),
+    getAppById: () =>
+      of({
+        name: 'App name',
+      } satisfies Partial<Application>),
   };
 
   beforeEach(async () => {
@@ -84,18 +82,20 @@ describe('ContextComponent', () => {
         LoggerModule.forRoot(),
         MatSidenavModule,
         MatDialogModule,
-        ContextComponent,
-        ContextListStub,
         ContextPreviewStub,
       ],
       providers: [
-        { provide: ApplicationService, useValue: applicationServiceMock },
-        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY } },
+        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY, paramMap: EMPTY, snapshot: { data: { appId: 'App Id' } } } },
         { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ApplicationService, { useValue: applicationServiceMock })
+      .overrideComponent(ContextListComponent, {
+        set: { template: '' },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

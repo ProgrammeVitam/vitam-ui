@@ -35,61 +35,72 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component, Input, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTabsModule } from '@angular/material/tabs';
 import { Subject } from 'rxjs';
 import type { Customer } from 'vitamui-library';
-import { ENVIRONMENT, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
-import { VitamUICommonTestModule } from 'vitamui-library/testing';
+import { ENVIRONMENT, OperationHistoryTabComponent, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { environment } from './../../../environments/environment';
 import { CustomerPreviewComponent } from './customer-preview.component';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { SsoTabComponent } from './sso-tab/sso-tab.component';
+import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
+import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-information-tab',
   template: '',
-  standalone: false,
 })
 export class InformationTabStubComponent {
-  @Input()
-  customer: Customer;
-  @Input()
-  readOnly: boolean;
-  @Input()
-  gdprReadOnlyStatus: boolean;
+  @Input() customer: Customer;
+  @Input() readOnly: boolean;
+  @Input() gdprReadOnlyStatus: boolean;
 }
 
 @Component({
   selector: 'app-sso-tab',
   template: '',
-  standalone: false,
 })
 export class SsoTabStubComponent {
-  @Input()
-  customer: Customer;
-  @Input()
-  readOnly: boolean;
+  @Input() customer: Customer;
+  @Input() readOnly: boolean;
 }
 
 @Component({
   selector: 'app-graphic-identity-tab',
   template: '',
-  standalone: false,
 })
 export class GraphicIdentityTabStubComponent {
-  @Input()
-  customer: Customer;
-  @Input()
-  readOnly: boolean;
+  @Input() customer: Customer;
+  @Input() readOnly: boolean;
+}
+
+@Component({
+  selector: 'app-homepage-message-tab',
+  template: '',
+})
+export class HomepageMessageTabStubComponent {
+  @Input() customer: Customer;
+  @Input() readOnly: boolean;
+}
+
+@Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'vitamui-common-operation-history-tab',
+  template: '',
+})
+export class OperationHistoryTabStubComponent {
+  @Input() id: string;
+  @Input() identifier: string;
+  @Input() collectionName: string;
 }
 
 @Component({
   template: '<app-customer-preview [customer]="customer" [gdprReadOnlyStatus]="false"></app-customer-preview>',
-  standalone: false,
+  imports: [CustomerPreviewComponent],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 class TestHostComponent {
   customer: any;
@@ -97,9 +108,6 @@ class TestHostComponent {
   @ViewChild(CustomerPreviewComponent, { static: false })
   component: CustomerPreviewComponent;
 }
-
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
 
 describe('CustomerPreviewComponent', () => {
   let testhost: TestHostComponent;
@@ -112,18 +120,10 @@ describe('CustomerPreviewComponent', () => {
     const startupServiceStub = {
       getPortalUrl: () => 'https://dev.vitamui.com',
       getConfigStringValue: () => 'https://dev.vitamui.com/identity',
+      getConfigNumberValue: () => 0,
     };
     await TestBed.configureTestingModule({
-      declarations: [TestHostComponent, InformationTabStubComponent, SsoTabStubComponent, GraphicIdentityTabStubComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatMenuModule,
-        MatTabsModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        LoggerModule.forRoot(),
-        CustomerPreviewComponent,
-      ],
+      imports: [TestHostComponent],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: StartupService, useValue: startupServiceStub },
@@ -132,7 +132,28 @@ describe('CustomerPreviewComponent', () => {
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CustomerPreviewComponent, {
+        remove: {
+          imports: [
+            InformationTabComponent,
+            SsoTabComponent,
+            GraphicIdentityTabComponent,
+            HomepageMessageTabComponent,
+            OperationHistoryTabComponent,
+          ],
+        },
+        add: {
+          imports: [
+            InformationTabStubComponent,
+            SsoTabStubComponent,
+            GraphicIdentityTabStubComponent,
+            HomepageMessageTabStubComponent,
+            OperationHistoryTabStubComponent,
+          ],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
