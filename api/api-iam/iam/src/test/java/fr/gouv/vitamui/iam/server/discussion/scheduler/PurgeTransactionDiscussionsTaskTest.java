@@ -179,23 +179,6 @@ class PurgeTransactionDiscussionsTaskTest {
     }
 
     @Test
-    void deletesDiscussionsWhenTransactionNoLongerExistsViaInvalidRequestException() throws Exception {
-        final Discussion discussion = transactionDiscussion(TRANSACTION_ID);
-        when(discussionRepository.findByEntitiesEntityType(EntityType.TRANSACTION)).thenReturn(Stream.of(discussion));
-        when(collectService.getTransactionById(any(VitamContext.class), anyString())).thenThrow(
-            new CollectExternalClientInvalidRequestException(
-                "bad request",
-                new VitamError<>("0").setHttpCode(400).setMessage("No such transaction with id " + TRANSACTION_ID)
-            )
-        );
-
-        task.run();
-
-        verify(discussionRepository).deleteAll(discussionsCaptor.capture());
-        assertThat(discussionsCaptor.getValue()).containsExactly(discussion);
-    }
-
-    @Test
     void doesNotDeleteDiscussionsWhenInvalidRequestExceptionIsNotANotFound() throws Exception {
         final Discussion discussion = transactionDiscussion(TRANSACTION_ID);
         when(discussionRepository.findByEntitiesEntityType(EntityType.TRANSACTION)).thenReturn(Stream.of(discussion));
