@@ -48,9 +48,11 @@ import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-li
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
+import { OwnerService } from '../owner.service';
 import { TenantService } from '../tenant.service';
 import { CustomerListComponent } from './customer-list.component';
 import { CustomerListService } from './customer-list.service';
+import { OwnerListComponent } from './owner-list/owner-list.component';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
@@ -267,6 +269,7 @@ describe('CustomerListComponent', () => {
 
     const tenantServiceSpy = {
       getTenantsByCustomerIds: () => of(tenants),
+      updated: new Subject(),
     };
     const matDialogSpy = {
       open: vi.fn().mockName('MatDialog.open'),
@@ -290,11 +293,21 @@ describe('CustomerListComponent', () => {
         { provide: CustomerListService, useValue: customerListServiceSpy },
         { provide: CustomerService, useValue: { updated: new Subject() } },
         { provide: TenantService, useValue: tenantServiceSpy },
+        { provide: OwnerService, useValue: { updated: new Subject() } },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
         CustomerDataService,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CustomerListComponent, {
+        remove: {
+          imports: [OwnerListComponent],
+        },
+        add: {
+          imports: [OwnerListStubComponent],
+        },
+      })
+      .compileComponents();
 
     const customerListService = TestBed.inject(CustomerListService);
     vi.spyOn(customerListService, 'search');

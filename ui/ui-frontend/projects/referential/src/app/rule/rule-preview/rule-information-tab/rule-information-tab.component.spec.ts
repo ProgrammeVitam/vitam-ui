@@ -83,6 +83,7 @@ describe('RuleInformationTabComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'RULES_APP' }),
+      snapshot: { data: { appId: 'RULES_APP' } },
     };
     await TestBed.configureTestingModule({
       imports: [RuleInformationTabComponent],

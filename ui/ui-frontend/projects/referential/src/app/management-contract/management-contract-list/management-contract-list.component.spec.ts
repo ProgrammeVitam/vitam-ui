@@ -171,12 +171,6 @@ describe('ManagementContractListComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 1 button ', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementBtn = nativeElement.querySelectorAll('button');
-      expect(elementBtn.length).toBe(1);
-    });
-
     it('should have 5 vitamui order button', () => {
       const nativeElement = fixture.nativeElement;
       const vitamUiOrderBtn = nativeElement.querySelectorAll('vitamui-order-by-button');

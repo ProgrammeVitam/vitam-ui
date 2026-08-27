@@ -48,17 +48,23 @@ describe('SecurityProfilePreviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SecurityProfilePreviewComponent],
-      providers: [
-        { provide: MatDialog, useValue: {} },
-        { provide: SecurityProfileService, useValue: {} },
-      ],
+      providers: [{ provide: MatDialog, useValue: {} }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(SecurityProfileService, { useValue: {} })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfilePreviewComponent);
     component = fixture.componentInstance;
+    component.securityProfile = {
+      id: 'vitam_id',
+      name: 'Name',
+      identifier: 'SP-000001',
+      fullAccess: true,
+      permissions: [],
+    };
     fixture.detectChanges();
   });
 

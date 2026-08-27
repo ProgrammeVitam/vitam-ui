@@ -58,6 +58,7 @@ describe('ProbativeValueComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'PROBATIVE_VALUE_APP' }),
+      snapshot: { data: { appId: 'PROBATIVE_VALUE_APP' } },
     };
     await TestBed.configureTestingModule({
       imports: [
