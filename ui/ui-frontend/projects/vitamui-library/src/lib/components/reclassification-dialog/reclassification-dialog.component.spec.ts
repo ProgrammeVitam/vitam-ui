@@ -113,8 +113,8 @@ describe('ReclassificationDialogComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         {
           provide: MAT_DIALOG_DATA,

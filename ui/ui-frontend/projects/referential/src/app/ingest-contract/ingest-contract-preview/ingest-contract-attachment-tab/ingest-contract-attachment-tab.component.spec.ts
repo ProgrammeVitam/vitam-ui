@@ -96,6 +96,8 @@ describe('IngestContractAttachmentTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [LoggerModule.forRoot(), IngestContractAttachmentTabComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: {} },
         { provide: SearchUnitApiService, useValue: unitValueMock },

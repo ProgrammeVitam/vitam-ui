@@ -50,6 +50,8 @@ describe('IngestReferentialService', () => {
       imports: [],
       providers: [
         IngestReferentialService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
