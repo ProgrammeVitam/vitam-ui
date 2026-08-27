@@ -40,7 +40,6 @@ import { GriffinsApiService } from './griffins-api.service';
 import { of } from 'rxjs';
 import { CreateGriffin, Griffin } from './griffin.type';
 import { vi } from 'vitest';
-import { BASE_URL } from '../../injection-tokens';
 import { LoggerModule } from '../../logger/logger.module';
 
 describe('GriffinsService', () => {

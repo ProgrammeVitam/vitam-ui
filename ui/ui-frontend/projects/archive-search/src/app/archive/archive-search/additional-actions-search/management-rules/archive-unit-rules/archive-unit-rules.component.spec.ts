@@ -37,18 +37,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  InjectorModule,
-  LoggerModule,
-  SearchCriteriaDto,
-  Tenant,
-  TenantSelectionService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { InjectorModule, LoggerModule, SearchCriteriaDto, Tenant, TenantSelectionService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { UpdateUnitManagementRuleService } from '../../../../common-services/update-unit-management-rule.service';
 import { RuleTypeEnum } from '../../../../models/rule-type-enum';
@@ -195,7 +186,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ArchiveUnitRulesComponent],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), ArchiveUnitRulesComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

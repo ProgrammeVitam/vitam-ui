@@ -43,7 +43,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   ENVIRONMENT,
   FlowType,
   InjectorModule,

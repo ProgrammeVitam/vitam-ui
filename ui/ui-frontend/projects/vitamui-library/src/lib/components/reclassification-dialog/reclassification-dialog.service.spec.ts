@@ -40,7 +40,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { Observable, of } from 'rxjs';
 import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
-import { BASE_URL } from '../../../app/modules/injection-tokens';
 import { LoggerModule } from '../../../app/modules/logger/logger.module';
 import { PagedResult } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { BaseReclassificationDialogService } from './reclassification-dialog.service';

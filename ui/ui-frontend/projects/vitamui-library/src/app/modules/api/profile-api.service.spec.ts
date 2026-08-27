@@ -36,8 +36,6 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
-import { BASE_URL } from '../injection-tokens';
 import { ProfileApiService } from './profile-api.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

@@ -73,9 +73,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, LoggerModule, StartupService } from 'vitamui-library';
+import { LoggerModule, StartupService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
@@ -107,12 +106,11 @@ describe('UserActionOpenProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, LoggerModule.forRoot(), UserActionSaveProfileComponent],
+      imports: [LoggerModule.forRoot(), UserActionSaveProfileComponent],
       providers: [
         ProfileService,
         FileTreeMetadataService,
         PastisConfiguration,
-        { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: StartupService, useValue: startUpServiceMock },
         { provide: PopupService, useValue: popupServiceMock },

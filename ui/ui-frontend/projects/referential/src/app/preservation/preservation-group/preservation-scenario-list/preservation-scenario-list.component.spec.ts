@@ -41,7 +41,7 @@ import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, of, throwError } from 'rxjs';
 import type { Mock, MockInstance } from 'vitest';
-import { BASE_URL, LoggerModule, PreservationScenario, PreservationScenariosService, SnackBarService } from 'vitamui-library';
+import { LoggerModule, PreservationScenario, PreservationScenariosService, SnackBarService } from 'vitamui-library';
 
 import { PreservationScenarioListComponent } from './preservation-scenario-list.component';
 

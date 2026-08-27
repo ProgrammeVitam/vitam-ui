@@ -37,7 +37,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService, BASE_URL, SnackBarService, StartupService } from 'vitamui-library';
+import { AuthService, SnackBarService, StartupService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
 
@@ -50,7 +50,6 @@ describe('FileFormatListComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [FileFormatListComponent],
       providers: [
-        { provide: BASE_URL, useValue: '' },
         FileFormatService,
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
         { provide: SnackBarService, useValue: {} },

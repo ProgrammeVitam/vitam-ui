@@ -39,7 +39,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { AddUnitsComponent } from './add-units.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DecimalPipe } from '@angular/common';

@@ -38,15 +38,13 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
-import { BASE_URL } from '../../injection-tokens';
 import { PreservationScenario } from './preservation-scenario.type';
 
 describe('PreservationScenariosApiService', () => {
   let service: PreservationScenariosApiService;
   let httpMock: HttpTestingController;
 
-  const baseUrl = 'http://localhost:8080';
-  const endpoint = `${baseUrl}/preservation-scenarios`;
+  const endpoint = `/fake-api/preservation-scenarios`;
 
   const mockScenario: PreservationScenario = {
     Identifier: 'ID-123',
@@ -67,7 +65,7 @@ describe('PreservationScenariosApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PreservationScenariosApiService, { provide: BASE_URL, useValue: baseUrl }],
+      providers: [PreservationScenariosApiService],
     });
 
     service = TestBed.inject(PreservationScenariosApiService);

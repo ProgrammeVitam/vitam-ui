@@ -40,11 +40,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   ConfigService,
   DiscussionIconComponent,
   DiscussionPanelComponent,
@@ -163,7 +161,6 @@ describe('ArchiveSearchCollectComponent', () => {
         LoggerModule.forRoot(),
         MatMenuModule,
         MatSidenavModule,
-        RouterTestingModule,
         ...extraImports,
       ],
       providers: [ArchiveSearchHelperService, ArchiveSharedDataService, { provide: environment, useValue: environment }],
