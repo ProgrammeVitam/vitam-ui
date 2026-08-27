@@ -51,13 +51,11 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [InjectorModule, LoggerModule.forRoot(), ArchiveUnitRulesDetailsTabComponent],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

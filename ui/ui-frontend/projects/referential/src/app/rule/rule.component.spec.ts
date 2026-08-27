@@ -166,11 +166,9 @@ describe('RuleComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
   });

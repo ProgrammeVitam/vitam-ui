@@ -151,7 +151,7 @@ describe('BlockRulesInheritanceComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, BlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -160,8 +160,6 @@ describe('BlockRulesInheritanceComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

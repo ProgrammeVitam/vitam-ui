@@ -167,7 +167,7 @@ describe('CreateProjectComponent', () => {
       ],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
@@ -179,8 +179,6 @@ describe('CreateProjectComponent', () => {
         { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
         { provide: TransactionsService, useValue: transactionServiceMock },
         { provide: CollectUploadService, useValue: uploadServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

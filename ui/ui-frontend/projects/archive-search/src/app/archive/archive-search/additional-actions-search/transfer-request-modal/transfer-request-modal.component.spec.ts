@@ -88,15 +88,13 @@ describe('TransferRequestModalComponent tests', () => {
             selectedItemCountKnown: true,
           },
         },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

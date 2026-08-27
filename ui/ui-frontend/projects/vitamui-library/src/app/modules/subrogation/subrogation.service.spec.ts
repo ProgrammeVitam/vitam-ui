@@ -65,13 +65,13 @@ describe('SubrogationService', () => {
             url: 'subrogations/customers/customerId',
           },
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: 'fake-api' },
         { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
         { provide: AuthService, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
   });

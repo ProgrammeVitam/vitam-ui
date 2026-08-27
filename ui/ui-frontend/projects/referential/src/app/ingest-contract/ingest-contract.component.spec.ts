@@ -86,11 +86,11 @@ describe('IngestContractComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: {} },
         { provide: MatDialog, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: DownloadSnackBarService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideProvider(IngestContractService, {

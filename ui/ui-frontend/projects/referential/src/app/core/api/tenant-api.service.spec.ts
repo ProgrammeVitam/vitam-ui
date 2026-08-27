@@ -45,14 +45,7 @@ describe('TenantApiService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(), { provide: BASE_URL, useValue: '' }],
     }).compileComponents();
   });
 

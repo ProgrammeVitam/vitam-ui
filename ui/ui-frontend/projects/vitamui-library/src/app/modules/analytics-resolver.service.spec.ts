@@ -54,7 +54,7 @@ describe('AnalyticsResolver', () => {
       providers: [
         { provide: Router, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: {} },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         {
@@ -65,8 +65,6 @@ describe('AnalyticsResolver', () => {
             },
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }),
   );

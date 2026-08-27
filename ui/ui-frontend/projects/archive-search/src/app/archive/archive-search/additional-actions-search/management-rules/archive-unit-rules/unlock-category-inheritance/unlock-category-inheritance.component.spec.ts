@@ -245,14 +245,12 @@ describe('UnlockCategoryInheritanceComponent', () => {
       imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, UnlockCategoryInheritanceComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideProvider(MatDialog, { useValue: matDialogSpy })

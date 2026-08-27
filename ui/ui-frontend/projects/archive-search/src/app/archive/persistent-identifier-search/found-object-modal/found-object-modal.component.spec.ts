@@ -74,7 +74,7 @@ describe('ErrorResponseModalComponent', () => {
           provide: MatDialogRef,
           useValue: matDialogRefSpy,
         },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         {
@@ -115,8 +115,6 @@ describe('ErrorResponseModalComponent', () => {
             },
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

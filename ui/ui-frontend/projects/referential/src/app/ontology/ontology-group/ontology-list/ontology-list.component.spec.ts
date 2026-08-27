@@ -42,6 +42,8 @@ import { EMPTY, of } from 'rxjs';
 import { AuthService, BASE_URL, Ontology, TenantSelectionService } from 'vitamui-library';
 import { OntologyListComponent } from './ontology-list.component';
 import { OntologyService } from '../../ontology.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('OntologyListComponent', () => {
   let component: OntologyListComponent;
@@ -64,6 +66,8 @@ describe('OntologyListComponent', () => {
       declarations: [],
       imports: [OntologyListComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },
         { provide: OntologyService, useValue: ontologyServiceMock },
