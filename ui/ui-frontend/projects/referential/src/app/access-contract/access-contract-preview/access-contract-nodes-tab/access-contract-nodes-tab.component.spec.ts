@@ -98,14 +98,12 @@ describe('AccessContractNodesTabComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LoggerModule.forRoot(), AccessContractNodesTabComponent],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SearchUnitApiService, useValue: unitValueMock },
         { provide: MatDialog, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

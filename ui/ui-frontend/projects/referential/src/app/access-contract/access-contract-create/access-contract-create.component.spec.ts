@@ -136,7 +136,7 @@ describe('AccessContractCreateComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -145,8 +145,6 @@ describe('AccessContractCreateComponent', () => {
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

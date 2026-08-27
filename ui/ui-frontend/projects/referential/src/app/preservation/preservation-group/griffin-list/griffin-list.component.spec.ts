@@ -106,11 +106,9 @@ describe('GriffinListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GriffinListComponent, LoggerModule.forRoot()],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: GriffinsService, useValue: griffinsService },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: StartupService, useValue: startupService },

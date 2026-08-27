@@ -40,6 +40,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, Rule, RuleService, SnackBarService } from 'vitamui-library';
 import { RuleListComponent } from './rule-list.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('RuleListComponent', () => {
   let component: RuleListComponent;
@@ -54,6 +56,8 @@ describe('RuleListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RuleListComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: RuleService, useValue: ruleServiceMock },
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },

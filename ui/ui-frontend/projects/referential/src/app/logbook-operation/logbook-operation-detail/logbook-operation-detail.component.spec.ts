@@ -81,14 +81,13 @@ describe('LogbookOperationDetailComponent', () => {
       ],
       providers: [
         { provide: LogbookService, useValue: {} },
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
       ],
     }).compileComponents();
   });

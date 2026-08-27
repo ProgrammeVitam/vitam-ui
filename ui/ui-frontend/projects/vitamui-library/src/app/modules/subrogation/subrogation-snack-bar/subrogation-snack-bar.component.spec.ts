@@ -55,6 +55,8 @@ describe('SubrogationSnackBarComponent', () => {
       imports: [VitamUICommonTestModule, SubrogationSnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fakeapi' },
         {
           provide: MatSnackBarRef,
@@ -73,8 +75,6 @@ describe('SubrogationSnackBarComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
         { provide: SnackBarService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

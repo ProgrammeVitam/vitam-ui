@@ -88,7 +88,7 @@ describe('TransferAcknowledgmentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TransferAcknowledgmentComponent, CdkStep, InjectorModule, LoggerModule.forRoot(), MockDateTimePipe],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -99,8 +99,6 @@ describe('TransferAcknowledgmentComponent', () => {
         { provide: ArchiveService, useValue: archiveSearchServiceStub },
         DecimalPipe,
         BytesPipe,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

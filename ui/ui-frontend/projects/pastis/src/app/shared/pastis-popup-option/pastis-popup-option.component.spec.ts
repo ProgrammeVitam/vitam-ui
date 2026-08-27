@@ -59,10 +59,10 @@ describe('PastisPopupOptionComponent', () => {
       imports: [RouterTestingModule, PastisPopupOptionComponent],
       providers: [
         PastisConfiguration,
-        { provide: BASE_URL, useValue: '/pastis-api' },
-        { provide: MatDialog, useValue: matDialogSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/pastis-api' },
+        { provide: MatDialog, useValue: matDialogSpy },
         { provide: SnackBarService, useValue: {} },
       ],
     }).compileComponents();
