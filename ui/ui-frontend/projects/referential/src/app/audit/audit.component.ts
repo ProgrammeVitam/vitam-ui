@@ -45,6 +45,7 @@ import {
   SearchBarComponent,
   SidenavPage,
   VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
   VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { AuditChainCreateComponent } from './audit-chain-create/audit-chain-create.component';
@@ -70,6 +71,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     DatepickerComponent,
     AuditListComponent,
     TranslatePipe,
+    VitamuiMenuButtonComponent,
   ],
 })
 export class AuditComponent extends SidenavPage<Event> {

@@ -115,12 +115,13 @@ describe('SecurisationPreviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [BrowserAnimationsModule, EventTypeBadgeColorPipe, SecurisationPreviewComponent, MockTruncatePipe],
       providers: [
-        { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SnackBarService, useValue: snackBarSpy },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(SecurisationService, { useValue: { getInfoFromTimestamp: () => of({}) } })
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -57,7 +57,6 @@ import { TranslatePipe } from '@ngx-translate/core';
       multi: true,
     },
   ],
-  standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -91,8 +90,8 @@ describe('HierarchyCreateComponent', () => {
         LevelInputComponent,
         TranslatePipe,
         HierarchyCreateComponent,
+        ProfilesFormStubComponent,
       ],
-      declarations: [ProfilesFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantId: 10 } },

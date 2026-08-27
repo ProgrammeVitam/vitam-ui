@@ -44,7 +44,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { AccessContractComponent } from './access-contract.component';
 
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 
 @Component({
   selector: 'app-access-contract-preview',
@@ -68,6 +68,8 @@ describe('AccessContractComponent', () => {
   let fixture: ComponentFixture<AccessContractComponent>;
   const accessContractServiceMock = {
     getAll: () => of([]),
+    search: () => of([]),
+    updated: EMPTY,
   };
 
   const applicationServiceMock = {
@@ -90,12 +92,13 @@ describe('AccessContractComponent', () => {
       ],
       providers: [
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(AccessContractService, { useValue: accessContractServiceMock })
+      .compileComponents();
   });
 
   beforeEach(() => {

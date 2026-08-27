@@ -98,7 +98,11 @@ describe('SearchCriteriaSaverComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+            snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
         { provide: SnackBarService, useValue: {} },
