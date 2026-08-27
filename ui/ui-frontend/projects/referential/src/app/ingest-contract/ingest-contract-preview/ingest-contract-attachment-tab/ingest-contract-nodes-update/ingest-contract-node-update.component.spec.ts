@@ -92,6 +92,8 @@ describe.skip('IngestContractNodeUpdateComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
         },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },

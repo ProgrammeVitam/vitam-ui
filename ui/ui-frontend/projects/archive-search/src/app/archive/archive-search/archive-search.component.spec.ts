@@ -195,6 +195,8 @@ describe('ArchiveSearchComponent', () => {
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),

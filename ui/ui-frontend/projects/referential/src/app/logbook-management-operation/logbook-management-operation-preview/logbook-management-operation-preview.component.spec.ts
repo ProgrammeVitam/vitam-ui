@@ -78,6 +78,8 @@ describe('LogbookManagementOperationPreviewComponent', () => {
         { provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: {} },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

@@ -63,6 +63,8 @@ describe('FilingPlanService', () => {
       imports: [VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
       providers: [
         FilingPlanService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
         { provide: AccessContractService, useValue: accessContractServiceMock },

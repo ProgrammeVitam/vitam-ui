@@ -167,6 +167,8 @@ describe('CreateProjectComponent', () => {
       ],
       providers: [
         FormBuilder,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: MAT_DIALOG_DATA, useValue: {} },

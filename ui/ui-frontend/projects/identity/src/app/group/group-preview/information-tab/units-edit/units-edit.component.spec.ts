@@ -83,6 +83,8 @@ describe('UnitsEditComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),

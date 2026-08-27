@@ -102,6 +102,8 @@ describe('IngestContractCreateComponent', () => {
       imports: [IngestContractCreateComponent, VitamUICommonTestModule, LoggerModule.forRoot(), MatButtonToggleModule],
       providers: [
         FormBuilder,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -129,6 +129,8 @@ describe('BlockCategoryInheritanceComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, BlockCategoryInheritanceComponent],
       providers: [
         FormBuilder,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

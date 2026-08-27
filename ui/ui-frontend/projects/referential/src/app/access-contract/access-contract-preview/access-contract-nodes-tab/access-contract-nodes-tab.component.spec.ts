@@ -98,6 +98,8 @@ describe('AccessContractNodesTabComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LoggerModule.forRoot(), AccessContractNodesTabComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SearchUnitApiService, useValue: unitValueMock },

@@ -46,6 +46,8 @@ describe('CustomerApiService Identity', () => {
     TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),

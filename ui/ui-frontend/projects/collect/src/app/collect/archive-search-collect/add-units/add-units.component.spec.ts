@@ -97,6 +97,8 @@ describe('AddUnitsComponent', () => {
       imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), AddUnitsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
