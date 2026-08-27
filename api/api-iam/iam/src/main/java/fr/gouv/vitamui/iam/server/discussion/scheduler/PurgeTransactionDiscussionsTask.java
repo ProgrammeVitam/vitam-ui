@@ -39,7 +39,6 @@ package fr.gouv.vitamui.iam.server.discussion.scheduler;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.common.dto.TransactionDto;
 import fr.gouv.vitam.collect.common.enums.TransactionStatus;
-import fr.gouv.vitam.collect.external.exception.CollectExternalClientInvalidRequestException;
 import fr.gouv.vitam.collect.external.exception.CollectExternalClientNotFoundException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -183,20 +182,13 @@ public class PurgeTransactionDiscussionsTask {
                     );
                     discussionRepository.deleteAll(discussions);
                 }
-            } catch (CollectExternalClientNotFoundException | CollectExternalClientInvalidRequestException e) {
-                // FIXME: Expected exception should be CollectExternalClientNotFoundException, but current API returns a 400 (instead of 404), throwing a CollectExternalClientInvalidRequestException instead. We temporarily catch also CollectExternalClientInvalidRequestException and check the code and message to handle "not found" with current API misbehaviour.
-                if (
-                    e instanceof CollectExternalClientNotFoundException ||
-                    (e.getVitamError().getHttpCode() == 400 &&
-                        e.getVitamError().getMessage().startsWith("No such transaction"))
-                ) {
-                    LOGGER.debug(
-                        "Transaction {} does not exist. Deleting {} discussions related to that transaction",
-                        transactionId,
-                        discussions.size()
-                    );
-                    discussionRepository.deleteAll(discussions);
-                }
+            } catch (CollectExternalClientNotFoundException e) {
+                LOGGER.debug(
+                    "Transaction {} does not exist. Deleting {} discussions related to that transaction",
+                    transactionId,
+                    discussions.size()
+                );
+                discussionRepository.deleteAll(discussions);
             } catch (VitamClientException | InvalidParseOperationException e) {
                 LOGGER.error("Couldn't retrieve transaction with id {} on tenant {}", transactionId, tenant, e);
             }
