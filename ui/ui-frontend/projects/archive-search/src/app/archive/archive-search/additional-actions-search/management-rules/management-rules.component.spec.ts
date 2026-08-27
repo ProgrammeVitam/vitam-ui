@@ -144,7 +144,7 @@ describe('ManagementRulesComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ManagementRulesComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: startupServiceStub },
@@ -154,8 +154,6 @@ describe('ManagementRulesComponent', () => {
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

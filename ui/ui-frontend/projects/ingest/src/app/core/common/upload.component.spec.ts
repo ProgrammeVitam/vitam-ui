@@ -72,11 +72,9 @@ describe('UploadComponent', () => {
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
         DecimalPipe,
         BytesPipe,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     })
       .overrideTemplate(UploadComponent, '<div></div>')

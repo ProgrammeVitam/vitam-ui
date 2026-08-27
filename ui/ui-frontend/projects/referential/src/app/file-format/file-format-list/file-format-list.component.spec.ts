@@ -52,14 +52,14 @@ describe('FileFormatListComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [FileFormatListComponent],
       providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         FileFormatService,
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
         { provide: SnackBarService, useValue: {} },
         { provide: MatDialog, useValue: {} },
         { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -131,7 +131,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         CollectObjectGroupDetailsTabComponent,
       ],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
@@ -139,8 +139,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         { provide: ArchiveCollectService, useValue: archiveCollectServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
         { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
 

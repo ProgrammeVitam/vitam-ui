@@ -210,7 +210,7 @@ describe('DeleteUnitRulesComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, DeleteUnitRulesComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -220,8 +220,6 @@ describe('DeleteUnitRulesComponent', () => {
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

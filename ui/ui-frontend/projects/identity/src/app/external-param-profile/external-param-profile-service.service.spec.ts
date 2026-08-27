@@ -51,11 +51,9 @@ describe('ExternalParamProfileService', () => {
       providers: [
         ExternalParamProfileService,
         { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     });
     service = TestBed.inject(ExternalParamProfileService);

@@ -48,12 +48,10 @@ describe('ReferentialImportService', () => {
     TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot()],
       providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }),
   );

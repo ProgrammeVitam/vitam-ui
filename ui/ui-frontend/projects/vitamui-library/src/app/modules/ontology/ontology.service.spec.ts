@@ -48,12 +48,9 @@ describe('OntologyService', () => {
       imports: [],
       providers: [
         OntologyService,
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     });
     service = TestBed.inject(OntologyService);
