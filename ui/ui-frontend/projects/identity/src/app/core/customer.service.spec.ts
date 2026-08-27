@@ -37,12 +37,11 @@
 import { BASE_URL, CriteriaSearchQuery, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
 import { CustomerService } from './customer.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomer: Customer = {
   id: '42',
@@ -101,8 +100,6 @@ describe('CustomerService', () => {
       imports: [LoggerModule.forRoot()],
       providers: [
         CustomerService,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: snackBarSpy },

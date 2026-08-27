@@ -36,12 +36,11 @@
  */
 import { BASE_URL, CriteriaSearchQuery, Direction, Group, Operators, PageRequest, SnackBarService } from 'vitamui-library';
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
 import { GroupService } from './group.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('GroupService', () => {
   let httpTestingController: HttpTestingController;
@@ -54,13 +53,7 @@ describe('GroupService', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        GroupService,
-        { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ],
+      providers: [GroupService, { provide: SnackBarService, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

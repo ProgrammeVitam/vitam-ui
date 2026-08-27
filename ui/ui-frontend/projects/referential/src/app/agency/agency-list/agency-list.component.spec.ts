@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,7 +43,6 @@ import { EMPTY, of } from 'rxjs';
 import { AgencyService, AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AgencyListComponent } from './agency-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const authServiceMock = { user: { proofTenantIdentifier: '1' } };
 const activatedRouteMock = { params: of({ tenantIdentifier: 1 }), paramMap: EMPTY };
@@ -58,8 +56,6 @@ describe('AgencyListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LoggerModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
