@@ -46,7 +46,6 @@ describe('UserApiService', () => {
       imports: [],
       providers: [
         { provide: AuthService, useValue: {} },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
       ],
     }),

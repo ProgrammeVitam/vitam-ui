@@ -45,7 +45,7 @@ describe('GroupApiService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(), { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }),
   );
 

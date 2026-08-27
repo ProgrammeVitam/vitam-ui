@@ -194,9 +194,8 @@ describe('ArchiveSearchComponent', () => {
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: environment, useValue: environment },
       ],
     })
       .overrideProvider(MatDialog, { useValue: matDialogSpy })

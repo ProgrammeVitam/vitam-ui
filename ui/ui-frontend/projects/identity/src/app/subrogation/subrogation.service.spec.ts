@@ -43,12 +43,7 @@ describe('SubrogationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        SubrogationService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: SubrogationApiService, useValue: {} },
-      ],
+      providers: [SubrogationService, { provide: WINDOW_LOCATION, useValue: {} }, { provide: SubrogationApiService, useValue: {} }],
     });
   });
 

@@ -170,7 +170,6 @@ describe('ArchiveSearchCollectComponent', () => {
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],

@@ -121,7 +121,6 @@ describe('ArchiveComponent', () => {
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: SecurityService, useValue: securityServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
       ],
     })

@@ -74,7 +74,6 @@ describe('OwnerPreviewComponent', () => {
       ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
       ],
