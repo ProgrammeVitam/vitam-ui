@@ -129,6 +129,8 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         DateTimeStubPipe,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideI18n(),
         provideHttpClient(withInterceptorsFromDi()),

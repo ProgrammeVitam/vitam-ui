@@ -131,6 +131,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         CollectObjectGroupDetailsTabComponent,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

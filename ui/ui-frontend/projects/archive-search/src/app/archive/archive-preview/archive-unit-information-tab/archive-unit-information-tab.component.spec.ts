@@ -68,6 +68,8 @@ import {
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
@@ -143,6 +145,8 @@ describe('ArchiveUnitInformationTabComponent', () => {
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },

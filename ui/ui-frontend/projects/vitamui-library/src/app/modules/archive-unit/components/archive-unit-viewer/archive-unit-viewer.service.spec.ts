@@ -65,6 +65,8 @@ describe('ArchiveUnitViewerService', () => {
         DisplayObjectHelperService,
         DisplayRuleHelperService,
         SchemaElementToDisplayRuleService,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SchemaService, useClass: MockSchemaService },
         provideHttpClient(withInterceptorsFromDi()),

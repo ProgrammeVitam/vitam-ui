@@ -54,6 +54,8 @@ describe('ArchiveService', () => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

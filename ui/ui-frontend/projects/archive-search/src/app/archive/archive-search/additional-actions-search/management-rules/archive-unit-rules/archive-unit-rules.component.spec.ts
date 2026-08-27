@@ -200,6 +200,8 @@ describe('ArchiveUnitRulesComponent', () => {
       imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ArchiveUnitRulesComponent],
       providers: [
         FormBuilder,
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

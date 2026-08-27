@@ -100,6 +100,8 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: SchemaService, useValue: schemaServiceMock },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         SnackBarService,
         {

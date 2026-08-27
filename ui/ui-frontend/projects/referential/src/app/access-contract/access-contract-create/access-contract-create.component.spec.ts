@@ -136,6 +136,8 @@ describe('AccessContractCreateComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: AgencyService, useValue: agencyServiceSpy },

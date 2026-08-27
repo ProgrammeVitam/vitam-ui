@@ -111,6 +111,8 @@ describe('ManagementContractCreateComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         ManagementContractToFormGroupConverterService,

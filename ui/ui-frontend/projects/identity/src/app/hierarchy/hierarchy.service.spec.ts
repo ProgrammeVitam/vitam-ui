@@ -53,6 +53,8 @@ describe('HierarchyService', () => {
       providers: [
         HierarchyService,
         { provide: SnackBarService, useValue: snackBarSpy },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

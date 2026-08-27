@@ -73,6 +73,8 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [InjectorModule, ArchiveUnitRulesDetailsTabComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
