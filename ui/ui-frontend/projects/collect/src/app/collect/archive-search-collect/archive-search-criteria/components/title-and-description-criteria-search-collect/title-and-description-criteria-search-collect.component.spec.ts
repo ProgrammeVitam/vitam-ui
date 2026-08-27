@@ -65,12 +65,7 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
         TitleAndDescriptionCriteriaSearchCollectComponent,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        FormBuilder,
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: MatDialog, useValue: matDialogSpy },
-      ],
+      providers: [FormBuilder, { provide: MatDialogRef, useValue: matDialogRefSpy }, { provide: MatDialog, useValue: matDialogSpy }],
     }).compileComponents();
   });
 

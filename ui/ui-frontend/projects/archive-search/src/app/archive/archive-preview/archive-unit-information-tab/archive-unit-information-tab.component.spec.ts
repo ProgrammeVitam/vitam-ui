@@ -143,7 +143,6 @@ describe('ArchiveUnitInformationTabComponent', () => {
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

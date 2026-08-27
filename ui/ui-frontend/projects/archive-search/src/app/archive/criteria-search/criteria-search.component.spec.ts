@@ -69,7 +69,6 @@ describe('CriteriaSearchComponent', () => {
       providers: [
         TranslateWithOptionalTypeSuffixPipe,
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
       ],
     }).compileComponents();

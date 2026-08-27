@@ -48,7 +48,7 @@ describe('ProfileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [ProfileService, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [ProfileService],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

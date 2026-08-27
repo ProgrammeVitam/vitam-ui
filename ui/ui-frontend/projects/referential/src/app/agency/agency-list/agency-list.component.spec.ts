@@ -56,7 +56,6 @@ describe('AgencyListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LoggerModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: AuthService, useValue: authServiceMock },

@@ -129,7 +129,7 @@ describe('TenantService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [TenantService, { provide: BASE_URL, useValue: '/fake-api' }, { provide: SnackBarService, useValue: snackBarSpy }],
+      providers: [TenantService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

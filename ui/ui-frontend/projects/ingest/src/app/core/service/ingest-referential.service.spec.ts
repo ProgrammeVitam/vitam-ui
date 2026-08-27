@@ -47,7 +47,7 @@ describe('IngestReferentialService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [IngestReferentialService, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [IngestReferentialService],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

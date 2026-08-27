@@ -66,7 +66,7 @@ describe('OwnerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OwnerService, { provide: SnackBarService, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [OwnerService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

@@ -55,7 +55,6 @@ describe('CustomerSelectService', () => {
       providers: [
         CustomerSelectService,
         { provide: AuthService, useValue: authStubService },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],
     });

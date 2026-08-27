@@ -47,7 +47,7 @@ describe('HierarchyService', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [HierarchyService, { provide: SnackBarService, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [HierarchyService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
   });
 

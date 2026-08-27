@@ -46,10 +46,7 @@ describe('AccessContractApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot()],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-      ],
+      providers: [{ provide: ENVIRONMENT, useValue: environment }],
     });
     service = TestBed.inject(AccessContractApiService);
   });

@@ -142,7 +142,6 @@ describe('ManagementRulesComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ManagementRulesComponent],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

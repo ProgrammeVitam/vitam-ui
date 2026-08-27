@@ -46,11 +46,7 @@ describe('ExternalParamProfileService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        ExternalParamProfileService,
-        { provide: SnackBarService, useValue: snackBarSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ],
+      providers: [ExternalParamProfileService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
     service = TestBed.inject(ExternalParamProfileService);
   });
