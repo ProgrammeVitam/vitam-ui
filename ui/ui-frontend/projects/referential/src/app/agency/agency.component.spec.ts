@@ -100,7 +100,6 @@ describe('AgencyComponent', () => {
           },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

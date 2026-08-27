@@ -190,12 +190,7 @@ describe('ArchiveSearchComponent', () => {
         ArchiveSearchComponent,
         SimpleCriteriaSearchComponent,
       ],
-      providers: [
-        ArchiveSearchHelperService,
-        ArchiveSharedDataService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment },
-      ],
+      providers: [ArchiveSearchHelperService, ArchiveSharedDataService, { provide: environment, useValue: environment }],
     })
       .overrideProvider(MatDialog, { useValue: matDialogSpy })
       .overrideProvider(Router, { useValue: routerSpy })

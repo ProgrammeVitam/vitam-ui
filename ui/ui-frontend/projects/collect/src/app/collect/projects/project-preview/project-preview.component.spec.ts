@@ -157,7 +157,6 @@ describe('ProjectPreviewComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: MatDialogRef,
           useValue: {

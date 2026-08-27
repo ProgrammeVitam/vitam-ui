@@ -98,7 +98,6 @@ describe('AccessionRegisterPreviewComponent', () => {
       ],
       providers: [
         { provide: AccessionRegistersService, useValue: AccessionRegistersServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

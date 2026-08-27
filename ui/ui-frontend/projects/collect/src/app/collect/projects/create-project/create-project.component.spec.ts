@@ -165,7 +165,6 @@ describe('CreateProjectComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: matDialogRefSpy },

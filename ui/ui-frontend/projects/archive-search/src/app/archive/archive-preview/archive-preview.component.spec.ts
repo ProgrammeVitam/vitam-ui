@@ -113,7 +113,6 @@ describe('ArchivePreviewComponent', () => {
         MockUnitI18nPipe,
       ],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

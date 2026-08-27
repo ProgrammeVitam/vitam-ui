@@ -49,7 +49,7 @@ describe('SearchCriteriaSaverService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(), { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
     service = TestBed.inject(SearchCriteriaSaverService);

@@ -50,7 +50,7 @@ describe('PersistentIdentifierSearchComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatDialogModule, RouterTestingModule, PersistentIdentifierSearchComponent],
-      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(), { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });
 

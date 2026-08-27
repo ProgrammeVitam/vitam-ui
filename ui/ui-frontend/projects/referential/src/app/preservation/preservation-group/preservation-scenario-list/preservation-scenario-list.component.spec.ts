@@ -83,7 +83,6 @@ describe('PreservationScenarioListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PreservationScenarioListComponent, LoggerModule.forRoot()],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: PreservationScenariosService, useValue: preservationScenariosService },
         { provide: SnackBarService, useValue: snackBarService },
       ],

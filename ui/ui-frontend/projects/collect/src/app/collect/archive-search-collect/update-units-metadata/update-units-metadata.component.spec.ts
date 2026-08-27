@@ -70,7 +70,6 @@ describe('UpdateUaMetadataComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UpdateUnitsMetadataComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },

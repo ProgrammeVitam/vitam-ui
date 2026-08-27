@@ -86,7 +86,6 @@ describe('AccountComponent', () => {
         { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: location },
       ],
       schemas: [NO_ERRORS_SCHEMA],

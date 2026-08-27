@@ -53,7 +53,7 @@ describe('GroupService', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [GroupService, { provide: SnackBarService, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [GroupService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

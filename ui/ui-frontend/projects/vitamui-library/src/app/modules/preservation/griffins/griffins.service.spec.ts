@@ -71,7 +71,7 @@ describe('GriffinsService', () => {
 
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [GriffinsService, { provide: GriffinsApiService, useValue: spy }, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [GriffinsService, { provide: GriffinsApiService, useValue: spy }],
     });
 
     service = TestBed.inject(GriffinsService);

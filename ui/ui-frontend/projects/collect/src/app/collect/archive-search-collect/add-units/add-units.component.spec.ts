@@ -95,7 +95,6 @@ describe('AddUnitsComponent', () => {
       imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), AddUnitsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },

@@ -70,7 +70,6 @@ describe('UploadComponent', () => {
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
         DecimalPipe,
         BytesPipe,
-        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     })
       .overrideTemplate(UploadComponent, '<div></div>')

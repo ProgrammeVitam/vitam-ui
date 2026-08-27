@@ -74,7 +74,6 @@ describe('IngestPreviewComponent test:', () => {
             logbookOperationsReloaded: of([logbookOperation]),
           },
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
   });

@@ -48,7 +48,7 @@ describe('EditableFieldComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      providers: [{ provide: BASE_URL, useValue: '/fake-api' }, provideHttpClientTesting()],
+      providers: [provideHttpClientTesting()],
     }),
   );
   beforeEach(() => {

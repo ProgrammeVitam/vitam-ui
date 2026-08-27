@@ -98,7 +98,6 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: SchemaService, useValue: schemaServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         SnackBarService,
         {
           provide: ActivatedRoute,

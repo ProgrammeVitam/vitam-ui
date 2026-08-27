@@ -107,7 +107,6 @@ describe('SecurisationCheckTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SecurisationCheckTabComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: SecurisationService, useValue: {} },
         {
