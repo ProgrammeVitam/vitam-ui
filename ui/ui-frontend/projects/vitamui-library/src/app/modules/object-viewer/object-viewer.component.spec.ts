@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { customTemplate } from '../archive-unit/archive-unit-template';
-import { BASE_URL } from '../injection-tokens';
 import { LoggerModule } from '../logger/logger.module';
 import { EmptyPipe } from '../pipes/empty.pipe';
 import { GroupComponent } from './components/group/group.component';

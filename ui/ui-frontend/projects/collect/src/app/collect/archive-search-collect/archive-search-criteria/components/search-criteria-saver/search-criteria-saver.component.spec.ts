@@ -42,7 +42,6 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
@@ -90,14 +89,7 @@ describe('SearchCriteriaSaverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        BrowserAnimationsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        SearchCriteriaSaverComponent,
-        MockTruncatePipe,
-      ],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), SearchCriteriaSaverComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
         ArchiveSharedDataService,

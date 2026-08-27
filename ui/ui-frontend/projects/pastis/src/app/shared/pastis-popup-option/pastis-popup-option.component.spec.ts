@@ -36,9 +36,8 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, SnackBarService } from 'vitamui-library';
+import { SnackBarService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 
 import { PastisPopupOptionComponent } from './pastis-popup-option.component';
@@ -54,13 +53,8 @@ describe('PastisPopupOptionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, PastisPopupOptionComponent],
-      providers: [
-        PastisConfiguration,
-        { provide: BASE_URL, useValue: '/pastis-api' },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: SnackBarService, useValue: {} },
-      ],
+      imports: [PastisPopupOptionComponent],
+      providers: [PastisConfiguration, { provide: MatDialog, useValue: matDialogSpy }, { provide: SnackBarService, useValue: {} }],
     }).compileComponents();
   });
 

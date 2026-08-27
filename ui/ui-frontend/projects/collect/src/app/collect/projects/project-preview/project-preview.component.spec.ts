@@ -45,7 +45,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  BASE_URL,
   FilingPlanService,
   LoggerModule,
   PaginatedResponse,

@@ -43,10 +43,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
@@ -96,7 +94,6 @@ describe('ArchivePreviewComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
         ArchivePreviewComponent,
         MockTruncatePipe,

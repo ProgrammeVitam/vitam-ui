@@ -45,7 +45,6 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import {
   AccessContract,
-  BASE_URL,
   InjectorModule,
   LoggerModule,
   SearchBarComponent,

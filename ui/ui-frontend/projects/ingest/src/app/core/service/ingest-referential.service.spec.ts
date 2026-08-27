@@ -37,7 +37,6 @@
 import { HttpTestingController } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { BASE_URL } from 'vitamui-library';
 import { IngestReferentialService } from './ingest-referential.service';
 
 describe('IngestReferentialService', () => {

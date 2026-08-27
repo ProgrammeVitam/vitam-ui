@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { InjectorModule } from 'vitamui-library';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
@@ -69,7 +68,7 @@ describe('SearchCriteriaListService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [InjectorModule, RouterTestingModule],
+      imports: [InjectorModule],
       providers: [
         {
           provide: ArchiveApiService,

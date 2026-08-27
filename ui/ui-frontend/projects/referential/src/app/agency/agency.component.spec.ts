@@ -39,8 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AgencyService, BASE_URL, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { AgencyService, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ActivatedRoute } from '@angular/router';
@@ -72,15 +71,7 @@ describe('AgencyComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [
-        VitamUICommonTestModule,
-        RouterTestingModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatSidenavModule,
-        MatDialogModule,
-        MatMenuModule,
-      ],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), MatSidenavModule, MatDialogModule, MatMenuModule],
       providers: [
         { provide: AgencyService, useValue: {} },
         {

@@ -40,7 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { AgencyService, AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AgencyService, AuthService, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AgencyListComponent } from './agency-list.component';
 

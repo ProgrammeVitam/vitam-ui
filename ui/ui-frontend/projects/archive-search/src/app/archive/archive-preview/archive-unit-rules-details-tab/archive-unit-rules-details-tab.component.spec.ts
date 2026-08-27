@@ -38,7 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, Unit, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, Unit, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
 

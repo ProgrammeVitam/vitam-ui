@@ -42,7 +42,6 @@ import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
-import { BASE_URL } from './injection-tokens';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
 import { Category } from './models/application/category.interface';

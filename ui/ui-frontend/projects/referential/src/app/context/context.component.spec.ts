@@ -38,7 +38,6 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Application, ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -49,7 +48,7 @@ import { ContextListComponent } from './context-list/context-list.component';
 @Component({
   selector: 'app-agency-preview',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class ContextPreviewStub {
   @Input()
@@ -72,15 +71,7 @@ describe('ContextComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        VitamUICommonTestModule,
-        RouterTestingModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        MatSidenavModule,
-        MatDialogModule,
-        ContextPreviewStub,
-      ],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), MatSidenavModule, MatDialogModule, ContextPreviewStub],
       providers: [
         { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY, paramMap: EMPTY, snapshot: { data: { appId: 'App Id' } } } },
         { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },

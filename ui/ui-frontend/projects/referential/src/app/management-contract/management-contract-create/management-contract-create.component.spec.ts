@@ -41,11 +41,9 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import {
-  BASE_URL,
   ConfirmDialogService,
   InjectorModule,
   LoggerModule,
@@ -99,7 +97,6 @@ describe('ManagementContractCreateComponent', () => {
         MatSelectModule,
         MatSidenavModule,
         ReactiveFormsModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
       ],

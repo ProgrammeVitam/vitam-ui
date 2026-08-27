@@ -36,7 +36,6 @@
  */
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger/logger.module';
 import { DisplayObject } from '../../../object-viewer/models/display-object.model';
 import { DisplayRule } from '../../../object-viewer/models/display-rule.model';

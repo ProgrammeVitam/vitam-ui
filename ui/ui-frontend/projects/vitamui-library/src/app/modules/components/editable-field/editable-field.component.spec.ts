@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
 import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-common-test.module';
-import { BASE_URL } from '../../injection-tokens';
 
 import { EditableFieldComponent } from './editable-field.component';
 

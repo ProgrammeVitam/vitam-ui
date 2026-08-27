@@ -38,15 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-  SearchUnitApiService,
-  Status,
-} from 'vitamui-library';
+import { AccessContract, ExternalParameters, ExternalParametersService, LoggerModule, SearchUnitApiService, Status } from 'vitamui-library';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
 
 describe('AccessContractNodesTabComponent', () => {

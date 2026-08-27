@@ -39,7 +39,7 @@ import { ReclassificationDialogComponent } from './reclassification-dialog.compo
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmDialogService } from '../../../app/modules/components/common-confirm-dialog/confirm-dialog.service';
-import { BASE_URL, WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
+import { WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
 import { LoggerModule } from '../../../app/modules/logger/logger.module';
 import { CriteriaDataType, CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
 import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
