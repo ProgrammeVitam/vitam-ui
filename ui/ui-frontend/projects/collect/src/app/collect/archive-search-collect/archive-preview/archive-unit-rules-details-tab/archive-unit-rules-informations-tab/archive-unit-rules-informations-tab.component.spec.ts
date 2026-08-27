@@ -40,7 +40,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 import {
-  BASE_URL,
   InheritedPropertyDto,
   InjectorModule,
   LoggerModule,

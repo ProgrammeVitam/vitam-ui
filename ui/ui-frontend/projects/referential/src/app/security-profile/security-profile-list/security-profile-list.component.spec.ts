@@ -37,7 +37,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, SecurityProfile } from 'vitamui-library';
+import { AuthService, SecurityProfile } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileListComponent } from './security-profile-list.component';
 
@@ -54,7 +54,6 @@ describe('SecurityProfileListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SecurityProfileListComponent],
       providers: [
-        { provide: BASE_URL, useValue: '' },
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
       ],

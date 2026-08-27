@@ -39,9 +39,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab.component';
@@ -96,14 +95,7 @@ describe('ManagementContractStorageTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        MatSidenavModule,
-        InjectorModule,
-        VitamUICommonTestModule,
-        RouterTestingModule,
-        LoggerModule.forRoot(),
-        ManagementContractStorageTabComponent,
-      ],
+      imports: [MatSidenavModule, InjectorModule, VitamUICommonTestModule, LoggerModule.forRoot(), ManagementContractStorageTabComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },

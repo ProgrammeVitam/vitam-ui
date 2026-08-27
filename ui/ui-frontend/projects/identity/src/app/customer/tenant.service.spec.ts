@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Operators, Owner, SnackBarService, Tenant } from 'vitamui-library';
+import { CriteriaSearchQuery, Operators, Owner, SnackBarService, Tenant } from 'vitamui-library';
 
 import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';

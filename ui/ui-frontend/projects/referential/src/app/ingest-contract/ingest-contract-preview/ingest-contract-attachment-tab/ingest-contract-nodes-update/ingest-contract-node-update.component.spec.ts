@@ -38,7 +38,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, ENVIRONMENT, FilingPlanComponent, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
+import { ENVIRONMENT, FilingPlanComponent, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 

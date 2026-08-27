@@ -40,14 +40,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, of } from 'rxjs';
-import {
-  AccessContractService,
-  BASE_URL,
-  ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-} from 'vitamui-library';
+import { AccessContractService, ConfirmDialogService, ExternalParameters, ExternalParametersService, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';

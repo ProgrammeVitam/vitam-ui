@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from '../injection-tokens';
 import { OntologyService } from './ontology.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

@@ -39,7 +39,6 @@ import { FormBuilder } from '@angular/forms';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -62,10 +61,8 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
     MatMenuModule,
     MatSidenavModule,
     InjectorModule,
-    RouterTestingModule,
     VitamUICommonTestModule,
     BrowserAnimationsModule,
-    RouterTestingModule,
     MatDialogModule,
   ],
 })
@@ -91,11 +88,9 @@ describe('HoldingFilingSchemeComponent', () => {
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         SearchBarComponent,
         MatDialogModule,
         HoldingFillingSchemeComponent,

@@ -38,14 +38,13 @@ import { inject, TestBed } from '@angular/core/testing';
 
 import { EMPTY } from 'rxjs';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
-import { BASE_URL } from '../injection-tokens';
 import { AccountService } from './account.service';
 
 describe('AccountService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [AccountService, { provide: BASE_URL, useValue: {} }, { provide: SnackBarService, useValue: { instant: () => EMPTY } }],
+      providers: [AccountService, { provide: SnackBarService, useValue: { instant: () => EMPTY } }],
     });
   });
 

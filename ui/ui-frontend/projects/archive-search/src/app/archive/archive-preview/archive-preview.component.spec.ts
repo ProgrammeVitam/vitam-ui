@@ -42,10 +42,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
@@ -103,7 +101,6 @@ describe('ArchivePreviewComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
         VitamUICommonModule,
         InjectorModule,

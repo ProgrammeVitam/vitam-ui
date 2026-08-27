@@ -38,7 +38,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { WINDOW_LOCATION } from 'vitamui-library';
 import { OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview.component';

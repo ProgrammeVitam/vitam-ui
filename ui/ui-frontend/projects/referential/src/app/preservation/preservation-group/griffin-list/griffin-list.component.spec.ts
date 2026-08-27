@@ -41,7 +41,7 @@ import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, of, throwError } from 'rxjs';
 import type { Mock, MockInstance } from 'vitest';
-import { BASE_URL, Griffin, GriffinsService, LoggerModule, SnackBarService, StartupService, TenantSelectionService } from 'vitamui-library';
+import { Griffin, GriffinsService, LoggerModule, SnackBarService, StartupService, TenantSelectionService } from 'vitamui-library';
 
 import { GriffinListComponent } from './griffin-list.component';
 

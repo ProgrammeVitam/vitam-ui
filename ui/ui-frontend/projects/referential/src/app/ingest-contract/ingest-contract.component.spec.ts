@@ -38,12 +38,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
   Application,
   ApplicationService,
-  BASE_URL,
   GlobalEventService,
   IngestContract,
   InjectorModule,
@@ -77,13 +75,12 @@ describe('IngestContractComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot(), IngestContractComponent],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), IngestContractComponent],
       providers: [
         GlobalEventService,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: {} },
         { provide: MatDialog, useValue: {} },
-        { provide: BASE_URL, useValue: '' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: DownloadSnackBarService, useValue: {} },
       ],

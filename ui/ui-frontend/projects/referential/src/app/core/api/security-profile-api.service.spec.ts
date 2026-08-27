@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { AgencyApiService, BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
+import { AgencyApiService, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from './../../../environments/environment';
 
 describe('AgencyApiService', () => {

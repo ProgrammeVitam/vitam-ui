@@ -38,7 +38,6 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
 import { InjectorModule, LoggerModule, SchemaService, SecurityService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
@@ -49,7 +48,7 @@ import { EMPTY } from 'rxjs';
 @Component({
   selector: 'app-ontology-preview',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class OntologyPreviewStub {
   @Input()
@@ -59,7 +58,7 @@ class OntologyPreviewStub {
 @Component({
   selector: 'app-ontology-list',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class OntologyListStub {}
 
@@ -71,7 +70,6 @@ describe('OntologyComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         VitamUICommonTestModule,
-        RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatSidenavModule,

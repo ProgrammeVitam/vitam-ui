@@ -37,10 +37,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import {
-  BASE_URL,
   InjectorModule,
   LoggerModule,
   SearchCriteriaTypeEnum,
@@ -57,15 +55,7 @@ describe('CriteriaSearchComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        InjectorModule,
-        RouterTestingModule,
-        VitamUICommonTestModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        CriteriaSearchComponent,
-      ],
+      imports: [InjectorModule, VitamUICommonTestModule, BrowserAnimationsModule, LoggerModule.forRoot(), CriteriaSearchComponent],
       providers: [
         TranslateWithOptionalTypeSuffixPipe,
         { provide: WINDOW_LOCATION, useValue: window.location },

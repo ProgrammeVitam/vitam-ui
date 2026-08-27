@@ -38,8 +38,7 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AccessContractService, ApplicationService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AccessContractService, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { AccessContractComponent } from './access-contract.component';
@@ -49,7 +48,7 @@ import { EMPTY, of } from 'rxjs';
 @Component({
   selector: 'app-access-contract-preview',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AccessContractPreviewStub {
   @Input()
@@ -59,7 +58,7 @@ class AccessContractPreviewStub {
 @Component({
   selector: 'app-access-contract-list',
   template: '',
-  imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, MatSidenavModule, MatDialogModule],
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AccessContractListStub {}
 
@@ -81,7 +80,6 @@ describe('AccessContractComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         VitamUICommonTestModule,
-        RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
         MatSidenavModule,

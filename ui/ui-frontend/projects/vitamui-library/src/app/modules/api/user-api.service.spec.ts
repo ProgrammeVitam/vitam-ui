@@ -36,7 +36,7 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from '../auth.service';
-import { BASE_URL, WINDOW_LOCATION } from './../injection-tokens';
+import { WINDOW_LOCATION } from './../injection-tokens';
 
 import { UserApiService } from './user-api.service';
 

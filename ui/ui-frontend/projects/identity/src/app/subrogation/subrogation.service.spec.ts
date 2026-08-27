@@ -36,7 +36,7 @@
  */
 import { inject, TestBed } from '@angular/core/testing';
 
-import { BASE_URL, SubrogationApiService, WINDOW_LOCATION } from 'vitamui-library';
+import { SubrogationApiService, WINDOW_LOCATION } from 'vitamui-library';
 import { SubrogationService } from './subrogation.service';
 
 describe('SubrogationService', () => {

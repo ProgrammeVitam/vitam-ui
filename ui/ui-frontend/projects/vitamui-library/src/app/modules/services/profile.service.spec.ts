@@ -38,7 +38,6 @@ import { HttpTestingController } from '@angular/common/http/testing';
 
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { BASE_URL } from '../injection-tokens';
 import { ProfileService } from './profile.service';
 
 describe('ProfileService', () => {

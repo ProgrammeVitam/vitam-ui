@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, LoggerModule, ResultFacet, ResultFacetList } from 'vitamui-library';
+import { LoggerModule, ResultFacet, ResultFacetList } from 'vitamui-library';
 import { ArchiveFacetsService } from './archive-facets.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

@@ -382,7 +382,8 @@
           "options": {
             "tsConfig": "projects/vitamui-library/tsconfig.spec.json",
             "setupFiles": [
-              "test.ts"
+              "test.ts",
+              "projects/vitamui-library/test.ts"
             ],
             "outputFile": "junit/vitamui-library.xml"
           }

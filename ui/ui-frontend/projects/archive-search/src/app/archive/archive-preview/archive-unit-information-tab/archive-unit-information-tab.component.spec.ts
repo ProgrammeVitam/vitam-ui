@@ -46,14 +46,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
   AccessContract,
   AccessContractService,
   ApiUnitObject,
-  BASE_URL,
   DataComponent,
   DescriptionLevel,
   ENVIRONMENT,
@@ -131,7 +129,6 @@ describe('ArchiveUnitInformationTabComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
         DataComponent,

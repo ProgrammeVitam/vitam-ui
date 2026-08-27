@@ -38,12 +38,10 @@ import { vi } from 'vitest';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
   ApiUnitObject,
-  BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   FileInfoDto,
@@ -124,7 +122,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         BrowserAnimationsModule,
         CollectObjectGroupDetailsTabComponent,
       ],

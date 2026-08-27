@@ -43,17 +43,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import {
-  AccessionRegisterDetail,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { AccessionRegisterDetail, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview.component';
@@ -90,7 +81,6 @@ describe('AccessionRegisterPreviewComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
         AccessionRegisterPreviewComponent,

@@ -47,7 +47,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   InjectorModule,
   LoggerModule,
   PagedResult,

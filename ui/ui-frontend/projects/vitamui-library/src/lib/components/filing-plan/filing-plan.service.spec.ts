@@ -41,7 +41,6 @@ import { inject, TestBed } from '@angular/core/testing';
 import { SnackBarService } from '../../../app/modules/components/snack-bar/snack-bar.service';
 import { FileType } from '../../../app/modules/file-type.enum';
 import { InjectorModule } from '../../../app/modules/helper/injector.module';
-import { BASE_URL } from '../../../app/modules/injection-tokens';
 import { LoggerModule } from '../../../app/modules/logger/logger.module';
 import { UnitType } from '../../../app/modules/models/units/unit-type.enum';
 import { AccessContractService } from '../../../app/modules/services/access-contract.service';
