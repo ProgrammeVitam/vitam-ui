@@ -45,7 +45,7 @@ describe('OntologyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [OntologyService, provideHttpClient(withInterceptorsFromDi()), { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [OntologyService, provideHttpClient(withInterceptorsFromDi())],
     });
     service = TestBed.inject(OntologyService);
   });

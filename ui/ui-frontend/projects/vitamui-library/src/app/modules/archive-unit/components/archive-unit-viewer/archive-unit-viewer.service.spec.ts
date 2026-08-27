@@ -63,7 +63,6 @@ describe('ArchiveUnitViewerService', () => {
         DisplayObjectHelperService,
         DisplayRuleHelperService,
         SchemaElementToDisplayRuleService,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SchemaService, useClass: MockSchemaService },
       ],
     });

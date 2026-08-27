@@ -163,7 +163,6 @@ describe('RuleComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();
   });

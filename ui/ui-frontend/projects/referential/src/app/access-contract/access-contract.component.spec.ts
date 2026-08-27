@@ -91,7 +91,6 @@ describe('AccessContractComponent', () => {
         AccessContractPreviewStub,
       ],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],

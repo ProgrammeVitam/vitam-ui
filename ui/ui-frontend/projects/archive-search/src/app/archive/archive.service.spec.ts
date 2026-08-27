@@ -51,10 +51,7 @@ describe('ArchiveService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ArchiveApiService, useValue: archiveApiService },
-      ],
+      providers: [{ provide: ArchiveApiService, useValue: archiveApiService }],
     });
     service = TestBed.inject(ArchiveService);
   });

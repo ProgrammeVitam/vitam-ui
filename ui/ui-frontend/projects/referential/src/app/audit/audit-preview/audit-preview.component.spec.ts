@@ -65,7 +65,6 @@ describe('AuditPreviewComponent', () => {
 
     await TestBed.configureTestingModule({
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: AuditService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },

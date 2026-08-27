@@ -270,7 +270,6 @@ describe('CustomerCreateComponent', () => {
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },

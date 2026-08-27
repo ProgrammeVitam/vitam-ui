@@ -106,7 +106,6 @@ describe('ManagementContractStorageTabComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: MatDialog, useValue: matDialogSpy },

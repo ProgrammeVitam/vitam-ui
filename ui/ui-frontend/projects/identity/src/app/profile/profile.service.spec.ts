@@ -52,7 +52,7 @@ describe('ProfileService', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [ProfileService, { provide: SnackBarService, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [ProfileService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

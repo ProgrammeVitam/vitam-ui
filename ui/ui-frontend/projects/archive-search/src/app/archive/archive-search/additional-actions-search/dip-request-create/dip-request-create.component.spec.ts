@@ -100,7 +100,6 @@ describe('DipRequestCreateComponent', () => {
             selectedItemCountKnown: true,
           },
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },

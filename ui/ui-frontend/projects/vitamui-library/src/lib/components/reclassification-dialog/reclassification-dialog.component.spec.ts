@@ -109,7 +109,6 @@ describe('ReclassificationDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         {

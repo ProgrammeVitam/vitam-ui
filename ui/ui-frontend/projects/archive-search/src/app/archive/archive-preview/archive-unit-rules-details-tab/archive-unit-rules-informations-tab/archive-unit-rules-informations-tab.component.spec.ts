@@ -126,7 +126,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         ArchiveUnitRulesInformationsTabComponent,
         DateTimeStubPipe,
       ],
-      providers: [{ provide: BASE_URL, useValue: '/fake-api' }, provideI18n()],
+      providers: [provideI18n()],
     }).compileComponents();
   });
 

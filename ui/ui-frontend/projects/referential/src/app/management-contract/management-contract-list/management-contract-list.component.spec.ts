@@ -89,7 +89,6 @@ describe('ManagementContractListComponent', () => {
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
         { provide: SearchService, useValue: searchServiceeMock },
       ],

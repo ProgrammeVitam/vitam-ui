@@ -129,7 +129,7 @@ describe('ArchiveFacetsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [provideHttpClient(withInterceptorsFromDi()), { provide: BASE_URL, useValue: '/fake-api' }, ArchiveFacetsService],
+      providers: [provideHttpClient(withInterceptorsFromDi()), ArchiveFacetsService],
     });
 
     archiveFacetsService = TestBed.inject(ArchiveFacetsService);

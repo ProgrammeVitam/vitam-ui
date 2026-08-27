@@ -98,12 +98,7 @@ describe('CustomerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        CustomerService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-        { provide: SnackBarService, useValue: snackBarSpy },
-      ],
+      providers: [CustomerService, { provide: ENVIRONMENT, useValue: environment }, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
