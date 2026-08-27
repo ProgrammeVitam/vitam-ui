@@ -72,6 +72,8 @@ describe('UpdateUaMetadataComponent', () => {
     await TestBed.configureTestingModule({
       imports: [UpdateUnitsMetadataComponent],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

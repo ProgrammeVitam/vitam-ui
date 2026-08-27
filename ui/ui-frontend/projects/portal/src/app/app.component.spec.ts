@@ -86,6 +86,8 @@ describe('AppComponent', () => {
           },
         },
         { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         provideHttpClient(withInterceptorsFromDi()),

@@ -48,6 +48,8 @@ describe('UserApiService', () => {
       imports: [],
       providers: [
         { provide: AuthService, useValue: {} },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         provideHttpClient(withInterceptorsFromDi()),

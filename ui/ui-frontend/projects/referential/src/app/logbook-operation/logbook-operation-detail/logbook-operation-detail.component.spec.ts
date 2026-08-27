@@ -47,6 +47,7 @@ import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -80,6 +81,8 @@ describe('LogbookOperationDetailComponent', () => {
       ],
       providers: [
         { provide: LogbookService, useValue: {} },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
         { provide: AuthService, useValue: {} },

@@ -70,6 +70,8 @@ describe('TitleAndDescriptionCriteriaSearchCollectComponent', () => {
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: matDialogSpy },
         provideHttpClient(withInterceptorsFromDi()),

@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateLoader } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
 import { AgencyService, AuthService, BASE_URL, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -59,6 +58,8 @@ describe('AgencyListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LoggerModule.forRoot(), VitamUICommonTestModule, MatProgressSpinnerModule],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

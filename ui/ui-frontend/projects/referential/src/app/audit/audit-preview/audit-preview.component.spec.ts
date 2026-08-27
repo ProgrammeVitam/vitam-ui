@@ -41,6 +41,8 @@ import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, 
 import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { ActivatedRoute } from '@angular/router';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -65,6 +67,8 @@ describe('AuditPreviewComponent', () => {
 
     await TestBed.configureTestingModule({
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: AuditService, useValue: {} },
