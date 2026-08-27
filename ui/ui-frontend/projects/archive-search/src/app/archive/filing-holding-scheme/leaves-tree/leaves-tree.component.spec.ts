@@ -39,7 +39,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
   ConfigurationsApiService,
@@ -117,7 +116,6 @@ describe('LeavesTreeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         LeavesTreeComponent,
       ],
       providers: [

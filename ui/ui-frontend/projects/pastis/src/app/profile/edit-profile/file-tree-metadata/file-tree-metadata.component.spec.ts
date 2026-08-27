@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
-import { BASE_URL, LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
+import { LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
 import { PastisApiService } from '../../../core/api/api.pastis.service';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { FileService } from '../../../core/services/file.service';

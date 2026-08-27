@@ -40,9 +40,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractListComponent } from './management-contract-list.component';
@@ -81,7 +80,6 @@ describe('ManagementContractListComponent', () => {
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        RouterTestingModule,
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
         ManagementContractListComponent,

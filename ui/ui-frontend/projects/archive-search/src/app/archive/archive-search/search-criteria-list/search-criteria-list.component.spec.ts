@@ -39,7 +39,6 @@ import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
   CriteriaDataType,
@@ -83,7 +82,7 @@ describe('SearchCriteriaListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule, SearchCriteriaListComponent, MockTruncatePipe],
+      imports: [InjectorModule, LoggerModule.forRoot(), SearchCriteriaListComponent, MockTruncatePipe],
       providers: [
         ArchiveSharedDataService,
         DatePipe,

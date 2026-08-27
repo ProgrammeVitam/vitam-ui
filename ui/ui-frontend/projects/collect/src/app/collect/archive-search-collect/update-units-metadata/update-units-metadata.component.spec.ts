@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata.component';
 
 const selectedTransaction: Transaction = {

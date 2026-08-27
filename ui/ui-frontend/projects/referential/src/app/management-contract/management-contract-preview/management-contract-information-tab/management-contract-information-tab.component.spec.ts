@@ -39,9 +39,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, IntermediaryVersionEnum, LoggerModule, ManagementContract, WINDOW_LOCATION } from 'vitamui-library';
 import { InputStubComponent, VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../../management-contract.service';
 import { ManagementContractInformationTabComponent } from './management-contract-information-tab.component';
@@ -108,7 +107,6 @@ describe('ManagementContractInformationTabComponent', () => {
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        RouterTestingModule,
         LoggerModule.forRoot(),
         ManagementContractInformationTabComponent,
         DateTimeStubPipe,

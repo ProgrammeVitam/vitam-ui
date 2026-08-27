@@ -34,43 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { inject, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 
-import { EMPTY } from 'rxjs';
-import { VitamUICommonTestModule } from '../../../../testing/src/vitamui-common-test.module';
+/// <reference types="vitest/globals" />
 
-import { AuthService } from '../auth.service';
-import { SnackBarService } from '../components/snack-bar/snack-bar.service';
-import { LoggerModule } from '../logger/logger.module';
-import { environment } from './../../../environments/environment';
-import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
-import { SubrogationService } from './subrogation.service';
+import { TestBed } from '@angular/core/testing';
+import { BASE_URL } from './src/app/modules/injection-tokens';
 
-describe('SubrogationService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [LoggerModule.forRoot(), VitamUICommonTestModule],
-      providers: [
-        SubrogationService,
-        { provide: WINDOW_LOCATION, useValue: {} },
-        {
-          provide: Router,
-          useValue: {
-            navigate: () => {},
-            navigateByUrl: () => {},
-            url: 'subrogations/customers/customerId',
-          },
-        },
-        { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 100 },
-        { provide: AuthService, useValue: {} },
-        { provide: ENVIRONMENT, useValue: environment },
-        { provide: SnackBarService, useValue: { instant: () => EMPTY } },
-      ],
-    });
-  });
-
-  it('should be created', inject([SubrogationService], (service: SubrogationService) => {
-    expect(service).toBeTruthy();
-  }));
-});
+/**
+ * We just need to override BASE_URL differently when executing tests in vitamui-library because the injection token wouldn't be recognized if it were imported from 'vitamui-library' (we use a relative path instead)
+ */
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    providers: [{ provide: BASE_URL, useValue: '/fake-api' }, ...(moduleDef?.providers ?? [])],
+  })) as typeof TestBed.configureTestingModule;

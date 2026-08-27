@@ -41,7 +41,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { Application, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -74,7 +73,6 @@ describe('ManagementContractComponent', () => {
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        RouterTestingModule,
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
         ManagementContractComponent,

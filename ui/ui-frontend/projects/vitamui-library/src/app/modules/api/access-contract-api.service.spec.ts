@@ -40,13 +40,20 @@ import { InjectorModule } from '../helper/injector.module';
 import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
 import { environment } from '../../../environments/environment';
 import { AccessContractApiService } from './access-contract-api.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessContractApiService', () => {
   let service: AccessContractApiService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot()],
-      providers: [{ provide: ENVIRONMENT, useValue: environment }],
+      providers: [
+        { provide: ENVIRONMENT, useValue: environment },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
+      ],
     });
     service = TestBed.inject(AccessContractApiService);
   });

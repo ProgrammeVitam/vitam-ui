@@ -38,9 +38,8 @@ import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
+import { AuthService, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
@@ -71,7 +70,6 @@ describe('LogbookOperationDetailComponent', () => {
         EventTypeBadgeColorPipe,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         VitamUICommonTestModule,
         LogbookOperationDetailComponent,
         LastEventPipe,

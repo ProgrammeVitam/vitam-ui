@@ -40,7 +40,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, of } from 'rxjs';
 import {
   AgenciesModule,
-  BASE_URL,
   InjectorModule,
   ItemNode,
   LoggerModule,

@@ -38,7 +38,7 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, SearchCriteriaHistory } from 'vitamui-library';
+import { SearchCriteriaHistory } from 'vitamui-library';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 

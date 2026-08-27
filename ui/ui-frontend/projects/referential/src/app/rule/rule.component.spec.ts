@@ -44,11 +44,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
 import {
   AuthService,
-  BASE_URL,
   ENVIRONMENT,
   GlobalEventService,
   InjectorModule,
@@ -65,7 +63,6 @@ import { RuleComponent } from './rule.component';
   selector: 'app-rule-preview',
   template: '',
   imports: [
-    RouterTestingModule,
     VitamUICommonTestModule,
     ReactiveFormsModule,
     MatMenuModule,
@@ -86,7 +83,6 @@ class RulePreviewStubComponent {
   selector: 'app-rule-list',
   template: '',
   imports: [
-    RouterTestingModule,
     VitamUICommonTestModule,
     ReactiveFormsModule,
     MatMenuModule,
@@ -140,7 +136,6 @@ describe('RuleComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
         VitamUICommonTestModule,
         ReactiveFormsModule,
         MatMenuModule,

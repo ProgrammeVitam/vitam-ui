@@ -37,7 +37,7 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
-import { AuthService, BASE_URL, ExternalParamProfile, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService, ExternalParamProfile, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';

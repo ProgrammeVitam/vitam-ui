@@ -38,9 +38,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../models/ruleAction.interface';
@@ -139,7 +138,7 @@ describe('ManagementRulesComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule, ManagementRulesComponent],
+      imports: [InjectorModule, LoggerModule.forRoot(), ManagementRulesComponent],
       providers: [
         FormBuilder,
         { provide: StartupService, useValue: startupServiceStub },

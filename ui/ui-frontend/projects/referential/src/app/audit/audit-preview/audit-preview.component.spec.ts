@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, SnackBarService } from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, LoggerModule, SnackBarService } from 'vitamui-library';
 import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
 import { ActivatedRoute } from '@angular/router';

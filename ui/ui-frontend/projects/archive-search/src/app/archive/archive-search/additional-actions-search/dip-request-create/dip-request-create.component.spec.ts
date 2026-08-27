@@ -40,15 +40,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  UsageVersionEnum,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { ConfirmDialogService, InjectorModule, LoggerModule, StartupService, UsageVersionEnum, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
 
