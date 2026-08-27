@@ -84,6 +84,8 @@ describe('PreservationScenarioListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PreservationScenarioListComponent, LoggerModule.forRoot()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),

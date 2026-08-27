@@ -140,6 +140,8 @@ describe('TransactionListComponent', () => {
             },
           },
         },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },

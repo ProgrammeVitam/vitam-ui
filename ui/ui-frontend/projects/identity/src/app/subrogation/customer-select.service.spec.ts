@@ -56,6 +56,8 @@ describe('CustomerSelectService', () => {
       providers: [
         CustomerSelectService,
         { provide: AuthService, useValue: authStubService },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),

@@ -68,6 +68,8 @@ describe('ExternalParamProfilDetailComponent', () => {
         { provide: ExternalParamProfileService, useValue: { updated: new Subject(), getAllActiveAccessContracts: of() } },
         { provide: AuthService, useValue: authServiceMock },
         { provide: WINDOW_LOCATION, useValue: {} },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),

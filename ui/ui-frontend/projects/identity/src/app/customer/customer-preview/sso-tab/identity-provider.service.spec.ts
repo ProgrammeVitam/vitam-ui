@@ -98,6 +98,8 @@ describe('IdentityProviderService', () => {
       providers: [
         IdentityProviderService,
         { provide: SnackBarService, useValue: snackBarSpy },
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: ENVIRONMENT, useValue: environment },

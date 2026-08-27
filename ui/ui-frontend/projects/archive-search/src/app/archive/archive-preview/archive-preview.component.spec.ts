@@ -115,6 +115,8 @@ describe('ArchivePreviewComponent', () => {
         MockUnitI18nPipe,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
