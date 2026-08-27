@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL, LoggerModule, ResultFacet, ResultFacetList } from 'vitamui-library';
 import { ArchiveFacetsService } from './archive-facets.service';
@@ -130,12 +129,7 @@ describe('ArchiveFacetsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
-        ArchiveFacetsService,
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), { provide: BASE_URL, useValue: '/fake-api' }, ArchiveFacetsService],
     });
 
     archiveFacetsService = TestBed.inject(ArchiveFacetsService);

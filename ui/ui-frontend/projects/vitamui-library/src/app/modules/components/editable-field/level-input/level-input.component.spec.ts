@@ -34,12 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { LevelInputComponent } from './level-input.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LevelInputComponent', () => {
   let component: LevelInputComponent;
@@ -53,8 +51,6 @@ describe('LevelInputComponent', () => {
           provide: WINDOW_LOCATION,
           useValue: {},
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

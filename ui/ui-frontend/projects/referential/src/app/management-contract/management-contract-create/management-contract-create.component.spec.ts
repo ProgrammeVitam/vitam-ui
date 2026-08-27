@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -58,7 +57,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractToFormGroupConverterService } from '../components/management-contract-to-form-group-converter.service';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractCreateComponent', () => {
   let managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService;
@@ -111,8 +109,6 @@ describe('ManagementContractCreateComponent', () => {
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         ManagementContractToFormGroupConverterService,

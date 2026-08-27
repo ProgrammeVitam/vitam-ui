@@ -34,8 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -74,8 +72,6 @@ describe('ErrorResponseModalComponent', () => {
           provide: MatDialogRef,
           useValue: matDialogRefSpy,
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: MAT_DIALOG_DATA,

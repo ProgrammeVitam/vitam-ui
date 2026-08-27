@@ -41,8 +41,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { AuthService, BASE_URL, SchemaService, TenantSelectionService } from 'vitamui-library';
 import { SchemaListComponent } from './schema-list.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('SchemaListComponent', () => {
   let component: SchemaListComponent;
@@ -63,8 +61,6 @@ describe('SchemaListComponent', () => {
       declarations: [],
       imports: [SchemaListComponent],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },
         { provide: SchemaService, useValue: schemaServiceMock },

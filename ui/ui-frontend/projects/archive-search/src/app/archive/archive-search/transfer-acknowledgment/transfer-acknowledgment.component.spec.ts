@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -43,7 +42,6 @@ import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, StartupService, WIND
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CdkStep } from '@angular/cdk/stepper';
 
 @Pipe({ name: 'dateTime' })
@@ -88,8 +86,6 @@ describe('TransferAcknowledgmentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TransferAcknowledgmentComponent, CdkStep, InjectorModule, LoggerModule.forRoot(), MockDateTimePipe],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

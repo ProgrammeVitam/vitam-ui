@@ -36,7 +36,6 @@
  */
 import { vi } from 'vitest';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -60,7 +59,6 @@ import {
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const createSpyObj = (name: string, methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 
@@ -131,8 +129,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         CollectObjectGroupDetailsTabComponent,
       ],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -56,7 +55,6 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 export function newNode(
   currentId: string,
@@ -127,8 +125,6 @@ describe('LeavesTreeComponent', () => {
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
         { provide: ArchiveFacetsService, useValue: archiveFacetsServicStube },
         { provide: ConfigurationsApiService, useValue: configurationsApiServiceStube },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

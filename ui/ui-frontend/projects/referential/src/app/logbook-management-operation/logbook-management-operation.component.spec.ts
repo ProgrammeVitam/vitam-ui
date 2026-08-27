@@ -43,8 +43,6 @@ import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModul
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('LogbookManagementOperationComponent', () => {
   let component: LogbookManagementOperationComponent;
@@ -78,8 +76,6 @@ describe('LogbookManagementOperationComponent', () => {
           },
         },
         { provide: WINDOW_LOCATION, useValue: {} },
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: ENVIRONMENT, useValue: '' },
       ],

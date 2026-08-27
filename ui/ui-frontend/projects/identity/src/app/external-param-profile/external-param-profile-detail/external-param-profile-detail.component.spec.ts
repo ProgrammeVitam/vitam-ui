@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
@@ -42,7 +41,6 @@ import { AuthService, BASE_URL, ExternalParamProfile, LoggerModule, WINDOW_LOCAT
 import { environment } from '../../../environments/environment.prod';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileDetailComponent } from './external-param-profile-detail.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 
 @Component({
@@ -68,8 +66,6 @@ describe('ExternalParamProfilDetailComponent', () => {
         { provide: ExternalParamProfileService, useValue: { updated: new Subject(), getAllActiveAccessContracts: of() } },
         { provide: AuthService, useValue: authServiceMock },
         { provide: WINDOW_LOCATION, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
       ],

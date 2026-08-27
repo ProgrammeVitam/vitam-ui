@@ -34,11 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL, LoggerModule, SnackBarService } from 'vitamui-library';
 import { ExternalParamProfileService } from './external-param-profile.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileService', () => {
   let service: ExternalParamProfileService;
@@ -51,8 +49,6 @@ describe('ExternalParamProfileService', () => {
       providers: [
         ExternalParamProfileService,
         { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     });

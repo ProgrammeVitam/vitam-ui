@@ -49,8 +49,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProbativeValueComponent } from './probative-value.component';
 import { DatePipe } from '@angular/common';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('ProbativeValueComponent', () => {
   let component: ProbativeValueComponent;
@@ -76,8 +74,6 @@ describe('ProbativeValueComponent', () => {
       ],
       providers: [
         provideNativeDateAdapter(),
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/pastis-api' },
         DatePipe,
         FormBuilder,

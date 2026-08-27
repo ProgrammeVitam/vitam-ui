@@ -37,14 +37,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AccessContractService, BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
 import { AccessContractListComponent } from './access-contract-list.component';
 
 import { EMPTY, of } from 'rxjs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessContractListComponent', () => {
   let component: AccessContractListComponent;
@@ -62,8 +59,6 @@ describe('AccessContractListComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [VitamUICommonTestModule, MatProgressSpinnerModule, AccessContractListComponent],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },

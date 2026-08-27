@@ -38,7 +38,6 @@
 import { ReclassificationDialogComponent } from './reclassification-dialog.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ConfirmDialogService } from '../../../app/modules/components/common-confirm-dialog/confirm-dialog.service';
 import { BASE_URL, WINDOW_LOCATION } from '../../../app/modules/injection-tokens';
 import { LoggerModule } from '../../../app/modules/logger/logger.module';
@@ -47,7 +46,6 @@ import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../..
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Observable, of } from 'rxjs';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
-import { provideHttpClient } from '@angular/common/http';
 
 const matDialogRefSpy = {
   close: vi.fn().mockName('MatDialogRef.close'),
@@ -111,8 +109,6 @@ describe('ReclassificationDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [MatSnackBarModule, LoggerModule.forRoot()],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },

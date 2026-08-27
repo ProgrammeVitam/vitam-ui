@@ -60,8 +60,6 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProjectsApiService } from '../../core/api/project-api.service';
 import { ProjectPreviewComponent } from './project-preview.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('ProjectPreviewComponent', () => {
   let component: ProjectPreviewComponent;
@@ -159,8 +157,6 @@ describe('ProjectPreviewComponent', () => {
       ],
       providers: [
         FormBuilder,
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: MatDialogRef,
