@@ -99,7 +99,11 @@ describe('IngestComponent test:', () => {
         { provide: UploadService, useValue: uploadServiceSpy },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'INGEST_MANAGEMENT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'INGEST_MANAGEMENT_APP' }),
+            snapshot: { data: { appId: 'INGEST_MANAGEMENT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
       ],

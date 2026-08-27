@@ -134,6 +134,7 @@ describe('RuleComponent', () => {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'RULE_APP' }),
       paramMap: EMPTY,
+      snapshot: { data: { appId: 'RULE_APP' } },
     };
 
     const securityServiceMock = {

@@ -98,7 +98,7 @@ describe('AgencyComponent', () => {
             queryParams: of({}),
             paramMap: of(),
             data: of({ appId: 'AGENCIES_APP' }),
-            snapshot: { data: {} },
+            snapshot: { data: { appId: 'AGENCIES_APP' } },
           },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },

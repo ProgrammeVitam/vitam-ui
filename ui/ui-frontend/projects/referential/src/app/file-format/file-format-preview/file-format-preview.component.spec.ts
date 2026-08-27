@@ -40,6 +40,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatPreviewComponent } from './file-format-preview.component';
+import { of } from 'rxjs';
+import { FileFormat } from 'vitamui-library';
 
 describe('FileFormatPreviewComponent', () => {
   let component: FileFormatPreviewComponent;
@@ -48,17 +50,33 @@ describe('FileFormatPreviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FileFormatPreviewComponent],
-      providers: [
-        { provide: MatDialog, useValue: {} },
-        { provide: FileFormatService, useValue: {} },
-      ],
+      providers: [{ provide: MatDialog, useValue: {} }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(FileFormatService, { useValue: { getAllForTenant: () => of([]) } })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileFormatPreviewComponent);
     component = fixture.componentInstance;
+    component.fileFormat = {
+      id: 'vitam_id',
+      documentVersion: 0,
+      version: '1.0',
+      versionPronom: '3.0',
+      puid: 'EXTERNAL_puid',
+      name: 'Name',
+      description: 'Format de Fichier',
+      mimeType: 'application/puid',
+      hasPriorityOverFileFormatIDs: [],
+      group: 'test',
+      alert: false,
+      comment: 'No Comment',
+      extensions: ['.puid'],
+      createdDate: new Date().toISOString(),
+      updateDate: new Date().toISOString(),
+    } satisfies FileFormat;
     fixture.detectChanges();
   });
 

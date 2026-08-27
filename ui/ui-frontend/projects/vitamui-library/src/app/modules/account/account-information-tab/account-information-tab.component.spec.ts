@@ -54,8 +54,7 @@ describe('AccountInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, SlideToggleComponent, AccountInformationTabComponent],
-      declarations: [VitamUIFieldErrorStubComponent],
+      imports: [ReactiveFormsModule, SlideToggleComponent, AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AccountService, useValue: accountServiceSpy },

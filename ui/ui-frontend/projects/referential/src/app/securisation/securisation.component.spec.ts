@@ -59,6 +59,7 @@ describe('SecurisationComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'SECURISATION_APP' }),
+      snapshot: { data: { appId: 'SECURISATION_APP' } },
     };
 
     await TestBed.configureTestingModule({

@@ -46,7 +46,7 @@ import { DomainsInputComponent } from './domains-input.component';
 
 @Component({
   template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
-  imports: [DomainsInputComponent],
+  imports: [DomainsInputComponent, FormsModule],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {

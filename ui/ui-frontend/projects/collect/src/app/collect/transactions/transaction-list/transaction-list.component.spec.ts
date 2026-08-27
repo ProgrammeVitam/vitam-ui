@@ -133,6 +133,7 @@ describe('TransactionListComponent', () => {
             params: of({ tenantIdentifier: 1 }),
             data: of({ appId: 'COLLECT_APP' }),
             snapshot: {
+              data: { appId: 'COLLECT_APP' },
               queryParamMap: {
                 get: () => 'project messageIdentifier',
               },
