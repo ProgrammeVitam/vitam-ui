@@ -107,7 +107,11 @@ describe('HoldingFilingSchemeComponent', () => {
         { provide: IngestService, useValue: ingestServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }),
+            snapshot: { data: { appId: 'HOLDING_FILLING_SCHEME_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
       ],

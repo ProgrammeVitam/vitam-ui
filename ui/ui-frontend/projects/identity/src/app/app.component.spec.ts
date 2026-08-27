@@ -36,38 +36,30 @@
  */
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'router-outlet',
-  template: '',
-})
-class RouterOutletStubComponent {}
-
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'vitamui-common-subrogation-banner',
-  template: '',
-})
-class SubrogationBannerStubComponent {}
-
 describe('AppComponent', () => {
   beforeEach(async () => {
-    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
+    const startupServiceStub = {
+      configurationLoaded: () => true,
+      printConfiguration: () => {},
+      getPlatformName: () => '',
+      getPortalUrl: () => '',
+      getConfigStringValue: () => '',
+      getHasSiteSelection: () => false,
+    };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, SubrogationBannerStubComponent, RouterOutletStubComponent, AppComponent],
+      imports: [AppComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => {} } },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideTemplate(AppComponent, '<div></div>')
+      .compileComponents();
   });
 
   it('should create the app', waitForAsync(() => {

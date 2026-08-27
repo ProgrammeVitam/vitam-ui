@@ -44,7 +44,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { Application, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractComponent } from './management-contract.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -55,6 +55,10 @@ describe('ManagementContractComponent', () => {
 
   const applicationServiceSpy = {
     isApplicationExternalIdentifierEnabled: vi.fn().mockName('ApplicationService.isApplicationExternalIdentifierEnabled'),
+    getAppById: () =>
+      of({
+        name: 'App name',
+      } satisfies Partial<Application>),
   };
   applicationServiceSpy.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
 
@@ -80,15 +84,20 @@ describe('ManagementContractComponent', () => {
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }),
+            snapshot: { data: { appId: 'MANAGEMENT_CONTRACT_APP' } },
+          },
         },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: ApplicationService, useValue: applicationServiceSpy },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ApplicationService, { useValue: applicationServiceSpy })
+      .compileComponents();
   });
 
   beforeEach(() => {

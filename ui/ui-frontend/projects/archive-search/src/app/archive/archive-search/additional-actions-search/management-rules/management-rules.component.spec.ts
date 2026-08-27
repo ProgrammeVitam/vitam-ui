@@ -121,6 +121,7 @@ describe('ManagementRulesComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+      snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
     };
 
     const archiveServiceMock = {

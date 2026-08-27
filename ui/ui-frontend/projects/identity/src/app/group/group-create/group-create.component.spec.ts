@@ -96,7 +96,6 @@ import { TranslatePipe } from '@ngx-translate/core';
       multi: true,
     },
   ],
-  standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -116,7 +115,6 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
 })
 class UnitsFormStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -178,7 +176,6 @@ describe('GroupCreateComponent', () => {
         TranslatePipe,
         GroupCreateComponent,
       ],
-      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -44,6 +44,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update.component';
 import { of } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { CdkStepper } from '@angular/cdk/stepper';
 
 describe('AccessContractAuthorizationsUpdateComponent', () => {
   let component: AccessContractAuthorizationsUpdateComponent;
@@ -71,6 +72,7 @@ describe('AccessContractAuthorizationsUpdateComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: CdkStepper, useValue: { steps: [] } },
       ],
     }).compileComponents();
   });

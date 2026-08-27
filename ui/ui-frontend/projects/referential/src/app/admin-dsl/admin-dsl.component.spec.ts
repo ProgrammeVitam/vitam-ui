@@ -74,6 +74,7 @@ describe('AdminDslComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'DSL_APP' }),
+      snapshot: { data: { appId: 'DSL_APP' } },
     };
 
     await TestBed.configureTestingModule({

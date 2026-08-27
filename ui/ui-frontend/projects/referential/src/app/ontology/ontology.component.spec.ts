@@ -44,6 +44,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
 import { OntologyService } from './ontology.service';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-ontology-preview',
@@ -81,8 +82,8 @@ describe('OntologyComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: OntologyService, useValue: {} },
-        { provide: SchemaService, useValue: {} },
+        { provide: OntologyService, useValue: { search: () => EMPTY, updated: EMPTY } },
+        { provide: SchemaService, useValue: { getSchemaTreeByCategory: () => EMPTY } },
         {
           provide: SecurityService,
           useValue: {
