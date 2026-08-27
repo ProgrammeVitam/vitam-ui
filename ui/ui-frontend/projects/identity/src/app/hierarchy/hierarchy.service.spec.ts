@@ -35,12 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { BASE_URL, SnackBarService } from 'vitamui-library';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { HierarchyService } from './hierarchy.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('HierarchyService', () => {
   beforeEach(() => {
@@ -50,13 +47,7 @@ describe('HierarchyService', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        HierarchyService,
-        { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ],
+      providers: [HierarchyService, { provide: SnackBarService, useValue: snackBarSpy }, { provide: BASE_URL, useValue: '/fake-api' }],
     });
   });
 

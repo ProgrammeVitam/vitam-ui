@@ -35,8 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController } from '@angular/common/http/testing';
 
 import { PreservationScenariosApiService } from './preservation-scenarios-api.service';
 import { BASE_URL } from '../../injection-tokens';
@@ -68,12 +67,7 @@ describe('PreservationScenariosApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        PreservationScenariosApiService,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: baseUrl },
-      ],
+      providers: [PreservationScenariosApiService, { provide: BASE_URL, useValue: baseUrl }],
     });
 
     service = TestBed.inject(PreservationScenariosApiService);

@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL } from '../injection-tokens';
 import { OntologyService } from './ontology.service';
@@ -46,12 +45,7 @@ describe('OntologyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        OntologyService,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-        { provide: BASE_URL, useValue: '/fake-api' },
-      ],
+      providers: [OntologyService, provideHttpClient(withInterceptorsFromDi()), { provide: BASE_URL, useValue: '/fake-api' }],
     });
     service = TestBed.inject(OntologyService);
   });

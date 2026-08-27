@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -46,7 +45,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { RuleTypeEnum } from '../../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { BlockCategoryInheritanceComponent } from './block-category-inheritance.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const accessContract = 'AccessContract';
 
@@ -129,8 +127,6 @@ describe('BlockCategoryInheritanceComponent', () => {
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule, BlockCategoryInheritanceComponent],
       providers: [
         FormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

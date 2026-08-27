@@ -37,12 +37,11 @@
 import { AuthService, BASE_URL, CriteriaSearchQuery, ENVIRONMENT, LoggerModule, Operators } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
 import { CustomerSelectService } from './customer-select.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CustomerSelectService', () => {
   let httpTestingController: HttpTestingController;
@@ -56,8 +55,6 @@ describe('CustomerSelectService', () => {
       providers: [
         CustomerSelectService,
         { provide: AuthService, useValue: authStubService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
       ],

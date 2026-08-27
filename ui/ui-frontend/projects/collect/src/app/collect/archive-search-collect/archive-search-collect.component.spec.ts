@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -71,7 +70,6 @@ import { ArchiveCollectService } from './archive-collect.service';
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
 
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
@@ -171,8 +169,6 @@ describe('ArchiveSearchCollectComponent', () => {
       providers: [
         ArchiveSearchHelperService,
         ArchiveSharedDataService,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
       ],

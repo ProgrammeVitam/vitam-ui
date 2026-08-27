@@ -35,8 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
@@ -62,7 +60,6 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-rule-preview',
@@ -166,8 +163,6 @@ describe('RuleComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();

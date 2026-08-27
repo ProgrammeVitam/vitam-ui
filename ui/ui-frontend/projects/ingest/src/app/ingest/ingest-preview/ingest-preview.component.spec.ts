@@ -37,14 +37,11 @@
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { BASE_URL, LogbookService } from 'vitamui-library';
 import { LogbookOperation } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { IngestPreviewComponent } from './ingest-preview.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
@@ -77,8 +74,6 @@ describe('IngestPreviewComponent test:', () => {
             logbookOperationsReloaded: of([logbookOperation]),
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     }).compileComponents();

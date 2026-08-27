@@ -45,8 +45,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractComponent } from './access-contract.component';
 
 import { EMPTY, of } from 'rxjs';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-access-contract-preview',
@@ -93,8 +91,6 @@ describe('AccessContractComponent', () => {
         AccessContractPreviewStub,
       ],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },

@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -48,7 +47,6 @@ import { DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule }
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurisationComponent } from './securisation.component';
 import { DatePipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('SecurisationComponent', () => {
@@ -86,8 +84,6 @@ describe('SecurisationComponent', () => {
             navigate: () => {},
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

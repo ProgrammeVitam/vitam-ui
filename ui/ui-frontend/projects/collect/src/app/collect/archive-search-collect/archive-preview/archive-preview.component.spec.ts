@@ -60,8 +60,6 @@ import {
 import { environment } from '../../../../environments/environment';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
@@ -105,8 +103,6 @@ describe('ArchivePreviewComponent', () => {
         MockUnitI18nPipe,
       ],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

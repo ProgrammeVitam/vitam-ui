@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService, BASE_URL, SnackBarService, StartupService } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatListComponent } from './file-format-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FileFormatListComponent', () => {
   let component: FileFormatListComponent;
@@ -52,8 +50,6 @@ describe('FileFormatListComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [FileFormatListComponent],
       providers: [
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         FileFormatService,
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },

@@ -44,8 +44,6 @@ import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
 import { DecimalPipe } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -72,8 +70,6 @@ describe('UploadComponent', () => {
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
         DecimalPipe,
         BytesPipe,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '/fake-api' },
       ],
     })

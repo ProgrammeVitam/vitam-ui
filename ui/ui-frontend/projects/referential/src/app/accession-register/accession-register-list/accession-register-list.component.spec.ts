@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -43,7 +42,6 @@ import { Direction, InfiniteScrollTable, PageRequest, SearchService } from 'vita
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterListComponent } from './accession-register-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessionRegisterListComponent', () => {
   let fixture: ComponentFixture<AccessionRegisterListComponent>;
@@ -82,8 +80,6 @@ describe('AccessionRegisterListComponent', () => {
       providers: [
         { provide: AccessionRegistersService, useValue: accessionRegistersService },
         { provide: SearchService, useValue: searchService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AccessionRegisterListComponent);

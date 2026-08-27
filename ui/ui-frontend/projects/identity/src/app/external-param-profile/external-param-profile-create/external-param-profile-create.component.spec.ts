@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -50,7 +49,6 @@ import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
@@ -103,8 +101,6 @@ describe('ExternalParamProfileCreateComponent', () => {
         },
         { provide: ExternalParamProfileValidators, useValue: externalParamProfileValidators },
         { provide: ExternalParamProfileService, useValue: externalParamProfileService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(ExternalParamProfileCreateComponent, {

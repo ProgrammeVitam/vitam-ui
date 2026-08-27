@@ -40,8 +40,6 @@ import { of } from 'rxjs';
 import { AuthService, BASE_URL, SecurityProfile } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileListComponent } from './security-profile-list.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 
 describe('SecurityProfileListComponent', () => {
   let component: SecurityProfileListComponent;
@@ -56,8 +54,6 @@ describe('SecurityProfileListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SecurityProfileListComponent],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: SecurityProfileService, useValue: securityProfileServiceMock },
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },

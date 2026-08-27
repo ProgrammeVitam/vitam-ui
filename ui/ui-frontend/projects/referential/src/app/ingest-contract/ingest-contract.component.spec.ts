@@ -51,12 +51,9 @@ import {
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
 import { IngestContractService } from './ingest-contract.service';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
@@ -86,8 +83,6 @@ describe('IngestContractComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: {} },
         { provide: MatDialog, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: BASE_URL, useValue: '' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: DownloadSnackBarService, useValue: {} },
