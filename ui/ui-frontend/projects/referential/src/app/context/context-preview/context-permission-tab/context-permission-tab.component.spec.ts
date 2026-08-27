@@ -163,7 +163,6 @@ describe('ContextPermissionTabComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ContextService, useValue: { updated: EMPTY } },

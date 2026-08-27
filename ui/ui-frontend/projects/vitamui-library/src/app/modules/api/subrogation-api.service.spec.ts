@@ -45,7 +45,6 @@ describe('SubrogationApiService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AuthService, useValue: {} },
       ],

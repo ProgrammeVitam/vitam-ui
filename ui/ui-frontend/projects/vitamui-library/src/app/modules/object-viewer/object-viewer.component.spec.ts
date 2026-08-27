@@ -101,7 +101,6 @@ describe('ObjectViewerComponent', () => {
         LayoutService,
         FavoriteEntryService,
         DatePipe,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
       ],
     })

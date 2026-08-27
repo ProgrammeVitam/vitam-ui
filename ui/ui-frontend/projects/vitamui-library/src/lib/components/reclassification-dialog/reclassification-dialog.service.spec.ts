@@ -72,7 +72,6 @@ describe('ReclassificationDialogService', () => {
         BaseReclassificationDialogService,
         { provide: ReclassificationService, useValue: reclassificationServiceSpy },
         { provide: TranslateService, useValue: translateServiceSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: VitamTenantConfigService,
           useValue: tenantConfigServiceMock,

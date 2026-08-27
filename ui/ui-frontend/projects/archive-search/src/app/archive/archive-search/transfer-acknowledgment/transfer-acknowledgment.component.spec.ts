@@ -86,7 +86,6 @@ describe('TransferAcknowledgmentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TransferAcknowledgmentComponent, CdkStep, InjectorModule, LoggerModule.forRoot(), MockDateTimePipe],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

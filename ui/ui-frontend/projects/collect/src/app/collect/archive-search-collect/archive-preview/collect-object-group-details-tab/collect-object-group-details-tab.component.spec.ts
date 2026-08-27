@@ -129,7 +129,6 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
         CollectObjectGroupDetailsTabComponent,
       ],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveCollectService, useValue: archiveCollectServiceSpy },

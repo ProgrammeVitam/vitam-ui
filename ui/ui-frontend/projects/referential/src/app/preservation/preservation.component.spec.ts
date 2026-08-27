@@ -54,7 +54,6 @@ describe('PreservationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PreservationComponent, LoggerModule.forRoot(), VitamUICommonModule, InjectorModule],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: ActivatedRoute,
           useValue: {

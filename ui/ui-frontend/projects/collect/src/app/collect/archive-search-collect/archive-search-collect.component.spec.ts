@@ -166,12 +166,7 @@ describe('ArchiveSearchCollectComponent', () => {
         RouterTestingModule,
         ...extraImports,
       ],
-      providers: [
-        ArchiveSearchHelperService,
-        ArchiveSharedDataService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment },
-      ],
+      providers: [ArchiveSearchHelperService, ArchiveSharedDataService, { provide: environment, useValue: environment }],
     })
       .overrideProvider(ConfigService, { useValue: { config$: of({ COLLECT: { OFFLINE_SERVICES: [] } }) } })
       .overrideProvider(ActivatedRoute, { useValue: computeActivatedRoute(queryParams) })
