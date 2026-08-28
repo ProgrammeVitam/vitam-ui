@@ -140,7 +140,12 @@ server {
   }
 
   location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
-    proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://CAS;
+    {% if vitamui.cas_server.secure | default(secure) | bool %}
+    set $cas_server_dns "vitamui-{{ vitamui.cas_server.vitamui_component }}.service.{{ consul_domain }}";
+    proxy_pass https://$cas_server_dns:{{ vitamui.cas_server.port_service }};
+    {% else %}
+    proxy_pass http://CAS;
+    {% endif %}
     include {{ nginx_conf_dir }}/proxy_params;
   }
 

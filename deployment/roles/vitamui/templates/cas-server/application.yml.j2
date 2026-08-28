@@ -57,9 +57,8 @@ iam-client:
   secure: {{ vitamui.iam_external.secure | default(secure) | lower }}
   ssl-configuration:
     keystore:
-      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
-      key-password: {{ password_keystore }}
-      type: JKS
+      key-path: {{ vitamui_folder_conf }}/keystore_client_{{ vitamui_struct.vitamui_component }}.p12
+      key-password: {{ password_keystore_client }}
     truststore:
       key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
       key-password: {{ password_truststore }}
