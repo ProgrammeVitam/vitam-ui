@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.server.provisioning.client;
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClientVitamui;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClientVitamui;
+import fr.gouv.vitamui.commons.rest.client.BaseCrudWebClient;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import org.apache.commons.lang3.StringUtils;
@@ -49,11 +50,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 /**
  * External WebClient for Customer operations.
  */
-public class ProvisioningWebClientVitamui extends BaseWebClientVitamui<HttpContext> {
+public class ProvisioningWebClient extends BaseWebClient<HttpContext> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProvisioningWebClientVitamui.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProvisioningWebClient.class);
 
-    public ProvisioningWebClientVitamui(final WebClient webClient, final String baseUrl) {
+    public ProvisioningWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
@@ -88,7 +89,7 @@ public class ProvisioningWebClientVitamui extends BaseWebClientVitamui<HttpConte
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(ProvidedUserDto.class)
             .block();
     }

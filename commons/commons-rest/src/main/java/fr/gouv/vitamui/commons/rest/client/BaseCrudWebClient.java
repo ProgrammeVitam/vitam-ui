@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -56,13 +57,13 @@ import java.util.Optional;
  * @param <C>
  * @param <D>
  */
-public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends IdDto> extends BaseWebClientVitamui<C> {
+public abstract class BaseCrudWebClient<C extends HttpContext, D extends IdDto> extends BaseWebClient<C> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudWebClientVitamui.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseCrudWebClient.class);
 
     private static final String CRITERIA_QUERY_PARAM = "criteria";
 
-    public BaseCrudWebClientVitamui(final WebClient webClient, final String baseUrl) {
+    public BaseCrudWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
@@ -80,7 +81,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .bodyValue(dto)
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
@@ -98,7 +99,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .uri(getPathUrl() + "/" + id)
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
@@ -120,7 +121,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
@@ -137,7 +138,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .uri(getPathUrl())
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(getDtoListClass())
             .block();
     }
@@ -158,7 +159,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .uri(buildUriBuilder(builder))
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(getDtoListClass())
             .block();
     }
@@ -176,7 +177,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .bodyValue(partialDto)
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(getDtoClass())
             .block();
     }
@@ -194,7 +195,7 @@ public abstract class BaseCrudWebClientVitamui<C extends HttpContext, D extends 
             .uri(getPathUrl() + "/" + id)
             .headers(headersConsumer -> headersConsumer.addAll(buildHeaders(context)))
             .retrieve()
-            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClientVitamui::createResponseException)
+            .onStatus(status -> !status.is2xxSuccessful(), BaseCrudWebClient::createResponseException)
             .bodyToMono(Void.class)
             .block();
     }

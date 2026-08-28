@@ -49,7 +49,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.VitamProfileCommonServic
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.provider.ExternalApiAuthenticationProvider;
@@ -62,7 +62,7 @@ import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,18 +87,15 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final ApiPastisApplicationProperties apiPastisApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new SecurityApiClientsFactoryVitamui(
-            apiPastisApplicationProperties.getSecurityClient(),
-            restClientBuilder
-        );
+        return new SecurityApiClientsFactory(apiPastisApplicationProperties.getSecurityClient(), restClientBuilder);
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -124,25 +121,25 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamApiClientsFactoryVitamui iamApiClientsFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final ApiPastisApplicationProperties apiPastisApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new IamApiClientsFactoryVitamui(apiPastisApplicationProperties.getIamClient(), restClientBuilder);
+        return new IamApiClientsFactory(apiPastisApplicationProperties.getIamClient(), restClientBuilder);
     }
 
     @Bean
-    public UsersApi usersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getUsersApi();
     }
 
     @Bean
-    public CustomersApi customersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public CustomersApi customersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getCustomersApi();
     }
 
     @Bean
-    public ExternalParametersApi externalParametersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getExternalParametersApi();
     }
 

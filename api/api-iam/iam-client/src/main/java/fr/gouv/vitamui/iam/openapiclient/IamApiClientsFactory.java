@@ -27,14 +27,14 @@
 
 package fr.gouv.vitamui.iam.openapiclient;
 
-import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.iam.openapiclient.invoker.ApiClient;
 import org.springframework.web.client.RestClient;
 
-public class IamApiClientsFactoryVitamui extends BaseVitamuiRestClientFactory {
+public class IamApiClientsFactory extends BaseRestClientFactory {
 
-    public IamApiClientsFactoryVitamui(
+    public IamApiClientsFactory(
         final RestClientConfiguration restClientConfiguration,
         final RestClient.Builder restClientBuilder
     ) {

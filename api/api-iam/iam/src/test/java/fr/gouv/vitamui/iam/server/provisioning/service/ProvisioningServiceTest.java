@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.provisioning.client.ProvisioningWebClientVitamui;
+import fr.gouv.vitamui.iam.server.provisioning.client.ProvisioningWebClient;
 import fr.gouv.vitamui.iam.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.server.provisioning.config.ProvisioningClientConfiguration;
 import org.junit.jupiter.api.Assertions;
@@ -115,7 +115,7 @@ class ProvisioningServiceTest {
         );
 
         // Do
-        ProvisioningWebClientVitamui webClient = service.buildWebClient(idpConfiguration);
+        ProvisioningWebClient webClient = service.buildWebClient(idpConfiguration);
 
         // Verify
         Assertions.assertNotNull(webClient);
@@ -125,7 +125,7 @@ class ProvisioningServiceTest {
     void getUserInformation_whenCall_thenUserIsReturned() {
         // Prepare
         var provisioningInternalServiceSpy = Mockito.spy(service);
-        var provisioningWebClient = Mockito.mock(ProvisioningWebClientVitamui.class);
+        var provisioningWebClient = Mockito.mock(ProvisioningWebClient.class);
         var providedUserDtoStub = new ProvidedUserDto();
         providedUserDtoStub.setFirstname("youyou");
 
@@ -171,7 +171,7 @@ class ProvisioningServiceTest {
     @Test
     void getUserInformation_whenAddressReturned_isTooLong() {
         var provisioningInternalServiceSpy = Mockito.spy(service);
-        var provisioningWebClient = Mockito.mock(ProvisioningWebClientVitamui.class);
+        var provisioningWebClient = Mockito.mock(ProvisioningWebClient.class);
         var providedUserDtoStub = new ProvidedUserDto();
         providedUserDtoStub.setFirstname("youyou");
         AddressDto addressDto = new AddressDto();

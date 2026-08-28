@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.authentication.LoginPwdAuthenticationHandler;
@@ -53,7 +54,7 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
@@ -259,14 +260,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public IamApiClientsFactoryVitamui iamApiClientsFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final IamClientConfigurationProperties iamClientProperties,
         final RestClient.Builder restClientBuilder,
         @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER) final RestClientCustomizer restClientCustomizer
     ) {
         restClientCustomizer.customize(restClientBuilder);
 
-        return new IamApiClientsFactoryVitamui(iamClientProperties, restClientBuilder);
+        return new IamApiClientsFactory(iamClientProperties, restClientBuilder);
     }
 
     @Bean
@@ -275,16 +276,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public CasApi casApi(
-        final IamApiClientsFactoryVitamui iamApiClientsFactory,
-        final IamApiDecorator iamApiDecorator
-    ) {
+    public CasApi casApi(final IamApiClientsFactory iamApiClientsFactory, final IamApiDecorator iamApiDecorator) {
         return iamApiDecorator.decorate(iamApiClientsFactory.getCasApi());
     }
 
     @Bean
     public CustomersApi customersApi(
-        final IamApiClientsFactoryVitamui iamApiClientsFactory,
+        final IamApiClientsFactory iamApiClientsFactory,
         final IamApiDecorator iamApiDecorator
     ) {
         return iamApiDecorator.decorate(iamApiClientsFactory.getCustomersApi());
@@ -292,7 +290,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public IdentityProvidersApi identityProvidersApi(
-        final IamApiClientsFactoryVitamui iamApiClientsFactory,
+        final IamApiClientsFactory iamApiClientsFactory,
         final IamApiDecorator iamApiDecorator
     ) {
         return iamApiDecorator.decorate(iamApiClientsFactory.getIdentityProvidersApi());

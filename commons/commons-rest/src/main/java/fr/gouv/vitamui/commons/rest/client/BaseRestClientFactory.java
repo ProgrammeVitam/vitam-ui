@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -91,9 +92,9 @@ import java.util.UUID;
  * object and handles SSL via x509 certificates.
  */
 
-public class BaseVitamuiRestClientFactory implements VitamuiRestClientFactory {
+public class BaseRestClientFactory implements RestClientFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseVitamuiRestClientFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseRestClientFactory.class);
 
     private final String baseUrl;
     private final RestClient restClient;
@@ -102,14 +103,14 @@ public class BaseVitamuiRestClientFactory implements VitamuiRestClientFactory {
     protected int connectionRequestTimeout = 500000;
     protected int socketTimeout = 500000;
 
-    public BaseVitamuiRestClientFactory(
+    public BaseRestClientFactory(
         final RestClientConfiguration restClientConfiguration,
         final RestClient.Builder restClientBuilder
     ) {
         this(restClientConfiguration, null, restClientBuilder);
     }
 
-    public BaseVitamuiRestClientFactory(
+    public BaseRestClientFactory(
         final RestClientConfiguration restClientConfig,
         final HttpPoolConfiguration httpPoolConfig,
         final RestClient.Builder restClientBuilder
@@ -284,10 +285,10 @@ public class BaseVitamuiRestClientFactory implements VitamuiRestClientFactory {
     }
 
     public void setRestClientInterceptor(final List<ClientHttpRequestInterceptor> interceptors) {
-        // VitamuiRestClient is immutable — interceptors must be set at build time
-        // This method should be removed and interceptors passed via VitamuiRestClient.Builder instead
+        // RestClient is immutable — interceptors must be set at build time
+        // This method should be removed and interceptors passed via RestClient.Builder instead
         throw new UnsupportedOperationException(
-            "VitamuiRestClient is immutable. Pass interceptors via VitamuiRestClient.Builder at construction time."
+            "RestClient is immutable. Pass interceptors via RestClient.Builder at construction time."
         );
     }
 }

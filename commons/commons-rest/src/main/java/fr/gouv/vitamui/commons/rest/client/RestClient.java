@@ -34,19 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.client;
 
-import org.springframework.web.client.RestClient;
+import fr.gouv.vitamui.commons.utils.VitamUIAutoClosable;
 
 /**
- * The base interface for all Rest Client Factories
+ * The Rest client interface
  */
 
-public interface VitamuiRestClientFactory {
-    RestClient getRestClient();
-
+public interface RestClient extends VitamUIAutoClosable {
     /**
      * @return the base url (ie. http[s]://server:port)
      */
     String getBaseUrl();
+
+    /**
+     * @return the path of the url (ie. /api/v1/user/)
+     */
+    String getPathUrl();
+
+    @Override
+    default void close() {
+        // default is nothing to close
+    }
 }

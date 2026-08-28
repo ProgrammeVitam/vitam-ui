@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.client.BaseVitamuiRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
 import fr.gouv.vitamui.commons.rest.config.Jackson2ObjectMapperFactory;
@@ -111,7 +111,7 @@ import fr.gouv.vitamui.iam.server.user.service.UserExportService;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -207,15 +207,15 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final RestClient.Builder restClientBuilder,
         final ApiIamApplicationProperties apiIamApplicationProperties
     ) {
-        return new SecurityApiClientsFactoryVitamui(apiIamApplicationProperties.getSecurityClient(), restClientBuilder);
+        return new SecurityApiClientsFactory(apiIamApplicationProperties.getSecurityClient(), restClientBuilder);
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -520,10 +520,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final RestClient.Builder restClientBuilder,
         final RestClientConfiguration casClientProperties
     ) {
-        final BaseVitamuiRestClientFactory factory = new BaseVitamuiRestClientFactory(
-            casClientProperties,
-            restClientBuilder
-        );
+        final BaseRestClientFactory factory = new BaseRestClientFactory(casClientProperties, restClientBuilder);
         return new UserEmailService(factory);
     }
 

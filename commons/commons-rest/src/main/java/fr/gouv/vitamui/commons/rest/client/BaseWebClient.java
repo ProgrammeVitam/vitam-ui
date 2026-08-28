@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.client;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -56,13 +57,13 @@ import java.io.IOException;
  * with identifier.
  */
 @ToString
-public abstract class BaseWebClientVitamui<C extends HttpContext> extends BaseClientVitamui<C> {
+public abstract class BaseWebClient<C extends HttpContext> extends BaseClient<C> {
 
     protected WebClient webClient;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebClientVitamui.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseWebClient.class);
 
-    public BaseWebClientVitamui(final WebClient webClient, final String baseUrl) {
+    public BaseWebClient(final WebClient webClient, final String baseUrl) {
         super(baseUrl);
         this.webClient = webClient;
     }
