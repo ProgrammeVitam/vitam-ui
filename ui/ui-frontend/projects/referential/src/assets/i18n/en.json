@@ -22,9 +22,16 @@
     "TITLE": "Manual Ingest",
     "ACCESS_CONTRACT_SUBTITLE": "Access contract(s) import",
     "INGEST_CONTRACT_SUBTITLE": "Ingest contract(s) import",
+<<<<<<< HEAD
     "AGENCY_SUBTITLE": "Agency referential import",
     "RULES_SUBTITLE": "Importing a business rule repository",
     "FILE_FORMAT_SUBTITLE": "Importing a file format repository",
+=======
+    "AGENCY_SUBTITLE": "Importing an agent services referential",
+    "RULES_SUBTITLE": "Importing a management rules repository",
+    "FILE_FORMAT_SUBTITLE": "Importing a file formats repository",
+    "ONTOLOGY_TITLE": "Importing an ontology",
+>>>>>>> e8f364878 (Bug #16524: Referentials import - labels fixes)
     "ONTOLOGY_SUBTITLE": "Importing an ontology repository",
     "IMPORT": "Import",
     "DRAG_DROP": "Drag / Drop or ",
