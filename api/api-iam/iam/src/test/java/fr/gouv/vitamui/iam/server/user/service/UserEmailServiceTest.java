@@ -4,7 +4,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
@@ -42,7 +42,7 @@ final class UserEmailServiceTest {
 
     private IdentityProviderService identityProviderService;
 
-    private VitamuiRestClientFactory vitamuiRestClientFactory;
+    private RestClientFactory restClientFactory;
 
     private RestClient restClient;
 
@@ -62,19 +62,19 @@ final class UserEmailServiceTest {
         identityProviderHelper = mock(IdentityProviderHelper.class);
         userInfoService = mock(UserInfoService.class);
         identityProviderService = mock(IdentityProviderService.class);
-        vitamuiRestClientFactory = mock(VitamuiRestClientFactory.class);
+        restClientFactory = mock(RestClientFactory.class);
         restClient = mock(RestClient.class);
         uriSpec = mock(RestClient.RequestHeadersUriSpec.class);
         responseSpec = mock(RestClient.ResponseSpec.class);
 
-        when(vitamuiRestClientFactory.getRestClient()).thenReturn(restClient);
-        when(vitamuiRestClientFactory.getBaseUrl()).thenReturn(BASE_URL);
+        when(restClientFactory.getRestClient()).thenReturn(restClient);
+        when(restClientFactory.getBaseUrl()).thenReturn(BASE_URL);
         when(restClient.get()).thenReturn(uriSpec);
         when(uriSpec.uri(any(String.class), any(), any(), any(), any(), any())).thenReturn(uriSpec);
         when(uriSpec.retrieve()).thenReturn(responseSpec);
         when(responseSpec.body(Boolean.class)).thenReturn(true);
 
-        userEmailService = new UserEmailService(vitamuiRestClientFactory);
+        userEmailService = new UserEmailService(restClientFactory);
         userEmailService.setInternalIdentityProviderService(identityProviderService);
         userEmailService.setIdentityProviderHelper(identityProviderHelper);
         userEmailService.setUserInfoService(userInfoService);

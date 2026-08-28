@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.vitam.api.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -223,7 +224,7 @@ public class VitamRestUtils {
      *
      * @param response Response of which the status is checked
      * @param acceptedStatus Statuses accepted
-     * TODO(refacto): commonize with BaseClientVitamui.checkResponse
+     * TODO(refacto): commonize with BaseClient.checkResponse
      */
     public static void checkResponse(final RequestResponse<?> response, final Integer... acceptedStatus) {
         Assert.notNull(response, "The server response cannot be null");

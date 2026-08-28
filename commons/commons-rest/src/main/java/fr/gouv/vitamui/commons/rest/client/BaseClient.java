@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.client;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -60,13 +61,13 @@ import java.util.List;
  */
 @EqualsAndHashCode
 @ToString
-public abstract class BaseClientVitamui<C extends HttpContext> implements VitamuiRestClient {
+public abstract class BaseClient<C extends HttpContext> implements RestClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClientVitamui.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseClient.class);
 
     protected String baseUrl;
 
-    public BaseClientVitamui(final String baseUrl) {
+    public BaseClient(final String baseUrl) {
         this.baseUrl = baseUrl;
     }
 

@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,7 +53,7 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.openapiclient.ApplicationsApi;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.config.ExternalParametersCommonConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
@@ -77,7 +78,7 @@ import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractCommonSer
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractCommonService;
 import fr.gouv.vitamui.referential.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -124,18 +125,18 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final ApiReferentialApplicationProperties apiReferentialApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new SecurityApiClientsFactoryVitamui(
+        return new SecurityApiClientsFactory(
             apiReferentialApplicationProperties.getSecurityClient(),
             restClientBuilder
         );
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -263,15 +264,15 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamApiClientsFactoryVitamui iamApiClientsFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final ApiReferentialApplicationProperties apiReferentialApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new IamApiClientsFactoryVitamui(apiReferentialApplicationProperties.getIamClient(), restClientBuilder);
+        return new IamApiClientsFactory(apiReferentialApplicationProperties.getIamClient(), restClientBuilder);
     }
 
     @Bean
-    public ApplicationsApi applicationsApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public ApplicationsApi applicationsApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getApplicationsApi();
     }
 
@@ -286,12 +287,12 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalParametersApi externalParametersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getExternalParametersApi();
     }
 
     @Bean
-    public UsersApi usersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getUsersApi();
     }
 

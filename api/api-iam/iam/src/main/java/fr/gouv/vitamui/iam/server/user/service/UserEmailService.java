@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.iam.server.user.service;
 
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
@@ -41,7 +42,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
@@ -79,10 +80,10 @@ public class UserEmailService {
     @Autowired
     private IdentityProviderService internalIdentityProviderService;
 
-    private final VitamuiRestClientFactory vitamuiRestClientFactory;
+    private final RestClientFactory restClientFactory;
 
-    public UserEmailService(final VitamuiRestClientFactory vitamuiRestClientFactory) {
-        this.vitamuiRestClientFactory = vitamuiRestClientFactory;
+    public UserEmailService(final RestClientFactory restClientFactory) {
+        this.restClientFactory = restClientFactory;
     }
 
     public void sendCreationEmail(final UserDto userDto) {
@@ -104,11 +105,11 @@ public class UserEmailService {
             ) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
-                vitamuiRestClientFactory
+                restClientFactory
                     .getRestClient()
                     .get()
                     .uri(
-                        vitamuiRestClientFactory.getBaseUrl() + casResetPasswordUrl,
+                        restClientFactory.getBaseUrl() + casResetPasswordUrl,
                         userDto.getEmail(),
                         userDto.getFirstname(),
                         userDto.getLastname(),

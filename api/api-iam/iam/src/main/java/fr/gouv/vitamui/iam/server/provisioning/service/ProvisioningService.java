@@ -42,7 +42,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
-import fr.gouv.vitamui.iam.server.provisioning.client.ProvisioningWebClientVitamui;
+import fr.gouv.vitamui.iam.server.provisioning.client.ProvisioningWebClient;
 import fr.gouv.vitamui.iam.server.provisioning.config.IdPProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.server.provisioning.config.ProvisioningClientConfiguration;
 import jakarta.validation.constraints.NotNull;
@@ -140,9 +140,7 @@ public class ProvisioningService {
      * @param idpProvisioningClient
      * @return
      */
-    protected ProvisioningWebClientVitamui buildWebClient(
-        final IdPProvisioningClientConfiguration idpProvisioningClient
-    ) {
+    protected ProvisioningWebClient buildWebClient(final IdPProvisioningClientConfiguration idpProvisioningClient) {
         final BaseWebClientFactory clientFactory = new BaseWebClientFactory(
             idpProvisioningClient.getClient(),
             null,
@@ -150,6 +148,6 @@ public class ProvisioningService {
             idpProvisioningClient.getUri()
         );
 
-        return new ProvisioningWebClientVitamui(clientFactory.getWebClient(), idpProvisioningClient.getUri());
+        return new ProvisioningWebClient(clientFactory.getWebClient(), idpProvisioningClient.getUri());
     }
 }

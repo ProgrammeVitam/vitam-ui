@@ -55,7 +55,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.ConfigurationService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.config.ExternalParametersCommonConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
@@ -66,7 +66,7 @@ import fr.gouv.vitamui.iam.security.service.IamClientUserAuthenticationService;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.iam.security.service.UserAuthenticationService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -101,18 +101,15 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final ApiArchiveApplicationProperties apiArchiveApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new SecurityApiClientsFactoryVitamui(
-            apiArchiveApplicationProperties.getSecurityClient(),
-            restClientBuilder
-        );
+        return new SecurityApiClientsFactory(apiArchiveApplicationProperties.getSecurityClient(), restClientBuilder);
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -163,20 +160,20 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamApiClientsFactoryVitamui iamApiClientsFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final ApiArchiveApplicationProperties apiArchiveApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new IamApiClientsFactoryVitamui(apiArchiveApplicationProperties.getIamClient(), restClientBuilder);
+        return new IamApiClientsFactory(apiArchiveApplicationProperties.getIamClient(), restClientBuilder);
     }
 
     @Bean
-    public UsersApi usersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getUsersApi();
     }
 
     @Bean
-    public ExternalParametersApi externalParametersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getExternalParametersApi();
     }
 
