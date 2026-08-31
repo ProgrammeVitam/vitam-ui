@@ -49,7 +49,6 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.client.IndirectClient;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -78,8 +77,14 @@ public class ProvidersService {
 
     @PostConstruct
     public void afterPropertiesSet() {
-        loadData();
-        Assert.notNull(providers, "No provider found");
+        try {
+            loadData();
+        } catch (final RuntimeException e) {
+            LOGGER.warn(
+                "Cannot load the identity providers at startup: starting with none, and retrying every minute",
+                e
+            );
+        }
     }
 
     // every minute, reload the data
@@ -118,7 +123,12 @@ public class ProvidersService {
             }
             newProviders.add(new Pac4jClientIdentityProviderDto(p, client));
         });
+        final boolean noProviderWasAvailable = providers.isEmpty();
         clients.setClients(newClients);
         providers = newProviders;
+
+        if (noProviderWasAvailable && !newProviders.isEmpty()) {
+            LOGGER.info("Identity providers are available again: {} loaded", newProviders.size());
+        }
     }
 }
