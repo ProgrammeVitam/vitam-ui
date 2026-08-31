@@ -131,20 +131,26 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.Ordered;
 import org.springframework.data.mongodb.observability.ContextProviderFactory;
 import org.springframework.data.mongodb.observability.MongoObservationCommandListener;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_EXTERNAL;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_XSRF_TOKEN_HEADER;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -290,6 +296,36 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return defaultPrincipalResolver;
     }
 
+    private static final String MASKED_HEADER_VALUE = "***";
+
+    /**
+     * Headers whose value is a credential and must never reach the logs. The IAM service account token is
+     * long-lived, so a single DEBUG line is enough to leak a credential that stays replayable.
+     */
+    private static final Set<String> SENSITIVE_HEADERS = sensitiveHeaders();
+
+    private static Set<String> sensitiveHeaders() {
+        // HTTP header names are case-insensitive, so the lookup must be too.
+        final Set<String> names = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        names.addAll(List.of(X_USER_TOKEN_HEADER, X_XSRF_TOKEN_HEADER, HttpHeaders.AUTHORIZATION, HttpHeaders.COOKIE));
+        return Collections.unmodifiableSet(names);
+    }
+
+    /**
+     * Copies the headers, replacing the value of every credential-bearing one. The remaining headers
+     * (tenant, application, identity, trace) are what makes the log line useful, so they are kept as is.
+     *
+     * @param headers the outgoing request headers.
+     * @return a copy safe to log.
+     */
+    private static HttpHeaders maskSensitiveHeaders(final HttpHeaders headers) {
+        final HttpHeaders masked = new HttpHeaders();
+        headers.forEach((name, values) ->
+            masked.addAll(name, SENSITIVE_HEADERS.contains(name) ? List.of(MASKED_HEADER_VALUE) : values)
+        );
+        return masked;
+    }
+
     /**
      * We must define our customizer to replace X_ORIGIN header from
      * IamApiClient.java for CAS usage.
@@ -303,7 +339,11 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             builder.requestInterceptor((request, body, execution) -> {
                 request.getHeaders().set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
 
-                LOGGER.debug("Final request URI: {}, headers: {}", request.getURI(), request.getHeaders());
+                LOGGER.debug(
+                    "Final request URI: {}, headers: {}",
+                    request.getURI(),
+                    maskSensitiveHeaders(request.getHeaders())
+                );
 
                 return execution.execute(request, body);
             });
