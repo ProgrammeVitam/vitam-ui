@@ -104,7 +104,26 @@ cas-client:
     hostname-verification: {{ vitamui_struct.ssl_hostname_verification | default(ssl_hostname_verification) | bool | lower }}
 {% endif %}
 
-cas.reset.password.url: {{ vitamui.cas_server.base_url | default('/cas') }}{{ vitamui.cas_server.reset_password_url | default('/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day') }}
+cas.password-reset-url.path: {{ vitamui.cas_server.base_url | default('/cas') }}/extras/passwordResetUrl
+
+mail.sender: {{ smtp.cas.sender }}
+mail.platform-name: {{ vitamui_platform_informations.platform_name }}
+
+spring.mail.host: {{ smtp.host }}
+spring.mail.port: {{ smtp.port }}
+spring.mail.protocol: {{ smtp.protocol|lower }}
+spring.mail.username: {{ smtp.user }}
+spring.mail.password: {{ smtp.password }}
+spring.mail.testConnection: {{ smtp.test_smtp_connection|lower }}
+spring.mail.properties.mail.{{ smtp.protocol|lower }}.auth: {{ smtp.auth|lower }}
+spring.mail.properties.mail.{{ smtp.protocol|lower }}.starttls.enable: {{ smtp.tls_enable|lower }}
+spring.mail.properties.mail.transport.protocol: {{ smtp.protocol|lower }}
+{% if smtp.protocol|lower == 'smtps' %}
+spring.mail.properties.mail.smtps.ssl.checkserveridentity: {{ smtp.smtps.checkserveridentity|lower }}
+spring.mail.properties.mail.smtps.ssl.trust: "{{ smtp.smtps.trust|lower }}"
+spring.mail.properties.mail.smtps.timeout: {{ smtp.smtps.timeout|default('8000') }}
+spring.mail.properties.mail.smtps.ssl.protocols: {{ smtp.smtps.ssl.protocols}}
+{% endif %}
 cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 cas_secret_token: {{ vitamui.cas_server.secret_token }}
 

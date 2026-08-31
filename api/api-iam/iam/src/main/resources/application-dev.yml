@@ -5,6 +5,20 @@ spring:
     error:
       path: /error
 
+  # set port to 1025 for local development with MailHog container
+  mail:
+    host: localhost
+    port: 2525
+    username: no-reply@vitamui.com
+    password: password
+    testConnection: false
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
   config:
     use-legacy-processing: true
   servlet:
@@ -71,7 +85,7 @@ cas-client:
       key-password: changeme
     hostname-verification: false
 
-cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
+cas.password-reset-url.path: /cas/extras/passwordResetUrl
 cas.tenant.identifier: -1
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 

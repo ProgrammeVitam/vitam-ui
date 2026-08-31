@@ -34,65 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cas.password;
+package fr.gouv.vitamui.iam.auth.contract;
 
-import org.springframework.context.HierarchicalMessageSource;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.util.Locale;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class PasswordResetUrlDto {
 
-/**
- * Message to send in the context of the password management.
- *
- *
- */
-public class PmMessageToSend {
+    private String url;
 
-    private static final String PM_RESET_SUBJECT_KEY = "cas.authn.pm.reset.subject";
-
-    private static final String PM_RESET_TEXT_KEY_1 = "cas.authn.pm.reset.text1";
-
-    private static final String PM_RESET_TEXT_KEY_2 = "cas.authn.pm.reset.text2";
-
-    private final String subject;
-
-    private final String text;
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    private PmMessageToSend(final String subject, final String text) {
-        this.subject = subject;
-        this.text = text;
-    }
-
-    public static PmMessageToSend buildMessage(
-        final HierarchicalMessageSource messageSource,
-        final String ttlInMinutes,
-        final String url,
-        final String platformName,
-        final Locale locale
-    ) {
-        final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
-        final String text;
-        if (validityDurationInMinutes >= 120) {
-            text = messageSource.getMessage(
-                PM_RESET_TEXT_KEY_2,
-                new Object[] { "", "", validityDurationInMinutes / 60, url, platformName },
-                locale
-            );
-        } else {
-            text = messageSource.getMessage(
-                PM_RESET_TEXT_KEY_1,
-                new Object[] { "", "", ttlInMinutes, url, platformName },
-                locale
-            );
-        }
-        final String subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
-        return new PmMessageToSend(subject, text);
-    }
+    private long expirationInMinutes;
 }
