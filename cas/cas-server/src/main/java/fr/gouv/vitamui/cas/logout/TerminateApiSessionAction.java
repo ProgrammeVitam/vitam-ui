@@ -131,28 +131,10 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
         if (StringUtils.isNotBlank(tgtId)) {
             try {
                 ticket = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
-                if (ticket != null) {
-                    final Principal principal = ticket.getAuthentication().getPrincipal();
-                    final Map<String, List<Object>> attributes = principal.getAttributes();
-                    final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
-                    final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
-                    final String superUserCustomerId = (String) utils.getAttributeValue(
-                        attributes,
-                        SUPER_USER_CUSTOMER_ID_ATTRIBUTE
-                    );
-
-                    LOGGER.debug(
-                        "Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
-                        authToken,
-                        superUserEmail,
-                        superUserCustomerId
-                    );
-
-                    casApi.logout(authToken, superUserEmail, superUserCustomerId);
-                }
             } catch (final InvalidTicketException e) {
                 LOGGER.warn("No TGT found for the CAS cookie: {}", tgtId);
             }
+            revokeIamSession(tgtId, ticket);
         }
 
         final Event event = super.terminate(context);
@@ -173,6 +155,40 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
         }
 
         return event;
+    }
+
+    protected void revokeIamSession(final String tgtId, final TicketGrantingTicket ticket) {
+        if (ticket == null) {
+            LOGGER.warn(
+                "The IAM token of the session behind TGT [{}] cannot be revoked: the TGT is gone. " +
+                "The token will only die by its own expiration.",
+                tgtId
+            );
+            return;
+        }
+
+        final Principal principal = ticket.getAuthentication().getPrincipal();
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
+        final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
+        final String superUserCustomerId = (String) utils.getAttributeValue(
+            attributes,
+            SUPER_USER_CUSTOMER_ID_ATTRIBUTE
+        );
+
+        if (StringUtils.isBlank(authToken)) {
+            LOGGER.warn("The CAS session behind TGT [{}] carries no IAM token: nothing to revoke", tgtId);
+            return;
+        }
+
+        LOGGER.debug(
+            "Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
+            authToken,
+            superUserEmail,
+            superUserCustomerId
+        );
+
+        casApi.logout(authToken, superUserEmail, superUserCustomerId);
     }
 
     protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {
