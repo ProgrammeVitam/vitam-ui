@@ -332,7 +332,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
 
             Assert.isTrue(
-                email.equals(loginEmailFromSession),
+                StringUtils.isNotBlank(email) &&
+                StringUtils.isNotBlank(loginEmailFromSession) &&
+                email.equalsIgnoreCase(loginEmailFromSession),
                 String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email)
             );
 
