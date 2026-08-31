@@ -99,6 +99,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
             if (httpContext != null && certificate != null) {
                 try {
                     final ContextDto context = getContextFromHttpContext(httpContext, certificate);
+                    token.setDetails(context);
                     final AuthUserDto userDto = userAuthenticationService.getUserFromHttpContext(token);
                     final Integer tenantIdentifier = httpContext.getTenantIdentifier();
                     final List<String> intersectionRoles = getRoles(context, userDto, tenantIdentifier);
