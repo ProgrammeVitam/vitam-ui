@@ -51,6 +51,12 @@ management:
     metrics:
       export:
         enabled: false
+  # No OTLP collector runs in a dev setup, and the exporter otherwise retries every step and
+  # logs a full connection stack trace each time.
+  otlp:
+    metrics:
+      export:
+        enabled: false
 
 # Root: cas - Apereo CAS technical and functional configuration
 cas:
