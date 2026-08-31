@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +23,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,10 +51,12 @@ public final class ProvidersServiceTest {
 
     private IdentityProviderHelper identityProviderHelper;
 
+    private Pac4jClientBuilder builder;
+
     @Before
     public void setUp() {
         final var clients = new Clients();
-        final var builder = mock(Pac4jClientBuilder.class);
+        builder = mock(Pac4jClientBuilder.class);
         identityProvidersApi = mock(IdentityProvidersApi.class);
         service = new ProvidersService(clients, identityProvidersApi, builder);
 
@@ -102,6 +107,33 @@ public final class ProvidersServiceTest {
     }
 
     @Test
+    public void testStartupSucceedsWhenTheIamIsUnreachable() {
+        when(identityProvidersApi.getAll(eq(null), any())).thenThrow(new RuntimeException(ERROR_MESSAGE));
+
+        service.afterPropertiesSet();
+
+        assertTrue(service.getProviders().isEmpty());
+    }
+
+    @Test
+    public void testProvidersBecomeAvailableWithoutRestartingOnceTheIamAnswers() {
+        when(identityProvidersApi.getAll(eq(null), any())).thenThrow(new RuntimeException(ERROR_MESSAGE));
+        service.afterPropertiesSet();
+        assertTrue(service.getProviders().isEmpty());
+
+        reset(identityProvidersApi);
+        when(builder.buildClient(any())).thenReturn(Optional.empty());
+        when(identityProvidersApi.getAll(eq(null), any())).thenReturn(
+            new ArrayList<>(List.of(buildProvider(PROVIDER_ID, "1", true)))
+        );
+
+        service.reloadData();
+
+        assertEquals(1, service.getProviders().size());
+        assertEquals(PROVIDER_ID, service.getProviders().getFirst().getId());
+    }
+
+    @Test
     public void testNoProviderResponse() {
         when(
             identityProvidersApi.getAll(
@@ -135,5 +167,15 @@ public final class ProvidersServiceTest {
         } catch (final RuntimeException e) {
             assertEquals(ERROR_MESSAGE, e.getMessage());
         }
+    }
+
+    private IdentityProviderDto buildProvider(final String id, final String identifier, final boolean internal) {
+        final var newProvider = new IdentityProviderDto();
+        newProvider.setId(id);
+        newProvider.setIdentifier(identifier);
+        newProvider.setInternal(internal);
+        newProvider.setPatterns(List.of(".*@company.com"));
+        newProvider.setCustomerId(CUSTOMER_ID);
+        return newProvider;
     }
 }
