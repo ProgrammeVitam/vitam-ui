@@ -67,9 +67,6 @@ public final class CasBeans {
     public static final String PROTOCOL_TICKET_CIPHER_EXECUTOR = "protocolTicketCipherExecutor";
     public static final String PASSWORD_MANAGEMENT_CIPHER_EXECUTOR = "passwordManagementCipherExecutor";
 
-    // === Spring / REST ===
-    public static final String REST_CLIENT_CUSTOMIZER = "restClientCustomizer";
-
     // === Spring / Web ===
     public static final String MESSAGE_SOURCE = "messageSource";
     public static final String CORS_HTTP_WEB_REQUEST_CONFIGURATION_SOURCE = "corsHttpWebRequestConfigurationSource";

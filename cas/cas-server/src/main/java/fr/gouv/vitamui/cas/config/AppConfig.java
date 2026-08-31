@@ -330,11 +330,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
      * We must define our customizer to replace X_ORIGIN header from
      * IamApiClient.java for CAS usage.
      *
-     * @return a rest client customizer.
+     * <p>Deliberately not a bean: Spring Boot applies every RestClientCustomizer bean to the auto-configured
+     * RestClient.Builder, so exposing it made the interceptor run twice on each IAM call and forced the
+     * EXTERNAL origin on every other rest client built from that builder.
+     *
+     * @return a rest client customizer for the IAM clients.
      */
-    @Bean
-    @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER)
-    public RestClientCustomizer restClientCustomizer() {
+    private RestClientCustomizer iamRestClientCustomizer() {
         return builder ->
             builder.requestInterceptor((request, body, execution) -> {
                 request.getHeaders().set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
@@ -352,10 +354,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public IamApiClientsFactory iamApiClientsFactory(
         final IamClientConfigurationProperties iamClientProperties,
-        final RestClient.Builder restClientBuilder,
-        @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER) final RestClientCustomizer restClientCustomizer
+        final RestClient.Builder restClientBuilder
     ) {
-        restClientCustomizer.customize(restClientBuilder);
+        iamRestClientCustomizer().customize(restClientBuilder);
 
         return new IamApiClientsFactory(iamClientProperties, restClientBuilder);
     }
