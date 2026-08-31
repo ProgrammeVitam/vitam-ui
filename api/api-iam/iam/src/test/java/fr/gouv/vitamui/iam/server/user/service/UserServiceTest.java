@@ -155,7 +155,6 @@ public final class UserServiceTest {
             mock(IamLogbookService.class),
             userConverter,
             null,
-            null,
             addressService,
             applicationService,
             null,

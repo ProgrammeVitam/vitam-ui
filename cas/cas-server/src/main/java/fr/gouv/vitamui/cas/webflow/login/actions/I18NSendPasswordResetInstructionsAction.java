@@ -231,8 +231,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
             messageSource,
-            "",
-            "",
             String.valueOf(duration.toMinutes()),
             url.toString(),
             vitamuiPlatformName,

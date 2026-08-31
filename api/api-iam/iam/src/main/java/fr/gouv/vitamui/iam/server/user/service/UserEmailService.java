@@ -42,9 +42,11 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
+import fr.gouv.vitamui.iam.auth.contract.PasswordResetUrlDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,8 +54,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -65,10 +75,24 @@ public class UserEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserEmailService.class);
 
-    @Value("${cas.reset.password.url}")
+    private static final String SUBJECT_KEY = "iam.password.initialization.subject";
+
+    private static final String TEXT_KEY = "iam.password.initialization.text";
+
+    private static final long MINUTES_PER_HOUR = 60L;
+
+    @Value("${cas.password-reset-url.path}")
     @NotNull
     @Setter
-    private String casResetPasswordUrl;
+    private String casPasswordResetUrlPath;
+
+    @Value("${mail.sender}")
+    @Setter
+    private String mailSenderAddress;
+
+    @Value("${mail.platform-name:VITAM-UI}")
+    @Setter
+    private String platformName;
 
     @Autowired
     private IdentityProviderHelper identityProviderHelper;
@@ -78,6 +102,12 @@ public class UserEmailService {
 
     @Autowired
     private IdentityProviderService internalIdentityProviderService;
+
+    @Autowired
+    private MessageSource iamMessageSource;
+
+    @Autowired(required = false)
+    private JavaMailSender mailSender;
 
     private final VitamuiRestClientFactory vitamuiRestClientFactory;
 
@@ -104,20 +134,105 @@ public class UserEmailService {
             ) {
                 LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
                 final UserInfoDto userInfoDto = userInfoService.getOne(userDto.getUserInfoId());
-                vitamuiRestClientFactory
-                    .getRestClient()
-                    .get()
-                    .uri(
-                        vitamuiRestClientFactory.getBaseUrl() + casResetPasswordUrl,
-                        userDto.getEmail(),
-                        userDto.getFirstname(),
-                        userDto.getLastname(),
-                        LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage(),
-                        userDto.getCustomerId()
-                    )
-                    .retrieve()
-                    .body(Boolean.class);
+                onceChangesArePersisted(() -> sendPasswordInitializationEmail(userDto, userInfoDto));
             }
+        }
+    }
+
+    private void onceChangesArePersisted(final Runnable action) {
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) {
+            action.run();
+            return;
+        }
+        TransactionSynchronizationManager.registerSynchronization(
+            new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    action.run();
+                }
+            }
+        );
+    }
+
+    private void sendPasswordInitializationEmail(final UserDto userDto, final UserInfoDto userInfoDto) {
+        final PasswordResetUrlDto passwordResetUrl = fetchPasswordResetUrl(userDto);
+        if (passwordResetUrl == null || passwordResetUrl.getUrl() == null) {
+            LOGGER.error(
+                "No password reset URL could be obtained for {} (customerId {}); no email sent",
+                userDto.getEmail(),
+                userDto.getCustomerId()
+            );
+            return;
+        }
+
+        final Locale locale = Locale.forLanguageTag(LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
+        final Object[] arguments = new Object[] {
+            userDto.getFirstname(),
+            userDto.getLastname(),
+            passwordResetUrl.getExpirationInMinutes() / MINUTES_PER_HOUR,
+            passwordResetUrl.getUrl(),
+            platformName,
+        };
+        final String subject = iamMessageSource.getMessage(SUBJECT_KEY, null, locale);
+        final String text = iamMessageSource.getMessage(TEXT_KEY, arguments, locale);
+
+        sendHtmlEmail(userDto, subject, text);
+    }
+
+    private PasswordResetUrlDto fetchPasswordResetUrl(final UserDto userDto) {
+        final Map<String, Object> uriVariables = new HashMap<>();
+        uriVariables.put("email", userDto.getEmail());
+        uriVariables.put("customerId", userDto.getCustomerId());
+
+        try {
+            return vitamuiRestClientFactory
+                .getRestClient()
+                .get()
+                .uri(
+                    vitamuiRestClientFactory.getBaseUrl() +
+                    casPasswordResetUrlPath +
+                    "?email={email}&customerId={customerId}",
+                    uriVariables
+                )
+                .retrieve()
+                .body(PasswordResetUrlDto.class);
+        } catch (final Exception e) {
+            LOGGER.error(
+                "Cannot obtain a password reset URL for {} (customerId {})",
+                userDto.getEmail(),
+                userDto.getCustomerId(),
+                e
+            );
+            return null;
+        }
+    }
+
+    private void sendHtmlEmail(final UserDto userDto, final String subject, final String text) {
+        if (mailSender == null) {
+            LOGGER.error(
+                "No mail sender is configured; the password initialization email to {} (customerId {}) has not been sent",
+                userDto.getEmail(),
+                userDto.getCustomerId()
+            );
+            return;
+        }
+
+        try {
+            final MimeMessage message = mailSender.createMimeMessage();
+            final MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setTo(userDto.getEmail());
+            helper.setSubject(subject);
+            helper.setFrom(mailSenderAddress);
+            helper.setPriority(1);
+            message.setContent(text, "text/html; charset=UTF-8");
+            mailSender.send(message);
+        } catch (final Exception e) {
+            LOGGER.error(
+                "The password initialization email to {} (customerId {}) has not been sent",
+                userDto.getEmail(),
+                userDto.getCustomerId(),
+                e
+            );
         }
     }
 }
