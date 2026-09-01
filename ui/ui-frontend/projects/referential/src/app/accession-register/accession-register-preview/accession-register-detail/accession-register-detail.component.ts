@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { AccessionRegisterDetail, DataComponent, rotate90Animation } from 'vitamui-library';
 import { DatePipe } from '@angular/common';
@@ -44,20 +43,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-accession-register-detail',
   templateUrl: './accession-register-detail.component.html',
   styleUrls: ['./accession-register-detail.component.scss'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
-    trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ]),
-    rotate90Animation,
-  ],
   imports: [DataComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterDetailComponent implements OnInit {

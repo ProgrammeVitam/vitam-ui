@@ -39,20 +39,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import {
-  collapseAnimation,
-  CollapseDirective,
-  Customer,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  EllipsisDirective,
-  InfiniteScrollDirective,
-  InfiniteScrollTable,
-  Owner,
-  PageRequest,
-  rotateAnimation,
-  Tenant,
-} from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
@@ -67,7 +53,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     OwnerListComponent,
     MatProgressSpinner,

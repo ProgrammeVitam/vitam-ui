@@ -37,25 +37,6 @@
 import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 
-import {
-  buildCriteriaFromSearch,
-  collapseAnimation,
-  CriteriaSearchQuery,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  EllipsisDirective,
-  Group,
-  InfiniteScrollDirective,
-  InfiniteScrollTable,
-  OrderByButtonComponent,
-  PageRequest,
-  PipesModule,
-  rotateAnimation,
-  TableFilterComponent,
-  TableFilterDirective,
-  TableFilterOptionComponent,
-  TableFilterSearchComponent,
-} from 'vitamui-library';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
 import { CommonModule, NgClass } from '@angular/common';
@@ -66,7 +47,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     TableFilterDirective,
     TableFilterComponent,

@@ -47,6 +47,7 @@ import {
   LoggerModule,
   provideI18n,
   VitamUICommonModule,
+  VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -87,6 +88,7 @@ bootstrapApplication(AppComponent, {
         // or after 30 seconds (whichever comes first).
         registrationStrategy: 'registerWhenStable:30000',
       }),
+      VitamUILibraryModule, // For Material tokens
     ),
     provideI18n(),
     Title,

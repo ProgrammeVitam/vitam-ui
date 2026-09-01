@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InheritedPropertyDto, Logger, PipesModule, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
@@ -44,14 +43,6 @@ import { NgClass } from '@angular/common';
   selector: 'app-archive-unit-rules-informations-tab',
   templateUrl: './archive-unit-rules-informations-tab.component.html',
   styleUrls: ['./archive-unit-rules-informations-tab.component.css'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
-  ],
   imports: [NgClass, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {

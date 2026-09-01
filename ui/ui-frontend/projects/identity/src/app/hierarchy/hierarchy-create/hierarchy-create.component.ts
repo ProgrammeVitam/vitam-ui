@@ -38,19 +38,6 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { forkJoin, Observable, Subscription } from 'rxjs';
-import {
-  AuthService,
-  buildValidators,
-  collapseAnimation,
-  ConfirmDialogService,
-  CriteriaSearchQuery,
-  DialogHeaderComponent,
-  LevelInputComponent,
-  Operators,
-  Profile,
-  rotateAnimation,
-  SlideToggleComponent,
-} from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -60,7 +47,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,

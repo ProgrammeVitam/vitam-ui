@@ -35,15 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
-import { slideDownAnimation } from '../../animations/vitamui-common-animations';
 
 @Component({
   selector: 'vitamui-common-field-error',
   template: `@if (show) {
-    <div @slideDownAnimation><ng-content></ng-content></div>
+    <div class="slide-down-enter"><ng-content></ng-content></div>
   }`,
   styleUrls: ['./vitamui-field-error.component.scss'],
-  animations: [slideDownAnimation],
   imports: [],
 })
 export class VitamUIFieldErrorComponent {

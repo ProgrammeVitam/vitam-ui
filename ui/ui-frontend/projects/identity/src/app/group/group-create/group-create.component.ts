@@ -38,22 +38,6 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import {
-  AuthService,
-  buildValidators,
-  collapseAnimation,
-  ConfirmDialogService,
-  DialogHeaderComponent,
-  InputComponent,
-  LevelInputComponent,
-  MiscValidators,
-  NextStepComponent,
-  PreviousStepComponent,
-  rotateAnimation,
-  SlideToggleComponent,
-  StepperComponent,
-} from 'vitamui-library';
-
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
 import { CdkStep } from '@angular/cdk/stepper';
@@ -66,7 +50,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     DialogHeaderComponent,
     ReactiveFormsModule,

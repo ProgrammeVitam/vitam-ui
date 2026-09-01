@@ -38,24 +38,6 @@ import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, 
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import {
-  AdminUserProfile,
-  collapseAnimation,
-  Context,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  EllipsisDirective,
-  InfiniteScrollDirective,
-  InfiniteScrollTable,
-  OrderByButtonComponent,
-  PageRequest,
-  PipesModule,
-  rotateAnimation,
-  TableFilterComponent,
-  TableFilterDirective,
-  TableFilterOptionComponent,
-  User,
-} from 'vitamui-library';
 import { ContextService } from '../context.service';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -67,7 +49,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-context-list',
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     TableFilterDirective,
     OrderByButtonComponent,

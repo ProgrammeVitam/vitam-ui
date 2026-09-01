@@ -36,7 +36,6 @@
  */
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { collapseAnimation, CollapseDirective, EllipsisDirective, Profile, rotateAnimation, SearchBarComponent } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
 import { GroupDetailComponent } from '../group-detail/group-detail.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -46,7 +45,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [SearchBarComponent, GroupDetailComponent, TranslatePipe, CollapseDirective, CommonModule, EllipsisDirective],
 })
 export class GroupListComponent implements OnInit {

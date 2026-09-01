@@ -1,3 +1,226 @@
+// Centralised CSS replacements for former @angular/animations triggers
+// Usage: @use 'animations' or import globally via styles.scss
+// Classes are designed to be toggled via [class.xxx] bindings
+
+// --- collapse (150ms variant, ex collapseAnimation) ---
+.collapse {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  & > * {
+    min-height: 0;
+  }
+
+  &.collapsed,
+  &.is-collapsed {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &.expanded,
+  &.is-expanded {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// 300ms variant used in archive-preview tabs (former trigger('collapse', 300ms))
+.collapse-300 {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 300ms ease-in-out,
+    visibility 300ms ease-in-out;
+
+  & > * {
+    min-height: 0;
+  }
+
+  &.collapsed,
+  &.is-collapsed {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+}
+
+// --- rotate ---
+.rotate-180 {
+  display: inline-block;
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.collapsed,
+  &.is-collapsed {
+    transform: rotate(180deg);
+  }
+
+  &.expanded,
+  &.is-expanded {
+    transform: none;
+  }
+}
+
+.rotate-90 {
+  display: inline-block;
+  transition: transform 200ms ease-out;
+
+  &.collapsed,
+  &.is-collapsed {
+    transform: rotate(-90deg);
+  }
+
+  &.expanded,
+  &.is-expanded {
+    transform: rotate(0deg);
+  }
+}
+
+// Generic rotate toggle (expand <=> collapse) 200ms
+.rotate {
+  display: inline-block;
+  transition: transform 200ms ease-out;
+
+  &.collapsed {
+    transform: rotate(-180deg);
+  }
+
+  &.expanded {
+    transform: rotate(0deg);
+  }
+}
+
+// --- slide down (field error) ---
+.slide-down-enter {
+  animation: slideDown 100ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Fade in/out (menu opacityAnimation)
+.fade-in {
+  animation: menuFadeIn 500ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.fade-out {
+  animation: menuFadeOut 500ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes menuFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes menuFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Stagger slide (menu slideAnimation)
+.slide-enter {
+  animation: slideStagger 50ms ease-out;
+}
+
+@keyframes slideStagger {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Stepper transition
+.step {
+  outline: none;
+  overflow: hidden;
+  transition:
+    height 225ms cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 225ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.hidden {
+    height: 0;
+    visibility: hidden;
+  }
+
+  &.step-current {
+    height: auto;
+    visibility: visible;
+  }
+}
+
+// Panel slide (sso-tab)
+.panel-slide {
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.panel-previous {
+  transform: translate3d(-100%, 0, 0);
+}
+
+.panel-next {
+  transform: translate3d(100%, 0, 0);
+}
+
+.panel-current {
+  transform: translate3d(0, 0, 0);
+}
+
+.slide-left-enter {
+  animation: slideLeftEnter 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-right-enter {
+  animation: slideRightEnter 225ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideLeftEnter {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideRightEnter {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+// Legacy helpers
 .fadeIn {
   animation: fade-in 200ms;
 }
@@ -9,7 +232,6 @@
     opacity: 1;
   }
 }
-
 .fadeOut {
   animation: fade-out 200ms;
 }
@@ -20,4 +242,23 @@
   to {
     opacity: 0;
   }
+}
+
+// Generic collapsible used by archive/collect preview tabs (former trigger collapse 300ms)
+.collapsible {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 300ms ease-in-out,
+    visibility 300ms ease-in-out;
+  > * {
+    min-height: 0;
+  }
+}
+.collapsible.collapsed,
+.collapsible.is-collapsed {
+  grid-template-rows: 0fr;
+  visibility: hidden;
 }

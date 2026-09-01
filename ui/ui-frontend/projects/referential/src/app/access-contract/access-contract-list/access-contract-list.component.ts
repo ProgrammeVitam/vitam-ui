@@ -37,23 +37,6 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import {
-  AccessContract,
-  AccessContractService,
-  collapseAnimation,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  EllipsisDirective,
-  InfiniteScrollDirective,
-  InfiniteScrollTable,
-  OrderByButtonComponent,
-  PageRequest,
-  PipesModule,
-  rotateAnimation,
-  TableFilterComponent,
-  TableFilterDirective,
-  TableFilterOptionComponent,
-} from 'vitamui-library';
 import { CommonModule, NgClass } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -64,7 +47,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-access-contract-list',
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     TableFilterDirective,
     OrderByButtonComponent,

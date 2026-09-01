@@ -1,4 +1,4 @@
-<div class="container p-0" [@opacityAnimation]="state">
+<div class="container p-0 menu-container" [class.menu-closing]="state === 'close'">
   <div class="row header">
     <vitamui-common-search-bar
       #searchBar
@@ -43,7 +43,7 @@
         [hideSingleSelectionIndicator]="true"
       >
         @for (app of filteredApplications; track app) {
-          <mat-list-option [value]="app" @slideAnimation>
+          <mat-list-option [value]="app" class="slide-enter">
             <vitamui-common-menu-application-tile
               [application]="app"
               [applicationUrl]="getApplicationUrl(app)"

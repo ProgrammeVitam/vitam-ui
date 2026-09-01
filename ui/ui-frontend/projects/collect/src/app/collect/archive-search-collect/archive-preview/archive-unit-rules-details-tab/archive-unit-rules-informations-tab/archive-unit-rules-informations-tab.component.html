@@ -12,7 +12,7 @@
     <div class="col">{{ getFinalActionValue(propertiesList) }}</div>
   }
 </div>
-<div class="collapsible" [@collapse]="listOfRulesCollapsed">
+<div class="collapsible" [class.collapsed]="listOfRulesCollapsed">
   @if (isPreventInheritance) {
     <div class="vitamui-table-head text-color">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.INHERITANCE_BLOCKED' | translate }}</div>
   } @else {
@@ -53,7 +53,7 @@
   </div>
 }
 @if (isToShowPropertiesList && ruleCategory !== 'ClassificationRule' && ruleCategory !== 'HoldRule') {
-  <div class="vitamui-table collapsible" [@collapse]="listOfPropertiesCollapsed">
+  <div class="vitamui-table collapsible" [class.collapsed]="listOfPropertiesCollapsed">
     @if (categoryHasPropertiesList) {
       <div class="vitamui-table-head">
         <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.PROPERTY' | translate }}</div>
@@ -86,7 +86,7 @@
   </div>
 }
 @if (isToShowPropertiesList && ruleCategory === 'HoldRule') {
-  <div class="vitamui-table collapsible" [@collapse]="listOfPropertiesCollapsed">
+  <div class="vitamui-table collapsible" [class.collapsed]="listOfPropertiesCollapsed">
     @if (categoryHasPropertiesList) {
       <div class="vitamui-table-head">
         <div class="col-6">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.PROPERTY' | translate }}</div>
@@ -139,7 +139,7 @@
   </div>
 }
 @if (isToShowPropertiesList && ruleCategory === 'ClassificationRule') {
-  <div class="vitamui-table collapsible" [@collapse]="listOfPropertiesCollapsed">
+  <div class="vitamui-table collapsible" [class.collapsed]="listOfPropertiesCollapsed">
     @if (categoryHasPropertiesList) {
       <div class="vitamui-table-head">
         <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION.PROPERTY' | translate }}</div>

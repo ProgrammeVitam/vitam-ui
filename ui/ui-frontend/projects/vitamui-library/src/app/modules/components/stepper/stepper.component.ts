@@ -36,7 +36,6 @@
  */
 import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
 import { Component, ElementRef, HostListener, inject, Input } from '@angular/core';
-import { transitionAnimation } from '../../animations/vitamui-common-animations';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -46,7 +45,6 @@ import { CommonModule } from '@angular/common';
   // This custom stepper provides itself as CdkStepper so that it can be recognized
   // by other components.
   providers: [{ provide: CdkStepper, useExisting: StepperComponent }],
-  animations: [transitionAnimation],
   imports: [CommonModule, CdkStepperModule],
 })
 export class StepperComponent extends CdkStepper {

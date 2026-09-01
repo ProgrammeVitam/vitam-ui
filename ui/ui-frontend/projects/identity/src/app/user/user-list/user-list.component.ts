@@ -37,33 +37,6 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  AdminUserProfile,
-  ApplicationId,
-  AuthService,
-  buildCriteriaFromSearch,
-  collapseAnimation,
-  CriteriaSearchQuery,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  EllipsisDirective,
-  Group,
-  HasAnyRoleDirective,
-  InfiniteScrollDirective,
-  InfiniteScrollTable,
-  OrderByButtonComponent,
-  PageRequest,
-  PipesModule,
-  Role,
-  rotateAnimation,
-  SnackBarService,
-  TableFilterComponent,
-  TableFilterDirective,
-  TableFilterOptionComponent,
-  TableFilterSearchComponent,
-  User,
-} from 'vitamui-library';
-
-import {
   Component,
   ElementRef,
   EventEmitter,
@@ -90,7 +63,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     TableFilterDirective,
     TableFilterComponent,
