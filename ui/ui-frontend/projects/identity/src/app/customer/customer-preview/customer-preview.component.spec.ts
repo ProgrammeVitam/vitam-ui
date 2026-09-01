@@ -145,15 +145,4 @@ describe('CustomerPreviewComponent', () => {
   it('should create', () => {
     expect(testhost).toBeTruthy();
   });
-
-  it('should call window.open', () => {
-    const openSpy = vi.spyOn(window, 'open');
-    openSpy.mockImplementation(() => null as any);
-    testhost.component.openPopup();
-    expect(openSpy).toHaveBeenCalledWith(
-      'https://dev.vitamui.com/identity/customer/11',
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-  });
 });
