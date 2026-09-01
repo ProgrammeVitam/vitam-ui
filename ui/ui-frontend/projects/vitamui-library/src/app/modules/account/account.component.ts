@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, switchMap } from 'rxjs/operators';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { AppRootComponent } from '../app-root-component.class';
 import { ApplicationId } from '../application-id.enum';
@@ -55,17 +56,20 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./account.component.scss'],
   imports: [VitamuiTitleBreadcrumbComponent, UserPhotoComponent, MatTabGroup, MatTab, AccountInformationTabComponent, TranslatePipe],
 })
-export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
+export class AccountComponent extends AppRootComponent {
   private accountService = inject(AccountService);
   private userInfoApiService = inject(BaseUserInfoApiService);
   route: ActivatedRoute;
 
   public displayAppTab = false;
-  public displayEditionAndAdminContact = false;
-  public account: Account;
-  public dataBreadcrumb: BreadCrumbData[];
+  public dataBreadcrumb: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
 
-  private sub: Subscription;
+  public account = toSignal(
+    this.accountService
+      .getMyAccount()
+      .pipe(switchMap((account) => this.userInfoApiService.getMyUserInfo().pipe(map((userInfo) => ({ ...account, userInfo }) as Account)))),
+    { initialValue: null as Account | null },
+  );
 
   constructor() {
     const route = inject(ActivatedRoute);
@@ -73,20 +77,5 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
     super(route);
 
     this.route = route;
-  }
-
-  ngOnInit() {
-    this.sub = this.accountService.getMyAccount().subscribe((account) => {
-      this.userInfoApiService.getMyUserInfo().subscribe((userInfo) => {
-        const accountWithUserInfos = account;
-        accountWithUserInfos.userInfo = userInfo;
-        this.account = accountWithUserInfos;
-      });
-    });
-    this.dataBreadcrumb = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 }

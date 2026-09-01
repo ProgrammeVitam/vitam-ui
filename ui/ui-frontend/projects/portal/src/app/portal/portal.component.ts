@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, effect, inject, signal } from '@angular/core';
 import { SafeResourceUrl, Title } from '@angular/platform-browser';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -44,16 +44,13 @@ import {
   ApplicationId,
   ApplicationService,
   AuthService,
-  BasicCustomer,
   Category,
-  FullLangString,
   GlobalEventService,
   LanguageService,
   MinLangString,
   StartupService,
   ThemeDataType,
   ThemeService,
-  UserInfo,
 } from 'vitamui-library';
 import { ContentTypeEnum } from '../components/content-list/content.enum';
 import { Content } from '../components/content-list/content.interface';
@@ -83,32 +80,48 @@ export class PortalComponent implements OnInit, OnDestroy {
   private titleService = inject(Title);
   private globalEventService = inject(GlobalEventService);
 
-  public content: Map<Category, Content> = new Map();
-  public welcomeTitle: string;
-  public welcomeMessage: string;
-  public portalLogoUrl: SafeResourceUrl;
-  public loading = true;
+  public content = signal<Map<Category, Content>>(new Map());
+  public portalLogoUrl = signal<SafeResourceUrl>(null);
+  public loading = signal(true);
+
+  private currentMinLang = computed(() => (this.translateService.currentLang() as MinLangString) ?? MinLangString.FR);
+  private currentFullLang = computed(() => this.languageService.getFullLangString(this.currentMinLang()));
+
+  public welcomeTitle = computed(() => {
+    const fullLang = this.currentFullLang();
+    const customer = this.authService.user?.basicCustomer;
+    if (customer?.portalTitles?.[fullLang]) return customer.portalTitles[fullLang];
+    return this.startupService.getConfigStringValue('PORTAL_TITLE') ?? '';
+  });
+
+  public welcomeMessage = computed(() => {
+    const fullLang = this.currentFullLang();
+    const customer = this.authService.user?.basicCustomer;
+    if (customer?.portalMessages?.[fullLang]) return customer.portalMessages[fullLang];
+    return this.startupService.getConfigStringValue('PORTAL_MESSAGE') ?? '';
+  });
 
   private destroyer$ = new Subject<void>();
+
+  constructor() {
+    effect(() => {
+      const translatedAppName = this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + ApplicationId.PORTAL_APP + '.NAME');
+      this.titleService.setTitle(translatedAppName);
+    });
+  }
 
   ngOnInit() {
     this.applicationService
       .getActiveTenantAppsMap()
       .pipe(takeUntil(this.destroyer$))
       .subscribe((appMap) => {
-        this.content = this.convertAppMapToContentMap(appMap);
-        this.loading = false;
+        this.content.set(this.convertAppMapToContentMap(appMap));
+        this.loading.set(false);
       });
 
     this.themeService
       .getData$(this.authService.user, ThemeDataType.PORTAL_LOGO)
-      .subscribe((portalLogoUrl: SafeResourceUrl) => (this.portalLogoUrl = portalLogoUrl));
-
-    this.authService.getUserInfo$().subscribe((userInfo: UserInfo) => this.initPortalTitleAndMessage(userInfo.language as FullLangString));
-
-    this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((event: LangChangeEvent) => {
-      this.initPortalTitleAndMessage(this.languageService.getFullLangString(event.lang as MinLangString));
-    });
+      .subscribe((portalLogoUrl: SafeResourceUrl) => this.portalLogoUrl.set(portalLogoUrl));
 
     this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);
   }
@@ -128,25 +141,5 @@ export class PortalComponent implements OnInit, OnDestroy {
     }
 
     return contentMap;
-  }
-
-  private initPortalTitleAndMessage(lang: FullLangString): void {
-    const translatedAppName = this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + ApplicationId.PORTAL_APP + '.NAME');
-    this.titleService.setTitle(translatedAppName);
-
-    const customer: BasicCustomer = this.authService.user.basicCustomer;
-    if (customer) {
-      if (customer.portalTitles && customer.portalTitles[lang]) {
-        this.welcomeTitle = customer.portalTitles[lang];
-      } else {
-        this.welcomeTitle = this.startupService.getConfigStringValue('PORTAL_TITLE');
-      }
-
-      if (customer.portalMessages && customer.portalMessages[lang]) {
-        this.welcomeMessage = customer.portalMessages[lang];
-      } else {
-        this.welcomeMessage = this.startupService.getConfigStringValue('PORTAL_MESSAGE');
-      }
-    }
   }
 }

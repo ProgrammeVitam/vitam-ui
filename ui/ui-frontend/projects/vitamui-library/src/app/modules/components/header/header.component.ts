@@ -34,12 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ApplicationService } from '../../application.service';
 import { AuthService } from '../../auth.service';
 import { CustomerSelectionService } from '../../customer-selection.service';
@@ -100,19 +101,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() hasLangSelection = false;
 
   /** TODO : rooting /account in portal module => move to header module */
-  public hasAccountProfile = false;
   public trustedInlineLogoUrl: SafeUrl;
-  public hasTenantSelection = false;
-  public hasCustomerSelection = false;
   public hasSiteSelection = false;
   public portalUrl: string;
-  public currentUser: AuthUser;
   public selectedTenant: MenuOption;
   public selectedCustomer: MenuOption;
   public customers: MenuOption[];
   public tenants: MenuOption[];
   public appTenants: MenuOption[];
-  public headerLogoUrl: SafeResourceUrl;
+
+  public currentUser = toSignal(this.authService.user$, { initialValue: this.authService.user as AuthUser });
+  public hasAccountProfile = computed(
+    () => this.currentUser()?.profileGroup?.profiles?.some((profile) => profile.applicationName === ApplicationId.ACCOUNTS_APP) ?? false,
+  );
+  public hasTenantSelection = toSignal(this.applicationService.hasTenantList(), { initialValue: false });
+  public hasCustomerSelection = toSignal(
+    this.globalEventService.pageEvent.pipe(
+      switchMap((appId: string) => this.applicationService.getAppById(appId).pipe(map((app: Application) => !!app?.hasCustomerList))),
+    ),
+    { initialValue: false },
+  );
+  public headerLogoUrl = toSignal(
+    this.authService.user$.pipe(switchMap((user: AuthUser) => this.themeService.getData$(user, ThemeDataType.HEADER_LOGO))),
+    { initialValue: null as SafeResourceUrl },
+  );
 
   private currentAppId: ApplicationId;
   private destroyer$ = new Subject<void>();
@@ -122,17 +134,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.hasSiteSelection = this.startupService.getHasSiteSelection();
     this.tenants = this.tenantSelectionService.getTenants().map((tenant: Tenant) => {
       return { value: tenant, label: tenant.name };
-    });
-
-    if (this.authService.user) {
-      this.currentUser = this.authService.user;
-      this.hasAccountProfile = this.authService.user.profileGroup.profiles.some(
-        (profile) => profile.applicationName === ApplicationId.ACCOUNTS_APP,
-      );
-    }
-
-    this.themeService.getData$(this.authService.user, ThemeDataType.HEADER_LOGO).subscribe((headerLogoUrl: SafeResourceUrl) => {
-      this.headerLogoUrl = headerLogoUrl;
     });
 
     // Open the select default tenant dialog if no default tenant identifier defined or if default value not in selected tenant list
@@ -196,27 +197,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   private initTenantSelection(): void {
     if (this.router.events) {
-      let eventsObsRef: Subscription;
-      // Show or hide the tenant selection component from the header when needed
-      this.applicationService.hasTenantList().subscribe((result: boolean) => {
-        this.hasTenantSelection = result;
-        if (this.hasTenantSelection && !eventsObsRef) {
-          eventsObsRef = this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data: any) => {
-            if (data?.snapshot?.params) {
-              const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
-              if (tenantIdentifier) {
-                this.tenantSelectionService.setSelectedTenantByIdentifier(tenantIdentifier);
-                this.tenantSelectionService
-                  .getSelectedTenant$()
-                  .pipe(takeUntil(this.destroyer$))
-                  .subscribe((tenant: Tenant) => {
-                    if (tenant.identifier !== tenantIdentifier) {
-                      this.changeTenant(tenant.identifier);
-                    }
-                  });
-              }
-            }
-          });
+      this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data: any) => {
+        if (!this.hasTenantSelection()) return;
+        if (data?.snapshot?.params) {
+          const tenantIdentifier = +data.snapshot.params.tenantIdentifier;
+          if (tenantIdentifier) {
+            this.tenantSelectionService.setSelectedTenantByIdentifier(tenantIdentifier);
+            this.tenantSelectionService
+              .getSelectedTenant$()
+              .pipe(takeUntil(this.destroyer$))
+              .subscribe((tenant: Tenant) => {
+                if (tenant.identifier !== tenantIdentifier) {
+                  this.changeTenant(tenant.identifier);
+                }
+              });
+          }
         }
       });
     }
@@ -280,12 +275,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
    * Init customer selection feature & listeners if the current opened application requires it.
    */
   private initCustomerSelection(appIdentifier: string): void {
-    this.hasCustomerSelection = false;
     if (appIdentifier) {
       this.applicationService.getAppById(appIdentifier).subscribe((currentApp: Application) => {
-        this.hasCustomerSelection = currentApp?.hasCustomerList;
-
-        if (this.hasCustomerSelection) {
+        if (currentApp?.hasCustomerList) {
           this.customerSelectionService
             .getCustomers$()
             .pipe(takeUntil(this.destroyer$))
