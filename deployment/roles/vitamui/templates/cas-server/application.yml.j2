@@ -83,6 +83,13 @@ cas.webflow.crypto:
   enabled: true
   encryption.key-size: 128
 cas.authn.pm.reset.crypto.enabled: true
+# CAS 7.3.5 turned encryption off by default for the session-replication cookies. Their value is then written
+# in clear as "<TST id>@<client ip>@<user agent>", and the semicolons of the user agent truncate the cookie at
+# the first one, per RFC 6265. CAS can no longer match the pinned user agent, drops the session, and therefore
+# cannot restore the pending OIDC authorization request: the login flow redirects to the client with no code
+# and loops. Encrypting the value keeps it opaque and free of semicolons.
+cas.authn.oauth.session-replication.cookie.crypto.enabled: true
+cas.authn.pac4j.core.session-replication.cookie.crypto.enabled: true
 
 ##
 # CAS Web Application Session Configuration
