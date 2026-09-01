@@ -34,10 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, computed, effect, inject, Input, untracked } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../auth.service';
 import { FullLangString, LanguageService, MinLangString } from '../../../language.service';
 import { BaseUserInfoApiService } from './../../../api/base-user-info-api.service';
@@ -51,7 +50,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./select-language.component.scss'],
   imports: [ItemSelectComponent, MatMiniFabButton, MatMenuTrigger, MatMenu, MatMenuItem, TranslatePipe],
 })
-export class SelectLanguageComponent implements OnInit, OnDestroy {
+export class SelectLanguageComponent {
   private translateService = inject(TranslateService);
   private languageService = inject(LanguageService);
   private userInfoApiService = inject(BaseUserInfoApiService);
@@ -64,25 +63,25 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
    */
   @Input() displayMode: 'select' | 'button' = 'button';
 
-  public currentLang = '';
   public minLangString = MinLangString;
 
-  private destroyer$ = new Subject<void>();
+  public currentLang = computed(() => (this.translateService.currentLang() as string) ?? '');
 
-  ngOnInit() {
-    this.authService.getUserInfo$().subscribe((userInfo) => {
-      this.currentLang = this.languageService.getShortLangString(userInfo.language as FullLangString);
-      this.translateService.use(this.currentLang);
+  private userInfo = toSignal(this.authService.getUserInfo$(), { initialValue: null });
+
+  constructor() {
+    // Sync user preference to TranslateService after render (effect runs outside the current CD cycle).
+    // Use untracked() for currentLang so the effect only tracks userInfo, not language changes,
+    // otherwise switching to 'en' would re-trigger the effect and revert to the stored 'fr' preference.
+    effect(() => {
+      const userInfo = this.userInfo();
+      if (!userInfo?.language) return;
+      const shortLang = this.languageService.getShortLangString(userInfo.language as FullLangString);
+      const current = untracked(() => this.translateService.getCurrentLang());
+      if (current !== shortLang) {
+        this.translateService.use(shortLang);
+      }
     });
-
-    this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((langEvent: LangChangeEvent) => {
-      this.currentLang = langEvent.lang;
-    });
-  }
-
-  ngOnDestroy() {
-    this.destroyer$.next();
-    this.destroyer$.complete();
   }
 
   public use(lang: MinLangString): void {
