@@ -55,6 +55,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { PreloadAllModules, provideRouter, withHashLocation, withPreloading } from '@angular/router';
 import { routes } from './app/app.routes';
 import { inject, provideAppInitializer } from '@angular/core';
+import { VitamUILibraryModule } from '../../vitamui-library/src/lib/vitamui-library.module';
 
 if (environment.production) {
   enableProdMode();
@@ -71,6 +72,7 @@ bootstrapApplication(AppComponent, {
         // or after 30 seconds (whichever comes first).
         registrationStrategy: 'registerWhenStable:30000',
       }),
+      VitamUILibraryModule, // For Material tokens
     ),
     provideAppInitializer(async () => {
       const configService = inject(ConfigService);
