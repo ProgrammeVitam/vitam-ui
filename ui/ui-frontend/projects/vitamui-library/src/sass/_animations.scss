@@ -97,7 +97,6 @@
     opacity: 1;
   }
 }
-
 // Generic collapsible used by archive/collect preview tabs (former trigger collapse 300ms)
 .collapsible {
   display: grid;
@@ -110,4 +109,23 @@
 .collapsible.collapsed,
 .collapsible.is-collapsed {
   grid-template-rows: 0fr;
+}
+
+// Generic collapsible used by archive/collect preview tabs (former trigger collapse 300ms)
+.collapsible {
+  display: grid;
+  overflow: hidden;
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows 300ms ease-in-out,
+    visibility 300ms ease-in-out;
+  > * {
+    min-height: 0;
+  }
+}
+.collapsible.collapsed,
+.collapsible.is-collapsed {
+  grid-template-rows: 0fr;
+  visibility: hidden;
 }
