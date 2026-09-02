@@ -46,7 +46,7 @@ function computeConfig(config) {
         type: 'element'
       }],
       '@angular-eslint/directive-selector': ['error', {
-        prefix: config.prefix || 'app',
+        prefix: (config.prefix || 'app').replace(/-([a-z])/g, (_, c) => c.toUpperCase()),
         style: 'camelCase',
         type: 'attribute'
       }],
