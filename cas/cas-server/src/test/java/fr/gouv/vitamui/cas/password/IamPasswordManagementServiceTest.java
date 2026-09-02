@@ -42,12 +42,13 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
@@ -201,7 +202,11 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailureNotConformWithRegex() {
+    public void testTheRefusalOfTheIamOnThePolicyIsShownOnTheScreen() {
+        doThrow(new InvalidFormatException("policy", PasswordChangeErrorKeys.POLICY_NOT_MATCHED))
+            .when(casApi)
+            .changePassword(any(String.class), any(String.class), any(String.class));
+
         assertThatCode(
             () ->
                 service.change(
@@ -211,9 +216,13 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     }
 
     @Test
-    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurrenceInPassword() throws Throwable {
-        try {
-            assertTrue(
+    public void testTheRefusalOfTheIamOnTheUserNameIsShownOnTheScreen() {
+        doThrow(new InvalidFormatException("name", PasswordChangeErrorKeys.CONTAINS_USER_NAME))
+            .when(casApi)
+            .changePassword(any(String.class), any(String.class), any(String.class));
+
+        assertThatCode(
+            () ->
                 service.change(
                     new PasswordChangeRequest(
                         EMAIL,
@@ -222,50 +231,18 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
                         PASSWORD_CONTAINS_DICTIONARY.toCharArray()
                     )
                 )
-            );
-            fail("should fail");
-        } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
-            assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
-        }
+        ).isInstanceOf(IamPasswordManagementService.PasswordContainsUserDictionaryException.class);
     }
 
     @Test
-    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurrenceInsensitiveCaseInPassword()
-        throws Throwable {
-        try {
-            assertTrue(
-                service.change(
-                    new PasswordChangeRequest(
-                        EMAIL,
-                        null,
-                        PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE.toCharArray(),
-                        PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE.toCharArray()
-                    )
-                )
-            );
-            fail("should fail");
-        } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
-            assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
-        }
-    }
+    public void testAnUnknownRefusalOfTheIamDoesNotBecomeAPasswordScreenError() throws Throwable {
+        doThrow(new InvalidFormatException("something else", "iam.unknown.key"))
+            .when(casApi)
+            .changePassword(any(String.class), any(String.class), any(String.class));
 
-    @Test
-    public void testChangePasswordFailureBecauseOfGenericUser() throws Throwable {
-        try {
-            UserDto userDto = new UserDto();
-            userDto.setType(UserTypeEnum.GENERIC);
-            userDto.setCustomerId(CUSTOMER_ID);
-            userDto.setStatus(UserStatusEnum.ENABLED);
-            when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(
-                new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
-            );
-            assertTrue(
-                service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
-            );
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals("user last name can not be null", e.getMessage());
-        }
+        assertFalse(
+            service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
+        );
     }
 
     @Test
@@ -280,32 +257,6 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         assertTrue(
             service.change(new PasswordChangeRequest(EMAIL, null, PASSWORD.toCharArray(), PASSWORD.toCharArray()))
         );
-    }
-
-    @Test
-    public void testChangePasswordFailureBecausePasswordContainsFullUsernameThenReturnException() throws Throwable {
-        try {
-            UserDto userDto = new UserDto();
-            userDto.setLastname("ADMIN");
-            userDto.setCustomerId(CUSTOMER_ID);
-            userDto.setStatus(UserStatusEnum.ENABLED);
-            when(casApi.getUser(eq(EMAIL), eq(CUSTOMER_ID), any(), any(), any())).thenReturn(
-                new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
-            );
-            assertTrue(
-                service.change(
-                    new PasswordChangeRequest(
-                        EMAIL,
-                        null,
-                        PASSWORD_CONTAINS_DICTIONARY.toCharArray(),
-                        PASSWORD_CONTAINS_DICTIONARY.toCharArray()
-                    )
-                )
-            );
-            fail("should fail");
-        } catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
-            assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
-        }
     }
 
     @Test

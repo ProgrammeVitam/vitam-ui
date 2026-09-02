@@ -66,12 +66,13 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
 import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
@@ -292,17 +293,26 @@ public class CasService {
             customerId
         );
         if (provider.isEmpty()) {
-            throw new BadRequestException("No identity provider found for user " + email);
+            throw new BadRequestException(
+                "No identity provider found for user " + email,
+                PasswordChangeErrorKeys.NO_IDENTITY_PROVIDER
+            );
         }
         if (!Boolean.TRUE.equals(provider.get().getInternal())) {
-            throw new BadRequestException("Only a user linked to an internal identity provider can change password");
+            throw new BadRequestException(
+                "Only a user linked to an internal identity provider can change password",
+                PasswordChangeErrorKeys.EXTERNAL_IDENTITY_PROVIDER
+            );
         }
     }
 
     private void checkPasswordPolicy(final String rawPassword, final User user) {
         final String policyPattern = passwordConfiguration != null ? passwordConfiguration.getPolicyPattern() : null;
         if (StringUtils.isNotBlank(policyPattern) && !passwordValidator.isValid(policyPattern, rawPassword)) {
-            throw new BadRequestException("The given password does not match the password policy");
+            throw new BadRequestException(
+                "The given password does not match the password policy",
+                PasswordChangeErrorKeys.POLICY_NOT_MATCHED
+            );
         }
 
         if (
@@ -317,7 +327,10 @@ public class CasService {
                 passwordConfiguration.getOccurrencesCharsNumber()
             )
         ) {
-            throw new BadRequestException("The given password contains an occurrence of the user name");
+            throw new BadRequestException(
+                "The given password contains an occurrence of the user name",
+                PasswordChangeErrorKeys.CONTAINS_USER_NAME
+            );
         }
     }
 
