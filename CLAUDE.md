@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Vitam-UI is a full-stack application for managing digital archives (archives numériques). It consists of:
-- **Backend**: Java 21 + Spring Boot 4.0.6 (Maven multi-module)
+- **Backend**: Java 21 + Spring Boot 4.1.1 (Maven multi-module)
 - **Frontend**: Angular 21 (multi-project workspace) + vitamui-library (shared component library)
 - **Authentication**: CAS Server (Apereo CAS)
 - **Database**: MongoDB
@@ -25,8 +25,10 @@ mvn clean install -Pdev
 # Build with frontend for production (optimized)
 mvn clean install -Pprod
 
-# Skip tests
+# Skip tests (compile tests but don't run)
 mvn clean install -DskipTests
+# Skip test compilation + execution and AOT test processing (Spring Boot 4.1+)
+mvn clean install -Dmaven.test.skip=true
 
 # Run a single backend module (from its directory)
 cd api/api-iam/iam && mvn clean spring-boot:run
@@ -174,7 +176,6 @@ npm run test:identity -- --watch
 - `dev` - Full build with frontend, dev optimizations
 - `prod` - Full build with frontend, production optimizations
 - `vitam` - For internal Vitam developers (uses private Nexus repos)
-- `skipTestsRun` - Automatically activated with `-DskipTests`
 - `sonar` - Generate SonarQube reports
 - `swagger` - Generate Swagger JSON files
 
