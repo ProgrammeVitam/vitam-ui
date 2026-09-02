@@ -22,7 +22,9 @@
             <div class="d-flex align-items-center clickable">
               <div class="col-1 d-flex" (click)="$event.stopPropagation(); row.toggle()">
                 <i class="vitamui-icon vitamui-icon-bank"></i>
-                <i class="material-icons caret ml-1" [style.fontSize.px]="20" [@rotateAnimation]="row.state">keyboard_arrow_up</i>
+                <i class="material-icons caret ml-1 rotate" [style.fontSize.px]="20" [class.collapsed]="row.state === 'collapsed'"
+                  >keyboard_arrow_up</i
+                >
               </div>
               <div class="col-2" vitamuiCommonEllipsis>{{ customer?.code }}</div>
               <div class="col-2" vitamuiCommonEllipsis>{{ customer?.name }}</div>
@@ -39,7 +41,9 @@
             </div>
           </div>
           <app-owner-list
-            [@collapseAnimation]="row.state"
+            class="vitamui-collapse"
+            [class.collapsed]="row.state === 'collapsed'"
+            [class.expanded]="row.state === 'expanded'"
             [customer]="customer"
             (ownerClick)="ownerClick.emit($event)"
             (tenantClick)="tenantClick.emit($event)"

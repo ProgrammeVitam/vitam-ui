@@ -1,4 +1,13 @@
 <div class="collapse-title" (click)="toggle()">
-  <i class="material-icons" [@rotate90Animation]="collapseState">keyboard_arrow_down</i> {{ collapseTitle }}
+  <i class="material-icons rotate-90" [class.collapsed]="collapseState === 'collapsed'" [class.expanded]="collapseState === 'expanded'"
+    >keyboard_arrow_down</i
+  >
+  {{ collapseTitle }}
 </div>
-<div class="collapse-content" [@collapseAnimation]="collapseState"><ng-content></ng-content></div>
+<div
+  class="collapse-content vitamui-collapse"
+  [class.collapsed]="collapseState === 'collapsed'"
+  [class.expanded]="collapseState === 'expanded'"
+>
+  <ng-content></ng-content>
+</div>

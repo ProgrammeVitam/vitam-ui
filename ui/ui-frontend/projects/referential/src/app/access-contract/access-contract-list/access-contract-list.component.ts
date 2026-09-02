@@ -37,16 +37,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import {
-  AccessContract,
-  collapseAnimation,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-  AccessContractService,
-} from 'vitamui-library';
+import { AccessContract, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, AccessContractService } from 'vitamui-library';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -54,7 +45,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-access-contract-list',
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {

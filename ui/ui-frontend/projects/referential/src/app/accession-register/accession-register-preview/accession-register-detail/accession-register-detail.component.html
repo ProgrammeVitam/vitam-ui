@@ -72,7 +72,7 @@
       @if (hasLongComment) {
         <div class="button">
           <button class="btn-circle" (click)="onClicShowMoreOrLessOfComment()">
-            <i class="material-icons" [@rotateAnimation]="showFullComment ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+            <i class="material-icons rotate" [class.collapsed]="!showFullComment" [class.expanded]="showFullComment">keyboard_arrow_down</i>
           </button>
         </div>
       }

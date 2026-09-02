@@ -1,0 +1,113 @@
+// Centralised CSS replacements for former @angular/animations triggers
+// Usage: @use 'animations' or import globally via styles.scss
+// Classes are designed to be toggled via [class.xxx] bindings
+
+// --- collapse (150ms variant, ex collapseAnimation) ---
+.vitamui-collapse {
+  display: grid !important;
+  overflow: hidden;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  & > * {
+    min-height: 0;
+  }
+
+  &.collapsed {
+    grid-template-rows: 0fr;
+  }
+
+  &.expanded {
+    grid-template-rows: 1fr;
+  }
+}
+
+// --- rotate ---
+.rotate-90 {
+  display: inline-block;
+  transition: transform 200ms ease-out;
+
+  &.collapsed {
+    transform: rotate(-90deg);
+  }
+
+  &.expanded {
+    transform: rotate(0deg);
+  }
+}
+
+// Generic rotate toggle (expand <=> collapse) 200ms
+.rotate {
+  display: inline-block;
+  transition: transform 200ms ease-out;
+
+  &.collapsed {
+    transform: rotate(180deg);
+  }
+
+  &.expanded {
+    transform: rotate(0deg);
+  }
+}
+
+// Fade in/out (menu opacityAnimation)
+.fade-in {
+  animation: menu-fade-in 500ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.fade-out {
+  animation: menu-fade-out 500ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes menu-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes menu-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Stepper transition
+.step {
+  &.hidden {
+    height: 0;
+    visibility: hidden;
+  }
+}
+
+// Legacy helpers
+.fadeIn {
+  animation: fade-in 200ms;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// Generic collapsible used by archive/collect preview tabs (former trigger collapse 300ms)
+.collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 300ms ease-out;
+  > * {
+    overflow: hidden;
+  }
+}
+.collapsible.collapsed,
+.collapsible.is-collapsed {
+  grid-template-rows: 0fr;
+}
