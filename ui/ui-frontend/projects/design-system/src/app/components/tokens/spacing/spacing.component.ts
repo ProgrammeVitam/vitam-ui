@@ -36,26 +36,15 @@
  */
 import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ComputedStyleDirective } from './computed-style.directive';
 
 @Component({
   templateUrl: './spacing.component.html',
   styleUrls: ['./spacing.component.scss'],
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, ComputedStyleDirective],
 })
 export class SpacingComponent {
   paddings = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   margins = [0, 1, 2, 3, 4, 5, 6, 7, 8, 'auto'];
   gaps = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-
-  getPadding(element: HTMLElement) {
-    return getComputedStyle(element).padding;
-  }
-
-  getMargin(element: HTMLElement) {
-    return getComputedStyle(element).margin;
-  }
-
-  getGap(element: HTMLElement) {
-    return getComputedStyle(element).gap;
-  }
 }
