@@ -1033,7 +1033,7 @@
       },
       "ARRAY": {
         "IDENTIFIER": "Identifier",
-        "CATEGORY": "Category",
+        "AUDIT_TYPE": "Audit type",
         "CREATION_DATE": "Creation date",
         "STATUS": "Status",
         "MESSAGE": "Result"
@@ -1048,11 +1048,25 @@
       "TRACEABILITY_CHAIN_AUDIT_UNIT": "Archive unit lifecycle log chaining",
       "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Operations log chaining"
     },
+    "AUDIT_TYPES": {
+      "PROCESS_AUDIT": "Existence and integrity audit",
+      "AUDIT_FILE_EXISTING": "Existence audit",
+      "AUDIT_FILE_INTEGRITY": "Integrity audit",
+      "EVIDENCE_AUDIT": "Consistency audit",
+      "RECTIFICATION_AUDIT": "Corrective audit",
+      "TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP": "Object group lifecycle logbook chaining audit",
+      "TRACEABILITY_CHAIN_AUDIT_UNIT": "Archive unit lifecycle logbook chaining audit",
+      "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Operation logbook chaining audit",
+      "TRACEABILITY_CHAIN_AUDIT_OBJECT_GROUP": "Object group lifecycle logbook chaining audit",
+      "OBJECT_GROUP": "Object group lifecycle logbook chaining audit",
+      "UNIT": "Archive unit lifecycle logbook chaining audit",
+      "LOGBOOK_OPERATION": "Operation logbook chaining audit"
+    },
     "TAB": {
       "INFORMATIONS": {
         "TITLE": "Informations",
         "DOWNLOAD_REPORT": "Download report",
-        "OPERATION_CATEGORY": "Operation category",
+        "AUDIT_TYPE": "Audit type",
         "EXTERNAL_AGENTS_INDENTIFIERS": "External agents identifiers",
         "ASSOCIATED_CONTRACT": "Associated contract",
         "ASSIGMENT_DATE": "Assignment date",
