@@ -45,14 +45,14 @@
         </vitamui-slide-toggle>
 
         @if (form.value.wholeChain) {
-          <div class="whole-chain-warning d-flex flex-row align-items-center hgap-2 pl-4 pr-4 pt-2 pb-2 mt-2">
+          <div class="whole-chain-warning d-flex flex-row align-items-center hgap-2 pl-4 pr-4 pt-2 pb-2">
             <i class="vitamui-icon vitamui-icon-anomalie"></i>
             <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.WHOLE_CHAIN_WARNING' | translate }}</div>
           </div>
         }
 
-        <div class="hgap-2 mt-4">
-          <div class="start-date">
+        <div class="row">
+          <div class="start-date col-6">
             <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
             <vitamui-datepicker
               formControlName="startDate"
@@ -63,7 +63,7 @@
               format="yyyy-MM-dd"
             ></vitamui-datepicker>
           </div>
-          <div class="end-date">
+          <div class="end-date col-6">
             <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_TO' | translate }}</p>
             <vitamui-datepicker
               formControlName="endDate"
