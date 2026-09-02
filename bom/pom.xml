@@ -33,7 +33,7 @@
         <gson.version>2.14.0</gson.version>
         <hibernate.validatior.version>8.0.3.Final</hibernate.validatior.version>
         <istack-commons-runtime.version>4.2.0</istack-commons-runtime.version>
-        <jackson2.version>2.21.3</jackson2.version>
+        <jackson2.version>2.22.2</jackson2.version>
         <jackson3.version>3.1.0</jackson3.version>
         <jackson2-annotation.version>2.21</jackson2-annotation.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
