@@ -26,15 +26,10 @@
  */
 package fr.gouv.vitamui.cas.webflow.login.actions;
 
-import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.CustomerIdDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +43,6 @@ import org.springframework.webflow.execution.RequestContext;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTION_VIEW;
@@ -66,19 +59,9 @@ public class ListCustomersAction extends AbstractAction {
 
     public static final String BAD_CONFIGURATION = "badConfiguration";
 
-    private final ProvidersService providersService;
-
-    private final IdentityProviderHelper identityProviderHelper;
-
     private final CasApi casApi;
 
-    public ListCustomersAction(
-        final ProvidersService providersService,
-        final IdentityProviderHelper identityProviderHelper,
-        final CasApi casApi
-    ) {
-        this.providersService = providersService;
-        this.identityProviderHelper = identityProviderHelper;
+    public ListCustomersAction(final CasApi casApi) {
         this.casApi = casApi;
     }
 
@@ -116,13 +99,13 @@ public class ListCustomersAction extends AbstractAction {
             superUserCustomerId
         );
 
-        // Filter by both email (domain) & customerId
-        Optional<IdentityProviderDto> providerDto = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            providersService.getProviders(),
-            superUserEmail,
-            superUserCustomerId
-        );
-        if (providerDto.isEmpty()) {
+        boolean providerConfigured = casApi
+            .resolveHrd(superUserEmail)
+            .stream()
+            .anyMatch(
+                entry -> superUserCustomerId.equals(entry.getCustomerId()) && entry.getIdentityProviderId() != null
+            );
+        if (!providerConfigured) {
             LOGGER.error(
                 "No provider found for superUserEmail: {} / superUserCustomerId: {}",
                 superUserEmail,
@@ -143,96 +126,16 @@ public class ListCustomersAction extends AbstractAction {
 
         LOGGER.debug("User provided login of '{}'", username);
 
-        List<UserDto> existingUsersList = casApi.getUsersByEmail(username, null);
+        List<HrdEntryDto> entries = casApi.resolveHrd(username);
 
-        if (existingUsersList.size() > 1) {
-            return processMultipleUsersForInputEmail(flowScope, username, existingUsersList);
-        }
-        if (existingUsersList.size() == 1) {
-            return processSingleUserForInputEmail(flowScope, username, existingUsersList.getFirst());
-        }
-
-        // To avoid account existence disclosure, unknown users are silently ignored.
-        // Once they enter their credentials, they will get a generic "login or password
-        // invalid" error message.
-        return processNoUserFoundMatchingInputEmail(flowScope, username);
-    }
-
-    private Event processSingleUserForInputEmail(MutableAttributeMap<Object> flowScope, String username, UserDto user) {
-        // Ensure user has a proper Identity Provided configured, and redirect to
-        // dispatcher...
-        LOGGER.debug("A single user matched provided login of '{}': {}", username, user);
-
-        String customerId = user.getCustomerId();
-        Optional<IdentityProviderDto> provider = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            providersService.getProviders(),
-            username,
-            customerId
-        );
-        if (provider.isEmpty()) {
-            LOGGER.error("No provider found for customerId: {}", customerId);
-            return new Event(this, BAD_CONFIGURATION);
-        }
-
-        return handleSingleAuthenticationProvider(flowScope, username, customerId);
-    }
-
-    @NotNull
-    private Event processNoUserFoundMatchingInputEmail(MutableAttributeMap<Object> flowScope, String username) {
-        List<IdentityProviderDto> identityProviders = identityProviderHelper.findAllProvidersByUserIdentifier(
-            providersService.getProviders(),
-            username
-        );
-
-        if (identityProviders.isEmpty()) {
+        if (entries.isEmpty()) {
             LOGGER.warn("No provider found for email: '{}'", username);
             return new Event(this, BAD_CONFIGURATION);
         }
-
-        if (identityProviders.size() == 1) {
-            LOGGER.debug(
-                "User {} not found in DB. To avoid account existence disclosure, we'll just redirect" +
-                " to provider login page.",
-                username
-            );
-            // User not found, but email domain matches existing provider
-            return handleSingleAuthenticationProvider(
-                flowScope,
-                username,
-                identityProviders.getFirst().getCustomerId()
-            );
+        if (entries.size() == 1) {
+            return handleSingleAuthenticationProvider(flowScope, username, entries.getFirst().getCustomerId());
         }
-
-        List<String> availableCustomerIds = identityProviders
-            .stream()
-            .map(CustomerIdDto::getCustomerId)
-            .collect(Collectors.toList());
-
-        LOGGER.debug(
-            "User '{}' not found in DB. To avoid account existence disclosure, we'll just redirect" +
-            " to customer selection page. Available customerIds: {}",
-            username,
-            availableCustomerIds
-        );
-
-        return handleMultipleAuthenticationProviders(flowScope, username, availableCustomerIds);
-    }
-
-    @NotNull
-    private Event processMultipleUsersForInputEmail(
-        MutableAttributeMap<Object> flowScope,
-        String username,
-        List<UserDto> existingUsersList
-    ) {
-        LOGGER.debug("Multiple users found for '{}'. Show customer selection page", username);
-
-        // Multiple users found ==> Redirect user to customerId selection page
-        List<String> availableCustomerIds = existingUsersList
-            .stream()
-            .map(UserDto::getCustomerId)
-            .collect(Collectors.toList());
-
-        return handleMultipleAuthenticationProviders(flowScope, username, availableCustomerIds);
+        return handleMultipleAuthenticationProviders(flowScope, username, entries);
     }
 
     private Event handleSingleAuthenticationProvider(
@@ -253,32 +156,29 @@ public class ListCustomersAction extends AbstractAction {
         return new Event(this, TRANSITION_TO_CUSTOMER_SELECTED);
     }
 
+    @NotNull
     private Event handleMultipleAuthenticationProviders(
         MutableAttributeMap<Object> flowScope,
         String username,
-        List<String> availableCustomerIds
+        List<HrdEntryDto> entries
     ) {
-        LOGGER.debug(
-            "Redirecting user with login of '{}' to customer selection page. Available customerIds: {}",
-            username,
-            availableCustomerIds
-        );
-
-        List<CustomerDto> customers = casApi.getCustomersByIds(availableCustomerIds);
-
-        LOGGER.debug("Available customers: {}", customers);
-
-        List<CustomerModel> customerToSelect = customers
+        List<CustomerModel> customerToSelect = entries
             .stream()
             .map(
-                customerDto ->
+                entry ->
                     new CustomerModel()
-                        .setCustomerId(customerDto.getId())
-                        .setCode(customerDto.getCode())
-                        .setName(customerDto.getName())
+                        .setCustomerId(entry.getCustomerId())
+                        .setCode(entry.getCustomerCode())
+                        .setName(entry.getCustomerName())
             )
             .sorted(Comparator.comparing(CustomerModel::getCode))
-            .collect(Collectors.toList());
+            .toList();
+
+        LOGGER.debug(
+            "Redirecting user with login of '{}' to customer selection page. Available customers: {}",
+            username,
+            customerToSelect
+        );
 
         flowScope.put(Constants.FLOW_LOGIN_EMAIL, username);
         flowScope.remove(Constants.FLOW_LOGIN_CUSTOMER_ID);
