@@ -320,8 +320,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
      */
     private static HttpHeaders maskSensitiveHeaders(final HttpHeaders headers) {
         final HttpHeaders masked = new HttpHeaders();
-        headers.forEach((name, values) ->
-            masked.addAll(name, SENSITIVE_HEADERS.contains(name) ? List.of(MASKED_HEADER_VALUE) : values)
+        headers.forEach(
+            (name, values) ->
+                masked.addAll(name, SENSITIVE_HEADERS.contains(name) ? List.of(MASKED_HEADER_VALUE) : values)
         );
         return masked;
     }
