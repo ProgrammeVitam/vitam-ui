@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd ../../..
-mvn clean install -DskipTests -Pvitam
+mvn clean install -Dmaven.test.skip=true -Pvitam
 
 cd ./api/api-pastis/pastis-standalone
-mvn clean install -DskipTests -Pstandalone
+mvn clean install -Dmaven.test.skip=true -Pstandalone
