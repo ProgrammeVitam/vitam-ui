@@ -3,9 +3,7 @@
   @for (padding of paddings; track padding) {
     <strong>p-{{ padding }}</strong>
     <div #el class="outer p-{{ padding }}">
-      <div class="inner">
-        {{ getPadding(el) }}
-      </div>
+      <div class="inner" designSystemComputedStyle="padding" [designSystemComputedStyleTarget]="el"></div>
     </div>
   }
 </div>
@@ -15,9 +13,7 @@
   @for (margin of margins; track margin) {
     <strong>m-{{ margin }}</strong>
     <div class="outer">
-      <div #el class="inner m-{{ margin }}">
-        {{ getMargin(el) }}
-      </div>
+      <div #el class="inner m-{{ margin }}" designSystemComputedStyle="margin" [designSystemComputedStyleTarget]="el"></div>
     </div>
   }
 </div>
@@ -25,7 +21,7 @@
 <h2>{{ 'SPACING.GAP' | translate }}</h2>
 <div class="d-flex flex-column">
   @for (gap of gaps; track gap) {
-    <strong>hgap-{{ gap }} ({{ getGap(el) }})</strong>
+    <strong>hgap-{{ gap }} (<span designSystemComputedStyle="gap" [designSystemComputedStyleTarget]="el"></span>)</strong>
     <div #el class="outer hgap-{{ gap }}">
       <div class="inner"></div>
       <div class="inner"></div>
@@ -39,7 +35,7 @@
 <div class="d-flex flex-row justify-content-between">
   @for (gap of gaps; track gap) {
     <div class="d-flex flex-column">
-      <strong>gap-{{ gap }} ({{ getGap(el) }})</strong>
+      <strong>gap-{{ gap }} (<span designSystemComputedStyle="gap" [designSystemComputedStyleTarget]="el"></span>)</strong>
       <div #el class="outer gap-{{ gap }}">
         <div class="inner"></div>
         <div class="inner"></div>
