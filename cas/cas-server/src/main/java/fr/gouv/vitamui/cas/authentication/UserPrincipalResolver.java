@@ -41,8 +41,10 @@ import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.x509.CertificateParser;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.utils.RawJson;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -74,19 +76,15 @@ import java.security.cert.CertificateParsingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.ADDRESS_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.ANALYTICS_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.API_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.AUTH_TOKEN_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.BASIC_CUSTOMER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CENTER_CODES;
 import static fr.gouv.vitamui.commons.api.CommonConstants.CUSTOMER_IDENTIFIER_ATTRIBUTE;
@@ -114,7 +112,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUBROGEABLE_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_IDENTIFIER_ATTRIBUTE;
-import static fr.gouv.vitamui.commons.api.CommonConstants.SURROGATION_PARAMETER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TENANTS_BY_APP_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.USER_ID_ATTRIBUTE;
@@ -369,96 +366,53 @@ public class UserPrincipalResolver implements PrincipalResolver {
             subrogationCall
         );
 
-        String embedded = AUTH_TOKEN_PARAMETER;
-        if (subrogationCall) {
-            embedded += "," + SURROGATION_PARAMETER;
-        } else if (requestContext == null) {
-            embedded += "," + API_PARAMETER;
-        }
-        LOGGER.debug("Computed embedded: {}", embedded);
+        // The IAM owns the principal: from the identity the credential resolved, it assembles the whole
+        // attribute set (including the OTP decision and the super-user resolution) out of its own data.
+        // The authentication server only builds the request and republishes the answer with the exact
+        // types the token expects.
+        final var request = new PrincipalAttributesRequestDto();
+        request.setLoginEmail(loginEmail);
+        request.setLoginCustomerId(loginCustomerId);
+        request.setIdentityProviderId(userProviderId);
+        request.setUserIdentifier(technicalUserId.orElse(null));
+        request.setSuperUserEmail(superUserEmail);
+        request.setSuperUserCustomerId(superUserCustomerId);
+        request.setApiContext(requestContext == null);
 
-        final AuthUserDto user = casApi.getUser(
-            loginEmail,
-            loginCustomerId,
-            userProviderId,
-            technicalUserId.orElse(null),
-            embedded
-        );
-
-        if (user == null) {
-            LOGGER.debug("No user resolved for: {}", loginEmail);
+        final PrincipalAttributesResponseDto principalAttributes;
+        try {
+            principalAttributes = casApi.buildPrincipalAttributes(request);
+        } catch (final RuntimeException e) {
+            LOGGER.debug("No user resolved for: {} ({})", loginEmail, e.getMessage());
             return null;
-        } else if (user.getStatus() != UserStatusEnum.ENABLED) {
-            LOGGER.debug("User cannot login: {} - User {}", loginEmail, user);
+        }
+
+        if (!UserStatusEnum.ENABLED.name().equals(principalAttributes.getStatus())) {
+            LOGGER.debug("User cannot login: {} - status {}", loginEmail, principalAttributes.getStatus());
             return null;
         }
 
         if (Objects.isNull(loginEmail)) {
-            loginEmail = user.getEmail();
+            loginEmail = principalAttributes.getEmail();
         }
 
-        final var attributes = new HashMap<String, List<Object>>();
-        attributes.put(USER_ID_ATTRIBUTE, Collections.singletonList(user.getId()));
-        attributes.put(CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(user.getCustomerId()));
-        attributes.put(EMAIL_ATTRIBUTE, Collections.singletonList(loginEmail));
-        attributes.put(FIRSTNAME_ATTRIBUTE, Collections.singletonList(user.getFirstname()));
-        attributes.put(LASTNAME_ATTRIBUTE, Collections.singletonList(user.getLastname()));
-        attributes.put(IDENTIFIER_ATTRIBUTE, Collections.singletonList(user.getIdentifier()));
-        final var otp = user.isOtp();
-        attributes.put(OTP_ATTRIBUTE, Collections.singletonList(otp));
-        final var otpUsername = subrogationCall ? superUserEmail : loginEmail;
-        final var otpCustomerId = subrogationCall ? superUserCustomerId : loginCustomerId;
-        var computedOtp =
-            otp &&
-            identityProviderHelper.identifierMatchProviderPattern(
-                providersService.getProviders(),
-                otpUsername,
-                otpCustomerId
-            );
-        attributes.put(COMPUTED_OTP, Collections.singletonList("" + computedOtp));
-        attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(user.isSubrogeable()));
-        attributes.put(USER_INFO_ID, Collections.singletonList(user.getUserInfoId()));
-        attributes.put(PHONE_ATTRIBUTE, Collections.singletonList(user.getPhone()));
-        attributes.put(MOBILE_ATTRIBUTE, Collections.singletonList(user.getMobile()));
-        attributes.put(STATUS_ATTRIBUTE, Collections.singletonList(user.getStatus()));
-        attributes.put(TYPE_ATTRIBUTE, Collections.singletonList(user.getType()));
-        attributes.put(READONLY_ATTRIBUTE, Collections.singletonList(user.isReadonly()));
-        attributes.put(LEVEL_ATTRIBUTE, Collections.singletonList(user.getLevel()));
-        attributes.put(LAST_CONNECTION_ATTRIBUTE, Collections.singletonList(user.getLastConnection()));
-        attributes.put(NB_FAILED_ATTEMPTS_ATTRIBUTE, Collections.singletonList(user.getNbFailedAttempts()));
-        attributes.put(PASSWORD_EXPIRATION_DATE_ATTRIBUTE, Collections.singletonList(user.getPasswordExpirationDate()));
-        attributes.put(GROUP_ID_ATTRIBUTE, Collections.singletonList(user.getGroupId()));
-        attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
-        attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
-        attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
-        AuthUserDto superUser = null;
-        if (subrogationCall) {
-            attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUserEmail));
-            attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(superUserCustomerId));
-            superUser = casApi.getUser(superUserEmail, superUserCustomerId, null, null, null);
-            if (superUser == null) {
-                LOGGER.debug("No super user found for: {}", superUserEmail);
-                return NullPrincipal.getInstance();
-            }
-            attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
-            attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
-        }
-
-        if (isTrueAuthUserDtoInstance(user)) {
-            addAuthenticatedUserAttributes(user, attributes);
-        }
+        final var attributes = buildAttributes(principalAttributes, loginEmail, subrogationCall);
 
         Principal createdPrincipal;
         try {
-            createdPrincipal = principalFactory.createPrincipal(user.getId(), attributes);
+            createdPrincipal = principalFactory.createPrincipal(principalAttributes.getUserId(), attributes);
         } catch (final Throwable e) {
             LOGGER.error("Error creating principal", e);
             throw new RuntimeException(e);
         }
         if (subrogationCall) {
+            if (principalAttributes.getSuperUserId() == null) {
+                LOGGER.debug("No super user found for: {}", superUserEmail);
+                return NullPrincipal.getInstance();
+            }
             Principal createdSuperPrincipal;
             try {
-                createdSuperPrincipal = principalFactory.createPrincipal(superUser.getId());
+                createdSuperPrincipal = principalFactory.createPrincipal(principalAttributes.getSuperUserId());
             } catch (final Throwable e) {
                 LOGGER.error("Error creating super principal", e);
                 throw new RuntimeException(e);
@@ -467,6 +421,62 @@ public class UserPrincipalResolver implements PrincipalResolver {
         } else {
             return createdPrincipal;
         }
+    }
+
+    Map<String, List<Object>> buildAttributes(
+        final PrincipalAttributesResponseDto p,
+        final String loginEmail,
+        final boolean subrogationCall
+    ) {
+        final var attributes = new HashMap<String, List<Object>>();
+        attributes.put(USER_ID_ATTRIBUTE, Collections.singletonList(p.getUserId()));
+        attributes.put(CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(p.getCustomerId()));
+        attributes.put(EMAIL_ATTRIBUTE, Collections.singletonList(loginEmail));
+        attributes.put(FIRSTNAME_ATTRIBUTE, Collections.singletonList(p.getFirstname()));
+        attributes.put(LASTNAME_ATTRIBUTE, Collections.singletonList(p.getLastname()));
+        attributes.put(IDENTIFIER_ATTRIBUTE, Collections.singletonList(p.getIdentifier()));
+        attributes.put(OTP_ATTRIBUTE, Collections.singletonList(p.isOtp()));
+        attributes.put(COMPUTED_OTP, Collections.singletonList("" + p.isComputedOtp()));
+        attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(p.isSubrogeable()));
+        attributes.put(USER_INFO_ID, Collections.singletonList(p.getUserInfoId()));
+        attributes.put(PHONE_ATTRIBUTE, Collections.singletonList(p.getPhone()));
+        attributes.put(MOBILE_ATTRIBUTE, Collections.singletonList(p.getMobile()));
+        attributes.put(
+            STATUS_ATTRIBUTE,
+            Collections.singletonList(p.getStatus() != null ? UserStatusEnum.valueOf(p.getStatus()) : null)
+        );
+        attributes.put(
+            TYPE_ATTRIBUTE,
+            Collections.singletonList(p.getType() != null ? UserTypeEnum.valueOf(p.getType()) : null)
+        );
+        attributes.put(READONLY_ATTRIBUTE, Collections.singletonList(p.isReadonly()));
+        attributes.put(LEVEL_ATTRIBUTE, Collections.singletonList(p.getLevel()));
+        attributes.put(LAST_CONNECTION_ATTRIBUTE, Collections.singletonList(p.getLastConnection()));
+        attributes.put(NB_FAILED_ATTEMPTS_ATTRIBUTE, Collections.singletonList(p.getNbFailedAttempts()));
+        attributes.put(PASSWORD_EXPIRATION_DATE_ATTRIBUTE, Collections.singletonList(p.getPasswordExpirationDate()));
+        attributes.put(GROUP_ID_ATTRIBUTE, Collections.singletonList(p.getGroupId()));
+        attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new RawJson(p.getAddressJson())));
+        attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new RawJson(p.getAnalyticsJson())));
+        attributes.put(INTERNAL_CODE, Collections.singletonList(p.getInternalCode()));
+
+        if (subrogationCall) {
+            attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(p.getSuperUserEmail()));
+            attributes.put(SUPER_USER_CUSTOMER_ID_ATTRIBUTE, Collections.singletonList(p.getSuperUserCustomerId()));
+            attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(p.getSuperUserIdentifier()));
+            attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(p.getSuperUserId()));
+        }
+        if (p.isAuthenticated()) {
+            attributes.put(PROFILE_GROUP_ATTRIBUTE, Collections.singletonList(new RawJson(p.getProfileGroupJson())));
+            attributes.put(CUSTOMER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(p.getCustomerIdentifier()));
+            attributes.put(BASIC_CUSTOMER_ATTRIBUTE, Collections.singletonList(new RawJson(p.getBasicCustomerJson())));
+            attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(p.getAuthToken()));
+            attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(p.getProofTenantIdentifier()));
+            attributes.put(TENANTS_BY_APP_ATTRIBUTE, Collections.singletonList(new RawJson(p.getTenantsByAppJson())));
+            attributes.put(SITE_CODE, Collections.singletonList(p.getSiteCode()));
+            attributes.put(CENTER_CODES, Collections.singletonList(p.getCenterCodes()));
+            attributes.put(ROLES_ATTRIBUTE, new ArrayList<>(p.getRoles()));
+        }
+        return attributes;
     }
 
     @Override
@@ -481,37 +491,5 @@ public class UserPrincipalResolver implements PrincipalResolver {
     @Override
     public IPersonAttributeDao getAttributeRepository() {
         return null;
-    }
-
-    private boolean isTrueAuthUserDtoInstance(AuthUserDto authUser) {
-        return authUser.getProfileGroup() != null;
-    }
-
-    private void addAuthenticatedUserAttributes(AuthUserDto authUser, Map<String, List<Object>> attributes) {
-        attributes.put(
-            PROFILE_GROUP_ATTRIBUTE,
-            Collections.singletonList(new CasJsonWrapper(authUser.getProfileGroup()))
-        );
-        attributes.put(CUSTOMER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(authUser.getCustomerIdentifier()));
-        attributes.put(
-            BASIC_CUSTOMER_ATTRIBUTE,
-            Collections.singletonList(new CasJsonWrapper(authUser.getBasicCustomer()))
-        );
-        attributes.put(AUTHTOKEN_ATTRIBUTE, Collections.singletonList(authUser.getAuthToken()));
-        attributes.put(PROOF_TENANT_ID_ATTRIBUTE, Collections.singletonList(authUser.getProofTenantIdentifier()));
-        attributes.put(
-            TENANTS_BY_APP_ATTRIBUTE,
-            Collections.singletonList(new CasJsonWrapper(authUser.getTenantsByApp()))
-        );
-        attributes.put(SITE_CODE, Collections.singletonList(authUser.getSiteCode()));
-        attributes.put(CENTER_CODES, Collections.singletonList(authUser.getCenterCodes()));
-        final Set<String> roles = new HashSet<>();
-        if (authUser.getProfileGroup() != null) {
-            authUser
-                .getProfileGroup()
-                .getProfiles()
-                .forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
-        }
-        attributes.put(ROLES_ATTRIBUTE, new ArrayList<>(roles));
     }
 }

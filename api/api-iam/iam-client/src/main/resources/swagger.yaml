@@ -2662,15 +2662,7 @@ paths:
                     content:
                         '*/*':
                             schema:
-                                type: object
-                                example: null
-                                additionalProperties:
-                                    type: array
-                                    example: null
-                                    items:
-                                        type: string
-                                        example: null
-                            example: null
+                                $ref: "#/components/schemas/PrincipalAttributesResponseDto"
     /iam/v1/cas/subrogations/validate:
         post:
             tags:
@@ -3826,6 +3818,91 @@ components:
                     type: boolean
                     example: null
             example: null
+        PrincipalAttributesResponseDto:
+            type: object
+            properties:
+                userId:
+                    type: string
+                customerId:
+                    type: string
+                email:
+                    type: string
+                firstname:
+                    type: string
+                lastname:
+                    type: string
+                identifier:
+                    type: string
+                otp:
+                    type: boolean
+                computedOtp:
+                    type: boolean
+                subrogeable:
+                    type: boolean
+                userInfoId:
+                    type: string
+                phone:
+                    type: string
+                mobile:
+                    type: string
+                status:
+                    type: string
+                type:
+                    type: string
+                readonly:
+                    type: boolean
+                level:
+                    type: string
+                lastConnection:
+                    type: string
+                    format: date-time
+                nbFailedAttempts:
+                    type: integer
+                    format: int32
+                passwordExpirationDate:
+                    type: string
+                    format: date-time
+                groupId:
+                    type: string
+                addressJson:
+                    type: string
+                analyticsJson:
+                    type: string
+                internalCode:
+                    type: string
+                authenticated:
+                    type: boolean
+                profileGroupJson:
+                    type: string
+                customerIdentifier:
+                    type: string
+                basicCustomerJson:
+                    type: string
+                authToken:
+                    type: string
+                proofTenantIdentifier:
+                    type: integer
+                    format: int32
+                tenantsByAppJson:
+                    type: string
+                siteCode:
+                    type: string
+                centerCodes:
+                    type: array
+                    items:
+                        type: string
+                roles:
+                    type: array
+                    items:
+                        type: string
+                superUserEmail:
+                    type: string
+                superUserCustomerId:
+                    type: string
+                superUserIdentifier:
+                    type: string
+                superUserId:
+                    type: string
         SubrogationValidateRequestDto:
             required:
                 - superUserCustomerId
