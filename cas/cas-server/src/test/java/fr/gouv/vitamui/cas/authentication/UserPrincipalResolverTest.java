@@ -11,8 +11,11 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.utils.CasJsonWrapper;
+import fr.gouv.vitamui.commons.api.utils.RawJson;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
@@ -47,6 +50,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -101,6 +106,43 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             identifierMapping,
             ""
         );
+
+        when(casApi.buildPrincipalAttributes(any())).thenAnswer(invocation -> {
+            final PrincipalAttributesRequestDto req = invocation.getArgument(0);
+            final PrincipalAttributesResponseDto response = principalResponse(UserStatusEnum.ENABLED, USERNAME_ID);
+            if (req != null && req.getSuperUserEmail() != null && !req.getSuperUserEmail().isEmpty()) {
+                response.setSuperUserEmail(req.getSuperUserEmail());
+                response.setSuperUserCustomerId(req.getSuperUserCustomerId());
+                response.setSuperUserId(ADMIN_ID);
+                response.setSuperUserIdentifier(ADMIN_ID);
+            }
+            return response;
+        });
+    }
+
+    private PrincipalAttributesResponseDto principalResponse(final UserStatusEnum status, final String id) {
+        final PrincipalAttributesResponseDto response = new PrincipalAttributesResponseDto();
+        response.setUserId(id);
+        response.setEmail(USERNAME);
+        response.setStatus(status.name());
+        response.setType(UserTypeEnum.NOMINATIVE.name());
+        response.setAddressJson(addressJson());
+        response.setAuthenticated(true);
+        response.setRoles(List.of(ROLE_NAME));
+        return response;
+    }
+
+    private String addressJson() {
+        final AddressDto address = new AddressDto();
+        address.setStreet("73 rue du faubourg poissonnière");
+        address.setZipCode("75009");
+        address.setCity("Paris");
+        address.setCountry("France");
+        try {
+            return JsonUtils.toJson(address);
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -525,12 +567,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     }
 
     @Test
-    public void testResolveAddressDeserializeSuccessfully() {
-        AuthUserDto userProfile = userProfile(UserStatusEnum.ENABLED);
-        when(
-            casApi.getUser(eq(USERNAME), eq(CUSTOMER_ID), eq(null), eq(null), eq(CommonConstants.AUTH_TOKEN_PARAMETER))
-        ).thenReturn(userProfile);
-
+    public void testResolveAddressCarriedAsJsonSuccessfully() {
         final var principal = resolver.resolve(
             new UsernamePasswordCredential(USERNAME, PWD),
             Optional.of(createLoginPrincipal()),
@@ -539,11 +576,8 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         );
 
         assertEquals(USERNAME_ID, principal.getId());
-        AddressDto addressDto = (AddressDto) ((CasJsonWrapper) principal
-                .getAttributes()
-                .get(CommonConstants.ADDRESS_ATTRIBUTE)
-                .getFirst()).getData();
-        assertThat(addressDto).isEqualToComparingFieldByField(userProfile.getAddress());
+        final RawJson address = (RawJson) principal.getAttributes().get(CommonConstants.ADDRESS_ATTRIBUTE).getFirst();
+        assertThat(address.getJson()).isEqualTo(addressJson());
         assertNull(principal.getAttributes().get(SUPER_USER_ATTRIBUTE));
         assertNull(principal.getAttributes().get(SUPER_USER_CUSTOMER_ID_ATTRIBUTE));
     }
@@ -568,6 +602,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER)
             )
         ).thenReturn(null);
+        doThrow(new RuntimeException("User not found")).when(casApi).buildPrincipalAttributes(any());
 
         assertNull(
             resolver.resolve(
@@ -599,6 +634,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.DISABLED));
+        doReturn(principalResponse(UserStatusEnum.DISABLED, USERNAME_ID)).when(casApi).buildPrincipalAttributes(any());
 
         assertNull(
             resolver.resolve(
@@ -630,6 +666,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
                 eq(CommonConstants.AUTH_TOKEN_PARAMETER)
             )
         ).thenReturn(userProfile(UserStatusEnum.BLOCKED));
+        doReturn(principalResponse(UserStatusEnum.BLOCKED, USERNAME_ID)).when(casApi).buildPrincipalAttributes(any());
 
         assertNull(
             resolver.resolve(

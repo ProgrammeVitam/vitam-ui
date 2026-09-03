@@ -87,6 +87,9 @@
                                     PrincipalAttributesRequestDto=fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto
                                 </importMapping>
                                 <importMapping>
+                                    PrincipalAttributesResponseDto=fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto
+                                </importMapping>
+                                <importMapping>
                                     SubrogationValidateRequestDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto
                                 </importMapping>
                                 <importMapping>

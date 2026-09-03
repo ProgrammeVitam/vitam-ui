@@ -50,6 +50,7 @@ import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -86,7 +87,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -351,7 +351,7 @@ public class CasController {
     @PostMapping(value = AuthContractApi.PRINCIPAL_ATTRIBUTES_PATH)
     @Operation(operationId = "cas_buildPrincipalAttributes", summary = "Build the authentication attributes of a user")
     @Secured(ServicesData.ROLE_CAS_PRINCIPAL_ATTRIBUTES)
-    public Map<String, List<String>> buildPrincipalAttributes(
+    public PrincipalAttributesResponseDto buildPrincipalAttributes(
         final @Valid @RequestBody PrincipalAttributesRequestDto request
     ) throws InvalidParseOperationException {
         LOGGER.debug("build the principal attributes");
