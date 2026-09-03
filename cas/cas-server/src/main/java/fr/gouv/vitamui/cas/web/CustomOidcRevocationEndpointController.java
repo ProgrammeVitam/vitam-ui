@@ -7,10 +7,8 @@ import org.apereo.cas.oidc.web.controllers.token.OidcRevocationEndpointControlle
 import org.apereo.cas.support.oauth.OAuth20Constants;
 import org.apereo.cas.support.oauth.util.OAuth20Utils;
 import org.apereo.cas.ticket.OAuth20Token;
-import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.refreshtoken.OAuth20RefreshToken;
 import org.apereo.cas.util.function.FunctionUtils;
-import org.jooq.lambda.Unchecked;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -60,18 +58,5 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
         final var mv = new ModelAndView(new MappingJackson2JsonView());
         mv.setStatus(HttpStatus.OK);
         return mv;
-    }
-
-    private void revokeToken(final OAuth20RefreshToken token) throws Exception {
-        this.revokeToken(token.getId());
-        token.getAccessTokens().forEach(Unchecked.consumer(this::revokeToken));
-    }
-
-    private boolean isRefreshToken(final OAuth20Token token) {
-        return token instanceof OAuth20RefreshToken;
-    }
-
-    private boolean isAccessToken(final OAuth20Token token) {
-        return token instanceof OAuth20AccessToken;
     }
 }
