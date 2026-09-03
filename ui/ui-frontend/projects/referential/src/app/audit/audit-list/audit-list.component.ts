@@ -44,12 +44,21 @@ import { AuditService } from '../audit.service';
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const POLLING_INTERVAL_MS = 5000;
 
-// The operation's own evDetData (audit.parsedData.type) carries the actual chain type, as stored
-// by the chainAudit workflow.
-const CHAIN_AUDIT_TYPE_BY_CATEGORY: Partial<Record<AuditCategoryFilter, AuditChainType>> = {
-  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_UNIT]: AuditChainType.UNIT,
-  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP]: AuditChainType.OBJECT_GROUP,
-  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION]: AuditChainType.LOGBOOK_OPERATION,
+// Specific categories that originate from the generic 'PROCESS_AUDIT' event type.
+// Legacy records missing 'evDetData' cannot be distinguished and will match both categories.
+const PROCESS_AUDIT_CATEGORIES: AuditCategoryFilter[] = [AuditCategoryFilter.AUDIT_FILE_EXISTING, AuditCategoryFilter.AUDIT_FILE_INTEGRITY];
+
+/**
+ * Lookup table mapping raw server values (`evDetData.type` or fallback `evType`)
+ * to UI `AuditCategoryFilter` values.
+ * Preserves backwards compatibility with legacy database.
+ */
+const AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE: Record<string, AuditCategoryFilter> = {
+  ...Object.fromEntries(Object.values(AuditCategoryFilter).map((category) => [category, category as AuditCategoryFilter])),
+  TRACEABILITY_CHAIN_AUDIT_OBJECT_GROUP: AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP,
+  [AuditChainType.UNIT]: AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_UNIT,
+  [AuditChainType.OBJECT_GROUP]: AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP,
+  [AuditChainType.LOGBOOK_OPERATION]: AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION,
 };
 
 export class AuditFilters {
@@ -152,30 +161,32 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   /**
-   * The 3 chain audit filter entries share the same evType server-side, but the operation's
-   * evDetData (audit.parsedData.type) does carry the actual chain type when populated, so this
-   * narrows the already evType-filtered rows down further. Rows without that data (e.g. audits
-   * launched before this data was tracked) are kept rather than silently hidden.
+   * Filters items based on selected audit categories.
+   *
+   * Category resolution logic:
+   * 1. Checks `parsedData.type` (from evDetData) against the category mapping table.
+   * 2. Falls back to `item.type` if `evDetData` is missing or unmapped.
+   * 3. Handles legacy "PROCESS_AUDIT" items by matching them against process audit categories.
    */
   public get filteredDataSource(): any[] {
-    if (!this.dataSource) {
+    const selectedCategories = this._filters?.types || [];
+
+    if (!this.dataSource || selectedCategories.length === 0) {
       return this.dataSource;
     }
-
-    const selectedChainCategories = (this._filters?.types || []).filter((category) => CHAIN_AUDIT_TYPE_BY_CATEGORY[category] !== undefined);
-
-    if (selectedChainCategories.length === 0 || selectedChainCategories.length === 3) {
-      return this.dataSource;
-    }
-
-    const wantedChainTypes = new Set(selectedChainCategories.map((category) => CHAIN_AUDIT_TYPE_BY_CATEGORY[category]));
 
     return this.dataSource.filter((item) => {
-      if (item.type !== AuditOperation.TRACEABILITY_CHAIN_AUDIT) {
-        return true;
+      const category = AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE[item.parsedData?.['type']] ?? AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE[item.type];
+
+      if (category) {
+        return selectedCategories.includes(category);
       }
-      const chainType = item.parsedData?.type;
-      return !chainType || wantedChainTypes.has(chainType);
+
+      // Legacy existence and integrity audits, kept under either of the two entries.
+      return (
+        item.type === AuditOperation.PROCESS_AUDIT &&
+        PROCESS_AUDIT_CATEGORIES.some((processAuditCategory) => selectedCategories.includes(processAuditCategory))
+      );
     });
   }
 
