@@ -39,8 +39,8 @@
     </cdk-step>
 
     <cdk-step>
-      <mat-dialog-content>
-        <vitamui-slide-toggle formControlName="wholeChain">
+      <mat-dialog-content class="gap-4 align-items-stretch">
+        <vitamui-slide-toggle class="pb-0" formControlName="wholeChain">
           <span>{{ 'AUDIT.CHAIN_CREATE_DIALOG.WHOLE_CHAIN_TOGGLE' | translate }}</span>
         </vitamui-slide-toggle>
 
@@ -51,9 +51,9 @@
           </div>
         }
 
-        <div class="row">
-          <div class="start-date col-6">
-            <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
+        <div class="hgap-4">
+          <div class="w-100 gap-2 align-items-stretch">
+            <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_FROM' | translate }}</div>
             <vitamui-datepicker
               formControlName="startDate"
               [label]="'AUDIT.CHAIN_CREATE_DIALOG.SECURING_OPERATION_DATE_PLACEHOLDER' | translate"
@@ -63,8 +63,8 @@
               format="yyyy-MM-dd"
             ></vitamui-datepicker>
           </div>
-          <div class="end-date col-6">
-            <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_TO' | translate }}</p>
+          <div class="w-100 gap-2 align-items-stretch">
+            <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_TO' | translate }}</div>
             <vitamui-datepicker
               formControlName="endDate"
               [label]="'AUDIT.CHAIN_CREATE_DIALOG.SECURING_OPERATION_DATE_PLACEHOLDER' | translate"
