@@ -1,0 +1,188 @@
+.lifecycle-event-item {
+  overflow: hidden;
+  position: relative;
+  padding: 0 0 16px 35px;
+  left: 8px;
+  font-size: 12px;
+  border-color: var(--vitamui-primary);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 9px;
+    width: 0;
+    height: 100%;
+    border-color: var(--vitamui-primary);
+    border-style: solid;
+    border-width: 1px 0 0 1px;
+  }
+
+  &.no-line::before {
+    border-width: 0 0 0 0;
+  }
+
+  &.bridge-row {
+    overflow: visible;
+
+    &::before {
+      height: calc(100% + 1.9rem);
+    }
+  }
+
+  // trailing gap is handed off to the last child instead (see .lifecycle-event-children)
+  &.has-visible-children {
+    padding-bottom: 0;
+  }
+
+  // direct-child combinator: avoids also matching a nested child's own title
+  &.event-warning > .lifecycle-event .lifecycle-event-title::before {
+    background: var(--vitamui-orange);
+    border-color: var(--vitamui-orange);
+  }
+
+  &.event-error > .lifecycle-event .lifecycle-event-title::before {
+    background: var(--vitamui-red);
+    border-color: var(--vitamui-red);
+  }
+
+  &.no-incoming-line > .lifecycle-event .lifecycle-event-date::after,
+  &.no-incoming-line > .lifecycle-event .lifecycle-event-title::after {
+    border-width: 0 0 0 0;
+  }
+
+  &.no-incoming-line::before {
+    top: 22px;
+  }
+
+  // cancels the item's own indent so nested dots stay on the shared timeline column
+  .lifecycle-event-children & {
+    left: 0;
+  }
+}
+
+.lifecycle-event {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lifecycle-event-date {
+  position: relative;
+  color: var(--vitamui-grey-600);
+  font-weight: 400;
+
+  // first half of the incoming line, continued by .lifecycle-event-title below
+  &::after {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 0;
+    width: 0;
+    height: 100%;
+    border-color: var(--vitamui-primary);
+    border-style: solid;
+    border-width: 1px 0 0 1px;
+  }
+}
+
+.lifecycle-event-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--vitamui-grey-900);
+
+  // the timeline dot; z-index needed or the ::after line paints over it
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    left: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--vitamui-white);
+    border: 2px solid var(--vitamui-primary);
+    border-radius: 50%;
+  }
+
+  // second half of the incoming line, down to the dot's vertical center
+  &::after {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 0;
+    width: 0;
+    height: 50%;
+    border-color: var(--vitamui-primary);
+    border-style: solid;
+    border-width: 0 0 0 1px;
+  }
+}
+
+.lifecycle-event-chevron {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 2px;
+  margin-left: -4px;
+  cursor: pointer;
+  color: var(--vitamui-grey-900);
+
+  i {
+    font-size: 20px;
+  }
+}
+
+.lifecycle-event-message {
+  font-weight: 400;
+}
+
+.event-warning .lifecycle-event-message {
+  color: var(--vitamui-orange);
+}
+
+.event-error .lifecycle-event-message {
+  color: var(--vitamui-red);
+}
+
+.lifecycle-event-detail-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 2px;
+  margin-left: -4px;
+  color: var(--vitamui-secondary);
+  cursor: pointer;
+  font-size: 12px;
+
+  span {
+    text-decoration: underline;
+  }
+
+  i {
+    font-size: 18px;
+  }
+}
+
+.lifecycle-event-details {
+  color: var(--vitamui-grey-900);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  padding-right: 8px;
+  margin-top: 4px;
+}
+
+.lifecycle-event-children {
+  margin-top: 8px;
+  margin-left: -35px;
+}
