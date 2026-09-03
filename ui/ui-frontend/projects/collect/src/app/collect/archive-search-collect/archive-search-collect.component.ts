@@ -52,6 +52,7 @@ import {
   ArchiveSearchResultFacets,
   ArchiveUnit,
   BreadCrumbData,
+  ConfigService,
   ConfirmDialogComponent,
   ConfirmDialogData,
   CriteriaDataType,
@@ -143,6 +144,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   private transactionService = inject(TransactionsService);
   private vitamConfigurationService = inject(VitamTenantConfigService);
   private sipImportTrackingService = inject(SipImportTrackingService);
+  private configService = inject(ConfigService);
+
+  private nonSortableFields: string[] = this.configService.config?.NON_SORTABLE_FIELDS?.['Unit'] ?? [];
 
   readonly UnitType = UnitType;
 
@@ -730,6 +734,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  // Bug #16446: hide the server-side sort chevron for fields configured as non-sortable (analyzed ES fields).
+  isSortableField(field: string): boolean {
+    return !this.nonSortableFields.includes(field);
   }
 
   showPreviewArchiveUnit(item: Unit) {

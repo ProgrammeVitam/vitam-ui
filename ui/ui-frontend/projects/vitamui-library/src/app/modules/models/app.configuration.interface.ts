@@ -68,6 +68,8 @@ export interface AppConfiguration {
   };
   [key: string]: any;
   REASSIGNMENT_ENABLED: boolean;
+  // Bug #16651: per-collection fields for which server-side sorting is disabled (analyzed fields whose sort is too costly at high volume)
+  NON_SORTABLE_FIELDS?: { [collection: string]: string[] };
 }
 
 export type SearchProvider = 'agencies' | 'archive-unit-profiles';

@@ -42,8 +42,10 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.elimination.DeletionRequestBody;
+import fr.gouv.vitamui.commons.api.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
+import fr.gouv.vitamui.commons.api.utils.NonSortableFields;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import jakarta.ws.rs.core.Response;
 import org.apache.hc.core5.http.HttpStatus;
@@ -80,7 +82,7 @@ public class CollectService {
         final VitamContext vitamContext
     ) throws VitamClientException {
         LOGGER.debug(TRANSACTION_ID, transactionId);
-
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, searchQuery);
         try {
             RequestResponse<JsonNode> result = collectExternalClient.getUnitsByTransaction(
                 vitamContext,
@@ -427,6 +429,7 @@ public class CollectService {
         String transactionId,
         final VitamContext vitamContext
     ) throws VitamClientException {
+        VitamQueryHelper.stripNonSortableOrderBy(NonSortableFields.UNIT_COLLECTION, dslQuery);
         RequestResponse<JsonNode> response = collectExternalClient.selectUnitsWithInheritedRules(
             vitamContext,
             transactionId,

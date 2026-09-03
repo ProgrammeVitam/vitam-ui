@@ -640,7 +640,9 @@
 <ng-template #name_description>
   <span>
     {{ 'COLLECT.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{ 'COLLECT.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate }}
-    <vitamui-order-by-button orderByKey="Title" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+    @if (isSortableField('Title')) {
+      <vitamui-order-by-button orderByKey="Title" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()" />
+    }
   </span>
 </ng-template>
 <ng-template #start_date>

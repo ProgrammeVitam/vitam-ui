@@ -35,7 +35,9 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.dtos.CriteriaValue;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaSort;
 import fr.gouv.vitamui.commons.api.dtos.TermsFacet;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,12 +46,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitamui.commons.api.utils.MetadataSearchCriteriaUtils.fillQueryFromMgtRulesCriteriaList;
 
 @ExtendWith(SpringExtension.class)
 public class MetadataSearchCriteriaUtilsTest {
+
+    @AfterEach
+    void resetNonSortableFields() {
+        NonSortableFields.setNonSortableFields(Map.of());
+    }
 
     @Test
     void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
@@ -173,5 +181,74 @@ public class MetadataSearchCriteriaUtilsTest {
             "[{\"$name\":\"some_facet\",\"$terms\":{\"$field\":\"some_field\",\"$size\":10,\"$order\":\"ASC\"}}]",
             facetNode.toString()
         );
+    }
+
+    private SearchCriteriaDto searchQuerySortedBy(final String sortField) {
+        SearchCriteriaEltDto criteria = new SearchCriteriaEltDto()
+            .setCriteria("Title")
+            .setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS)
+            .setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name())
+            .setValues(List.of(new CriteriaValue().setValue("Some title")))
+            .setDataType(ArchiveSearchConsts.CriteriaDataType.STRING.name());
+
+        SearchCriteriaSort sort = new SearchCriteriaSort();
+        sort.setCriteria(sortField);
+
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        searchQuery.setCriteriaList(List.of(criteria));
+        searchQuery.setSortingCriteria(sort);
+        return searchQuery;
+    }
+
+    @Test
+    void shouldRemoveOrderByWhenSortFieldIsBlocklisted() throws VitamClientException {
+        NonSortableFields.setNonSortableFields(Map.of(NonSortableFields.UNIT_COLLECTION, List.of("Title")));
+
+        SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(
+            searchQuerySortedBy("Title")
+        );
+
+        JsonNode filter = selectMultiQuery.getFinalSelect().get("$filter");
+        Assertions.assertFalse(filter.has("$orderby"));
+    }
+
+    @Test
+    void shouldKeepOrderByWhenSortFieldIsNotBlocklisted() throws VitamClientException {
+        NonSortableFields.setNonSortableFields(Map.of(NonSortableFields.UNIT_COLLECTION, List.of("Title")));
+
+        SelectMultiQuery selectMultiQuery = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(
+            searchQuerySortedBy("StartDate")
+        );
+
+        JsonNode orderBy = selectMultiQuery.getFinalSelect().get("$filter").get("$orderby");
+        Assertions.assertNotNull(orderBy);
+        Assertions.assertTrue(orderBy.has("StartDate"));
+    }
+
+    @Test
+    void shouldEvaluateEachBlocklistedFieldIndependentlyWhenMultipleFieldsAreBlocklisted() throws VitamClientException {
+        NonSortableFields.setNonSortableFields(
+            Map.of(NonSortableFields.UNIT_COLLECTION, List.of("Title", "Description"))
+        );
+
+        Assertions.assertFalse(
+            MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(searchQuerySortedBy("Title"))
+                .getFinalSelect()
+                .get("$filter")
+                .has("$orderby")
+        );
+        Assertions.assertFalse(
+            MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(searchQuerySortedBy("Description"))
+                .getFinalSelect()
+                .get("$filter")
+                .has("$orderby")
+        );
+
+        JsonNode orderBy = MetadataSearchCriteriaUtils.mapRequestToSelectMultiQuery(searchQuerySortedBy("StartDate"))
+            .getFinalSelect()
+            .get("$filter")
+            .get("$orderby");
+        Assertions.assertNotNull(orderBy);
+        Assertions.assertTrue(orderBy.has("StartDate"));
     }
 }
