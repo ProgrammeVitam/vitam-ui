@@ -176,10 +176,9 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   async handleFilesSelection(files: FileList | File[]) {
-    this.control.markAsTouched();
-
+    // We mark the control as touched only AFTER the value has been set
     await this.updateFiles(files);
-
+    this.control.markAsTouched();
     this.resetInput();
   }
 
