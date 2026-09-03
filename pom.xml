@@ -78,6 +78,8 @@
         <!--Spring dependencies version override-->
         <!-- override it to fix CVE-2025-48924 -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
+        <!-- override it to fix CVE-2026-19880 -->
+        <logback.version>1.6.3</logback.version>
 
         <!--Plugins version -->
         <asciidoctorj.pdf.version>1.5.4</asciidoctorj.pdf.version>
