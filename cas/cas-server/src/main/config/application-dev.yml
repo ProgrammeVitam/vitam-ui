@@ -53,7 +53,7 @@ management:
 
 # Root: cas - Apereo CAS technical and functional configuration
 cas:
-  server.prefix: https://dev.vitamui.com:8080/cas
+  server.prefix: https://dev.vitamui.com/cas
   webflow.crypto:
     signing.key: =oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg
     encryption.key: 3FzNquczUjhmeJyqu251Ow
@@ -65,7 +65,7 @@ cas:
     #   sslHeaderName: x-ssl-cert
     pac4j:
       cas:
-        - login-url: https://dev.vitamui.com:8080/cas/login
+        - login-url: https://dev.vitamui.com/cas/login
       core.session-replication.cookie:
         crypto:
           encryption.key: T4LxS93IaaD-F-7kz66VEc2BD3g8uGGYKPECFkV9vBU
@@ -102,7 +102,7 @@ iam-client:
 
 # Root: vitamui - Global VITAM-UI environment settings
 vitamui:
-  portal.url: https://dev.vitamui.com:4200/
+  portal.url: https://dev.vitamui.com/
 
 cas_secret_token: tokcas_ie6UZsEcHIWrfv2x
 
@@ -137,27 +137,7 @@ spring:
 cas.http-web-request.cors:
   allow-credentials: true
   allow-origins:
-    - "https://dev.vitamui.com:4200"
-    - "https://dev.vitamui.com:4201"
-    - "https://dev.vitamui.com:4202"
-    - "https://dev.vitamui.com:4203"
-    - "https://dev.vitamui.com:4204"
-    - "https://dev.vitamui.com:4205"
-    - "https://dev.vitamui.com:4208"
-    - "https://dev.vitamui.com:4209"
-    - "https://dev.vitamui.com:4210"
-    - "https://dev.vitamui.com:4251"
     - "https://dev.vitamui.com"
-    - "https://localhost:4200"
-    - "https://localhost:4201"
-    - "https://localhost:4202"
-    - "https://localhost:4203"
-    - "https://localhost:4204"
-    - "https://localhost:4205"
-    - "https://localhost:4208"
-    - "https://localhost:4209"
-    - "https://localhost:4210"
-    - "https://localhost:4251"
     - "https://localhost"
     - "https://dev.vitamui.com:8083" # For swagger (IAM)
     - "https://localhost:8083"
