@@ -37,7 +37,7 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApplicationId, FileTypes, FileValidationErrors, FileValidatorFunction, SnackBarService } from 'vitamui-library';
-import { finalize, firstValueFrom, Subject } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ImportDialogParam, ReferentialTypes } from './import-dialog-param.interface';
 import { FormControl, Validators } from '@angular/forms';
@@ -74,7 +74,6 @@ export class ImportDialogComponent implements OnDestroy {
     this.referentialImportService
       .importReferential(this.dialogParams.referential, this.fileControl.value[0])
       .pipe(takeUntil(this.destroy))
-      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
           this.snackBarService.open({
@@ -91,6 +90,7 @@ export class ImportDialogComponent implements OnDestroy {
           this.dialogRef.close({ successfulImport: true });
         },
         error: (_) => {
+          this.isLoading = false;
           let showSnackbar = true;
           if (showSnackbar && this.dialogParams.errorMessage) {
             this.snackBarService.open({
