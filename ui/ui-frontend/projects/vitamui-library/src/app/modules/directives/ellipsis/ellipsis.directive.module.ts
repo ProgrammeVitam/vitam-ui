@@ -36,10 +36,11 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonTooltipModule } from '../../components/common-tooltip/common-tooltip.module';
 import { EllipsisDirective } from './ellipsis.directive';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, CommonTooltipModule],
   declarations: [EllipsisDirective],
   exports: [EllipsisDirective],
 })

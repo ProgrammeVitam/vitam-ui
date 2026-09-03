@@ -34,51 +34,108 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, inject, input, OnInit, Renderer2 } from '@angular/core';
+import {
+  AfterViewInit,
+  ComponentRef,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { ConnectedPosition, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { CommonTooltipComponent } from '../../components/common-tooltip/common-tooltip.component';
+
+const ELLIPSIS_TOOLTIP_POSITION: ConnectedPosition = {
+  originX: 'start',
+  originY: 'bottom',
+  overlayX: 'start',
+  overlayY: 'top',
+};
 
 @Directive({
   selector: '[vitamuiCommonEllipsis]',
   standalone: false,
 })
-export class EllipsisDirective implements OnInit, AfterViewInit {
+export class EllipsisDirective implements OnInit, AfterViewInit, OnDestroy {
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);
+  private overlay = inject(Overlay);
+  private overlayPositionBuilder = inject(OverlayPositionBuilder);
 
   isToolTipOnMouseEnter = input(false, { transform: coerceBooleanProperty });
   vitamuiCommonEllipsisLines = input(1);
   breakAll = input(false, { transform: coerceBooleanProperty });
 
-  domElement: any;
+  domElement: HTMLElement;
+
+  private isTruncated = false;
+  private overlayRef: OverlayRef;
+  private tooltipRef: ComponentRef<CommonTooltipComponent>;
 
   ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;
-    this.renderer.addClass(this.elementRef.nativeElement, 'text-ellipsis');
-    if (this.breakAll()) this.renderer.addClass(this.elementRef.nativeElement, 'break-all');
-    this.setToolTip();
+    this.renderer.addClass(this.domElement, 'text-ellipsis');
+    if (this.breakAll()) this.renderer.addClass(this.domElement, 'break-all');
+    this.checkTruncation();
   }
 
   ngAfterViewInit(): void {
     this.renderer.setProperty(this.domElement, 'scrollTop', 1);
-    this.setToolTip();
+    this.checkTruncation();
+  }
+
+  ngOnDestroy(): void {
+    this.closeTooltip();
+    this.overlayRef?.dispose();
   }
 
   @HostListener('window:resize')
-  setToolTip() {
-    this.domElement.offsetHeight < this.domElement.scrollHeight
-      ? this.renderer.setAttribute(this.domElement, 'title', this.domElement.textContent)
-      : this.renderer.removeAttribute(this.domElement, 'title');
+  checkTruncation() {
+    this.isTruncated = this.domElement.offsetHeight < this.domElement.scrollHeight;
+    if (!this.isTruncated) this.closeTooltip();
   }
 
   @HostListener('mouseenter')
-  setToolTipOnMouseEnter() {
-    if (this.isToolTipOnMouseEnter()) {
-      this.setToolTip();
-    }
+  onMouseEnter() {
+    if (this.isToolTipOnMouseEnter()) this.checkTruncation();
+    if (this.isTruncated) this.openTooltip();
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.closeTooltip();
   }
 
   @HostBinding('style.-webkit-line-clamp')
   get lineClamp() {
     return this.vitamuiCommonEllipsisLines() > 1 ? this.vitamuiCommonEllipsisLines() : null;
+  }
+
+  private openTooltip() {
+    if (!this.overlayRef) this.createOverlayRef();
+    if (!this.overlayRef.hasAttached()) {
+      this.tooltipRef = this.overlayRef.attach(new ComponentPortal(CommonTooltipComponent));
+      this.tooltipRef.instance.text = this.domElement.textContent;
+      this.tooltipRef.instance.position = 'BOTTOM';
+    }
+  }
+
+  private closeTooltip() {
+    if (this.overlayRef?.hasAttached()) this.overlayRef.detach();
+  }
+
+  private createOverlayRef() {
+    const positionStrategy = this.overlayPositionBuilder
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([ELLIPSIS_TOOLTIP_POSITION])
+      .withPush(false);
+    this.overlayRef = this.overlay.create({ positionStrategy, scrollStrategy: this.overlay.scrollStrategies.reposition() });
   }
 }

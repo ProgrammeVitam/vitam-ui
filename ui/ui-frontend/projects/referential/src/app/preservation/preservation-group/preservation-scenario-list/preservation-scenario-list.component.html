@@ -25,7 +25,7 @@
         </span>
       </th>
 
-      <th>
+      <th class="possible-actions">
         <span class="no-wrap">
           {{ 'PRESERVATION.SCENARIO.TABLE.HEADER.POSSIBLE_ACTIONS' | translate }}
           <vitamui-order-by-button
@@ -64,7 +64,9 @@
       >
         <td>{{ preservationScenario.Identifier }}</td>
         <td>{{ preservationScenario.Name }}</td>
-        <td>{{ formatPossibleActions(preservationScenario.ActionList) }}</td>
+        <td class="possible-actions">
+          <div vitamuiCommonEllipsis>{{ formatPossibleActions(preservationScenario.ActionList) }}</div>
+        </td>
         <td>{{ preservationScenario.CreationDate | dateTime: 'dd/MM/yyyy' | empty }}</td>
         <td class="delete-button">
           <button class="btn btn-circle primary" (click)="$event.stopPropagation(); deletePreservationScenarioDialog(preservationScenario)">
