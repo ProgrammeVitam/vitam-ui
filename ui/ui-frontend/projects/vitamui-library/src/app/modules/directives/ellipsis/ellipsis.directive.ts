@@ -37,10 +37,7 @@
 import { AfterViewInit, Directive, ElementRef, HostBinding, HostListener, inject, input, OnInit, Renderer2 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
-@Directive({
-  selector: '[vitamuiCommonEllipsis]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonEllipsis]' })
 export class EllipsisDirective implements OnInit, AfterViewInit {
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);

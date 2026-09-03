@@ -36,15 +36,15 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+
 import { PipesModule } from '../../pipes/pipes.module';
+import { TooltipDirective } from '../common-tooltip/tooltip.directive';
 
 @Component({
   selector: 'vitamui-elements',
   templateUrl: './elements.component.html',
   styleUrls: ['elements.component.scss'],
-  standalone: true,
-  imports: [CommonTooltipModule, MatMenuModule, PipesModule],
+  imports: [TooltipDirective, MatMenuModule, PipesModule],
 })
 export class ElementsComponent {
   @Input() icon = '';

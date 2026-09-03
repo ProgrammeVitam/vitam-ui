@@ -34,25 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ConfirmDialogService,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  UsageVersionEnum,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { ConfirmDialogService, InjectorModule, LoggerModule, StartupService, UsageVersionEnum, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveApiService } from '../../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('DipRequestCreateComponent', () => {
   let component: DipRequestCreateComponent;
@@ -87,8 +77,7 @@ describe('DipRequestCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DipRequestCreateComponent],
-      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, MatButtonToggleModule, LoggerModule.forRoot(), DipRequestCreateComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -103,14 +92,11 @@ describe('DipRequestCreateComponent', () => {
             selectedItemCountKnown: true,
           },
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: StartupService, useValue: startupServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

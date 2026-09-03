@@ -55,10 +55,9 @@ import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/imp
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyCreateModule } from './agency-create/agency-create.module';
+
 import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuItem } from '@angular/material/menu';
@@ -69,10 +68,8 @@ import { map } from 'rxjs/operators';
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
   imports: [
-    AgencyCreateModule,
     AgencyListComponent,
     AgencyPreviewComponent,
-    ImportDialogModule,
     MatMenuItem,
     MatProgressSpinnerModule,
     MatSidenavModule,

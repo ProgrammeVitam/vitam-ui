@@ -71,19 +71,16 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, LoggerModule, StartupService } from 'vitamui-library';
+import { LoggerModule, StartupService } from 'vitamui-library';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
 
 import { PopupService } from '../../core/services/popup.service';
 import { UserActionSaveProfileComponent } from './save-profile.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const matDialogSpy = {
   open: vi.fn().mockName('MatDialog.open'),
@@ -109,18 +106,14 @@ describe('UserActionOpenProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserActionSaveProfileComponent],
-      imports: [RouterTestingModule, LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), UserActionSaveProfileComponent],
       providers: [
         ProfileService,
         FileTreeMetadataService,
         PastisConfiguration,
-        { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: StartupService, useValue: startUpServiceMock },
         { provide: PopupService, useValue: popupServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

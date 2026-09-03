@@ -34,18 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnChanges, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
-import { SignedDocumentPolicyEnum } from 'vitamui-library';
-import type { IngestContract, SignaturePolicy } from 'vitamui-library';
+import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
 import { IngestContractService } from '../../ingest-contract.service';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-signature-tab',
   templateUrl: './ingest-contract-signature-tab.component.html',
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, MatButtonToggleGroup, MatButtonToggle, MatCheckbox, TranslatePipe],
 })
 export class IngestContractSignatureTabComponent implements OnChanges {
   private formBuilder = inject(FormBuilder);

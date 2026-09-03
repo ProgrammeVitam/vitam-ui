@@ -34,12 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { Subject, Subscription, merge } from 'rxjs';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, IngestContract, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  IngestContract,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 
 import { IngestContractService } from '../ingest-contract.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -47,7 +63,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-ingest-contract-list',
   templateUrl: './ingest-contract-list.component.html',
   styleUrls: ['./ingest-contract-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class IngestContractListComponent extends InfiniteScrollTable<IngestContract> implements OnDestroy, OnInit {
   ingestContractService: IngestContractService;

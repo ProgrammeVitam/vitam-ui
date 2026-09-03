@@ -43,10 +43,7 @@ import { ProbativeValueService } from '../probative-value.service';
 import { ProbativeValuePreviewComponent } from './probative-value-preview.component';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -68,8 +65,7 @@ describe('ProbativeValuePreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProbativeValuePreviewComponent, MockTruncatePipe],
-      imports: [EventTypeBadgeColorPipe],
+      imports: [EventTypeBadgeColorPipe, ProbativeValuePreviewComponent, MockTruncatePipe],
       providers: [
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: ProbativeValueService, useValue: {} },

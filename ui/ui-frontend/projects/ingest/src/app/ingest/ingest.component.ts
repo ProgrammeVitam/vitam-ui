@@ -35,22 +35,55 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, HostListener, inject, OnInit, viewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  DatepickerComponent,
+  Direction,
+  GlobalEventService,
+  SearchBarComponent,
+  SidenavPage,
+  TooltipDirective,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { IngestList } from '../core/common/ingest-list';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadComponent } from '../core/common/upload.component';
 import { UploadService } from '../core/common/upload.service';
 import { LogbookOperation } from '../models/logbook-event.interface';
 import { IngestListComponent } from './ingest-list/ingest-list.component';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { IngestPreviewComponent } from './ingest-preview/ingest-preview.component';
+import { NgStyle } from '@angular/common';
+import { MatMenuItem } from '@angular/material/menu';
+import { UploadTrackingComponent } from '../shared/upload-tracking/upload-tracking.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest',
   templateUrl: './ingest.component.html',
   styleUrls: ['./ingest.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    IngestPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    TooltipDirective,
+    NgStyle,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    ReactiveFormsModule,
+    DatepickerComponent,
+    UploadTrackingComponent,
+    IngestListComponent,
+    TranslatePipe,
+  ],
 })
 export class IngestComponent extends SidenavPage<LogbookOperation> implements OnInit {
   private readonly route = inject(ActivatedRoute);

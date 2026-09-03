@@ -34,19 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
+import { ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { UnitsEditComponent } from './units-edit.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-units-form',
@@ -58,7 +55,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class UnitsFormStubComponent {
   writeValue() {}
@@ -78,17 +75,13 @@ describe('UnitsEditComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [UnitsEditComponent, UnitsFormStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, UnitsEditComponent, UnitsFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

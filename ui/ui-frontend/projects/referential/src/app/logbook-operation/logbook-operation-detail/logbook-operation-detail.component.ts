@@ -34,23 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   AuthService,
-  IEvent,
+  EventTypeLabelComponent,
   ExternalParameters,
   ExternalParametersService,
-  fadeInOutAnimation,
+  HistoryEventsComponent,
+  IEvent,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
+  PipesModule,
   SnackBarService,
+  VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const msgForDownload: { [key: string]: string } = {
   EXPORT_DIP: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP',
@@ -63,8 +73,20 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
-  animations: [fadeInOutAnimation],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    EventTypeLabelComponent,
+    HistoryEventsComponent,
+    PipesModule,
+    LastEventPipe,
+    EventTypeBadgeColorPipe,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   private logbookService = inject(LogbookService);

@@ -36,7 +36,6 @@
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from '../injection-tokens';
 import { OntologyApiService } from './ontology-api.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -46,14 +45,7 @@ describe('OntologyApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
     service = TestBed.inject(OntologyApiService);
   });

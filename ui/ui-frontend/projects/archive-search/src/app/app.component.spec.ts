@@ -34,40 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
 
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'router-outlet',
-  template: '',
-})
-class RouterOutletStubComponent {}
-
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'vitamui-common-subrogation-banner',
-  template: '',
-})
-class SubrogationBannerStubComponent {}
+import { provideRouter } from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
-    const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent],
-      declarations: [AppComponent],
-      providers: [
-        { provide: StartupService, useValue: startupServiceStub },
-        { provide: AuthService, useValue: { userLoaded: of(null) } },
-        { provide: Router, useValue: { navigate: () => {} } },
-      ],
+      imports: [AppComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 

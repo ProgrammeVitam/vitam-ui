@@ -34,28 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subscription, forkJoin } from 'rxjs';
-import {
-  AuthService,
-  ConfirmDialogService,
-  CriteriaSearchQuery,
-  Operators,
-  Profile,
-  buildValidators,
-  collapseAnimation,
-  rotateAnimation,
-} from 'vitamui-library';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { HierarchyService } from '../hierarchy.service';
+import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    MatDialogContent,
+    SlideToggleComponent,
+    ProfilesFormComponent,
+    MatDialogActions,
+    TranslatePipe,
+    CommonModule,
+    FormsModule,
+    LevelInputComponent,
+  ],
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<HierarchyCreateComponent>>(MatDialogRef);

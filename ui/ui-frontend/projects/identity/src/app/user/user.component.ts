@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
@@ -50,20 +50,34 @@ import {
   Group,
   PageRequest,
   SidenavPage,
-  User,
   SnackBarService,
+  User,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { GroupService } from '../group/group.service';
 import { UserCreateComponent } from './user-create/user-create.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserService } from './user.service';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { UserPreviewComponent } from './user-preview/user-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    UserPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    UserListComponent,
+    TranslatePipe,
+  ],
 })
 export class UserComponent extends SidenavPage<User> implements OnInit {
   dialog = inject(MatDialog);

@@ -34,16 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import type { Event } from 'vitamui-library';
-import { ExternalParameters, ExternalParametersService, SnackBarService } from 'vitamui-library';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import {
+  Event,
+  ExternalParameters,
+  ExternalParametersService,
+  OperationHistoryTabComponent,
+  PipesModule,
+  SnackBarService,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
 import { SecurisationService } from '../securisation.service';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { SecurisationInformationTabComponent } from './securisation-information-tab/securisation-information-tab.component';
+import { SecurisationCheckTabComponent } from './securisation-check-tab/securisation-check-tab.component';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-securisation-preview',
   templateUrl: './securisation-preview.component.html',
   styleUrls: ['./securisation-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    SecurisationInformationTabComponent,
+    SecurisationCheckTabComponent,
+    OperationHistoryTabComponent,
+    PipesModule,
+    EventTypeBadgeColorPipe,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class SecurisationPreviewComponent implements OnInit {
   private securisationService = inject(SecurisationService);

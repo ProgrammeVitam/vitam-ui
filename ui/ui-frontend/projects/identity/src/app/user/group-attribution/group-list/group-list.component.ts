@@ -34,16 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
+import { GroupDetailComponent } from '../group-detail/group-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [SearchBarComponent, GroupDetailComponent, TranslatePipe, CollapseDirective, CommonModule, EllipsisDirective],
 })
 export class GroupListComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);

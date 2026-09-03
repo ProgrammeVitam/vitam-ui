@@ -46,13 +46,12 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
+import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { opacityAnimation, slideAnimation } from '../../../animations/vitamui-common-animations';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models/application/category.interface';
 import { Application } from '../../../models/application/application.interface';
@@ -63,6 +62,11 @@ import { Tenant } from './../../../models/customer/tenant.interface';
 import { MenuOverlayRef } from './menu-overlay-ref';
 import { MenuOption } from '../../../models/menu-option.interface';
 import { normalizeString } from '../../../../../lib/utils/string.util';
+import { ItemSelectComponent } from '../item-select/item-select.component';
+import { MatIconButton } from '@angular/material/button';
+import { MenuApplicationTileComponent } from './menu-application-tile/menu-application-tile.component';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { KeyValuePipe } from '@angular/common';
 
 const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
@@ -75,8 +79,19 @@ interface NgxTranslateApp {
   selector: 'vitamui-common-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  animations: [opacityAnimation, slideAnimation],
-  standalone: false,
+  imports: [
+    SearchBarComponent,
+    ItemSelectComponent,
+    MatIconButton,
+    MatSelectionList,
+    MatListOption,
+    MenuApplicationTileComponent,
+    MatTabGroup,
+    MatTab,
+    CdkTrapFocus,
+    KeyValuePipe,
+    TranslatePipe,
+  ],
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   private dialogRef = inject(MenuOverlayRef);

@@ -37,13 +37,12 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { GriffinsApiService } from './griffins-api.service';
-import { BASE_URL } from '../../injection-tokens';
-import { Griffin, CreateGriffin } from './griffin.type';
+import { CreateGriffin, Griffin } from './griffin.type';
 
 describe('GriffinsApiService', () => {
   let service: GriffinsApiService;
   let httpMock: HttpTestingController;
-  const baseUrl = 'http://localhost:8080';
+  const baseUrl = '/fake-api';
 
   const mockGriffin: Griffin = {
     '#id': '1',
@@ -61,7 +60,7 @@ describe('GriffinsApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [GriffinsApiService, { provide: BASE_URL, useValue: baseUrl }],
+      providers: [GriffinsApiService],
     });
     service = TestBed.inject(GriffinsApiService);
     httpMock = TestBed.inject(HttpTestingController);

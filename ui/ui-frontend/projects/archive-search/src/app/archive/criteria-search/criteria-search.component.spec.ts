@@ -34,14 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import {
-  BASE_URL,
   InjectorModule,
   LoggerModule,
   SearchCriteriaTypeEnum,
@@ -50,7 +47,6 @@ import {
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CriteriaSearchComponent } from './criteria-search.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CriteriaSearchComponent', () => {
   let component: CriteriaSearchComponent;
@@ -58,23 +54,12 @@ describe('CriteriaSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CriteriaSearchComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        InjectorModule,
-        RouterTestingModule,
-        VitamUICommonTestModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-      ],
+      imports: [InjectorModule, VitamUICommonTestModule, BrowserAnimationsModule, LoggerModule.forRoot(), CriteriaSearchComponent],
       providers: [
         TranslateWithOptionalTypeSuffixPipe,
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

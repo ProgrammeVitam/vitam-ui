@@ -34,16 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 
-import type { Owner, Tenant } from 'vitamui-library';
-import { StartupService } from 'vitamui-library';
+import { Owner, StartupService, Tenant, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { OwnerOperationHistoryTabComponent } from './owner-operation-history-tab/owner-operation-history-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-owner-preview',
   templateUrl: './owner-preview.component.html',
   styleUrls: ['./owner-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    OwnerOperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class OwnerPreviewComponent {
   private startupService = inject(StartupService);

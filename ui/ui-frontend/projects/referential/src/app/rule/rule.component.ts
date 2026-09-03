@@ -37,19 +37,47 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
-import { ApplicationId, FileTypes, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationId,
+  FileTypes,
+  GlobalEventService,
+  Role,
+  Rule,
+  RuleService,
+  SecurityService,
+  SidenavPage,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { RuleCreateComponent } from './rule-create/rule-create.component';
 import { RuleListComponent } from './rule-list/rule-list.component';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { RulePreviewComponent } from './rule-preview/rule-preview.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-rules',
   templateUrl: './rule.component.html',
   styleUrls: ['./rule.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    RulePreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    RuleListComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   ruleService = inject(RuleService);

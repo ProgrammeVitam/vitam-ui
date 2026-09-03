@@ -34,37 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges, inject } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
+  ArchiveUnitModule,
   DescriptionLevel,
   FileInfoDto,
   FormatIdentificationDto,
+  getErrorOnObjectsGroup,
+  getErrorOnTechnicalObjectsGroup,
+  InformationBlocComponent,
+  InformationDetailComponent,
+  PipesModule,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
+  TooltipDirective,
   Unit,
-  VersionWithQualifierDto,
   ValidationError,
-  getErrorOnTechnicalObjectsGroup,
-  getErrorOnObjectsGroup,
+  VersionWithQualifierDto,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { NgClass, UpperCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-collect-object-group-details-tab',
   templateUrl: './collect-object-group-details-tab.component.html',
   styleUrls: ['./collect-object-group-details-tab.component.scss'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
+  imports: [
+    InformationBlocComponent,
+    InformationDetailComponent,
+    ArchiveUnitModule,
+    NgClass,
+    TooltipDirective,
+    UpperCasePipe,
+    PipesModule,
+    TranslatePipe,
   ],
-  standalone: false,
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   private archiveCollectService = inject(ArchiveCollectService);

@@ -34,16 +34,60 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import {
+  BASE_URL,
+  BaseUserInfoApiService,
+  ConfigService,
+  ENVIRONMENT,
+  loadConfigFactory,
+  LoggerModule,
+  provideI18n,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { of } from 'rxjs';
+import { AppComponent } from './app/app.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { PreloadAllModules, provideRouter, withHashLocation, withPreloading } from '@angular/router';
+import { routes } from './app/app.routes';
+import { inject, provideAppInitializer } from '@angular/core';
+import { VitamUILibraryModule } from '../../vitamui-library/src/lib/vitamui-library.module';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.log(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes, withPreloading(PreloadAllModules), withHashLocation()),
+    importProvidersFrom(
+      LoggerModule.forRoot(),
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+      VitamUILibraryModule, // For Material tokens
+    ),
+    provideAppInitializer(async () => {
+      const configService = inject(ConfigService);
+      const environment = inject(ENVIRONMENT);
+      await loadConfigFactory(configService, environment)();
+    }),
+    provideI18n(),
+    provideNativeDateAdapter(),
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: ENVIRONMENT, useValue: environment },
+    { provide: BASE_URL, useValue: '/FAKE' },
+    {
+      provide: WINDOW_LOCATION,
+      useValue: window.location,
+    },
+    { provide: BaseUserInfoApiService, useValue: { patchMyUserInfo: () => of(undefined) } }, // Make changing language work
+  ],
+}).catch((err) => console.log(err));

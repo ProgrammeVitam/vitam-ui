@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, SnackBarService } from 'vitamui-library';
+import { ConfirmActionComponent, SnackBarService, VitamuiMenuButtonComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
@@ -48,13 +48,33 @@ import type { ProfileDescription } from '../../models/profile-description.model'
 import { ProfileResponse } from '../../models/profile-response';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-preview',
   templateUrl: './profile-preview.component.html',
   styleUrls: ['./profile-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    NgTemplateOutlet,
+    MatTabGroup,
+    MatTab,
+    ProfileInformationTabComponent,
+    MatProgressSpinner,
+    forwardRef(() => ProfilePreviewComponent),
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ProfilePreviewComponent implements AfterViewInit {
   private matDialog = inject(MatDialog);

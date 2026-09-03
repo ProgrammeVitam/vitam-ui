@@ -35,8 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNode,
+  MatTreeNodeDef,
+  MatTreeNodeOutlet,
+} from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
   ConfigurationsApiService,
@@ -48,19 +55,36 @@ import {
   nodeToVitamuiIcon,
   ResultFacet,
   SearchCriteriaDto,
+  TooltipDirective,
   Unit,
   UnitType,
+  VitamuiTreeNodeComponent,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { Pair } from '../../../models/utils';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 import { first } from 'rxjs/operators';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { DecimalPipe, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-leaves-tree',
   templateUrl: './leaves-tree.component.html',
   styleUrls: ['./leaves-tree.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    TooltipDirective,
+    MatTree,
+    MatTreeNodeDef,
+    MatNestedTreeNode,
+    NgClass,
+    VitamuiTreeNodeComponent,
+    MatTreeNodeOutlet,
+    MatTreeNode,
+    DecimalPipe,
+    TranslatePipe,
+  ],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private archiveSharedDataService = inject(ArchiveSharedDataService);

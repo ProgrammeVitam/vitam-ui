@@ -34,16 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import type { Profile } from 'vitamui-library';
-import { AuthService, buildValidators, diff } from 'vitamui-library';
+import {
+  AuthService,
+  buildValidators,
+  diff,
+  EditableInputComponent,
+  EditableLevelInputComponent,
+  EditableTextareaComponent,
+  Profile,
+  SlideToggleComponent,
+  TooltipDirective,
+  VitamUIFieldErrorComponent,
+} from 'vitamui-library';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const DEBOUNCE_TIME = 400;
 
@@ -51,7 +70,25 @@ const DEBOUNCE_TIME = 400;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    TooltipDirective,
+    VitamUIFieldErrorComponent,
+    TranslatePipe,
+    CommonModule,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    FormsModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+  ],
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
   private formBuilder = inject(FormBuilder);

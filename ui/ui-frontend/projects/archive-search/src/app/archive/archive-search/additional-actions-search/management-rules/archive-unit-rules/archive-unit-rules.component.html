@@ -9,7 +9,7 @@
           </i>
         </div>
         @for (actionName of getActions(); track actionName) {
-          <div class="collapsible" [@collapse]="collapsed">
+          <div class="collapsible" [class.collapsed]="collapsed">
             @if (actionName.actionType === action && action === 'ADD_RULES') {
               <app-add-management-rules
                 (delete)="deleteForm(actionName.id, $event, action)"
@@ -34,7 +34,7 @@
           </i>
         </div>
         @for (actionName of getActions(); track actionName) {
-          <div class="collapsible" [@collapse]="deleteRuleCollapsed">
+          <div class="collapsible" [class.collapsed]="deleteRuleCollapsed">
             @if (actionName.actionType === action && action === 'DELETE_RULES') {
               <app-delete-unit-rules
                 [selectedItem]="selectedItem"
@@ -58,7 +58,7 @@
             {{ updatePropertyCollapsed ? 'expand_more' : 'expand_less' }}
           </i>
         </div>
-        <div class="collapsible" [@collapse]="updatePropertyCollapsed">
+        <div class="collapsible" [class.collapsed]="updatePropertyCollapsed">
           <app-add-update-property [ruleCategory]="ruleCategory"></app-add-update-property>
         </div>
       </div>
@@ -72,7 +72,7 @@
           </i>
         </div>
         @for (actionName of getActions(); track actionName) {
-          <div class="collapsible" [@collapse]="updateRuleCollapsed">
+          <div class="collapsible" [class.collapsed]="updateRuleCollapsed">
             @if (actionName.actionType === action && action === 'UPDATE_RULES') {
               <app-update-unit-rules
                 (delete)="deleteForm(actionName.id, $event, action)"
@@ -96,7 +96,7 @@
             {{ blockCategoryInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
           </i>
         </div>
-        <div class="collapsible" [@collapse]="blockCategoryInheritanceCollapsed">
+        <div class="collapsible" [class.collapsed]="blockCategoryInheritanceCollapsed">
           <app-block-category-inheritance [ruleCategory]="ruleCategory"></app-block-category-inheritance>
         </div>
       </div>
@@ -109,7 +109,7 @@
             {{ unlockCategoryInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
           </i>
         </div>
-        <div class="collapsible" [@collapse]="unlockCategoryInheritanceCollapsed">
+        <div class="collapsible" [class.collapsed]="unlockCategoryInheritanceCollapsed">
           <app-unlock-category-inheritance
             [ruleCategory]="ruleCategory"
             [hasExactCount]="hasExactCount"
@@ -128,7 +128,7 @@
           </i>
         </div>
         @for (actionName of getActions(); track actionName) {
-          <div class="collapsible" [@collapse]="blockRuleInheritanceCollapsed">
+          <div class="collapsible" [class.collapsed]="blockRuleInheritanceCollapsed">
             @if (actionName.actionType === action && action === 'BLOCK_RULE_INHERITANCE') {
               <app-block-rules-inheritance
                 [ruleCategory]="ruleCategory"
@@ -151,7 +151,7 @@
           </i>
         </div>
         @for (actionName of getActions(); track actionName) {
-          <div class="collapsible" [@collapse]="unlockRuleInheritanceCollapsed">
+          <div class="collapsible" [class.collapsed]="unlockRuleInheritanceCollapsed">
             @if (actionName.actionType === action && action === 'UNLOCK_RULE_INHERITANCE') {
               <app-unlock-rules-inheritance
                 (delete)="deleteForm(actionName.id, $event, action)"

@@ -1,3 +1,9 @@
 <div class="d-flex">
-  <div class="tooltip-custom {{ position }}" [class.outline]="outline" [ngClass]="className" @fadeInOutAnimation [innerHTML]="text"></div>
+  <div
+    class="tooltip-custom {{ position }}"
+    [class.outline]="outline"
+    [ngClass]="className"
+    animate.enter="fadeIn"
+    [innerHTML]="text"
+  ></div>
 </div>

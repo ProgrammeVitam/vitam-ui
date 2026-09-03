@@ -37,9 +37,29 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject, Subscription, timer } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  EllipsisDirective,
+  Event,
+  EventTypeLabelComponent,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 import { AUDIT_CATEGORY_FILTER_EV_TYPE, AuditCategoryFilter, AuditChainType, AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const POLLING_INTERVAL_MS = 5000;
@@ -62,7 +82,23 @@ export class AuditFilters {
   selector: 'app-audit-list',
   templateUrl: './audit-list.component.html',
   styleUrls: ['./audit-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    EventTypeLabelComponent,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    EventTypeColorClassPipe,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   auditService: AuditService;

@@ -36,9 +36,9 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, finalize, merge, Observable, of, Subject, Subscription, zip } from 'rxjs';
 import { debounceTime, filter, map, mergeMap, share, switchMap, take, tap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
@@ -51,6 +51,7 @@ import {
   APPRAISAL_RULE,
   ArchiveSearchResultFacets,
   ArchiveUnit,
+  ArchiveUnitModule,
   BreadCrumbData,
   ConfirmDialogComponent,
   ConfirmDialogData,
@@ -58,20 +59,28 @@ import {
   CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
+  DialogHeaderComponent,
   Direction,
   DiscussionEntity,
+  DiscussionIconComponent,
+  DiscussionPanelComponent,
   DISSEMINATION_RULE,
   ExternalParameters,
   ExternalParametersService,
   FilingHoldingSchemeNode,
   GlobalEventService,
+  InfiniteScrollDirective,
   MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+  ManagementRuleSearchComponent,
   NODES,
+  OrderByButtonComponent,
   ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
+  PipesModule,
   QueryParamsService,
   ReclassificationDialogComponent,
+  ResizeSidebarDirective,
   REUSE_RULE,
   Rule,
   RuleService,
@@ -88,14 +97,18 @@ import {
   SidenavPage,
   SnackBarService,
   STORAGE_RULE,
-  VitamTenantConfigService,
   TermsFacet,
   toManagementRuleType,
+  TooltipDirective,
   Transaction,
   TransactionStatus,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
+  VitamTenantConfigService,
+  VitamuiMenuButtonComponent,
+  VitamuiSupHeaderComponent,
+  VitamuiTitleBreadcrumbComponent,
   WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveCollectService } from './archive-collect.service';
@@ -107,9 +120,33 @@ import { UpdateUnitsMetadataComponent } from './update-units-metadata/update-uni
 import { AddUnitsComponent } from './add-units/add-units.component';
 import { TransactionsService } from '../transactions/transactions.service';
 import { SipImportTrackingService } from '../shared/sip-import-tracking.service';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
 import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
+import { AsyncPipe, CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-criteria/components/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { CriteriaSearchComponent } from './archive-search-criteria/components/criteria-search/criteria-search.component';
+import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search-criteria/components/archive-search-rules-facets/archive-search-rules-facets.component';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
+import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
@@ -119,12 +156,62 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-archive-search-collect',
   templateUrl: './archive-search-collect.component.html',
   styleUrls: ['./archive-search-collect.component.scss'],
-  standalone: false,
   providers: [
     {
       provide: MANAGEMENT_RULE_SHARED_DATA_SERVICE,
       useExisting: ArchiveSharedDataService,
     },
+  ],
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    FilingHoldingSchemeComponent,
+    NgClass,
+    ArchivePreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    DiscussionIconComponent,
+    TooltipDirective,
+    DiscussionPanelComponent,
+    TitleAndDescriptionCriteriaSearchCollectComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    CriteriaSearchComponent,
+    MatMenuTrigger,
+    MatMenu,
+    SearchCriteriaListComponent,
+    MatProgressSpinner,
+    ArchiveSearchRulesFacetsComponent,
+    MatTabGroup,
+    MatTab,
+    SimpleCriteriaSearchComponent,
+    MatTabLabel,
+    ManagementRuleSearchComponent,
+    VitamuiSupHeaderComponent,
+    ArchiveUnitModule,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    NgTemplateOutlet,
+    MatCellDef,
+    MatCell,
+    MatCheckbox,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    DialogHeaderComponent,
+    OrderByButtonComponent,
+    AsyncPipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+    ResizeSidebarDirective,
   ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {

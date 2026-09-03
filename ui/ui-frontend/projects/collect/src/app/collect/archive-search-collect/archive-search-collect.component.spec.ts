@@ -35,17 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   ConfigService,
   DiscussionIconComponent,
   DiscussionPanelComponent,
@@ -71,7 +68,6 @@ import { ArchiveCollectService } from './archive-collect.service';
 import { SimpleCriteriaSearchComponent } from './archive-search-criteria/components/simple-criteria-search/simple-criteria-search.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
 
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
@@ -151,12 +147,11 @@ describe('ArchiveSearchCollectComponent', () => {
 
     vi.spyOn(archiveCollectServiceStub, 'searchArchiveUnitsByCriteria');
 
-    const declarations = withSimpleCriteria
+    const extraImports = withSimpleCriteria
       ? [ArchiveSearchCollectComponent, SimpleCriteriaSearchComponent]
       : [ArchiveSearchCollectComponent];
 
     await TestBed.configureTestingModule({
-      declarations: declarations,
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
@@ -166,33 +161,21 @@ describe('ArchiveSearchCollectComponent', () => {
         LoggerModule.forRoot(),
         MatMenuModule,
         MatSidenavModule,
-        RouterTestingModule,
+        ...extraImports,
       ],
-      providers: [
-        ArchiveSearchHelperService,
-        ArchiveSharedDataService,
-        { provide: ActivatedRoute, useValue: computeActivatedRoute(queryParams) },
-        { provide: ArchiveCollectService, useValue: archiveCollectServiceStub },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ConfigService, useValue: { config$: of() } },
-        { provide: ExternalParametersService, useValue: externalParametersServiceStub },
-        { provide: Location, useValue: locationSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: Router, useValue: routerSpy },
-        { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
-        { provide: environment, useValue: environment },
-        {
-          provide: VitamTenantConfigService,
-          useValue: tenantConfigServiceMock,
-        },
-        {
-          provide: DiscussionService,
-          useClass: DiscussionServiceMock,
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
-    }).compileComponents();
+      providers: [ArchiveSearchHelperService, ArchiveSharedDataService, { provide: environment, useValue: environment }],
+    })
+      .overrideProvider(ConfigService, { useValue: { config$: of({ COLLECT: { OFFLINE_SERVICES: [] } }) } })
+      .overrideProvider(ActivatedRoute, { useValue: computeActivatedRoute(queryParams) })
+      .overrideProvider(ArchiveCollectService, { useValue: archiveCollectServiceStub })
+      .overrideProvider(ExternalParametersService, { useValue: externalParametersServiceStub })
+      .overrideProvider(Location, { useValue: locationSpy })
+      .overrideProvider(MatDialog, { useValue: matDialogSpy })
+      .overrideProvider(Router, { useValue: routerSpy })
+      .overrideProvider(SchemaService, { useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } })
+      .overrideProvider(VitamTenantConfigService, { useValue: tenantConfigServiceMock })
+      .overrideProvider(DiscussionService, { useFactory: () => new DiscussionServiceMock() })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ArchiveSearchCollectComponent);
     component = fixture.componentInstance;
@@ -207,6 +190,8 @@ describe('ArchiveSearchCollectComponent', () => {
     beforeEach(async () => await setupTest({}));
 
     it('component should be created', () => {
+      fixture.detectChanges();
+      fixture.whenStable();
       expect(component).toBeTruthy();
     });
 

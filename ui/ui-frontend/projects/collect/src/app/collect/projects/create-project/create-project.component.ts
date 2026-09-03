@@ -34,11 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, Observable, of, throwError } from 'rxjs';
 import { last, map, switchMap, tap } from 'rxjs/operators';
 import { ProjectsService } from '../projects.service';
@@ -47,24 +46,40 @@ import { ArchiveCollectService } from '../../archive-search-collect/archive-coll
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import {
+  AccordionComponent,
+  CommonProgressBarComponent,
+  DatepickerComponent,
+  DialogContentWithStateComponent,
+  DialogHeaderComponent,
   ExternalReferentialService,
   fetchTitle,
+  FileSelectorComponent,
+  FilingPlanComponent,
   FilingPlanMode,
   FilingPlanService,
   FlowType,
+  InputComponent,
   ItemNode,
   Logger,
   MetadataUnitUp,
+  NextStepComponent,
   oneIncludedNodeRequired,
   Option,
+  PipesModule,
+  PreviousStepComponent,
   Project,
   ProjectStatus,
   readFileContent,
   SchemaElement,
   SchemaService,
+  SelectComponent,
+  SelectWithTreeComponent,
+  SlideToggleComponent,
   SnackBarService,
+  StepperComponent,
   TENANT_SEPARATOR,
   TenantSelectionService,
+  TooltipDirective,
   Transaction,
   TransactionStatus,
   Unit,
@@ -74,6 +89,13 @@ import {
   ZipFile,
   ZipFileStatus,
 } from 'vitamui-library';
+import { CdkStep } from '@angular/cdk/stepper';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
@@ -92,14 +114,38 @@ export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
-  animations: [
-    trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ]),
+  imports: [
+    DialogHeaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    MatDialogContent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatDialogActions,
+    NextStepComponent,
+    SlideToggleComponent,
+    SelectComponent,
+    PreviousStepComponent,
+    InputComponent,
+    FileSelectorComponent,
+    AccordionComponent,
+    TooltipDirective,
+    SelectWithTreeComponent,
+    DatepickerComponent,
+    CommonProgressBarComponent,
+    DialogContentWithStateComponent,
+    AsyncPipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    FilingPlanComponent,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatTreeModule,
   ],
-  standalone: false,
 })
 export class CreateProjectComponent implements OnInit, AfterViewChecked {
   private formBuilder = inject(FormBuilder);

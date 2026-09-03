@@ -34,16 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
+import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { CoreModule } from './app/core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app/app-routing.module';
+import { IngestModule } from './app/ingest/ingest.module';
+import { HoldingFillingSchemeModule } from './app/holding-filling-scheme/holding-filling-scheme.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppComponent } from './app/app.component';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.log(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      AuthenticationModule.forRoot(),
+      CoreModule,
+      BrowserAnimationsModule,
+      BrowserModule,
+      VitamUICommonModule.forRoot(),
+      AppRoutingModule,
+      IngestModule,
+      HoldingFillingSchemeModule,
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+    ),
+    provideI18n(),
+    provideNativeDateAdapter(),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    {
+      provide: WINDOW_LOCATION,
+      useValue: window.location,
+    },
+    DatePipe,
+    BytesPipe,
+  ],
+}).catch((err) => console.log(err));

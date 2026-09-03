@@ -34,24 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vitamui-library';
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import {
+  Direction,
+  OrderByButtonComponent,
+  RegisterValueEventModel,
+  RegisterValueEventType,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-operations-list',
   templateUrl: './accession-register-operations-list.component.html',
   styleUrls: ['./accession-register-operations-list.component.scss'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
-  ],
-  standalone: false,
+  imports: [TableFilterDirective, TableFilterComponent, TableFilterOptionComponent, OrderByButtonComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
   private translateService = inject(TranslateService);

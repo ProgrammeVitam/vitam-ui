@@ -34,19 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY } from 'rxjs';
-import { BASE_URL, Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { Context, ContextPermission, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ContextService } from '../../context.service';
 import { ContextPermissionTabComponent } from './context-permission-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const permissions: ContextPermission[] = [
   {
@@ -154,18 +151,14 @@ describe('ContextPermissionTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextPermissionTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), ContextPermissionTabComponent],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ContextService, useValue: { updated: EMPTY } },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

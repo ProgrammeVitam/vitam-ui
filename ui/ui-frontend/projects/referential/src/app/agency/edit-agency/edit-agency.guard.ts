@@ -39,7 +39,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ROUTES, ERROR_MESSAGES } from './edit-agency.constants';
+import { ERROR_MESSAGES, ROUTES } from './edit-agency.constants';
 
 const accessDenied = (router: Router): Observable<boolean> => {
   router.navigateByUrl(ROUTES.ACCESS_DENIED);

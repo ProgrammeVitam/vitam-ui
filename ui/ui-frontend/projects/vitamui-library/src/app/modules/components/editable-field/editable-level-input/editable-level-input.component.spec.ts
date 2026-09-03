@@ -35,14 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayModule } from '@angular/cdk/overlay';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { EditableLevelInputComponent } from './editable-level-input.component';
 import { SubLevelPipe } from './sub-level.pipe';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'vitamui-common-level-input',
@@ -54,7 +52,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [ReactiveFormsModule, OverlayModule],
 })
 class LevelInputStubComponent implements ControlValueAccessor {
   @Input() prefix: string;
@@ -71,15 +69,12 @@ describe('EditableLevelInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditableLevelInputComponent, LevelInputStubComponent, SubLevelPipe],
-      imports: [ReactiveFormsModule, OverlayModule],
+      imports: [ReactiveFormsModule, OverlayModule, EditableLevelInputComponent, LevelInputStubComponent, SubLevelPipe],
       providers: [
         {
           provide: WINDOW_LOCATION,
           useValue: {},
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

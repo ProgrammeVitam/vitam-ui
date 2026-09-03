@@ -34,18 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { DialogHeaderComponent } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-block-category-inheritance',
   templateUrl: './block-category-inheritance.component.html',
   styleUrls: ['./block-category-inheritance.component.css'],
-  standalone: false,
+  imports: [DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class BlockCategoryInheritanceComponent implements OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

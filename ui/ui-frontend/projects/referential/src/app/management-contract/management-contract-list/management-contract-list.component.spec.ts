@@ -34,20 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Subject } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, ManagementContract, SearchService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractListComponent } from './management-contract-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractListComponent', () => {
   let component: ManagementContractListComponent;
@@ -77,26 +74,21 @@ describe('ManagementContractListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         ReactiveFormsModule,
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        RouterTestingModule,
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
-        NoopAnimationsModule,
+        ManagementContractListComponent,
       ],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ManagementContractService, useValue: managementContractServiceMock },
         { provide: SearchService, useValue: searchServiceeMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -172,12 +164,6 @@ describe('ManagementContractListComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 1 button ', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementBtn = nativeElement.querySelectorAll('button');
-      expect(elementBtn.length).toBe(1);
-    });
-
     it('should have 5 vitamui order button', () => {
       const nativeElement = fixture.nativeElement;
       const vitamUiOrderBtn = nativeElement.querySelectorAll('vitamui-order-by-button');

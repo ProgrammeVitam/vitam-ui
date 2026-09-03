@@ -34,17 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, getProjectIcon, InfiniteScrollTable, PageRequest, Project } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  getProjectIcon,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  Project,
+  VitamuiMenuButtonComponent,
+} from 'vitamui-library';
 import { ProjectsService } from '../projects.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css'],
-  standalone: false,
+  imports: [
+    OrderByButtonComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    MatProgressSpinner,
+    AsyncPipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
   projectsService: ProjectsService;

@@ -34,18 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadComponent } from '../core/common/upload.component';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { UploadTrackingComponent } from '../shared/upload-tracking/upload-tracking.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-holding-filling-scheme',
   templateUrl: './holding-filling-scheme.component.html',
   styleUrls: ['./holding-filling-scheme.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    UploadTrackingComponent,
+    TranslatePipe,
+  ],
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
   private router = inject(Router);

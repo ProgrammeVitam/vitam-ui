@@ -36,12 +36,15 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import type { Application } from '../../../../models/application/application.interface';
+import { NgClass } from '@angular/common';
+import { HighlightPipe } from '../../../../pipes/highlight.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-menu-application-tile',
   templateUrl: './menu-application-tile.component.html',
   styleUrls: ['./menu-application-tile.component.scss'],
-  standalone: false,
+  imports: [NgClass, HighlightPipe, TranslatePipe],
 })
 export class MenuApplicationTileComponent implements OnInit {
   @Input()

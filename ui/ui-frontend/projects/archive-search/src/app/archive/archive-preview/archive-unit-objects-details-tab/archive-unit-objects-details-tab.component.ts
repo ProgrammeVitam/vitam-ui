@@ -34,36 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
-import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import {
   AccessContract,
   AccessContractService,
+  ArchiveUnitModule,
   DescriptionLevel,
+  PipesModule,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
+  TooltipDirective,
+  Unit,
+  VersionWithQualifierDto,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { Subscription } from 'rxjs';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-objects-details-tab',
   templateUrl: './archive-unit-objects-details-tab.component.html',
   styleUrls: ['./archive-unit-objects-details-tab.component.scss'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
-  ],
-  standalone: false,
+  imports: [ArchiveUnitModule, NgClass, TooltipDirective, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
   private archiveService = inject(ArchiveService);

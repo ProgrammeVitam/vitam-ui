@@ -34,20 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, of } from 'rxjs';
+import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { ManagementContract, StorageStrategy } from 'vitamui-library';
-import { diff } from 'vitamui-library';
+import { diff, InputComponent, ManagementContract, StorageStrategy } from 'vitamui-library';
 import { ManagementContractService } from '../../management-contract.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-management-contract-storage-tab',
   templateUrl: './management-contract-storage-tab.component.html',
   styleUrls: ['./management-contract-storage-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ManagementContractStorageTabComponent implements OnDestroy {
   private formBuilder = inject(FormBuilder);

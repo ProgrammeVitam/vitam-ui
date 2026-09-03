@@ -37,13 +37,23 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import {
+  MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNode,
+  MatTreeNodeDef,
+  MatTreeNodeOutlet,
+} from '@angular/material/tree';
 import { v4 as uuid } from 'uuid';
 
 import { Node } from '../../models/node.interface';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 import { Unit } from '../../../app/modules/models/units/unit.interface';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
+import { NodeComponent } from './node.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { FormErrorsComponent } from '../form-errors/form-errors.component';
 
 export const NODE_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -56,7 +66,16 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
   templateUrl: './filing-plan.component.html',
   styleUrls: ['./filing-plan.component.scss'],
   providers: [NODE_SELECT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNode,
+    NodeComponent,
+    MatNestedTreeNode,
+    MatTreeNodeOutlet,
+    MatProgressSpinner,
+    FormErrorsComponent,
+  ],
 })
 export class FilingPlanComponent extends AbstractFormInputDirective implements OnInit {
   filingPlanService = inject(FilingPlanService);

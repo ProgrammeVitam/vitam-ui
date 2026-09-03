@@ -34,26 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
 import { Rule } from 'vitamui-library';
+import { AddManagementRulesComponent } from './add-management-rules/add-management-rules.component';
+import { DeleteUnitRulesComponent } from './delete-unit-rules/delete-unit-rules.component';
+import { AddUpdatePropertyComponent } from './add-update-property/add-update-property.component';
+import { UpdateUnitRulesComponent } from './update-unit-rules/update-unit-rules.component';
+import { BlockCategoryInheritanceComponent } from './block-category-inheritance/block-category-inheritance.component';
+import { UnlockCategoryInheritanceComponent } from './unlock-category-inheritance/unlock-category-inheritance.component';
+import { BlockRulesInheritanceComponent } from './block-rules-inheritance/block-rules-inheritance.component';
+import { UnlockRulesInheritanceComponent } from './unlock-rules-inheritance/unlock-rules-inheritance.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-rules',
   templateUrl: './archive-unit-rules.component.html',
   styleUrls: ['./archive-unit-rules.component.css'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
+  imports: [
+    AddManagementRulesComponent,
+    DeleteUnitRulesComponent,
+    AddUpdatePropertyComponent,
+    UpdateUnitRulesComponent,
+    BlockCategoryInheritanceComponent,
+    UnlockCategoryInheritanceComponent,
+    BlockRulesInheritanceComponent,
+    UnlockRulesInheritanceComponent,
+    TranslatePipe,
   ],
-  standalone: false,
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

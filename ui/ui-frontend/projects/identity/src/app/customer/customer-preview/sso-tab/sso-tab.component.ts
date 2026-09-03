@@ -34,39 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
-import type { Customer, IdentityProvider } from 'vitamui-library';
-import { DownloadUtils } from 'vitamui-library';
+import { Customer, DownloadUtils, IdentityProvider, TooltipDirective } from 'vitamui-library';
 import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
+import { IdentityProviderDetailsComponent } from './identity-provider-details/identity-provider-details.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sso-tab',
   templateUrl: './sso-tab.component.html',
   styleUrls: ['./sso-tab.component.scss'],
-  animations: [
-    trigger('panelTransition', [
-      state('previous', style({ transform: 'translate3d(-100%, 0, 0)' })),
-      state('next', style({ transform: 'translate3d(100%, 0, 0)' })),
-      state('current', style({ transform: 'translate3d(0, 0, 0)' })),
-      transition('* <=> current', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-    trigger('slideLeftTransition', [
-      transition(':enter', [style({ transform: 'translate3d(-100%, 0, 0)' }), animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')]),
-      transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(-100%, 0, 0)' }))]),
-    ]),
-    trigger('slideRightTransition', [
-      state('*', style({ transform: 'translate3d(0, 0, 0)' })),
-      transition(':enter', [style({ transform: 'translate3d(100%, 0, 0)' }), animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')]),
-      transition(':leave', [animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ transform: 'translate3d(100%, 0, 0)' }))]),
-    ]),
-  ],
-  standalone: false,
+  imports: [TooltipDirective, IdentityProviderDetailsComponent, TranslatePipe],
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
   dialog = inject(MatDialog);

@@ -34,33 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, switchMap } from 'rxjs/operators';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { AppRootComponent } from '../app-root-component.class';
 import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
+import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
+import { UserPhotoComponent } from '../components/header/user-photo/user-photo.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  standalone: false,
+  imports: [VitamuiTitleBreadcrumbComponent, UserPhotoComponent, MatTabGroup, MatTab, AccountInformationTabComponent, TranslatePipe],
 })
-export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
+export class AccountComponent extends AppRootComponent {
   private accountService = inject(AccountService);
   private userInfoApiService = inject(BaseUserInfoApiService);
   route: ActivatedRoute;
 
   public displayAppTab = false;
-  public displayEditionAndAdminContact = false;
-  public account: Account;
-  public dataBreadcrumb: BreadCrumbData[];
+  public dataBreadcrumb: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
 
-  private sub: Subscription;
+  public account = toSignal(
+    this.accountService
+      .getMyAccount()
+      .pipe(switchMap((account) => this.userInfoApiService.getMyUserInfo().pipe(map((userInfo) => ({ ...account, userInfo }) as Account)))),
+    { initialValue: null as Account | null },
+  );
 
   constructor() {
     const route = inject(ActivatedRoute);
@@ -68,20 +77,5 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
     super(route);
 
     this.route = route;
-  }
-
-  ngOnInit() {
-    this.sub = this.accountService.getMyAccount().subscribe((account) => {
-      this.userInfoApiService.getMyUserInfo().subscribe((userInfo) => {
-        const accountWithUserInfos = account;
-        accountWithUserInfos.userInfo = userInfo;
-        this.account = accountWithUserInfos;
-      });
-    });
-    this.dataBreadcrumb = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 }

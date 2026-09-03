@@ -76,7 +76,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,
+    ProjectsComponent,
+    ProjectListComponent,
+    CreateProjectComponent,
   ],
-  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent],
 })
 export class ProjectModule {}

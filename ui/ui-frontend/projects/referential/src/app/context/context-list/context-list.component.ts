@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import { Direction, InfiniteScrollTable, PageRequest, collapseAnimation, DEFAULT_PAGE_SIZE, rotateAnimation } from 'vitamui-library';
-import type { Context, User, AdminUserProfile } from 'vitamui-library';
 import { ContextService } from '../context.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -48,8 +49,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-context-list',
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   contextService: ContextService;

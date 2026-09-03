@@ -34,15 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   ConfigurationsApiService,
   DescriptionLevel,
@@ -57,15 +54,6 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
 import { ArchiveService } from '../../archive.service';
 import { ArchiveFacetsService } from '../../common-services/archive-facets.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 export function newNode(
   currentId: string,
@@ -121,7 +109,6 @@ describe('LeavesTreeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LeavesTreeComponent],
       imports: [
         MatMenuModule,
         MatTreeModule,
@@ -129,15 +116,13 @@ describe('LeavesTreeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
+        LeavesTreeComponent,
       ],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
         { provide: ArchiveFacetsService, useValue: archiveFacetsServicStube },
         { provide: ConfigurationsApiService, useValue: configurationsApiServiceStube },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

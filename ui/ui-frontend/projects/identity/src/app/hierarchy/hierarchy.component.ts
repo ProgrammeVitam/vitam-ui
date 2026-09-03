@@ -34,18 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, Profile, SidenavPage } from 'vitamui-library';
+import { GlobalEventService, Profile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { HierarchyDetailComponent } from './hierarchy-detail/hierarchy-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hierarchy',
   templateUrl: './hierarchy.component.html',
   styleUrls: ['./hierarchy.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    HierarchyDetailComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    HierarchyListComponent,
+    TranslatePipe,
+  ],
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   dialog = inject(MatDialog);

@@ -44,7 +44,6 @@ import { BehaviorSubject, of } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileType } from '../../models/profile-type.enum';
 import { MatRadioModule } from '@angular/material/radio';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateProfilNoticeComponent', () => {
   let component: CreateProfilNoticeComponent;
@@ -77,15 +76,7 @@ describe('CreateProfilNoticeComponent', () => {
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(externalIdSubject.asObservable());
 
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        MatRadioModule,
-        InputComponent,
-        SelectComponent,
-        SlideToggleComponent,
-        NoopAnimationsModule,
-        CreateProfilNoticeComponent,
-      ],
+      imports: [ReactiveFormsModule, MatRadioModule, InputComponent, SelectComponent, SlideToggleComponent, CreateProfilNoticeComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: mockDialogRef },

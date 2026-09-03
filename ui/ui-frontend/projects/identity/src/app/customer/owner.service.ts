@@ -38,7 +38,7 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CriteriaSearchQuery, Criterion, Operators, Owner, SnackBarService } from 'vitamui-library';
 
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { OwnerApiService } from './owner-api.service';
 
 @Injectable({

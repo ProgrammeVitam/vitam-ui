@@ -34,19 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import {
-  AccessContract,
-  collapseAnimation,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  rotateAnimation,
-  AccessContractService,
-} from 'vitamui-library';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -54,8 +47,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-access-contract-list',
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
   accessContractService: AccessContractService;

@@ -39,27 +39,61 @@ import {
   Component,
   EventEmitter,
   HostListener,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import type { Unit } from 'vitamui-library';
-import { AccessContract, AccessContractService, unitToVitamuiIcon } from 'vitamui-library';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import {
+  AccessContract,
+  AccessContractService,
+  ClickOutsideDirective,
+  PipesModule,
+  TooltipDirective,
+  Unit,
+  unitToVitamuiIcon,
+  VitamuiMenuButtonComponent,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { CommonModule, NgClass } from '@angular/common';
+import { ArchiveUnitInformationTabComponent } from './archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab/archive-unit-objects-details-tab.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    TooltipDirective,
+    MatTabGroup,
+    NgClass,
+    MatTab,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitDescriptionTabComponent,
+    ClickOutsideDirective,
+    ArchiveUnitRulesDetailsTabComponent,
+    ArchiveUnitObjectsDetailsTabComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);

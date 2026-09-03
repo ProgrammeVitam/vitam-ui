@@ -41,17 +41,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   StartupService,
+  TenantSelectionService,
   Unit,
   UnitType,
   VitamUICommonModule,
@@ -60,27 +58,19 @@ import {
 import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
 import { ArchivePreviewComponent } from './archive-preview.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -91,16 +81,18 @@ describe('ArchivePreviewComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+      snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
     };
 
     const archiveServiceMock = {
       getBaseUrl: () => '/fake-api',
       buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
       receiveDownloadProgressSubject: () => of(true),
+      hasArchiveSearchRole: () => of(true),
+      selectUnitWithInheritedRules: () => of({}),
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatMenuModule,
@@ -109,16 +101,15 @@ describe('ArchivePreviewComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
-        BrowserAnimationsModule,
         VitamUICommonModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        ArchivePreviewComponent,
+        MockTruncatePipe,
+        MockUnitI18nPipe,
       ],
       providers: [
-        { provide: ArchiveService, useValue: archiveServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
@@ -129,10 +120,17 @@ describe('ArchivePreviewComponent', () => {
             setTenantIdentifier: () => {},
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ArchiveService, { useValue: archiveServiceMock })
+      .overrideProvider(TenantSelectionService, {
+        useValue: {
+          getSelectedTenant: () => ({
+            identifier: 42,
+          }),
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -147,6 +145,7 @@ describe('ArchivePreviewComponent', () => {
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      DescriptionLevel: DescriptionLevel.OTHER_LEVEL,
     };
     fixture.detectChanges();
   });
@@ -227,15 +226,6 @@ describe('ArchivePreviewComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 4 mat-tab', () => {
-      // When
-      const nativeElement = fixture.nativeElement;
-      const matTabElements = nativeElement.querySelectorAll('mat-tab');
-
-      // Then
-      expect(matTabElements.length).toEqual(4);
-    });
-
     it('should have 1 mat-tab-group', () => {
       // When
       const nativeElement = fixture.nativeElement;

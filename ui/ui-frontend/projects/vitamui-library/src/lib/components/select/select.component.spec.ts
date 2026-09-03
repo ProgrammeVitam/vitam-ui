@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectComponent, VitamuiSelectOptions } from './select.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -92,7 +91,7 @@ describe('SelectComponent', () => {
   ) {
     return async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TestHostComponent],
+        imports: [TestHostComponent],
       }).compileComponents();
 
       hostFixture = TestBed.createComponent(TestHostComponent);
@@ -367,7 +366,7 @@ describe('SelectComponent', () => {
   describe('regression test for bug (Referential fields appear empty in edit mode despite a saved value)', () => {
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TestHostComponent],
+        imports: [TestHostComponent],
       }).compileComponents();
 
       hostFixture = TestBed.createComponent(TestHostComponent);

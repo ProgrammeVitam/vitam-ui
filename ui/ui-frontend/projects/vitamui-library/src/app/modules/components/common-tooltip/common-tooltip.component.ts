@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { fadeInOutAnimation } from '../../animations/vitamui-common-animations';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-tooltip',
   templateUrl: './common-tooltip.component.html',
   styleUrls: ['./common-tooltip.component.scss'],
-  animations: [fadeInOutAnimation],
-  standalone: false,
+  imports: [NgClass],
 })
 export class CommonTooltipComponent {
   public text = '';

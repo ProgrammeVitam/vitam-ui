@@ -39,7 +39,7 @@ import { Component, computed, HostBinding, HostListener, inject, input, output }
 import { AuthService } from '../../../../../app/modules/auth.service';
 import { VitamUICommonModule } from '../../../../../app/modules/vitamui-common.module';
 import { Discussion, DiscussionService, Message } from '../../discussion.service';
-import { CommonTooltipModule } from '../../../../../app/modules/components/common-tooltip/common-tooltip.module';
+
 import { InputComponent } from '../../../input/input.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -47,10 +47,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../dialog/confirm-dialog/confirm-dialog.component';
 import { ConfirmDialogData } from '../../../../models/confirm-dialog-data.interface';
 import { firstValueFrom } from 'rxjs';
+import { TooltipDirective } from '../../../../../app/modules/components/common-tooltip/tooltip.directive';
 
 @Component({
   selector: 'vitamui-message',
-  imports: [DatePipe, CommonTooltipModule, InputComponent, ReactiveFormsModule, TranslatePipe, VitamUICommonModule],
+  imports: [DatePipe, TooltipDirective, InputComponent, ReactiveFormsModule, TranslatePipe, VitamUICommonModule],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss',
 })

@@ -37,25 +37,10 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  ApplicationId,
-  AuthService,
-  buildCriteriaFromSearch,
-  collapseAnimation,
-  CriteriaSearchQuery,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  PageRequest,
-  Role,
-  rotateAnimation,
-  SnackBarService,
-} from 'vitamui-library';
-import type { AdminUserProfile, Group, User } from 'vitamui-library';
-
-import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   LOCALE_ID,
   OnDestroy,
@@ -63,12 +48,14 @@ import {
   Output,
   TemplateRef,
   ViewChild,
-  inject,
 } from '@angular/core';
 
 import { CustomerService } from '../../core/customer.service';
 import { UserService } from '../user.service';
 import { buildCriteriaFromUserFilters } from './user-criteria-builder.util';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule, DatePipe, UpperCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -76,8 +63,22 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    OrderByButtonComponent,
+    TableFilterSearchComponent,
+    MatProgressSpinner,
+    UpperCasePipe,
+    DatePipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasAnyRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
   private customerService = inject(CustomerService);

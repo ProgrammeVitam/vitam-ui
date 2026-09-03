@@ -44,7 +44,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
 import { ConfirmDialogService, OtpState } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -62,7 +61,15 @@ import { ContextCreateValidators } from './context-create.validators';
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    VitamUICommonTestModule,
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -152,11 +159,11 @@ describe.skip('ContextCreateComponent', () => {
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        ContextCreateComponent,
+        OwnerFormStubComponent,
       ],
-      declarations: [ContextCreateComponent, OwnerFormStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

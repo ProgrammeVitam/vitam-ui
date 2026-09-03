@@ -34,18 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import type { Group } from 'vitamui-library';
-import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
+import {
+  AuthService,
+  Group,
+  isLevelAllowed,
+  OperationHistoryTabComponent,
+  StartupService,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
 
 import { GroupService } from '../group.service';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-group-preview',
   templateUrl: './group-preview.component.html',
   styleUrls: ['./group-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    ProfilesTabComponent,
+    OperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   private groupService = inject(GroupService);

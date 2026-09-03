@@ -47,6 +47,9 @@ import {
   SecurityService,
   SidenavPage,
   SnackBarService,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { firstValueFrom, Observable, Subscription } from 'rxjs';
@@ -54,10 +57,14 @@ import { mergeMap, shareReplay } from 'rxjs/operators';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { IngestContractService } from './ingest-contract.service';
 import { HttpResponse } from '@angular/common/http';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { IngestContractPreviewComponent } from './ingest-contract-preview/ingest-contract-preview.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { AsyncPipe } from '@angular/common';
 
 const IMPORT_FILE_MODEL_NAME = 'Import_ingest_contract_template.csv';
 
@@ -65,7 +72,19 @@ const IMPORT_FILE_MODEL_NAME = 'Import_ingest_contract_template.csv';
   selector: 'app-ingest-contract',
   templateUrl: './ingest-contract.component.html',
   styleUrls: ['./ingest-contract.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    IngestContractPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    IngestContractListComponent,
+    AsyncPipe,
+    TranslatePipe,
+  ],
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
   dialog = inject(MatDialog);

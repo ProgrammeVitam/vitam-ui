@@ -2,7 +2,9 @@
   <div
     class="step"
     [class.hidden]="selectedIndex !== i"
-    [@transitionAnimation]="_getAnimationDirection(i)"
+    [class.step-current]="selectedIndex === i"
+    [class.step-previous]="_getAnimationDirection(i) === 'previous'"
+    [class.step-next]="_getAnimationDirection(i) === 'next'"
     [attr.tabindex]="selectedIndex === i ? 0 : null"
     [attr.aria-expanded]="selectedIndex === i"
   >

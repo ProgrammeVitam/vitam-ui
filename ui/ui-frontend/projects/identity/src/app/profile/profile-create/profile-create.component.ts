@@ -35,31 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Subscription } from 'rxjs';
-import {
-  ApplicationId,
-  AuthService,
-  AuthUser,
-  buildValidators,
-  collapseAnimation,
-  ConfirmDialogService,
-  Profile,
-  Role,
-} from 'vitamui-library';
-
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
 import { ProfileValidators } from '../profile.validators';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
-  animations: [collapseAnimation],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    MatDialogContent,
+    SlideToggleComponent,
+    InputComponent,
+    MatDialogActions,
+    TranslatePipe,
+    CommonModule,
+    FormsModule,
+    LevelInputComponent,
+    RoleComponent,
+    RoleToggleComponent,
+  ],
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProfileCreateComponent>>(MatDialogRef);

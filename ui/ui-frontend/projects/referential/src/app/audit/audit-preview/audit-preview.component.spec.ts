@@ -37,16 +37,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ExternalParameters, ExternalParametersService, LoggerModule, SnackBarService } from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, LoggerModule, SnackBarService } from 'vitamui-library';
 import { AuditPreviewComponent } from './audit-preview.component';
 import { AuditService } from '../audit.service';
-import { PipesModule } from '../../shared/pipes/pipes.module';
 import { ActivatedRoute } from '@angular/router';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -68,15 +64,13 @@ describe('AuditPreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [MockTruncatePipe],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: AuditService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SnackBarService, useValue: snackBarSpy },
       ],
-      imports: [AuditPreviewComponent, LoggerModule.forRoot(), PipesModule],
+      imports: [AuditPreviewComponent, LoggerModule.forRoot(), MockTruncatePipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

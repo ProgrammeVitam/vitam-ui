@@ -38,7 +38,6 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BASE_URL } from '../../../injection-tokens';
 import { LoggerModule } from '../../../logger/logger.module';
 import { UnitType } from '../../../models/units/unit-type.enum';
 import { Unit } from '../../../models/units/unit.interface';
@@ -97,17 +96,9 @@ describe('ArchiveUnitViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitViewerComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot()],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      imports: [ObjectViewerModule, ObjectEditorModule, ReactiveFormsModule, LoggerModule.forRoot(), ArchiveUnitViewerComponent],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });
 

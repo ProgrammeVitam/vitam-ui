@@ -34,22 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { ApplicationService, Context, GlobalEventService, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  Context,
+  GlobalEventService,
+  SidenavPage,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';
 import { shareReplay } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { ContextPreviewComponent } from './context-preview/context-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-context',
   templateUrl: './context.component.html',
   styleUrls: ['./context.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ContextPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ContextListComponent,
+    TranslatePipe,
+  ],
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   dialog = inject(MatDialog);

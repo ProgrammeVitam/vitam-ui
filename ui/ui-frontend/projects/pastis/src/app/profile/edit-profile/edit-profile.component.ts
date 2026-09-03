@@ -71,8 +71,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatTab, MatTabChangeEvent, MatTabContent, MatTabGroup } from '@angular/material/tabs';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
@@ -82,16 +82,17 @@ import { FileNode } from '../../models/file-node';
 import { ProfileType } from '../../models/profile-type.enum';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FileTreeService } from './file-tree/file-tree.service';
-import { Logger } from 'vitamui-library';
+import { ChipComponent, Logger } from 'vitamui-library';
 import { filter } from 'rxjs/operators';
 import { BreadcrumbService } from '../../core/services/breadcrumb.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss'],
-  standalone: false,
+  imports: [ChipComponent, MatTabGroup, MatTab, MatTabContent, FileTreeComponent, TranslatePipe],
 })
 export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   profileService = inject(ProfileService);

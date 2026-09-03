@@ -36,13 +36,14 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import type { FileNode } from '../../models/file-node';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'modify-text-button',
   templateUrl: './modify-text-button.component.html',
   styleUrls: ['./modify-text-button.component.scss'],
-  standalone: false,
+  imports: [FormsModule],
 })
 export class ModifyTextButtonComponent {
   @Input()

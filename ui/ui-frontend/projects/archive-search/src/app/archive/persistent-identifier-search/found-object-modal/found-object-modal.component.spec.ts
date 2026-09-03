@@ -34,14 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, LoggerModule, ObjectQualifierType, VitamuiMissingTranslationHandler } from 'vitamui-library';
+import { LoggerModule, ObjectQualifierType } from 'vitamui-library';
 import { FoundObjectModalComponent } from './found-object-modal.component';
 
 class FakeTranslateLoader implements TranslateLoader {
@@ -68,14 +65,12 @@ describe('ErrorResponseModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FoundObjectModalComponent],
-      imports: [LoggerModule.forRoot(), RouterTestingModule],
+      imports: [LoggerModule.forRoot(), FoundObjectModalComponent],
       providers: [
         {
           provide: MatDialogRef,
           useValue: matDialogRefSpy,
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
@@ -114,8 +109,6 @@ describe('ErrorResponseModalComponent', () => {
             },
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

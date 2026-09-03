@@ -34,38 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { SharedModule } from '../../shared/shared.module';
-import { UnitsFormModule } from '../units-form/units-form.module';
-import { GroupCreateComponent } from './group-create.component';
-import { TranslatePipe } from '@ngx-translate/core';
+/// <reference types="vitest/globals" />
 
-@NgModule({
-  imports: [
-    CommonModule,
-    MatButtonToggleModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    SharedModule,
-    UnitsFormModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
-    TranslatePipe,
-  ],
-  declarations: [GroupCreateComponent],
-})
-export class GroupCreateModule {}
+import { TestBed } from '@angular/core/testing';
+import { BASE_URL } from './src/app/modules/injection-tokens';
+
+/**
+ * We just need to override BASE_URL differently when executing tests in vitamui-library because the injection token wouldn't be recognized if it were imported from 'vitamui-library' (we use a relative path instead)
+ */
+const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
+TestBed.configureTestingModule = ((moduleDef: any) =>
+  configureTestingModule({
+    ...moduleDef,
+    providers: [{ provide: BASE_URL, useValue: '/fake-api' }, ...(moduleDef?.providers ?? [])],
+  })) as typeof TestBed.configureTestingModule;

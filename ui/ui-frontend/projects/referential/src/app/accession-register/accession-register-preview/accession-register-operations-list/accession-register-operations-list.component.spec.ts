@@ -76,8 +76,8 @@ describe('AccessionRegisterOperationsListComponent', () => {
         LoggerModule.forRoot(),
         MatIconModule,
         BrowserAnimationsModule,
+        AccessionRegisterOperationsListComponent,
       ],
-      declarations: [AccessionRegisterOperationsListComponent],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

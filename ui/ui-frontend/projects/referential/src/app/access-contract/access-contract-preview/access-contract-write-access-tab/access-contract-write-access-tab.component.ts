@@ -34,19 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { AccessContract, Option } from 'vitamui-library';
-import { AccessContractService, diff } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractService,
+  diff,
+  Option,
+  SelectComponent,
+  SlideToggleComponent,
+  TooltipDirective,
+} from 'vitamui-library';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',
   templateUrl: './access-contract-write-access-tab.component.html',
   styleUrls: ['./access-contract-write-access-tab.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SlideToggleComponent,
+    TooltipDirective,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    SelectComponent,
+    TranslatePipe,
+  ],
 })
 export class AccessContractWriteAccessTabComponent implements OnInit {
   private formBuilder = inject(FormBuilder);

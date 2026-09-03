@@ -40,7 +40,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
@@ -49,14 +48,15 @@ import { InfiniteScrollStubDirective, VitamUICommonTestModule } from 'vitamui-li
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
+import { OwnerService } from '../owner.service';
 import { TenantService } from '../tenant.service';
 import { CustomerListComponent } from './customer-list.component';
 import { CustomerListService } from './customer-list.service';
+import { OwnerListComponent } from './owner-list/owner-list.component';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapseTriggerFor]',
-  standalone: false,
 })
 class CollapseTriggerForStubDirective {
   @Input()
@@ -67,7 +67,6 @@ class CollapseTriggerForStubDirective {
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
-  standalone: false,
 })
 class CollapseStubDirective {
   @Input()
@@ -77,7 +76,7 @@ class CollapseStubDirective {
 @Component({
   selector: 'app-owner-list',
   template: '',
-  standalone: false,
+  imports: [MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class OwnerListStubComponent {
   @Input()
@@ -270,6 +269,7 @@ describe('CustomerListComponent', () => {
 
     const tenantServiceSpy = {
       getTenantsByCustomerIds: () => of(tenants),
+      updated: new Subject(),
     };
     const matDialogSpy = {
       open: vi.fn().mockName('MatDialog.open'),
@@ -280,18 +280,34 @@ describe('CustomerListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [
+        MatProgressSpinnerModule,
+        VitamUICommonTestModule,
+        CustomerListComponent,
+        CollapseStubDirective,
+        CollapseTriggerForStubDirective,
+        OwnerListStubComponent,
+      ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [CustomerListComponent, CollapseStubDirective, CollapseTriggerForStubDirective, OwnerListStubComponent],
       providers: [
         { provide: CustomerListService, useValue: customerListServiceSpy },
         { provide: CustomerService, useValue: { updated: new Subject() } },
         { provide: TenantService, useValue: tenantServiceSpy },
+        { provide: OwnerService, useValue: { updated: new Subject() } },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: Router, useValue: routerSpy },
         CustomerDataService,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CustomerListComponent, {
+        remove: {
+          imports: [OwnerListComponent],
+        },
+        add: {
+          imports: [OwnerListStubComponent],
+        },
+      })
+      .compileComponents();
 
     const customerListService = TestBed.inject(CustomerListService);
     vi.spyOn(customerListService, 'search');

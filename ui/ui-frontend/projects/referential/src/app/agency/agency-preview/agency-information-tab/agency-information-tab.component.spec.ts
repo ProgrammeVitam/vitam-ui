@@ -60,7 +60,11 @@ describe('AgencyInformationTabComponent', () => {
         { provide: SecurityService, useValue: securityServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'AGENCIES_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'AGENCIES_APP' }),
+            snapshot: { data: { appId: 'AGENCIES_APP' } },
+          },
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],

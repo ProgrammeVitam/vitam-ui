@@ -34,18 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import type { Customer } from 'vitamui-library';
-import { StartupService } from 'vitamui-library';
+import { Customer, OperationHistoryTabComponent, StartupService, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { InformationTabComponent } from './information-tab/information-tab.component';
+import { SsoTabComponent } from './sso-tab/sso-tab.component';
+import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-identity-tab.component';
+import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-customer-preview',
   templateUrl: './customer-preview.component.html',
   styleUrls: ['./customer-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    InformationTabComponent,
+    SsoTabComponent,
+    GraphicIdentityTabComponent,
+    HomepageMessageTabComponent,
+    OperationHistoryTabComponent,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
   private customerService = inject(CustomerService);

@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import type { Agency } from 'vitamui-library';
+import { Agency, AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

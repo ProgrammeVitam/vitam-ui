@@ -34,24 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
+import { AuthService, ExternalParametersService, InjectorModule, LogbookService, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -69,25 +64,23 @@ describe('LogbookOperationDetailComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationDetailComponent, LastEventPipe, MockTruncatePipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
         EventTypeBadgeColorPipe,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
+        LogbookOperationDetailComponent,
+        LastEventPipe,
+        MockTruncatePipe,
       ],
       providers: [
         { provide: LogbookService, useValue: {} },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: LogbookDownloadService, useValue: { logbookOperationsReloaded: of([{ id: 'event-01' }]) } },
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
       ],
     }).compileComponents();
   });

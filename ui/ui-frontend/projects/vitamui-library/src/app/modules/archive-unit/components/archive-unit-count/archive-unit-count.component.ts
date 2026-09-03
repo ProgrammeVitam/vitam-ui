@@ -35,16 +35,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../../../logger/logger';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TooltipDirective } from '../../../components/common-tooltip/tooltip.directive';
+import { PluralPipe } from '../../../pipes/plural.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-archive-unit-count',
   templateUrl: './archive-unit-count.component.html',
   styleUrls: ['./archive-unit-count.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, TooltipDirective, PluralPipe, TranslatePipe],
 })
 export class ArchiveUnitCountComponent implements OnChanges {
   private logger = inject(Logger);
