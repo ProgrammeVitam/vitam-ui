@@ -112,6 +112,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
       allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.ACCESS_CONTRACTS,
       successMessage: 'SNACKBAR.ACCESS_CONTRACT_IMPORTED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
       iconMessage: 'vitamui-icon-user',
     };
 

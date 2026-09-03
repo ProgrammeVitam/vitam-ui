@@ -148,6 +148,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
       allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.INGEST_CONTRACT,
       successMessage: 'SNACKBAR.INGEST_CONTRACT_IMPORTED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
       iconMessage: 'vitamui-icon-user',
     };
 
