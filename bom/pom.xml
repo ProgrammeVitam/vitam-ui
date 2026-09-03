@@ -16,7 +16,7 @@
         <antisamy.version>1.7.8</antisamy.version>
         <apache.commons.codec.version>1.22.0</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
-        <bouncycastle.version>1.84</bouncycastle.version>
+        <bouncycastle.version>1.85.2</bouncycastle.version>
         <cas.version>7.0.10.1</cas.version>
         <commons.beanutils.version>1.11.0</commons.beanutils.version>
         <commons.collections4.version>4.5.0</commons.collections4.version>
@@ -33,7 +33,7 @@
         <gson.version>2.14.0</gson.version>
         <hibernate.validatior.version>8.0.3.Final</hibernate.validatior.version>
         <istack-commons-runtime.version>4.2.0</istack-commons-runtime.version>
-        <jackson2.version>2.21.3</jackson2.version>
+        <jackson2.version>2.22.2</jackson2.version>
         <jackson3.version>3.1.0</jackson3.version>
         <jackson2-annotation.version>2.21</jackson2-annotation.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
@@ -49,7 +49,6 @@
         <json-sanitize.version>1.2.3</json-sanitize.version>
         <json.version>20260522</json.version>
         <jsonassert.version>1.5.3</jsonassert.version>
-        <logback.version>1.5.34</logback.version>
         <lombok.version>1.18.46</lombok.version>
         <micrometer.version>1.16.5</micrometer.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
@@ -63,8 +62,7 @@
         <serenity-spring.version>5.3.10</serenity-spring.version>
         <serenity.cucumber.version>2.2.6</serenity.cucumber.version>
         <serenity.version>5.3.10</serenity.version>
-        <slf4j.version>2.0.9</slf4j.version>
-        <spring-cloud-dependencies.version>2025.1.0</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.1.3</spring-cloud-dependencies.version>
         <spring-security-cas.version>6.2.8</spring-security-cas.version>
         <swagger.version>3.0.0</swagger.version>
         <testcontainers.version>1.21.4</testcontainers.version>
