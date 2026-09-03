@@ -34,7 +34,7 @@
   <mat-tab-group #tabs [ngClass]="isPanelExtended ? 'extended-preview-tab-group' : 'preview-tab-group'">
     <!-- DESCRIPTION TAB -->
     <mat-tab #description [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate">
-      @if (project) {
+      @if (project()) {
         <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
           @if (editMode(description)) {
             <vitamui-input
@@ -120,7 +120,7 @@
 
     <!-- CONTEXT TAB -->
     <mat-tab #context [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONTEXT' | translate">
-      @if (project) {
+      @if (project()) {
         <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
           @if (!editMode(context)) {
             <vitamui-common-data
@@ -247,7 +247,7 @@
 
     <!-- ATTACHEMENT TAB -->
     <mat-tab #attachments [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.ATTACHEMENT' | translate">
-      @if (project) {
+      @if (project()) {
         <div class="row">
           <div class="col-12">
             @if (!editMode(attachments)) {
@@ -518,7 +518,7 @@
 
     <!-- CONFIGURATION TAB -->
     <mat-tab #configuration [label]="'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONFIGURATION' | translate">
-      @if (project) {
+      @if (project()) {
         <div class="align-items-stretch" [class]="editMode() ? 'gap-4' : 'gap-2'">
           @if (editMode(configuration)) {
             <div class="align-items-stretch gap-2">

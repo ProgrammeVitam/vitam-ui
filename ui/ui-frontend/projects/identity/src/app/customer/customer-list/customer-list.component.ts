@@ -39,17 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import {
-  collapseAnimation,
-  Customer,
-  DEFAULT_PAGE_SIZE,
-  Direction,
-  InfiniteScrollTable,
-  Owner,
-  PageRequest,
-  rotateAnimation,
-  Tenant,
-} from 'vitamui-library';
+import { Customer, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Owner, PageRequest, Tenant } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
@@ -60,7 +50,6 @@ import { CustomerListService } from './customer-list.service';
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {

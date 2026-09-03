@@ -39,14 +39,12 @@ import { merge, Subject, Subscription } from 'rxjs';
 
 import {
   buildCriteriaFromSearch,
-  collapseAnimation,
   CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
   Group,
   InfiniteScrollTable,
   PageRequest,
-  rotateAnimation,
 } from 'vitamui-library';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
@@ -55,7 +53,6 @@ import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {

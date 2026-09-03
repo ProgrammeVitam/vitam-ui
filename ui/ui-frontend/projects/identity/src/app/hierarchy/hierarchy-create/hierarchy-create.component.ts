@@ -38,23 +38,13 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription, forkJoin } from 'rxjs';
-import {
-  AuthService,
-  ConfirmDialogService,
-  CriteriaSearchQuery,
-  Operators,
-  Profile,
-  buildValidators,
-  collapseAnimation,
-  rotateAnimation,
-} from 'vitamui-library';
+import { AuthService, ConfirmDialogService, CriteriaSearchQuery, Operators, Profile, buildValidators } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({
   selector: 'app-hierarchy-create',
   templateUrl: './hierarchy-create.component.html',
   styleUrls: ['./hierarchy-create.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class HierarchyCreateComponent implements OnInit, OnDestroy {

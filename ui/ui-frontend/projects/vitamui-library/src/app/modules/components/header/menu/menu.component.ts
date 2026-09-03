@@ -52,7 +52,6 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { opacityAnimation, slideAnimation } from '../../../animations/vitamui-common-animations';
 import { ApplicationService } from '../../../application.service';
 import { Category } from '../../../models/application/category.interface';
 import { Application } from '../../../models/application/application.interface';
@@ -75,7 +74,6 @@ interface NgxTranslateApp {
   selector: 'vitamui-common-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  animations: [opacityAnimation, slideAnimation],
   standalone: false,
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {

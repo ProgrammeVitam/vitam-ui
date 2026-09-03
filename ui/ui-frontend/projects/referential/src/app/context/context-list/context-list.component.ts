@@ -38,7 +38,7 @@ import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, 
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import { Direction, InfiniteScrollTable, PageRequest, collapseAnimation, DEFAULT_PAGE_SIZE, rotateAnimation } from 'vitamui-library';
+import { Direction, InfiniteScrollTable, PageRequest, DEFAULT_PAGE_SIZE } from 'vitamui-library';
 import type { Context, User, AdminUserProfile } from 'vitamui-library';
 import { ContextService } from '../context.service';
 
@@ -48,7 +48,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-context-list',
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {

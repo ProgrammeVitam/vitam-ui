@@ -6,7 +6,7 @@
   </div>
   <div class="col-1">
     <button class="btn-circle" (click)="toggleTracking()">
-      <i class="material-icons" [@rotateAnimation]="displayTracking ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+      <i class="material-icons rotate" [class.collapsed]="!displayTracking" [class.expanded]="displayTracking">keyboard_arrow_down</i>
     </button>
   </div>
 </div>
