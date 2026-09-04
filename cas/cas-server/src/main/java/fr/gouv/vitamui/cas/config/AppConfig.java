@@ -414,14 +414,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         @Qualifier(CasBeans.PASSWORD_MANAGEMENT_CIPHER_EXECUTOR) final CipherExecutor passwordManagementCipherExecutor,
         @Qualifier(PasswordHistoryService.BEAN_NAME) final PasswordHistoryService passwordHistoryService,
         final ProvidersService providersService,
-        final TicketRegistry ticketRegistry,
         final CasApi casApi,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
         final PasswordValidator passwordValidator,
-        @Qualifier(
-            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
-        ) final CentralAuthenticationService centralAuthenticationService,
         final PasswordConfiguration passwordConfiguration
     ) {
         return new IamPasswordManagementService(
@@ -432,9 +428,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             casApi,
             providersService,
             identityProviderHelper,
-            centralAuthenticationService,
             utils,
-            ticketRegistry,
             passwordValidator,
             passwordConfiguration
         );

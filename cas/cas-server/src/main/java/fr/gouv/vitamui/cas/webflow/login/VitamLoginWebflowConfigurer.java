@@ -191,7 +191,6 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     protected void createIntermediateSubmitAction(final Flow flow) {
         val action = createActionState(flow, ACTION_STATE_INTERMEDIATE_SUBMIT, "dispatcherAction");
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_SUCCESS, VIEW_STATE_PASSWORD_FORM);
-        createTransitionForState(action, DispatcherAction.TRANSITION_SELECT_CUSTOMER, VIEW_STATE_LOGIN_CUSTOMER_FORM);
         createTransitionForState(
             action,
             CasWebflowConstants.TRANSITION_ID_STOP,

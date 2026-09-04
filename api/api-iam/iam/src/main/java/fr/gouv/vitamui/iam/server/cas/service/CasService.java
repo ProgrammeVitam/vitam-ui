@@ -792,9 +792,9 @@ public class CasService {
      * Chaque valeur est une chaîne, booléens et dates compris. Ce n'est pas une perte de fidélité : c'est la
      * forme sous laquelle ils parviennent déjà aux applications, puisque {@code AuthUserDto.buildFromAttributes}
      * les relit avec {@code Boolean.parseBoolean((String) value)} ou
-     * {@code OffsetDateTime.parse((String) value)}. Composite attributes are serialised to JSON with the
-     * very {@link JsonUtils} that {@code CasJsonWrapper.toString()} used, so the transmitted string is
-     * identical.
+     * {@code OffsetDateTime.parse((String) value)}. Les attributs composites sont sérialisés en JSON avec
+     * {@link JsonUtils}, de sorte que la chaîne transmise est identique à celle que les applications recevaient
+     * auparavant.
      *
      * Un attribut dont la valeur est absente est omis plutôt que mis à {@code null} : le lecteur
      * s'appuie sur les clés présentes, et une clé absente y équivaut à une clé nulle.

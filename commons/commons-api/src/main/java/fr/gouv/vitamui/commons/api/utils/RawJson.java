@@ -42,9 +42,9 @@ import java.io.Serializable;
 /**
  * Contient une charge utile JSON déjà sérialisée et la restitue telle quelle (pour CAS).
  *
- * Same output contract as {@link CasJsonWrapper}, but the JSON is produced upstream instead of by
- * serializing an object here: the authentication server thus carries a principal attribute built by
- * the IAM without having to depend on the administration model that produced it.
+ * Le JSON est produit en amont plutôt qu'en sérialisant un objet ici : le serveur d'authentification
+ * transporte ainsi un attribut de principal construit par l'IAM sans avoir à dépendre du modèle
+ * d'administration qui l'a produit.
  */
 public class RawJson implements Serializable {
 

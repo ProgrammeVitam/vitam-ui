@@ -64,7 +64,6 @@ public class DispatcherAction extends AbstractAction {
 
     public static final String DISABLED = "disabled";
     public static final String BAD_CONFIGURATION = "badConfiguration";
-    public static final String TRANSITION_SELECT_CUSTOMER = "selectCustomer";
 
     private final ProvidersService providersService;
 

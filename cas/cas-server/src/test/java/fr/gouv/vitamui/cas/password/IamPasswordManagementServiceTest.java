@@ -105,7 +105,6 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     private static final String NOT_PASSWORD = "password1234";
     private static final String BAD_PASSWORD = "password1234";
     private static final String PASSWORD_CONTAINS_DICTIONARY = "ADMIN-Change-itChange-it0!0!";
-    private static final String PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE = "admin-Change-itChange-it0!0!";
 
     private IamPasswordManagementService service;
     private CasApi casApi;
@@ -151,9 +150,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             casApi,
             providersService,
             identityProviderHelper,
-            null,
             utils,
-            null,
             passwordValidator,
             passwordConfiguration
         );
