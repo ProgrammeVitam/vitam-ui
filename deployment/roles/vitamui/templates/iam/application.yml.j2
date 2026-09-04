@@ -17,11 +17,11 @@ spring:
         tags: vitamui, {{ vitamui_struct.vitamui_component }}
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
   mongodb:
-    uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+    uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}&appName=vitamui-iam"
 
 discussion:
   mongodb:
-    uri: "mongodb://{{ mongodb.discussions.user }}:{{ mongodb.discussions.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.discussions.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+    uri: "mongodb://{{ mongodb.discussions.user }}:{{ mongodb.discussions.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.discussions.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}&appName=vitamui-iam-discussions"
   scheduling:
     purgeTransactionDiscussions:
       enabled: {{ vitamui_struct.discussion.enabled | default('true') | lower }}

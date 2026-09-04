@@ -43,8 +43,15 @@ replication:
   replSetName: shard{{ mongo_shard_id | default(0) }} # name of the replica set
   enableMajorityReadConcern: true
 
-sharding:
-  clusterRole: shardsvr # role du shard
+# NOTE: do NOT declare "sharding.clusterRole: shardsvr" here.
+# VitamUI deploys a single replica set and no mongos / config server (the
+# inventory only defines hosts_vitamui_mongod). A mongod declaring itself a
+# shard server delegates the creation of config.system.sessions to the cluster,
+# which therefore never happens: the logical session cache is never reaped and
+# grows until it hits maxSessions, at which point MongoDB rejects every new
+# session until the process is restarted (bug #15294).
+# The "shard0" replica set name below is inherited from the VITAM platform
+# deployment and is purely cosmetic.
 
 # During (re)initialization, authentication is temporarily disabled to ensure replica-set & user creation/update.
 # Authentication will be (re)enabled during mongo_configure role execution
