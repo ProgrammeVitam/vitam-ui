@@ -5,11 +5,10 @@
     name:
       - mongodb-org-server
     state: present
-  register: result
+  register: mongod_package
   retries: "{{ packages_install_retries_number }}"
-  until: result is succeeded
+  until: mongod_package is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  notify: "mongo - restart service"
   when: install_mode != "container"
 
 - name: Disable mongod default service
@@ -31,7 +30,7 @@
     owner: root
     group: root
     mode: "0644"
-  notify: "mongo - restart service"
+  register: mongod_service_file
 
 #### Configuration ####
 
@@ -51,7 +50,7 @@
     - log
     - script
     - tmp
-  notify: "mongo - restart service"
+  register: mongod_directories
   tags: update_mongodb_configuration
 
 - name: Create db directory
@@ -61,7 +60,72 @@
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ '0777' if install_mode == 'container' else vitam_defaults.folder.folder_permission }}"
-  notify: mongo - restart service
+  register: mongod_db_directory
+  tags: update_mongodb_configuration
+
+# The configuration written below deliberately declares no sharding.clusterRole
+# (bug #15294). mongod refuses to start when it finds a shardIdentity document
+# in admin.system.version without that role, and it only finds out at restart
+# time, once the new configuration has already replaced the old one. VitamUI
+# never registers its replica set into a sharded cluster, so the document should
+# not be there, but a node carrying one has to be caught before that point.
+- name: Check whether this node already holds MongoDB data
+  stat:
+    path: "{{ mongod_effective_db_path }}/WiredTiger"
+  register: mongod_data_directory
+  tags: update_mongodb_configuration
+
+# An arbiter is left out of the whole check: it replicates no admin.system.users,
+# so the authenticated lookup below can only be refused on one, and it holds no
+# collection to shard, so it carries no shardIdentity document to begin with.
+# Without this the guard further down would abort every deployment of an
+# inventory declaring an arbiter.
+- name: Look for a leftover shardIdentity document
+  command: >-
+    mongosh {{ ip_service }}:{{ mongodb.mongod_port }}/admin
+    -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet
+    --eval 'print("VITAMUI_SHARD_IDENTITY=" + (db.system.version.findOne({_id: "shardIdentity"}) ? 1 : 0))'
+  register: mongod_shard_identity
+  no_log: "{{ hide_passwords_during_deploy }}"
+  failed_when: false
+  changed_when: false
+  when: not (mongo_arbiter | default(false) | bool)
+  tags: update_mongodb_configuration
+
+- name: Fail when a shardIdentity document would keep mongod from restarting
+  fail:
+    msg: >-
+      admin.system.version holds a shardIdentity document on this node, and the
+      mongod configuration deployed by VitamUI declares no sharding.clusterRole:
+      mongod would refuse to start on the next restart. Check first that this
+      replica set really is not a shard of a sharded cluster, then drop the
+      document with: mongosh {{ ip_service }}:{{ mongodb.mongod_port }}/admin
+      -u <admin> --eval 'db.system.version.deleteOne({_id: "shardIdentity"})'
+  when: mongod_shard_identity.stdout | default('') is search('VITAMUI_SHARD_IDENTITY=[1-9]')
+  tags: update_mongodb_configuration
+
+# Reading admin.system.version needs a running mongod and the admin credentials.
+# A node being installed has neither, and no sharding history to carry either,
+# so it goes through. A node that already holds data and still cannot be read is
+# the dangerous case: it may well carry the document, and letting it through
+# would only find that out when it refuses to restart.
+- name: Fail when the shardIdentity check could not run on a node holding data
+  fail:
+    msg: >-
+      This node already holds MongoDB data but admin.system.version could not be
+      read, so the shardIdentity check did not run: mongod is down, or the admin
+      credentials were refused. The configuration deployed by VitamUI declares no
+      sharding.clusterRole, and a node carrying a shardIdentity document would
+      only refuse to start once that configuration is in place. Start mongod and
+      run the deployment again, or check the node by hand with: mongosh
+      {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u <admin> --eval
+      'db.system.version.findOne({_id: "shardIdentity"})' then re-run with
+      -e mongod_skip_shard_identity_check=true once it answers null.
+  when:
+    - not (mongo_arbiter | default(false) | bool)
+    - mongod_data_directory.stat.exists
+    - mongod_shard_identity.stdout | default('') is not search('VITAMUI_SHARD_IDENTITY=')
+    - not (mongod_skip_shard_identity_check | default(false) | bool)
   tags: update_mongodb_configuration
 
 - name: Create the mongod configuration server file
@@ -71,7 +135,7 @@
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ '0444' if install_mode == 'container' else vitam_defaults.folder.conf_permission }}"
-  notify: mongo - restart service
+  register: mongod_configuration
   tags: update_mongodb_configuration
 
 - name: Enable logrotate for vitamui-mongod
@@ -119,6 +183,46 @@
   tags:
     - consul_conf
     - update_mongodb_configuration
+
+#### Rolling restart ####
+# mongod must never be restarted on every member at once: with the default
+# parallelism (forks = 20 in ansible.cfg) the whole replica set goes down within
+# the same second and the quorum is lost, where a member by member restart is
+# just a failover. The loop below is what serialises it, driven from a single
+# host so that each member is taken down, waited for, and only then followed by
+# the next one.
+
+# The package installation and the systemd unit carry no tag, so a run limited
+# to --tags update_mongodb_configuration never registers their variables. The
+# "changed" test raises on an undefined value rather than answering false, so
+# both are guarded: in such a run neither can have changed anyway, since neither
+# ran.
+- name: Check whether vitamui-mongod must be restarted
+  set_fact:
+    mongod_restart_required: >-
+      {{ (mongod_package is defined and mongod_package is changed)
+         or (mongod_service_file is defined and mongod_service_file is changed)
+         or mongod_directories is changed
+         or mongod_db_directory is changed
+         or mongod_configuration is changed }}
+  tags: update_mongodb_configuration
+
+- name: Restart vitamui-mongod, one replica set member at a time
+  include_tasks:
+    file: rolling_restart.yml
+    # Without apply, the tag below only gates the include itself: the tasks it
+    # brings in carry no tag of their own and a run limited to
+    # --tags update_mongodb_configuration would skip every restart and every
+    # wait, leaving the configuration it just wrote inactive.
+    apply:
+      tags: update_mongodb_configuration
+  vars:
+    mongod_member_restart_required: "{{ hostvars[mongod_member]['mongod_restart_required'] | default(false) | bool }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  loop_control:
+    loop_var: mongod_member
+  run_once: true
+  tags: update_mongodb_configuration
 
 - name: Ensure vitamui-mongod is started
   service:

@@ -8,7 +8,7 @@ spring:
         enabled: false
         register: false
   mongodb:
-    uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000
+    uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000&appName=vitamui-security
 
   web:
     error:
