@@ -58,6 +58,11 @@ MONGO_SCRIPT="$GENERATED_DIR/vitamui-providers.js"
 CAS_LOGIN_URL="${VITAMUI_CAS_URL}/login"
 SAML_ENTITY_ID="${CAS_LOGIN_URL}/${SAML_TECHNICAL_NAME}"
 SAML_ACS_URL="${CAS_LOGIN_URL}?client_name=${SAML_TECHNICAL_NAME}"
+# The SLO endpoint is NOT the assertion consumer one: the LogoutResponse has to land in the CAS
+# logout webflow, where DelegatedAuthenticationClientFinishLogoutAction picks the client back up
+# from the SAML RelayState. Sent to the login callback instead, it is taken for an authentication
+# attempt and answered with the "unauthorized" page.
+SAML_SLO_URL="${VITAMUI_CAS_URL}/logout"
 OIDC_CLIENT_UUID=11111111-1111-1111-1111-111111111111
 SAML_CLIENT_UUID=22222222-2222-2222-2222-222222222222
 OIDC_USER_UUID=33333333-3333-3333-3333-333333333333
@@ -241,13 +246,14 @@ echo "==> Aligning the SAML client on ${SAML_ENTITY_ID}"
 patch_client "$SAML_CLIENT_UUID" \
     --arg entityId "$SAML_ENTITY_ID" \
     --arg acs "$SAML_ACS_URL" \
+    --arg slo "$SAML_SLO_URL" \
     --arg redirect "${CAS_LOGIN_URL}*" \
     '.clientId = $entityId
      | .redirectUris = [$redirect]
      | .attributes."saml_assertion_consumer_url_post" = $acs
      | .attributes."saml_assertion_consumer_url_redirect" = $acs
-     | .attributes."saml_single_logout_service_url_post" = $acs
-     | .attributes."saml_single_logout_service_url_redirect" = $acs'
+     | .attributes."saml_single_logout_service_url_post" = $slo
+     | .attributes."saml_single_logout_service_url_redirect" = $slo'
 
 echo "==> Aligning the test users on ${OIDC_USER_EMAIL} / ${SAML_USER_EMAIL}"
 patch_user "$OIDC_USER_UUID" "$OIDC_USER_EMAIL" "OIDC"

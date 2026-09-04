@@ -38,6 +38,7 @@ package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.logout.CustomDelegatedAuthenticationClientLogoutAction;
+import fr.gouv.vitamui.cas.logout.CustomFinishLogoutAction;
 import fr.gouv.vitamui.cas.logout.TerminateApiSessionAction;
 import fr.gouv.vitamui.cas.password.PmTransientSessionTicketExpirationPolicyBuilder;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -64,6 +65,7 @@ import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.bucket4j.consumer.BucketConsumer;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.logout.LogoutExecutionPlan;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
@@ -94,6 +96,7 @@ import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.impl.CasWebflowEventResolutionConfigurationContext;
 import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
+import org.apereo.cas.web.support.ArgumentExtractor;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -323,6 +326,38 @@ public class WebflowConfig {
                     )
             )
             .withId(CasWebflowConstants.ACTION_ID_TERMINATE_SESSION)
+            .build()
+            .get();
+    }
+
+    // Runs last in the logout flow, so it can end it on the delegated provider rather than on the
+    // service url LogoutAction puts back when cas.logout.follow-service-redirects is on.
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public Action finishLogoutAction(
+        final CasConfigurationProperties casProperties,
+        final ConfigurableApplicationContext applicationContext,
+        @Qualifier(CasBeans.TICKET_GRANTING_COOKIE_BUILDER) final CasCookieBuilder ticketGrantingTicketCookieGenerator,
+        @Qualifier(ArgumentExtractor.BEAN_NAME) final ArgumentExtractor argumentExtractor,
+        final ServicesManager servicesManager,
+        @Qualifier(CasBeans.TICKET_REGISTRY) final TicketRegistry ticketRegistry,
+        @Qualifier(LogoutExecutionPlan.BEAN_NAME) final LogoutExecutionPlan logoutExecutionPlan
+    ) {
+        return WebflowActionBeanSupplier.builder()
+            .withApplicationContext(applicationContext)
+            .withProperties(casProperties)
+            .withAction(
+                () ->
+                    new CustomFinishLogoutAction(
+                        ticketRegistry,
+                        ticketGrantingTicketCookieGenerator,
+                        argumentExtractor,
+                        servicesManager,
+                        logoutExecutionPlan,
+                        casProperties
+                    )
+            )
+            .withId(CasWebflowConstants.ACTION_ID_FINISH_LOGOUT)
             .build()
             .get();
     }
