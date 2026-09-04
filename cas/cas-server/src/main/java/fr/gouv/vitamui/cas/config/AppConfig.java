@@ -417,8 +417,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final CasApi casApi,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
-        final PasswordValidator passwordValidator,
-        final PasswordConfiguration passwordConfiguration
+        final PasswordValidator passwordValidator
     ) {
         return new IamPasswordManagementService(
             casProperties.getAuthn().getPm(),
@@ -429,8 +428,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             providersService,
             identityProviderHelper,
             utils,
-            passwordValidator,
-            passwordConfiguration
+            passwordValidator
         );
     }
 
