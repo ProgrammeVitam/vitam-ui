@@ -372,20 +372,6 @@ public class CasService {
     }
 
     @Transactional
-    public List<UserDto> getUsersByEmail(final String email, final String optEmbedded) {
-        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
-        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
-        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
-
-        final List<UserDto> usersDto = userService.findUsersByEmail(email);
-
-        return usersDto
-            .stream()
-            .map(user -> loadFullUserProfileIfRequired(user, loadFullProfile, isSubrogation, isApi))
-            .collect(Collectors.toList());
-    }
-
-    @Transactional
     public UserDto getUserByEmailAndCustomerId(final String email, final String customerId, final String optEmbedded) {
         boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
         boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
