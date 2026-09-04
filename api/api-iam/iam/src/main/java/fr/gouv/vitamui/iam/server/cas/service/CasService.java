@@ -81,7 +81,6 @@ import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
-import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.token.domain.Token;
@@ -159,9 +158,6 @@ public class CasService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
-
-    @Autowired
-    private SubrogationService subrogationService;
 
     @Autowired
     private SubrogationRepository subrogationRepository;
@@ -704,24 +700,6 @@ public class CasService {
         final Query query = new Query(Criteria.where(ID).is(user.getId()));
         final Update update = Update.update(LAST_CONNECTION, user.getLastConnection());
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
-    }
-
-    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
-        final List<Subrogation> subrogations = subrogationRepository.findBySuperUserAndSuperUserCustomerId(
-            superUser,
-            superUserCustomerId
-        );
-        final List<SubrogationDto> dtos = new ArrayList<>();
-        subrogations.forEach(subrogation -> dtos.add(convertFromSubrogationToDto(subrogation)));
-        return dtos;
-    }
-
-    protected final SubrogationDto convertFromSubrogationToDto(final Subrogation entity) {
-        if (entity != null) {
-            return subrogationService.internalConvertFromEntityToDto(entity);
-        } else {
-            return null;
-        }
     }
 
     @Transactional
