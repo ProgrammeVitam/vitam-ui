@@ -128,8 +128,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     public static final String PROVIDER_PROTOCOL_TYPE_CERTIFICAT = "CERTIFICAT";
 
-    private static final String DEFAULT_PROVIDER = "";
-
     private final PrincipalFactory principalFactory;
 
     private final CasApi casApi;

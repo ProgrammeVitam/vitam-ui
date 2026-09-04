@@ -792,9 +792,9 @@ public class CasService {
      * Every value is a string, booleans and dates included. That is not a loss of fidelity: it is the
      * form in which they already reach the applications, since {@code AuthUserDto.buildFromAttributes}
      * reads them back with {@code Boolean.parseBoolean((String) value)} or
-     * {@code OffsetDateTime.parse((String) value)}. Composite attributes are serialised to JSON with the
-     * very {@link JsonUtils} that {@code CasJsonWrapper.toString()} used, so the transmitted string is
-     * identical.
+     * {@code OffsetDateTime.parse((String) value)}. Composite attributes are serialised to JSON with
+     * {@link JsonUtils}, so the transmitted string is identical to the one the applications received
+     * before.
      *
      * An attribute whose value is missing is omitted rather than set to {@code null}: the reader
      * switches on the keys that are present, and an absent key is equivalent to a null one there.

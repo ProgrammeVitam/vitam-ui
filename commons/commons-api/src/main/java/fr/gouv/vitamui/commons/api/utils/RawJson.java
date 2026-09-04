@@ -42,9 +42,9 @@ import java.io.Serializable;
 /**
  * Holds an already-serialized JSON payload and outputs it verbatim (for CAS).
  *
- * Same output contract as {@link CasJsonWrapper}, but the JSON is produced upstream instead of by
- * serializing an object here: the authentication server thus carries a principal attribute built by
- * the IAM without having to depend on the administration model that produced it.
+ * The JSON is produced upstream instead of by serializing an object here: the authentication server
+ * thus carries a principal attribute built by the IAM without having to depend on the administration
+ * model that produced it.
  */
 public class RawJson implements Serializable {
 

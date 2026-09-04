@@ -57,7 +57,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
@@ -66,7 +65,6 @@ import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.impl.BasePasswordManagementService;
-import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -98,11 +96,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    private final CentralAuthenticationService centralAuthenticationService;
-
     private final Utils utils;
-
-    private final TicketRegistry ticketRegistry;
 
     private final PasswordValidator passwordValidator;
 
@@ -116,9 +110,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final CasApi casApi,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
-        final CentralAuthenticationService centralAuthenticationService,
         final Utils utils,
-        final TicketRegistry ticketRegistry,
         final PasswordValidator passwordValidator,
         final PasswordConfiguration passwordConfiguration
     ) {
@@ -126,9 +118,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.casApi = casApi;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
-        this.centralAuthenticationService = centralAuthenticationService;
         this.utils = utils;
-        this.ticketRegistry = ticketRegistry;
         this.passwordValidator = passwordValidator;
         this.passwordConfiguration = passwordConfiguration;
     }

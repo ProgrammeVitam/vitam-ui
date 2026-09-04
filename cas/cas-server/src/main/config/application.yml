@@ -75,7 +75,6 @@ vitamui:
     identity: cas
 
 
-login.url: ${cas.server.prefix}/login
 ip.header: X-Real-IP
 
 password:
