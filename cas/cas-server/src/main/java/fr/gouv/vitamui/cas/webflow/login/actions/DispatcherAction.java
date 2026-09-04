@@ -108,14 +108,25 @@ public class DispatcherAction extends AbstractAction {
             superUserCustomerId
         );
 
-        if (isUserDisabled(superUserEmail, superUserCustomerId)) {
+        // Resolve each HRD entry once and reuse it for the disabled check and the dispatch (resolveHrd is
+        // an idempotent GET; this avoids resolving the same user twice).
+        Optional<HrdEntryDto> superUserEntry = resolveEntry(superUserEmail, superUserCustomerId);
+        if (isEntryDisabled(superUserEntry)) {
             return handleUserDisabled(superUserEmail, superUserCustomerId);
         }
-        if (isUserDisabled(surrogateEmail, surrogateCustomerId)) {
+        Optional<HrdEntryDto> surrogateEntry = resolveEntry(surrogateEmail, surrogateCustomerId);
+        if (isEntryDisabled(surrogateEntry)) {
             return handleUserDisabled(superUserEmail, surrogateCustomerId);
         }
 
-        return dispatchUser(requestContext, superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId);
+        return dispatchUser(
+            requestContext,
+            superUserEntry,
+            superUserEmail,
+            superUserCustomerId,
+            surrogateEmail,
+            surrogateCustomerId
+        );
     }
 
     private Event processLoginRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
@@ -127,21 +138,22 @@ public class DispatcherAction extends AbstractAction {
 
         ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
 
-        if (isUserDisabled(userEmail, customerId)) {
+        Optional<HrdEntryDto> entry = resolveEntry(userEmail, customerId);
+        if (isEntryDisabled(entry)) {
             return handleUserDisabled(userEmail, customerId);
         }
 
-        return dispatchUser(requestContext, userEmail, customerId, null, null);
+        return dispatchUser(requestContext, entry, userEmail, customerId, null, null);
     }
 
     private Event dispatchUser(
         RequestContext requestContext,
+        Optional<HrdEntryDto> entryOpt,
         String loginEmail,
         String loginCustomerId,
         String surrogateEmail,
         String surrogateCustomerId
     ) throws IOException {
-        Optional<HrdEntryDto> entryOpt = resolveEntry(loginEmail, loginCustomerId);
         if (entryOpt.isEmpty() || entryOpt.get().getIdentityProviderId() == null) {
             LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
             return new Event(this, BAD_CONFIGURATION);
@@ -188,8 +200,8 @@ public class DispatcherAction extends AbstractAction {
         }
     }
 
-    private boolean isUserDisabled(String email, String customerId) {
-        return resolveEntry(email, customerId)
+    private boolean isEntryDisabled(Optional<HrdEntryDto> entry) {
+        return entry
             .map(HrdEntryDto::getUserStatus)
             .map(status -> !UserStatusEnum.ENABLED.name().equals(status))
             .orElse(false);
