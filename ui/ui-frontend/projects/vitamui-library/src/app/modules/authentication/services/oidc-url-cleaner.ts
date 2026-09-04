@@ -34,57 +34,68 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ModuleWithProviders, NgModule, provideAppInitializer, inject } from '@angular/core';
-import { OAuthModule } from 'angular-oauth2-oidc';
-import { first, tap } from 'rxjs/operators';
-import { AuthService } from '../auth.service';
-import { ConfigService } from '../config.service';
-import { AuthenticationInterceptor } from './authentication-interceptor';
-import { CasAuthenticatorService } from './services/cas-authenticator.service';
-import { OidcAuthenticatorService } from './services/oidc-authenticator.service';
+import { Injectable } from '@angular/core';
 
-@NgModule({
-  declarations: [],
-  imports: [],
-  providers: [
-    provideAppInitializer(() => {
-      const initializerFn = AuthenticationModule.loadModule();
-      return initializerFn();
-    }),
-  ],
+/**
+ * Service dedicated to cleaning and validating URLs during OIDC authentication flows.
+ */
+@Injectable({
+  providedIn: 'root',
 })
-export class AuthenticationModule {
-  private configService = inject(ConfigService);
+export class OidcUrlCleaner {
+  private readonly OIDC_PARAMS = [
+    'code',
+    'state',
+    'id_token',
+    'access_token',
+    'token_type',
+    'session_state',
+    'nonce',
+    'error',
+    'error_description',
+    'client_id',
+    'isSubrogation',
+    'superUserEmail',
+    'superUserCustomerId',
+    'surrogateEmail',
+    'surrogateCustomerId',
+  ];
 
-  private static loading: Promise<any> = null;
-
-  private static loadModule() {
-    // Do NOT inline the variable.
-    const result = () => this.loading;
-    return result;
+  /** Removes all OIDC-related parameters from the provided URL object */
+  public removeOidcParams(url: URL): void {
+    this.OIDC_PARAMS.forEach((p) => url.searchParams.delete(p));
   }
 
-  constructor() {
-    const oidcAuthenticator = inject(OidcAuthenticatorService);
-    const casAuthenticator = inject(CasAuthenticatorService);
-    const authService = inject(AuthService);
-
-    AuthenticationModule.loading = this.configService.config$
-      .pipe(
-        first((config) => !!config),
-        tap((config) => {
-          const authenticatorService = config.GATEWAY_ENABLED ? oidcAuthenticator : casAuthenticator;
-          authService.configure(authenticatorService);
-        }),
-      )
-      .toPromise();
+  /** Returns a relative path (pathname + search) cleaned of OIDC parameters */
+  public getCleanedPath(pathWithSearch: string, origin: string): string {
+    const url = new URL(pathWithSearch, origin);
+    this.removeOidcParams(url);
+    return url.pathname + (url.search || '');
   }
 
-  static forRoot(): ModuleWithProviders<AuthenticationModule> {
-    return {
-      ngModule: AuthenticationModule,
-      providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true }, OAuthModule.forRoot().providers],
-    };
+  /**
+   * Resolves a valid absolute redirect URI.
+   * If the provided URI is not absolute or is invalid, it returns the current URL (cleaned).
+   */
+  public resolveValidRedirectUri(uri: string | undefined, currentHref: string): string {
+    if (this.isAbsoluteUrl(uri)) {
+      return uri!;
+    }
+
+    const url = new URL(currentHref);
+    this.removeOidcParams(url);
+    return url.origin + url.pathname + url.search;
+  }
+
+  private isAbsoluteUrl(url: string | undefined): boolean {
+    if (!url) {
+      return false;
+    }
+    try {
+      const u = new URL(url);
+      return !!u.host && !!u.protocol;
+    } catch {
+      return false;
+    }
   }
 }

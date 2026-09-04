@@ -50,35 +50,39 @@ import { AppConfiguration } from './models/app.configuration.interface';
 export class ConfigService implements OnDestroy {
   private logger = inject(Logger);
   private applicationApi = inject(ApplicationApiService);
-
   private http: HttpClient;
 
-  public config: AppConfiguration = null;
-  public config$ = new BehaviorSubject<AppConfiguration>(null);
+  private _config: AppConfiguration | null = null;
+  public readonly config$ = new BehaviorSubject<AppConfiguration>(null);
 
   constructor() {
     const httpBackend = inject(HttpBackend);
-
     this.http = new HttpClient(httpBackend);
+  }
+
+  /** Synchronous access to the loaded config. Throws if called before initialization. */
+  get config(): AppConfiguration {
+    if (!this._config) {
+      throw new Error('ConfigService accessed before initialization — check the app initializer.');
+    }
+    return this._config;
   }
 
   ngOnDestroy(): void {
     this.config$.complete();
   }
 
+  /**
+   * Loads the config. Resolves to `true` on success, `false` on failure.
+   * Callers driving app bootstrap (e.g. provideAppInitializer) must fail fast on `false`.
+   */
   load(configUrls: string[]): Observable<boolean> {
     return this.loadFrontendConfig(configUrls).pipe(
-      switchMap((frontendConfig: AppConfiguration) => {
-        if (frontendConfig && frontendConfig.GATEWAY_ENABLED) {
-          return of(frontendConfig);
-        } else {
-          return this.loadBackendConfig();
-        }
-      }),
-      switchMap((config: AppConfiguration) => {
-        this.config = config;
+      switchMap((frontendConfig: AppConfiguration) => (frontendConfig?.GATEWAY_ENABLED ? of(frontendConfig) : this.loadBackendConfig())),
+      map((config: AppConfiguration) => {
+        this._config = config;
         this.config$.next(config);
-        return of(true);
+        return true;
       }),
       catchError((error) => {
         this.logger.error(this, error);
@@ -92,19 +96,15 @@ export class ConfigService implements OnDestroy {
   }
 
   private loadFrontendConfig(configUrls: string[]): Observable<AppConfiguration> {
-    if (configUrls) {
-      const getConfigs = configUrls.map((url) => this.http.get<AppConfiguration>(url));
-      return forkJoin(getConfigs).pipe(
-        map((configs: AppConfiguration[]) => {
-          return configs.reduce((mergedConfig, currentConfig) => Object.assign(mergedConfig, currentConfig), {} as AppConfiguration);
-        }),
-        catchError((error) => {
-          this.logger.error(this, error);
-          return of(null);
-        }),
-      );
-    } else {
+    if (!configUrls) {
       return of(null);
     }
+    return forkJoin(configUrls.map((url) => this.http.get<AppConfiguration>(url))).pipe(
+      map((configs: AppConfiguration[]) => configs.reduce((merged, current) => Object.assign(merged, current), {} as AppConfiguration)),
+      catchError((error) => {
+        this.logger.error(this, error);
+        return of(null);
+      }),
+    );
   }
 }

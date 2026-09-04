@@ -19,7 +19,6 @@
   "ALLOWED_URLS": ["/ingest-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
-    "redirectUri": "https://dev.vitamui.com:4208/ingest",
     "postLogoutRedirectUri": "https://dev.vitamui.com:4208/ingest",
     "clientId": "ingest",
     "responseType": "code",

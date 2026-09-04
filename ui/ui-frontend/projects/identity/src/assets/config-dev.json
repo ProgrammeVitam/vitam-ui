@@ -20,7 +20,6 @@
   "ALLOWED_URLS": ["/identity-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
-    "redirectUri": "https://dev.vitamui.com:4201/user",
     "postLogoutRedirectUri": "https://dev.vitamui.com:4201/user",
     "clientId": "identity",
     "responseType": "code",
