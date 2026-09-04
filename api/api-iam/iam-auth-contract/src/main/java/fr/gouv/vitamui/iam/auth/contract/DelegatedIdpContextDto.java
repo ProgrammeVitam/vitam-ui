@@ -36,7 +36,8 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,44 +45,27 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The user whose authentication attributes are being requested, and the context they are signing in
- * from.
+ * The raw identity an external IdP returned for a delegated (OIDC / SAML) authentication.
  *
- * {@code identityProviderId} is only set for a delegated authentication: it triggers just-in-time
- * provisioning when the provider allows it. Both subrogation fields are only set when a super user takes
- * someone else's place.
+ * The authentication server forwards this as-is; the IAM owns the rules that turn it into a VitamUI
+ * identity: it reads the provider's {@code mailAttribute} / {@code identifierAttribute} to pull the e-mail
+ * and the technical identifier out of {@code attributes} (falling back to {@code principalId} when the
+ * provider defines no specific attribute), and it checks that the e-mail the IdP returned is the one the
+ * user asked to sign in with.
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class PrincipalAttributesRequestDto {
+public class DelegatedIdpContextDto {
 
-    @NotNull
-    private String loginEmail;
+    /** Id of the identity provider (pac4j client) that authenticated the user. */
+    private String providerId;
 
-    @NotNull
-    private String loginCustomerId;
+    /** The id the IdP asserted for the principal, used when the provider defines no mail/identifier attribute. */
+    private String principalId;
 
-    private String identityProviderId;
-
-    private String userIdentifier;
-
-    private String superUserEmail;
-
-    private String superUserCustomerId;
-
-    /**
-     * True when the login does not come from a browser but from a programmatic call. The blocks embedded
-     * in the response depend on it.
-     */
-    private boolean apiContext;
-
-    /**
-     * Only set for a delegated authentication (OIDC / SAML): the raw identity the external IdP returned.
-     * When present, the IAM resolves the e-mail and the technical identifier from it (using the provider's
-     * mapping) and checks the returned e-mail against the one the user asked to sign in with.
-     */
-    private DelegatedIdpContextDto delegatedIdp;
+    /** The raw attributes the IdP returned, keyed as the provider exposes them. */
+    private Map<String, List<String>> attributes;
 }

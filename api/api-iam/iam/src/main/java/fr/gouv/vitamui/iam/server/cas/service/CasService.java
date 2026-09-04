@@ -55,6 +55,7 @@ import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfigura
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.iam.auth.contract.DelegatedIdpContextDto;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
@@ -812,11 +813,25 @@ public class CasService {
             embedded += "," + CommonConstants.API_PARAMETER;
         }
 
+        // A delegated authentication forwards the raw identity the external IdP returned: the IAM owns the
+        // rules that turn it into a VitamUI identity (which attribute is the e-mail, which is the technical
+        // identifier, and that the e-mail matches the one the user asked to sign in with).
+        String userIdentifier = request.getUserIdentifier();
+        if (request.getDelegatedIdp() != null) {
+            final String expectedEmail = subrogation ? request.getSuperUserEmail() : request.getLoginEmail();
+            final String resolvedIdentifier = resolveDelegatedIdentity(request.getDelegatedIdp(), expectedEmail);
+            // The identifier drives just-in-time provisioning of the signed-in user, which never happens for
+            // the surrogate; keep the surrogation call's identifier untouched, exactly as before.
+            if (!subrogation) {
+                userIdentifier = resolvedIdentifier;
+            }
+        }
+
         final UserDto user = getUser(
             request.getLoginEmail(),
             request.getLoginCustomerId(),
             request.getIdentityProviderId(),
-            request.getUserIdentifier(),
+            userIdentifier,
             embedded
         );
         if (user == null) {
@@ -835,6 +850,68 @@ public class CasService {
             }
         }
         return toPrincipalAttributes(user, request, superUser);
+    }
+
+    /**
+     * Turns the raw identity an external IdP returned into the technical identifier VitamUI provisions on,
+     * and enforces that the e-mail the IdP asserted is the one the user asked to sign in with.
+     *
+     * @return the resolved technical identifier (used for just-in-time provisioning)
+     */
+    String resolveDelegatedIdentity(final DelegatedIdpContextDto delegatedIdp, final String expectedEmail) {
+        final IdentityProviderDto provider = identityProviderService.getOne(delegatedIdp.getProviderId());
+        final Map<String, List<String>> attributes = delegatedIdp.getAttributes();
+        final String principalId = delegatedIdp.getPrincipalId();
+
+        final String email = resolveIdpAttribute(provider, provider.getMailAttribute(), attributes, principalId, "mail");
+        final String identifier = resolveIdpAttribute(
+            provider,
+            provider.getIdentifierAttribute(),
+            attributes,
+            principalId,
+            "identifier"
+        );
+
+        if (
+            StringUtils.isBlank(email) ||
+            StringUtils.isBlank(expectedEmail) ||
+            !email.equalsIgnoreCase(expectedEmail)
+        ) {
+            throw new InvalidAuthenticationException(
+                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", expectedEmail, email)
+            );
+        }
+
+        return identifier;
+    }
+
+    /**
+     * Reads the attribute the provider maps for {@code kind} out of the IdP attributes, falling back to the
+     * principal id when the provider defines no specific attribute. A provider that requires an attribute the
+     * IdP did not return is a configuration error and refuses the login.
+     */
+    private String resolveIdpAttribute(
+        final IdentityProviderDto provider,
+        final String attributeName,
+        final Map<String, List<String>> attributes,
+        final String fallback,
+        final String kind
+    ) {
+        if (StringUtils.isBlank(attributeName)) {
+            return fallback;
+        }
+        final List<String> values = attributes == null ? null : attributes.get(attributeName);
+        if (values == null || values.isEmpty() || StringUtils.isBlank(values.getFirst())) {
+            throw new BadRequestException(
+                String.format(
+                    "Provider: '%s' requested specific %s attribute: '%s' for id, but attribute does not exist or has no value",
+                    provider.getTechnicalName(),
+                    kind,
+                    attributeName
+                )
+            );
+        }
+        return values.getFirst();
     }
 
     /**

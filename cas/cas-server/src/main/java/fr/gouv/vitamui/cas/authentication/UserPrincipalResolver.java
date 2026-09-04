@@ -43,6 +43,7 @@ import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.utils.RawJson;
+import fr.gouv.vitamui.iam.auth.contract.DelegatedIdpContextDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -66,10 +67,7 @@ import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.session.SessionStore;
-import org.pac4j.core.util.CommonHelper;
 import org.pac4j.jee.context.JEEContext;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.security.cert.CertificateParsingException;
@@ -172,6 +170,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
         String userProviderId;
         final Optional<String> technicalUserId;
+        // Only filled on the delegation path; forwarded so the IAM can map the IdP identity and check the e-mail.
+        DelegatedIdpContextDto delegatedIdp = null;
         // x509 certificate
         if (credential instanceof X509CertificateCredential) {
             String emailFromCertificate;
@@ -262,53 +262,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
             final var provider = identityProviderHelper
                 .findByTechnicalName(providersService.getProviders(), providerName)
                 .get();
-            final var mailAttribute = provider.getMailAttribute();
-            String email = principalId;
-            if (CommonHelper.isNotBlank(mailAttribute)) {
-                final var mails = principal.getAttributes().get(mailAttribute);
-                if (CollectionUtils.isEmpty(mails) || CommonHelper.isBlank((String) mails.getFirst())) {
-                    LOGGER.error(
-                        "Provider: '{}' requested specific mail attribute: '{}' for id, but attribute does not exist or has no value",
-                        providerName,
-                        mailAttribute
-                    );
-                    return NullPrincipal.getInstance();
-                } else {
-                    final var mail = (String) mails.getFirst();
-                    LOGGER.info(
-                        "Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'",
-                        providerName,
-                        mailAttribute,
-                        principalId,
-                        mail
-                    );
-                    email = mail;
-                }
-            }
-
-            final var identifierAttribute = provider.getIdentifierAttribute();
-            String identifier = principalId;
-            if (CommonHelper.isNotBlank(identifierAttribute)) {
-                final var identifiers = principal.getAttributes().get(identifierAttribute);
-                if (CollectionUtils.isEmpty(identifiers) || CommonHelper.isBlank((String) identifiers.getFirst())) {
-                    LOGGER.error(
-                        "Provider: '{}' requested specific identifier attribute: '{}' for id, but attribute does not exist or has no value",
-                        providerName,
-                        identifierAttribute
-                    );
-                    return NullPrincipal.getInstance();
-                } else {
-                    final var identifierAttr = (String) identifiers.getFirst();
-                    LOGGER.info(
-                        "Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'",
-                        providerName,
-                        identifierAttribute,
-                        principalId,
-                        identifierAttr
-                    );
-                    identifier = identifierAttr;
-                }
-            }
+            // The IAM owns the mapping of the IdP profile to a VitamUI identity (which attribute is the
+            // e-mail, which is the technical identifier) and the e-mail check: forward the raw identity the
+            // IdP returned rather than resolving it here.
+            delegatedIdp = new DelegatedIdpContextDto();
+            delegatedIdp.setProviderId(provider.getId());
+            delegatedIdp.setPrincipalId(principalId);
+            delegatedIdp.setAttributes(stringifyIdpAttributes(principal.getAttributes()));
 
             String surrogateEmailFromSession = (String) sessionStore
                 .get(webContext, Constants.FLOW_SURROGATE_EMAIL)
@@ -328,13 +288,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
 
-            Assert.isTrue(
-                StringUtils.isNotBlank(email) &&
-                StringUtils.isNotBlank(loginEmailFromSession) &&
-                email.equalsIgnoreCase(loginEmailFromSession),
-                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", loginEmailFromSession, email)
-            );
-
             if (surrogateEmailFromSession != null && surrogateCustomerIdFromSession != null) {
                 userProviderId = null;
                 technicalUserId = Optional.empty();
@@ -346,7 +299,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 superUserCustomerId = loginCustomerIdFromSession;
             } else {
                 userProviderId = provider.getId();
-                technicalUserId = Optional.of(identifier);
+                // The IAM resolves the technical identifier from the forwarded IdP profile.
+                technicalUserId = Optional.empty();
                 subrogationCall = false;
 
                 loginEmail = loginEmailFromSession;
@@ -378,6 +332,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         request.setSuperUserEmail(superUserEmail);
         request.setSuperUserCustomerId(superUserCustomerId);
         request.setApiContext(requestContext == null);
+        request.setDelegatedIdp(delegatedIdp);
 
         final PrincipalAttributesResponseDto principalAttributes;
         try {
@@ -421,6 +376,27 @@ public class UserPrincipalResolver implements PrincipalResolver {
         } else {
             return createdPrincipal;
         }
+    }
+
+    /**
+     * Flattens the pac4j profile attributes to strings so they can travel to the IAM, which applies the
+     * provider's mapping rules to them. Only the mapped e-mail/identifier attributes are read on the other
+     * side, so a non-string value is rendered with {@code toString()}.
+     */
+    private Map<String, List<String>> stringifyIdpAttributes(final Map<String, List<Object>> attributes) {
+        final var result = new HashMap<String, List<String>>();
+        if (attributes != null) {
+            attributes.forEach((key, values) -> {
+                final var stringValues = new ArrayList<String>();
+                if (values != null) {
+                    for (final Object value : values) {
+                        stringValues.add(value == null ? null : value.toString());
+                    }
+                }
+                result.put(key, stringValues);
+            });
+        }
+        return result;
     }
 
     Map<String, List<Object>> buildAttributes(
