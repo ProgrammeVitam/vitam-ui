@@ -36,7 +36,8 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
-import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,44 +45,27 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * L'utilisateur dont les attributs d'authentification sont demandés, et le contexte depuis lequel il se
- * connecte.
+ * L'identité brute renvoyée par un IdP externe pour une authentification déléguée (OIDC / SAML).
  *
- * {@code identityProviderId} n'est renseigné que pour une authentification déléguée : il déclenche le
- * provisionnement à la volée lorsque le fournisseur l'autorise. Les deux champs de subrogation ne sont renseignés que
- * lorsqu'un super utilisateur prend la place de quelqu'un d'autre.
+ * Le serveur d'authentification la transmet telle quelle ; l'IAM détient les règles qui la transforment en identité
+ * VitamUI : il lit les {@code mailAttribute} / {@code identifierAttribute} du fournisseur pour extraire l'e-mail
+ * et l'identifiant technique depuis {@code attributes} (en se rabattant sur {@code principalId} lorsque le
+ * fournisseur ne définit aucun attribut spécifique), et il vérifie que l'e-mail renvoyé par l'IdP est bien celui avec
+ * lequel l'utilisateur a demandé à se connecter.
  */
 @Getter
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class PrincipalAttributesRequestDto {
+public class DelegatedIdpContextDto {
 
-    @NotNull
-    private String loginEmail;
+    /** Id du fournisseur d'identité (client pac4j) qui a authentifié l'utilisateur. */
+    private String providerId;
 
-    @NotNull
-    private String loginCustomerId;
+    /** L'id que l'IdP a affirmé pour le principal, utilisé lorsque le fournisseur ne définit aucun attribut mail/identifiant. */
+    private String principalId;
 
-    private String identityProviderId;
-
-    private String userIdentifier;
-
-    private String superUserEmail;
-
-    private String superUserCustomerId;
-
-    /**
-     * Vrai lorsque la connexion ne provient pas d'un navigateur mais d'un appel programmatique. Les blocs intégrés
-     * dans la réponse en dépendent.
-     */
-    private boolean apiContext;
-
-    /**
-     * Renseigné uniquement pour une authentification déléguée (OIDC / SAML) : l'identité brute renvoyée par l'IdP externe.
-     * Lorsqu'il est présent, l'IAM en résout l'e-mail et l'identifiant technique (à l'aide du mapping du
-     * fournisseur) et vérifie l'e-mail renvoyé par rapport à celui avec lequel l'utilisateur a demandé à se connecter.
-     */
-    private DelegatedIdpContextDto delegatedIdp;
+    /** Les attributs bruts renvoyés par l'IdP, indexés tels que le fournisseur les expose. */
+    private Map<String, List<String>> attributes;
 }
