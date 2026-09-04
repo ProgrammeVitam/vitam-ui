@@ -88,12 +88,6 @@ public class InitializeSubrogationAction extends AbstractAction {
                 flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
                 flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
 
-                // Populate extra properties for CAS 7 / OIDC compatibility as used in v9.0
-                flowScope.put("userEmail", surrogateEmail);
-                flowScope.put("userCustomerId", surrogateCustomerId);
-                flowScope.put("superUserEmail", superUserEmail);
-                flowScope.put("superUserCustomerId", superUserCustomerId);
-
                 // Fetch surrogate customer info for display in subrogation validation mire
                 CustomerDto surrogateCustomer = casApi
                     .getCustomersByIds(List.of(surrogateCustomerId))
