@@ -254,11 +254,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         return convertFromEntityToDto(user);
     }
 
-    public List<UserDto> findUsersByEmail(final String email) {
-        List<User> users = getRepository().findAllByEmailIgnoreCase(email);
-        return users.stream().map(this::convertFromEntityToDto).collect(Collectors.toList());
-    }
-
     public AuthUserDto getMe() {
         return securityService.getUser();
     }

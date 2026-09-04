@@ -224,18 +224,6 @@ public class CasController {
         return "true";
     }
 
-    @GetMapping(value = AuthContractApi.USERS_PATH, params = "email")
-    @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
-    @Secured(ServicesData.ROLE_CAS_USERS)
-    public List<UserDto> getUsersByEmail(
-        @RequestParam final String email,
-        @RequestParam final Optional<String> embedded
-    ) {
-        LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
-        ParameterChecker.checkParameter("The email is mandatory : ", email);
-        return casService.getUsersByEmail(email, embedded.orElse(null));
-    }
-
     @GetMapping(value = AuthContractApi.USERS_PATH + AuthContractApi.USERS_PROVISIONING_PATH)
     @Operation(
         operationId = "cas_getUser",
