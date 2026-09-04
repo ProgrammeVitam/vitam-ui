@@ -66,21 +66,6 @@ public class UserLoginModel {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserLoginModel that = (UserLoginModel) o;
-        return (
-            java.util.Objects.equals(userEmail, that.userEmail) && java.util.Objects.equals(customerId, that.customerId)
-        );
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(userEmail, customerId);
-    }
-
-    @Override
     public String toString() {
         return "UserLoginModel{" + "userEmail='" + userEmail + '\'' + ", customerId='" + customerId + '\'' + '}';
     }
