@@ -42,6 +42,7 @@ public class CasBeanOverridesTest {
             "delegatedAuthenticationCredentialExtractor",
             "delegatedClientAuthenticationConfigurationContext",
             "delegatedIdentityProviders",
+            "finishLogoutAction",
             "initialAuthenticationAttemptWebflowEventResolver",
             "loadSurrogatesListAction",
             "mfaSimpleMultifactorSendTokenAction",
