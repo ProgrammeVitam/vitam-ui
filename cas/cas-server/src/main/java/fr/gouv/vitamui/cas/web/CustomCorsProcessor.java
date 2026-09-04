@@ -6,6 +6,7 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.support.saml.SamlProtocolConstants;
 import org.pac4j.core.util.Pac4jConstants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -66,8 +67,17 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
             final var request = ((ServletServerHttpRequest) serverRequest).getServletRequest();
 
             final var uri = request.getRequestURI();
-            final var clientName = request.getParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER);
-            if (StringUtils.endsWith(uri, "/login") && StringUtils.isNotBlank(clientName)) {
+            var clientName = request.getParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER);
+            // A SAML2 LogoutResponse is posted back to the logout endpoint, with no client_name:
+            // the client travels in the RelayState, which is where
+            // DelegatedAuthenticationClientFinishLogoutAction reads it from as well. Without this
+            // the form the identity provider submits is rejected for its 'null' origin and the user
+            // is left on a blank page, the logout having otherwise gone through on both sides.
+            final var logoutCallback = StringUtils.endsWith(uri, "/logout");
+            if (StringUtils.isBlank(clientName) && logoutCallback) {
+                clientName = request.getParameter(SamlProtocolConstants.PARAMETER_SAML_RELAY_STATE);
+            }
+            if ((StringUtils.endsWith(uri, "/login") || logoutCallback) && StringUtils.isNotBlank(clientName)) {
                 LOGGER.debug("Delegated authn callback for clientName: {}", clientName);
                 final var identityProvider = identityProviderHelper.findByTechnicalName(
                     providersService.getProviders(),
