@@ -36,13 +36,14 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
-import java.util.List;
-import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * The raw identity an external IdP returned for a delegated (OIDC / SAML) authentication.
