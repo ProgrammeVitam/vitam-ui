@@ -47,7 +47,6 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -100,8 +99,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final PasswordValidator passwordValidator;
 
-    private final PasswordConfiguration passwordConfiguration;
-
     public IamPasswordManagementService(
         final PasswordManagementProperties passwordManagementProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
@@ -111,8 +108,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
-        final PasswordValidator passwordValidator,
-        final PasswordConfiguration passwordConfiguration
+        final PasswordValidator passwordValidator
     ) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
         this.casApi = casApi;
@@ -120,7 +116,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.identityProviderHelper = identityProviderHelper;
         this.utils = utils;
         this.passwordValidator = passwordValidator;
-        this.passwordConfiguration = passwordConfiguration;
     }
 
     protected RequestContext blockIfSubrogation() {
@@ -163,7 +158,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
 
         final var username = bean.getUsername();
-        LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
         Assert.notNull(username, "username can not be null");
 
         final UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);

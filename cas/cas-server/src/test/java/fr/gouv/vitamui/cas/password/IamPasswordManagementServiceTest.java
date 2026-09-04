@@ -128,9 +128,6 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderDto.setInternal(true);
         PasswordManagementProperties passwordManagementProperties = new PasswordManagementProperties();
         passwordManagementProperties.getCore().setPasswordPolicyPattern(encode(policyPattern));
-        PasswordConfiguration passwordConfiguration = new PasswordConfiguration();
-        passwordConfiguration.setCheckOccurrence(true);
-        passwordConfiguration.setOccurrencesCharsNumber(4);
         when(
             identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(EMAIL), eq(CUSTOMER_ID))
         ).thenReturn(Optional.of(identityProviderDto));
@@ -151,8 +148,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
             providersService,
             identityProviderHelper,
             utils,
-            passwordValidator,
-            passwordConfiguration
+            passwordValidator
         );
         final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
         successes.put("fake", null);
