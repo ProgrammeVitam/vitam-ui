@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
@@ -58,9 +56,7 @@ import org.apereo.cas.services.ServicesManager;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
-import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -104,38 +100,33 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
         try {
             final var user = casApi.login(login);
 
-            if (user != null) {
-                if (user.isMustChangePassword()) {
-                    LOGGER.info("Password expired for: {} ({})", login.getLoginEmail(), login.getLoginCustomerId());
-                    throw new AccountPasswordMustChangeException("Password expired for: " + login.getLoginEmail());
-                } else if (user.getStatus() == UserStatusEnum.ENABLED && user.getType() == UserTypeEnum.NOMINATIVE) {
-                    Map<String, List<Object>> attributes = new HashMap<>();
-
-                    attributes.put(FLOW_LOGIN_EMAIL, List.of(login.getLoginEmail()));
-                    attributes.put(FLOW_LOGIN_CUSTOMER_ID, List.of(login.getLoginCustomerId()));
-
-                    if (login.getSurrogateEmail() != null) {
-                        attributes.put(FLOW_SURROGATE_EMAIL, List.of(login.getSurrogateEmail()));
-                        attributes.put(FLOW_SURROGATE_CUSTOMER_ID, List.of(login.getSurrogateCustomerId()));
-                    }
-
-                    Principal principal;
-                    try {
-                        principal = principalFactory.createPrincipal(login.getLoginEmail(), attributes);
-                    } catch (final Throwable e) {
-                        LOGGER.error("Error creating principal", e);
-                        throw new PreventedException(e);
-                    }
-                    LOGGER.debug("Successful authentication, created principal: {}", principal);
-                    return createHandlerResult(transformedCredential, principal, new ArrayList<>());
-                } else {
-                    LOGGER.debug("Cannot login user: {} ({})", login.getLoginEmail(), login.getLoginCustomerId());
-                    throw new AccountException("Disabled or cannot login user: " + login.getLoginEmail());
-                }
-            } else {
-                LOGGER.debug("No user found for: {} ({})", login.getLoginEmail(), login.getLoginCustomerId());
-                throw new AccountNotFoundException("Bad credentials for: " + login.getLoginEmail());
+            if (user.isMustChangePassword()) {
+                LOGGER.info("Password expired for: {} ({})", login.getLoginEmail(), login.getLoginCustomerId());
+                throw new AccountPasswordMustChangeException("Password expired for: " + login.getLoginEmail());
             }
+
+            // The IAM login returns a non-null, ENABLED, NOMINATIVE user or throws (absent -> NotFound,
+            // non-nominative -> InvalidAuthentication, bad status -> InvalidFormat) - all mapped by the catch
+            // blocks below - so no null/status/type re-check is needed here.
+            Map<String, List<Object>> attributes = new HashMap<>();
+
+            attributes.put(FLOW_LOGIN_EMAIL, List.of(login.getLoginEmail()));
+            attributes.put(FLOW_LOGIN_CUSTOMER_ID, List.of(login.getLoginCustomerId()));
+
+            if (login.getSurrogateEmail() != null) {
+                attributes.put(FLOW_SURROGATE_EMAIL, List.of(login.getSurrogateEmail()));
+                attributes.put(FLOW_SURROGATE_CUSTOMER_ID, List.of(login.getSurrogateCustomerId()));
+            }
+
+            Principal principal;
+            try {
+                principal = principalFactory.createPrincipal(login.getLoginEmail(), attributes);
+            } catch (final Throwable e) {
+                LOGGER.error("Error creating principal", e);
+                throw new PreventedException(e);
+            }
+            LOGGER.debug("Successful authentication, created principal: {}", principal);
+            return createHandlerResult(transformedCredential, principal, new ArrayList<>());
         } catch (final InvalidAuthenticationException e) {
             LOGGER.error("Bad credentials for username: {} ({})", login.getLoginEmail(), login.getLoginCustomerId());
             throw new CredentialNotFoundException("Bad credentials for username: " + login.getLoginEmail());
