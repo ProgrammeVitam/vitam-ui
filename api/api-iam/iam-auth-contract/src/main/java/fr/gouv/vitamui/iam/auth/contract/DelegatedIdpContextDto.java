@@ -36,13 +36,14 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
-import java.util.List;
-import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * L'identité brute renvoyée par un IdP externe pour une authentification déléguée (OIDC / SAML).

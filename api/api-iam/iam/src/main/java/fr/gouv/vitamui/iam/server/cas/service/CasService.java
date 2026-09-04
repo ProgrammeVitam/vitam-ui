@@ -65,7 +65,6 @@ import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -827,7 +826,13 @@ public class CasService {
         final Map<String, List<String>> attributes = delegatedIdp.getAttributes();
         final String principalId = delegatedIdp.getPrincipalId();
 
-        final String email = resolveIdpAttribute(provider, provider.getMailAttribute(), attributes, principalId, "mail");
+        final String email = resolveIdpAttribute(
+            provider,
+            provider.getMailAttribute(),
+            attributes,
+            principalId,
+            "mail"
+        );
         final String identifier = resolveIdpAttribute(
             provider,
             provider.getIdentifierAttribute(),
@@ -837,9 +842,7 @@ public class CasService {
         );
 
         if (
-            StringUtils.isBlank(email) ||
-            StringUtils.isBlank(expectedEmail) ||
-            !email.equalsIgnoreCase(expectedEmail)
+            StringUtils.isBlank(email) || StringUtils.isBlank(expectedEmail) || !email.equalsIgnoreCase(expectedEmail)
         ) {
             throw new InvalidAuthenticationException(
                 String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", expectedEmail, email)

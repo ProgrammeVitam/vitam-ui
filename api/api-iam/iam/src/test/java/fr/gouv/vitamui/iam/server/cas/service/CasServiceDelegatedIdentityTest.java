@@ -61,8 +61,9 @@ class CasServiceDelegatedIdentityTest {
             Map.of("email", List.of("someone.else@organisation-a.fr"), "sub", List.of("technical-42"))
         );
 
-        assertThatThrownBy(() -> casService.resolveDelegatedIdentity(delegatedIdp, EMAIL))
-            .isInstanceOf(InvalidAuthenticationException.class);
+        assertThatThrownBy(() -> casService.resolveDelegatedIdentity(delegatedIdp, EMAIL)).isInstanceOf(
+            InvalidAuthenticationException.class
+        );
     }
 
     @Test
@@ -70,8 +71,9 @@ class CasServiceDelegatedIdentityTest {
         givenProvider("email", "sub");
         final DelegatedIdpContextDto delegatedIdp = context(Map.of("email", List.of(EMAIL)));
 
-        assertThatThrownBy(() -> casService.resolveDelegatedIdentity(delegatedIdp, EMAIL))
-            .isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> casService.resolveDelegatedIdentity(delegatedIdp, EMAIL)).isInstanceOf(
+            BadRequestException.class
+        );
     }
 
     private void givenProvider(final String mailAttribute, final String identifierAttribute) {
