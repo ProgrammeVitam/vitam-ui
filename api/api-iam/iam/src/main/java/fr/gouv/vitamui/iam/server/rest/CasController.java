@@ -54,7 +54,6 @@ import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.user.domain.User;
@@ -84,7 +83,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -253,40 +251,6 @@ public class CasController {
         );
 
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
-    }
-
-    @GetMapping(value = AuthContractApi.SUBROGATIONS_PATH)
-    @Operation(
-        operationId = "getSubrogationsBySuperUserIdOrEmailAndCustomerId",
-        summary = "Get available subrogations for a super user by super user id or by super user email and customerId"
-    )
-    @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserIdOrEmailAndCustomerId(
-        @RequestParam(required = false) final String superUserId,
-        @RequestParam(required = false) final String superUserEmail,
-        @RequestParam(required = false) final String superUserCustomerId
-    ) {
-        LOGGER.debug(
-            "getSubrogationsBySuperUserIdOrEmailAndCustomerId: id: {} | email: {} / customerId: {}",
-            superUserId,
-            superUserEmail,
-            superUserCustomerId
-        );
-        String email = superUserEmail, customerId = superUserCustomerId;
-        if (superUserId != null && !superUserId.isEmpty() && !superUserId.trim().isEmpty()) {
-            SanityChecker.checkSecureParameter(superUserId);
-            final UserDto user = userService.getOne(superUserId, Optional.empty());
-            if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
-                email = user.getEmail();
-                customerId = user.getCustomerId();
-                LOGGER.debug("-> email: {}, customerId: {}", email, customerId);
-            } else {
-                return new ArrayList<>();
-            }
-        }
-        ParameterChecker.checkParameter("The superUserEmail is mandatory : ", email);
-        ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", customerId);
-        return casService.getSubrogationsBySuperUser(email, customerId);
     }
 
     @GetMapping(value = AuthContractApi.LOGOUT_PATH)
