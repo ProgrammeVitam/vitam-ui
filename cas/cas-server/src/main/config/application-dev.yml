@@ -58,7 +58,7 @@ cas:
     signing.key: =oebPIRe18A0cAeBdZCHkVlLPa_Kbthxo70iRpAhbk84dQGQj_8AOEMvEg3y7GAKYxtpF5nn6nx7vj5iU-eHStg
     encryption.key: 3FzNquczUjhmeJyqu251Ow
   service-registry.mongo:
-    client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+    client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas?appName=vitamui-cas
   authn:
     # Authent with x509 certificate :
     # x509:

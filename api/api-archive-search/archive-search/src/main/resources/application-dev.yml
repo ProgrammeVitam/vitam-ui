@@ -12,7 +12,7 @@ spring:
 
 
   mongodb:
-    uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
+    uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000&appName=vitamui-archive-search
 
 multipart:
   enabled: true
