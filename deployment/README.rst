@@ -205,6 +205,24 @@ ATTENTION: il faut avoir déployer aussi les extras Vitam, sinon le déploiement
 
 en l'absence ce cette extra vars, le comportement par defaut est extra=no
 
+Exploitation
+=============
+
+Diagnostic des sessions logiques MongoDB
+----------------------------------------
+
+Le script ``scripts/diagnose_mongo_logical_sessions.js`` répond à la question « le *reaper* de sessions logiques tourne-t-il sur ce nœud ? », posée par le message ``Unable to add session ID ... into the cache because the number of active sessions is too high`` (bug #15294). Il est en lecture seule et peut être lancé sur un primaire de production.
+
+*Script* ::
+
+   mongosh "mongodb://<hôte>:<port>/admin?replicaSet=<replicaset>" \
+       --username <admin> --password \
+       --quiet --file scripts/diagnose_mongo_logical_sessions.js
+
+Il sort en 1 dès qu'un ``PROBLEM`` est relevé et en 0 sinon, ce qui permet de l'appeler depuis une supervision. Un ``WARNING`` demande une seconde passe : relancer le script un cycle de rafraîchissement plus tard et comparer ``activeSessionsCount`` distingue un *reaper* bloqué d'un nœud simplement peu sollicité.
+
+Le *reaper* ne tournant que sur le primaire, c'est là qu'il faut lancer le script en premier ; le passer ensuite sur chaque membre du replica set permet de comparer les compteurs.
+
 Désinstallation
 =================
 
