@@ -57,7 +57,6 @@ import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
 import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
@@ -76,7 +75,6 @@ import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.logout.LogoutExecutionPlan;
 import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
-import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationRequestCustomizer;
 import org.apereo.cas.pac4j.client.DelegatedClientIdentityProviderRedirectionStrategy;
 import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
@@ -223,17 +221,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             );
     }
 
-    @Bean
+    // The surrogate and X509 modules each look up their own resolver bean: both are the single default one.
+    @Bean(name = { "surrogatePrincipalResolver", "x509SubjectDNPrincipalResolver" })
     @RefreshScope
-    public PrincipalResolver surrogatePrincipalResolver(
-        @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
-    ) {
-        return defaultPrincipalResolver;
-    }
-
-    @Bean
-    @RefreshScope
-    public PrincipalResolver x509SubjectDNPrincipalResolver(
+    public PrincipalResolver surrogateAndX509PrincipalResolvers(
         @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
     ) {
         return defaultPrincipalResolver;
@@ -264,9 +255,11 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final RestClient.Builder restClientBuilder,
         @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER) final RestClientCustomizer restClientCustomizer
     ) {
-        restClientCustomizer.customize(restClientBuilder);
-
-        return new IamApiClientsFactoryVitamui(iamClientProperties, restClientBuilder);
+        // Customize a copy: the injected builder is Spring Boot's shared one, and the X-Origin interceptor
+        // must not leak into every other RestClient of the application.
+        final var builder = restClientBuilder.clone();
+        restClientCustomizer.customize(builder);
+        return new IamApiClientsFactoryVitamui(iamClientProperties, builder);
     }
 
     @Bean
@@ -399,7 +392,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @RefreshScope
     @Bean
-    @SneakyThrows
     public SurrogateAuthenticationService surrogateAuthenticationService(
         final CasApi casApi,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
@@ -435,14 +427,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy() {
-        return new CasSimpleMultifactorTokenCommunicationStrategy() {
-            @Override
-            public EnumSet<TokenSharingStrategyOptions> determineStrategy(
-                final CasSimpleMultifactorAuthenticationTicket token
-            ) {
-                return EnumSet.of(TokenSharingStrategyOptions.SMS);
-            }
-        };
+        return token -> EnumSet.of(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.SMS);
     }
 
     @Bean

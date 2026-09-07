@@ -38,8 +38,7 @@ package fr.gouv.vitamui.cas.delegation;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import org.pac4j.core.client.IndirectClient;
-
-import java.util.Objects;
+import org.springframework.beans.BeanUtils;
 
 /**
  * Pac4j client identity provider.
@@ -51,41 +50,11 @@ public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
     private final IndirectClient client;
 
     public Pac4jClientIdentityProviderDto(final IdentityProviderDto dto, final IndirectClient client) {
-        setId(dto.getId());
-        setName(dto.getName());
-        setTechnicalName(dto.getTechnicalName());
-        setInternal(dto.getInternal());
-        setEnabled(dto.getEnabled());
-        setPatterns(dto.getPatterns());
-        setReadonly(dto.isReadonly());
-        setCustomerId(dto.getCustomerId());
-        setMailAttribute(dto.getMailAttribute());
-        setIdentifierAttribute(dto.getIdentifierAttribute());
-        setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
-        setProtocoleType(dto.getProtocoleType());
-        setPropagateLogout(Objects.isNull(dto.isPropagateLogout()) ? false : dto.isPropagateLogout());
-
-        setKeystoreBase64(dto.getKeystoreBase64());
-        setKeystorePassword(dto.getKeystorePassword());
-        setPrivateKeyPassword(dto.getPrivateKeyPassword());
-        setIdpMetadata(dto.getIdpMetadata());
-        setSpMetadata(dto.getSpMetadata());
-        setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
-        setAuthnRequestBinding(dto.getAuthnRequestBinding());
-        setWantsAssertionsSigned(
-            Objects.isNull(dto.getWantsAssertionsSigned()) ? true : dto.getWantsAssertionsSigned()
-        );
-        setAuthnRequestSigned(Objects.isNull(dto.getAuthnRequestSigned()) ? true : dto.getAuthnRequestSigned());
-
-        setClientId(dto.getClientId());
-        setClientSecret(dto.getClientSecret());
-        setDiscoveryUrl(dto.getDiscoveryUrl());
-        setScope(dto.getScope());
-        setPreferredJwsAlgorithm(dto.getPreferredJwsAlgorithm());
-        setCustomParams(dto.getCustomParams());
-        setUseState(dto.getUseState());
-        setUseNonce(dto.getUseNonce());
-        setUsePkce(dto.getUsePkce());
+        // Every property of the IdP is carried over: a hand-written copy silently dropped newly added fields.
+        BeanUtils.copyProperties(dto, this);
+        setPropagateLogout(Boolean.TRUE.equals(dto.isPropagateLogout()));
+        setWantsAssertionsSigned(dto.getWantsAssertionsSigned() == null || dto.getWantsAssertionsSigned());
+        setAuthnRequestSigned(dto.getAuthnRequestSigned() == null || dto.getAuthnRequestSigned());
         this.client = client;
     }
 

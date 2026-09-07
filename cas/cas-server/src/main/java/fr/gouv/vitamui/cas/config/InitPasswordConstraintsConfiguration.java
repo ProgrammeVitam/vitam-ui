@@ -44,8 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
-import java.util.Objects;
-
 /**
  * Custom context initializer for password complexity configuration.
  */
@@ -57,15 +55,13 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
-        LOGGER.debug("PASSWORD_CONSTRAINTS = {}", passwordConfiguration.toString());
+        LOGGER.debug("PASSWORD_CONSTRAINTS = {}", passwordConfiguration);
+        final var constraints = passwordConfiguration.getConstraints();
         if (
-            Objects.isNull(passwordConfiguration) ||
-            (Objects.isNull(passwordConfiguration.getConstraints()) ||
-                (Objects.isNull(passwordConfiguration.getConstraints().getDefaults()) &&
-                    Objects.isNull(passwordConfiguration.getConstraints().getCustoms()))) ||
-            Objects.isNull(passwordConfiguration.getProfile())
+            constraints == null ||
+            (constraints.getDefaults() == null && constraints.getCustoms() == null) ||
+            passwordConfiguration.getProfile() == null
         ) {
-            LOGGER.debug("Configuration error, check your password server constraints configurations !");
             throw new ServletException(
                 "Error starting CAS Server due to absence of password configurations. consider configuring at least default profile for password configurations in application.yml file !"
             );
@@ -73,26 +69,29 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
 
         validateAnssiPasswordConstraints(passwordConfiguration);
 
-        if (passwordConfiguration != null && passwordConfiguration.getConstraints() != null) {
-            switch (passwordConfiguration.getProfile().toLowerCase()) {
-                case "anssi":
-                    putAnssiConfigurations(servletContext, passwordConfiguration);
-                    break;
-                case "custom":
-                    putCustomConfigurations(servletContext, passwordConfiguration);
-                    break;
-                default:
-                    throw new ServletException(
-                        "Error starting CAS Server due to absence of password configurations. consider configuring a valid profile, anssi or custom profile in your configuration !"
-                    );
-            }
-            servletContext.setAttribute(Constants.MAX_OLD_PASSWORD, passwordConfiguration.getMaxOldPassword());
-            servletContext.setAttribute(Constants.CHECK_OCCURRENCE, passwordConfiguration.isCheckOccurrence());
-            servletContext.setAttribute(
-                Constants.OCCURRENCE_CHAR_NUMBERS,
-                passwordConfiguration.getOccurrencesCharsNumber()
+        switch (passwordConfiguration.getProfile().toLowerCase()) {
+            case "anssi" -> putConstraints(
+                servletContext,
+                Constants.PASSWORD_DEFAULT_CONSTRAINTS,
+                "PASSWORD_ANSSI_CONSTRAINTS",
+                constraints.getDefaults()
+            );
+            case "custom" -> putConstraints(
+                servletContext,
+                Constants.PASSWORD_CUSTOM_CONSTRAINTS,
+                "PASSWORD_CUSTOM_CONSTRAINTS",
+                constraints.getCustoms()
+            );
+            default -> throw new ServletException(
+                "Error starting CAS Server due to absence of password configurations. consider configuring a valid profile, anssi or custom profile in your configuration !"
             );
         }
+        servletContext.setAttribute(Constants.MAX_OLD_PASSWORD, passwordConfiguration.getMaxOldPassword());
+        servletContext.setAttribute(Constants.CHECK_OCCURRENCE, passwordConfiguration.isCheckOccurrence());
+        servletContext.setAttribute(
+            Constants.OCCURRENCE_CHAR_NUMBERS,
+            passwordConfiguration.getOccurrencesCharsNumber()
+        );
     }
 
     private void validateAnssiPasswordConstraints(PasswordConfiguration passwordConfiguration) throws ServletException {
@@ -109,27 +108,18 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
         }
     }
 
-    private void putCustomConfigurations(ServletContext servletContext, PasswordConfiguration passwordConfiguration) {
-        if (passwordConfiguration.getConstraints().getCustoms() != null) {
-            LOGGER.debug(
-                "PASSWORD_CUSTOM_CONSTRAINTS = {}",
-                passwordConfiguration.getConstraints().getCustoms().toString()
-            );
-            servletContext.setAttribute(Constants.PASSWORD_CUSTOM_CONSTRAINTS, passwordConfiguration.getConstraints());
+    // The attribute carries the whole constraints object when the selected profile is configured, null otherwise.
+    private void putConstraints(
+        final ServletContext servletContext,
+        final String attribute,
+        final String logLabel,
+        final Object selectedProfileConstraints
+    ) {
+        if (selectedProfileConstraints != null) {
+            LOGGER.debug("{} = {}", logLabel, selectedProfileConstraints);
+            servletContext.setAttribute(attribute, passwordConfiguration.getConstraints());
         } else {
-            servletContext.setAttribute(Constants.PASSWORD_CUSTOM_CONSTRAINTS, null);
-        }
-    }
-
-    private void putAnssiConfigurations(ServletContext servletContext, PasswordConfiguration passwordConfiguration) {
-        if (passwordConfiguration.getConstraints().getDefaults() != null) {
-            LOGGER.debug(
-                "PASSWORD_ANSSI_CONSTRAINTS = {}",
-                passwordConfiguration.getConstraints().getDefaults().toString()
-            );
-            servletContext.setAttribute(Constants.PASSWORD_DEFAULT_CONSTRAINTS, passwordConfiguration.getConstraints());
-        } else {
-            servletContext.setAttribute(Constants.PASSWORD_DEFAULT_CONSTRAINTS, null);
+            servletContext.setAttribute(attribute, null);
         }
     }
 }

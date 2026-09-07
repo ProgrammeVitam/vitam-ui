@@ -51,6 +51,7 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.ActionState;
 import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.History;
+import org.springframework.webflow.engine.Transition;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
 import java.util.Map;
@@ -176,10 +177,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
             ACTION_STATE_LIST_CUSTOMERS
         );
-        val attributes = transition.getAttributes();
-        attributes.put("bind", Boolean.TRUE);
-        attributes.put("validate", Boolean.TRUE);
-        attributes.put("history", History.INVALIDATE);
+        bindAndValidate(transition);
 
         createListCustomersAction(flow);
         createLoginCustomerFormView(flow);
@@ -219,16 +217,21 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
             CasWebflowConstants.STATE_ID_REAL_SUBMIT
         );
-        val attributes = transition.getAttributes();
-        attributes.put("bind", Boolean.TRUE);
-        attributes.put("validate", Boolean.TRUE);
-        attributes.put("history", History.INVALIDATE);
+        bindAndValidate(transition);
 
         createTransitionForState(
             state,
             CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
             CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
         );
+    }
+
+    // A form submit binds and validates the model, and never comes back through the browser history.
+    private static void bindAndValidate(final Transition transition) {
+        val attributes = transition.getAttributes();
+        attributes.put("bind", Boolean.TRUE);
+        attributes.put("validate", Boolean.TRUE);
+        attributes.put("history", History.INVALIDATE);
     }
 
     private void createListCustomersAction(final Flow flow) {
@@ -247,10 +250,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
             ACTION_STATE_SELECTED_CUSTOMER_SUBMIT
         );
-        val attributes = transition.getAttributes();
-        attributes.put("bind", Boolean.TRUE);
-        attributes.put("validate", Boolean.TRUE);
-        attributes.put("history", History.INVALIDATE);
+        bindAndValidate(transition);
     }
 
     private void createSelectedCustomerAction(final Flow flow) {

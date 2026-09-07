@@ -105,32 +105,24 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
         return certificates;
     }
 
+    // Nginx forwards the PEM url-encoded, with tabs for line breaks and '+' turned into spaces.
     protected X509Certificate parseCertificateGeneratedByNginx(final String header) throws CertificateException {
-        final String data = header.replaceAll("\t", "\n");
-
-        final String decoded = URLDecoder.decode(data, StandardCharsets.UTF_8);
-        final String cert = decoded
-            .replace(BEGIN_CERT, "")
-            .replace(END_CERT, "")
-            .replaceAll(" ", "+")
-            .replaceAll("\\n", "");
-
-        final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certificateFactory.generateCertificate(
-            new ByteArrayInputStream(Base64.getDecoder().decode(cert))
-        );
+        final String decoded = URLDecoder.decode(header.replace("\t", "\n"), StandardCharsets.UTF_8);
+        return toCertificate(stripMarkers(decoded).replace(" ", "+"));
     }
 
+    // Apache forwards the PEM with plain spaces standing for line breaks.
     protected X509Certificate parseCertificateGeneratedByApache(final String header) throws CertificateException {
-        final String cert = header
-            .replace(BEGIN_CERT, "")
-            .replace(END_CERT, "")
-            .replaceAll(" ", "")
-            .replaceAll("\\n", "");
+        return toCertificate(stripMarkers(header).replace(" ", ""));
+    }
 
-        final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certificateFactory.generateCertificate(
-            new ByteArrayInputStream(Base64.getDecoder().decode(cert))
+    private static String stripMarkers(final String pem) {
+        return pem.replace(BEGIN_CERT, "").replace(END_CERT, "");
+    }
+
+    private static X509Certificate toCertificate(final String base64Body) throws CertificateException {
+        return (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(
+            new ByteArrayInputStream(Base64.getDecoder().decode(base64Body.replace("\n", "")))
         );
     }
 }

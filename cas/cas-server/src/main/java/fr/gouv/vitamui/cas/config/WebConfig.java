@@ -45,7 +45,6 @@ import fr.gouv.vitamui.cas.web.CustomCorsProcessor;
 import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
 import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.oidc.OidcConfigurationContext;
 import org.apereo.cas.oidc.util.OidcRequestSupport;
@@ -151,14 +150,13 @@ public class WebConfig {
         final WebEndpointProperties webEndpointProperties,
         final CasConfigurationProperties casProperties
     ) {
-        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+        return buildAdapter(
             casProperties,
             webEndpointProperties,
             pathMappedEndpoints,
             configurersList,
             securityContextRepository
-        );
-        return adapter::configureWebSecurity;
+        )::configureWebSecurity;
     }
 
     @Bean
@@ -170,13 +168,30 @@ public class WebConfig {
         final WebEndpointProperties webEndpointProperties,
         final CasConfigurationProperties casProperties
     ) throws Exception {
-        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+        return buildAdapter(
+            casProperties,
+            webEndpointProperties,
+            pathMappedEndpoints,
+            configurersList,
+            securityContextRepository
+        )
+            .configureHttpSecurity(http)
+            .build();
+    }
+
+    private static CustomCasWebSecurityConfigurerAdapter buildAdapter(
+        final CasConfigurationProperties casProperties,
+        final WebEndpointProperties webEndpointProperties,
+        final ObjectProvider<PathMappedEndpoints> pathMappedEndpoints,
+        final List<CasWebSecurityConfigurer> configurersList,
+        final SecurityContextRepository securityContextRepository
+    ) {
+        return new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
             pathMappedEndpoints,
             configurersList,
             securityContextRepository
         );
-        return adapter.configureHttpSecurity(http).build();
     }
 }

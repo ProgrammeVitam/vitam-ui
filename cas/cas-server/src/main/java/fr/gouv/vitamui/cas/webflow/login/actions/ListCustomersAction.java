@@ -40,7 +40,6 @@ import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -66,7 +65,7 @@ public class ListCustomersAction extends AbstractAction {
     }
 
     @Override
-    protected Event doExecute(final RequestContext requestContext) throws IOException {
+    protected Event doExecute(final RequestContext requestContext) {
         var flowScope = requestContext.getFlowScope();
 
         if (isSubrogationMode(flowScope)) {
@@ -76,7 +75,7 @@ public class ListCustomersAction extends AbstractAction {
         }
     }
 
-    private Event processSubrogationRequest(MutableAttributeMap<Object> flowScope) throws IOException {
+    private Event processSubrogationRequest(MutableAttributeMap<Object> flowScope) {
         // We came from subrogation validation (emailForm)
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
@@ -164,14 +163,8 @@ public class ListCustomersAction extends AbstractAction {
     ) {
         List<CustomerModel> customerToSelect = entries
             .stream()
-            .map(
-                entry ->
-                    new CustomerModel()
-                        .setCustomerId(entry.getCustomerId())
-                        .setCode(entry.getCustomerCode())
-                        .setName(entry.getCustomerName())
-            )
-            .sorted(Comparator.comparing(CustomerModel::getCode))
+            .map(entry -> new CustomerModel(entry.getCustomerId(), entry.getCustomerCode(), entry.getCustomerName()))
+            .sorted(Comparator.comparing(CustomerModel::code))
             .toList();
 
         LOGGER.debug(

@@ -53,6 +53,9 @@ public class PmMessageToSend {
 
     private static final String PM_RESET_TEXT_KEY_2 = "cas.authn.pm.reset.text2";
 
+    // From two hours on, the validity is worded in hours rather than in minutes.
+    private static final long HOURS_WORDING_THRESHOLD_MINUTES = 120;
+
     private final String subject;
 
     private final String text;
@@ -79,7 +82,7 @@ public class PmMessageToSend {
     ) {
         final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
         final String text;
-        if (validityDurationInMinutes >= 120) {
+        if (validityDurationInMinutes >= HOURS_WORDING_THRESHOLD_MINUTES) {
             text = messageSource.getMessage(
                 PM_RESET_TEXT_KEY_2,
                 new Object[] { "", "", validityDurationInMinutes / 60, url, platformName },

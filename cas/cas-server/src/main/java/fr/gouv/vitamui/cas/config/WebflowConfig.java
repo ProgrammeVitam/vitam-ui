@@ -118,6 +118,8 @@ import org.springframework.webflow.execution.Action;
 @Configuration
 public class WebflowConfig {
 
+    private static final int MFA_WEBFLOW_CONFIGURER_ORDER = 100;
+
     @Bean
     public ListCustomersAction listCustomersAction(CasApi casApi) {
         return new ListCustomersAction(casApi);
@@ -145,8 +147,8 @@ public class WebflowConfig {
         );
     }
 
-    @Bean
-    public DefaultTransientSessionTicketFactory pmTicketFactory(final CasConfigurationProperties casProperties) {
+    // Not a bean: only consumed directly by sendPasswordResetInstructionsAction.
+    private DefaultTransientSessionTicketFactory pmTicketFactory(final CasConfigurationProperties casProperties) {
         return new DefaultTransientSessionTicketFactory(
             new PmTransientSessionTicketExpirationPolicyBuilder(casProperties)
         );
@@ -382,7 +384,7 @@ public class WebflowConfig {
             casProperties,
             MultifactorAuthenticationWebflowUtils.getMultifactorAuthenticationWebflowCustomizers(applicationContext)
         );
-        cfg.setOrder(100);
+        cfg.setOrder(MFA_WEBFLOW_CONFIGURER_ORDER);
         return cfg;
     }
 
@@ -463,7 +465,7 @@ public class WebflowConfig {
                 casProperties
             );
         } else {
-            return new StaticEventExecutionAction("error");
+            return new StaticEventExecutionAction(CasWebflowConstants.TRANSITION_ID_ERROR);
         }
     }
 

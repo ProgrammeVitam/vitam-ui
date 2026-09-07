@@ -71,15 +71,11 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
             return Optional.empty();
         }
 
-        val client = optClient.get();
-        val provider = identityProviderHelper
-            .findByTechnicalName(providersService.getProviders(), client.getName())
-            .get();
-        LOGGER.debug("provider: {}", provider);
-        if (!provider.isPropagateLogout()) {
-            return Optional.empty();
-        }
-
-        return optClient;
+        // Propagate the logout only when the provider is known and asks for it: an unknown provider is not an error.
+        val propagateLogout = identityProviderHelper
+            .findByTechnicalName(providersService.getProviders(), optClient.get().getName())
+            .map(provider -> Boolean.TRUE.equals(provider.isPropagateLogout()))
+            .orElse(false);
+        return propagateLogout ? optClient : Optional.empty();
     }
 }

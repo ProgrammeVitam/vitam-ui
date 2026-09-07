@@ -30,8 +30,8 @@ public class CustomerSelectedActionTest extends BaseWebflowActionTest {
     @Before
     public void before() {
         List<CustomerModel> customerModels = List.of(
-            new CustomerModel().setCustomerId(CUSTOMER_ID_1),
-            new CustomerModel().setCustomerId(CUSTOMER_ID_2)
+            new CustomerModel(CUSTOMER_ID_1, null, null),
+            new CustomerModel(CUSTOMER_ID_2, null, null)
         );
         this.flowParameters.put(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST, customerModels);
     }
