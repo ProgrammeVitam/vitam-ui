@@ -1,31 +1,33 @@
 <div class="breadcrumb">
-  @for (d of data; track d; let last = $last) {
-    <span class="text normal" (click)="onClick(d, !last)">
-      @switch (d.format) {
-        @case ('TITLECASE') {
-          <div>
-            {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | titlecase }}
-          </div>
+  @if (breadcrumb(); as items) {
+    @for (d of items; track d; let last = $last) {
+      <span class="text normal" (click)="onClick(d, !last)">
+        @switch (d.format) {
+          @case ('TITLECASE') {
+            <div>
+              {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | titlecase }}
+            </div>
+          }
+          @case ('LOWERCASE') {
+            <div>
+              {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | lowercase }}
+            </div>
+          }
+          @case ('UPPERCASE') {
+            <div>
+              {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | uppercase }}
+            </div>
+          }
+          @default {
+            <div>
+              {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } }}
+            </div>
+          }
         }
-        @case ('LOWERCASE') {
-          <div>
-            {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | lowercase }}
-          </div>
-        }
-        @case ('UPPERCASE') {
-          <div>
-            {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } | uppercase }}
-          </div>
-        }
-        @default {
-          <div>
-            {{ 'APPLICATION.' + d.identifier + '.NAME' | translate: { default: d.label } }}
-          </div>
-        }
+      </span>
+      @if (!last) {
+        <i class="material-icons px-2">trending_flat</i>
       }
-    </span>
-    @if (!last) {
-      <i class="material-icons px-2">trending_flat</i>
     }
   }
 </div>

@@ -15,13 +15,17 @@
     </div>
     <div class="col-1 form-control">
       <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-        <button mat-menu-item [disabled]="!hasTransferAcknowledgmentRole" (click)="showAcknowledgmentTransferForm()">
+        <button mat-menu-item [disabled]="!hasTransferAcknowledgmentRole()" (click)="showAcknowledgmentTransferForm()">
           {{ 'ARCHIVE_SEARCH.TRANSFER_ACKNOWLEDGMENT.ACTION_TITLE' | translate }}
         </button>
         <button mat-menu-item (click)="goToPersistentIdentifierSearchPage()">
           {{ 'ARCHIVE_SEARCH.PERSISTENT_IDENTIFIER_SEARCH.GO_TO_PAGE' | translate }}
         </button>
-        <button mat-menu-item (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_OPI)" [disabled]="!hasReassignmentRole">
+        <button
+          mat-menu-item
+          (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_OPI)"
+          [disabled]="!hasReassignmentRole()"
+        >
           {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.TITLE' | translate }}
         </button>
       </vitamui-menu-button>
@@ -74,7 +78,7 @@
       <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
     </div>
   }
-  @if (!pendingComputeFacets && submitted && rulesFacetsComputed && showingFacets) {
+  @if (!pendingComputeFacets && submitted() && rulesFacetsComputed && showingFacets) {
     <div class="card-criteria">
       <i
         id="show-hide-facet-button"
@@ -93,23 +97,23 @@
         [holdRuleFacets]="archiveSearchResultFacets?.holdRuleFacets"
         [classificationRuleFacets]="archiveSearchResultFacets?.classificationRuleFacets"
         [tenantIdentifier]="tenantIdentifier"
-        [totalResults]="totalResults"
+        [totalResults]="totalResults()"
         [defaultFacetTabIndex]="defaultFacetTabIndex"
       ></app-archive-search-rules-facets>
     </div>
   }
-  @if (!pending) {
+  @if (!pending()) {
     <div class="row">
-      @if (!showCriteriaPanel) {
+      @if (!showCriteriaPanel()) {
         <a class="hide-ink text uppercase" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
       }
-      @if (!pendingComputeFacets && !showingFacets && submitted) {
+      @if (!pendingComputeFacets && !showingFacets && submitted()) {
         <a class="hide-ink" (click)="showHideFacets(true)">{{ 'ARCHIVE_SEARCH.COMPUTE_RULES_FACETS' | translate }}</a>
       }
     </div>
   }
 
-  <div [hidden]="!showCriteriaPanel">
+  <div [hidden]="!showCriteriaPanel()">
     <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
       <mat-tab label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
         <div class="card-criteria">
@@ -210,51 +214,52 @@
       </mat-menu>
     </mat-tab-group>
   </div>
-  @if (showCriteriaPanel) {
+  @if (showCriteriaPanel()) {
     <div class="row justify-content-end text-on-right-side">
       <a class="hide-ink text uppercase" (click)="showHidePanel(false)">{{ 'ARCHIVE_SEARCH.HIDE_SEARCH_CRITERIA' | translate }}</a>
     </div>
   }
 </div>
 
-@if (submitted) {
+@if (submitted()) {
   <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
     <vitamui-sup-header>
       <ng-container title>
         <vitamui-common-archive-unit-count
           [search]="search$"
-          [archiveUnitCount]="totalResults"
+          [archiveUnitCount]="totalResults()"
           (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
           [(selectedArchiveUnitCount)]="selectedItemCount"
           [threshold]="10000"
-          [(pending)]="pending"
+          [pending]="pending()"
+          (pendingChange)="pending.set($event)"
           [allChecked]="isAllChecked"
           class="col-8"
         />
       </ng-container>
       <ng-container buttons>
-        <button class="btn btn-circle large tertiary" [disabled]="!(totalResults > 0 && selectedItemCount > 0)">
+        <button class="btn btn-circle large tertiary" [disabled]="!(totalResults() > 0 && selectedItemCount > 0)">
           <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
         </button>
         <vitamui-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole()">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
+          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole()">
             {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
           </button>
           <button
             mat-menu-item
             (click)="launchUpdateManagementRuleModal()"
             [vitamuiTooltip]="
-              !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc ? hasAccessContractManagementPermissionsMessage : ''
+              !accessContractAllowUpdating() || accessContractUpdatingRestrictedDesc() ? hasAccessContractManagementPermissionsMessage : ''
             "
             [vitamuiTooltipShowDelay]="300"
             [disabled]="
-              !hasUpdateManagementRuleRole ||
+              !hasUpdateManagementRuleRole() ||
               selectedItemCount === 0 ||
-              !accessContractAllowUpdating ||
-              accessContractUpdatingRestrictedDesc
+              !accessContractAllowUpdating() ||
+              accessContractUpdatingRestrictedDesc()
             "
           >
             {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
@@ -263,10 +268,10 @@
             mat-menu-item
             (click)="launchPUAUpdateModal()"
             [disabled]="
-              !hasUpdateManagementRuleRole ||
+              !hasUpdateManagementRuleRole() ||
               selectedItemCount === 0 ||
-              !accessContractAllowUpdating ||
-              accessContractUpdatingRestrictedDesc
+              !accessContractAllowUpdating() ||
+              accessContractUpdatingRestrictedDesc()
             "
           >
             {{ 'ARCHIVE_SEARCH.PUA.UPDATE' | translate }}
@@ -274,35 +279,35 @@
           <button
             mat-menu-item
             (click)="launchEliminationAnalysisModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+            [disabled]="!hasEliminationAnalysisOrActionRole() || selectedItemCount === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
           <button
             mat-menu-item
             (click)="launchEliminationModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+            [disabled]="!hasEliminationAnalysisOrActionRole() || selectedItemCount === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button
             mat-menu-item
             (click)="launchDeleteUnitTreeModal()"
-            [disabled]="!hasEliminationAnalysisOrActionRole || selectedItemCount === 0"
+            [disabled]="!hasEliminationAnalysisOrActionRole() || selectedItemCount === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.TREE_ELIMINATION' | translate }}
           </button>
           <button
             mat-menu-item
             (click)="launchComputedInheritedRulesModal()"
-            [disabled]="!hasComputedInheritedRulesRole || selectedItemCount === 0 || accessContractUpdatingRestrictedDesc"
+            [disabled]="!hasComputedInheritedRulesRole() || selectedItemCount === 0 || accessContractUpdatingRestrictedDesc()"
           >
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
-          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || selectedItemCount === 0">
+          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole() || selectedItemCount === 0">
             {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
           </button>
-          <button mat-menu-item (click)="launchPreservationModal()" [disabled]="!hasPreservationRole || selectedItemCount === 0">
+          <button mat-menu-item (click)="launchPreservationModal()" [disabled]="!hasPreservationRole() || selectedItemCount === 0">
             {{ 'ARCHIVE_SEARCH.PRESERVATION.ACTION' | translate }}
           </button>
           @if ((configService.config$ | async)?.REASSIGNMENT_ENABLED) {
@@ -420,15 +425,15 @@
       ></tr>
     </table>
     <div class="vitamui-table-footer">
-      @if (pending) {
+      @if (pending()) {
         <mat-spinner diameter="50" color="accent"></mat-spinner>
       }
-      @if (!pending && canLoadMore) {
+      @if (!pending() && canLoadMore) {
         <button (click)="loadMore()" class="btn">
           {{ 'ARCHIVE_SEARCH.SHOW_MORE_RESULTS' | translate }}
         </button>
       }
-      @if (!pending && !canLoadMore) {
+      @if (!pending() && !canLoadMore) {
         <span>{{ 'ARCHIVE_SEARCH.NO_MORE_RESULTS' | translate }}</span>
       }
     </div>
