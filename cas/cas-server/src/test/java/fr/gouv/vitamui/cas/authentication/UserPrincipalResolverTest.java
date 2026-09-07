@@ -14,6 +14,7 @@ import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.utils.RawJson;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -48,6 +49,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -168,24 +170,14 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     @Test
     public void testResolveX509() throws Throwable {
-        final var provider = new IdentityProviderDto();
-        provider.setId(PROVIDER_ID);
-        provider.setCustomerId(CUSTOMER_ID);
-        provider.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
-        provider.setPatterns(List.of(".*@test.com"));
-        when(
-            identityProviderHelper.findAllProvidersByUserIdentifier(providersService.getProviders(), USERNAME)
-        ).thenReturn(List.of(provider));
+        // La résolution du fournisseur CERTIFICAT unique vit désormais dans l'IAM ; le resolver se contente de consommer sa
+        // réponse (id du fournisseur + id du customer).
+        final var certEntry = new HrdEntryDto();
+        certEntry.setIdentityProviderId(PROVIDER_ID);
+        certEntry.setCustomerId(CUSTOMER_ID);
+        certEntry.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
+        when(casApi.resolveCertificateProvider(USERNAME)).thenReturn(certEntry);
 
-        when(
-            casApi.getUser(
-                eq(USERNAME),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(IDENTIFIER),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
-        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         final var cert = mock(X509Certificate.class);
         final var subjectDn = mock(java.security.Principal.class);
         when(subjectDn.getName()).thenReturn(USERNAME);
@@ -211,30 +203,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     @Test
     public void testResolveX509CaseInsensitive() throws Throwable {
-        final var provider = new IdentityProviderDto();
-        provider.setId(PROVIDER_ID);
-        provider.setCustomerId(CUSTOMER_ID);
-        provider.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
-        provider.setPatterns(List.of(".*@TesT.com"));
+        final var certEntry = new HrdEntryDto();
+        certEntry.setIdentityProviderId(PROVIDER_ID);
+        certEntry.setCustomerId(CUSTOMER_ID);
+        certEntry.setProtocoleType(CERTIFICATE_PROTOCOL_TYPE);
+        when(casApi.resolveCertificateProvider(USERNAME_EMAIL_WITH_OTHER_CASE)).thenReturn(certEntry);
 
-        when(providersService.getProviders()).thenReturn(List.of(provider));
-
-        when(
-            identityProviderHelper.findAllProvidersByUserIdentifier(
-                providersService.getProviders(),
-                USERNAME_EMAIL_WITH_OTHER_CASE
-            )
-        ).thenReturn(List.of(provider));
-
-        when(
-            casApi.getUser(
-                eq(USERNAME_EMAIL_WITH_OTHER_CASE),
-                eq(CUSTOMER_ID),
-                eq(PROVIDER_ID),
-                eq(IDENTIFIER),
-                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
-            )
-        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
         final var cert = mock(X509Certificate.class);
         final var subjectDn = mock(java.security.Principal.class);
         when(subjectDn.getName()).thenReturn(USERNAME_EMAIL_WITH_OTHER_CASE);
@@ -256,6 +230,30 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         assertEquals(List.of(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
         assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
         assertNull(attributes.get(SUPER_USER_CUSTOMER_ID_ATTRIBUTE));
+    }
+
+    @Test
+    public void testResolveX509NoSingleCertificateProviderReturnsNullPrincipal() throws Throwable {
+        // Quand l'IAM refuse la résolution (aucun fournisseur CERTIFICAT, ou plusieurs - multi-domaine), le
+        // resolver doit s'arrêter avec un NullPrincipal, exactement comme avant le déplacement de la règle vers l'IAM.
+        when(casApi.resolveCertificateProvider(USERNAME)).thenThrow(new RuntimeException("no single provider"));
+
+        final var cert = mock(X509Certificate.class);
+        final var subjectDn = mock(java.security.Principal.class);
+        when(subjectDn.getName()).thenReturn(USERNAME);
+        when(cert.getSubjectDN()).thenReturn(subjectDn);
+        final var issuerDn = mock(java.security.Principal.class);
+        when(issuerDn.getName()).thenReturn(IDENTIFIER);
+        when(cert.getIssuerDN()).thenReturn(issuerDn);
+
+        final var principal = resolver.resolve(
+            new X509CertificateCredential(new X509Certificate[] { cert }),
+            Optional.of(principalFactory.createPrincipal(USERNAME)),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        assertTrue(principal instanceof org.apereo.cas.authentication.principal.NullPrincipal);
     }
 
     @Test
