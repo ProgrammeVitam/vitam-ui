@@ -35,7 +35,7 @@
         <istack-commons-runtime.version>4.2.0</istack-commons-runtime.version>
         <jackson2.version>2.22.2</jackson2.version>
         <jackson2-annotation.version>2.22</jackson2-annotation.version>
-        <jackson3.version>3.1.0</jackson3.version>
+        <jackson3.version>3.1.5</jackson3.version>
         <jaeger.tracing.version>3.3.1</jaeger.tracing.version>
         <jakarta.el.version>6.0.1</jakarta.el.version>
         <jakarta.mail.version>2.1.5</jakarta.mail.version>
