@@ -6,6 +6,8 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
@@ -29,7 +31,6 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
-import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -141,10 +142,12 @@ public final class LoginPwdAuthenticationHandlerTest {
         // Étant donné
         givenLoginRequestInRequestContext();
 
-        when(casApi.login(eq(userCredentials()))).thenReturn(null);
+        // Le login de l'IAM retourne désormais un utilisateur ENABLED, NOMINATIVE ou lève une exception ; un utilisateur inconnu est une
+        // NotFoundException, que le handler convertit en PreventedException. (Il ne retourne plus null.)
+        when(casApi.login(eq(userCredentials()))).thenThrow(new NotFoundException(""));
 
         // Quand / Alors
-        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountNotFoundException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(PreventedException.class);
     }
 
     @Test
@@ -152,18 +155,9 @@ public final class LoginPwdAuthenticationHandlerTest {
         // Étant donné
         givenLoginRequestInRequestContext();
 
-        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.DISABLED));
-
-        // Quand / Alors
-        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
-    }
-
-    @Test
-    public void testUserCannotLogin() {
-        // Étant donné
-        givenLoginRequestInRequestContext();
-
-        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.BLOCKED));
+        // Un utilisateur dont l'IAM refuse le statut (par ex. DISABLED) remonte sous forme d'InvalidFormatException ; le
+        // handler ne revérifie plus le statut lui-même, il convertit cette exception en AccountDisabledException.
+        when(casApi.login(eq(userCredentials()))).thenThrow(new InvalidFormatException(""));
 
         // Quand / Alors
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
