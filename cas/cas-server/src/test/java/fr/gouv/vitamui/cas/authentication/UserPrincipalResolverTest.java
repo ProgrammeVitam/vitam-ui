@@ -11,6 +11,7 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.utils.RawJson;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
@@ -385,6 +386,11 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.emptyList());
 
+        // L'attribut mappé est vide. CAS ne tranche plus dessus : il transmet le profil brut et
+        // l'IAM refuse le login (le mapping et ses vérifications ont été déplacés là - voir CasServiceDelegatedIdentityTest
+        // .refusesWhenAMappedAttributeIsMissing). Un refus se traduit par un principal null.
+        doThrow(new BadRequestException("no mapped mail attribute")).when(casApi).buildPrincipalAttributes(any());
+
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
             Optional.of(principalFactory.createPrincipal("fake", princAttributes)),
@@ -392,7 +398,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             Optional.empty()
         );
 
-        assertEquals("nobody", principal.getId());
+        assertNull(principal);
     }
 
     @Test
@@ -417,6 +423,10 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(IDENTIFIER, Collections.emptyList());
 
+        // L'attribut identifiant mappé est vide : CAS transmet le profil brut et l'IAM refuse le
+        // login (le mapping a été déplacé là). Un refus se traduit par un principal null.
+        doThrow(new BadRequestException("no mapped identifier attribute")).when(casApi).buildPrincipalAttributes(any());
+
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
             Optional.of(principalFactory.createPrincipal("fake", princAttributes)),
@@ -424,7 +434,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             Optional.empty()
         );
 
-        assertEquals("nobody", principal.getId());
+        assertNull(principal);
     }
 
     @Test
@@ -554,6 +564,10 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
         ).thenReturn(Optional.of(provider));
 
+        // Aucun attribut mail sur le profil de l'utilisateur subrogé : CAS transmet le profil brut et l'IAM refuse la
+        // subrogation (le mapping et la vérification de l'e-mail ont été déplacés là). Un refus se traduit par un principal null.
+        doThrow(new BadRequestException("no mapped mail attribute")).when(casApi).buildPrincipalAttributes(any());
+
         final var principal = resolver.resolve(
             new ClientCredential(null, PROVIDER_NAME),
             Optional.of(principalFactory.createPrincipal("fake")),
@@ -561,7 +575,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             Optional.empty()
         );
 
-        assertEquals("nobody", principal.getId());
+        assertNull(principal);
     }
 
     @Test
