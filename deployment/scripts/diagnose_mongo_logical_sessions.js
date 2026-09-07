@@ -19,8 +19,13 @@
 // This script is read-only and safe to run on a production primary.
 //
 // Usage:
-//   mongosh "mongodb://<admin>:<password>@<host>:<port>/admin?replicaSet=<rs>" \
+//   mongosh "mongodb://<host>:<port>/admin?replicaSet=<rs>" \
+//       --username <admin> --password \
 //       --quiet --file deployment/scripts/diagnose_mongo_logical_sessions.js
+//
+// --password with no value makes mongosh prompt for it, which keeps the
+// password out of the shell history and of the process arguments every other
+// user of the machine can read.
 //
 // Run it twice a few minutes apart: activeSessionsCount rising while
 // sessionsCollectionJobCount stays flat is the signature of a stalled reaper.
@@ -161,15 +166,19 @@ if (recordCache) {
 
     const lastJob = recordCache.lastSessionsCollectionJobTimestamp;
     if (lastJob) {
-        // The refresh job runs every logicalSessionRefreshMillis (5 minutes by
-        // default). Anything much older means it is erroring out every cycle.
+        // The refresh job runs every logicalSessionRefreshMillis, read above
+        // rather than assumed: missing three cycles in a row means it is
+        // erroring out every time, not merely running late.
+        const refreshMinutes = refreshMillis / 60000;
         const staleMinutes = (Date.now() - new Date(lastJob).getTime()) / 60000;
         report("last job age (minutes)", staleMinutes.toFixed(1));
-        if (staleMinutes > 15) {
+        if (staleMinutes > 3 * refreshMinutes) {
             fail(
                 "The sessions collection job last completed " +
                     staleMinutes.toFixed(0) +
-                    " minutes ago; it should run every 5 minutes. Nothing is being reaped."
+                    " minutes ago; it should run every " +
+                    refreshMinutes.toFixed(0) +
+                    " minutes. Nothing is being reaped."
             );
         }
     }
@@ -178,21 +187,25 @@ if (recordCache) {
         conclude("sessionsCollectionJobCount is 0: the reaper has never completed a cycle since startup.");
     }
 
-    // The most reliable signal. On a misconfigured node the job still ticks, so
-    // sessionsCollectionJobCount and the timestamp both look healthy, but every
-    // cycle bails out before touching a single record: entriesRefreshed stays at
-    // 0 and the duration at 0ms while sessions are piling up in the cache.
+    // The most discriminating signal, and the one a single sample cannot carry.
+    // On a misconfigured node the job still ticks, so sessionsCollectionJobCount
+    // and the timestamp both look healthy, but every cycle bails out before
+    // touching a single record. A healthy but quiet node reads exactly the same
+    // when its sessions were all opened since the last cycle, so this stays a
+    // warning whatever the settling state: only the same reading with a higher
+    // activeSessionsCount, one refresh cycle later, tells the two apart.
     if (
         recordCache.sessionsCollectionJobCount > 0 &&
         recordCache.activeSessionsCount > 0 &&
         recordCache.lastSessionsCollectionJobEntriesRefreshed === 0
     ) {
-        conclude(
-            "The sessions collection job completes without refreshing any record " +
+        warn(
+            "The last sessions collection job refreshed no record " +
                 "(lastSessionsCollectionJobEntriesRefreshed = 0) while " +
                 recordCache.activeSessionsCount +
-                " sessions are active. The job is running but doing nothing, " +
-                "so the cache can only grow."
+                " sessions are active. Re-run this script after a refresh cycle: " +
+                "the same reading with a higher activeSessionsCount means the job " +
+                "is running but doing nothing, so the cache can only grow."
         );
     }
 } else {
@@ -300,19 +313,21 @@ const changeStreams = probe("currentOp", () => {
     return result.toArray();
 });
 
-if (changeStreams !== null) {
-    if (changeStreams.length === 0) {
-        report("open change streams", 0);
-    } else {
-        changeStreams.forEach((entry) => {
-            report("change streams on " + entry._id, entry.count + " (oldest opened " + entry.oldest + ")");
-        });
-        warn(
-            "Change streams are open. Each one pins a logical session for its whole " +
-                "lifetime. Compare the count against the number of running application " +
-                "instances: significantly more means they are being leaked."
-        );
-    }
+if (changeStreams === null) {
+    // Without this the section would print nothing at all, which reads exactly
+    // like an absence of change streams.
+    print("  Open change streams could not be listed: this hypothesis is left open.");
+} else if (changeStreams.length === 0) {
+    report("open change streams", 0);
+} else {
+    changeStreams.forEach((entry) => {
+        report("change streams on " + entry._id, entry.count + " (oldest opened " + entry.oldest + ")");
+    });
+    warn(
+        "Change streams are open. Each one pins a logical session for its whole " +
+            "lifetime. Compare the count against the number of running application " +
+            "instances: significantly more means they are being leaked."
+    );
 }
 
 // ---------------------------------------------------------------------------
@@ -321,13 +336,23 @@ if (changeStreams !== null) {
 
 heading("Verdict");
 
+const problems = findings.filter((finding) => finding.level === "PROBLEM").length;
+
 if (findings.length === 0) {
     print("  No anomaly detected. The session reaper looks healthy on this node.");
     print("  If sessions still accumulate, re-run this script on every replica set");
     print("  member and compare activeSessionsCount over time.");
 } else {
+    report("problems", problems);
+    report("warnings", findings.length - problems);
+    print("");
     findings.forEach((finding, index) => {
         print("  [" + finding.level + " " + (index + 1) + "] " + finding.message);
         print("");
     });
 }
+
+// Exit status, so that a supervision job can consume the verdict without
+// parsing the report. Warnings alone call for a second run of this script, not
+// for an alert, hence only problems are counted.
+quit(problems > 0 ? 1 : 0);
