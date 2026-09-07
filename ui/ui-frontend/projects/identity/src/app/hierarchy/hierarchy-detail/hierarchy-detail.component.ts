@@ -38,12 +38,7 @@ import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } fro
 
 import { Subscription } from 'rxjs';
 import type { Profile } from 'vitamui-library';
-import {
-  AuthService,
-  isLevelAllowed,
-  OperationHistoryTabComponent,
-  VitamuiSidenavHeaderComponent,
-} from 'vitamui-library';
+import { AuthService, isLevelAllowed, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { InformationTabComponent } from './information-tab/information-tab.component';
