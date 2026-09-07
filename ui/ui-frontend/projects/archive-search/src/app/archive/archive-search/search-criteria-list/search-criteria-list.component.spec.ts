@@ -184,7 +184,7 @@ describe('SearchCriteriaListComponent', () => {
         },
       ];
 
-      component.searchCriteriaHistory = searchCriteriaHistory$;
+      component.searchCriteriaHistory.set(searchCriteriaHistory$);
     });
 
     it('should call getSearchCriteriaHistory of SearchCriteriaListService', () => {
@@ -195,14 +195,14 @@ describe('SearchCriteriaListComponent', () => {
       component.getSearchCriteriaHistory();
 
       // Then
-      expect(component.pending).toBeFalsy();
+      expect(component.pending()).toBeFalsy();
       expect(SearchCriteriaListServiceStub.getSearchCriteriaHistory).toHaveBeenCalled();
     });
 
     it('should delete searchCriteria', () => {
       component.clearElement(searchCriteriaHistory$[0].id);
-      expect(component.searchCriteriaHistory.length).toEqual(1);
-      expect(component.searchCriteriaHistory[0].name).toEqual('Second Save');
+      expect(component.searchCriteriaHistory().length).toEqual(1);
+      expect(component.searchCriteriaHistory()[0].name).toEqual('Second Save');
     });
   });
 });
