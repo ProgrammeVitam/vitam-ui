@@ -63,6 +63,8 @@ public final class AuthContractApi {
 
     public static final String HRD_PATH = "/hrd";
 
+    public static final String CERTIFICATE_PATH = "/certificate";
+
     public static final String PASSWORD_POLICY_PATH = "/password/policy";
 
     public static final String SUBROGATION_VALIDATE_PATH = "/subrogations/validate";

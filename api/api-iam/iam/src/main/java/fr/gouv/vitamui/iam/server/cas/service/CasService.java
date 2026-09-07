@@ -143,6 +143,8 @@ public class CasService {
 
     private static final String TOKEN_PREFIX = "TOK";
 
+    private static final String PROVIDER_PROTOCOL_TYPE_CERTIFICAT = "CERTIFICAT";
+
     @Autowired
     private TokenRepository tokenRepository;
 
@@ -1102,6 +1104,57 @@ public class CasService {
      *
      * @return the entries sorted by customer code, possibly empty when nothing matches.
      */
+    /**
+     * Resolves the single X509 certificate identity provider matching a user identifier (an e-mail
+     * extracted from the certificate, or a bare {@code @domain} fallback).
+     *
+     * <p>This rule was previously carried by the authentication server: it keeps only the providers whose
+     * pattern matches the identifier (case-insensitively) and whose protocol is {@code CERTIFICAT}, and
+     * certificate authentication does not support multi-domain — exactly one provider must match. The
+     * provider set and the matching helper are the very ones the authentication server used to load
+     * ({@code identityProviderService.getAll} mirrors its {@code getAll(null, ...)}), so the resolution is
+     * behaviour-identical, only relocated.
+     *
+     * @return the resolved entry (identity provider id + customer id).
+     * @throws NotFoundException when no single {@code CERTIFICAT} provider matches (none or several).
+     */
+    public HrdEntryDto resolveCertificateProvider(final String userIdentifier) {
+        Assert.hasText(userIdentifier, "userIdentifier must not be empty");
+
+        final List<IdentityProviderDto> certProviders = identityProviderHelper
+            .findAllProvidersByUserIdentifier(
+                identityProviderService.getAll(Optional.empty(), Optional.empty()),
+                userIdentifier
+            )
+            .stream()
+            .filter(provider -> PROVIDER_PROTOCOL_TYPE_CERTIFICAT.equals(provider.getProtocoleType()))
+            .toList();
+
+        if (certProviders.isEmpty()) {
+            LOGGER.warn("No certificate identity provider matches: {}", userIdentifier);
+            throw new NotFoundException("No certificate identity provider matches: " + userIdentifier);
+        }
+        if (certProviders.size() > 1) {
+            LOGGER.warn("Several certificate identity providers match (multi-domain unsupported): {}", userIdentifier);
+            throw new NotFoundException(
+                "Several certificate identity providers match (multi-domain unsupported): " + userIdentifier
+            );
+        }
+
+        final IdentityProviderDto provider = certProviders.getFirst();
+        final Customer customer = customerRepository.findById(provider.getCustomerId()).orElse(null);
+        return new HrdEntryDto(
+            provider.getCustomerId(),
+            customer != null ? customer.getCode() : null,
+            customer != null ? customer.getName() : provider.getCustomerId(),
+            provider.getId(),
+            provider.getName(),
+            Boolean.TRUE.equals(provider.getInternal()),
+            provider.getProtocoleType(),
+            null
+        );
+    }
+
     public List<HrdEntryDto> resolveHrdEntries(final String email) {
         Assert.hasText(email, "email must not be empty");
 

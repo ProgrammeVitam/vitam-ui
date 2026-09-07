@@ -2577,6 +2577,27 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/HrdEntryDto"
                             example: null
+    /iam/v1/cas/certificate:
+        get:
+            tags:
+                - Cas
+            summary: Resolve the single X509 certificate identity provider for a user identifier
+            operationId: cas_resolveCertificateProvider
+            parameters:
+                - name: userIdentifier
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/HrdEntryDto"
+                            example: null
     /iam/v1/cas/users/principal-attributes:
         post:
             tags:

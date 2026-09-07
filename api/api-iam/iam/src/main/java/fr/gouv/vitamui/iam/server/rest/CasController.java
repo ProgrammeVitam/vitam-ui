@@ -364,4 +364,23 @@ public class CasController {
         SanityChecker.checkSecureParameter(email);
         return casService.resolveHrdEntries(email);
     }
+
+    /**
+     * Resolves the single X509 certificate identity provider matching a user identifier (an e-mail
+     * extracted from the certificate, or a bare {@code @domain} fallback). Certificate authentication does
+     * not support multi-domain, so exactly one provider must match; otherwise a 404 is returned and the
+     * authentication server turns it into an authentication refusal.
+     */
+    @GetMapping(value = AuthContractApi.CERTIFICATE_PATH, params = "userIdentifier")
+    @Operation(
+        operationId = "cas_resolveCertificateProvider",
+        summary = "Resolve the single X509 certificate identity provider for a user identifier"
+    )
+    @Secured(ServicesData.ROLE_CAS_HRD)
+    public HrdEntryDto resolveCertificateProvider(final @RequestParam String userIdentifier) {
+        LOGGER.debug("resolve certificate identity provider");
+        ParameterChecker.checkParameter("The userIdentifier is mandatory : ", userIdentifier);
+        SanityChecker.checkSecureParameter(userIdentifier);
+        return casService.resolveCertificateProvider(userIdentifier);
+    }
 }

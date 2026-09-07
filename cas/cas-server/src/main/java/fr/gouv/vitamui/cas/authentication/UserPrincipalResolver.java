@@ -44,9 +44,9 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.utils.RawJson;
 import fr.gouv.vitamui.iam.auth.contract.DelegatedIdpContextDto;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
@@ -126,8 +126,6 @@ public class UserPrincipalResolver implements PrincipalResolver {
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
-    public static final String PROVIDER_PROTOCOL_TYPE_CERTIFICAT = "CERTIFICAT";
-
     private final PrincipalFactory principalFactory;
 
     private final CasApi casApi;
@@ -201,36 +199,18 @@ public class UserPrincipalResolver implements PrincipalResolver {
                 userDomain = emailFromCertificate;
             }
 
-            // Certificate authn mode does not support multi-domain. Ensure a single
-            // provider matches user email.
-            final var availableProvidersForUserDomain = identityProviderHelper.findAllProvidersByUserIdentifier(
-                providersService.getProviders(),
-                userDomain
-            );
-
-            final var certProviders = availableProvidersForUserDomain
-                .stream()
-                .filter(p -> p.getProtocoleType().equals(PROVIDER_PROTOCOL_TYPE_CERTIFICAT))
-                .toList();
-
-            if (certProviders.isEmpty()) {
-                LOGGER.warn(
-                    "Cert authentication failed - No valid certificate identity provider found for: {}",
-                    userDomain
-                );
+            // Certificate authn mode does not support multi-domain: the IAM owns that identity rule now. It
+            // resolves the single CERTIFICAT identity provider matching the user domain - refusing when
+            // none or several match - and returns its id and customer id. On refusal the flow stops here.
+            final HrdEntryDto certProvider;
+            try {
+                certProvider = casApi.resolveCertificateProvider(userDomain);
+            } catch (final RuntimeException e) {
+                LOGGER.warn("Cert authentication failed - no single certificate identity provider for: {}", userDomain);
                 return NullPrincipal.getInstance();
             }
-            if (certProviders.size() > 1) {
-                LOGGER.warn(
-                    "Cert authentication failed - Too many certificate identity providers found for: {}",
-                    userDomain
-                );
-                return NullPrincipal.getInstance();
-            }
-
-            IdentityProviderDto providerDto = certProviders.getFirst();
-            userProviderId = providerDto.getId();
-            loginCustomerId = providerDto.getCustomerId();
+            userProviderId = certProvider.getIdentityProviderId();
+            loginCustomerId = certProvider.getCustomerId();
         } else if (credential instanceof SurrogateUsernamePasswordCredential) {
             userProviderId = null;
             technicalUserId = Optional.empty();
