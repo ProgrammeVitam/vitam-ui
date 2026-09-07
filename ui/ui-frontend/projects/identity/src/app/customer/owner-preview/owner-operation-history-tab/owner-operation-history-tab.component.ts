@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import type { HistoryEvent } from 'vitamui-library';
 import { AuthService, LogbookService, HistoryEventsComponent, CollapseComponent } from 'vitamui-library';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
