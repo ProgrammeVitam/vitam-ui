@@ -19,7 +19,6 @@
   "ALLOWED_URLS": ["/referential-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
-    "redirectUri": "https://dev.vitamui.com:4202/ingest-contract",
     "postLogoutRedirectUri": "https://dev.vitamui.com:4202/ingest-contract",
     "clientId": "referential",
     "responseType": "code",

@@ -20,7 +20,6 @@
   "ALLOWED_URLS": ["/collect-api"],
   "OIDC_CONFIG": {
     "issuer": "https://dev.vitamui.com:8080/cas/oidc",
-    "redirectUri": "https://dev.vitamui.com:4210/collect",
     "postLogoutRedirectUri": "https://dev.vitamui.com:4210/collect",
     "clientId": "collect",
     "responseType": "code",
