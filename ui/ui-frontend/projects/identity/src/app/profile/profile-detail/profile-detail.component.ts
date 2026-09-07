@@ -37,12 +37,7 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import type { Profile } from 'vitamui-library';
-import {
-  AuthService,
-  isLevelAllowed,
-  OperationHistoryTabComponent,
-  VitamuiSidenavHeaderComponent,
-} from 'vitamui-library';
+import { AuthService, isLevelAllowed, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { ProfileService } from '../profile.service';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { InformationTabComponent } from './information-tab/information-tab.component';
