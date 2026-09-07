@@ -35,16 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Subscription } from 'rxjs';
-import {
-  ApplicationId,
-  AuthService,
-  AuthUser,
-  buildValidators,
-  collapseAnimation,
-  ConfirmDialogService,
-  Profile,
-  Role,
-} from 'vitamui-library';
+import { ApplicationId, AuthService, AuthUser, buildValidators, ConfirmDialogService, Profile, Role } from 'vitamui-library';
 
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -58,7 +49,6 @@ import { ProfileValidators } from '../profile.validators';
   selector: 'app-profile-create',
   templateUrl: './profile-create.component.html',
   styleUrls: ['./profile-create.component.scss'],
-  animations: [collapseAnimation],
   standalone: false,
 })
 export class ProfileCreateComponent implements OnInit, OnDestroy {

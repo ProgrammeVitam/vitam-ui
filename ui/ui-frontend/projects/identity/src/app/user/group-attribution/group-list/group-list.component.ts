@@ -36,13 +36,12 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { collapseAnimation, Profile, rotateAnimation } from 'vitamui-library';
+import { Profile } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class GroupListComponent implements OnInit {

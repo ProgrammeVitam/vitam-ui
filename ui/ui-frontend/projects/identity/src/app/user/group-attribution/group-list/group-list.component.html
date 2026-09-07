@@ -39,9 +39,14 @@
                 }}
               </button>
             </div>
-            @if (row.state === 'expanded') {
-              <app-group-detail [group]="group" [@collapseAnimation]></app-group-detail>
-            }
+            <app-group-detail
+              [group]="group"
+              class="vitamui-collapse"
+              [class.collapsed]="row.state === 'collapsed'"
+              [class.expanded]="row.state === 'expanded'"
+              [attr.aria-hidden]="row.state === 'collapsed' ? 'true' : null"
+              [attr.inert]="row.state === 'collapsed' ? '' : null"
+            ></app-group-detail>
           </div>
         }
       }

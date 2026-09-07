@@ -118,7 +118,6 @@ export * from './lib/validators/misc.validators';
 export * from './app/modules/account/account.component';
 export * from './app/modules/active-tenant.guard';
 export * from './app/modules/analytics-resolver.service';
-export * from './app/modules/animations/vitamui-common-animations';
 export * from './app/modules/api/access-contract-api.service';
 export * from './app/modules/api/application-api.service';
 export * from './app/modules/api/base-user-info-api.service';

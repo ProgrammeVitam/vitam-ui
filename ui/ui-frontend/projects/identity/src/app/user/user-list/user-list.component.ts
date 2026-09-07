@@ -40,14 +40,12 @@ import {
   ApplicationId,
   AuthService,
   buildCriteriaFromSearch,
-  collapseAnimation,
   CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
   InfiniteScrollTable,
   PageRequest,
   Role,
-  rotateAnimation,
   SnackBarService,
 } from 'vitamui-library';
 import type { AdminUserProfile, Group, User } from 'vitamui-library';
@@ -76,7 +74,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
