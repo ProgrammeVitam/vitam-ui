@@ -38,7 +38,6 @@ package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.util.Constants;
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +45,6 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -61,32 +59,30 @@ public class InitContextConfiguration implements ServletContextInitializer {
     private final String vitamuiFaviconPath;
 
     @Override
-    public void onStartup(final ServletContext servletContext) throws ServletException {
-        if (vitamuiLogoLargePath != null) {
-            try {
-                final Path logoFile = Paths.get(vitamuiLogoLargePath);
-                String base64Logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
-                if (vitamuiLogoLargePath.endsWith(".svg")) {
-                    base64Logo = "data:image/svg+xml;base64," + base64Logo;
-                } else {
-                    // default PNG
-                    base64Logo = "data:image/png;base64," + base64Logo;
-                }
-                servletContext.setAttribute(Constants.VITAMUI_LOGO_LARGE, base64Logo);
-            } catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui large logo", e);
-            }
-        }
+    public void onStartup(final ServletContext servletContext) {
+        putBase64Image(servletContext, vitamuiLogoLargePath, Constants.VITAMUI_LOGO_LARGE, true, "large logo");
+        putBase64Image(servletContext, vitamuiFaviconPath, Constants.VITAM_UI_FAVICON, false, "favicon");
+    }
 
-        if (vitamuiFaviconPath != null) {
-            try {
-                final Path faviconFile = Paths.get(vitamuiFaviconPath);
-                final String favicon = DatatypeConverter.printBase64Binary(Files.readAllBytes(faviconFile));
-                servletContext.setAttribute(Constants.VITAM_UI_FAVICON, favicon);
-            } catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui favicon");
-                throw new ServletException(e);
+    // Une image manquante est un avertissement, jamais un échec de démarrage (un favicon manquant interrompait autrefois le démarrage).
+    private static void putBase64Image(
+        final ServletContext servletContext,
+        final String path,
+        final String attribute,
+        final boolean asDataUri,
+        final String label
+    ) {
+        if (path == null) {
+            return;
+        }
+        try {
+            String base64 = DatatypeConverter.printBase64Binary(Files.readAllBytes(Paths.get(path)));
+            if (asDataUri) {
+                base64 = (path.endsWith(".svg") ? "data:image/svg+xml;base64," : "data:image/png;base64,") + base64;
             }
+            servletContext.setAttribute(attribute, base64);
+        } catch (final IOException e) {
+            LOGGER.warn("Can't find vitam ui {}", label, e);
         }
     }
 }

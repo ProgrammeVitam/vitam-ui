@@ -149,8 +149,8 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         assertThat((List<CustomerModel>) flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST))
             .usingFieldByFieldElementComparator()
             .containsExactly(
-                new CustomerModel().setCustomerId(CUSTOMER_ID_1).setName("MyCustomer1").setCode("MyCode1"),
-                new CustomerModel().setCustomerId(CUSTOMER_ID_2).setName("MyCustomer2").setCode("MyCode2")
+                new CustomerModel(CUSTOMER_ID_1, "MyCode1", "MyCustomer1"),
+                new CustomerModel(CUSTOMER_ID_2, "MyCode2", "MyCustomer2")
             );
     }
 
@@ -195,8 +195,8 @@ public class ListCustomersActionTest extends BaseWebflowActionTest {
         assertThat((List<CustomerModel>) flowParameters.get(Constants.FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST))
             .usingFieldByFieldElementComparator()
             .containsExactly(
-                new CustomerModel().setCustomerId(CUSTOMER_ID_1).setName("MyCustomer1").setCode("MyCode1"),
-                new CustomerModel().setCustomerId(CUSTOMER_ID_2).setName("MyCustomer2").setCode("MyCode2")
+                new CustomerModel(CUSTOMER_ID_1, "MyCode1", "MyCustomer1"),
+                new CustomerModel(CUSTOMER_ID_2, "MyCode2", "MyCustomer2")
             );
     }
 

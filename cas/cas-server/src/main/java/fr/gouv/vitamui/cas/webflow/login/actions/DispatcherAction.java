@@ -116,7 +116,7 @@ public class DispatcherAction extends AbstractAction {
         }
         Optional<HrdEntryDto> surrogateEntry = resolveEntry(surrogateEmail, surrogateCustomerId);
         if (isEntryDisabled(surrogateEntry)) {
-            return handleUserDisabled(superUserEmail, surrogateCustomerId);
+            return handleUserDisabled(surrogateEmail, surrogateCustomerId);
         }
 
         return dispatchUser(

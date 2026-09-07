@@ -99,8 +99,6 @@ public class InitializeSubrogationAction extends AbstractAction {
 
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getName());
-
-                return new Event(this, PROCEED);
             } catch (Exception e) {
                 LOGGER.error("Validation of subrogation parameters failed", e);
                 // Si la validation échoue, nous la traitons comme une requête de connexion normale
@@ -110,19 +108,14 @@ public class InitializeSubrogationAction extends AbstractAction {
         return new Event(this, PROCEED);
     }
 
+    // Les paramètres arrivent non-null à ces contrôles (isNoneBlank protège l'appel).
     private void validateEmail(String email) {
-        if (email == null) {
-            throw new IllegalArgumentException("Null email");
-        }
         if (!EMAIL_VALID_REGEXP.matcher(email).matches()) {
             throw new IllegalArgumentException("email : '" + email + "' format is not allowed");
         }
     }
 
     private void validateCustomerId(String customerId) {
-        if (customerId == null) {
-            throw new IllegalArgumentException("Null customerId");
-        }
         if (!CUSTOMER_ID_VALIDATION_PATTERN.matcher(customerId).matches()) {
             throw new IllegalArgumentException("Invalid customerId: '" + customerId + "'");
         }

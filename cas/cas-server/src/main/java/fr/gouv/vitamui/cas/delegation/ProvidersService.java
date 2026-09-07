@@ -65,6 +65,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProvidersService {
 
+    private static final long RELOAD_INTERVAL_MS = 60_000L;
+
     @Getter
     private List<IdentityProviderDto> providers = new ArrayList<>();
 
@@ -87,8 +89,7 @@ public class ProvidersService {
         }
     }
 
-    // every minute, reload the data
-    @Scheduled(initialDelay = 60 * 1000, fixedRate = 60 * 1000)
+    @Scheduled(initialDelay = RELOAD_INTERVAL_MS, fixedRate = RELOAD_INTERVAL_MS)
     public void reloadData() {
         try {
             loadData();

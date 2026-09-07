@@ -38,15 +38,7 @@ public class CustomOidcRevocationEndpointController extends OidcRevocationEndpoi
         if (registryToken == null) {
             LOGGER.error("Provided token [{}] has not been found in the ticket registry", token);
         } else if (isRefreshToken(registryToken) || isAccessToken(registryToken)) {
-            /*
-             * Custom : Don't check clientId to allow revoke token to all services (SSO)
-             * if (!StringUtils.equals(clientId, registryToken.getClientId())) {
-             * LOGGER.warn("Provided token [{}] has not been issued for the service [{}]",
-             * token, clientId);
-             * return OAuth20Utils.writeError(response, OAuth20Constants.INVALID_REQUEST);
-             * }
-             */
-
+            // CUSTO : le clientId n'est volontairement pas vérifié, afin qu'un jeton puisse être révoqué depuis n'importe quel service (SSO).
             if (isRefreshToken(registryToken)) {
                 revokeToken((OAuth20RefreshToken) registryToken);
             } else {

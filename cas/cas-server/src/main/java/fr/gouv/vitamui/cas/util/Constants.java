@@ -39,9 +39,11 @@ package fr.gouv.vitamui.cas.util;
 /**
  * Constantes.
  *
- * @sicne 0.1.0
+ * @since 0.1.0
  */
-public abstract class Constants {
+public final class Constants {
+
+    private Constants() {}
 
     public static final String PROVIDED_USERNAME = "providedUsername";
     public static final String SHOW_SURROGATE_CUSTOMER_NAME = "surrogateCustomerName";

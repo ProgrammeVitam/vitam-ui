@@ -53,7 +53,6 @@ import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAut
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.services.ServicesManager;
-import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
 import javax.security.auth.login.AccountLockedException;
@@ -151,66 +150,27 @@ public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthe
         }
     }
 
-    private LoginRequestDto buildLoginRequestFromFlowScopeData(String originalPassword) {
-        var requestContext = RequestContextHolder.getRequestContext();
-        var flowScope = requestContext.getFlowScope();
+    private LoginRequestDto buildLoginRequestFromFlowScopeData(final String originalPassword) {
+        final var requestContext = RequestContextHolder.getRequestContext();
+        final var flowScope = requestContext.getFlowScope();
+        final var request = (HttpServletRequest) requestContext.getExternalContext().getNativeRequest();
 
-        String loginEmail = flowScope.getRequiredString(FLOW_LOGIN_EMAIL);
-        String loginCustomerId = flowScope.getRequiredString(FLOW_LOGIN_CUSTOMER_ID);
-        String surrogateEmail = flowScope.getString(FLOW_SURROGATE_EMAIL);
-        String surrogateCustomerId = flowScope.getString(FLOW_SURROGATE_CUSTOMER_ID);
-        String ip = extractClientIp(requestContext);
+        final var login = new LoginRequestDto();
+        login.setLoginEmail(flowScope.getRequiredString(FLOW_LOGIN_EMAIL));
+        login.setLoginCustomerId(flowScope.getRequiredString(FLOW_LOGIN_CUSTOMER_ID));
+        login.setPassword(originalPassword);
+        login.setSurrogateEmail(flowScope.getString(FLOW_SURROGATE_EMAIL));
+        login.setSurrogateCustomerId(flowScope.getString(FLOW_SURROGATE_CUSTOMER_ID));
+        login.setIp(request.getHeader(ipHeaderName));
 
-        logAuthenticationAttempt(loginEmail, loginCustomerId, surrogateEmail, surrogateCustomerId, ip);
-
-        return buildLoginRequest(
-            originalPassword,
-            loginEmail,
-            loginCustomerId,
-            surrogateEmail,
-            surrogateCustomerId,
-            ip
-        );
-    }
-
-    private String extractClientIp(RequestContext requestContext) {
-        var externalContext = requestContext.getExternalContext();
-        var request = (HttpServletRequest) externalContext.getNativeRequest();
-        return request.getHeader(ipHeaderName);
-    }
-
-    private void logAuthenticationAttempt(
-        String loginEmail,
-        String loginCustomerId,
-        String surrogateEmail,
-        String surrogateCustomerId,
-        String ip
-    ) {
         LOGGER.debug(
             "Authenticating loginEmail={} loginCustomerId={} surrogateEmail={} surrogateCustomerId={} ip={}",
-            loginEmail,
-            loginCustomerId,
-            surrogateEmail,
-            surrogateCustomerId,
-            ip
+            login.getLoginEmail(),
+            login.getLoginCustomerId(),
+            login.getSurrogateEmail(),
+            login.getSurrogateCustomerId(),
+            login.getIp()
         );
-    }
-
-    private LoginRequestDto buildLoginRequest(
-        String password,
-        String loginEmail,
-        String loginCustomerId,
-        String surrogateEmail,
-        String surrogateCustomerId,
-        String ip
-    ) {
-        var login = new LoginRequestDto();
-        login.setLoginEmail(loginEmail);
-        login.setLoginCustomerId(loginCustomerId);
-        login.setPassword(password);
-        login.setSurrogateEmail(surrogateEmail);
-        login.setSurrogateCustomerId(surrogateCustomerId);
-        login.setIp(ip);
         return login;
     }
 }

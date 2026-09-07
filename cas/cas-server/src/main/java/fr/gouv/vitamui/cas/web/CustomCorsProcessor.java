@@ -27,6 +27,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +48,7 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
 
     private static final Set<String> ALLOWED_ORIGINS_WITHOUT_CREDENTIALS = Set.of("http://localhost");
 
+    @Override
     protected boolean handleInternal(
         ServerHttpRequest serverRequest,
         ServerHttpResponse response,
@@ -89,12 +91,7 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
                     }
                     LOGGER.debug("providerUrl: {}", providerUrl);
                     if (StringUtils.isNotBlank(providerUrl)) {
-                        final var followingSlash = providerUrl.indexOf("/", 9);
-                        if (followingSlash < 0) {
-                            allowOrigin = providerUrl;
-                        } else {
-                            allowOrigin = providerUrl.substring(0, followingSlash);
-                        }
+                        allowOrigin = originOf(providerUrl);
                     }
                     LOGGER.debug("allowOrigin: {}", allowOrigin);
                 }
@@ -152,6 +149,18 @@ public class CustomCorsProcessor extends DefaultCorsProcessor {
 
         response.flush();
         return true;
+    }
+
+    // scheme://authority d'une URL, c.-à-d. l'origine depuis laquelle l'IdP rappelle ; l'URL elle-même lorsqu'elle ne peut pas être analysée.
+    private static String originOf(final String url) {
+        try {
+            final var uri = URI.create(url);
+            return uri.getScheme() != null && uri.getAuthority() != null
+                ? uri.getScheme() + "://" + uri.getAuthority()
+                : url;
+        } catch (final IllegalArgumentException e) {
+            return url;
+        }
     }
 
     private HttpMethod getMethodToUse(ServerHttpRequest request, boolean isPreFlight) {

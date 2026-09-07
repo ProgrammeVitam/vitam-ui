@@ -64,6 +64,9 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.TYPE_ATTRIBUTE;
  */
 public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTicketFactory {
 
+    // Un compte générique subrogé par un super utilisateur vit au maximum 170 minutes.
+    private static final int GENERIC_SURROGATE_TGT_TIMEOUT_SECONDS = 170 * 60;
+
     private final Utils utils;
 
     public DynamicTicketGrantingTicketFactory(
@@ -94,7 +97,11 @@ public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTic
         final String superUser = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
         final UserTypeEnum type = (UserTypeEnum) utils.getAttributeValue(attributes, TYPE_ATTRIBUTE);
         if (superUser != null && type == UserTypeEnum.GENERIC) {
-            return (T) new TicketGrantingTicketImpl(tgtId, authentication, new HardTimeoutExpirationPolicy(170 * 60));
+            return (T) new TicketGrantingTicketImpl(
+                tgtId,
+                authentication,
+                new HardTimeoutExpirationPolicy(GENERIC_SURROGATE_TGT_TIMEOUT_SECONDS)
+            );
         } else {
             return super.produceTicket(authentication, tgtId, service, clazz);
         }
