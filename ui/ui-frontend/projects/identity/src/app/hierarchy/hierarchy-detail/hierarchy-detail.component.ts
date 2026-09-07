@@ -37,8 +37,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import type { Event, Profile } from 'vitamui-library';
-import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
+import type { Profile } from 'vitamui-library';
+import { AuthService, isLevelAllowed } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 
 @Component({
@@ -50,7 +50,6 @@ import { HierarchyService } from '../hierarchy.service';
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
   private hierarchyService = inject(HierarchyService);
   private authService = inject(AuthService);
-  private startupService = inject(StartupService);
 
   @Input()
   set id(id: string) {
@@ -75,15 +74,6 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
     this.profileUpdateSub.unsubscribe();
   }
 
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/profile-hierarchy/' + this.profile.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
-  }
-
   emitClose() {
     this.previewClose.emit();
   }
@@ -93,11 +83,5 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
       return !isLevelAllowed(this.authService.user, this.profile.level);
     }
     return false;
-  }
-
-  filterEvents(event: Event): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') || event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE'))
-    );
   }
 }

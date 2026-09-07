@@ -133,15 +133,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this.userUpdatedSub.unsubscribe();
   }
 
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/user/' + this.user.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
-  }
-
   updateStatus(status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
