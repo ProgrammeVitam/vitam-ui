@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -132,7 +132,6 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   private schemaService = inject(SchemaService);
   private agencyService = inject(AgencyService);
   private archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
-  private cdr = inject(ChangeDetectorRef);
 
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
@@ -144,17 +143,17 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     [ARCHIVE_UNIT_WITHOUT_OBJECTS, false],
   ]);
 
-  otherCriteriaOptions: ItemNode<SchemaElement>[];
+  otherCriteriaOptions = signal<ItemNode<SchemaElement>[]>(undefined);
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
-  titleSearchTypes: SearchType[];
-  titleSelectedType?: SearchType;
+  titleSearchTypes = signal<SearchType[]>(undefined);
+  titleSelectedType = signal<SearchType>(undefined);
 
-  selectOptions = {
+  selectOptions = signal({
     agency: { options: [] as Option[] },
     archiveUnitProfile: { options: [] as Option[] },
-  } satisfies { [key: string]: VitamuiSelectOptions };
+  } satisfies { [key: string]: VitamuiSelectOptions });
 
   constructor() {
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
@@ -194,7 +193,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           }),
         ),
       )
-      .subscribe((options) => (this.selectOptions.agency = options));
+      .subscribe((options) => {
+        this.selectOptions.update((selectOptions) => ({ ...selectOptions, agency: options }));
+      });
 
     this.archiveUnitProfilesService
       .getAll()
@@ -208,18 +209,21 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           }),
         ),
       )
-      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
+      .subscribe((options) => {
+        this.selectOptions.update((selectOptions) => ({ ...selectOptions, archiveUnitProfile: options }));
+      });
 
     const descriptiveSchemaTree$ = this.schemaService.getDescriptiveSchemaTree().pipe(share());
-    descriptiveSchemaTree$.subscribe((schema) => (this.otherCriteriaOptions = schema));
+    descriptiveSchemaTree$.subscribe((schema) => {
+      this.otherCriteriaOptions.set(schema);
+    });
 
     const titleSearchTypes$ = descriptiveSchemaTree$.pipe(
       map((schema) => this.searchTypes(schema, 'Title')),
       share(),
     );
     titleSearchTypes$.subscribe((titleSearchTypes) => {
-      this.titleSearchTypes = titleSearchTypes;
-      this.cdr.detectChanges(); // Force la détection de changements
+      this.titleSearchTypes.set(titleSearchTypes);
     });
 
     const otherCriteriaControl = this.form.controls['otherCriteria'] as FormGroup;
@@ -239,12 +243,13 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     combineLatest([titleKeys$, titleSearchTypes$]).subscribe(([titleKeys, titleSearchTypes]) => {
       const hasTitleSearchCriteria = !!titleKeys?.length;
       const type = hasTitleSearchCriteria ? titleKeys[0].split('.')[1] || '' : null;
-      this.titleSearchTypes = titleSearchTypes.map((item) => ({
-        ...item,
-        disabled: hasTitleSearchCriteria && item.value !== type,
-      }));
-      if (hasTitleSearchCriteria) this.titleSelectedType = this.titleSearchTypes.find((item) => item.value === type);
-      this.cdr.detectChanges(); // Force la détection de changements
+      this.titleSearchTypes.set(
+        titleSearchTypes.map((item) => ({
+          ...item,
+          disabled: hasTitleSearchCriteria && item.value !== type,
+        })),
+      );
+      if (hasTitleSearchCriteria) this.titleSelectedType.set(this.titleSearchTypes().find((item) => item.value === type));
     });
 
     // Sync archive unit types with criteria
@@ -343,7 +348,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   getCriteriaName(criteria: SchemaElement) {
     const path = criteria.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
-      children: this.otherCriteriaOptions,
+      children: this.otherCriteriaOptions(),
     } as ItemNode<SchemaElement>);
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
