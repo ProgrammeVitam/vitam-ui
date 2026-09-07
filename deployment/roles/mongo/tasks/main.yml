@@ -63,6 +63,38 @@
   register: mongod_db_directory
   tags: update_mongodb_configuration
 
+# The configuration written below deliberately declares no sharding.clusterRole
+# (bug #15294). mongod refuses to start when it finds a shardIdentity document
+# in admin.system.version without that role, and it only finds out at restart
+# time, once the new configuration has already replaced the old one. VitamUI
+# never registers its replica set into a sharded cluster, so the document should
+# not be there, but a node carrying one has to be caught before that point.
+# The probe needs the admin credentials, hence a node whose authentication is
+# not enabled yet cannot be checked; that is a node being installed, which has
+# no sharding history to carry.
+- name: Look for a leftover shardIdentity document
+  command: >-
+    mongosh {{ ip_service }}:{{ mongodb.mongod_port }}/admin
+    -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet
+    --eval 'print("VITAMUI_SHARD_IDENTITY=" + (db.system.version.findOne({_id: "shardIdentity"}) ? 1 : 0))'
+  register: mongod_shard_identity
+  no_log: "{{ hide_passwords_during_deploy }}"
+  failed_when: false
+  changed_when: false
+  tags: update_mongodb_configuration
+
+- name: Fail when a shardIdentity document would keep mongod from restarting
+  fail:
+    msg: >-
+      admin.system.version holds a shardIdentity document on this node, and the
+      mongod configuration deployed by VitamUI declares no sharding.clusterRole:
+      mongod would refuse to start on the next restart. Check first that this
+      replica set really is not a shard of a sharded cluster, then drop the
+      document with: mongosh {{ ip_service }}:{{ mongodb.mongod_port }}/admin
+      -u <admin> --eval 'db.system.version.deleteOne({_id: "shardIdentity"})'
+  when: mongod_shard_identity.stdout | default('') is search('VITAMUI_SHARD_IDENTITY=[1-9]')
+  tags: update_mongodb_configuration
+
 - name: Create the mongod configuration server file
   template:
     src: mongod.conf.j2
