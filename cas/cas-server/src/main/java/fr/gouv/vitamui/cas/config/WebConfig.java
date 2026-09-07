@@ -63,7 +63,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.PathMappedEndpoints;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -100,10 +99,11 @@ public class WebConfig {
         return builder;
     }
 
+    // Conservé volontairement : le RegisteredServiceCorsConfigurationSource propre à CAS est conditionnel, tandis que corsFilter
+    // ci-dessous a besoin d'une source de manière inconditionnelle - sans ce bean, le contexte ne démarre pas.
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CorsConfigurationSource corsHttpWebRequestConfigurationSource(
-        final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
         @Qualifier(CasBeans.ARGUMENT_EXTRACTOR) final ArgumentExtractor argumentExtractor,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager

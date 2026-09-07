@@ -53,7 +53,6 @@ import fr.gouv.vitamui.cas.webflow.mfa.VitamMfaWebflowConfigurer;
 import fr.gouv.vitamui.cas.webflow.mfa.actions.CheckMfaTokenAction;
 import fr.gouv.vitamui.cas.webflow.mfa.actions.CustomSendTokenAction;
 import fr.gouv.vitamui.cas.x509.CustomRequestHeaderX509CertificateExtractor;
-import fr.gouv.vitamui.cas.x509.X509CasDelegatingWebflowEventResolver;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.val;
@@ -92,7 +91,6 @@ import org.apereo.cas.web.flow.actions.StaticEventExecutionAction;
 import org.apereo.cas.web.flow.actions.WebflowActionBeanSupplier;
 import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
 import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
-import org.apereo.cas.web.flow.resolver.impl.CasWebflowEventResolutionConfigurationContext;
 import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
@@ -467,73 +465,6 @@ public class WebflowConfig {
         } else {
             return new StaticEventExecutionAction(CasWebflowConstants.TRANSITION_ID_ERROR);
         }
-    }
-
-    @Bean
-    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver(
-        @Qualifier(
-            CasBeans.SELECTIVE_AUTHENTICATION_PROVIDER_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver selectiveAuthenticationProviderWebflowEventResolver,
-        @Qualifier(
-            CasBeans.CAS_WEBFLOW_CONFIGURATION_CONTEXT
-        ) final CasWebflowEventResolutionConfigurationContext casWebflowConfigurationContext,
-        @Qualifier(
-            CasBeans.ADAPTIVE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver adaptiveAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.TIMED_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver timedAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.GLOBAL_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver globalAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.HTTP_REQUEST_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver httpRequestAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.REST_ENDPOINT_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver restEndpointAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(CasBeans.GROOVY_SCRIPT_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER) final ObjectProvider<
-            CasWebflowEventResolver
-        > groovyScriptAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.SCRIPTED_REGISTERED_SERVICE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.REGISTERED_SERVICE_PRINCIPAL_ATTRIBUTE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.PREDICATED_PRINCIPAL_ATTRIBUTE_MULTIFACTOR_AUTHENTICATION_POLICY_EVENT_RESOLVER
-        ) final CasWebflowEventResolver predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver,
-        @Qualifier(
-            CasBeans.PRINCIPAL_ATTRIBUTE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver principalAttributeAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.AUTHENTICATION_ATTRIBUTE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver authenticationAttributeAuthenticationPolicyWebflowEventResolver,
-        @Qualifier(
-            CasBeans.REGISTERED_SERVICE_AUTHENTICATION_POLICY_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver registeredServiceAuthenticationPolicyWebflowEventResolver,
-        @Value("${vitamui.authn.x509.mandatory:false}") final boolean x509AuthnMandatory
-    ) {
-        final var resolver = new X509CasDelegatingWebflowEventResolver(
-            casWebflowConfigurationContext,
-            selectiveAuthenticationProviderWebflowEventResolver,
-            x509AuthnMandatory
-        );
-        resolver.addDelegate(adaptiveAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(timedAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(globalAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(httpRequestAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(restEndpointAuthenticationPolicyWebflowEventResolver);
-        groovyScriptAuthenticationPolicyWebflowEventResolver.ifAvailable(resolver::addDelegate);
-        resolver.addDelegate(scriptedRegisteredServiceAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(registeredServicePrincipalAttributeAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(predicatedPrincipalAttributeMultifactorAuthenticationPolicyEventResolver);
-        resolver.addDelegate(principalAttributeAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(authenticationAttributeAuthenticationPolicyWebflowEventResolver);
-        resolver.addDelegate(registeredServiceAuthenticationPolicyWebflowEventResolver);
-        return resolver;
     }
 
     @Bean
