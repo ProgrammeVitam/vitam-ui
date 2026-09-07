@@ -228,7 +228,7 @@ describe('ArchiveSearchComponent', () => {
 
     it('should be false', () => {
       component.showHidePanel(false);
-      expect(component.showCriteriaPanel).toBeFalsy();
+      expect(component.showCriteriaPanel()).toBeFalsy();
     });
 
     it('should call hasArchiveSearchRole', () => {
@@ -261,7 +261,7 @@ describe('ArchiveSearchComponent', () => {
     });
 
     describe('DOM', () => {
-      it('should have 5 rows ', () => {
+      it('should have 5 rows on init (no search yet, criteria panel expanded)', () => {
         // When
         const nativeElement = fixture.nativeElement;
         const elementRow = nativeElement.querySelectorAll('.row');
@@ -400,7 +400,17 @@ describe('ArchiveSearchComponent', () => {
       });
     });
 
-    it('should trigger a search with criteria matching the queryParams in the URL on page access', async () => {
+    it('should not trigger a search on portal landing (no query params on arrival)', async () => {
+      await setupTest({});
+
+      // Leave time for any asynchronous auto-submit to run.
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      const currentCalls = vi.mocked(archiveServiceStub.searchArchiveUnitsByCriteria as Mock).mock.calls;
+      expect(currentCalls.length).toBe(0);
+    });
+
+    it('should trigger a search with criteria matching the queryParams in the URL on reload / deep link', async () => {
       await setupTest({ opi: '1234' });
 
       await vi.waitFor(() => {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -94,7 +94,9 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
 
   show = true;
   tenantIdentifier: string;
-  foundAccessContract = false;
+  // Signal (et non booléen) : la notification via ChangeDetectionScheduler planifie un tick
+  // même si la zone ne notifie pas la fin des callbacks HTTP.
+  foundAccessContract = signal(false);
   bulkOperationsThreshold: number;
   isLPExtended = false;
   hasUpdateDescriptiveUnitMetadataRole = false;
@@ -133,7 +135,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   fetchUserExternalParameters() {
     this.accessContractService.currentAccessContractId$.subscribe((accessContractId) => {
       if (accessContractId && accessContractId.length > 0) {
-        this.foundAccessContract = true;
+        this.foundAccessContract.set(true);
         this.managementRulesSharedDataService.emitAccessContract(accessContractId);
       } else {
         this.snackBarService.open({
