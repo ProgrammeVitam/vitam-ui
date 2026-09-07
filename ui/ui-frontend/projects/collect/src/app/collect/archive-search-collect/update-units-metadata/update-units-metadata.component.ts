@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, TemplateRef, ViewChild, inject } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
 import { Logger, SnackBarService, Transaction, VitamErrorDetails } from 'vitamui-library';
@@ -60,7 +61,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   isLoadingData = false;
 
-  fileToUpload: File = undefined;
+  fileControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   errorsDetails: VitamErrorDetails[];
   errorMessage: string;
 
@@ -74,6 +75,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   }
 
   updateUnitsMetadata() {
+    const fileToUpload = this.fileControl.value[0];
     this.isLoadingData = true;
     this.snackBarService.open({
       message: 'COLLECT.UPDATE_UNITS_METADATA.WAIT_MESSAGE',
@@ -81,7 +83,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     });
 
     this.subscriptions = this.archiveCollectService
-      .updateUnitsMetadataByCsvFile(this.fileToUpload, this.fileToUpload.name, this.data.selectedTransaction.id)
+      .updateUnitsMetadataByCsvFile(fileToUpload, fileToUpload.name, this.data.selectedTransaction.id)
       .subscribe({
         next: () => {
           this.isLoadingData = false;
@@ -112,9 +114,5 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   onConfirmAction() {
     this.dialogRefToClose.close(true);
     this.dialogRef.close(true);
-  }
-
-  handleFiles(files: File[]) {
-    this.fileToUpload = files?.length ? files[0] : undefined;
   }
 }
