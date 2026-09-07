@@ -34,19 +34,39 @@
   tags: update_mongodb_configuration
 
 # Restart the mongo instances (to enable auth)
-- name: Restart vitamui-mongod service
-  service:
-    name: vitamui-mongod
-    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
-    state: restarted
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hosts_vitamui_mongod'] }}"
+# The play already runs on every replica set member, so each host restarts its
+# own mongod: the previous delegate_to loop had every host restart every member,
+# so each member was restarted as many times as there are members, all of them
+# concurrently. As in the mongo role, "throttle: 1" keeps the sequence below
+# exclusive to a single member, so the next one is only taken down once this one
+# is serving again instead of losing the quorum.
+- name: Restart vitamui-mongod service, one replica set member at a time
+  throttle: 1
   tags: update_mongodb_configuration
+  block:
 
-# Make sure the service is open (mongod listening on 27017)
-- name: "Wait for the service port {{ mongodb.mongod_port }} to be open"
-  wait_for:
-    host: "{{ ip_service }}"
-    port: "{{ mongodb.mongod_port }}"
-    timeout: "{{ vitamui_defaults.services.start_timeout }}"
-  tags: update_mongodb_configuration
+    - name: Restart vitamui-mongod service
+      service:
+        name: vitamui-mongod
+        enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
+        state: restarted
+
+    # Make sure the service is open (mongod listening on 27017)
+    - name: "Wait for the service port {{ mongodb.mongod_port }} to be open"
+      wait_for:
+        host: "{{ ip_service }}"
+        port: "{{ mongodb.mongod_port }}"
+        timeout: "{{ vitamui_defaults.services.start_timeout }}"
+
+    # db.hello() is answered before authentication, which matters here since the
+    # restart is precisely what enables it.
+    - name: Wait for the member to be back in the replica set
+      command: >-
+        mongosh --host {{ ip_service }} --port {{ mongodb.mongod_port }}
+        --quiet --eval 'const member = db.hello();
+        quit(member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
+      register: mongod_member_state
+      until: mongod_member_state.rc == 0
+      retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
+      delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
+      changed_when: false
