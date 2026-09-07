@@ -37,12 +37,7 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import type { Group } from 'vitamui-library';
-import {
-  AuthService,
-  isLevelAllowed,
-  OperationHistoryTabComponent,
-  VitamuiSidenavHeaderComponent,
-} from 'vitamui-library';
+import { AuthService, isLevelAllowed, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
