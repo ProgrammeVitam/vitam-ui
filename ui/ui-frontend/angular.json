@@ -74,7 +74,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/identity/"
             }
           }
         },
@@ -83,7 +84,8 @@
           "options": {
             "buildTarget": "identity:build",
             "host": "dev.vitamui.com",
-            "port": 4201
+            "port": 4201,
+            "servePath": "/identity/"
           },
           "configurations": {
             "development": {
@@ -304,7 +306,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/referential/"
             }
           }
         },
@@ -313,7 +316,8 @@
           "options": {
             "buildTarget": "referential:build",
             "host": "dev.vitamui.com",
-            "port": 4202
+            "port": 4202,
+            "servePath": "/referential/"
           },
           "configurations": {
             "development": {
@@ -455,7 +459,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/design-system/"
             }
           },
           "defaultConfiguration": ""
@@ -465,7 +470,8 @@
           "options": {
             "host": "dev.vitamui.com",
             "port": 4242,
-            "buildTarget": "design-system:build"
+            "buildTarget": "design-system:build",
+            "servePath": "/design-system/"
           },
           "configurations": {
             "development": {
@@ -555,7 +561,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/ingest/"
             }
           }
         },
@@ -564,7 +571,8 @@
           "options": {
             "buildTarget": "ingest:build",
             "host": "dev.vitamui.com",
-            "port": 4208
+            "port": 4208,
+            "servePath": "/ingest/"
           },
           "configurations": {
             "development": {
@@ -656,7 +664,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/archive-search/"
             }
           }
         },
@@ -665,7 +674,8 @@
           "options": {
             "buildTarget": "archive-search:build",
             "host": "dev.vitamui.com",
-            "port": 4209
+            "port": 4209,
+            "servePath": "/archive-search/"
           },
           "configurations": {
             "development": {
@@ -757,7 +767,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/collect/"
             }
           }
         },
@@ -766,7 +777,8 @@
           "options": {
             "buildTarget": "collect:build",
             "host": "dev.vitamui.com",
-            "port": 4210
+            "port": 4210,
+            "servePath": "/collect/"
           },
           "configurations": {
             "development": {
@@ -855,7 +867,8 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "baseHref": "/pastis/"
             },
             "standalone": {
               "fileReplacements": [
@@ -872,7 +885,8 @@
           "options": {
             "buildTarget": "pastis:build",
             "host": "dev.vitamui.com",
-            "port": 4251
+            "port": 4251,
+            "servePath": "/pastis/"
           },
           "configurations": {
             "development": {
