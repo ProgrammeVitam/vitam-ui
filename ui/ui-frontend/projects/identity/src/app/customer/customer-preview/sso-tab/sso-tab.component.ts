@@ -39,7 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import type { Customer, IdentityProvider } from 'vitamui-library';
-import { DownloadUtils } from 'vitamui-library';
+import { DownloadUtils, SnackBarService } from 'vitamui-library';
 import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
@@ -54,6 +54,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   dialog = inject(MatDialog);
   private identityProviderService = inject(IdentityProviderService);
   private providerApi = inject(ProviderApiService);
+  private snackBarService = inject(SnackBarService);
 
   providers: IdentityProvider[];
   panel1Position = 'current';
@@ -129,7 +130,10 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   }
 
   downloadFile(url: string): void {
-    this.providerApi.getFileByUrl(url).subscribe((response: any) => DownloadUtils.loadFromBlob(response, response.body.type));
+    this.providerApi.getFileByUrl(url).subscribe((response: any) => {
+      DownloadUtils.loadFromBlob(response, response.body.type);
+      this.snackBarService.notifyDownloadStarted();
+    });
   }
 
   private refreshAvailableDomains() {
