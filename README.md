@@ -119,10 +119,6 @@ This profile is used to push the generated rpm package.
 
 Only Maven modules with `rpm.skip = false` in their properties are eligible.
 
-### skipTestsRun
-
-This profile is automatically activated if the option `-DskipTests` is used during Maven execution in order to disable Jasmine Karma tests execution.
-
 ### sonar
 
 This profile is used to update sonar information.
@@ -187,11 +183,11 @@ Execute this command to build the project with unit tests and without building o
 
 ### Build (only Java) without test
 
-Execute this command to build the project without unit tests and without building our angular projects: `mvn clean install -DskipTests`
+Execute this command to build the project without unit tests and without building our angular projects: `mvn clean install -Dmaven.test.skip=true`
 
 ### Build for Vitam internal developers
 
-`mvn clean install [-Ddependency-check.skip=true] -Denv.SERVICE_NEXUS_URL=... -Denv.SERVICE_REPOSITORY_URL=... [-DskipTests] -Pvitam`
+`mvn clean install [-Ddependency-check.skip=true] -Denv.SERVICE_NEXUS_URL=... -Denv.SERVICE_REPOSITORY_URL=... [-Dmaven.test.skip=true] -Pvitam`
 
 ### Build with IHM (JS) in dev mode
 
@@ -229,7 +225,7 @@ For the karma tests, we don't generate the code coverage and use the headless ch
 mvn clean install -Pprod
 ```
 
-If `-DskipTests` id added during the build of dev, webpack or prod, unit tests and karma tests are both ignored.
+If `-Dmaven.test.skip=true` id added during the build of dev, webpack or prod, unit tests and karma tests are both ignored.
 
 ### Build with integration tests for development environment
 
