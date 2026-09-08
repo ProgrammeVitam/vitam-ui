@@ -1,1 +1,7 @@
-// step styles centralised in sass/_animations.scss
+.step {
+  outline: none;
+
+  &.hidden {
+    overflow: hidden;
+  }
+}
