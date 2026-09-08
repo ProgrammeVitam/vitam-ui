@@ -36,9 +36,10 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID
 @RequiredArgsConstructor
 public class IamApiDecorator {
 
-    private static final String DEFAULT_SERVICE_ACCOUNT = "admin@change-it.fr";
-
     private final Utils utils;
+
+    // E-mail du compte de service utilisé lorsqu'aucun utilisateur n'est authentifié (configurable).
+    private final String serviceAccount;
 
     @SuppressWarnings("unchecked")
     public <T> T decorate(T target) {
@@ -98,7 +99,7 @@ public class IamApiDecorator {
 
     private HttpContext createServiceContext() {
         LOGGER.debug("Using service account context");
-        return createContext(DEFAULT_SERVICE_ACCOUNT);
+        return createContext(serviceAccount);
     }
 
     private HttpContext createContext(String username) {

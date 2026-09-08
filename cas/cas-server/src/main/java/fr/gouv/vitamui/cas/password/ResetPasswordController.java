@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.password;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.auth.contract.PasswordResetUrlDto;
@@ -66,8 +65,6 @@ public class ResetPasswordController {
 
     private final PasswordResetUrlBuilder passwordResetUrlBuilder;
 
-    private final ObjectMapper objectMapper;
-
     @GetMapping("/passwordResetUrl")
     public ResponseEntity<PasswordResetUrlDto> buildPasswordResetUrl(
         @RequestParam(value = "email", defaultValue = "") final String email,
@@ -88,7 +85,7 @@ public class ResetPasswordController {
             final var userLoginModel = new UserLoginModel();
             userLoginModel.setUserEmail(email.toLowerCase().trim());
             userLoginModel.setCustomerId(customerId);
-            final String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
+            final String userLoginModelToToken = utils.toJson(userLoginModel);
 
             final var url = passwordResetUrlBuilder.build(userLoginModelToToken).toString();
 

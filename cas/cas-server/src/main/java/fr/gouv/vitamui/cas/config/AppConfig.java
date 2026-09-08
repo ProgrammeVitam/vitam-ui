@@ -236,8 +236,11 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public IamApiDecorator iamApiDecorator(Utils utils) {
-        return new IamApiDecorator(utils);
+    public IamApiDecorator iamApiDecorator(
+        final Utils utils,
+        @Value("${vitamui.cas.service-account:admin@change-it.fr}") final String serviceAccount
+    ) {
+        return new IamApiDecorator(utils, serviceAccount);
     }
 
     @Bean
