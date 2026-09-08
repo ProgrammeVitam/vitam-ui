@@ -32,6 +32,22 @@ services:
       MONGO_CONNECTION_URL: "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@mongo-dev:27018/"
       MONGONAUT_AUTH_MODE: "NONE"
 
+  dbgate-dev:
+    container_name: vitamui-dbgate
+    image: dbgate/dbgate:latest
+    restart: unless-stopped
+    ports:
+      - "18082:3000"
+    depends_on:
+      - mongo-dev
+    networks:
+      - local_vitamui_network
+    environment:
+      CONNECTIONS: vitamui
+      LABEL_vitamui: vitamui
+      URL_vitamui: "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@mongo-dev:27018/?directConnection=true"
+      ENGINE_vitamui: "mongo@dbgate-plugin-mongo"
+
 networks:
   local_vitamui_network:
     name: mongo_default
