@@ -108,14 +108,14 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   }
 
   ngOnInit() {
-    this.pending = true;
+    this.pending.set(true);
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     this.accessContractService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
-      .pipe(finalize(() => (this.pending = false)))
+      .pipe(finalize(() => this.pending.set(false)))
       .subscribe({
         next: (data: AccessContract[]) => {
-          this.dataSource = data;
+          this.dataSource.set(data);
         },
         error: (e) => console.error(e),
       });
@@ -146,10 +146,14 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
 
   private replaceUpdatedAccessContract(): void {
     this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAccessContract: AccessContract) => {
-      const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedAccessContract;
-      }
+      this.dataSource.update((contracts) => {
+        const list = [...(contracts ?? [])];
+        const index = list.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
+        if (index !== -1) {
+          list[index] = updatedAccessContract;
+        }
+        return list;
+      });
     });
   }
 

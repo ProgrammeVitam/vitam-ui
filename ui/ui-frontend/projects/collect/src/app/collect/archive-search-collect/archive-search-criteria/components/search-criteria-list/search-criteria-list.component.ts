@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
@@ -63,22 +63,23 @@ export class SearchCriteriaListComponent implements OnInit {
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
-  searchCriteriaHistory: SearchCriteriaHistory[];
+  searchCriteriaHistory = signal<SearchCriteriaHistory[]>([]);
   private readonly orderChange = new Subject<void>();
   direction: Direction = Direction.ASCENDANT;
 
   subscriptionSearchCriteriaHistory: Subscription;
   keyPressSubscription: Subscription;
 
-  pending = false;
+  pending = signal(false);
 
   ngOnInit() {
     this.subscriptionSearchCriteriaHistory = this.archiveSharedDataService
       .getSearchCriteriaHistoryShared()
       .subscribe((searchCriteriaHistoryResults) => {
         if (searchCriteriaHistoryResults) {
-          this.searchCriteriaHistory.push(searchCriteriaHistoryResults);
-          this.archiveSharedDataService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
+          const next = [...this.searchCriteriaHistory(), searchCriteriaHistoryResults];
+          this.archiveSharedDataService.sort(Direction.ASCENDANT, next);
+          this.searchCriteriaHistory.set(next);
         }
       });
     this.getSearchCriteriaHistory();
@@ -90,12 +91,12 @@ export class SearchCriteriaListComponent implements OnInit {
   }
 
   getSearchCriteriaHistory() {
-    this.pending = true;
+    this.pending.set(true);
     this.searchCriteriaSaverService.getSearchCriteriaHistory().subscribe((data) => {
-      this.searchCriteriaHistory = data;
-      this.archiveSharedDataService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
+      this.archiveSharedDataService.sort(Direction.ASCENDANT, data);
+      this.searchCriteriaHistory.set(data);
       this.archiveSharedDataService.emitAllSearchCriteriaHistory(data);
-      this.pending = false;
+      this.pending.set(false);
     });
   }
 
@@ -121,10 +122,6 @@ export class SearchCriteriaListComponent implements OnInit {
   }
 
   clearElement(id: string) {
-    for (let i = 0; i < this.searchCriteriaHistory.length; i++) {
-      if (this.searchCriteriaHistory[i].id === id) {
-        this.searchCriteriaHistory.splice(i, 1);
-      }
-    }
+    this.searchCriteriaHistory.set(this.searchCriteriaHistory().filter((criteria) => criteria.id !== id));
   }
 }

@@ -115,7 +115,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
     // when the list is reloaded, we retrieve the groups .
     this.updatedData.subscribe(() => {
-      const groupIds = new Set(this.dataSource.map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
+      const groupIds = new Set((this.dataSource() ?? []).map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
 
       const observables = new Array<Observable<Group>>();
       groupIds.forEach((groupId) => {
@@ -132,7 +132,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
           });
 
           const subrogations = results[1];
-          this.dataSource
+          (this.dataSource() ?? [])
             .filter((subrogationUser: SubrogationUser) => !subrogationUser.criticality)
             .forEach((subrogationUser: SubrogationUser) => {
               const subrogateUserGroup = this.getGroup(subrogationUser);
@@ -146,11 +146,11 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
             });
 
           this.loaded = true;
-          this.pending = false;
+          this.pending.set(false);
         });
       } else {
         this.loaded = true;
-        this.pending = false;
+        this.pending.set(false);
       }
     });
 

@@ -122,10 +122,14 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     this.refreshLevelOptions();
 
     this.updatedGroupSub = this.groupService.updated.subscribe((updatedGroup: Group) => {
-      const profileGroupIndex = this.dataSource.findIndex((group) => updatedGroup.id === group.id);
-      if (profileGroupIndex > -1) {
-        this.dataSource[profileGroupIndex] = updatedGroup;
-      }
+      this.dataSource.update((groups) => {
+        const list = [...(groups ?? [])];
+        const profileGroupIndex = list.findIndex((group) => updatedGroup.id === group.id);
+        if (profileGroupIndex > -1) {
+          list[profileGroupIndex] = updatedGroup;
+        }
+        return list;
+      });
     });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange);

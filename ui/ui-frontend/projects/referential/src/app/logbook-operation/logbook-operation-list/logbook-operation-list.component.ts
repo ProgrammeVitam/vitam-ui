@@ -206,18 +206,24 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   }
 
   private onDataSourceReloaded() {
-    if (this.pending) {
+    if (this.pending()) {
       return;
     }
 
-    this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
+    this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource());
     this.finishedLoading.next();
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: IEvent[]) {
-    logbookOperationsReloaded.forEach((logbookOperation) => {
-      const index = this.dataSource.findIndex((o) => o.id === logbookOperation.id);
-      this.dataSource[index] = logbookOperation;
+    this.dataSource.update((operations) => {
+      const list = [...(operations ?? [])];
+      logbookOperationsReloaded.forEach((logbookOperation) => {
+        const index = list.findIndex((o) => o.id === logbookOperation.id);
+        if (index !== -1) {
+          list[index] = logbookOperation;
+        }
+      });
+      return list;
     });
   }
 

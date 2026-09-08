@@ -151,7 +151,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     this.auditService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildCriteriaFromSearch())))
       .subscribe((data: any[]) => {
-        this.dataSource = data;
+        this.dataSource.set(data);
         this.startPolling();
       });
 
@@ -207,11 +207,12 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   public get filteredDataSource(): any[] {
     const selectedCategories = this._filters?.types || [];
 
-    if (!this.dataSource || selectedCategories.length === 0) {
-      return this.dataSource;
+    const dataSource = this.dataSource();
+    if (!dataSource || selectedCategories.length === 0) {
+      return dataSource;
     }
 
-    return this.dataSource.filter((item) => {
+    return dataSource.filter((item) => {
       const category = AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE[item.parsedData?.['type']] ?? AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE[item.type];
 
       if (category) {
@@ -286,24 +287,29 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   private updateDataSource(newData: any[]): void {
-    if (!this.dataSource || this.dataSource.length === 0) {
-      this.dataSource = newData;
+    const current = this.dataSource() ?? [];
+    if (current.length === 0) {
+      this.dataSource.set(newData);
       return;
     }
+    const list = [...current];
+    const changedItems: Event[] = [];
     newData.forEach((newItem: Event) => {
-      const existingItemIndex = this.dataSource.findIndex((item) => item.id === newItem.id);
+      const existingItemIndex = list.findIndex((item) => item.id === newItem.id);
       if (existingItemIndex !== -1) {
-        const existingItem = this.dataSource[existingItemIndex];
+        const existingItem = list[existingItemIndex];
         const newStatus = this.auditMessage(newItem);
         const oldStatus = this.auditMessage(existingItem);
 
         if (newStatus !== oldStatus) {
-          this.dataSource[existingItemIndex] = { ...existingItem, ...newItem };
-          this.auditClick.next(newItem);
+          list[existingItemIndex] = { ...existingItem, ...newItem };
+          changedItems.push(newItem);
         }
       } else {
-        this.dataSource.unshift(newItem);
+        list.unshift(newItem);
       }
     });
+    this.dataSource.set(list);
+    changedItems.forEach((item) => this.auditClick.next(item));
   }
 }

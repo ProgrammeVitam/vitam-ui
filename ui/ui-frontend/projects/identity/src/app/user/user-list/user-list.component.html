@@ -122,7 +122,7 @@
     </div>
     @if (groups) {
       <div class="vitamui-table-body">
-        @for (user of dataSource; track user; let index = $index) {
+        @for (user of dataSource(); track user; let index = $index) {
           <div class="vitamui-table-rows" (click)="userClick.emit(user)">
             <div class="vitamui-row d-flex align-items-center clickable">
               <div class="col-2 padding-user">
@@ -178,7 +178,7 @@
     }
   </div>
 
-  @if (!dataSource || pending || !groups) {
+  @if (!dataSource() || pending() || !groups) {
     <div class="vitamui-min-content">
       <mat-spinner class="vitamui-spinner medium"></mat-spinner>
     </div>
