@@ -952,6 +952,14 @@
                         <entrypoint>java,-jar,/app/cas-server.war</entrypoint>
                     </container>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

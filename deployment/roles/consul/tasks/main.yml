@@ -105,7 +105,7 @@
 
     - name: Add consul nameserver to resolv.conf
       blockinfile:
-        backup: true
+        backup: false
         dest: /etc/resolv.conf
         insertbefore: BOF # necessary or this entry won't be asked
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
