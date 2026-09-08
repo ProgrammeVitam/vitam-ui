@@ -108,17 +108,36 @@ if (hello) {
     }
 }
 
+// probe() returns null on a command error, and an absent sharding section reads
+// as "no cluster role" too. Printing the same thing for both would let a node
+// nobody could read pass for a healthy plain replica set, which is the one
+// conclusion this script must never reach by accident.
 const commandLine = probe("getCmdLineOpts", () => adminDb.runCommand({ getCmdLineOpts: 1 }));
+const clusterRoleKnown = commandLine !== null;
 const clusterRole =
-    commandLine && commandLine.parsed && commandLine.parsed.sharding
+    clusterRoleKnown && commandLine.parsed && commandLine.parsed.sharding
         ? commandLine.parsed.sharding.clusterRole
         : null;
-report("clusterRole", clusterRole || "(none - plain replica set)");
+report("clusterRole", clusterRoleKnown ? clusterRole || "(none - plain replica set)" : "(unknown)");
+if (!clusterRoleKnown) {
+    warn(
+        "getCmdLineOpts could not be read, so the cluster role is unknown and the " +
+            "configuration behind this bug cannot be ruled out from here. Check " +
+            "sharding.clusterRole in mongod.conf by hand."
+    );
+}
 
-const shardIdentity = probe("shardIdentity lookup", () =>
-    adminDb.system.version.findOne({ _id: "shardIdentity" })
+// findOne() legitimately answers null when the document is absent, so the lookup
+// is wrapped: a null wrapper means the probe itself failed, a null document
+// means the node is clean.
+const shardIdentityLookup = probe("shardIdentity lookup", () => {
+    return { document: adminDb.system.version.findOne({ _id: "shardIdentity" }) };
+});
+const shardIdentity = shardIdentityLookup ? shardIdentityLookup.document : null;
+report(
+    "shardIdentity document",
+    shardIdentityLookup ? (shardIdentity ? "present" : "absent") : "(unknown)"
 );
-report("shardIdentity document", shardIdentity ? "present" : "absent");
 
 if (clusterRole === "shardsvr") {
     fail(
@@ -153,15 +172,23 @@ const recordCache = serverStatus ? serverStatus.logicalSessionRecordCache : null
 // useful cycle happens after the node has been elected. A node that just
 // restarted legitimately shows no sessions collection and no refreshed entry,
 // so hold back the corresponding conclusions until a couple of cycles elapsed.
-const refreshMillis =
-    probe(
-        "logicalSessionRefreshMillis",
-        () => adminDb.runCommand({ getParameter: 1, logicalSessionRefreshMillis: 1 }).logicalSessionRefreshMillis
-    ) || 300000;
+const refreshMillisProbe = probe(
+    "logicalSessionRefreshMillis",
+    () => adminDb.runCommand({ getParameter: 1, logicalSessionRefreshMillis: 1 }).logicalSessionRefreshMillis
+);
+// Every timing conclusion below is measured against this interval. A server
+// started with a longer one than the 5 minute default would make them all wrong,
+// so an assumed value is reported as such and never concludes on its own.
+const refreshMillisKnown = refreshMillisProbe !== null && refreshMillisProbe !== undefined;
+const refreshMillis = refreshMillisKnown ? refreshMillisProbe : 300000;
 const uptimeSeconds = serverStatus ? serverStatus.uptime : 0;
 const elapsedCycles = uptimeSeconds / (refreshMillis / 1000);
 const settled = elapsedCycles >= 2;
 
+report(
+    "refresh interval (minutes)",
+    (refreshMillis / 60000).toFixed(1) + (refreshMillisKnown ? "" : " (assumed, not read)")
+);
 report("uptime (minutes)", (uptimeSeconds / 60).toFixed(1));
 report("refresh cycles elapsed", elapsedCycles.toFixed(1));
 if (!settled) {
@@ -195,12 +222,16 @@ if (recordCache) {
         const staleMinutes = (Date.now() - new Date(lastJob).getTime()) / 60000;
         report("last job age (minutes)", staleMinutes.toFixed(1));
         if (staleMinutes > 3 * refreshMinutes) {
-            fail(
+            const staleConclusion = refreshMillisKnown ? fail : warn;
+            staleConclusion(
                 "The sessions collection job last completed " +
                     staleMinutes.toFixed(0) +
                     " minutes ago; it should run every " +
                     refreshMinutes.toFixed(0) +
-                    " minutes. Nothing is being reaped."
+                    (refreshMillisKnown
+                        ? " minutes. "
+                        : " minutes, assumed since logicalSessionRefreshMillis could not be read. ") +
+                    "Nothing is being reaped."
             );
         }
     }
