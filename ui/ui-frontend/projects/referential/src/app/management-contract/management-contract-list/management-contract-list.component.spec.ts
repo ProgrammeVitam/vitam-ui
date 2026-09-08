@@ -135,7 +135,7 @@ describe('ManagementContractListComponent', () => {
     vi.spyOn(searchServiceeMock, 'search');
 
     // When
-    component.pending = true;
+    component.pending.set(true);
     component.searchManagementContractOrdered();
 
     // Then

@@ -131,7 +131,7 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
           JSON.stringify(this.buildProbativeValueCriteriaFromSearch()),
         ),
       )
-      .subscribe((data: any[]) => (this.dataSource = data));
+      .subscribe((data: any[]) => this.dataSource.set(data));
 
     const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 

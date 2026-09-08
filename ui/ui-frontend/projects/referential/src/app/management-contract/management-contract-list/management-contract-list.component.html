@@ -71,7 +71,7 @@
     </div>
 
     <div class="vitamui-table-body">
-      @for (managementContract of dataSource; track managementContract; let index = $index) {
+      @for (managementContract of dataSource(); track managementContract; let index = $index) {
         <div class="vitamui-table-rows" (click)="managementContractClick.emit(managementContract)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-2">
@@ -103,7 +103,7 @@
     </div>
   </div>
 
-  @if (!pending && !managementContractService.canLoadMore) {
+  @if (!pending() && !managementContractService.canLoadMore) {
     <div class="text-center">{{ 'CONTRACT_MANAGEMENT.CONTRACT_LIST.NO_RESULT_FOUND' | translate }}</div>
   } @else {
     <div class="vitamui-min-content">

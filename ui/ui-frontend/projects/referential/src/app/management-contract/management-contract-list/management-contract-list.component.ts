@@ -108,15 +108,15 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
   }
 
   ngOnInit() {
-    this.pending = true;
+    this.pending.set(true);
     this.firstSearchCriteriaSub = this.managementContractService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe(
         (data: ManagementContract[]) => {
-          this.dataSource = data;
+          this.dataSource.set(data);
         },
         () => {},
-        () => (this.pending = false),
+        () => this.pending.set(false),
       );
 
     this.searchCriteriaSub = merge(this.searchChange, this.filterChange, this.orderChange)
@@ -144,12 +144,14 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
 
   subscribeOnManagementContractPatchOperation() {
     this.updatedManagementContractsSub = this.managementContractService.updated.subscribe((managementContract: ManagementContract) => {
-      const index = this.dataSource.findIndex(
-        (mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier,
-      );
-      if (index > -1) {
-        this.dataSource[index] = { ...managementContract };
-      }
+      this.dataSource.update((contracts) => {
+        const list = [...(contracts ?? [])];
+        const index = list.findIndex((mngContract: ManagementContract) => mngContract.identifier === managementContract.identifier);
+        if (index > -1) {
+          list[index] = { ...managementContract };
+        }
+        return list;
+      });
     });
   }
 
