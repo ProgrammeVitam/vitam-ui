@@ -46,12 +46,26 @@ function report(label, value) {
 
 // Every probe is optional: a restricted account or an older server must degrade
 // into a partial report rather than abort the whole diagnosis.
+//
+// Getting there takes both branches below. mongosh rewrites the shell API calls
+// made inside fn into awaited ones and awaits the call to probe() itself, but it
+// does not await fn() here: a denied command therefore came back as a rejected
+// promise, long after the try block had been left, and killed the whole script
+// instead of printing one unavailable line. Attaching the handler to the promise
+// is what actually catches it. The try/catch is kept for whatever throws
+// synchronously, and an explicit await cannot be used instead: mongosh parses
+// the file as a plain script, where top level await is a syntax error.
 function probe(label, fn) {
-    try {
-        return fn();
-    } catch (error) {
+    const unavailable = (error) => {
         print("  ! " + label + " unavailable: " + error.message);
         return null;
+    };
+
+    try {
+        const result = fn();
+        return result && typeof result.catch === "function" ? result.catch(unavailable) : result;
+    } catch (error) {
+        return unavailable(error);
     }
 }
 
@@ -249,13 +263,6 @@ if (collections !== null && collections.length === 0) {
 } else if (collections !== null) {
     report("collection", "present");
 
-    // estimatedDocumentCount() reads collection metadata instead of scanning,
-    // which matters if the collection has grown to millions of documents.
-    report(
-        "approximate document count",
-        probe("estimatedDocumentCount", () => configDb.system.sessions.estimatedDocumentCount())
-    );
-
     const indexes = probe("getIndexes", () => configDb.system.sessions.getIndexes());
     if (indexes) {
         const ttlIndex = indexes.find(
@@ -272,6 +279,19 @@ if (collections !== null && collections.length === 0) {
                     ". Persisted sessions are never expired."
             );
         }
+    }
+
+    // Reported last because it is the one line here that is merely nice to
+    // have, and the one most likely to be refused: counting documents in
+    // config.system.sessions needs privileges that the root role does not carry
+    // (observed on 8.0.23). estimatedDocumentCount() reads collection metadata
+    // instead of scanning, which matters once the collection holds millions of
+    // documents.
+    const documentCount = probe("estimatedDocumentCount", () =>
+        configDb.system.sessions.estimatedDocumentCount()
+    );
+    if (documentCount !== null) {
+        report("approximate document count", documentCount);
     }
 }
 
