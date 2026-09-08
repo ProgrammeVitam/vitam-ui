@@ -44,7 +44,7 @@
     </div>
 
     <div class="vitamui-table-body">
-      @for (accessContract of dataSource; track accessContract) {
+      @for (accessContract of dataSource(); track accessContract) {
         <div class="vitamui-table-rows" (click)="ingestContractClick.emit(accessContract)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-1">
@@ -62,15 +62,15 @@
       }
     </div>
 
-    @if (!dataSource || pending) {
+    @if (!dataSource() || pending()) {
       <div class="vitamui-min-content">
         <mat-spinner class="vitamui-spinner medium"></mat-spinner>
       </div>
     }
-    @if (!pending && dataSource?.length === 0) {
+    @if (!pending() && dataSource()?.length === 0) {
       <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
     }
-    @if (infiniteScrollDisabled && ingestContractService.canLoadMore && !pending) {
+    @if (infiniteScrollDisabled() && ingestContractService.canLoadMore && !pending()) {
       <div class="vitamui-min-content vitamui-table-message" (click)="ingestContractService.loadMore()">
         <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
       </div>

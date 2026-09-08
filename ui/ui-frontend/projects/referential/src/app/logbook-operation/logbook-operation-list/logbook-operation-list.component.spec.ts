@@ -73,7 +73,7 @@ describe('LogbookOperationListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationListComponent);
     component = fixture.componentInstance;
-    component.dataSource = [];
+    component.dataSource.set([]);
     fixture.detectChanges();
   });
 

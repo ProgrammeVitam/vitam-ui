@@ -94,26 +94,30 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
     this.rngProfileService = rngProfileService;
 
     this.updatedProfileSub = this.rngProfileService.updated.subscribe((updatedProfile: Profile) => {
-      const profileIndex = this.dataSource.findIndex((profile) => updatedProfile.id === profile.id);
-      if (profileIndex > -1) {
-        this.dataSource[profileIndex] = {
-          id: this.dataSource[profileIndex].id,
-          identifier: updatedProfile.identifier,
-          enabled: updatedProfile.enabled,
-          name: updatedProfile.name,
-          level: updatedProfile.level,
-          customerId: updatedProfile.customerId,
-          groupsCount: updatedProfile.groupsCount,
-          description: updatedProfile.description,
-          usersCount: this.dataSource[profileIndex].usersCount,
-          tenantIdentifier: this.dataSource[profileIndex].tenantIdentifier,
-          tenantName: this.dataSource[profileIndex].tenantName,
-          applicationName: this.dataSource[profileIndex].applicationName,
-          roles: this.dataSource[profileIndex].roles,
-          readonly: this.dataSource[profileIndex].readonly,
-          externalParamId: this.dataSource[profileIndex].externalParamId,
-        };
-      }
+      this.dataSource.update((profiles) => {
+        const list = [...(profiles ?? [])];
+        const profileIndex = list.findIndex((profile) => updatedProfile.id === profile.id);
+        if (profileIndex > -1) {
+          list[profileIndex] = {
+            id: list[profileIndex].id,
+            identifier: updatedProfile.identifier,
+            enabled: updatedProfile.enabled,
+            name: updatedProfile.name,
+            level: updatedProfile.level,
+            customerId: updatedProfile.customerId,
+            groupsCount: updatedProfile.groupsCount,
+            description: updatedProfile.description,
+            usersCount: list[profileIndex].usersCount,
+            tenantIdentifier: list[profileIndex].tenantIdentifier,
+            tenantName: list[profileIndex].tenantName,
+            applicationName: list[profileIndex].applicationName,
+            roles: list[profileIndex].roles,
+            readonly: list[profileIndex].readonly,
+            externalParamId: list[profileIndex].externalParamId,
+          };
+        }
+        return list;
+      });
     });
   }
 
