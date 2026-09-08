@@ -221,7 +221,11 @@ Le script ``scripts/diagnose_mongo_logical_sessions.js`` répond à la question 
 
 Il sort en 1 dès qu'un ``PROBLEM`` est relevé et en 0 sinon, ce qui permet de l'appeler depuis une supervision. Un ``WARNING`` demande une seconde passe : relancer le script un cycle de rafraîchissement plus tard et comparer ``activeSessionsCount`` distingue un *reaper* bloqué d'un nœud simplement peu sollicité.
 
-Le *reaper* ne tournant que sur le primaire, c'est là qu'il faut lancer le script en premier ; le passer ensuite sur chaque membre du replica set permet de comparer les compteurs.
+Le *reaper* ne tournant que sur le primaire, c'est là que le paramètre ``replicaSet`` amène la connexion, quel que soit le membre indiqué en amorce. C'est aussi ce qui rend cette URI inutilisable pour comparer les membres entre eux : elle lirait le primaire à chaque fois. Pour interroger un membre précis, il faut une connexion directe ::
+
+   mongosh "mongodb://<membre>:<port>/admin?directConnection=true" \
+       --username <admin> --password \
+       --quiet --file scripts/diagnose_mongo_logical_sessions.js
 
 Désinstallation
 =================

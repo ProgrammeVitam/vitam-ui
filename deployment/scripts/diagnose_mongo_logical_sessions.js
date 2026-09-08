@@ -18,8 +18,16 @@
 //
 // This script is read-only and safe to run on a production primary.
 //
-// Usage:
+// Usage. The reaper only runs on the primary, and replicaSet= is what takes the
+// connection there whichever member is used to seed it:
 //   mongosh "mongodb://<host>:<port>/admin?replicaSet=<rs>" \
+//       --username <admin> --password \
+//       --quiet --file deployment/scripts/diagnose_mongo_logical_sessions.js
+//
+// That same routing makes this URI useless to compare members against one
+// another: it would read the primary every time, whatever host is named. Each
+// member has to be reached by a direct connection instead:
+//   mongosh "mongodb://<member>:<port>/admin?directConnection=true" \
 //       --username <admin> --password \
 //       --quiet --file deployment/scripts/diagnose_mongo_logical_sessions.js
 //
@@ -360,8 +368,9 @@ const problems = findings.filter((finding) => finding.level === "PROBLEM").lengt
 
 if (findings.length === 0) {
     print("  No anomaly detected. The session reaper looks healthy on this node.");
-    print("  If sessions still accumulate, re-run this script on every replica set");
-    print("  member and compare activeSessionsCount over time.");
+    print("  If sessions still accumulate, run this script against each member in");
+    print("  turn with directConnection=true and compare activeSessionsCount: the");
+    print("  replicaSet= form would report the primary every time.");
 } else {
     report("problems", problems);
     report("warnings", findings.length - problems);
