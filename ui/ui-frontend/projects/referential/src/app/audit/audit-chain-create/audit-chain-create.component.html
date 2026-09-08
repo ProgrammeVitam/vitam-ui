@@ -39,21 +39,21 @@
     </cdk-step>
 
     <cdk-step>
-      <mat-dialog-content>
-        <vitamui-slide-toggle formControlName="wholeChain">
+      <mat-dialog-content class="gap-4 align-items-stretch">
+        <vitamui-slide-toggle class="pb-0" formControlName="wholeChain">
           <span>{{ 'AUDIT.CHAIN_CREATE_DIALOG.WHOLE_CHAIN_TOGGLE' | translate }}</span>
         </vitamui-slide-toggle>
 
         @if (form.value.wholeChain) {
-          <div class="whole-chain-warning d-flex flex-row align-items-center hgap-2 pl-4 pr-4 pt-2 pb-2 mt-2">
+          <div class="whole-chain-warning d-flex flex-row align-items-center hgap-2 pl-4 pr-4 pt-2 pb-2">
             <i class="vitamui-icon vitamui-icon-anomalie"></i>
             <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.WHOLE_CHAIN_WARNING' | translate }}</div>
           </div>
         }
 
-        <div class="hgap-2 mt-4">
-          <div class="start-date">
-            <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
+        <div class="hgap-4">
+          <div class="w-100 gap-2 align-items-stretch">
+            <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_FROM' | translate }}</div>
             <vitamui-datepicker
               formControlName="startDate"
               [label]="'AUDIT.CHAIN_CREATE_DIALOG.SECURING_OPERATION_DATE_PLACEHOLDER' | translate"
@@ -63,8 +63,8 @@
               format="yyyy-MM-dd"
             ></vitamui-datepicker>
           </div>
-          <div class="end-date">
-            <p>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_TO' | translate }}</p>
+          <div class="w-100 gap-2 align-items-stretch">
+            <div>{{ 'AUDIT.CHAIN_CREATE_DIALOG.PERIOD_TO' | translate }}</div>
             <vitamui-datepicker
               formControlName="endDate"
               [label]="'AUDIT.CHAIN_CREATE_DIALOG.SECURING_OPERATION_DATE_PLACEHOLDER' | translate"
