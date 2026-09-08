@@ -50,6 +50,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -77,7 +78,11 @@ public final class ResetPasswordControllerTest {
 
         when(passwordResetUrlBuilder.build(anyString())).thenReturn(URI.create(RESET_URL).toURL());
 
-        controller = new ResetPasswordController(mock(Utils.class), passwordResetUrlBuilder, new ObjectMapper());
+        final Utils utils = mock(Utils.class);
+        when(utils.toJson(any())).thenAnswer(
+            invocation -> new ObjectMapper().writeValueAsString(invocation.getArgument(0))
+        );
+        controller = new ResetPasswordController(utils, passwordResetUrlBuilder);
     }
 
     @Test

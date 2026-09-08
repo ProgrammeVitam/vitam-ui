@@ -38,7 +38,6 @@ package fr.gouv.vitamui.cas.password;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.util.Constants;
@@ -86,8 +85,6 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 @Setter
 @Slf4j
 public class IamPasswordManagementService extends BasePasswordManagementService {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final CasApi casApi;
 
@@ -242,7 +239,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
 
         try {
-            UserLoginModel userLoginNode = OBJECT_MAPPER.readValue(username, new TypeReference<>() {});
+            UserLoginModel userLoginNode = utils.fromJson(username, new TypeReference<>() {});
 
             if (StringUtils.isBlank(userLoginNode.getUserEmail())) {
                 LOGGER.error("Could not find the user email for password changing ");

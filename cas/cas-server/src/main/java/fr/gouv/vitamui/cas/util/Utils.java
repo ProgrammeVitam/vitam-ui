@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.cas.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import jakarta.mail.internet.MimeMessage;
@@ -77,6 +80,9 @@ public class Utils {
 
     // Length of the token tail hidden when a password-reset URL is logged.
     private static final int PASSWORD_RESET_URL_HIDDEN_TAIL = 15;
+
+    // Shared mapper for the CAS password-reset token (a two-field UserLoginModel); default configuration.
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String casToken;
 
@@ -123,6 +129,14 @@ public class Utils {
         cookie.setSecure(tgc.isSecure());
         cookie.setHttpOnly(tgc.isHttpOnly());
         return cookie;
+    }
+
+    public String toJson(final Object value) throws JsonProcessingException {
+        return OBJECT_MAPPER.writeValueAsString(value);
+    }
+
+    public <T> T fromJson(final String json, final TypeReference<T> type) throws JsonProcessingException {
+        return OBJECT_MAPPER.readValue(json, type);
     }
 
     public Object getAttributeValue(final Map<String, List<Object>> attributes, final String key) {

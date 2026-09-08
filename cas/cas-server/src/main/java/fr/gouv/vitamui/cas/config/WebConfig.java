@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.password.CustomCasWebSecurityConfigurerAdapter;
 import fr.gouv.vitamui.cas.password.ResetPasswordController;
@@ -131,7 +130,7 @@ public class WebConfig {
         @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
         final Utils utils
     ) {
-        return new ResetPasswordController(utils, passwordResetUrlBuilder, new ObjectMapper());
+        return new ResetPasswordController(utils, passwordResetUrlBuilder);
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
