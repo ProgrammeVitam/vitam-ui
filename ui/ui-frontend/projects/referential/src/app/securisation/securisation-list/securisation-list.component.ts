@@ -131,7 +131,7 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
       .search(
         new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildSecurisationCriteriaFromSearch())),
       )
-      .subscribe((data: any[]) => (this.dataSource = data));
+      .subscribe((data: any[]) => this.dataSource.set(data));
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 

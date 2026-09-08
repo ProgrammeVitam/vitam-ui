@@ -143,7 +143,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     );
 
     this.contextService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Context[]) => {
-      this.dataSource = data;
+      this.dataSource.set(data);
     });
 
     const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
@@ -201,10 +201,14 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   private replaceUpdatedContext(): void {
     this.contextService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedContext: Context) => {
-      const index = this.dataSource.findIndex((item: Context) => item.id === updatedContext.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedContext;
-      }
+      this.dataSource.update((contexts) => {
+        const list = [...(contexts ?? [])];
+        const index = list.findIndex((item: Context) => item.id === updatedContext.id);
+        if (index !== -1) {
+          list[index] = updatedContext;
+        }
+        return list;
+      });
     });
   }
 }

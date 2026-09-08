@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -239,7 +239,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   transaction: Transaction;
   private transaction$: Observable<Transaction>;
-  foundAccessContract = false;
+  foundAccessContract = signal(false);
   accessContractUpdatingRestrictedDesc: boolean;
   hasUnitaryUpdateUnitRole = false;
   hasDeleteArchiveUnitActionRole = false;
@@ -257,7 +257,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   nbQueryCriteria = 0;
   additionalSearchCriteriaCategoryIndex = 0;
   included = false;
-  showCriteriaPanel = true;
+  showCriteriaPanel = signal(true);
   showSearchCriteriaPanel = false;
   archiveUnits: Unit[];
 
@@ -267,15 +267,15 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   nodeArray: FilingHoldingSchemeNode[] = [];
 
   // AU Search Properties
-  pending = false;
-  submited = false;
+  pending = signal(false);
+  submited = signal(false);
   currentPage = 0;
   itemSelected = 0;
   itemNotSelected = 0;
   isIndeterminate: boolean;
   isAllChecked: boolean;
   waitingToGetFixedCount = false;
-  totalResults = 0;
+  totalResults = signal(0);
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
   searchHasResults = false;
@@ -659,9 +659,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   private initializeSelectionParams() {
-    this.pending = true;
-    this.submited = true;
-    this.showCriteriaPanel = false;
+    this.pending.set(true);
+    this.submited.set(true);
+    this.showCriteriaPanel.set(false);
     this.showSearchCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];
@@ -679,7 +679,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
         if (accessContractId && accessContractId.length > 0) {
           this.accessContract = accessContractId;
-          this.foundAccessContract = true;
+          this.foundAccessContract.set(true);
           this.fetchVitamAccessContract();
         } else {
           this.snackBarService.open({
@@ -737,7 +737,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.showingFacets = false;
     }
     // Prepare criteria and store them to use for lateral panel
-    this.pending = true;
+    this.pending.set(true);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
 
     let facets: TermsFacet[] = [];
@@ -768,16 +768,16 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           this.archiveUnits = pagedResult.results;
           this.searchHasResults = !isEmpty(pagedResult.results);
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-          this.totalResults = pagedResult.totalResults;
-          this.archiveSharedDataService.emitTotalResults(this.totalResults);
+          this.totalResults.set(pagedResult.totalResults);
+          this.archiveSharedDataService.emitTotalResults(this.totalResults());
           this.archiveSharedDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
         } else if (pagedResult.results) {
           this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
-        this.waitingToGetFixedCount = this.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
+        this.waitingToGetFixedCount = this.totalResults() === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
         if (this.isAllChecked) {
-          this.itemSelected = this.totalResults - this.itemNotSelected;
+          this.itemSelected = this.totalResults() - this.itemNotSelected;
         }
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
         this.archiveHelperService.updateCriteriaStatus(
@@ -785,13 +785,13 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           SearchCriteriaStatusEnum.IN_PROGRESS,
           SearchCriteriaStatusEnum.INCLUDED,
         );
-        this.pending = false;
+        this.pending.set(false);
         this.included = true;
       },
       (error: HttpErrorResponse) => {
         this.logger.error('Error message :', error.message);
         this.canLoadMore = false;
-        this.pending = false;
+        this.pending.set(false);
         if (includeFacets) {
           this.pendingComputeFacets = false;
           this.archiveSharedDataService.emitFacets([]);
@@ -801,7 +801,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   onArchiveUnitCountChange(event: number) {
-    this.totalResults = event;
+    this.totalResults.set(event);
     this.archiveSharedDataService.emitTotalResults(event);
   }
 
@@ -830,7 +830,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     const { checked } = event;
 
     this.isAllChecked = checked;
-    this.itemSelected = checked ? this.totalResults : 0;
+    this.itemSelected = checked ? this.totalResults() : 0;
     if (!checked) {
       this.isIndeterminate = false;
     } else {
@@ -858,7 +858,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       if (action) {
         this.listOfUACriteriaSearch = [];
         this.itemSelected++;
-        if (this.itemSelected === this.totalResults) {
+        if (this.itemSelected === this.totalResults()) {
           this.isIndeterminate = false;
         }
         if (this.isAllChecked) {
@@ -903,8 +903,8 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
 
     if (this.searchCriterias && this.searchCriterias.size === 0) {
-      this.submited = false;
-      this.showCriteriaPanel = true;
+      this.submited.set(false);
+      this.showCriteriaPanel.set(true);
       this.showSearchCriteriaPanel = false;
       // Get initial AUs by project Id
       this.searchCriteriaKeys = [];
@@ -934,7 +934,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     this.included = false;
     this.nbQueryCriteria = 0;
     this.pageNumbers = 0;
-    this.totalResults = 0;
+    this.totalResults.set(0);
     this.itemSelected = 0;
     this.isAllChecked = false;
     this.isIndeterminate = false;
@@ -1058,7 +1058,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   showHidePanel(show: boolean) {
-    this.showCriteriaPanel = show;
+    this.showCriteriaPanel.set(show);
   }
 
   containsWaitingToRecalculateInheritenceRuleCriteria() {
@@ -1131,7 +1131,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       pageNumber: 0,
       size: 1,
       sortingCriteria,
-      trackTotalHits: this.totalResults >= 10000,
+      trackTotalHits: this.totalResults() >= 10000,
       computeMgtRulesFacets: true,
       facets: facets,
     };
@@ -1235,14 +1235,14 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   loadMore() {
-    if (this.pending) {
+    if (this.pending()) {
       return;
     }
     this.canLoadMore = this.currentPage < this.pageNumbers - 1;
     if (!this.canLoadMore) {
       return;
     }
-    this.submited = true;
+    this.submited.set(true);
     this.currentPage = this.currentPage + 1;
     if (!this.hasSearchCriteriaOrMoreThan10Results()) {
       return;
@@ -1255,7 +1255,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   private hasSearchCriteriaOrMoreThan10Results() {
-    return this.hasSearchCriteria() || this.totalResults >= 10;
+    return this.hasSearchCriteria() || this.totalResults() >= 10;
   }
 
   showHideFacets(show: boolean) {
@@ -1283,7 +1283,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
           .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.transaction?.id || null)
           .toPromise();
         if (exactCountResults !== -1) {
-          this.totalResults = exactCountResults;
+          this.totalResults.set(exactCountResults);
           this.waitingToGetFixedCount = false;
           this.launchComputingManagementRulesFacets();
         }

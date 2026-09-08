@@ -87,11 +87,15 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   @Input()
   set ingestThatHasChanged(ingest: LogbookOperation) {
-    if (!this.dataSource) {
+    if (!this.dataSource()) {
       return;
     }
-    const index = this.dataSource.findIndex((o) => o.id === ingest.id);
-    this.dataSource[index] = ingest;
+    const index = this.dataSource().findIndex((o) => o.id === ingest.id);
+    this.dataSource.update((ingests) => {
+      const next = [...(ingests ?? [])];
+      next[index] = ingest;
+      return next;
+    });
   }
 
   private _filters: IngestFilters;
@@ -132,7 +136,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
             element.rightsStatementIdentifier = JSON.parse(element.rightsStatementIdentifier);
           }
         });
-        this.dataSource = data;
+        this.dataSource.set(data);
       });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -142,7 +146,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
-    this.updatedData.subscribe(() => this.ingestService.logbookOperationsReloaded.next(this.dataSource));
+    this.updatedData.subscribe(() => this.ingestService.logbookOperationsReloaded.next(this.dataSource()));
   }
 
   ngOnDestroy() {

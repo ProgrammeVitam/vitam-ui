@@ -7,7 +7,7 @@
             {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: getTotalElements() } }}
           }
         </div>
-        <div class="col-1 area-download" [ngClass]="dataSource?.length > 0 ? 'enabled-div' : 'disabled-div'">
+        <div class="col-1 area-download" [ngClass]="dataSource()?.length > 0 ? 'enabled-div' : 'disabled-div'">
           <i (click)="exportAccessionRegisterCsv()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
         </div>
       </div>
@@ -91,7 +91,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (accessionRegisterDetail of dataSource; track accessionRegisterDetail) {
+          @for (accessionRegisterDetail of dataSource(); track accessionRegisterDetail) {
             <tr class="clickable" [class.selected]="accessionRegisterDetail === selectedRow" (click)="onSelectRow(accessionRegisterDetail)">
               <td>{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</td>
               <td>{{ accessionRegisterDetail.obIdIn }}</td>
@@ -120,15 +120,15 @@
         </tbody>
       </table>
 
-      @if (!dataSource || pending) {
+      @if (!dataSource() || pending()) {
         <div class="vitamui-min-content">
           <mat-spinner class="vitamui-spinner medium"></mat-spinner>
         </div>
       }
-      @if (!pending && dataSource?.length === 0) {
+      @if (!pending() && dataSource()?.length === 0) {
         <div class="vitamui-min-content vitamui-table-message">{{ 'ACCESSION_REGISTER.LIST.NO_RESULT' | translate }}</div>
       }
-      @if (infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending) {
+      @if (infiniteScrollDisabled() && accessionRegistersService.canLoadMore && !pending()) {
         <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
           <span class="clickable">{{ 'ACCESSION_REGISTER.LIST.LOAD_MORE_RESULTS' | translate }}</span>
         </div>

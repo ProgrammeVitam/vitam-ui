@@ -36,7 +36,7 @@
           [multiple]="true"
           [enableSelectAll]="false"
           formControlName="agencies"
-          [options]="selectOptions.agency"
+          [options]="selectOptions().agency"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate"
           [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.SP_PLACEHOLDER' | translate"
           class="w-100"
@@ -55,7 +55,7 @@
           [multiple]="true"
           [enableSelectAll]="false"
           formControlName="archiveUnitProfiles"
-          [options]="selectOptions.archiveUnitProfile"
+          [options]="selectOptions().archiveUnitProfile"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate"
           [searchBarPlaceHolder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.AUP_PLACEHOLDER' | translate"
           class="w-100"
@@ -123,12 +123,12 @@
     <div class="hgap-4">
       <p class="text medium bold primary uppercase">{{ 'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
     </div>
-    @if (otherCriteriaOptions) {
+    @if (otherCriteriaOptions()) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
         <vitamui-select-with-tree
           formControlName="otherCriteriaList"
           [multiple]="true"
-          [options]="otherCriteriaOptions"
+          [options]="otherCriteriaOptions()"
           [getDisplayValue]="getOtherCriteriaDisplayValue"
           [placeholder]="'COLLECT.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
           [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"

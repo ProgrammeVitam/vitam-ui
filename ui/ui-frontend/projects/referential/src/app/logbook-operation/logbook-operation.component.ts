@@ -134,7 +134,7 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   }
 
   private openOperationDetail(): void {
-    this.list.eventClick.emit(this.list.dataSource[0]);
+    this.list.eventClick.emit(this.list.dataSource()[0]);
   }
 
   onFinishedLoading() {

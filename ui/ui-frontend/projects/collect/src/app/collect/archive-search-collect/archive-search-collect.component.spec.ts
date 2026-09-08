@@ -200,7 +200,7 @@ describe('ArchiveSearchCollectComponent', () => {
       component.submit();
 
       // Then
-      expect(component.submited).toBeTruthy();
+      expect(component.submited()).toBeTruthy();
       expect(component.itemSelected).toBe(0);
     });
 
