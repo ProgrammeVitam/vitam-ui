@@ -247,11 +247,12 @@ public class ProjectService {
     public RequestResponse<UploadSipResult> streamingUploadSip(
         InputStream inputStream,
         String transactionId,
+        String attachmentId,
         VitamContext vitamContext
     ) {
         LOGGER.debug("TransactionId: {}", transactionId);
         try {
-            return collectService.uploadSipToTransaction(vitamContext, transactionId, inputStream);
+            return collectService.uploadSipToTransaction(vitamContext, transactionId, attachmentId, inputStream);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
             throw new BadRequestException(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);

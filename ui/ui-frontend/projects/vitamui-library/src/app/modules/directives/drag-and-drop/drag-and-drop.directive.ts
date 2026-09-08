@@ -133,6 +133,7 @@ export class DragAndDropDirective {
       });
     } catch (err) {
       this.logger.error(this, err);
+      throw err;
     }
   };
 
@@ -177,6 +178,7 @@ export class DragAndDropDirective {
       });
     } catch (err) {
       this.logger.error(this, err);
+      throw err;
     }
   };
 }

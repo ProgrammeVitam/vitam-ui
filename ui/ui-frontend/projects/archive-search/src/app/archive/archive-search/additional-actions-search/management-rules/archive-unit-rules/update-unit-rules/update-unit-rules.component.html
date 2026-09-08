@@ -104,24 +104,24 @@
       }
     }
 
-    @if (ruleDetailsForm.dirty && ruleDetailsForm.errors?.sameTargetRule) {
-      <vitamui-common-input-error class="vitamui-input-errors d-flex row">
+    @if (ruleDetailsForm.dirty && ruleDetailsForm.errors?.['sameTargetRule']) {
+      <div class="vitamui-input-errors d-flex row">
         <div class="d-flex col align-items-center">
           <i class="material-icons">error</i>
           <span class="ml-1">
-            {{ 'RULES.APPRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.sameTargetRule?.value } }}
+            {{ 'RULES.APPRAISAL_RULES.SAME_TARGET_RULE' | translate: { value: ruleDetailsForm.errors?.['sameTargetRule']?.value } }}
           </span>
         </div>
-      </vitamui-common-input-error>
+      </div>
     }
 
-    @if (ruleDetailsForm.dirty && ruleDetailsForm.errors?.mustUpdateRuleOrStartDate) {
-      <vitamui-common-input-error class="vitamui-input-errors d-flex row">
+    @if (ruleDetailsForm.dirty && ruleDetailsForm.errors?.['mustUpdateRuleOrStartDate']) {
+      <div class="vitamui-input-errors d-flex row">
         <div class="d-flex col align-items-center">
           <i class="material-icons">error</i>
           <span class="ml-1">{{ 'RULES.APPRAISAL_RULES.REQUIRED_RULE_OR_START_DATE' | translate }}</span>
         </div>
-      </vitamui-common-input-error>
+      </div>
     }
 
     <div>
@@ -132,7 +132,7 @@
           [disabled]="
             ruleDetailsForm.untouched ||
             !ruleDetailsForm.valid ||
-            (ruleDetailsForm.dirty && ruleDetailsForm.errors?.mustUpdateRuleOrStartDate)
+            (ruleDetailsForm.dirty && ruleDetailsForm.errors && ruleDetailsForm.errors['mustUpdateRuleOrStartDate'])
           "
           (click)="submit()"
         >

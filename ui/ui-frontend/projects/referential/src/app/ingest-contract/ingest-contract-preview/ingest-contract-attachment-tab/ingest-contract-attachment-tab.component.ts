@@ -37,14 +37,9 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  ExternalParameters,
-  ExternalParametersService,
-  IngestContract,
-  SearchUnitApiService,
-  VitamuiHttpHeaders,
-  SnackBarService,
-} from 'vitamui-library';
+import type { IngestContract } from 'vitamui-library';
+import { ExternalParameters, VitamuiHttpHeaders } from 'vitamui-library';
+import { ExternalParametersService, SearchUnitApiService, SnackBarService } from 'vitamui-library';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
 
 @Component({

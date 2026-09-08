@@ -225,6 +225,19 @@ public class IngestContractController {
         return ingestContractService.importIngestContracts(file);
     }
 
+    @Secured(ServicesData.ROLE_CREATE_INGEST_CONTRACTS)
+    @PostMapping(CommonConstants.PATH_IMPORT + "/check")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> getCSVCheckResults(@RequestParam MultipartFile file) {
+        ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        LOGGER.debug("CSV check results of file {}", file.getOriginalFilename());
+
+        ingestContractService.checkCSV(file);
+
+        return ResponseEntity.ok().build();
+    }
+
     @Operation(summary = "Export ingest contracts to a csv file")
     @GetMapping(path = RestApi.EXPORT_CSV)
     @Secured(ServicesData.ROLE_GET_INGEST_CONTRACTS)

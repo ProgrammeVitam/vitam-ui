@@ -38,7 +38,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { PaginatedApi } from '../';
+import { PaginatedApi } from '../paginated-api.interface';
 import { Direction } from './direction.enum';
 import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
 import { PaginatedResponse } from './paginated-response.interface';

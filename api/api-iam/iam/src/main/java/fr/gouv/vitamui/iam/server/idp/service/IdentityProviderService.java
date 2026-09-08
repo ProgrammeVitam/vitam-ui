@@ -647,6 +647,17 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
     }
 
     /**
+     * Sets the metadata presence flags, computed before the masking done by {@link #loadExtraInformation}.
+     */
+    @Override
+    public IdentityProviderDto internalConvertFromEntityToDto(final IdentityProvider entity) {
+        final IdentityProviderDto dto = super.internalConvertFromEntityToDto(entity);
+        dto.setHasIdpMetadata(StringUtils.isNotBlank(entity.getIdpMetadata()));
+        dto.setHasSpMetadata(StringUtils.isNotBlank(entity.getSpMetadata()));
+        return dto;
+    }
+
+    /**
      * Method for load or not file contents
      *
      * @param dto

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
 import {
-  CriteriaOperator,
   FINAL_ACTION,
   FINAL_ACTION_HAS_FINAL_ACTION,
   FINAL_ACTION_INHERITE_FINAL_ACTION,
@@ -50,7 +50,7 @@ import {
   ORIGIN_INHERITE_AT_LEAST_ONE,
   ORIGIN_WAITING_RECALCULATE,
   RULE_ORIGIN,
-} from '../../../app/modules';
+} from '../../../app/modules/models/criteria/search-criteria-configs';
 import { CheckboxItem, ManagementRuleCheckboxDescriptor, ManagementRuleSearchConfig } from './management-rule-search.config';
 import { ManagementRuleSearchHelper } from './utils/management-rule-search.helper';
 

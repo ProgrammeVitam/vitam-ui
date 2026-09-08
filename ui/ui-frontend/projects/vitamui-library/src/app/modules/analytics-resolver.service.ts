@@ -53,7 +53,7 @@ export class AnalyticsResolver {
   private currentApplicationId: string;
 
   resolve(route: ActivatedRouteSnapshot) {
-    const nextApplicationId = route.data.appId;
+    const nextApplicationId = route.data['appId'];
     this.tenantService.currentAppId$.next(nextApplicationId);
     if (nextApplicationId && nextApplicationId !== this.currentApplicationId) {
       // tag the application as the last used

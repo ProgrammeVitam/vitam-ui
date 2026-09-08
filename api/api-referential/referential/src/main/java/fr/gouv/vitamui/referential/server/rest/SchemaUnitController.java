@@ -33,8 +33,6 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.iam.security.service.SecurityService;
 import fr.gouv.vitamui.referential.server.service.schema.SchemaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping(CommonConstants.SCHEMAS_UNIT)
 public class SchemaUnitController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SchemaUnitController.class);
 
     private final SchemaService schemaService;
     private final SecurityService securityService;
@@ -65,6 +61,20 @@ public class SchemaUnitController {
         }
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         SanityChecker.isValidFileName(file.getOriginalFilename());
+
         return schemaService.importUnitSchema(file);
+    }
+
+    @Secured(ServicesData.ROLE_IMPORT_SCHEMAS)
+    @PostMapping(CommonConstants.PATH_IMPORT + "/check")
+    public ResponseEntity<Void> getCSVCheckResults(@RequestParam MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("The file cannot be null or empty.");
+        }
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        schemaService.checkCSV(file);
+
+        return ResponseEntity.ok().build();
     }
 }

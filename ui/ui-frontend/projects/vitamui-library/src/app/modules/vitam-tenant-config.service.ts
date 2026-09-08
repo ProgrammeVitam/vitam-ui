@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { inject, Injectable, signal, computed } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Logger } from './logger/logger';
-import { ConfigurationsApiService, TenantConfiguration } from './services';
+import { ConfigurationsApiService, TenantConfiguration } from './services/configurations-api.service';
 import { lastValueFrom, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 

@@ -261,12 +261,10 @@ describe('ArchiveSearchComponent', () => {
       expect(archiveServiceStub.hasArchiveSearchRole).toHaveBeenCalled();
     });
     it('should open a modal with TransferAcknowledgmentComponent', () => {
-      component.accessContractId = 'accessContract';
       component.showAcknowledgmentTransferForm();
       expect(matDialogSpy.open).toHaveBeenCalledWith(TransferAcknowledgmentComponent, {
         disableClose: true,
         data: {
-          accessContract: 'accessContract',
           tenantIdentifier: '1',
         },
       });

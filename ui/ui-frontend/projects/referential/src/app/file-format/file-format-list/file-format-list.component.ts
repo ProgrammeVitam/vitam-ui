@@ -39,17 +39,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
+import type { AdminUserProfile, FileFormat, User } from 'vitamui-library';
 import {
-  AdminUserProfile,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
   Direction,
   FILE_FORMAT_EXTERNAL_PREFIX,
-  FileFormat,
   InfiniteScrollTable,
   PageRequest,
   StartupService,
-  User,
   SnackBarService,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
@@ -83,7 +81,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<FileFormatListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
-  overridePendingChange: true;
+  override overridePendingChange: true;
   loaded = false;
   orderBy = 'Name';
   direction = Direction.ASCENDANT;

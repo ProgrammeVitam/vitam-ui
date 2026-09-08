@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Logger } from '../logger/logger';
-import { DisplayObjectService, DisplayRule } from './models';
+import { DisplayObjectService } from './models/display-object-service';
+import { DisplayRule } from './models/display-rule.model';
 import { Mode } from './models/display-object.enum';
+import { AUMode } from '../archive-unit/components/archive-unit-viewer/archive-unit-viewer.service';
 
 @Component({
   selector: 'vitamui-common-object-viewer',
@@ -51,7 +53,7 @@ export class ObjectViewerComponent implements OnInit, OnChanges {
 
   @Input() data!: any;
   @Input() template!: DisplayRule[];
-  @Input() mode: Mode = Mode.TEMPLATE_DRIVEN;
+  @Input() mode: Mode | AUMode = Mode.TEMPLATE_DRIVEN;
 
   ngOnInit(): void {
     this.displayObjectService.setMode(this.mode);

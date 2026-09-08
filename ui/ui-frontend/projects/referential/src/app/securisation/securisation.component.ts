@@ -51,7 +51,7 @@ import { DateTime } from 'luxon';
 export class SecurisationComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   private formBuilder = inject(FormBuilder);
 
   search: string;
@@ -75,15 +75,15 @@ export class SecurisationComponent extends SidenavPage<Event> {
       types: [],
     });
 
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
+    this.dateRangeFilterForm.controls['startDate'].valueChanges.subscribe((value) => {
       this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
     });
 
-    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
+    this.dateRangeFilterForm.controls['endDate'].valueChanges.subscribe((value) => {
       this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
     });
 
-    this.dateRangeFilterForm.controls.types.valueChanges.subscribe((value) => {
+    this.dateRangeFilterForm.controls['types'].valueChanges.subscribe((value) => {
       this.filters.types = value;
       this.securisationListComponent.filters = this.filters;
     });

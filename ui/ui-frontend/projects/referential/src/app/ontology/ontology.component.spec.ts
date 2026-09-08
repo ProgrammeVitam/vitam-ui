@@ -51,7 +51,6 @@ import { OntologyService } from './ontology.service';
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyPreviewStub {
   @Input()
   accessContract: any;
@@ -62,7 +61,6 @@ class OntologyPreviewStub {
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class OntologyListStub {}
 
 describe('OntologyComponent', () => {

@@ -34,18 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ReferentialImportApiService } from '../../core/api/referential-import-api.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
 import { ReferentialTypes } from './import-dialog-param.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReferentialImportService {
-  private referentialImportApiService = inject(ReferentialImportApiService);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = inject(BASE_URL);
 
-  importReferential(referential: ReferentialTypes, file: File): Observable<any> {
-    return this.referentialImportApiService.importReferential(referential, file);
+  importReferential(referential: ReferentialTypes, file: File) {
+    const headers = new HttpHeaders().append(VitamuiHttpHeaders.X_BY_PASSED_ERROR, '400');
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' });
+  }
+
+  getCSVCheckResults(referential: ReferentialTypes, file: File): Observable<void> {
+    const headers = new HttpHeaders().append(VitamuiHttpHeaders.X_BY_PASSED_ERROR, '400');
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<void>(this.baseUrl + '/' + referential + '/import/check', formData, { headers });
   }
 }

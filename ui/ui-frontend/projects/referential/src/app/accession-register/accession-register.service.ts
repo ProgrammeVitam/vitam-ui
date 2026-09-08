@@ -70,7 +70,6 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   updated = new Subject<AccessionRegisterDetail>();
 
   private searchTextChange$ = new BehaviorSubject<string>('');
-  private statusFilterChange$ = new BehaviorSubject<Map<string, Array<string>>>(null);
   private dateIntervalChange$ = new BehaviorSubject<{ endDateMin: string; endDateMax: string }>(null);
 
   private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -195,8 +194,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     return stateFacetDetails;
   }
 
-  notifyFilterChange(value: Map<string, Array<string>>) {
-    this.statusFilterChange$.next(value);
+  notifyFilterChange() {
     this.globalSearchButtonEvent$.next(true);
   }
 

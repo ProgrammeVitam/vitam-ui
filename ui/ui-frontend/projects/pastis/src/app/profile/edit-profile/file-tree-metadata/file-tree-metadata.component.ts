@@ -158,7 +158,6 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
   profileModeLabel: string;
-  config: {};
   notificationAjoutMetadonnee: string;
   boutonAjoutMetadonnee: string;
   boutonAjoutUA: string;
@@ -195,14 +194,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   private _fileMetadataServiceSubscriptionDataSource: Subscription;
   private _sedalanguageSub: Subscription;
 
-  constructor() {
-    this.config = {
-      locale: 'fr',
-      showGoToCurrent: false,
-      firstDayOfWeek: 'mo',
-      format: 'YYYY-MM-DD',
-    };
-  }
+  constructor() {}
 
   ngOnInit() {
     if (!this.isStandalone) {
@@ -424,16 +416,16 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     }
   }
 
-  isElementComplex(elementName: string) {
+  isElementComplex(elementName: string): boolean {
     const childFound = this.selectedSedaNode.children.find((el) => el.name === elementName);
     if (childFound) {
       return childFound.element === SedaElementConstants.COMPLEX;
     }
+    return undefined;
   }
 
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
-      // eslint-disable-next-line prefer-const
       let elements: SedaData[];
       elements.push({
         name: 'ArchiveUnit',
@@ -595,7 +587,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     const actualPattern = fileNode?.puaData?.pattern;
     return (
       actualPattern &&
-      !this.getAvailableRegex(fileNode?.sedaData?.Type)
+      !this.getAvailableRegex(fileNode?.sedaData?.['Type'])
         .map((e) => e.key)
         .includes(actualPattern)
     );
@@ -708,12 +700,13 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkElementType(elementName?: string) {
+  checkElementType(elementName?: string): boolean {
     if (this.selectedSedaNode) {
       const nameToSearch = elementName ? elementName : this.sedaService.selectedSedaNode.getValue().name;
       const nodeElementType = this.sedaService.checkSedaElementType(nameToSearch, this.selectedSedaNode);
       return nodeElementType === SedaElementConstants.COMPLEX;
     }
+    return undefined;
   }
 
   shouldLoadMetadataTable() {
@@ -735,7 +728,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   }
 
   isDeletable(element: SedaData): boolean {
-    const node = this.fileService.getFileNodeById(this.clickedNode, element.id);
+    const node = this.fileService.getFileNodeById(this.clickedNode, element['id']);
     return !this.sedaService.isMandatory(element.name) || node.parent.children.filter((child) => child.name === element.name).length > 1;
   }
 
@@ -774,10 +767,11 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
     return elementName;
   }
 
-  resolveButtonLabel(node: FileNode) {
+  resolveButtonLabel(node: FileNode): string {
     if (node) {
       return node.name === 'DescriptiveMetadata' ? null : this.boutonAjoutMetadonnee;
     }
+    return undefined;
   }
 
   onChangeSelected(element: any, value: any) {

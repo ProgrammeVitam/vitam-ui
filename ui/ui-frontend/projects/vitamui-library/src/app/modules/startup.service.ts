@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 import { ApplicationApiService } from './api/application-api.service';
@@ -46,7 +46,10 @@ import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AttachmentType, AuthUser, UserInfo } from './models';
+import { AppConfiguration } from './models/app.configuration.interface';
+import { AttachmentType } from './models/customer/theme/attachmentType.enum';
+import { AuthUser } from './models/user/auth-user.interface';
+import { UserInfo } from './models/user/user-info.interface';
 import { ThemeService } from './theme.service';
 
 const WARNING_DURATION = 2000;
@@ -180,12 +183,14 @@ export class StartupService {
 
   getLogo(): string {
     if (this.configurationLoaded()) {
-      if (this.configurationData.APP_LOGO) {
-        return this.configurationData.APP_LOGO;
+      if (this.configurationData['APP_LOGO']) {
+        return this.configurationData['APP_LOGO'];
       } else {
         return this.configurationData.LOGO;
       }
     }
+
+    return null;
   }
 
   getAppLogoURL(): string {
@@ -254,7 +259,7 @@ export class StartupService {
 
   getArchivesSearchUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.ARCHIVES_SEARCH_URL;
+      return this.configurationData['ARCHIVES_SEARCH_URL'];
     }
 
     return null;
@@ -262,21 +267,21 @@ export class StartupService {
 
   getReferentialUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.REFERENTIAL_URL;
+      return this.configurationData['REFERENTIAL_URL'];
     }
     return null;
   }
 
   getPastisUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.PASTIS_URL;
+      return this.configurationData['PASTIS_URL'];
     }
     return null;
   }
 
   getCollectUrl(): string {
     if (this.configurationLoaded()) {
-      return this.configurationData.COLLECT_URL;
+      return this.configurationData['COLLECT_URL'];
     }
 
     return null;
@@ -286,6 +291,8 @@ export class StartupService {
     if (this.configurationLoaded()) {
       return this.configurationData.UI?.hasSiteSelection;
     }
+
+    return false;
   }
 
   getConfigStringValue(key: string): string {
@@ -328,6 +335,8 @@ export class StartupService {
     if (this.configurationLoaded()) {
       return this.configurationData.CUSTOMER;
     }
+
+    return null;
   }
 
   isVitamEnabled(): boolean {

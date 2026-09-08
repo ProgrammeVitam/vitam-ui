@@ -45,9 +45,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
-// eslint-disable-next-line max-len
+
 import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-preview/logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';
-// eslint-disable-next-line max-len
+
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
 import { LogbookManagementOperationRoutingModule } from './logbook-management-operation-routing.module';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';

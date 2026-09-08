@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, inject } from '@angular/core';
 import { IngestList } from '../../core/common/ingest-list';
 import { UploadService } from '../../core/common/upload.service';
@@ -43,13 +42,6 @@ import { UploadService } from '../../core/common/upload.service';
   selector: 'app-upload-tracking',
   templateUrl: './upload-tracking.component.html',
   styleUrls: ['./upload-tracking.component.scss'],
-  animations: [
-    trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ]),
-  ],
   standalone: false,
 })
 export class UploadTrackingComponent {

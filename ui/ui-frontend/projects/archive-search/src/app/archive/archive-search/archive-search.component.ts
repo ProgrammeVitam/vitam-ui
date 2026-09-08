@@ -54,14 +54,19 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   ACCESS_RULE,
   AccessContract,
   AccessContractService,
   AlertDialogComponent,
+  ALL_ARCHIVE_UNIT_TYPES,
   ALL_DESCENDANTS_FACET,
   APPRAISAL_RULE,
+  ARCHIVE_UNIT_FILING_UNIT,
+  ARCHIVE_UNIT_HOLDING_UNIT,
+  ARCHIVE_UNIT_WITH_OBJECTS,
+  ARCHIVE_UNIT_WITHOUT_OBJECTS,
   ArchiveSearchResultFacets,
   ConfigService,
   CriteriaDataType,
@@ -124,6 +129,9 @@ import { ReassignmentMode } from '../models/reassign-request.interface';
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+
+const TREE_UNIT_TYPES = [ARCHIVE_UNIT_HOLDING_UNIT];
+const NON_TREE_UNIT_TYPES = [ARCHIVE_UNIT_FILING_UNIT, ARCHIVE_UNIT_WITH_OBJECTS, ARCHIVE_UNIT_WITHOUT_OBJECTS];
 
 @Component({
   selector: 'app-archive-search',
@@ -442,7 +450,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      this.tenantIdentifier = +params['tenantIdentifier'];
       this.hasRole('ROLE_ORIGINATING_AGENCY_REASSIGNMENT');
     });
     this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
@@ -485,7 +493,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.accessContract) {
+    if (changes['accessContract']) {
       this.archiveSharedDataService.emitToggle(true);
     }
   }
@@ -597,7 +605,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
 
-    // eslint-disable-next-line guard-for-in
     for (const mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
@@ -625,6 +632,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     if (archiveUnit) {
       return archiveUnit['#unitType'];
     }
+    return undefined;
   }
 
   private launchComputingManagementRulesFacets() {
@@ -1305,85 +1313,83 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   async launchEliminationModal() {
     const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
     listAUHoldingUnit.push({
-      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
-      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+      criteria: ALL_ARCHIVE_UNIT_TYPES,
+      values: TREE_UNIT_TYPES.map((unitType) => ({ value: unitType, id: unitType })),
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
       dataType: CriteriaDataType.STRING,
     });
 
-    this.archiveService
-      .getTotalTrackHitsByCriteria(listAUHoldingUnit)
-      .pipe(
-        tap((value: number) => {
-          if (value !== 0) {
-            const dialogConfig = new MatDialogConfig();
+    this.archiveService.existsArchiveUnitByCriteria(listAUHoldingUnit).subscribe({
+      next: (hasTreeUnit: boolean) => {
+        if (hasTreeUnit) {
+          const dialogConfig = new MatDialogConfig();
 
-            dialogConfig.data = {
-              title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
-              icon: 'cancel',
-              message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
-              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
-            };
+          dialogConfig.data = {
+            title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+            icon: 'cancel',
+            message: 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+            cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+          };
 
-            this.dialog.open(AlertDialogComponent, dialogConfig);
-          } else {
-            this.launchBulkOperationWorkflow(
-              () =>
-                this.archiveUnitEliminationService.launchEliminationModal(
-                  this.listOfUACriteriaSearch,
-                  this.tenantIdentifier,
-                  this.currentPage,
-                  this.confirmSecondActionBigNumberOfResultsActionDialog,
-                  true,
-                ),
-              this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
-            );
-          }
-        }),
-      )
-      .subscribe();
+          this.dialog.open(AlertDialogComponent, dialogConfig);
+        } else {
+          this.launchBulkOperationWorkflow(
+            () =>
+              this.archiveUnitEliminationService.launchEliminationModal(
+                this.listOfUACriteriaSearch,
+                this.tenantIdentifier,
+                this.currentPage,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                true,
+              ),
+            this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
+          );
+        }
+      },
+      error: (error: HttpErrorResponse) => this.logger.error('Error message :', error.message),
+    });
   }
 
   async launchDeleteUnitTreeModal() {
-    const listAUHoldingUnit = this.prepareListOfUACriteriaSearch();
-    listAUHoldingUnit.push({
-      criteria: 'ALL_ARCHIVE_UNIT_TYPES',
-      values: [{ value: 'ARCHIVE_UNIT_HOLDING_UNIT', id: 'ARCHIVE_UNIT_HOLDING_UNIT' }],
+    const listAUNonHoldingUnit = this.prepareListOfUACriteriaSearch();
+    listAUNonHoldingUnit.push({
+      criteria: ALL_ARCHIVE_UNIT_TYPES,
+      values: NON_TREE_UNIT_TYPES.map((unitType) => ({ value: unitType, id: unitType })),
       operator: CriteriaOperator.EQ,
       category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
       dataType: CriteriaDataType.STRING,
     });
-    this.archiveService
-      .getTotalTrackHitsByCriteria(listAUHoldingUnit)
-      .pipe(
-        tap((value: number) => {
-          if (value === this.selectedItemCount) {
-            this.launchBulkOperationWorkflow(
-              () =>
-                this.archiveUnitEliminationService.launchEliminationModal(
-                  this.listOfUACriteriaSearch,
-                  this.tenantIdentifier,
-                  this.currentPage,
-                  this.confirmSecondActionBigNumberOfResultsActionDialog,
-                  false,
-                ),
-              this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
-            );
-          } else {
-            const dialogConfig = new MatDialogConfig();
-            dialogConfig.data = {
-              title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
-              icon: 'cancel',
-              message: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
-              cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
-            };
 
-            this.dialog.open(AlertDialogComponent, dialogConfig);
-          }
-        }),
-      )
-      .subscribe();
+    this.archiveService.existsArchiveUnitByCriteria(listAUNonHoldingUnit).subscribe({
+      next: (hasNonTreeUnit: boolean) => {
+        if (hasNonTreeUnit) {
+          const dialogConfig = new MatDialogConfig();
+
+          dialogConfig.data = {
+            title: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE',
+            icon: 'cancel',
+            message: 'ARCHIVE_SEARCH.ELIMINATION.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE',
+            cancelLabel: 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION',
+          };
+
+          this.dialog.open(AlertDialogComponent, dialogConfig);
+        } else {
+          this.launchBulkOperationWorkflow(
+            () =>
+              this.archiveUnitEliminationService.launchEliminationModal(
+                this.listOfUACriteriaSearch,
+                this.tenantIdentifier,
+                this.currentPage,
+                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                false,
+              ),
+            this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
+          );
+        }
+      },
+      error: (error: HttpErrorResponse) => this.logger.error('Error message :', error.message),
+    });
   }
 
   async launchExportDipModal() {
@@ -1455,7 +1461,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const dialogRef = this.dialog.open(TransferAcknowledgmentComponent, {
       disableClose: true,
       data: {
-        accessContract: this.accessContractId,
         tenantIdentifier: this.tenantIdentifier.toString(),
       },
     });

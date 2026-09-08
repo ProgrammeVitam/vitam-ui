@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -50,8 +50,8 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  VitamuiSelectOptions,
   VitamTenantConfigService,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -106,9 +106,9 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   isShowCheckButton = true;
   showText = false;
 
-  itemsWithSameRule: string;
-  itemsWithSameRuleAndDate: string;
-  itemsToUpdate: string;
+  itemsWithSameRule: number;
+  itemsWithSameRuleAndDate: number;
+  itemsToUpdate: number;
 
   showConfirmDeleteAddRuleSuscription: Subscription;
   criteriaSearchDSLQuery: SearchCriteriaDto;
@@ -123,7 +123,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   managementRulesSubscription: Subscription;
   rule: Rule;
   selectedStartDate: any;
-  resultNumberToShow: string;
+  resultNumberToShow: number;
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<AddManagementRulesComponent>;
 
@@ -223,22 +223,22 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
-          this.itemsWithSameRule = resultsNumber.toString();
-          this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
+          this.itemsWithSameRule = resultsNumber;
+          this.itemsToUpdate = this.selectedItem - resultsNumber;
           this.isLoading = false;
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
-          this.itemsWithSameRule = data.totalResults.toString();
+          this.itemsWithSameRule = data.totalResults;
 
           this.itemsToUpdate =
             data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
               : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
-                : (this.selectedItem - data.totalResults).toString();
+                : this.selectedItem - data.totalResults;
 
           this.isLoading = false;
         });
@@ -284,7 +284,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
 
       if (this.hasExactCount) {
         this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe((resultsNumber) => {
-          this.itemsWithSameRuleAndDate = resultsNumber.toString();
+          this.itemsWithSameRuleAndDate = resultsNumber;
           this.isWarningLoading = false;
         });
       } else {
@@ -292,7 +292,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
           this.itemsWithSameRuleAndDate =
             data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : data.totalResults.toString();
+              : data.totalResults;
         });
         this.isWarningLoading = false;
       }
@@ -314,7 +314,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     const dialogToOpen = this.confirmDeleteAddRuleDialog;
     const dialogRef = this.dialog.open(dialogToOpen);
     this.managementRulesSharedDataService.emitIsRuleDuplicated(
-      !!(this.ruleDetailsForm.get('rule').errors && this.ruleDetailsForm.get('rule').errors.uniqueRuleId),
+      !!(this.ruleDetailsForm.get('rule').errors && this.ruleDetailsForm.get('rule').errors['uniqueRuleId']),
     );
 
     this.showConfirmDeleteAddRuleSuscription = dialogRef
@@ -341,7 +341,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
           startDateSelected.setMonth(startDateSelected.getMonth() + Number(this.rule.ruleDuration));
           break;
         case 'DAY':
-          startDateSelected.setDate(startDateSelected.getDay() + Number(this.rule.ruleDuration));
+          startDateSelected.setDate(startDateSelected.getDate() + Number(this.rule.ruleDuration));
           break;
       }
 

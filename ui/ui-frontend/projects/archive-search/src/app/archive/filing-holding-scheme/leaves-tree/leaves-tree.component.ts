@@ -104,11 +104,11 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.searchRequestResultFacets) {
-      this.leavesTreeService.setSearchRequestResultFacets(this.searchRequestResultFacets);
-      this.virtualPathLimitReached = this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE;
-    } else if (changes.nestedDataSourceLeaves) {
-      this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
+    if (changes['searchRequestResultFacets']) {
+      this.leavesTreeService.setSearchRequestResultFacets(this['searchRequestResultFacets']);
+      this.virtualPathLimitReached = this['searchRequestResultFacets']?.length >= FACETS_DEFAULT_SIZE;
+    } else if (changes['nestedDataSourceLeaves']) {
+      this.nestedTreeControlLeaves.dataNodes = this['nestedDataSourceLeaves'].data;
     }
   }
 

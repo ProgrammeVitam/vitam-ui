@@ -44,7 +44,7 @@ import { UserService } from '../user.service';
 
 export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => GroupAttributionComponent),
   multi: true,
 };

@@ -5,7 +5,7 @@
         <div class="text large bold mb-4">{{ 'CUSTOMER.GRAPHIC_IDENTITY.COLOR_TITLE' | translate }}</div>
         <app-customer-colors-input
           class="d-inline-flex flex-column gap-3 align-items-stretch"
-          [formGroup]="graphicIdentityForm.get('themeColors')"
+          [formGroup]="$any(graphicIdentityForm.get('themeColors'))"
           [isUpdating]="true"
           [disabled]="disabled"
           themeOverloadSelector="form#graphicIdentityForm"

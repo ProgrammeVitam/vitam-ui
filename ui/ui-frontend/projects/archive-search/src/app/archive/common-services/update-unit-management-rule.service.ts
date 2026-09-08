@@ -108,6 +108,7 @@ export class UpdateUnitManagementRuleService {
       case 'ClassificationRule':
         return SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
       default:
+        return undefined;
     }
   }
 

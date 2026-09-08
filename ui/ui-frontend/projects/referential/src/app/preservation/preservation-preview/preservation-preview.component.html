@@ -17,9 +17,9 @@
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'PRESERVATION.TAB.INFORMATION.TITLE' | translate">
       @if (isPreservationScenario()) {
-        <app-preservation-scenario-information-tab [inputPreservationScenario]="selectedElement()" #infoTab />
+        <app-preservation-scenario-information-tab [inputPreservationScenario]="$any(selectedElement())" #infoTab />
       } @else {
-        <app-griffin-information-tab [inputGriffin]="selectedElement()" #infoTab (updatedGriffin)="updateGriffin($event)" />
+        <app-griffin-information-tab [inputGriffin]="$any(selectedElement())" #infoTab (updatedGriffin)="updateGriffin($event)" />
       }
     </mat-tab>
 

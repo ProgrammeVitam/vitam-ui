@@ -54,7 +54,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextPreviewStub {
   @Input()
   accessContract: any;
@@ -65,7 +64,6 @@ class ContextPreviewStub {
   template: '',
   standalone: false,
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class ContextListStub {}
 
 describe('ContextComponent', () => {

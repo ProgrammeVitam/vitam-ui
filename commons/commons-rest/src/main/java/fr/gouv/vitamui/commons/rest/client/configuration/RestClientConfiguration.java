@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.rest.client.configuration;
 
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ import lombok.experimental.Accessors;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * The RestClientConfiguration stores properties used in the VitamuiRestClient
+ * The RestClientConfiguration stores properties used in the RestClient
  */
 
 @Getter

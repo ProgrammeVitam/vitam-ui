@@ -89,7 +89,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
   ];
 
   searchOperationsList(searchCriteria: any) {
-    this.filterMap.categories = [];
+    this.filterMap['categories'] = [];
     this.initializeParameters(this.filter);
     this.logbookManagementOperationService.listOperationsDetails(searchCriteria).subscribe((data) => {
       this.operationsList = data;
@@ -176,8 +176,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
   filterByOerationCategory() {
     window.scroll(0, 20);
     this.initializeParameters(true);
-    this.resultsFiltred = this.operationsList.results.filter((operation) => this.filterMap.categories.includes(operation.processType));
-    if (this.filterMap.categories.length === 0) {
+    this.resultsFiltred = this.operationsList.results.filter((operation) => this.filterMap['categories'].includes(operation.processType));
+    if (this.filterMap['categories'].length === 0) {
       this.resultsFiltred = this.operationsList.results;
     }
     this.totalResults = this.resultsFiltred.length;
@@ -201,7 +201,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
   getOperationsByGlobalState(state: string) {
     window.scroll(0, 20);
-    this.filterMap.categories = [];
+    this.filterMap['categories'] = [];
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((element) => element.globalState === state);
     this.totalResults = this.resultsFiltred.length;
@@ -211,7 +211,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
   getOperationsByStatus(status: string) {
     window.scroll(0, 20);
-    this.filterMap.categories = [];
+    this.filterMap['categories'] = [];
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((element) => element.stepStatus === status);
     this.totalResults = this.resultsFiltred.length;
@@ -223,12 +223,14 @@ export class LogbookManagementOperationListComponent implements OnInit {
     if (operationsList && operationsList.results) {
       return operationsList.results.filter((element) => element.stepStatus === status).length;
     }
+    return 0;
   }
 
   getTotalResultsByState(operationsList: OperationsResults, state: string): number {
     if (operationsList && operationsList.results) {
       return operationsList.results.filter((element) => element.globalState === state).length;
     }
+    return 0;
   }
 
   operationStatus(operation: OperationDetails): string {
@@ -277,6 +279,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
     if (parameter === 'Status') {
       return this.filtredByStatus;
     }
+    return false;
   }
 
   private initializeFacetDetails() {

@@ -268,13 +268,15 @@ public class CollectService {
     public RequestResponse<UploadSipResult> uploadSipToTransaction(
         final VitamContext vitamContext,
         final String transactionId,
+        final String attachmentId,
         final InputStream inputStream
     ) throws VitamClientException {
         LOGGER.debug("upload SIP by transaction id : {}", transactionId);
         final RequestResponse result = collectExternalClient.uploadSipToTransaction(
             vitamContext,
             transactionId,
-            inputStream
+            inputStream,
+            attachmentId
         );
         VitamRestUtils.checkResponse(result);
         return result;

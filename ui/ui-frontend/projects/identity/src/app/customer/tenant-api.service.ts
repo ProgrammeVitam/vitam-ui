@@ -51,23 +51,23 @@ export class TenantApiService extends BaseHttpClient<Tenant> {
     super(http, baseUrl + '/tenants');
   }
 
-  getOne(id: string): Observable<Tenant> {
+  override getOne(id: string): Observable<Tenant> {
     return super.getOne(id);
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  create(tenant: Tenant): Observable<Tenant> {
+  override create(tenant: Tenant): Observable<Tenant> {
     return super.create(tenant);
   }
 
-  patch(partialTenant: { id: string; [key: string]: any }): Observable<Tenant> {
+  override patch(partialTenant: { id: string; [key: string]: any }): Observable<Tenant> {
     return super.patch(partialTenant);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
     return super.checkExistsByParam(params);
   }
 

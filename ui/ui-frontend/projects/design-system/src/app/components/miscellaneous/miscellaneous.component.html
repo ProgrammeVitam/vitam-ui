@@ -39,7 +39,7 @@
   <h2>Action button menu with overlay</h2>
   <div class="gap-2">
     @for (menuButtonOutline of [false, true]; track menuButtonOutline) {
-      @for (menuColor of ['primary', 'secondary']; track menuColor) {
+      @for (menuColor of menuColors; track menuColor) {
         <div class="d-flex hgap-2">
           <vitamui-menu-button
             [simpleOverlay]="true"
@@ -108,7 +108,7 @@
   <h2>{{ 'MISCELLANEOUS.INFINITE_SCROLL' | translate }}</h2>
   <div
     vitamuiCommonInfiniteScroll
-    vitamuiCommonInfiniteScrollThreshold="0.5"
+    [vitamuiCommonInfiniteScrollThreshold]="0.5"
     [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
     (vitamuiScroll)="onScroll()"
   >

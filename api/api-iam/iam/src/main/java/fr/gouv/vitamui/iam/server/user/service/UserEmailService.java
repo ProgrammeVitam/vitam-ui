@@ -41,7 +41,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.rest.client.VitamuiRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
 import fr.gouv.vitamui.iam.auth.contract.PasswordResetUrlDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -109,10 +109,10 @@ public class UserEmailService {
     @Autowired(required = false)
     private JavaMailSender mailSender;
 
-    private final VitamuiRestClientFactory vitamuiRestClientFactory;
+    private final RestClientFactory restClientFactory;
 
-    public UserEmailService(final VitamuiRestClientFactory vitamuiRestClientFactory) {
-        this.vitamuiRestClientFactory = vitamuiRestClientFactory;
+    public UserEmailService(final RestClientFactory restClientFactory) {
+        this.restClientFactory = restClientFactory;
     }
 
     public void sendCreationEmail(final UserDto userDto) {
@@ -185,13 +185,11 @@ public class UserEmailService {
         uriVariables.put("customerId", userDto.getCustomerId());
 
         try {
-            return vitamuiRestClientFactory
+            return restClientFactory
                 .getRestClient()
                 .get()
                 .uri(
-                    vitamuiRestClientFactory.getBaseUrl() +
-                    casPasswordResetUrlPath +
-                    "?email={email}&customerId={customerId}",
+                    restClientFactory.getBaseUrl() + casPasswordResetUrlPath + "?email={email}&customerId={customerId}",
                     uriVariables
                 )
                 .retrieve()

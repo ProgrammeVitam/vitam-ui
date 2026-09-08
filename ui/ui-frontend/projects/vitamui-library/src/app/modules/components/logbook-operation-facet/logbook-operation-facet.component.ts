@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FacetDetails } from '../../models';
+import { FacetDetails } from '../../models/operation/facet-details.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({

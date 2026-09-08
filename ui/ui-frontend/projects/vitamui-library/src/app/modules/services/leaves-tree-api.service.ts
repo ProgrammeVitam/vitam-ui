@@ -36,16 +36,17 @@
  */
 import { firstValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CriteriaDataType, CriteriaOperator } from '../models/criteria/criteria.enums';
+import { ALL_DESCENDANTS_FACET, FACETS_DEFAULT_SIZE, VIRTUAL_PATHS_FACET } from '../models/criteria/search-criteria-configs';
+import { ORPHANS_NODE_ID } from '../models/nodes/filing-holding-scheme.handler';
+import { FilingHoldingSchemeNode } from '../models/nodes/node.interface';
 import {
-  ALL_DESCENDANTS_FACET,
-  CriteriaDataType,
-  CriteriaOperator,
-  FACETS_DEFAULT_SIZE,
-  FilingHoldingSchemeNode,
-  ORPHANS_NODE_ID,
-  VIRTUAL_PATHS_FACET,
-} from '../models';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../models';
+  PagedResult,
+  ResultFacet,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+} from '../models/criteria/search-criteria.interface';
 import { SearchArchiveUnitsInterface } from './search-archive-units.interface';
 import { FacetsUtils } from '../models/criteria/facets.utils';
 

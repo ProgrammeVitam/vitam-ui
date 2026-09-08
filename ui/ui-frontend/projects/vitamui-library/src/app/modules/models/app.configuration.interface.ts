@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Ui, VitamConfiguration } from './application';
+import { Ui } from './application/ui.interface';
+import { VitamConfiguration } from './application/vitam-configuration.interface';
 import { Category } from './application/category.interface';
 
 export interface AppConfiguration {

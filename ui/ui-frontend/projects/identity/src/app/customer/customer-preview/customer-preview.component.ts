@@ -37,7 +37,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { Customer, StartupService } from 'vitamui-library';
+import type { Customer } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 
 @Component({
@@ -48,7 +48,6 @@ import { CustomerService } from '../../core/customer.service';
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
   private customerService = inject(CustomerService);
-  private startupService = inject(StartupService);
 
   @Input() customer: Customer;
   @Input() isPopup: boolean;
@@ -62,15 +61,6 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
     this.customerUpdatedSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {
       this.customer = updatedCustomer;
     });
-  }
-
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/customer/' + this.customer.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
   }
 
   emitClose() {

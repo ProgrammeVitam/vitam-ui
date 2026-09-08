@@ -5,13 +5,7 @@
     </div>
     <p [innerHTML]="'COLORS.' + colorInfo.key + '.INFO' | translate"></p>
     <div>
-      <div
-        #color
-        class="color"
-        [ngClass]="colorInfo.className"
-        style="background-color: var({{ colorInfo.varName }})"
-        [class.border]="colorInfo.border"
-      >
+      <div #color class="color" style="background-color: var({{ colorInfo.varName }})" [class.border]="colorInfo.border">
         <div class="shade-text">
           <div class="text normal">{{ colorToHex(color) }}</div>
           @for (kv of colorToHsl(color) | keyvalue; track kv) {

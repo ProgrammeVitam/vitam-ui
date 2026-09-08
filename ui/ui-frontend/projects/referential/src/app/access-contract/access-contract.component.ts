@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -67,9 +67,9 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
   standalone: false,
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   private dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   private readonly accessContractService = inject(AccessContractService);
   private applicationService = inject(ApplicationService);
   private translateService = inject(TranslateService);
@@ -94,11 +94,11 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => (this.tenantIdentifier = params.tenantIdentifier));
+    this.route.params.subscribe((params) => (this.tenantIdentifier = params['tenantIdentifier']));
     this.globalEventService.tenantEvent.subscribe(() => this.refreshList());
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     super.ngOnDestroy();
   }
 
@@ -127,10 +127,11 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     const params: ImportDialogParam = {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.ACCESS_CONTRACT_SUBTITLE'),
-      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.FILE_FORMAT_DETAIL_INFO'),
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_CSV_SEMICOLON'),
       allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.ACCESS_CONTRACTS,
       successMessage: 'SNACKBAR.ACCESS_CONTRACT_IMPORTED',
+      errorMessage: 'SNACKBAR.IMPORT_REFERENTIAL_FAILED',
       iconMessage: 'vitamui-icon-user',
     };
 
@@ -163,7 +164,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
     });
   }
 
-  public onSearchSubmit(search: string) {
+  onSearchSubmit(search: string) {
     this.search = search || '';
   }
 

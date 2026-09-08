@@ -65,11 +65,11 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
 
     super(route, projectsService);
     route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     super.ngOnDestroy();
     this.createDialogSub?.unsubscribe();
   }

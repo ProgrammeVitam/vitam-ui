@@ -26,9 +26,7 @@
 
 package fr.gouv.vitamui.ingest.server.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
@@ -36,6 +34,8 @@ import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.api.download.SignedDownloadTokenService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.config.Jackson2CompatibilityConfig;
+import fr.gouv.vitamui.commons.rest.config.Jackson2ObjectMapperFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.access.TransferAcknowledgmentService;
@@ -47,7 +47,7 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
 import fr.gouv.vitamui.iam.openapiclient.CustomersApi;
 import fr.gouv.vitamui.iam.openapiclient.ExternalParametersApi;
-import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactoryVitamui;
+import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.UsersApi;
 import fr.gouv.vitamui.iam.security.config.ExternalParametersCommonConfig;
 import fr.gouv.vitamui.iam.security.provider.ApiAuthenticationProvider;
@@ -62,7 +62,7 @@ import fr.gouv.vitamui.ingest.server.service.IngestAccessContractService;
 import fr.gouv.vitamui.ingest.server.service.IngestGeneratorODTFile;
 import fr.gouv.vitamui.ingest.server.service.IngestService;
 import fr.gouv.vitamui.security.openapiclient.ContextsApi;
-import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactoryVitamui;
+import fr.gouv.vitamui.security.openapiclient.SecurityApiClientsFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -79,6 +79,7 @@ import org.springframework.web.client.RestClient;
         VitamAccessConfig.class,
         VitamIngestConfig.class,
         VitamAdministrationConfig.class,
+        Jackson2CompatibilityConfig.class,
         ExternalParametersCommonConfig.class,
     }
 )
@@ -86,25 +87,19 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
+        return Jackson2ObjectMapperFactory.create();
     }
 
     @Bean
-    public SecurityApiClientsFactoryVitamui securityApiClientsFactory(
+    public SecurityApiClientsFactory securityApiClientsFactory(
         final ApiIngestApplicationProperties apiIngestApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new SecurityApiClientsFactoryVitamui(
-            apiIngestApplicationProperties.getSecurityClient(),
-            restClientBuilder
-        );
+        return new SecurityApiClientsFactory(apiIngestApplicationProperties.getSecurityClient(), restClientBuilder);
     }
 
     @Bean
-    public ContextsApi contextsApi(final SecurityApiClientsFactoryVitamui securityApiClientsFactory) {
+    public ContextsApi contextsApi(final SecurityApiClientsFactory securityApiClientsFactory) {
         return securityApiClientsFactory.getContextsApi();
     }
 
@@ -180,15 +175,15 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IamApiClientsFactoryVitamui iamApiClientsFactory(
+    public IamApiClientsFactory iamApiClientsFactory(
         final ApiIngestApplicationProperties ingestApplicationProperties,
         final RestClient.Builder restClientBuilder
     ) {
-        return new IamApiClientsFactoryVitamui(ingestApplicationProperties.getIamClient(), restClientBuilder);
+        return new IamApiClientsFactory(ingestApplicationProperties.getIamClient(), restClientBuilder);
     }
 
     @Bean
-    public UsersApi usersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public UsersApi usersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getUsersApi();
     }
 
@@ -215,7 +210,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public CustomersApi customersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public CustomersApi customersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getCustomersApi();
     }
 
@@ -225,7 +220,7 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalParametersApi externalParametersApi(final IamApiClientsFactoryVitamui iamApiClientsFactory) {
+    public ExternalParametersApi externalParametersApi(final IamApiClientsFactory iamApiClientsFactory) {
         return iamApiClientsFactory.getExternalParametersApi();
     }
 

@@ -54,7 +54,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   selector: 'app-agency-preview',
   template: '',
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyPreviewStub {
   @Input()
   accessContract: any;
@@ -64,7 +63,6 @@ class AgencyPreviewStub {
   selector: 'app-agency-list',
   template: '',
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
 class AgencyListStub {}
 
 describe('AgencyComponent', () => {

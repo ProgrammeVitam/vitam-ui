@@ -29,7 +29,7 @@
             [vitamuiCommonCollapse]
             #row="vitamuiCommonCollapse"
           >
-            <div class="d-flex justify-content-between align-items-center clickable" (click)="updateGroup(group?.id, group?.name, row)">
+            <div class="d-flex justify-content-between align-items-center clickable" (click)="updateGroup(group?.id, group?.name)">
               <div class="align-items-center w-100" vitamuiCommonEllipsis>{{ group?.name }}</div>
               <button class="btn link underline" (click)="$event.stopPropagation(); row.toggle()">
                 {{
@@ -39,9 +39,14 @@
                 }}
               </button>
             </div>
-            @if (row.state === 'expanded') {
-              <app-group-detail [group]="group" [@collapseAnimation]></app-group-detail>
-            }
+            <app-group-detail
+              [group]="group"
+              class="vitamui-collapse"
+              [class.collapsed]="row.state === 'collapsed'"
+              [class.expanded]="row.state === 'expanded'"
+              [attr.aria-hidden]="row.state === 'collapsed' ? 'true' : null"
+              [attr.inert]="row.state === 'collapsed' ? '' : null"
+            ></app-group-detail>
           </div>
         }
       }

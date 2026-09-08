@@ -161,7 +161,7 @@ class TenantServiceTest {
 
         when(userService.getDefaultAdminUser(proofTenant.getCustomerId())).thenReturn(buildUserDto());
 
-        when(groupService.getOne(buildUserDto().getGroupId(), Optional.empty(), Optional.empty())).thenReturn(
+        when(groupService.getOneByPassSecurity(buildUserDto().getGroupId(), Optional.empty())).thenReturn(
             buildGroupDto()
         );
         when(userService.getAll(any(QueryDto.class))).thenReturn(Arrays.asList(buildUserDto()));

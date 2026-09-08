@@ -44,7 +44,7 @@ import { ArchiveApiService } from '../core/api/archive-api.service';
 import { vi } from 'vitest';
 import { of } from 'rxjs';
 
-const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
+const createSpyObj = (name: string, methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 
 describe('ArchiveService', () => {
   let service: ArchiveService;

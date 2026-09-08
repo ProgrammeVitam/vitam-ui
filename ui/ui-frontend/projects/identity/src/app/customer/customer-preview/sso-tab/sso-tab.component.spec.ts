@@ -40,7 +40,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { of, Subject } from 'rxjs';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { BASE_URL, Customer, IdentityProvider, OtpState } from 'vitamui-library';
+import { BASE_URL, OtpState } from 'vitamui-library';
+import type { Customer, IdentityProvider } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';

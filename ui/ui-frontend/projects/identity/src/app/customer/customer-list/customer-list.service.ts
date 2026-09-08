@@ -55,7 +55,7 @@ export class CustomerListService extends SearchService<Customer> {
     this.customerApi = customerApi;
   }
 
-  search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'code', Direction.ASCENDANT)): Observable<Customer[]> {
+  override search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'code', Direction.ASCENDANT)): Observable<Customer[]> {
     this.pageRequest = pageRequest;
 
     return this.customerApi.getAllPaginated(this.pageRequest, 'OWNER,TENANT').pipe(
@@ -69,7 +69,7 @@ export class CustomerListService extends SearchService<Customer> {
     );
   }
 
-  loadMore(): Observable<Customer[]> {
+  override loadMore(): Observable<Customer[]> {
     if (!this.hasMore) {
       return of(this.data);
     }

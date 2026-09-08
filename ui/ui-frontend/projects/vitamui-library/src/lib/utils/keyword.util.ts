@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { PositionType } from '../../app/modules';
+import { PositionType } from '../../app/modules/models/position/position-type.enum';
 import { MetadataPermission } from '../models/metadata.interface';
 import { Unit } from '../../app/modules/models/units/unit.interface';
 

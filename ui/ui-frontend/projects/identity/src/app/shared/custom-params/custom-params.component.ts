@@ -40,7 +40,7 @@ import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/f
 import { VitamUIFieldErrorComponent } from 'vitamui-library';
 export const LIST_INPUT_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => CustomParamsComponent),
   multi: true,
 };

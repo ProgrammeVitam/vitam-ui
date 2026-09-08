@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Tenant } from '../customer';
+import { Tenant } from '../customer/tenant.interface';
 
 export interface TenantsByApplication {
   name: string;

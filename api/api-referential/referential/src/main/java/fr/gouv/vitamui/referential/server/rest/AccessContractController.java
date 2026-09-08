@@ -264,4 +264,17 @@ public class AccessContractController {
 
         return accessContractService.importAccessContracts(file);
     }
+
+    @Secured(ServicesData.ROLE_CREATE_ACCESS_CONTRACTS)
+    @PostMapping(CommonConstants.PATH_IMPORT + "/check")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Void> getCSVCheckResults(@RequestParam MultipartFile file) {
+        SanityChecker.isValidFileName(file.getOriginalFilename());
+        ParameterChecker.checkParameter("The fileName is mandatory parameter : ", file.getOriginalFilename());
+        LOGGER.debug("CSV check results of file {}", file.getOriginalFilename());
+
+        accessContractService.checkCSV(file);
+
+        return ResponseEntity.ok().build();
+    }
 }

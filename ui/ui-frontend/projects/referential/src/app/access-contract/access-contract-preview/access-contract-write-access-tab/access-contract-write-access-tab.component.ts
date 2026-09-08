@@ -39,7 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, AccessContractService, diff, Option } from 'vitamui-library';
+import type { AccessContract, Option } from 'vitamui-library';
+import { AccessContractService, diff } from 'vitamui-library';
 
 @Component({
   selector: 'app-access-contract-write-access-tab',
@@ -97,8 +98,8 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   ngOnInit() {
     this.form.get('downloadChoose').valueChanges.subscribe((val) => {
       this.form.get('everyDataObjectVersion').setValue(val === 'ALL', { emitEvent: false });
-      this.form.controls.dataObjectVersion.setValidators(val === 'SELECTION' ? Validators.required : []);
-      this.form.controls.dataObjectVersion.updateValueAndValidity();
+      this.form.controls['dataObjectVersion'].setValidators(val === 'SELECTION' ? Validators.required : []);
+      this.form.controls['dataObjectVersion'].updateValueAndValidity();
     });
 
     this.onWritingRestrictedDescChanges();

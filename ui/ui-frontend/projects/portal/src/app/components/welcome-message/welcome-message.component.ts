@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-welcome-message',
@@ -47,5 +48,5 @@ export class WelcomeMessageComponent {
 
   @Input() message: string;
 
-  @Input() imgUrl: string;
+  @Input() imgUrl: string | SafeResourceUrl;
 }

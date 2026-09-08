@@ -37,7 +37,8 @@
 import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
-import { ConfirmActionComponent, Rule, RuleService } from 'vitamui-library';
+import type { Rule } from 'vitamui-library';
+import { ConfirmActionComponent, RuleService } from 'vitamui-library';
 import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 import { switchMap } from 'rxjs/operators';
 
@@ -62,7 +63,7 @@ export class RulePreviewComponent implements AfterViewInit {
   @ViewChild('infoTab', { static: false }) infoTab: RuleInformationTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
+  beforeunloadHandler(event: any): string | void {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();

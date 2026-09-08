@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { ApplicationId } from '../../../app/modules/application-id.enum';
+import { CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
 import {
   ACCESS_RULE,
-  ApplicationId,
   APPRAISAL_RULE,
-  CriteriaOperator,
   DISSEMINATION_RULE,
   END_DATE_ACCESS,
   END_DATE_DISSEMINATION,
@@ -67,11 +67,10 @@ import {
   ORIGIN_INHERITE_AT_LEAST_ONE,
   ORIGIN_WAITING_RECALCULATE,
   REUSE_RULE,
-  SearchCriteriaCategory,
-  SearchCriteriaTypeEnum,
-  StartupService,
   STORAGE_RULE,
-} from '../../../app/modules';
+} from '../../../app/modules/models/criteria/search-criteria-configs';
+import { SearchCriteriaCategory, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
+import { StartupService } from '../../../app/modules/startup.service';
 import { composeCheckboxConfig, composeCheckboxes, composeKeysList } from './management-rule-checkbox';
 import { InjectionToken } from '@angular/core';
 

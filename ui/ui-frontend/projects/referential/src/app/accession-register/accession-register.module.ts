@@ -53,7 +53,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
-// eslint-disable-next-line max-len
+
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';

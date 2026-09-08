@@ -52,7 +52,7 @@ export class AppRootComponent {
       if (!data.hasOwnProperty('appId')) {
         this.logger.error(this, 'Error: Missing "appId" property in route data.');
       } else {
-        this._appId = data.appId;
+        this._appId = data['appId'];
       }
     });
   }

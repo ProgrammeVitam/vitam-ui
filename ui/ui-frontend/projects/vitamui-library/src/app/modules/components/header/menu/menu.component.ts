@@ -39,12 +39,12 @@ import {
   ChangeDetectorRef,
   Component,
   HostListener,
+  inject,
   OnDestroy,
   OnInit,
   QueryList,
   ViewChild,
   ViewChildren,
-  inject,
 } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -52,9 +52,8 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { opacityAnimation, slideAnimation } from '../../../animations';
 import { ApplicationService } from '../../../application.service';
-import { Category } from '../../../models';
+import { Category } from '../../../models/application/category.interface';
 import { Application } from '../../../models/application/application.interface';
 import { StartupService } from '../../../startup.service';
 import { TenantSelectionService } from '../../../tenant-selection.service';
@@ -75,7 +74,6 @@ interface NgxTranslateApp {
   selector: 'vitamui-common-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
-  animations: [opacityAnimation, slideAnimation],
   standalone: false,
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {

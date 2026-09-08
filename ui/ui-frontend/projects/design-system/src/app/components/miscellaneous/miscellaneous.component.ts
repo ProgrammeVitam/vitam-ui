@@ -50,6 +50,7 @@ const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
   imports: [MatProgressSpinnerModule, VitamUICommonModule, MatMenuItem, TranslatePipe],
 })
 export class MiscellaneousComponent {
+  menuColors = ['primary', 'secondary'] as const;
   infiniteValues: number[] = [1, 2, 3, 4, 5];
   infiniteScrollDisabled = false;
   scrollLastValue = 6;

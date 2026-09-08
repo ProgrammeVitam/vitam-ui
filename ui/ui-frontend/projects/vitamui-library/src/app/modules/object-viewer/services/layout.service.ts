@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Logger } from '../../logger/logger';
-import { DisplayObject, Layout } from '../models';
+import { DisplayObject } from '../models/display-object.model';
+import { Layout } from '../models/layout.model';
 import { LayoutSize } from '../types';
 
 @Injectable({

@@ -38,7 +38,8 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, Context } from 'vitamui-library';
+import type { Context } from 'vitamui-library';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { ContextService } from '../context.service';
 import { ContextInformationTabComponent } from './context-information-tab/context-information-tab.component';
 import { ContextPermissionTabComponent } from './context-permission-tab/context-permission-tab.component';
@@ -64,7 +65,7 @@ export class ContextPreviewComponent implements AfterViewInit {
   @ViewChild('permsTab', { static: false }) permsTab: ContextInformationTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
+  beforeunloadHandler(event: any): string | void {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();

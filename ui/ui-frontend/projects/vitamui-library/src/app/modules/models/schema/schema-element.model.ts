@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { WithPath } from '../../object-viewer/models';
+import { WithPath } from '../../object-viewer/models/with-path.model';
 import { Cardinality, EffectiveCardinality, SedaVersion } from '../../object-viewer/types';
-import { Collection } from '../index';
+import { Collection } from './collection.enum';
 import { Control } from './control.model';
 
 export interface SchemaElement extends WithPath {

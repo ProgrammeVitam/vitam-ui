@@ -50,7 +50,8 @@ import {
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AccessContract, AccessContractService, Unit, unitToVitamuiIcon } from 'vitamui-library';
+import type { Unit } from 'vitamui-library';
+import { AccessContract, AccessContractService, unitToVitamuiIcon } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
@@ -87,7 +88,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
 
   constructor() {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      this.tenantIdentifier = +params['tenantIdentifier'];
     });
   }
 
@@ -155,11 +156,11 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes.archiveUnit) {
+    if (changes['archiveUnit']) {
       if (this.descriptionTab?.isModified()) {
-        this.archiveUnit = changes.archiveUnit.previousValue;
+        this.archiveUnit = changes['archiveUnit']['previousValue'];
         await this.checkBeforeExit().then(() => {
-          this.archiveUnit = changes.archiveUnit.currentValue;
+          this.archiveUnit = changes['archiveUnit']['currentValue'];
         });
       }
       this.showNormalPanel();

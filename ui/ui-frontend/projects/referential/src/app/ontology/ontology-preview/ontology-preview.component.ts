@@ -80,7 +80,6 @@ export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();
 
-  isPopup: boolean;
   title: string;
   identifier: string;
 

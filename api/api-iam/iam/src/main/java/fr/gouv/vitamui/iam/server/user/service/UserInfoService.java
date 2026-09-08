@@ -68,6 +68,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -196,6 +197,11 @@ public class UserInfoService extends AbstractResourceClientService<UserInfoDto, 
         super.checkIdentifier(dto.getIdentifier(), message);
 
         dto.setIdentifier(getNextSequenceId(SequencesConstants.USER_INFOS_IDENTIFIER));
+    }
+
+    @Override
+    protected Collection<String> getRestrictedKeys() {
+        return Collections.emptyList();
     }
 
     @Override

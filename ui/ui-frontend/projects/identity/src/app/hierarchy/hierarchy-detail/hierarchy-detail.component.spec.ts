@@ -45,7 +45,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { EMPTY, of, Subject } from 'rxjs';
 import { environment } from './../../../environments/environment';
 
-import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, Profile, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthService, BASE_URL, ENVIRONMENT, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import type { Profile } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyDetailComponent } from './hierarchy-detail.component';

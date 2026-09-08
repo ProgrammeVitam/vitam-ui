@@ -126,6 +126,7 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
             if (value.length && !(value as SchemaElement[]).map((v) => v.Path).some((path) => path === 'TextContent')) {
               return { CONTAINS_TextContent: true };
             }
+            return undefined;
           },
         ]
       : config?.disabled

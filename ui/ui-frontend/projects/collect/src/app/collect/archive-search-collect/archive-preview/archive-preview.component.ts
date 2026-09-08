@@ -48,7 +48,8 @@ import {
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { TranslateService } from '@ngx-translate/core';
-import { Unit, unitToVitamuiIcon, ArchiveUnit, addErrorStatusBadgeIfArchiveUnitHasErrors } from 'vitamui-library';
+import type { ArchiveUnit, Unit } from 'vitamui-library';
+import { unitToVitamuiIcon, addErrorStatusBadgeIfArchiveUnitHasErrors } from 'vitamui-library';
 import { ArchiveUnitDescriptionTabComponent } from './archive-unit-description-tab/archive-unit-description-tab.component';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
@@ -145,11 +146,11 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if (changes.archiveUnit) {
+    if (changes['archiveUnit']) {
       if (this.descriptionTab?.isModified()) {
-        this.archiveUnit = changes.archiveUnit.previousValue;
+        this.archiveUnit = changes['archiveUnit']['previousValue'];
         await this.checkBeforeExit().then(() => {
-          this.archiveUnit = changes.archiveUnit.currentValue;
+          this.archiveUnit = changes['archiveUnit']['currentValue'];
         });
       }
       this.showNormalPanel();

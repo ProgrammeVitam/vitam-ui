@@ -47,9 +47,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [ReactiveFormsModule, CommonTooltipModule, MatTooltipModule, FormsModule, InputComponent],
 })
 export class TooltipComponent implements AfterViewInit {
-  outlineValues = [true, false];
-  colors = ['primary', 'secondary', 'red', 'orange'];
-  positions = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'];
+  outlineValues = [true, false] as const;
+  colors = ['primary', 'secondary', 'red', 'orange'] as const;
+  positions = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'] as const;
   disabled = false;
   tooltipText = '';
 

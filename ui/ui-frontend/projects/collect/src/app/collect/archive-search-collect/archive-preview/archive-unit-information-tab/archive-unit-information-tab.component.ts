@@ -79,7 +79,7 @@ export class ArchiveUnitInformationTabComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.checkDownloadPermissions();
 
-    if (changes.archiveUnit?.currentValue['#id']) {
+    if (changes['archiveUnit']?.['currentValue']['#id']) {
       // TODO : Créer Web service de création du chemin d'archive
       // this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
     }

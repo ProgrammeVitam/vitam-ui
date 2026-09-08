@@ -38,14 +38,16 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DisplayRule } from './display-rule.model';
 import { DisplayObject } from './display-object.model';
+import { Mode } from './display-object.enum';
+import { AUMode } from '../../archive-unit/components/archive-unit-viewer/archive-unit-viewer.service';
 
 @Injectable()
-export abstract class DisplayObjectService {
+export abstract class DisplayObjectService<T extends Mode | AUMode> {
   displayObject$: Observable<any>;
 
   public abstract setData(data: any): void;
   public abstract setTemplate(template: DisplayRule[]): void;
-  public abstract setMode(mode: string): void;
+  public abstract setMode(mode: T): void;
 
   public afterCompute?(displayObject: DisplayObject): DisplayObject {
     return displayObject;

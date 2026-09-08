@@ -39,12 +39,12 @@ import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
 import { EMPTY } from 'rxjs';
-import { VitamUICommonTestModule } from '../../../../testing/src';
+import { VitamUICommonTestModule } from '../../../../testing/src/vitamui-common-test.module';
 
 import { AuthService } from '../auth.service';
 import { SnackBarService } from '../components/snack-bar/snack-bar.service';
 import { BASE_URL } from '../injection-tokens';
-import { LoggerModule } from '../logger';
+import { LoggerModule } from '../logger/logger.module';
 import { environment } from './../../../environments/environment';
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './../injection-tokens';
 import { SubrogationService } from './subrogation.service';

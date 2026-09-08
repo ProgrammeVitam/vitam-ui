@@ -417,13 +417,7 @@ public class IngestContractService extends AbstractService {
     }
 
     public ResponseEntity<Void> importIngestContracts(VitamContext vitamContext, MultipartFile file) {
-        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(INGEST_CONTRACT);
-
-        if (isIdentifierMandatory == null) {
-            throw new InternalServerException("The result of the API call should not be null");
-        }
-
-        IngestContractCSVUtils.checkImportFile(file, isIdentifierMandatory);
+        checkCSV(file);
         LOGGER.debug("ingest contracts file {} has been validated before parsing it", file.getOriginalFilename());
 
         List<IngestContractDto> ingestContractDtos = convertCsvFileToIngestContractsDto(file);
@@ -456,6 +450,16 @@ public class IngestContractService extends AbstractService {
                 )
             )
         );
+    }
+
+    public void checkCSV(MultipartFile file) {
+        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(INGEST_CONTRACT);
+
+        if (isIdentifierMandatory == null) {
+            throw new InternalServerException("The result of the API call should not be null");
+        }
+
+        IngestContractCSVUtils.checkImportFile(file, isIdentifierMandatory);
     }
 
     private List<IngestContractDto> convertCsvFileToIngestContractsDto(MultipartFile file) {

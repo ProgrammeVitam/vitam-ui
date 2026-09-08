@@ -133,7 +133,7 @@ export interface UnitRuleDto {
 
 export interface InheritedPropertyDto {
   PropertyName: string;
-  PropertyValue: object;
+  PropertyValue: string;
   Paths: any[];
 }
 

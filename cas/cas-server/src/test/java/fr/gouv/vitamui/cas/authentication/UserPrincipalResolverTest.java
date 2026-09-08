@@ -329,6 +329,46 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
     }
 
     @Test
+    public void testResolveAuthnDelegationIsCaseInsensitiveOnTheEmailReturnedByTheIdp() throws Throwable {
+        // l'utilisateur a saisi "user@test.com" dans le formulaire de login : le webflow l'a stocké en minuscules dans la session
+        givenLoginInfoInSessionForDeleguatedAuthn();
+
+        final var provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        provider.setMailAttribute(MAIL);
+        when(
+            identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
+        ).thenReturn(Optional.of(provider));
+
+        //  l'IdP retourne "USER@test.com"
+        final var princAttributes = new HashMap<String, List<Object>>();
+        princAttributes.put(MAIL, Collections.singletonList(USERNAME_EMAIL_WITH_OTHER_CASE));
+
+        // l'utilisateur doit être chargé à partir de l'e-mail en minuscules de la session, pas à partir de celui de l'IdP :
+        // ce mock ne répond qu'à cette valeur.
+        when(
+            casApi.getUser(
+                eq(USERNAME),
+                eq(CUSTOMER_ID),
+                eq(PROVIDER_ID),
+                eq("fake"),
+                eq(CommonConstants.AUTH_TOKEN_PARAMETER)
+            )
+        ).thenReturn(userProfile(UserStatusEnum.ENABLED));
+
+        final var principal = resolver.resolve(
+            new ClientCredential(null, PROVIDER_NAME),
+            Optional.of(principalFactory.createPrincipal("fake", princAttributes)),
+            Optional.empty(),
+            Optional.empty()
+        );
+
+        // l'authentification réussit malgré la différence de casse
+        assertEquals(USERNAME_ID, principal.getId());
+        assertEquals(USERNAME, principal.getAttributes().get(CommonConstants.EMAIL_ATTRIBUTE).getFirst());
+    }
+
+    @Test
     public void testResolveAuthnDelegationIdentifierAttribute() throws Throwable {
         final var provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);

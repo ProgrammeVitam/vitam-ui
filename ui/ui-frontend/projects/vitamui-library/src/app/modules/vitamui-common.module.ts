@@ -107,7 +107,7 @@ import { VitamuiTreeNodeComponent } from './components/vitamui-tree-node/vitamui
 import { InputComponent } from '../../lib/components/input/input.component';
 import { VitamUIFieldErrorComponent } from './components/vitamui-field-error/vitamui-field-error.component';
 import { ElementsComponent } from './components/elements/elements.component';
-import { EventTypeLabelComponent } from './logbook';
+import { EventTypeLabelComponent } from './logbook/event-type-label/event-type-label.component';
 import { HistoryEventsComponent } from './logbook/history/history-events/history-events.component';
 import { TranslatePipe } from '@ngx-translate/core';
 

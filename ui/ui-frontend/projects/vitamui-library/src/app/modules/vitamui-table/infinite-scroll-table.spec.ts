@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable no-magic-numbers */
 
 import { Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -47,11 +46,11 @@ class SearchServiceMock extends SearchService<any> {
     super(null);
   }
 
-  search(): Observable<any[]> {
+  override search(): Observable<any[]> {
     return of(['value1', 'value2']);
   }
 
-  loadMore(): Observable<any[]> {
+  override loadMore(): Observable<any[]> {
     return of(['value3', 'value4']);
   }
 }

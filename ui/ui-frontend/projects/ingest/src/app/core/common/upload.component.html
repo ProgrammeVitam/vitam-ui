@@ -4,53 +4,11 @@
 ></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <form [formGroup]="sipForm">
-    <div class="d-flex">
-      <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleFile($event)">
-        @if (fileName && fileSize > 0 && fileSizeString) {
-          <div class="drag-container">
-            <div class="file-info-class">
-              {{ fileName }}
-              <span class="text light" [ngStyle]="{ 'font-size': '13px' }"> | {{ fileSizeString }} </span>
-              @if (!hasError) {
-                <i class="material-icons success-icon">check_circle</i>
-              }
-              <div>
-                <span class="text danger bold">{{ message }} </span>
-                @if (hasError) {
-                  <i class="material-icons error-icon">cancel</i>
-                }
-              </div>
-            </div>
-          </div>
-        }
-
-        <input type="file" #fileSearch class="input-file" (change)="handleFile($event.target.files)" />
-
-        <div class="drop-area">
-          @if (!fileSize || !hasSip) {
-            <div class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br /></div>
-          }
-          @if (!fileSize || !hasSip) {
-            <div>
-              <div class="sip-drop">
-                <div class="upload">
-                  <span class="url-select" (click)="addSip()">{{ 'INGEST_UPLOAD.BROWSE' | translate }}</span>
-                </div>
-                <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_1' | translate }}</span
-                ><br />
-                <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate }}</span>
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
-  </form>
+  <vitamui-file-selector [formControl]="sipControl" [maxSizeInBytes]="FILE_MAX_SIZE" [extensions]="extensions" />
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">
+  <button type="button" class="btn primary" [disabled]="sipControl.invalid || sipControl.pending" (click)="upload()">
     {{ (contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.CONFIRM_BLANK' : 'INGEST_UPLOAD.CONFIRM') | translate }}
   </button>
   <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>

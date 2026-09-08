@@ -39,7 +39,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Option, SecurityProfile, diff } from 'vitamui-library';
+import type { Option, SecurityProfile } from 'vitamui-library';
+import { diff } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
 
 @Component({
@@ -121,7 +122,7 @@ export class SecurityProfileInformationTabComponent {
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
-        if (formData.fullAccess) {
+        if (formData['fullAccess']) {
           formData = { ...formData, permissions: [] };
         }
         return this.securityProfileService.patch(formData).pipe(catchError(() => of(null)));

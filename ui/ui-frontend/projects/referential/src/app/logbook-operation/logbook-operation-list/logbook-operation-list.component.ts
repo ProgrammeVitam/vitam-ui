@@ -125,7 +125,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.tenantIdentifier || changes.filters) {
+    if (changes['tenantIdentifier'] || changes['filters']) {
       this.refreshList();
     }
   }
@@ -157,7 +157,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   }
 
   public resetFilters(): void {
-    this.filterMap.operationCategories = null;
+    this.filterMap['operationCategories'] = null;
     this.filterChange.next(this.filterMap);
   }
 
@@ -200,8 +200,8 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
       }
     }
 
-    if (this.filterMap && this.filterMap.operationCategories) {
-      criteria.types = this.filterMap.operationCategories;
+    if (this.filterMap && this.filterMap['operationCategories']) {
+      criteria.types = this.filterMap['operationCategories'];
     }
 
     return criteria;

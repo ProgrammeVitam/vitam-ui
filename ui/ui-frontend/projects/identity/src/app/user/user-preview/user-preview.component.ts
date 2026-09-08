@@ -38,7 +38,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef,
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User, UserInfo } from 'vitamui-library';
+import { AuthService, isLevelAllowed, StartupService } from 'vitamui-library';
+import type { AdminUserProfile, Customer, Group, User, UserInfo } from 'vitamui-library';
 import { UserInfoService } from './../user-info.service';
 
 import { UserApiService } from '../../core/api/user-api.service';
@@ -132,15 +133,6 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     this.userUpdatedSub.unsubscribe();
   }
 
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/user/' + this.user.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
-  }
-
   updateStatus(status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
@@ -163,6 +155,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     if (this.user) {
       return !isLevelAllowed(this.authService.user, this.user.level);
     }
+    return false;
   }
 
   emitClose() {

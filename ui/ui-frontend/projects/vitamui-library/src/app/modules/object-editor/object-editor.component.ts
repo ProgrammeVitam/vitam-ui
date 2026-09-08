@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { DisplayObjectType } from '../object-viewer/types';
-import { EditObject } from './models/edit-object.model';
+import type { EditObject } from './models/edit-object.model';
 
 @Component({
   selector: 'vitamui-common-object-editor',
@@ -46,6 +47,10 @@ import { EditObject } from './models/edit-object.model';
 })
 export class ObjectEditorComponent {
   @Input() editObject!: EditObject;
+
+  get formGroup(): FormGroup {
+    return this.editObject.control as FormGroup;
+  }
 
   readonly DisplayObjectType = DisplayObjectType;
 }

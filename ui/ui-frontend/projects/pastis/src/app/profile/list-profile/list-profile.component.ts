@@ -112,7 +112,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   private dialog = inject(MatDialog);
   private startupService = inject(StartupService);
   private pastisConfig = inject(PastisConfiguration);
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   private dataGeneriquePopupService = inject(DataGeneriquePopupService);
   private translateService = inject(TranslateService);
   private toggleService = inject(ToggleSidenavService);
@@ -258,7 +258,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     });
   }
 
-  uploadProfile(files: File[]): void {
+  uploadProfile(files: FileList): void {
     const fileToUpload: File = files[0];
 
     if (fileToUpload) {
@@ -305,7 +305,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.subscriptions.push(subscription);
   }
 
-  public onSearchSubmit(search: string): void {
+  onSearchSubmit(search: string): void {
     if (!search) {
       search = '';
     }
@@ -327,7 +327,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     }
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
     if (this.pendingSub) this.pendingSub.unsubscribe();

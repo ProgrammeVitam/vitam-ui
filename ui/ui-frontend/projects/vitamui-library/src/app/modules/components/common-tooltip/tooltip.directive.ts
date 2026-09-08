@@ -49,7 +49,7 @@ import {
   SimpleChanges,
   inject,
 } from '@angular/core';
-import { TooltipPosition } from './TooltipPosition.enum';
+import type { TooltipPosition } from './TooltipPosition.enum';
 import { CommonTooltipComponent } from './common-tooltip.component';
 
 const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
@@ -91,8 +91,8 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   private elementRef = inject(ElementRef);
 
   @Input('vitamuiTooltip') text?: string;
-  @Input() outline = false;
-  @Input() vitamuiTooltipPosition: TooltipPosition = TooltipPosition.BOTTOM;
+  @Input({ transform: coerceBooleanProperty }) outline = false;
+  @Input() vitamuiTooltipPosition: TooltipPosition = 'BOTTOM';
   @Input() vitamuiTooltipClass?: string;
   @Input() vitamuiTooltipShowDelay = 0;
   /** Disables the display of the tooltip. */
@@ -112,7 +112,7 @@ export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
     if (this.#tooltipRef?.instance) {
       this.updateTooltip();
     }
-    if (changes.disabled) {
+    if (changes['disabled']) {
       if (this.disabled) (this.elementRef.nativeElement as HTMLElement).classList.remove(TOOLTIP_TRIGGER_CLASS);
       else (this.elementRef.nativeElement as HTMLElement).classList.add(TOOLTIP_TRIGGER_CLASS);
 

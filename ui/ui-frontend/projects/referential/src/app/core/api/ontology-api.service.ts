@@ -53,19 +53,19 @@ export class OntologyApiService extends PaginatedHttpClient<Ontology> {
     super(http, baseUrl + '/ontology');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Ontology> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Ontology> {
     return super.getOne(id, headers);
   }
 
-  patch(partialOntology: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialOntology: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialOntology, headers);
   }
 
-  create(ontology: Ontology, headers?: HttpHeaders): Observable<Ontology> {
+  override create(ontology: Ontology, headers?: HttpHeaders): Observable<Ontology> {
     return super.getHttp().post<any>(super.getApiUrl(), ontology, { headers });
   }
 

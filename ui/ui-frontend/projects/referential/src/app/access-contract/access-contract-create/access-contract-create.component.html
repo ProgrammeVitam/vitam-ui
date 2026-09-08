@@ -117,7 +117,7 @@
 
       <mat-dialog-actions>
         <div>
-          <vitamui-next-step [disabled]="form.get('thirdStep').errors"></vitamui-next-step>
+          <vitamui-next-step [disabled]="!!form.get('thirdStep').errors"></vitamui-next-step>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
         <vitamui-previous-step></vitamui-previous-step>

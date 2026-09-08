@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ArchiveUnit, SearchCriteriaDto } from '../../../app/modules';
+import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
+import { SearchCriteriaDto } from '../../../app/modules/models/criteria/search-criteria.interface';
 import {
   childrenCountQuery,
   dedupe,
@@ -44,7 +45,7 @@ import {
   searchByIdsQuery,
   withAdditionalFieldsQuery,
 } from './reclassification-dialog.queries';
-import { computed, Injectable, signal, inject } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { iif, switchMap } from 'rxjs';
 import { filter, first, map, shareReplay, tap } from 'rxjs/operators';

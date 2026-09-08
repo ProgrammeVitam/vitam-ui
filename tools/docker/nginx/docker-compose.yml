@@ -1,9 +1,57 @@
-version: '3'
 services:
   nginx:
-    image: nginx
+    image: nginx:1.29-alpine
+    container_name: ${VITAMUI_CONTAINER_NAME:-vitamui-nginx}
+    restart: unless-stopped
+
     network_mode: host
+
+    environment:
+      NGINX_ENVSUBST_FILTER: '^VITAMUI_'
+      NGINX_ENVSUBST_OUTPUT_DIR: /etc/nginx/conf.d
+
+      VITAMUI_SERVER_NAME: ${VITAMUI_SERVER_NAME:-dev.vitamui.com}
+      VITAMUI_PUBLIC_ORIGIN: ${VITAMUI_PUBLIC_ORIGIN:-https://dev.vitamui.com}
+      VITAMUI_HTTP_PORT: ${VITAMUI_HTTP_PORT:-80}
+      VITAMUI_HTTPS_PORT: ${VITAMUI_HTTPS_PORT:-443}
+      VITAMUI_GATEWAY: ${VITAMUI_GATEWAY:-127.0.0.1:8070}
+      VITAMUI_CAS: ${VITAMUI_CAS:-127.0.0.1:8080}
+
+      # Angular dev-server ports (ui/ui-frontend/angular.json): when a dev
+      # server answers on its port, the app is served live, otherwise from
+      # its dist/.
+      VITAMUI_NG_PORT_PORTAL: ${VITAMUI_NG_PORT_PORTAL:-4200}
+      VITAMUI_NG_PORT_IDENTITY: ${VITAMUI_NG_PORT_IDENTITY:-4201}
+      VITAMUI_NG_PORT_REFERENTIAL: ${VITAMUI_NG_PORT_REFERENTIAL:-4202}
+      VITAMUI_NG_PORT_INGEST: ${VITAMUI_NG_PORT_INGEST:-4208}
+      VITAMUI_NG_PORT_ARCHIVE_SEARCH: ${VITAMUI_NG_PORT_ARCHIVE_SEARCH:-4209}
+      VITAMUI_NG_PORT_COLLECT: ${VITAMUI_NG_PORT_COLLECT:-4210}
+      VITAMUI_NG_PORT_DESIGN_SYSTEM: ${VITAMUI_NG_PORT_DESIGN_SYSTEM:-4242}
+      VITAMUI_NG_PORT_PASTIS: ${VITAMUI_NG_PORT_PASTIS:-4251}
+
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ../../../../vitam-ui/ui/ui-frontend/dist:/usr/share/nginx/html/vitamui:z
-      - ../../../dev-deployment/environments/certs/vitamui-services:/etc/nginx/certs/vitamui-services
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./conf/snippets:/etc/nginx/snippets:ro
+      - ./conf/templates:/etc/nginx/templates:ro
+
+      - ./conf/proxy_ssl_password:/etc/nginx/proxy_ssl_password:ro
+
+      - ./conf/disabled-default.conf:/etc/nginx/conf.d/default.conf:ro
+
+      - ${VITAMUI_DIST_DIR:-../../../ui/ui-frontend/dist}:/usr/share/nginx/html/vitamui:ro
+
+      - ${VITAMUI_CERTS_DIR:-../../../dev-deployment/environments/certs/vitamui-services}:/etc/nginx/certs:ro
+
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --quiet
+        - --tries=1
+        - --no-check-certificate
+        - --spider
+        - https://${VITAMUI_SERVER_NAME:-dev.vitamui.com}:${VITAMUI_HTTPS_PORT:-443}/__vitamui/health
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

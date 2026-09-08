@@ -92,7 +92,7 @@ export class PreservationPreviewComponent {
   }
 
   downloadScenario() {
-    const blob = new Blob([JSON.stringify(this.selectedElement(), null, 2)], { type: 'octet/stream' });
+    const blob = new Blob([JSON.stringify([this.selectedElement()], null, 2)], { type: 'octet/stream' });
     download(blob, 'PreservationScenario.json');
   }
 

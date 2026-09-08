@@ -5,8 +5,7 @@
     "sourceMap": false,
     "inlineSourceMap": false,
   },
-// FIXME: enable partial compilation mode
-//  "angularCompilerOptions": {
-//    "compilationMode": "partial"
-//  }
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  }
 }

@@ -98,7 +98,6 @@ public class ExternalParamProfileService {
     private static final String USE_PLATFORM_BULK_OPERATIONS_THRESHOLD = "usePlatformThreshold";
     private static final String BULK_OPERATIONS_THRESHOLD = "bulkOperationsThreshold";
     private static final String ID_PROFILE = "idProfile";
-    private static final String ID_EXTERNAL_PARAM = "idExternalParam";
     private static final String EXTERNAL_PARAM_PROFILE = "externalparamprofile";
 
     public ExternalParamProfileService(
@@ -233,8 +232,11 @@ public class ExternalParamProfileService {
         // Patch du profile
         patchProfile(profileDto, externalParamProfileDto, partialDto, externalParamProfileLogbooks);
 
-        String idExternalParam = (String) partialDto.get(ID_EXTERNAL_PARAM);
-        ExternalParametersDto externalParametersDto = externalParametersService.getOne(idExternalParam);
+        String idExternalParam = externalParamProfileDto.getIdExternalParam();
+        ExternalParametersDto externalParametersDto = externalParametersService.getOneByPassSecurity(
+            idExternalParam,
+            Optional.empty()
+        );
         Collection<EventDiffDto> externalParametersLogbooks = new ArrayList<>();
 
         Map<String, ParameterDto> parametersMaps = Optional.ofNullable(externalParametersDto.getParameters())

@@ -1,12 +1,12 @@
 <vitamui-dialog-header [title]="'GROUP.INFORMATIONS.MODAL.UPDATE_UNITS' | translate: { name: data?.group?.name }"></vitamui-dialog-header>
 
-<mat-dialog-content>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
     <app-units-form [customer]="data?.group?.customerId" formControlName="units"></app-units-form>
-  </form>
-</mat-dialog-content>
+  </mat-dialog-content>
 
-<mat-dialog-actions>
-  <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
-  <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-</mat-dialog-actions>
+  <mat-dialog-actions>
+    <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</form>

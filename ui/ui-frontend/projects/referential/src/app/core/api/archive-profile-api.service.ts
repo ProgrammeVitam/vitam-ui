@@ -49,7 +49,7 @@ export class ArchiveProfileApiService extends BaseHttpClient<any> {
     super(http, baseUrl + '/profile');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 }

@@ -87,7 +87,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   private _searchText: string;
 
   private groups: Array<{ id: string; group: any }> = [];
-  overridePendingChange: true;
+  override overridePendingChange: true;
   loaded = false;
   customerId: string;
   currenteUser: AuthUser;

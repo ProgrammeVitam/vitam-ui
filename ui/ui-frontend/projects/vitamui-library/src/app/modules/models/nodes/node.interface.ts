@@ -34,7 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id, SigningInformation, UnitType } from '../index';
+import { Id } from '../id.interface';
+import { UnitType } from '../units/unit-type.enum';
+import { SigningInformation } from '../units/unit.interface';
 import { DescriptionLevel } from '../../../../lib/models/description-level.enum';
 
 export interface FilingHoldingSchemeNode extends Id {

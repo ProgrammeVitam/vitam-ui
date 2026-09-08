@@ -36,7 +36,7 @@
  */
 import { Component, Input } from '@angular/core';
 
-import { HistoryEvent } from '../../../models';
+import { HistoryEvent } from '../../../models/logbook/event.interface';
 import { EventTypeLabelComponent } from '../../event-type-label/event-type-label.component';
 import { PipesModule } from '../../../pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -63,5 +63,7 @@ export class HistoryEventsComponent {
         return event.data;
       }
     }
+
+    return null;
   }
 }

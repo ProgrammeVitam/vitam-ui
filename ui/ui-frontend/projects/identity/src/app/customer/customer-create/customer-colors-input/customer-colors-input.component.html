@@ -3,7 +3,7 @@
     <div>
       <app-input-color
         [disabled]="disabled"
-        [colorInput]="formGroup.get(color)"
+        [colorInput]="$any(formGroup.get(color))"
         [checkWarning]="true"
         [placeholder]="baseColors[color] | translate"
       >
@@ -24,14 +24,14 @@
   <app-input-color
     [style.display]="!displayTertiary ? 'none' : 'block'"
     [disabled]="disabled"
-    [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
+    [colorInput]="$any(formGroup.get(THEME_COLORS.VITAMUI_TERTIARY))"
     [checkWarning]="true"
     [placeholder]="'COLOR.TERTIARY' | translate"
   >
   </app-input-color>
 
   <app-input-color
-    [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER)"
+    [colorInput]="$any(formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER))"
     [disabled]="disabled"
     [placeholder]="'COLOR.HEADER_FOOTER' | translate"
   >

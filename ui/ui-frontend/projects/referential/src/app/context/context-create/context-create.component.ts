@@ -122,24 +122,24 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       permissions: [[]],
     });
 
-    this.form.controls.name.valueChanges.subscribe((value) => {
+    this.form.controls['name'].valueChanges.subscribe((value) => {
       if (!this.isSlaveMode) {
-        this.form.controls.identifier.setValue(value);
+        this.form.controls['identifier'].setValue(value);
       }
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
     // Add or remove controls on the permissions
-    this.form.controls.enableControl.valueChanges.subscribe((value) => {
+    this.form.controls['enableControl'].valueChanges.subscribe((value) => {
       if (value) {
-        this.form.controls.permissions.setValidators([this.contextCreateValidators.permissionInvalid()]);
+        this.form.controls['permissions'].setValidators([this.contextCreateValidators.permissionInvalid()]);
       } else {
-        this.form.controls.permissions.clearValidators();
+        this.form.controls['permissions'].clearValidators();
       }
-      this.form.controls.permissions.updateValueAndValidity(this.form.controls.permissions.value);
+      this.form.controls['permissions'].updateValueAndValidity(this.form.controls['permissions'].value);
     });
 
     this.securityProfileService.getAll().subscribe((securityProfiles) => {
@@ -169,8 +169,8 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     this.isDisabledButton = true;
     const context = this.form.value as Context;
     context.status === 'ACTIVE'
-      ? (context.activationDate = new Date().toISOString())
-      : (context.deactivationDate = new Date().toISOString());
+      ? (context['activationDate'] = new Date().toISOString())
+      : (context['deactivationDate'] = new Date().toISOString());
     this.contextService.create(context).subscribe(
       () => {
         this.isDisabledButton = false;

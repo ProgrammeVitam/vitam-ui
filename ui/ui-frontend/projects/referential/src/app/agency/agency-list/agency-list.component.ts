@@ -39,9 +39,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
+import type { AdminUserProfile, Agency } from 'vitamui-library';
 import {
-  AdminUserProfile,
-  Agency,
   AgencyService,
   ApplicationId,
   DEFAULT_PAGE_SIZE,
@@ -52,7 +51,7 @@ import {
   SecurityService,
   VitamUICommonModule,
 } from 'vitamui-library';
-import { AgencyCreateModule } from '../agency-create';
+import { AgencyCreateModule } from '../agency-create/agency-create.module';
 
 import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

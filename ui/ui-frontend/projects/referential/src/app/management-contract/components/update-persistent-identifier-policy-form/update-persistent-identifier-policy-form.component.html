@@ -36,7 +36,8 @@
     <div class="content" [ngStyle]="{ display: objectUsagePoliciesToggle ? 'block' : 'none' }">
       <div class="container" formArrayName="objectUsagePolicies">
         @for (objectUsagePolicy of getObjectUsagePolicies(); track objectUsagePolicy; let i = $index) {
-          <div class="row" [formGroupName]="i">
+          @let iString = i.toString();
+          <div class="row" [formGroupName]="iString">
             <div class="col">
               <div class="row">
                 <div class="col-10">
@@ -69,7 +70,7 @@
                       <mat-radio-button
                         class="mr-2"
                         [value]="false"
-                        [disabled]="form.get('objectUsagePolicies').at(i).get('intermediaryVersion').value === 'NONE'"
+                        [disabled]="$any($any(objectUsagePolicies?.get(iString)).get('intermediaryVersion')).value === 'NONE'"
                         >{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.NO' | translate }}</mat-radio-button
                       >
                     </mat-radio-group>
@@ -86,17 +87,17 @@
                       <mat-radio-button
                         class="mr-2"
                         value="NONE"
-                        [disabled]="!form.get('objectUsagePolicies').at(i).get('initialVersion').value"
+                        [disabled]="!objectUsagePolicies?.get(iString).get('initialVersion').value"
                         >{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.NONE' | translate }}</mat-radio-button
                       >
                     </mat-radio-group>
                   </div>
                 </div>
               </div>
-              @if (form.get('objectUsagePolicies').at(i).hasError('invalidObjectUsagePolicy')) {
-                <vitamui-common-input-error class="vitamui-input-errors">
+              @if (objectUsagePolicies?.get(iString).hasError('invalidObjectUsagePolicy')) {
+                <div class="vitamui-input-errors">
                   {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_OBJECT_USAGE_POLICY' | translate }}
-                </vitamui-common-input-error>
+                </div>
               }
             </div>
           </div>
@@ -118,9 +119,9 @@
       </div>
     </div>
     @if (form.hasError('invalidPersistentIdentifierPolicyTarget')) {
-      <vitamui-common-input-error class="vitamui-input-errors">
+      <div class="vitamui-input-errors">
         {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
-      </vitamui-common-input-error>
+      </div>
     }
   }
 </div>

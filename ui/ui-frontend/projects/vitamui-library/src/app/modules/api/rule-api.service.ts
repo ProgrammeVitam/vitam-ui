@@ -58,11 +58,11 @@ export class RuleApiService extends PaginatedHttpClient<Rule> {
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Rule> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Rule> {
     return super.getOne(id, headers);
   }
 

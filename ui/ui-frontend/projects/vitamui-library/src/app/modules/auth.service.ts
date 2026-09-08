@@ -39,7 +39,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, skipWhile, switchMap, take } from 'rxjs/operators';
 import { ApplicationId } from './application-id.enum';
 import { AuthenticatorService } from './authentication/services/authenticator.service';
-import { AuthUser, Tenant, UserInfo } from './models';
+import { AuthUser } from './models/user/auth-user.interface';
+import { Tenant } from './models/customer/tenant.interface';
+import { UserInfo } from './models/user/user-info.interface';
 @Injectable({
   providedIn: 'root',
 })

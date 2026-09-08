@@ -60,19 +60,19 @@ export class AccessContractApiService extends PaginatedHttpClient<AccessContract
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<AccessContract> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<AccessContract> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
-  create(accessContract: AccessContract, headers?: HttpHeaders): Observable<AccessContract> {
+  override create(accessContract: AccessContract, headers?: HttpHeaders): Observable<AccessContract> {
     return super.getHttp().post<any>(super.getApiUrl(), accessContract, { headers });
   }
 
@@ -83,7 +83,7 @@ export class AccessContractApiService extends PaginatedHttpClient<AccessContract
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patch(partialAccessContract: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<AccessContract> {
+  override patch(partialAccessContract: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<AccessContract> {
     return super.patch(partialAccessContract, headers);
   }
 

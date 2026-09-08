@@ -80,7 +80,7 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
 
   @Input() domains: string[];
 
-  writeValue(value: any) {
+  override writeValue(value: any) {
     this.control.reset(value, { emitEvent: false });
     this.originValue = value;
     if (value) {
@@ -90,7 +90,7 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
     }
   }
 
-  onClick(target: HTMLElement) {
+  override onClick(target: HTMLElement) {
     if (!this.editMode) {
       return;
     }

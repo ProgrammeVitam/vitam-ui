@@ -95,7 +95,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   archiveUnitWithAgencyLabel = computed(() => {
     const unit = this.archiveUnit();
     const identifier = unit?.['#originating_agency'];
-    const name = unit?.originating_agencyName;
+    const name = unit?.['originating_agencyName'];
     if (!identifier || !name) return unit;
     return { ...unit, '#originating_agency': `${identifier} - ${name}` };
   });
@@ -299,7 +299,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   }
 
   private handleUpdateSuccess({ operationId }: OperationId): void {
-    const tenantId = this.route.snapshot.params.tenantIdentifier;
+    const tenantId = this.route.snapshot.params['tenantIdentifier'];
 
     if (!operationId) return this.logger.error(this, 'Operation id is mandatory to build logbook operation link');
     if (!tenantId) return this.logger.error(this, 'Tenant id is mandatory to build logbook operation link');

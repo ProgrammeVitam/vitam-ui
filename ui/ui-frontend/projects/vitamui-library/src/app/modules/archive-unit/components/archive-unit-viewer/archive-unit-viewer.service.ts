@@ -34,22 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { Logger } from '../../../logger/logger';
-import { Collection, Schema } from '../../../models';
+import { Collection } from '../../../models/schema/collection.enum';
+import { Schema } from '../../../models/schema/schema.interface';
 import { EditObjectService } from '../../../object-editor/services/edit-object.service';
-import { DisplayObject, DisplayObjectService, DisplayRule } from '../../../object-viewer/models';
-import { SchemaService } from '../../../schema';
+import { DisplayObjectService } from '../../../object-viewer/models/display-object-service';
+import { DisplayObject } from '../../../object-viewer/models/display-object.model';
+import { DisplayRule } from '../../../object-viewer/models/display-rule.model';
+import { SchemaService } from '../../../schema/schema.service';
 import { ArchiveUnitEditObjectService, SchemaElementByApiPath } from '../../archive-unit-edit-object.service';
 import { ArchiveUnitTemplateService } from '../../archive-unit-template.service';
 
-enum Mode {
+export enum AUMode {
   DEFAULT = 'default',
 }
 
 @Injectable()
-export class ArchiveUnitViewerService implements DisplayObjectService {
+export class ArchiveUnitViewerService implements DisplayObjectService<AUMode> {
   private logger = inject(Logger);
   private schemaService = inject(SchemaService);
   private archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
@@ -59,7 +62,7 @@ export class ArchiveUnitViewerService implements DisplayObjectService {
   private displayObject = new BehaviorSubject<DisplayObject>(null);
   private data = new BehaviorSubject<any>(null);
   private customTemplate = new BehaviorSubject<DisplayRule[]>([]);
-  private mode = new BehaviorSubject<Mode>(Mode.DEFAULT);
+  private mode = new BehaviorSubject<AUMode>(AUMode.DEFAULT);
 
   private template = new BehaviorSubject<DisplayRule[]>([]);
   private schema = new BehaviorSubject<Schema>([]);
@@ -70,7 +73,7 @@ export class ArchiveUnitViewerService implements DisplayObjectService {
     combineLatest([this.schemaService.getSchema(Collection.ARCHIVE_UNIT), this.data, this.customTemplate]).subscribe(
       ([schema, data, template]) => {
         if (data === null) return this.displayObject.next(null);
-        if (this.mode.value !== Mode.DEFAULT) throw new Error(`Mode ${this.mode.value} is not supported`);
+        if (this.mode.value !== AUMode.DEFAULT) throw new Error(`Mode ${this.mode.value} is not supported`);
 
         this.displayObject.next(this.computeDisplayObject(data, template, schema));
       },
@@ -112,7 +115,7 @@ export class ArchiveUnitViewerService implements DisplayObjectService {
     if (template) this.customTemplate.next(template);
   }
 
-  public setMode(mode: string): void {
-    if (mode) this.mode.next(mode as Mode);
+  public setMode(mode: AUMode): void {
+    if (mode) this.mode.next(mode);
   }
 }

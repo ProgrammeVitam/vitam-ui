@@ -51,20 +51,15 @@ import {
 import { ArchiveService } from '../../archive.service';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab.component';
 import { vi } from 'vitest';
-const createSpyObj = (name: string, methods: string[]) => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
+const createSpyObj = (methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 const anything = () => expect.anything();
 import { ActivatedRoute } from '@angular/router';
 
 describe('ArchiveUnitObjectsDetailsTabComponent', () => {
   let component: ArchiveUnitObjectsDetailsTabComponent;
   let fixture: ComponentFixture<ArchiveUnitObjectsDetailsTabComponent>;
-  const clipboardSpy = createSpyObj('Clipboard', ['copy']);
-  const archiveServiceSpy = createSpyObj('ArchiveService', [
-    'downloadObjectFromUnit',
-    'getObjectById',
-    'getAccessContractById',
-    'hasArchiveSearchRole',
-  ]);
+  const clipboardSpy = createSpyObj(['copy']);
+  const archiveServiceSpy = createSpyObj(['downloadObjectFromUnit', 'getObjectById', 'getAccessContractById', 'hasArchiveSearchRole']);
 
   archiveServiceSpy.getAccessContractById.mockReturnValue(of({} as AccessContract));
   archiveServiceSpy.hasArchiveSearchRole.mockReturnValue(of(true));

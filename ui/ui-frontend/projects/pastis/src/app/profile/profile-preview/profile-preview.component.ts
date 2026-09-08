@@ -44,7 +44,7 @@ import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
 import { FileNode } from '../../models/file-node';
-import { ProfileDescription } from '../../models/profile-description.model';
+import type { ProfileDescription } from '../../models/profile-description.model';
 import { ProfileResponse } from '../../models/profile-response';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileInformationTabComponent } from './profile-information-tab/profile-information-tab/profile-information-tab.component';
@@ -88,6 +88,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
       this.checkBeforeExit();
       return '';
     }
+    return undefined;
   }
 
   ngAfterViewInit() {
@@ -139,11 +140,12 @@ export class ProfilePreviewComponent implements AfterViewInit {
     this.previewClose.emit();
   }
 
-  isProfilAttached() {
+  isProfilAttached(): boolean {
     if ((this.inputProfile.controlSchema && this.inputProfile.controlSchema.length !== 2) || this.inputProfile.path) {
       // console.log(this.inputProfile)
       return true;
     }
+    return false;
   }
 
   onButtonClicked() {

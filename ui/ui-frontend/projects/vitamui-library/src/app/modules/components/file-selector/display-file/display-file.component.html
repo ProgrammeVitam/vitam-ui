@@ -1,17 +1,22 @@
-<div class="file-to-upload" [class.error]="file.errors && Object.entries(file.errors)?.length">
+<div class="file-to-upload" [class.error]="file().errors && Object.entries(file().errors)?.length">
   <div class="file-container px-2 flex-grow-1 hgap-2 text normal bold">
-    <i class="file-icon vitamui-icon {{ file.directory ? 'vitamui-icon-folder' : 'vitamui-icon-file' }}"></i>
-    <span class="file-name flex-grow-1" [vitamuiTooltip]="file.name">{{ file.name }}</span>
-    <span class="file-size vitamui-grey-600">{{ file.size | bytes }}</span>
+    <i class="file-icon vitamui-icon {{ file().directory ? 'vitamui-icon-folder' : 'vitamui-icon-file' }}"></i>
+    <span class="file-name flex-grow-1" [vitamuiTooltip]="file().name">{{ file().name }}</span>
+    <span class="file-size vitamui-grey-600">{{ file().size | bytes }}</span>
   </div>
   <div class="remove-file">
-    <button class="btn btn-circle link primary xsmall" (click)="removeFile.emit(file)">
+    <button class="btn btn-circle link primary xsmall" (click)="removeFile.emit(file())">
       <i class="vitamui-icon vitamui-icon-close"></i>
     </button>
   </div>
 </div>
-@if (file.errors && Object.entries(file.errors)?.length) {
-  @for (entry of Object.entries(file.errors); track entry[0]) {
-    <vitamui-form-error class="pt-1" [errorKey]="entry[0]" [translateParams]="entry[1]"></vitamui-form-error>
+@if (file().errors && Object.entries(file().errors)?.length) {
+  @for (entry of Object.entries(file().errors); track entry[0]) {
+    <vitamui-form-error
+      class="pt-1"
+      [errorKey]="entry[0]"
+      [translateParams]="entry[1]"
+      [errorMessageMap]="errorMessageMap()"
+    ></vitamui-form-error>
   }
 }

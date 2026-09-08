@@ -184,7 +184,6 @@ export class FileService implements OnDestroy {
    * Update the children of a node, based on given list of nodes
    */
   updateNodeChildren(parentNode: FileNode, newChildrenNodes: FileNode[]) {
-    // eslint-disable-next-line guard-for-in
     for (const idx in parentNode.children) {
       const childFromNewChildren = newChildrenNodes.find((newChild) => newChild.id === parentNode.children[idx].id);
       if (childFromNewChildren) {
@@ -214,6 +213,7 @@ export class FileService implements OnDestroy {
         return child;
       }
     }
+    return undefined;
   }
 
   setNewChildrenRules(rules: string[][]) {

@@ -42,7 +42,9 @@ import { MANAGEMENT_RULE_SEARCH_CONFIG, ManagementRuleCheckboxDescriptor, Manage
 import { QueryParamsService } from '../../../app/modules/url/query-params.service';
 import { SearchCriteriaService } from '../../../app/modules/models/criteria/search-criteria.service';
 import { MANAGEMENT_RULE_SHARED_DATA_SERVICE } from '../../models/management-rule-shared-data-service.interface';
-import { ACCESS_RULE, ApplicationId, ORIGIN_WAITING_RECALCULATE, StartupService } from '../../../app/modules';
+import { ApplicationId } from '../../../app/modules/application-id.enum';
+import { ACCESS_RULE, ORIGIN_WAITING_RECALCULATE } from '../../../app/modules/models/criteria/search-criteria-configs';
+import { StartupService } from '../../../app/modules/startup.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ManagementRuleCriteriaService } from './services/management-rule-criteria.service';
 
@@ -164,20 +166,20 @@ describe('ManagementRuleSearchComponent', () => {
   });
 
   it('should reset date inputs after adding criteria', () => {
-    component.criteriaForm.controls.ruleStartDate.setValue('2023-01-01');
+    component.criteriaForm.controls['ruleStartDate'].setValue('2023-01-01');
     component.addBeginDtCriteria();
-    expect(component.criteriaForm.controls.ruleStartDate.value).toBeNull();
+    expect(component.criteriaForm.controls['ruleStartDate'].value).toBeNull();
   });
 
   it('should reset ruleEliminationIdentifier after processing form update', () => {
     fixture.componentRef.setInput('type', ManagementRuleType.APPRAISAL);
     component.ngOnInit();
-    component.criteriaForm.controls.ruleEliminationIdentifier.setValue('ELIM-123');
+    component.criteriaForm.controls['ruleEliminationIdentifier'].setValue('ELIM-123');
 
     // @ts-ignore
     component.processFormUpdate(component.criteriaForm.value);
 
-    expect(component.criteriaForm.controls.ruleEliminationIdentifier.value).toBeNull();
+    expect(component.criteriaForm.controls['ruleEliminationIdentifier'].value).toBeNull();
   });
 
   it('should initialize ORIGIN_WAITING_RECALCULATE from hasWaitingToRecalculateCriteria input', () => {

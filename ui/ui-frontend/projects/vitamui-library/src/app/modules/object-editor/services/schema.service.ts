@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Logger } from '../../logger/logger';
-import { Collection, ProfiledSchemaElement, Schema, SchemaElement } from '../../models';
+import { Collection } from '../../models/schema/collection.enum';
+import { ProfiledSchemaElement, SchemaElement } from '../../models/schema/schema-element.model';
+import { Schema } from '../../models/schema/schema.interface';
 import { internationalizedKeys } from '../../object-viewer/services/display-object-helper.service';
 import { SedaVersion } from '../../object-viewer/types';
 import { PathService } from './path.service';

@@ -40,7 +40,6 @@ import { PastisPopupSelectionService } from './pastis-popup-selection.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   imports: [CommonModule],
   selector: 'app-pastis-generic-popup',
   templateUrl: './pastis-generic-popup.component.html',

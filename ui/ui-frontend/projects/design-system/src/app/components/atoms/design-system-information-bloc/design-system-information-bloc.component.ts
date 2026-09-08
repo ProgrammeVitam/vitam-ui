@@ -43,7 +43,7 @@ import { InformationBlocComponent } from 'vitamui-library';
   styleUrl: './design-system-information-bloc.component.scss',
 })
 export class DesignSystemInformationBlocComponent {
-  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'neutral'];
-  icons = ['exclamation-point', 'anomalie', 'info'];
-  decorations = ['default', 'bordered'];
+  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'neutral'] as const;
+  icons = ['exclamation-point', 'anomalie', 'info'] as const;
+  decorations = ['default', 'bordered'] as const;
 }

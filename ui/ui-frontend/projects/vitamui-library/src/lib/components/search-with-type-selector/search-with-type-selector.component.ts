@@ -74,7 +74,7 @@ export interface SearchWithTypeSelectorValue {
 export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective implements OnInit {
   @Input({ required: true }) placeholder: string;
   @Input({ required: true }) types: SearchType[];
-  @Input() errorMessageMap: { [p: string]: string };
+  @Input() override errorMessageMap: { [p: string]: string };
 
   _selectedType: SearchType;
   @Input() set selectedType(type: SearchType) {
@@ -89,18 +89,18 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
   }
 
   @HostListener('keydown.enter', ['$event'])
-  onEnter(event: KeyboardEvent) {
+  onEnter(event: Event) {
     if ((event.target as HTMLElement).tagName !== 'INPUT') {
       event.stopPropagation();
     }
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
     this.afterControlSet();
   }
 
-  afterControlSet() {
+  override afterControlSet() {
     if (this._selectedType) this.selectType(this._selectedType);
     this.applyValidatorsToInputValue();
     this.control.valueChanges.subscribe((value: SearchWithTypeSelectorValue) => ((this.control as any).resetValue = { type: value?.type })); // resetValue is a metadata that is used to keep the selected type when we reset the field from a FormFieldValueWrapperComponent
@@ -136,7 +136,7 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
     this.onChange(this.control.value);
   }
 
-  canConfirmInWrapper(): boolean {
+  override canConfirmInWrapper(): boolean {
     return !!this.control.value?.value;
   }
 }

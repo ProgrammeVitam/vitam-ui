@@ -36,11 +36,13 @@
  */
 import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import type { AsyncValidator, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
-import { AuthnRequestBindingEnum, IdentityProvider } from 'vitamui-library';
+import { AuthnRequestBindingEnum } from 'vitamui-library';
+import type { IdentityProvider } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderDetailsComponent } from './identity-provider-details.component';

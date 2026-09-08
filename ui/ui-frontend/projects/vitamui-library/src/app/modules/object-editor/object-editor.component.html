@@ -1,5 +1,5 @@
 @if (editObject) {
-  <form [formGroup]="editObject.control">
+  <form [formGroup]="formGroup">
     @if (editObject.type === DisplayObjectType.GROUP) {
       <vitamui-common-group-editor [editObject]="editObject"></vitamui-common-group-editor>
     }

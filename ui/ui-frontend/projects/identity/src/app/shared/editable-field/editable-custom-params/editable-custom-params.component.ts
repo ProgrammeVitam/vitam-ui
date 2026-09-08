@@ -40,7 +40,7 @@ import { EditableFieldComponent } from 'vitamui-library';
 
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => EditableCustomParamsComponent),
   multi: true,
 };
@@ -57,7 +57,7 @@ export class EditableCustomParamsComponent extends EditableFieldComponent {
 
   selected: string;
   private domainInputClicked = false;
-  get canConfirm(): boolean {
+  override get canConfirm(): boolean {
     return this.editMode && !this.control.pending && this.control.valid && this.control.dirty;
   }
   @Input()
@@ -88,12 +88,12 @@ export class EditableCustomParamsComponent extends EditableFieldComponent {
     return map;
   }
 
-  cancel() {
+  override cancel() {
     super.cancel();
     this.selected = this.defaultDomain;
   }
 
-  onClick(target: HTMLElement) {
+  override onClick(target: HTMLElement) {
     if (!this.editMode) {
       return;
     }
@@ -113,7 +113,7 @@ export class EditableCustomParamsComponent extends EditableFieldComponent {
     this.domainInputClicked = true;
   }
 
-  enterEditMode() {
+  override enterEditMode() {
     super.enterEditMode();
   }
 }

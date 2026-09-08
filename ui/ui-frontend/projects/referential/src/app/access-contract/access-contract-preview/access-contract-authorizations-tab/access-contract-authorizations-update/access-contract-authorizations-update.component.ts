@@ -92,7 +92,7 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
       },
     );
     this.accessRightSelected.valueChanges.subscribe((value: AccessRightType) => {
-      const doNotFilterFilingSchemesControl = this.form.controls.doNotFilterFilingSchemes;
+      const doNotFilterFilingSchemesControl = this.form.controls['doNotFilterFilingSchemes'];
       if (value === AccessRightType.ACCESS_FULL) {
         doNotFilterFilingSchemesControl.setValue(true);
         doNotFilterFilingSchemesControl.disable({ onlySelf: true });
@@ -100,16 +100,16 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
         doNotFilterFilingSchemesControl.enable({ onlySelf: true });
       }
     });
-    this.form.controls.accessRightSelected.setValue(AccessRightType.ACCESS_FULL);
+    this.form.controls['accessRightSelected'].setValue(AccessRightType.ACCESS_FULL);
     if (data && data.accessContract) {
       this.updateMode = true;
-      this.form.controls.accessRightSelected.setValue(data.accessContract.accessRightType);
-      this.form.controls.originatingAgencies.setValue(data.accessContract.originatingAgencies || []);
-      this.form.controls.ruleCategoryToFilter.setValue(data.accessContract.ruleCategoryToFilter || []);
-      this.form.controls.ruleCategoryToFilterForTheOtherOriginatingAgencies.setValue(
+      this.form.controls['accessRightSelected'].setValue(data.accessContract.accessRightType);
+      this.form.controls['originatingAgencies'].setValue(data.accessContract.originatingAgencies || []);
+      this.form.controls['ruleCategoryToFilter'].setValue(data.accessContract.ruleCategoryToFilter || []);
+      this.form.controls['ruleCategoryToFilterForTheOtherOriginatingAgencies'].setValue(
         data.accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies || [],
       );
-      this.form.controls.doNotFilterFilingSchemes.setValue(data.accessContract.doNotFilterFilingSchemes);
+      this.form.controls['doNotFilterFilingSchemes'].setValue(data.accessContract.doNotFilterFilingSchemes);
     }
   }
 
@@ -221,6 +221,8 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
             errors = { ...errors, ruleCategoryToFilter: true };
           }
           return errors;
+        default:
+          return null;
       }
     };
   }

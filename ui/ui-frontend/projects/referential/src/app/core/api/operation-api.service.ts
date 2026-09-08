@@ -39,6 +39,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { BASE_URL, PaginatedHttpClient, Event, PageRequest, PaginatedResponse, VitamuiHttpHeaders } from 'vitamui-library';
+import { TraceabilityChainAuditRequest } from '../../models/audit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -54,19 +55,19 @@ export class OperationApiService extends PaginatedHttpClient<Event> {
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super
       .getAllByParams(params, headers)
       .pipe(tap((result) => result.map((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null))));
   }
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
+  override getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
     return super
       .getAllPaginated(pageRequest, embedded, headers)
       .pipe(tap((result) => result.values.map((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null))));
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<any> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<any> {
     return super.getOne(id, headers).pipe(tap((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null)));
   }
 
@@ -90,6 +91,10 @@ export class OperationApiService extends PaginatedHttpClient<Event> {
 
   runAudit(audit: any, headers?: HttpHeaders): Observable<any> {
     return super.create(audit, headers);
+  }
+
+  runTraceabilityChainAudit(request: TraceabilityChainAuditRequest, headers?: HttpHeaders): Observable<{ operationId: string }> {
+    return this.http.post<{ operationId: string }>(`${this.apiUrl}/chainAudit`, request, { headers });
   }
 
   runProbativeValue(probativeValue: any, headers?: HttpHeaders): Observable<any> {

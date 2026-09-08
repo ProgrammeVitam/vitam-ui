@@ -53,19 +53,19 @@ export class FileFormatApiService extends PaginatedHttpClient<FileFormat> {
     super(http, baseUrl + '/fileformat');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<FileFormat> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<FileFormat> {
     return super.getOne(id, headers);
   }
 
-  patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialAgency: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialAgency, headers);
   }
 
-  create(agency: FileFormat, headers?: HttpHeaders): Observable<FileFormat> {
+  override create(agency: FileFormat, headers?: HttpHeaders): Observable<FileFormat> {
     return super.getHttp().post<any>(super.getApiUrl(), agency, { headers });
   }
 

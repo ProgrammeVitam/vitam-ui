@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Group } from '../group';
-import { User, UserInfo } from '../user';
+import { Group } from '../group/group.interface';
+import { UserInfo } from '../user/user-info.interface';
+import { User } from '../user/user.interface';
 
 export interface Account extends User {
   profileGroup: Group;

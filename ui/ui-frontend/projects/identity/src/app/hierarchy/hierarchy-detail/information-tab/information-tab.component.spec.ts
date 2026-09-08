@@ -36,10 +36,12 @@
  */
 import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import type { AsyncValidator, Validator } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 
-import { AuthService, CountryService, Profile } from 'vitamui-library';
+import { AuthService, CountryService } from 'vitamui-library';
+import type { Profile } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../../hierarchy.service';
 import { ProfileValidators } from '../../profile.validators';
@@ -134,17 +136,7 @@ describe('Hierarchy InformationTabComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: CountryService, useValue: {} },
       ],
-    })
-      .overrideComponent(InformationTabComponent, {
-        set: {
-          template: `
-            <vitamui-common-editable-input [attr.formControlName]="'name'" maxlength="100">ProfileName</vitamui-common-editable-input>
-            <vitamui-common-editable-textarea [attr.formControlName]="'description'" maxlength="250">Profile description...</vitamui-common-editable-textarea>
-            <vitamui-slide-toggle [attr.formControlName]="'enabled'">HIERARCHY.INFORMATIONS.ACTIVE_SWITCH</vitamui-slide-toggle>
-          `,
-        },
-      })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

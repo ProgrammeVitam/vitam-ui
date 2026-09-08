@@ -65,4 +65,47 @@ export enum AuditOperation {
   PROCESS_AUDIT = 'PROCESS_AUDIT',
   EVIDENCE_AUDIT = 'EVIDENCE_AUDIT',
   RECTIFICATION_AUDIT = 'RECTIFICATION_AUDIT',
+  TRACEABILITY_CHAIN_AUDIT = 'TRACEABILITY_CHAIN_AUDIT',
 }
+
+/**
+ * Matches VITAM's TraceabilityType enum names.
+ */
+export enum AuditChainType {
+  UNIT = 'UNIT',
+  OBJECT_GROUP = 'OBJECT_GROUP',
+  LOGBOOK_OPERATION = 'LOGBOOK_OPERATION',
+}
+
+export interface TraceabilityChainAuditRequest {
+  chainType: AuditChainType;
+  wholeChain: boolean;
+  startDate: string;
+  endDate: string;
+}
+
+/**
+ * Categories displayed in the audit list "Catégorie" filter.
+ * Existence/Integrity share the PROCESS_AUDIT evType and the 3 chain audit
+ * entries share the TRACEABILITY_CHAIN_AUDIT evType: VITAM does not persist
+ * enough data on the operation to distinguish them server-side today.
+ */
+export enum AuditCategoryFilter {
+  AUDIT_FILE_EXISTING = 'AUDIT_FILE_EXISTING',
+  AUDIT_FILE_INTEGRITY = 'AUDIT_FILE_INTEGRITY',
+  EVIDENCE_AUDIT = 'EVIDENCE_AUDIT',
+  RECTIFICATION_AUDIT = 'RECTIFICATION_AUDIT',
+  TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP = 'TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP',
+  TRACEABILITY_CHAIN_AUDIT_UNIT = 'TRACEABILITY_CHAIN_AUDIT_UNIT',
+  TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION = 'TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION',
+}
+
+export const AUDIT_CATEGORY_FILTER_EV_TYPE: Record<AuditCategoryFilter, AuditOperation> = {
+  [AuditCategoryFilter.AUDIT_FILE_EXISTING]: AuditOperation.PROCESS_AUDIT,
+  [AuditCategoryFilter.AUDIT_FILE_INTEGRITY]: AuditOperation.PROCESS_AUDIT,
+  [AuditCategoryFilter.EVIDENCE_AUDIT]: AuditOperation.EVIDENCE_AUDIT,
+  [AuditCategoryFilter.RECTIFICATION_AUDIT]: AuditOperation.RECTIFICATION_AUDIT,
+  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP]: AuditOperation.TRACEABILITY_CHAIN_AUDIT,
+  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_UNIT]: AuditOperation.TRACEABILITY_CHAIN_AUDIT,
+  [AuditCategoryFilter.TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION]: AuditOperation.TRACEABILITY_CHAIN_AUDIT,
+};

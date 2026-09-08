@@ -39,11 +39,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProfileService } from '../../../../core/services/profile.service';
-import { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
-import { Profile } from '../../../../models/profile';
-import { ProfileDescription } from '../../../../models/profile-description.model';
 import { ProfileType } from '../../../../models/profile-type.enum';
 import { MiscValidators, SnackBarService } from 'vitamui-library';
+import type { Profile } from '../../../../models/profile';
+import type { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
+import type { ProfileDescription } from '../../../../models/profile-description.model';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -91,12 +91,12 @@ export class ProfileInformationTabComponent {
     });
 
     this.statusProfile.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
   }
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  // eslint-disable-next-line @angular-eslint/no-output-native
+
   @Output() closed: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
 

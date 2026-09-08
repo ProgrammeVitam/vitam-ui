@@ -39,7 +39,6 @@ import { FacetDetails } from '../../models/operation/facet-details.interface';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-facet',
   templateUrl: './vitamui-facet.component.html',
   styleUrls: ['./vitamui-facet.component.scss'],

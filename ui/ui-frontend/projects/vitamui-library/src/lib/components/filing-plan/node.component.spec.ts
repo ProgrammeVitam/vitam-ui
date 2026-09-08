@@ -37,7 +37,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NodeComponent } from './node.component';
-import { FileType } from '../../../app/modules';
+import { FileType } from '../../../app/modules/file-type.enum';
 
 describe('NodeComponent', () => {
   let component: NodeComponent;

@@ -1,7 +1,7 @@
 <vitamui-common-sidenav-header
   [title]="probativeValue?.id | truncate: 30"
   (onclose)="closePanel()"
-  [badge]="probativeValue | eventTypeBadgeClass | slice: 13"
+  [badge]="probativeValue | eventTypeBadgeColor"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="probativeValue?.id"
   [toolTipTitleDuration]="300"

@@ -102,14 +102,14 @@ describe('CreateProfilNoticeComponent', () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
     mockProfileService.checkPaProfile.mockReturnValue(of(true));
-    component.noticeForm.controls.identifier?.setValue('DUPLICATE');
+    component.noticeForm.controls['identifier']?.setValue('DUPLICATE');
 
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE' }));
   });
 
   it('should disable identifier validators if External ID is disabled', async () => {
     fixture.detectChanges();
-    component.noticeForm.controls.profileType?.setValue(ProfileType.PUA);
+    component.noticeForm.controls['profileType']?.setValue(ProfileType.PUA);
 
     externalIdSubject.next(false);
 
@@ -117,7 +117,7 @@ describe('CreateProfilNoticeComponent', () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
 
-    const identifierCtrl = component.noticeForm.controls.identifier;
+    const identifierCtrl = component.noticeForm.controls['identifier'];
 
     expect(component.externalIdentifierEnabledSignal()).toBe(false);
 
@@ -134,10 +134,10 @@ describe('CreateProfilNoticeComponent', () => {
     component.profileTypeSignal.set(ProfileType.PA);
     fixture.detectChanges();
     mockProfileService.checkPaProfile.mockReturnValue(of(false));
-    component.noticeForm.controls.identifier?.setValue('UNIQUE_TEST');
+    component.noticeForm.controls['identifier']?.setValue('UNIQUE_TEST');
 
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_TEST' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBe(false);
+    expect(component.noticeForm.controls['identifier'].invalid).toBe(false);
   });
 
   it('should check PA and alert if duplicated', async () => {
@@ -146,31 +146,31 @@ describe('CreateProfilNoticeComponent', () => {
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
     mockProfileService.checkPaProfile.mockReturnValue(of(true));
 
-    component.noticeForm.controls.identifier?.setValue('DUPLICATE_PA');
+    component.noticeForm.controls['identifier']?.setValue('DUPLICATE_PA');
 
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_PA' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBe(true);
+    expect(component.noticeForm.controls['identifier'].invalid).toBe(true);
   });
 
   it('should check PUA and set isIdentifierOK to true if unique', async () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
     mockProfileService.checkPuaProfile.mockReturnValue(of(false));
-    component.noticeForm.controls.identifier?.setValue('UNIQUE_PUA');
+    component.noticeForm.controls['identifier']?.setValue('UNIQUE_PUA');
 
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_PUA' }));
-    expect(component.noticeForm.controls.identifier.invalid).toBe(false);
+    expect(component.noticeForm.controls['identifier'].invalid).toBe(false);
   });
 
   it('should check PUA and alert if duplicated', async () => {
     component.profileTypeSignal.set(ProfileType.PUA);
     fixture.detectChanges();
     mockProfileService.checkPuaProfile.mockReturnValue(of(true));
-    component.noticeForm.controls.identifier?.setValue('DUPLICATE_TEST');
+    component.noticeForm.controls['identifier']?.setValue('DUPLICATE_TEST');
 
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_TEST' }));
-    component.noticeForm.controls.profileType?.setValue(ProfileType.PUA);
-    expect(component.noticeForm.controls.identifier.invalid).toBe(true);
+    component.noticeForm.controls['profileType']?.setValue(ProfileType.PUA);
+    expect(component.noticeForm.controls['identifier'].invalid).toBe(true);
   });
 
   it('should create', () => {

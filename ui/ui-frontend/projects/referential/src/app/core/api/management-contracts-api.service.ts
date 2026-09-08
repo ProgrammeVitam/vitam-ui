@@ -83,19 +83,19 @@ export class ManagementContractsApiService extends PaginatedHttpClient<Managemen
     super(http, baseUrl + '/management-contract');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<ManagementContract> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<ManagementContract> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
-  create(managementContract: ManagementContract, headers?: HttpHeaders): Observable<ManagementContract> {
+  override create(managementContract: ManagementContract, headers?: HttpHeaders): Observable<ManagementContract> {
     return super.getHttp().post<ManagementContract>(super.getApiUrl(), managementContract, { headers });
   }
 
@@ -106,7 +106,7 @@ export class ManagementContractsApiService extends PaginatedHttpClient<Managemen
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patch(partialmanagementContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialmanagementContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialmanagementContract, headers);
   }
 }

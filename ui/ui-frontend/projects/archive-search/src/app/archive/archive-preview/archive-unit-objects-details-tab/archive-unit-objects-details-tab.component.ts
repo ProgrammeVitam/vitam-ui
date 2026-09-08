@@ -34,18 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject } from '@angular/core';
+import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
 import {
   AccessContract,
   AccessContractService,
   DescriptionLevel,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
-  Unit,
-  VersionWithQualifierDto,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
@@ -56,14 +54,6 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
   selector: 'app-archive-unit-objects-details-tab',
   templateUrl: './archive-unit-objects-details-tab.component.html',
   styleUrls: ['./archive-unit-objects-details-tab.component.scss'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
-  ],
   standalone: false,
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
@@ -90,7 +80,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.archiveUnit) {
+    if (changes['archiveUnit']) {
       if (!this.accessContract) {
         this.getAccessContract();
       } else {

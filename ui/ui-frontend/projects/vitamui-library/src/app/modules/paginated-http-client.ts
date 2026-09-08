@@ -36,7 +36,8 @@
  */
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PageRequest, PaginatedResponse } from './vitamui-table';
+import { PageRequest } from './vitamui-table/page-request.model';
+import { PaginatedResponse } from './vitamui-table/paginated-response.interface';
 import { BaseHttpClient } from './base-http-client';
 import { PaginatedApi } from './paginated-api.interface';
 

@@ -148,20 +148,7 @@ public class SchemaService extends AbstractService {
     }
 
     public ResponseEntity<Void> importUnitSchema(MultipartFile file) {
-        if (file == null) {
-            throw new IllegalArgumentException("File cannot be null");
-        }
-
-        if (file.getOriginalFilename() == null) {
-            throw new IllegalArgumentException("Filename cannot be null");
-        }
-
-        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(IMPORT_UNIT_SCHEMA);
-
-        if (isIdentifierMandatory == null) {
-            throw new InternalServerException("The result of the API call should not be null");
-        }
-        ImportSchemaCSVUtils.checkImportFile(file);
+        checkCSV(file);
         LOGGER.debug("Schema file {} has been validated before parsing it", file.getOriginalFilename());
 
         List<ImportSchemaDto> importSchemaDtos = convertCsvFileToImportDto(file);
@@ -194,6 +181,23 @@ public class SchemaService extends AbstractService {
                 )
             )
         );
+    }
+
+    public void checkCSV(MultipartFile file) {
+        if (file == null) {
+            throw new IllegalArgumentException("File cannot be null");
+        }
+
+        if (file.getOriginalFilename() == null) {
+            throw new IllegalArgumentException("Filename cannot be null");
+        }
+
+        Boolean isIdentifierMandatory = applicationsApi.isApplicationExternalIdentifierEnabled(IMPORT_UNIT_SCHEMA);
+
+        if (isIdentifierMandatory == null) {
+            throw new InternalServerException("The result of the API call should not be null");
+        }
+        ImportSchemaCSVUtils.checkImportFile(file);
     }
 
     private List<ImportSchemaDto> convertCsvFileToImportDto(MultipartFile file) {

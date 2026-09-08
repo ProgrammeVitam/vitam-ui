@@ -38,7 +38,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
 import { PipesModule } from '../../pipes/pipes.module';
-import { TooltipPosition } from '../common-tooltip/TooltipPosition.enum';
 
 @Component({
   selector: 'vitamui-elements',
@@ -48,8 +47,6 @@ import { TooltipPosition } from '../common-tooltip/TooltipPosition.enum';
   imports: [CommonTooltipModule, MatMenuModule, PipesModule],
 })
 export class ElementsComponent {
-  BOTTOM = TooltipPosition.BOTTOM;
-
   @Input() icon = '';
 
   @Input() title = '';

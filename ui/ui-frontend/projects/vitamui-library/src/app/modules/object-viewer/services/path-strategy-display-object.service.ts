@@ -34,10 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Logger } from '../../logger/logger';
-import { DisplayObject, DisplayObjectService, DisplayRule, Mode } from '../models';
+import { DisplayObjectService } from '../models/display-object-service';
+import { Mode } from '../models/display-object.enum';
+import { DisplayObject } from '../models/display-object.model';
+import { DisplayRule } from '../models/display-rule.model';
 import { DisplayObjectHelperService } from './display-object-helper.service';
 import { TypeService } from './type.service';
 import {
@@ -57,7 +60,7 @@ const MIXED_MODE_MESSAGE =
   'The mixed mode is enabled, the computed display object will follow the provided template structure and data structure otherwise';
 
 @Injectable()
-export class PathStrategyDisplayObjectService implements DisplayObjectService {
+export class PathStrategyDisplayObjectService implements DisplayObjectService<Mode> {
   private logger = inject(Logger);
   private displayObjectHelper = inject(DisplayObjectHelperService);
   private typeService = inject(TypeService);
@@ -124,7 +127,7 @@ export class PathStrategyDisplayObjectService implements DisplayObjectService {
     this.template.next(template);
   }
 
-  setMode(mode: string): void {
-    this.mode.next(mode as Mode);
+  setMode(mode: Mode): void {
+    this.mode.next(mode);
   }
 }

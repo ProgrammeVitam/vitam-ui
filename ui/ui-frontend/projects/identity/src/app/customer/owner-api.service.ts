@@ -51,19 +51,19 @@ export class OwnerApiService extends BaseHttpClient<Owner> {
     super(http, baseUrl + '/owners');
   }
 
-  getOne(id: string): Observable<Owner> {
+  override getOne(id: string): Observable<Owner> {
     return super.getOne(id);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>): Observable<boolean> {
     return super.checkExistsByParam(params);
   }
 
-  create(owner: Owner): Observable<Owner> {
+  override create(owner: Owner): Observable<Owner> {
     return super.create(owner);
   }
 
-  patch(partialOwner: { id: string; [key: string]: any }): Observable<Owner> {
+  override patch(partialOwner: { id: string; [key: string]: any }): Observable<Owner> {
     return super.patch(partialOwner);
   }
 }

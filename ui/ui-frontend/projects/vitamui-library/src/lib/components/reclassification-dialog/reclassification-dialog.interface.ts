@@ -35,7 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Signal, WritableSignal } from '@angular/core';
-import { ArchiveUnit, SearchCriteriaDto } from '../../../app/modules';
+import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
+import { SearchCriteriaDto } from '../../../app/modules/models/criteria/search-criteria.interface';
 
 export interface ReclassificationDialogService {
   readonly transactionId: WritableSignal<string>;

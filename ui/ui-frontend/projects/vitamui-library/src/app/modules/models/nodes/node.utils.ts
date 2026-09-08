@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { VitamuiIcons } from '../../vitamui-icons.enum';
-import { unitTypeToVitamuiIcon } from '../units';
+import { unitTypeToVitamuiIcon } from '../units/unit.utils';
 import { FilingHoldingSchemeNode } from './node.interface';
 
 export function nodeToVitamuiIcon(node: FilingHoldingSchemeNode): VitamuiIcons {

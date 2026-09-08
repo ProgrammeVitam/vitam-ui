@@ -37,7 +37,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Account } from '../../models/account/account.interface';
+import type { Account } from '../../models/account/account.interface';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',

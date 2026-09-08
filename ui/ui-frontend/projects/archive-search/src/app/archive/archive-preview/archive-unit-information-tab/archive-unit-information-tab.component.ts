@@ -36,7 +36,8 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { AccessContract, AccessContractService, ObjectQualifierType, Unit, VersionWithQualifierDto } from 'vitamui-library';
+import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
+import { AccessContract, AccessContractService, ObjectQualifierType } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 
@@ -80,7 +81,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.archiveUnit?.currentValue['#id']) {
+    if (changes['archiveUnit']?.currentValue['#id']) {
       this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit);
       this.findDownloadableObjectWithAccessContract();
     }

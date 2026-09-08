@@ -91,26 +91,4 @@ describe('UploadComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('checkFileExtension', () => {
-    it('should return true when extension zip is correct', () => {
-      expect(component.checkFileExtension('correct.zip')).toBeTruthy();
-    });
-
-    it('should return true when extension tar is correct', () => {
-      expect(component.checkFileExtension('correct.tar')).toBeTruthy();
-    });
-
-    it('should return true when extension .tar.gz is correct', () => {
-      expect(component.checkFileExtension('correct.tar.gz')).toBeTruthy();
-    });
-
-    it('should return true when extension .tar.bz2 is correct', () => {
-      expect(component.checkFileExtension('correct.tar.bz2')).toBeTruthy();
-    });
-
-    it('should return true when extension is bad', () => {
-      expect(component.checkFileExtension('bad.json')).toBeFalsy();
-    });
-  });
 });

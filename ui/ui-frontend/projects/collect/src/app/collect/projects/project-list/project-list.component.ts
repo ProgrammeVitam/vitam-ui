@@ -108,7 +108,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     super.search(pageRequest);
   }
 
-  onScroll() {
+  override onScroll() {
     this.loadMore();
   }
 

@@ -38,17 +38,9 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
-import {
-  AccessContract,
-  AuthService,
-  Context,
-  ContextPermission,
-  Customer,
-  IngestContract,
-  Tenant,
-  diff,
-  AccessContractService,
-} from 'vitamui-library';
+import type { AccessContract, Context, Customer, IngestContract, Tenant } from 'vitamui-library';
+import { ContextPermission } from 'vitamui-library';
+import { diff, AccessContractService, AuthService } from 'vitamui-library';
 import { extend, isEmpty } from 'underscore';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
 import { TenantApiService } from '../../../core/api/tenant-api.service';
@@ -78,7 +70,7 @@ export class ContextPermissionTabComponent implements OnInit {
   dataLoaded = false;
 
   private _context: Context;
-  private updatedPermissions: ContextPermission[] = [];
+  protected updatedPermissions: ContextPermission[] = [];
 
   tenants: Map<string, Tenant> = new Map();
   organisations: Map<string, Customer> = new Map();
@@ -320,5 +312,6 @@ export class ContextPermissionTabComponent implements OnInit {
       });
       return label;
     }
+    return '';
   }
 }

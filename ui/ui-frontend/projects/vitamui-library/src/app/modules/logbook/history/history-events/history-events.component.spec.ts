@@ -36,7 +36,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IEvent } from '../../../models';
+import { IEvent } from '../../../models/logbook/event.interface';
 import { HistoryEventsComponent } from './history-events.component';
 
 @Component({

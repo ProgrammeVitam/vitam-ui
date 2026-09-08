@@ -213,14 +213,16 @@ public class ProjectController {
     @PostMapping(value = "/uploadSip", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public String streamingUploadSip(
         InputStream inputStream,
-        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId
+        @RequestHeader(value = CommonConstants.X_TRANSACTION_ID_HEADER) final String transactionId,
+        @RequestHeader(value = CommonConstants.X_ATTACHMENT_ID_HEADER, required = false) final String attachmentId
     ) throws PreconditionFailedException, VitamClientException {
         ParameterChecker.checkParameter("The transaction ID is a mandatory parameter: ", transactionId);
-        SanityChecker.checkSecureParameter(transactionId);
+        SanityChecker.checkSecureParameter(transactionId, attachmentId);
         LOGGER.debug("[External] upload SIP");
         var requestResponse = projectService.streamingUploadSip(
             inputStream,
             transactionId,
+            attachmentId,
             externalParametersService.buildVitamContextFromExternalParam()
         );
         if (!requestResponse.isOk()) {

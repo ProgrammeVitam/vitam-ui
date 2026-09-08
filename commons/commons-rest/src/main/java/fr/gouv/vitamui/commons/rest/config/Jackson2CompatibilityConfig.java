@@ -27,26 +27,29 @@
 package fr.gouv.vitamui.commons.rest.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.rest.converter.Jackson2JsonNodeHttpMessageConverter;
+import fr.gouv.vitamui.commons.rest.converter.Jackson2GenericHttpMessageConverter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverters;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 /**
- * Registers {@link Jackson2JsonNodeHttpMessageConverter} ahead of the default Jackson 3 converter so that
- * {@code @RequestBody com.fasterxml.jackson.databind.JsonNode} parameters keep working under Spring Boot 4.
- * <p>
- * Must be wired with {@link org.springframework.context.annotation.Import} in each microservice's server
- * config, since this class lives outside every application's base package and is therefore not picked up by
- * {@code @SpringBootApplication}'s component scan.
- * <p>
- * Uses the non-deprecated {@link #configureMessageConverters(HttpMessageConverters.ServerBuilder)} hook
- * ({@code extendMessageConverters(List)} is {@code @Deprecated(since = "7.0", forRemoval = true)}).
- * {@code builder.configureMessageConvertersList(...)} runs once the builder has already assembled the full
- * default converter list (Jackson 3 included), so we only need to move our converter to the front of that
- * list rather than rebuild it from scratch.
- * <p>
- * To remove once the controllers, their services and the Vitam SDK are migrated to Jackson 3.
+ * Keeps Jackson 2 working under Spring Boot 4, whose default JSON converter is now Jackson 3
+ * ({@code tools.jackson}) and cannot instantiate Jackson 2 types
+ * ({@code com.fasterxml.jackson.databind.JsonNode} and the DTOs that contain one, such as the Vitam client).
+ *
+
+ * <p>ALL inbound/outbound JSON now goes through Jackson 2. The injected
+ * {@code ObjectMapper} bean must therefore be configured completely and consistently (same modules and
+ * features as the Jackson 3 layer expected). The Jackson 3 converter stays in the list as a fallback but is
+ * no longer selected for {@code application/json}.
+ *
+ * <p>To be wired with {@code @Import} in each microservice (this class lives outside the base package
+ * scanned by {@code @SpringBootApplication}), and to be removed once the whole stack (controllers, services,
+ * Vitam client) has migrated to Jackson 3.
  */
 @Configuration
 public class Jackson2CompatibilityConfig implements WebMvcConfigurer {
@@ -59,8 +62,23 @@ public class Jackson2CompatibilityConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(final HttpMessageConverters.ServerBuilder builder) {
-        builder.configureMessageConvertersList(
-            converters -> converters.addFirst(new Jackson2JsonNodeHttpMessageConverter(jackson2Mapper))
-        );
+        builder.configureMessageConvertersList(converters -> insertBeforeJackson3(converters, jackson2Mapper));
+    }
+
+    /**
+     * Inserts the Jackson 2 converter <b>right before</b> the Jackson 3 converter
+     */
+    static void insertBeforeJackson3(
+        final List<HttpMessageConverter<?>> converters,
+        final ObjectMapper jackson2Mapper
+    ) {
+        final Jackson2GenericHttpMessageConverter jackson2 = new Jackson2GenericHttpMessageConverter(jackson2Mapper);
+        for (int i = 0; i < converters.size(); i++) {
+            if (converters.get(i) instanceof JacksonJsonHttpMessageConverter) {
+                converters.add(i, jackson2);
+                return;
+            }
+        }
+        converters.add(jackson2);
     }
 }

@@ -50,7 +50,7 @@ export class CustomerPopupComponent {
   customer: Customer;
 
   constructor() {
-    this.customer = this.route.snapshot.data.customer;
+    this.customer = this.route.snapshot.data['customer'];
   }
 
   closePopup() {

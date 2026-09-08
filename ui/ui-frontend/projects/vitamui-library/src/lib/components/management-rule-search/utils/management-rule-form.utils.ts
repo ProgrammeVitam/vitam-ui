@@ -35,7 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_WAITING_RECALCULATE } from '../../../../app/modules';
+import {
+  ORIGIN_HAS_AT_LEAST_ONE,
+  ORIGIN_INHERITE_AT_LEAST_ONE,
+  ORIGIN_WAITING_RECALCULATE,
+} from '../../../../app/modules/models/criteria/search-criteria-configs';
 import { ManagementRuleSearchConfig } from '../management-rule-search.config';
 
 /**

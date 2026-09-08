@@ -78,7 +78,7 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
     return this.baseUrl;
   }
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
+  override getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
     return super
       .getAllPaginated(pageRequest, embedded, headers)
       .pipe(tap((result) => result.values.map((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null))));

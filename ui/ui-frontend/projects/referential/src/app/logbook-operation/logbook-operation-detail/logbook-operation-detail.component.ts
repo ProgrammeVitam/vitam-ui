@@ -42,7 +42,6 @@ import {
   IEvent,
   ExternalParameters,
   ExternalParametersService,
-  fadeInOutAnimation,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
@@ -63,7 +62,6 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
-  animations: [fadeInOutAnimation],
   standalone: false,
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
@@ -158,7 +156,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
     if (this.accessContractLogbookIdentifier || this.doesNotHaveTenant()) {
       return;
     }
-    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
+    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
     if (!tenant) {
       return;
     }

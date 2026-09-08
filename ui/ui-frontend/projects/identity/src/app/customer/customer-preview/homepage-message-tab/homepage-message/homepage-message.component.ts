@@ -39,7 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { Customer, LanguageService, Option, StartupService } from 'vitamui-library';
+import type { Customer, Option } from 'vitamui-library';
+import { LanguageService, StartupService } from 'vitamui-library';
 
 @Component({
   selector: 'app-homepage-message',

@@ -42,7 +42,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
-import { Customer, ENVIRONMENT, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { ENVIRONMENT, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import type { Customer } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { environment } from './../../../environments/environment';
@@ -143,16 +144,5 @@ describe('CustomerPreviewComponent', () => {
 
   it('should create', () => {
     expect(testhost).toBeTruthy();
-  });
-
-  it('should call window.open', () => {
-    const openSpy = vi.spyOn(window, 'open');
-    openSpy.mockImplementation(() => null as any);
-    testhost.component.openPopup();
-    expect(openSpy).toHaveBeenCalledWith(
-      'https://dev.vitamui.com/identity/customer/11',
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
   });
 });

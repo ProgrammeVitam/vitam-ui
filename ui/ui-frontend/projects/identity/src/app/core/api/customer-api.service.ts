@@ -53,20 +53,20 @@ export class CustomerApiService extends PaginatedHttpClient<Customer> {
     super(http, baseUrl + '/customers');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Customer>> {
+  override getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Customer>> {
     const params = embedded ? pageRequest.httpParams.set('embedded', embedded) : pageRequest.httpParams;
     return this.http.get<PaginatedResponse<Customer>>(this.apiUrl + '/paginated', { params, headers });
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Customer> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Customer> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
@@ -103,23 +103,23 @@ export class CustomerApiService extends PaginatedHttpClient<Customer> {
       'partialCustomerDto',
       JSON.stringify({
         id: partialCustomer.id,
-        hasCustomGraphicIdentity: partialCustomer.hasCustomGraphicIdentity,
-        themeColors: partialCustomer.themeColors,
-        portalTitles: partialCustomer.portalTitles,
-        portalMessages: partialCustomer.portalMessages,
-        identifier: partialCustomer.identifier,
-        code: partialCustomer.code,
-        name: partialCustomer.name,
-        companyName: partialCustomer.companyName,
-        passwordRevocationDelay: partialCustomer.passwordRevocationDelay,
-        otp: partialCustomer.otp,
-        address: partialCustomer.address,
-        internalCode: partialCustomer.internalCode,
-        language: partialCustomer.language,
-        emailDomains: partialCustomer.emailDomains,
-        defaultEmailDomain: partialCustomer.defaultEmailDomain,
-        gdprAlert: partialCustomer.gdprAlert,
-        gdprAlertDelay: partialCustomer.gdprAlertDelay,
+        hasCustomGraphicIdentity: partialCustomer['hasCustomGraphicIdentity'],
+        themeColors: partialCustomer['themeColors'],
+        portalTitles: partialCustomer['portalTitles'],
+        portalMessages: partialCustomer['portalMessages'],
+        identifier: partialCustomer['identifier'],
+        code: partialCustomer['code'],
+        name: partialCustomer['name'],
+        companyName: partialCustomer['companyName'],
+        passwordRevocationDelay: partialCustomer['passwordRevocationDelay'],
+        otp: partialCustomer['otp'],
+        address: partialCustomer['address'],
+        internalCode: partialCustomer['internalCode'],
+        language: partialCustomer['language'],
+        emailDomains: partialCustomer['emailDomains'],
+        defaultEmailDomain: partialCustomer['defaultEmailDomain'],
+        gdprAlert: partialCustomer['gdprAlert'],
+        gdprAlertDelay: partialCustomer['gdprAlertDelay'],
       }),
     );
 

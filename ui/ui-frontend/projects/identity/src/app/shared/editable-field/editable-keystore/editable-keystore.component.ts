@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EditableFieldComponent, IdentityProvider, newFile } from 'vitamui-library';
+import { EditableFieldComponent, newFile } from 'vitamui-library';
+import type { IdentityProvider } from 'vitamui-library';
 
 import { Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 
@@ -52,11 +53,11 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
   @Input() identityProvider: IdentityProvider;
 
   file: File;
-  originValue = newFile([''], 'keystore.jks');
+  override originValue = newFile([''], 'keystore.jks');
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  get canConfirm() {
+  override get canConfirm() {
     return this.editMode && !!this.file && this.control.valid;
   }
 
@@ -70,7 +71,7 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
     this.file = files.item(0);
   }
 
-  confirm() {
+  override confirm() {
     if (!this.canConfirm) {
       return;
     }
@@ -85,7 +86,7 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
     );
   }
 
-  cancel() {
+  override cancel() {
     if (!this.editMode) {
       return;
     }

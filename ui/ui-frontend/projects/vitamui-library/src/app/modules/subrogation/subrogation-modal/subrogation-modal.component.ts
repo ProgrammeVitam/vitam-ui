@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
-import { Subrogation } from '../../models';
+import { Subrogation } from '../../models/subrogation/subrogation.interface';
 import { SubrogationService } from '../subrogation.service';
 
 @Component({
@@ -92,7 +92,6 @@ export class SubrogationModalComponent implements OnInit {
     this.subrogationService.checkCurrentUserIsInSubrogation().subscribe((response: Subrogation) => {
       if (response.id) {
         if (response.surrogate === surrogateEmail) {
-          // eslint-disable-next-line no-magic-numbers
           this.stepIndex = 1;
           // TODO subscribe to the modal close event and cancel the subrogation
           this.pending = true;
@@ -141,7 +140,6 @@ export class SubrogationModalComponent implements OnInit {
     };
     this.subrogationService.createSubrogation(this.subrogation).subscribe(
       (subrogation) => {
-        // eslint-disable-next-line no-magic-numbers
         this.stepIndex = 1;
         this.subrogation = subrogation;
         this.subrogationService.checkSubrogationStatus(this.subrogation, this.dialogRef).subscribe(() => {

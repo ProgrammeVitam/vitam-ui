@@ -41,7 +41,7 @@ import { PipesModule } from '../pipes/pipes.module';
 import { GroupComponent } from './components/group/group.component';
 import { ListComponent } from './components/list/list.component';
 import { PrimitiveComponent } from './components/primitive/primitive.component';
-import { DisplayObjectService } from './models';
+import { DisplayObjectService } from './models/display-object-service';
 import { ObjectViewerComponent } from './object-viewer.component';
 import { DisplayObjectHelperService } from './services/display-object-helper.service';
 import { DisplayRuleHelperService } from './services/display-rule-helper.service';

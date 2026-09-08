@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Id } from '../id.interface';
-import { FacetDetails } from '../operation';
+import { FacetDetails } from '../operation/facet-details.interface';
 import { ProjectStatus } from './project-status';
 
 export interface Project extends Id {

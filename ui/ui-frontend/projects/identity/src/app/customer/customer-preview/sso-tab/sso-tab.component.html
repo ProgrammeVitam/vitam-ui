@@ -41,16 +41,16 @@
           </div>
           <a
             class="provider-item-link clickable"
-            (click)="downloadFile(provider?.internal, provider?.idpMetadataUrl)"
-            [class.disabled]="provider?.internal"
+            (click)="downloadFile(provider?.idpMetadataUrl)"
+            [class.disabled]="!canDownloadIdpMetadata(provider)"
           >
             <i class="material-icons">file_download</i>
             <span class="p-0">{{ 'CUSTOMER.SSO.METADATA' | translate }}</span>
           </a>
           <a
             class="provider-item-link clickable"
-            (click)="downloadFile(provider?.internal, provider?.spMetadataUrl)"
-            [class.disabled]="provider?.internal"
+            (click)="downloadFile(provider?.spMetadataUrl)"
+            [class.disabled]="!canDownloadSpMetadata(provider)"
           >
             <i class="material-icons">file_download</i>
             <span class="p-0">{{ 'CUSTOMER.SSO.SP_METADATA' | translate }}</span>

@@ -36,15 +36,9 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import {
-  AccessContract,
-  AccessContractDisplay,
-  AccessRightType,
-  accessRightTypeOf,
-  AgencyService,
-  Option,
-  VitamuiSelectOptions,
-} from 'vitamui-library';
+import type { AccessContract, AccessContractDisplay, Option, VitamuiSelectOptions } from 'vitamui-library';
+import { AccessRightType } from 'vitamui-library';
+import { accessRightTypeOf, AgencyService } from 'vitamui-library';
 import { MatDialog } from '@angular/material/dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { RULE_TYPES } from '../../../rule/rules.constants';

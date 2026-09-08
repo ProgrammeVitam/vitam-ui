@@ -37,7 +37,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { AdminUserProfile, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, SecurityProfile } from 'vitamui-library';
+import type { AdminUserProfile, SecurityProfile } from 'vitamui-library';
+import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;

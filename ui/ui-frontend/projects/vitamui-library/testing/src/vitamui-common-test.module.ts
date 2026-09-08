@@ -36,7 +36,8 @@
  */
 /* eslint-disable max-classes-per-file */
 import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform, TemplateRef } from '@angular/core';
-import { AsyncValidatorFn, ControlValueAccessor, NG_VALUE_ACCESSOR, ValidatorFn } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { provideTranslateService } from '@ngx-translate/core';
 
@@ -57,13 +58,6 @@ export class StepperStubComponent {
   @Input() selectedIndex: number;
   steps: any[] = [];
 }
-
-@Component({
-  selector: 'vitamui-common-input-error',
-  template: '<ng-content></ng-content>',
-  standalone: false,
-})
-export class VitamUIInputErrorStubComponent {}
 
 @Component({
   selector: 'vitamui-common-input',
@@ -438,7 +432,6 @@ const components = [
   VitamUIEditableTextareaStubComponent,
   VitamUIEditableToggleGroupStubComponent,
   VitamUIFieldErrorStubComponent,
-  VitamUIInputErrorStubComponent,
   VitamUIInputPositiveNumberStubComponent,
   VitamUIInputStubComponent,
   VitamUISlideToggleStubComponent,

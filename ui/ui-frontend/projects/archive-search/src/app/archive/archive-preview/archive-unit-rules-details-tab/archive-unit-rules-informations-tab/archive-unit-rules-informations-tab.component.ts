@@ -34,23 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { InheritedPropertyDto, Logger, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
+import type { InheritedPropertyDto, RuleActionDetails, Unit, UnitRuleDto } from 'vitamui-library';
+import { Logger } from 'vitamui-library';
 
 @Component({
   selector: 'app-archive-unit-rules-informations-tab',
   templateUrl: './archive-unit-rules-informations-tab.component.html',
   styleUrls: ['./archive-unit-rules-informations-tab.component.css'],
-  animations: [
-    trigger('collapse', [
-      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
-      state('true', style({ height: '0', visibility: 'hidden' })),
-      transition('false => true', animate(300 + 'ms ease-in')),
-      transition('true => false', animate(300 + 'ms ease-out')),
-    ]),
-  ],
   standalone: false,
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
@@ -78,16 +70,17 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.initializeParameters();
-    if (changes.archiveUnitRules) {
-      this.getInheritedRulesDetails(changes.archiveUnitRules.currentValue);
+    if (changes['archiveUnitRules']) {
+      this.getInheritedRulesDetails(changes['archiveUnitRules']['currentValue']);
       this.showListOfPropertiesBloc();
     }
   }
 
-  getRuleCategoryName(ruleCategoryId: string) {
+  getRuleCategoryName(ruleCategoryId: string): string {
     if (ruleCategoryId) {
       return this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.CATEGORY_NAME.' + ruleCategoryId.toUpperCase());
     }
+    return null;
   }
 
   getRuleStatus(ruleDUA: UnitRuleDto): string {
@@ -99,6 +92,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
         ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.INHERITED')
         : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED');
     }
+    return null;
   }
 
   getMaxEndDate(rules: UnitRuleDto[]): string {
@@ -107,6 +101,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
 
       return response ? response[0]?.EndDate : null;
     }
+    return null;
   }
 
   getFinalActionValue(propertiesDUA: InheritedPropertyDto[]): string {
@@ -122,6 +117,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
             );
       }
     }
+    return null;
   }
 
   getPropertyName(property: string): string {
@@ -130,11 +126,13 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
         return this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION_VALUE');
       }
     }
+    return null;
   }
   getPropertyValue(property: string): string {
     if (property) {
       return this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.' + property.toUpperCase());
     }
+    return null;
   }
 
   getFinalActionStatus(propertiesDUA: InheritedPropertyDto): string {
@@ -151,6 +149,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
         ? this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED')
         : this.translateService.instant('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED');
     }
+    return null;
   }
 
   showlistOfRulesBloc() {

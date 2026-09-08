@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable max-lines, max-classes-per-file */
+
 import { EMPTY, of } from 'rxjs';
 import {
   AdminUserProfile,
@@ -159,7 +159,6 @@ let expectedAdminUserProfile: AdminUserProfile = {
 };
 
 @Component({
-  // eslint-disable-next-line max-len
   template: ` <app-user-info-tab
     [user]="user"
     [customer]="customer"

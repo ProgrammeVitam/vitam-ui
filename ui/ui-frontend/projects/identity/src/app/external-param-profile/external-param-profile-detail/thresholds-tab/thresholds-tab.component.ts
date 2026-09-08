@@ -38,7 +38,8 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, inject }
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
-import { diff, ExternalParamProfile, Option } from 'vitamui-library';
+import type { ExternalParamProfile } from 'vitamui-library';
+import { diff, Option } from 'vitamui-library';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DecimalPipe } from '@angular/common';

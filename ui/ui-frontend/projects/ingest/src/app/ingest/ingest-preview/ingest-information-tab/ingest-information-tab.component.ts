@@ -35,17 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, inject } from '@angular/core';
-import {
+import { ApplicationId, ApplicationService } from 'vitamui-library';
+import { IngestStatus } from '../../../models/logbook-event.interface';
+import type {
   AgIdExtDeflateJson,
   EvDetDataDeflateJson,
-  ingestHasEvents,
-  ingestLastEvent,
-  IngestStatus,
-  ingestStatus,
+  IngestReferentialNames,
   LogbookOperation,
 } from '../../../models/logbook-event.interface';
-
-import { ApplicationId, ApplicationService } from 'vitamui-library';
+import { ingestHasEvents, ingestLastEvent, ingestStatus } from '../../../models/logbook-event.interface';
 import { Observable, ReplaySubject, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { IngestReferentialService } from '../../../core/service/ingest-referential.service';
@@ -67,7 +65,7 @@ export class IngestInformationTabComponent implements OnChanges {
   private readonly resolve$ = new ReplaySubject<Parameters<IngestReferentialService['resolveNames']>[0]>(1);
 
   readonly referentialNames$ = this.resolve$.pipe(
-    switchMap((params) => this.ingestReferentialService.resolveNames(params).pipe(startWith({}))),
+    switchMap((params) => this.ingestReferentialService.resolveNames(params).pipe(startWith<IngestReferentialNames>({}))),
   );
 
   constructor() {}
@@ -112,6 +110,8 @@ export class IngestInformationTabComponent implements OnChanges {
         return 'danger';
       case IngestStatus.IN_PROGRESS:
         return 'light';
+      default:
+        return undefined;
     }
   }
 

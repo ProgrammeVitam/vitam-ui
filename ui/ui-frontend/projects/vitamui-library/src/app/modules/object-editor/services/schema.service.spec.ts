@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { LoggerModule } from '../../logger';
-import { Collection, Schema } from '../../models';
+import { LoggerModule } from '../../logger/logger.module';
+import { Collection } from '../../models/schema/collection.enum';
+import { Schema } from '../../models/schema/schema.interface';
 import { MockSchemaService } from '../../schema/mock-schema.service';
 import { PathService } from './path.service';
 import { SchemaOptions, SchemaService } from './schema.service';

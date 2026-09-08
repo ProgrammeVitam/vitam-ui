@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { BASE_URL } from '../injection-tokens';
-import { AppConfiguration, Application, AttachmentType } from '../models';
+import { AppConfiguration } from '../models/app.configuration.interface';
+import { Application } from '../models/application/application.interface';
+import { AttachmentType } from '../models/customer/theme/attachmentType.enum';
 import { IdentifierName } from '../models/application/identifier-name.interface';
 
 @Injectable({

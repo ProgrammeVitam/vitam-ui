@@ -38,6 +38,12 @@ subrogation.ttl: 30
 
 logbook.scheduling.sendEventToVitamTasks.enabled: false
 
+discussion:
+  scheduling:
+    purgeTransactionDiscussions:
+      enabled: true
+      cronExpression: 0 */5 * ? * *
+
 customer.init.config.file: src/test/resources/customer-init.yml
 
 cas.password-reset-url.path: /extras/passwordResetUrl

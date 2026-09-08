@@ -38,7 +38,8 @@ import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, Vi
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent, SecurityProfile } from 'vitamui-library';
+import type { SecurityProfile } from 'vitamui-library';
+import { ConfirmActionComponent } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
@@ -64,7 +65,7 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
   @ViewChild('permsTab', { static: false }) permsTab: SecurityProfilePermissionsTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
-  beforeunloadHandler(event: any) {
+  beforeunloadHandler(event: any): string | void {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();

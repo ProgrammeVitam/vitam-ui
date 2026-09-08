@@ -34,7 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ORIGIN_HAS_AT_LEAST_ONE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_WAITING_RECALCULATE } from '../../../../app/modules';
+import {
+  ORIGIN_HAS_AT_LEAST_ONE,
+  ORIGIN_INHERITE_AT_LEAST_ONE,
+  ORIGIN_WAITING_RECALCULATE,
+} from '../../../../app/modules/models/criteria/search-criteria-configs';
 import { ManagementRuleSearchConfig } from '../management-rule-search.config';
 import { ManagementRuleFormUtils } from './management-rule-form.utils';
 
@@ -80,9 +84,9 @@ describe('ManagementRuleFormUtils', () => {
       const checkboxConfig = {};
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, false);
 
-      expect(result.ruleIdentifier).toBe('');
-      expect(result.ruleStartDate).toBe('');
-      expect(result.ruleEndDate).toBe('');
+      expect(result['ruleIdentifier']).toBe('');
+      expect(result['ruleStartDate']).toBe('');
+      expect(result['ruleEndDate']).toBe('');
     });
 
     it('should set ORIGIN_INHERITE_AT_LEAST_ONE to true', () => {
@@ -92,7 +96,7 @@ describe('ManagementRuleFormUtils', () => {
 
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, false);
 
-      expect(result.inheritOrigin).toBe(true);
+      expect(result['inheritOrigin']).toBe(true);
     });
 
     it('should set ORIGIN_HAS_AT_LEAST_ONE to true', () => {
@@ -102,7 +106,7 @@ describe('ManagementRuleFormUtils', () => {
 
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, false);
 
-      expect(result.hasOrigin).toBe(true);
+      expect(result['hasOrigin']).toBe(true);
     });
 
     it('should set ORIGIN_WAITING_RECALCULATE based on parameter when true', () => {
@@ -112,7 +116,7 @@ describe('ManagementRuleFormUtils', () => {
 
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, true);
 
-      expect(result.waitingRecalculate).toBe(true);
+      expect(result['waitingRecalculate']).toBe(true);
     });
 
     it('should set ORIGIN_WAITING_RECALCULATE based on parameter when false', () => {
@@ -122,7 +126,7 @@ describe('ManagementRuleFormUtils', () => {
 
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, false);
 
-      expect(result.waitingRecalculate).toBe(false);
+      expect(result['waitingRecalculate']).toBe(false);
     });
 
     it('should set other checkboxes to false', () => {
@@ -132,7 +136,7 @@ describe('ManagementRuleFormUtils', () => {
 
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, false);
 
-      expect(result.otherCheckbox).toBe(false);
+      expect(result['otherCheckbox']).toBe(false);
     });
 
     it('should handle multiple checkboxes with correct defaults', () => {
@@ -145,10 +149,10 @@ describe('ManagementRuleFormUtils', () => {
 
       const result = ManagementRuleFormUtils.initializePreviousCriteriaValue(checkboxConfig, true);
 
-      expect(result.inheritOrigin).toBe(true);
-      expect(result.hasOrigin).toBe(true);
-      expect(result.waitingRecalculate).toBe(true);
-      expect(result.customProp).toBe(false);
+      expect(result['inheritOrigin']).toBe(true);
+      expect(result['hasOrigin']).toBe(true);
+      expect(result['waitingRecalculate']).toBe(true);
+      expect(result['customProp']).toBe(false);
     });
   });
 });

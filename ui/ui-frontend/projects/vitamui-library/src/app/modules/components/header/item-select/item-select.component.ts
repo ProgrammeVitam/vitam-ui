@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MenuOption } from '../../../models/menu-option.interface';
-import { Option } from '../../autocomplete';
+import type { MenuOption } from '../../../models/menu-option.interface';
+import { Option } from '../../autocomplete/utils/option.interface';
 
 @Component({
   selector: 'vitamui-common-item-select',

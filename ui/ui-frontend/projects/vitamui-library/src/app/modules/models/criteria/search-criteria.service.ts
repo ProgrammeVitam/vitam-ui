@@ -79,10 +79,11 @@ import {
   TITLE_REUSE,
   translatedKeys,
 } from './search-criteria-configs';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { SearchWithTypeSelectorValue } from '../../../../lib/components/search-with-type-selector/search-with-type-selector.component';
-import { SchemaService } from '../../schema';
-import { Collection, Schema } from '../schema';
+import { SchemaService } from '../../schema/schema.service';
+import { Collection } from '../schema/collection.enum';
+import { Schema } from '../schema/schema.interface';
 import { firstValueFrom } from 'rxjs';
 
 const SEPARATOR = '|';

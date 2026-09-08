@@ -44,9 +44,9 @@ import { VitamUICommonModule } from 'vitamui-library';
 
 import { SharedModule } from '../shared/shared.module';
 import { GroupAttributionModule } from './group-attribution/group-attribution.module';
-import { UserCreateModule } from './user-create';
-import { UserListModule } from './user-list';
-import { UserPreviewModule } from './user-preview';
+import { UserCreateModule } from './user-create/user-create.module';
+import { UserListModule } from './user-list/user-list.module';
+import { UserPreviewModule } from './user-preview/user-preview.module';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
 import { TranslatePipe } from '@ngx-translate/core';

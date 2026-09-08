@@ -100,7 +100,7 @@
         <div class="col-12">
           <vitamui-common-editable-input
             formControlName="street"
-            maxlength="{{ maxStreetLength }}"
+            [maxlength]="maxStreetLength"
             [label]="'COMMON.ADRESS.STREET' | translate"
             [validator]="form?.get('address.street')?.validator"
             [asyncValidator]="form?.get('address.street')?.asyncValidator"
@@ -113,7 +113,7 @@
         <div class="col-6">
           <vitamui-common-editable-input
             formControlName="zipCode"
-            maxlength="10"
+            [maxlength]="10"
             [label]="'COMMON.ADRESS.ZIPCODE' | translate"
             [validator]="form?.get('address.zipCode')?.validator"
             [asyncValidator]="form?.get('address.zipCode')?.asyncValidator"
@@ -124,7 +124,7 @@
         <div class="col-6">
           <vitamui-common-editable-input
             formControlName="city"
-            maxlength="100"
+            [maxlength]="100"
             [label]="'COMMON.ADRESS.CITY' | translate"
             [validator]="form?.get('address.city')?.validator"
             [asyncValidator]="form?.get('address.city')?.asyncValidator"

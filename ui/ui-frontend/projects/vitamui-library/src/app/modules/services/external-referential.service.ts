@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { PaginatedHttpClient } from '../paginated-http-client';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BASE_URL } from '../injection-tokens';
 import { Observable } from 'rxjs';
-import { ElectronicArchivingSystem, IngestContractLight, ProfileLight } from '../models';
-import { AgencyLight } from '../models/agency/agency.interface';
+import { ElectronicArchivingSystem } from '../models/collect/project';
+import { IngestContractLight } from '../models/ingest-contract/ingest-contract';
+import { ProfileLight } from '../models/profile/profile.interface';
+import { AgencyLight } from '../models/agency-light/agency-light.interface';
 import { map, shareReplay } from 'rxjs/operators';
-import { Option } from '../components/autocomplete';
+import { Option } from '../components/autocomplete/utils/option.interface';
 
 export const TENANT_SEPARATOR = ' - Tenant ';
 

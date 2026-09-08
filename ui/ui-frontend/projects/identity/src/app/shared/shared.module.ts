@@ -38,8 +38,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { CollapseModule, LevelInputModule, VitamUICommonModule } from 'vitamui-library';
-import { DomainsInputModule } from './domains-input';
-import { EditableFieldModule } from './editable-field';
+import { DomainsInputModule } from './domains-input/domains-input.module';
+import { EditableFieldModule } from './editable-field/editable-field.module';
 import { ProfilesFormModule } from './profiles-form/profiles-form.module';
 
 @NgModule({

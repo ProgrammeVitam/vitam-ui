@@ -37,7 +37,8 @@
 
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogModule } from '@angular/material/dialog';
-import { VitamError, VitamErrorDetails } from '../../../../app/modules';
+import { VitamError } from '../../../../app/modules/models/collect/vitam-error';
+import { VitamErrorDetails } from '../../../../app/modules/models/collect/vitam-error-details';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { DialogContentWithStateComponent } from '../dialog-content-with-state/dialog-content-with-state.component';
 import { DialogHeaderComponent } from '../dialog-header/dialog-header.component';

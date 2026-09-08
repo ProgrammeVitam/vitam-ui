@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { IEvent, LogbookService } from 'vitamui-library';
-import { OperationDetails } from '../../../models/operation-response.interface';
+import { LogbookService } from 'vitamui-library';
+import type { IEvent } from 'vitamui-library';
+import type { OperationDetails } from '../../../models/operation-response.interface';
 
 @Component({
   selector: 'app-logbook-management-operation-information-tab',
@@ -68,22 +69,24 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.operation) {
-      this.getLogbookOperationDetails(changes.operation.currentValue);
+    if (changes['operation']) {
+      this.getLogbookOperationDetails(changes['operation'].currentValue);
     }
   }
 
-  getLastEvent(event: IEvent): IEvent {
+  getLastEvent(event: IEvent): IEvent | null {
     if (event) {
       const events: IEvent[] = event.events.filter((element) => element.outcome === this.operation.stepStatus);
       return events && events.length > 0 ? events[events.length - 1] : null;
     }
+    return null;
   }
 
-  getEventEndDate(event: IEvent): IEvent {
+  getEventEndDate(event: IEvent): IEvent | null {
     if (event) {
       const events: IEvent[] = event.events;
       return events && events.length > 0 ? events[events.length - 1] : null;
     }
+    return null;
   }
 }

@@ -7,9 +7,9 @@
     <span>{{ 'INGEST_CONTRACT.TAB.OBJECTS.ALL_USAGES' | translate }}</span>
   </vitamui-slide-toggle>
 
-  @if (!form?.controls.everyDataObjectVersion?.value) {
+  @if (!form?.controls['everyDataObjectVersion']?.value) {
     <div class="py-3">
-      @if (!form?.controls.everyDataObjectVersion?.value) {
+      @if (!form?.controls['everyDataObjectVersion']?.value) {
         <vitamui-select
           [multiple]="true"
           formControlName="dataObjectVersion"

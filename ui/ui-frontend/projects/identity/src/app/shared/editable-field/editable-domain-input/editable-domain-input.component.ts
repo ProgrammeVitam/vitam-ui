@@ -40,7 +40,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => EditableDomainInputComponent),
   multi: true,
 };
@@ -68,7 +68,7 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
 
   private domainInputClicked = false;
 
-  get canConfirm(): boolean {
+  override get canConfirm(): boolean {
     return this.editMode && !this.control.pending && this.control.valid && (this.control.dirty || this.selected !== this.defaultDomain);
   }
 
@@ -78,7 +78,7 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
     super(elementRef);
   }
 
-  confirm() {
+  override confirm() {
     if (!this.canConfirm) {
       return;
     }
@@ -87,12 +87,12 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
     this.defaultDomainChange.emit(this.defaultDomain);
   }
 
-  cancel() {
+  override cancel() {
     super.cancel();
     this.selected = this.defaultDomain;
   }
 
-  onClick(target: HTMLElement) {
+  override onClick(target: HTMLElement) {
     if (!this.editMode) {
       return;
     }

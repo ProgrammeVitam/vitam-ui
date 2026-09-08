@@ -39,7 +39,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { FileFormat, IngestContract, VitamuiSelectOptions, diff } from 'vitamui-library';
+import { diff, VitamuiSelectOptions } from 'vitamui-library';
+import type { FileFormat, IngestContract } from 'vitamui-library';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 
@@ -123,18 +124,18 @@ export class IngestContractFormatTabComponent implements OnInit {
       .subscribe((options) => (this.formatOptions = { options }));
 
     if (!this.ingestContract.everyFormatType) {
-      this.form.controls.formatType.setValidators(Validators.required);
+      this.form.controls['formatType'].setValidators(Validators.required);
     }
 
-    this.form.controls.everyFormatType.valueChanges.subscribe((value: boolean) => {
-      this.form.controls.formatType.setValue(null);
+    this.form.controls['everyFormatType'].valueChanges.subscribe((value: boolean) => {
+      this.form.controls['formatType'].setValue(null);
       if (value) {
-        this.form.controls.formatType.setValidators([]);
+        this.form.controls['formatType'].setValidators([]);
       } else {
-        this.form.controls.formatType.setValidators(Validators.required);
-        this.form.controls.formatType.markAllAsTouched();
+        this.form.controls['formatType'].setValidators(Validators.required);
+        this.form.controls['formatType'].markAllAsTouched();
       }
-      this.form.controls.formatType.updateValueAndValidity();
+      this.form.controls['formatType'].updateValueAndValidity();
     });
   }
 
@@ -156,8 +157,8 @@ export class IngestContractFormatTabComponent implements OnInit {
       filter((formData) => !isEmpty(formData)),
       map((formData) => {
         // prevent having error from backend
-        if (formData.formatType === null) {
-          formData.formatType = [];
+        if (formData['formatType'] === null) {
+          formData['formatType'] = [];
         }
         return formData;
       }),

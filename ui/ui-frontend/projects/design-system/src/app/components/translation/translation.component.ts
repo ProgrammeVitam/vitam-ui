@@ -41,7 +41,6 @@ import { TranslateService } from '@ngx-translate/core';
 const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'design-system-translation',
   templateUrl: './translation.component.html',
   styleUrls: ['./translation.component.scss'],
@@ -69,7 +68,7 @@ export class TranslationComponent implements OnInit {
     this.myInstantText = this.translateService.instant('TRANSLATION.TRANSLATE_INSTANT');
 
     this.translateService.get(TRANSLATE_GET_PATH).subscribe((translatedTexts: { [key: string]: string }) => {
-      this.myGetTexts = [translatedTexts.TRANSLATE_GET_1, translatedTexts.TRANSLATE_GET_2];
+      this.myGetTexts = [translatedTexts['TRANSLATE_GET_1'], translatedTexts['TRANSLATE_GET_2']];
     });
   }
 

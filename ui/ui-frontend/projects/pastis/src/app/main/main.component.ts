@@ -126,13 +126,13 @@ export class MainComponent implements OnInit, OnDestroy {
       this.pending = status;
     });
     const navigation = this.router.getCurrentNavigation();
-    this.uploadedProfileByFile = navigation?.extras.state?.payload;
+    this.uploadedProfileByFile = navigation?.extras.state?.['payload'];
   }
 
   ngOnInit() {
     this.fileService.currentTreeLoaded = false;
     this._routeParamsSubscription = this.route.params.subscribe((params) => {
-      const profileId = params.id;
+      const profileId = params['id'];
 
       // If a profileId has been defined, it is retrieved from backend
       if (profileId !== undefined) {
@@ -143,8 +143,8 @@ export class MainComponent implements OnInit, OnDestroy {
           if (this.uploadedProfileByFile !== undefined) {
             this.uploadNewProfile();
           } else if (queryParams['type'] && queryParams['version']) {
-            const type: ProfileType = queryParams?.type;
-            const version: ProfileVersion = queryParams?.version;
+            const type: ProfileType = queryParams?.['type'];
+            const version: ProfileVersion = queryParams?.['version'];
             this.createNewProfile(type, version);
           } else {
             // No valid params, redirect to list

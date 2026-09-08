@@ -40,13 +40,13 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
+  inject,
   Injector,
   Input,
   OnInit,
   Output,
   TemplateRef,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -56,7 +56,7 @@ import { DisplayFile } from './display-file/display-file.interface';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { FormErrorsComponent } from '../../../../lib/components/form-errors/form-errors.component';
-import { BytesPipe } from '../../pipes';
+import { BytesPipe } from '../../pipes/bytes.pipe';
 import { AbstractFormInputDirective } from '../../../../lib/components/abstract-form-input.directive';
 import { DisplayFileComponent } from './display-file/display-file.component';
 
@@ -82,7 +82,8 @@ export interface FileValidationErrors {
   controlErrors: ValidationErrors;
 }
 
-type FileValidatorFunction = (file: File) => Promise<FileValidationErrors | null>;
+export type FileValidatorFunction = (file: File, hasErrors?: boolean) => Promise<FileValidationErrors | null>;
+type DirectoryValidatorFunction = (displayFile: DisplayFile) => Promise<FileValidationErrors | undefined>;
 
 @Component({
   selector: 'vitamui-file-selector',
@@ -101,7 +102,7 @@ type FileValidatorFunction = (file: File) => Promise<FileValidationErrors | null
   providers: [FILE_SELECTOR_VALUE_ACCESSOR, BytesPipe],
 })
 export class FileSelectorComponent extends AbstractFormInputDirective implements OnInit {
-  private bytesPipe = inject(BytesPipe);
+  private readonly bytesPipe = inject(BytesPipe);
 
   /**
    * Allowed extensions. Ex: ['.json', '.rng']
@@ -138,11 +139,10 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
 
   constructor() {
     const injector = inject(Injector);
-
     super(injector);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
 
     this.control.addValidators([this.maxSizeInBytesValidator, this.maxFilesValidator]);
@@ -158,7 +158,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
 
   private isInitialization = true;
 
-  writeValue(): void {
+  override writeValue(): void {
     // Only add files to init the component from the form control value, otherwise it would be triggered after calling control.setValue
     if (this.isInitialization) {
       this.isInitialization = false;
@@ -176,10 +176,9 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   async handleFilesSelection(files: FileList | File[]) {
-    this.control.markAsTouched();
-
+    // We mark the control as touched only AFTER the value has been set
     await this.updateFiles(files);
-
+    this.control.markAsTouched();
     this.resetInput();
   }
 
@@ -269,7 +268,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   private async computeDirectoryErrors(displayFile: DisplayFile): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     console.group(`Computing errors on directory "${displayFile.name}"`);
 
-    const validators: ((displayFile: DisplayFile) => Promise<FileValidationErrors | undefined>)[] = [this.directoryForbiddenValidator];
+    const validators: DirectoryValidatorFunction[] = [this.directoryForbiddenValidator];
     const errors = await this.runValidators(validators, displayFile);
 
     console.groupEnd();
@@ -284,10 +283,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
         ? this.fileValidators
         : [this.fileValidators]
       : [];
-    const validators: ((file: File) => Promise<FileValidationErrors | undefined>)[] = [
-      this.fileExtensionValidator,
-      ...customFileValidators,
-    ];
+    const validators: FileValidatorFunction[] = [this.fileExtensionValidator, ...customFileValidators];
     const errors = await this.runValidators(validators, file);
 
     console.groupEnd();
@@ -295,13 +291,13 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   }
 
   private async runValidators<T extends File | DisplayFile>(
-    validators: ((element: T) => Promise<FileValidationErrors | undefined>)[],
+    validators: (FileValidatorFunction | DirectoryValidatorFunction)[],
     element: T,
   ): Promise<{ fileErrors: ValidationErrors; globalErrors: any[] }> {
     let errors: ValidationErrors = {};
     const globalErrors: any[] = [];
     for (const validator of validators) {
-      const validationErrors = await validator.call(this, element);
+      const validationErrors = await validator.call(this, element, globalErrors.length > 0);
       const fileErrors = validationErrors?.fileErrors || {};
       const controlErrors = validationErrors?.controlErrors || {};
 
@@ -309,7 +305,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
       errors = { ...errors, ...fileErrors };
 
       // We're adding global errors
-      if (controlErrors) {
+      if (Object.keys(controlErrors).length > 0) {
         globalErrors.push(controlErrors);
       }
     }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -55,7 +55,7 @@ import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/imp
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyCreateModule } from './agency-create';
+import { AgencyCreateModule } from './agency-create/agency-create.module';
 import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
 import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
@@ -82,8 +82,8 @@ import { map } from 'rxjs/operators';
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
-  globalEventService: GlobalEventService;
-  private route: ActivatedRoute;
+  override globalEventService: GlobalEventService;
+  route: ActivatedRoute;
   private securityService = inject(SecurityService);
   private agencyService = inject(AgencyService);
   private translateService = inject(TranslateService);
@@ -111,11 +111,11 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
+      this.tenantIdentifier = +params['tenantIdentifier'];
     });
     this.queryParamsService
       .getQueryParams()
-      .pipe(map((queryParam) => queryParam.s || ''))
+      .pipe(map((queryParam) => queryParam['s'] || ''))
       .subscribe((s) => (this.search = s));
 
     zip(
@@ -148,6 +148,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
     const params: ImportDialogParam = {
       title: this.translateService.instant('IMPORT_DIALOG.TITLE'),
       subtitle: this.translateService.instant('IMPORT_DIALOG.AGENCY_SUBTITLE'),
+      fileFormatDetailInfo: this.translateService.instant('IMPORT_DIALOG.SCHEMA_FORMAT_CSV_COMMA'),
       allowedFiles: [FileTypes.CSV, FileTypes.VND],
       referential: ReferentialTypes.AGENCY,
       successMessage: 'SNACKBAR.AGENCY_CONTRACT_IMPORTED',

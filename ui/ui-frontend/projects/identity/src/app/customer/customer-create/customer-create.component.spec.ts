@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable max-classes-per-file, @angular-eslint/directive-selector */
+
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';

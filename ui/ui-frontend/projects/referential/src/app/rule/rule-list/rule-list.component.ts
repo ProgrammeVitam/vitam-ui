@@ -39,8 +39,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
+import type { AdminUserProfile, Rule } from 'vitamui-library';
 import {
-  AdminUserProfile,
   ApplicationId,
   AuthService,
   ConfirmActionComponent,
@@ -49,7 +49,6 @@ import {
   InfiniteScrollTable,
   PageRequest,
   Role,
-  Rule,
   RuleService,
   SnackBarService,
 } from 'vitamui-library';
@@ -146,8 +145,8 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       criteria.RuleId = this._searchText;
     }
 
-    if (this.filterMap.ruleType.length > 0) {
-      criteria.RuleType = this.filterMap.ruleType;
+    if (this.filterMap['ruleType'].length > 0) {
+      criteria['RuleType'] = this.filterMap['ruleType'];
     }
 
     return criteria;

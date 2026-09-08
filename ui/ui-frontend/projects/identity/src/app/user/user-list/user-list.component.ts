@@ -37,22 +37,18 @@
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
-  AdminUserProfile,
   ApplicationId,
   AuthService,
   buildCriteriaFromSearch,
-  collapseAnimation,
   CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
-  Group,
   InfiniteScrollTable,
   PageRequest,
   Role,
-  rotateAnimation,
-  User,
   SnackBarService,
 } from 'vitamui-library';
+import type { AdminUserProfile, Group, User } from 'vitamui-library';
 
 import {
   Component,
@@ -78,7 +74,6 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
@@ -100,7 +95,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<UserListComponent>;
   @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
-  overridePendingChange: true;
+  override overridePendingChange: true;
   statusFilter: string[] = [];
   filterMap: { [key: string]: any[] } = {
     status: [],

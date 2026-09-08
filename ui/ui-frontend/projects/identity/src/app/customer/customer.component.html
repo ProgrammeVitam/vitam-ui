@@ -3,15 +3,15 @@
     @if (previewType === 'CUSTOMER') {
       <app-customer-preview
         (previewClose)="closePanel()"
-        [customer]="openedItem"
+        [customer]="$any(openedItem)"
         [gdprReadOnlyStatus]="gdprReadOnlySettingStatus"
       ></app-customer-preview>
     }
     @if (previewType === 'OWNER') {
-      <app-owner-preview (previewClose)="closePanel()" [owner]="openedItem"></app-owner-preview>
+      <app-owner-preview (previewClose)="closePanel()" [owner]="$any(openedItem)"></app-owner-preview>
     }
     @if (previewType === 'TENANT') {
-      <app-owner-preview (previewClose)="closePanel()" [owner]="owner" [tenant]="openedItem"></app-owner-preview>
+      <app-owner-preview (previewClose)="closePanel()" [owner]="owner" [tenant]="$any(openedItem)"></app-owner-preview>
     }
   </mat-sidenav>
 

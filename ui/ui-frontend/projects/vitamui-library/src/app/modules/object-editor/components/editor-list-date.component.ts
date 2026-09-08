@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { EditObject } from '../models/edit-object.model';
+import type { EditObject } from '../models/edit-object.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HintComponent } from '../../components/hint/hint.component';

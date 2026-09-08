@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaAddAction, SearchCriteriaTypeEnum } from '../../../../app/modules';
+import { CriteriaDataType, CriteriaOperator } from '../../../../app/modules/models/criteria/criteria.enums';
+import { SearchCriteriaAddAction, SearchCriteriaTypeEnum } from '../../../../app/modules/models/criteria/search-criteria.interface';
 
 export interface ManagementRuleSearchCriteria extends SearchCriteriaAddAction {}
 

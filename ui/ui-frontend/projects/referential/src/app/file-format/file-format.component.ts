@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationId, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
-import { FileFormat, FileTypes } from 'vitamui-library';
+import { ApplicationId, FileFormat, FileTypes, GlobalEventService, Role, SecurityService, SidenavPage } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { FileFormatCreateComponent } from './file-format-create/file-format-create.component';
@@ -55,7 +54,7 @@ import { FileFormatListComponent } from './file-format-list/file-format-list.com
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  route: ActivatedRoute;
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
 
@@ -98,22 +97,22 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
 
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
+      if (params['tenantIdentifier']) {
         this.hasCreateRole = this.securityService.hasRole$(
           ApplicationId.FILE_FORMATS_APP,
           Role.ROLE_CREATE_FILE_FORMATS,
-          parseInt(params.tenantIdentifier),
+          parseInt(params['tenantIdentifier']),
         );
         this.hasImportRole = this.securityService.hasRole$(
           ApplicationId.FILE_FORMATS_APP,
           Role.ROLE_IMPORT_FILE_FORMATS,
-          parseInt(params.tenantIdentifier),
+          parseInt(params['tenantIdentifier']),
         );
       }
     });
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
     this.tenantIdentifierSubscription.unsubscribe();
   }
 

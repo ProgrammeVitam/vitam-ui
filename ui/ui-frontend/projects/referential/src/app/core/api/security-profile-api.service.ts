@@ -53,19 +53,19 @@ export class SecurityProfileApiService extends PaginatedHttpClient<SecurityProfi
     super(http, baseUrl + '/security-profile');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<SecurityProfile> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<SecurityProfile> {
     return super.getOne(id, headers);
   }
 
-  patch(partialSecurityProfile: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialSecurityProfile: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialSecurityProfile, headers);
   }
 
-  create(securityProfile: SecurityProfile, headers?: HttpHeaders): Observable<SecurityProfile> {
+  override create(securityProfile: SecurityProfile, headers?: HttpHeaders): Observable<SecurityProfile> {
     return super.getHttp().post<any>(super.getApiUrl(), securityProfile, { headers });
   }
 

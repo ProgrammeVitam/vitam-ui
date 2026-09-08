@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { DisplayObject } from '../../models';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import type { DisplayObject } from '../../models/display-object.model';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { LayoutService } from '../../services/layout.service';
@@ -59,7 +59,7 @@ export class GroupComponent implements OnInit, OnChanges {
   display: 'ACCORDION' | 'KEY-VALUE-OBJECTS' | 'ROWS';
 
   readonly DisplayObjectType = DisplayObjectType;
-  readonly entries = Object.entries;
+  readonly entries = Object.entries as (value: object) => [string, string | string[]][];
 
   ngOnInit(): void {
     if (this.displayObject.key !== 'Generalities') {

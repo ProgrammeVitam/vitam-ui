@@ -100,7 +100,7 @@ export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges 
   isExistingTypeOption = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.form) {
+    if (changes['form']) {
       this.updateAddButtonState();
       this.isExistingTypeOption = this.form.get('policyTypeOption').value !== '';
       this.objectUsagePoliciesToggle = this.form.get('shouldConcernObjects').value;
@@ -183,7 +183,7 @@ export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges 
     return this.getObjectUsagePolicies().some((policy: FormGroup) => policy.get('objectUsage').value === optionValue);
   }
 
-  private get objectUsagePolicies(): FormArray {
+  protected get objectUsagePolicies(): FormArray {
     return this.form.get('objectUsagePolicies') as FormArray;
   }
 

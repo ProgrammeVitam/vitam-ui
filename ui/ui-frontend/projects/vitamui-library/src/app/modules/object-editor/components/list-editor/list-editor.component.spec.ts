@@ -36,7 +36,7 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoggerModule } from '../../../logger';
+import { LoggerModule } from '../../../logger/logger.module';
 import { ListEditorComponent } from './list-editor.component';
 
 describe('ListEditorComponent', () => {

@@ -13,7 +13,8 @@
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-slide-toggle formControlName="enabled">
           {{
-            (form.controls.enabled.value ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE') | translate
+            (form.controls['enabled'].value ? 'EXTERNAL_PARAM_PROFILE.ACTIVE_PROFILE' : 'EXTERNAL_PARAM_PROFILE.INACTIVE_PROFILE')
+              | translate
           }}
         </vitamui-slide-toggle>
 
@@ -52,7 +53,7 @@
           {{ 'EXTERNAL_PARAM_PROFILE.USE_PLATFORM_BULK_OPERATIONS_THRESHOLD_TITLE' | translate }}
         </vitamui-slide-toggle>
 
-        @if (!form.controls.usePlatformThreshold.value) {
+        @if (!form.controls['usePlatformThreshold'].value) {
           <div class="select-threshold">
             <vitamui-select
               class="w-100"

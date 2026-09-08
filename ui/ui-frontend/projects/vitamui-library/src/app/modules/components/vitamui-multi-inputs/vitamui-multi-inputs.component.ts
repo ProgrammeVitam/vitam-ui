@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditableFieldComponent } from '../editable-field/editable-field.component';
@@ -46,7 +46,6 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'vitamui-multi-inputs',
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],
@@ -76,12 +75,12 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
     return super.canConfirm && !!value;
   }
 
-  enterEditMode() {
+  override enterEditMode() {
     super.enterEditMode();
     setTimeout(() => this.input.nativeElement.focus(), 0);
   }
 
-  confirm() {
+  override confirm() {
     if (this.control.invalid || this.control.pending) {
       return;
     }
@@ -91,7 +90,6 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
     }
     this.values.push(val);
     this.onChange(this.values);
-    this.originValue = this.values;
     this.editMode = false;
     this.control.reset();
   }
@@ -110,9 +108,8 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.reset?.currentValue) {
+    if (changes['reset']?.currentValue) {
       this.values = [];
-      this.originValue = this.values;
       this.onChange(this.values);
       this.control.reset(this.values);
     }

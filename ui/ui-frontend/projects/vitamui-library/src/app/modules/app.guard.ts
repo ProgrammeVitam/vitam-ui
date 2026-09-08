@@ -63,7 +63,7 @@ export class AppGuard {
       console.error('AppGuard Error: Missing "appId" property in route declaration. Please add the property to the route\'s data');
       return false;
     }
-    const appId = next.data.appId;
+    const appId = next.data['appId'];
     const foundAppProfile = this.authService.user.profileGroup.profiles.find((profile) => profile.applicationName === appId);
     if (!foundAppProfile) {
       this.location.href = this.startupService.getPortalUrl();

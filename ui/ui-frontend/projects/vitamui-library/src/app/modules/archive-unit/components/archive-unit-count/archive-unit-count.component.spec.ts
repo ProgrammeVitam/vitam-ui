@@ -34,16 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
-import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
-import { LoggerModule } from '../../../logger';
-import { VitamuiMissingTranslationHandler } from '../../../missing-translation-handler';
+import { LoggerModule } from '../../../logger/logger.module';
 import { PluralPipe } from '../../../pipes/plural.pipe';
 import { ArchiveUnitCountComponent } from './archive-unit-count.component';
 

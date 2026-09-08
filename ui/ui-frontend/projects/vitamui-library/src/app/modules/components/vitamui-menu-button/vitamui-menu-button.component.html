@@ -17,7 +17,7 @@
 
 <mat-menu
   #moreMenu="matMenu"
-  xPosition="{{ overlayPos() === 'start' ? 'after' : 'before' }}"
+  [xPosition]="overlayPos() === 'start' ? 'after' : 'before'"
   [overlapTrigger]="!simpleOverlay()"
   class="more-action-menu {{ overlayPos() }} {{ menuColor() }} {{ simpleOverlay() ? 'simple' : '' }}"
 >

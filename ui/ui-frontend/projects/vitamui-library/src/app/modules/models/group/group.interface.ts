@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Id } from '../id.interface';
-import { Profile } from '../profile';
+import { Profile } from '../profile/profile.interface';
 
 export interface Group extends Id {
   customerId: string;

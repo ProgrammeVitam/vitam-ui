@@ -50,7 +50,7 @@ export class SiteApiService extends BaseHttpClient<any> {
     super(http, baseUrl + '/sites');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 }

@@ -43,7 +43,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
 import { SharedModule } from '../shared/shared.module';
-import { HierarchyCreateModule } from './hierarchy-create';
+import { HierarchyCreateModule } from './hierarchy-create/hierarchy-create.module';
 import { HierarchyDetailModule } from './hierarchy-detail/hierarchy-detail.module';
 import { HierarchyListModule } from './hierarchy-list/hierarchy-list.module';
 import { HierarchyRoutingModule } from './hierarchy-routing.module';

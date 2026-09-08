@@ -10,7 +10,11 @@
       <vitamui-title-breadcrumb>
         <h5>{{ 'PRESERVATION.HOME.TITLE' | translate }}</h5>
       </vitamui-title-breadcrumb>
-      <vitamui-banner [searchbarPlaceholder]="'PRESERVATION.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
+      <vitamui-banner
+        [searchbarPlaceholder]="'PRESERVATION.HOME.SEARCH_PLACEHOLDER' | translate"
+        (search)="onSearchSubmit($event)"
+        (searchChanged)="onSearchSubmit($event)"
+      >
         <div class="hgap-2">
           <button class="btn primary" (click)="importScenarios()">{{ 'PRESERVATION.ACTION.IMPORT_SCENARIOS' | translate }}</button>
           <vitamui-menu-button overlayPos="end" icon="vitamui-icon-more-horiz">

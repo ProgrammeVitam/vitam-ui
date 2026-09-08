@@ -73,8 +73,8 @@ export class AdminDslComponent extends AppRootComponent {
     this.route = route;
 
     this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        this.tenantId = params.tenantIdentifier;
+      if (params['tenantIdentifier']) {
+        this.tenantId = params['tenantIdentifier'];
         this.accessContractService.getAllForTenant('' + this.tenantId).subscribe((accessContracts) => {
           this.accessContracts = accessContracts.map((accessContract) => ({
             key: accessContract.identifier,
@@ -103,9 +103,9 @@ export class AdminDslComponent extends AppRootComponent {
       searchObservable.subscribe(
         (response: any) => {
           if (response.httpCode === 400) {
-            this.form.controls.response.setValue(response.description);
+            this.form.controls['response'].setValue(response.description);
           } else {
-            this.form.controls.response.setValue(JSON.stringify(response, null, 2));
+            this.form.controls['response'].setValue(JSON.stringify(response, null, 2));
           }
         },
         (error: any) => {
@@ -129,12 +129,12 @@ export class AdminDslComponent extends AppRootComponent {
     }
   }
 
-  copyToClipbord(value: string) {
+  copyToClipboard(value: string) {
     this.clipboard.copy(value);
   }
 
   clear() {
-    this.form.controls.response.reset();
+    this.form.controls['response'].reset();
   }
 
   /**

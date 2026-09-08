@@ -53,20 +53,18 @@
     <cdk-step>
       <mat-dialog-content>
         <div class="main-content">
-          <div class="toggle-right">
-            <vitamui-slide-toggle
-              class="fields-padding d-flex"
-              [checked]="true"
-              formControlName="connectedToArchivingSystem"
-              (change)="onConnectedToArchivingSystemChangeValue()"
-            >
-              {{
-                easOptions.length > 1
-                  ? ('COLLECT.PROJECT_REFERENTIAL_CONNECTION_BUTTON' | translate)
-                  : ('COLLECT.PROJECT_REFERENTIAL_CONNECTION_LOCALLY_BUTTON' | translate)
-              }}
-            </vitamui-slide-toggle>
-          </div>
+          <vitamui-slide-toggle
+            class="fields-padding d-flex"
+            [checked]="true"
+            formControlName="connectedToArchivingSystem"
+            (change)="onConnectedToArchivingSystemChangeValue()"
+          >
+            {{
+              easOptions.length > 1
+                ? ('COLLECT.PROJECT_REFERENTIAL_CONNECTION_BUTTON' | translate)
+                : ('COLLECT.PROJECT_REFERENTIAL_CONNECTION_LOCALLY_BUTTON' | translate)
+            }}
+          </vitamui-slide-toggle>
           @if (connectedToArchivingSystem && easOptions.length > 1) {
             <vitamui-select
               formControlName="archivingSystem"
@@ -77,7 +75,7 @@
               [multiple]="false"
               [required]="true"
               [enableSearch]="true"
-            ></vitamui-select>
+            />
           }
         </div>
       </mat-dialog-content>
@@ -330,6 +328,7 @@
                   [maxSizeInBytes]="uploadMaxSizeInBytes"
                   [multiple]="true"
                   [formControl]="filesToUploadControl"
+                  [information]="'COLLECT.MODAL.POSSIBLE_METADATA_FILE_ADDITION' | translate"
                 >
                 </vitamui-file-selector>
               }

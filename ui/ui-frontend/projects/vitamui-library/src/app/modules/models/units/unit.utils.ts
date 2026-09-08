@@ -37,7 +37,7 @@
 import { VitamuiIcons } from '../../vitamui-icons.enum';
 import { UnitType } from './unit-type.enum';
 import { Unit, ValidationError } from './unit.interface';
-import { ArchiveUnit } from '../../archive-unit';
+import { ArchiveUnit } from '../../archive-unit/models/archive-unit';
 
 export function unitToVitamuiIcon(unit: Unit): VitamuiIcons {
   const hasObject = unit['#object'] && unit['#object'].length > 0;
@@ -57,8 +57,8 @@ export function unitTypeToVitamuiIcon(unitType: string, hasObject: boolean): Vit
   return VitamuiIcons.INGEST_WITHOUT_OBJECT;
 }
 
-export function addErrorStatusBadgeIfArchiveUnitHasErrors(archiveUnit: ArchiveUnit) {
-  return archiveUnit['#errors']?.length > 0 || archiveUnit['#ogInfo']?.['#errors']?.length > 0 ? 'red' : '';
+export function addErrorStatusBadgeIfArchiveUnitHasErrors(archiveUnit: ArchiveUnit): 'red' | undefined {
+  return archiveUnit['#errors']?.length > 0 || archiveUnit['#ogInfo']?.['#errors']?.length > 0 ? 'red' : undefined;
 }
 
 export function getErrorsOnArchiveUnit(archiveUnit: ArchiveUnit): ValidationError[] {

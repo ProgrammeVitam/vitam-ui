@@ -37,7 +37,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import { VitamUISlideToggleStubComponent } from '../../../../../testing/src';
+import { VitamUISlideToggleStubComponent } from '../../../../../testing/src/vitamui-common-test.module';
 import { RoleComponent } from './role.component';
 
 describe('RoleComponent', () => {

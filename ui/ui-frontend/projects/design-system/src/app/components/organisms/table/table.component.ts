@@ -36,19 +36,19 @@
  */
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { collapseAnimation, Direction, Group, rotateAnimation, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Direction, Group, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { SampleDialogComponent } from '../dialog/sample-dialog/sample-dialog.component';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -59,6 +59,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDialogModule,
     MatTableModule,
     MatMenuModule,
+    MatProgressBarModule,
   ],
 })
 export class TableComponent {

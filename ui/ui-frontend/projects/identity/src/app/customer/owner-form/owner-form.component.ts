@@ -38,7 +38,8 @@ import { Component, forwardRef, Input, OnDestroy, OnInit, inject } from '@angula
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { CountryOption, CountryService, Customer, Option, Owner, StartupService } from 'vitamui-library';
+import type { CountryOption, Customer, Owner } from 'vitamui-library';
+import { CountryService, Option, StartupService } from 'vitamui-library';
 import {
   ALPHA_NUMERIC_REGEX,
   OWNER_CITY_MAX_LENGTH,
@@ -53,7 +54,7 @@ import {
 
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
-  // eslint-disable-next-line no-use-before-define
+
   useExisting: forwardRef(() => OwnerFormComponent),
   multi: true,
 };

@@ -50,7 +50,7 @@ import { ExternalParamProfileListComponent } from './external-param-profile-list
 export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProfile> implements OnInit {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
 
   dto: ExternalParamProfile;
   tenantIdentifier: string;
@@ -69,7 +69,7 @@ export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProf
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
   }
 

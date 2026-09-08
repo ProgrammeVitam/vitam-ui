@@ -69,7 +69,7 @@ export class InputComponent extends AbstractFormInputDirective {
   textarea = false;
   @Input() addTooltipKey = 'INPUT.ADD_TOOLTIP';
   @Input() removeTooltipKey = 'INPUT.REMOVE_TOOLTIP';
-  @Input() type: 'text' | 'number' = 'text';
+  @Input() type: 'text' | 'number' | 'password' = 'text';
 
   items: InternalValue[] = [{ id: 0, value: '' }];
   focused: number;
@@ -83,9 +83,10 @@ export class InputComponent extends AbstractFormInputDirective {
   }
 
   @HostListener('click', ['$event.target'])
-  onClick(target: Element) {
-    if (!['INPUT', 'TEXTAREA', 'BUTTON', 'I'].includes(target.tagName)) {
-      const input = target.querySelector('input, textarea') as HTMLElement;
+  onClick(target: EventTarget) {
+    const el = target as Element;
+    if (!['INPUT', 'TEXTAREA', 'BUTTON', 'I'].includes(el.tagName)) {
+      const input = el.querySelector('input, textarea') as HTMLElement;
       if (input) {
         input.focus();
       } else {
@@ -100,7 +101,7 @@ export class InputComponent extends AbstractFormInputDirective {
     super(injector);
   }
 
-  writeValue(values?: InternalValue['value'] | InternalValue['value'][]) {
+  override writeValue(values?: InternalValue['value'] | InternalValue['value'][]) {
     this.items = (Array.isArray(values) ? (values && values.length ? values : ['']) : [values || '']).map((v, i) => ({
       id: i,
       value: v.toString(),

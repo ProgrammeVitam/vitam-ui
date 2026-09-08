@@ -37,9 +37,11 @@
 import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { from, mergeMap, toArray } from 'rxjs';
-import { LoggerModule } from '../../logger';
-import { Collection, ProfiledSchemaElement, Schema } from '../../models';
-import { DisplayRule } from '../../object-viewer/models';
+import { LoggerModule } from '../../logger/logger.module';
+import { Collection } from '../../models/schema/collection.enum';
+import { ProfiledSchemaElement } from '../../models/schema/schema-element.model';
+import { Schema } from '../../models/schema/schema.interface';
+import { DisplayRule } from '../../object-viewer/models/display-rule.model';
 import { DisplayRuleHelperService } from '../../object-viewer/services/display-rule-helper.service';
 import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/schema-element-to-display-rule.service';
 import { TypeService } from '../../object-viewer/services/type.service';
@@ -315,7 +317,7 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject).toBeTruthy();
 
-          addresseesEditObject.actions.add.handler();
+          addresseesEditObject.actions['add'].handler();
 
           expect(addresseesEditObject.children.length).toEqual(2);
         });
@@ -387,7 +389,7 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject).toBeTruthy();
 
-          addresseesEditObject.children[0].actions.remove.handler();
+          addresseesEditObject.children[0].actions['remove'].handler();
 
           expect(addresseesEditObject.children.length).toEqual(0);
         });
@@ -459,13 +461,13 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject).toBeTruthy();
 
-          addresseesEditObject.actions.add.handler({ FirstName: 'John' });
-          addresseesEditObject.actions.add.handler({ FirstName: 'Daniel' });
-          addresseesEditObject.actions.add.handler({ FirstName: 'Alexandre' });
+          addresseesEditObject.actions['add'].handler({ FirstName: 'John' });
+          addresseesEditObject.actions['add'].handler({ FirstName: 'Daniel' });
+          addresseesEditObject.actions['add'].handler({ FirstName: 'Alexandre' });
 
           expect(addresseesEditObject.children.length).toEqual(4);
 
-          addresseesEditObject.children[2].actions.remove.handler();
+          addresseesEditObject.children[2].actions['remove'].handler();
 
           expect(addresseesEditObject.children.length).toEqual(3);
           expect(addresseesEditObject.control.value).not.toEqual(

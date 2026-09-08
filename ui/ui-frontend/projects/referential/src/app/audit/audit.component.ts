@@ -39,6 +39,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import { AuditChainCreateComponent } from './audit-chain-create/audit-chain-create.component';
 import { AuditCreateComponent } from './audit-create/audit-create.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
 import { DateTime } from 'luxon';
@@ -52,7 +53,7 @@ import { DateTime } from 'luxon';
 export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   private formBuilder = inject(FormBuilder);
 
   public dateRangeFilterForm: FormGroup;
@@ -72,7 +73,7 @@ export class AuditComponent extends SidenavPage<Event> {
     this.globalEventService = globalEventService;
 
     route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = params['tenantIdentifier'];
     });
 
     this.dateRangeFilterForm = this.formBuilder.group({
@@ -80,11 +81,11 @@ export class AuditComponent extends SidenavPage<Event> {
       endDate: null,
     });
 
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value: Date) => {
+    this.dateRangeFilterForm.controls['startDate'].valueChanges.subscribe((value: Date) => {
       this.filters = { ...this.filters, startDate: value ? DateTime.fromJSDate(value).startOf('day').toISO() : null };
     });
 
-    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value: Date) => {
+    this.dateRangeFilterForm.controls['endDate'].valueChanges.subscribe((value: Date) => {
       this.filters = { ...this.filters, endDate: value ? DateTime.fromJSDate(value).endOf('day').toISO() : null };
     });
   }
@@ -92,6 +93,15 @@ export class AuditComponent extends SidenavPage<Event> {
   openCreateAuditDialog() {
     const dialogRef = this.dialog.open(AuditCreateComponent, { disableClose: true });
     dialogRef.componentInstance.tenantIdentifier = +this.tenantIdentifier;
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined && result.success) {
+        this.refreshList();
+      }
+    });
+  }
+
+  openCreateChainAuditDialog() {
+    const dialogRef = this.dialog.open(AuditChainCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined && result.success) {
         this.refreshList();

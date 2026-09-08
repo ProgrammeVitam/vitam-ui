@@ -21,7 +21,7 @@
       <vitamui-common-editable-input
         class="col-6"
         formControlName="name"
-        maxlength="100"
+        [maxlength]="100"
         [label]="'EXTERNAL_PARAM_PROFILE.NAME' | translate"
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
@@ -37,7 +37,7 @@
 
     <vitamui-common-editable-input
       formControlName="description"
-      maxlength="380"
+      [maxlength]="380"
       label="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION' | translate }}"
       [validator]="form?.get('description')?.validator"
     >

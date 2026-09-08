@@ -42,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { FileFormatCreateModule } from './file-format-create';
+import { FileFormatCreateModule } from './file-format-create/file-format-create.module';
 import { FileFormatListComponent } from './file-format-list/file-format-list.component';
 import { FileFormatPreviewModule } from './file-format-preview/file-format-preview.module';
 import { FileFormatRoutingModule } from './file-format-routing.module';

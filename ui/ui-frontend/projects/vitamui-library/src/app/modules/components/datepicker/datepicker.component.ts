@@ -50,7 +50,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { PickerType } from './datepicker.interface';
+import type { PickerType } from './datepicker.interface';
 import { DatePipe } from '@angular/common';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { CustomValidators } from '../../object-editor/pattern.validator';
@@ -112,8 +112,8 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   @ViewChild('hintArea') private hintArea: ElementRef;
 
   @HostListener('click', ['$event.target'])
-  onClick(target: HTMLElement) {
-    if (!this.hintArea.nativeElement.contains(target)) {
+  onClick(target: EventTarget) {
+    if (!this.hintArea.nativeElement.contains(target as Node)) {
       this.vitamUIInput.nativeElement.focus();
     }
   }
@@ -136,7 +136,7 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     super(injector);
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     super.ngOnInit();
 
     this.selectedFormat = computed(() => this.format() || this.defaultFormatMapping.get(this.pickerType));
@@ -148,7 +148,7 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     });
   }
 
-  writeValue(value: string | Date) {
+  override writeValue(value: string | Date) {
     this.displayedValue = this.formatDateToString(value);
     this.datePickerValue = value ? (value instanceof Date ? value : DateTime.fromFormat(value, this.selectedFormat()).toJSDate()) : null;
   }

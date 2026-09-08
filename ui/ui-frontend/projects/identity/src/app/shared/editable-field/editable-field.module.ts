@@ -44,7 +44,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { LevelInputModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CustomParamsModule } from '../custom-params/custom-params.module';
-import { DomainsInputModule } from '../domains-input';
+import { DomainsInputModule } from '../domains-input/domains-input.module';
 import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';

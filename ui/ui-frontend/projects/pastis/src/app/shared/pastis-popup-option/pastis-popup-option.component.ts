@@ -133,7 +133,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     window.open(url, '_blank');
   }
 
-  uploadProfile(files: File[]): void {
+  uploadProfile(files: FileList): void {
     const fileToUpload: File = files[0];
 
     if (fileToUpload) {

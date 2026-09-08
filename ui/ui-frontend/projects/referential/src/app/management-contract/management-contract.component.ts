@@ -74,8 +74,8 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
     });
 
     this.route.params.subscribe((params) => {
-      if (params.tenantIdentifier) {
-        this.tenantId = +params.tenantIdentifier;
+      if (params['tenantIdentifier']) {
+        this.tenantId = +params['tenantIdentifier'];
       }
     });
   }

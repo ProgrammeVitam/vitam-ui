@@ -44,7 +44,9 @@ import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import jakarta.annotation.PostConstruct;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -58,6 +60,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
     basePackages = {
         "fr.gouv.vitamui.commons.mongo.repository", "fr.gouv.vitamui.commons.mongo.dao", "fr.gouv.vitamui.iam.server",
     },
+    // We exclude the discussion package as it should use a "discussion" database instead of the "iam" database. It is temporary until the discussion-related code is moved outside the IAM application
+    excludeFilters = @ComponentScan.Filter(
+        type = FilterType.REGEX,
+        pattern = "fr\\.gouv\\.vitamui\\.iam\\.server\\.discussion\\..*"
+    ),
     repositoryBaseClass = VitamUIRepositoryImpl.class
 )
 public class MongoDbConfig {

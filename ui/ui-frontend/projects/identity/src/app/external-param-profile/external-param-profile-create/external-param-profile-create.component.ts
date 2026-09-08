@@ -139,9 +139,9 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    const nameControl = this.form.controls.name;
-    const descriptionControl = this.form.controls.description;
-    const accessContractControl = this.form.controls.accessContract;
+    const nameControl = this.form.controls['name'];
+    const descriptionControl = this.form.controls['description'];
+    const accessContractControl = this.form.controls['accessContract'];
 
     return nameControl.invalid || nameControl.pending || descriptionControl.invalid || accessContractControl.invalid;
   }

@@ -53,14 +53,14 @@ export class OwnerPopupComponent {
   tenant: Tenant;
 
   constructor() {
-    if (this.route.snapshot.data.tenant) {
-      this.tenant = this.route.snapshot.data.tenant;
-      this.owner = this.route.snapshot.data.owner;
+    if (this.route.snapshot.data['tenant']) {
+      this.tenant = this.route.snapshot.data['tenant'];
+      this.owner = this.route.snapshot.data['owner'];
       if (!this.owner) {
         this.ownerService.get(this.tenant.ownerId).subscribe((owner) => (this.owner = owner));
       }
     } else {
-      this.owner = this.route.snapshot.data.owner;
+      this.owner = this.route.snapshot.data['owner'];
     }
   }
 

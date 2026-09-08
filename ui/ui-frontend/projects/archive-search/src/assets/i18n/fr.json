@@ -148,7 +148,6 @@
       "ATR_NOT_VALID": "Le fichier déposé n'est pas un atr de transfert valide",
       "DRAG_AND_DROP": "Glisser ou déposer",
       "BROWSE": "Ou parcourir",
-      "ACCEPTED_FORMAT": "format accepté : xml",
       "MAX_SIZE": "Taille maximale conseillée : 10 GB",
       "OPERATION_MESSAGE_IDENTIFIER": "Identifiant de la demande de transfert d'origine",
       "TRANSFER_REALISATION_DATE": "Date de la réalisation du transfert",

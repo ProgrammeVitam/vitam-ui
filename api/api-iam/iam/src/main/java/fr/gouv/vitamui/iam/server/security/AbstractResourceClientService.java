@@ -339,4 +339,12 @@ public abstract class AbstractResourceClientService<E extends IdDto, I extends B
     public boolean checkExist(final String criteria) {
         return super.checkExist(checkAuthorization(Optional.ofNullable(criteria)).get());
     }
+
+    /**
+     * Secures direct access by ID by applying access restrictions (tenant/customer).
+     */
+    @Override
+    public E getOne(final String id, final Optional<String> criteria, final Optional<String> embedded) {
+        return super.getOne(id, checkAuthorization(criteria), embedded);
+    }
 }

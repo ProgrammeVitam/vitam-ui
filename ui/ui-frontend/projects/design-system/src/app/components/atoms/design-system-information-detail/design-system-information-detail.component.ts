@@ -63,5 +63,5 @@ export class DesignSystemInformationDetailComponent {
     evDetData:
       '{"evDetTechData":"metadata contains fields declared in ontology with a wrong format : Error \'Invalid date format: bad_date\' on field \'LastModified\'."}',
   };
-  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'neutral'];
+  colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'neutral'] as const;
 }

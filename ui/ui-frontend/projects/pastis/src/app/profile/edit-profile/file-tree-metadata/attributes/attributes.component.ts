@@ -146,7 +146,6 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
 
   // Checks if a file node has an atttribute child
   initAttributeCardinality() {
-    // eslint-disable-next-line guard-for-in
     for (const index in this.matDataSource.data) {
       const fileNode = this.dialogReceivedData.fileNode;
       const att = this.matDataSource.data[index];
@@ -204,7 +203,7 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
         return popSendSedaNodeFilted.cardinality.startsWith('1');
       }
     }
-    return;
+    return false;
   }
 
   toggleAllAttributes(toggleAllCheckChange: MatCheckboxChange): void {
@@ -308,10 +307,11 @@ export class AttributesPopupComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  getAttributeInputType(element: AttributeData) {
+  getAttributeInputType(element: AttributeData): string {
     if (element.enumeration.length > 0) {
       return 'enumeration';
     }
+    return undefined;
   }
 
   getSedaDefinition(elementName: string) {

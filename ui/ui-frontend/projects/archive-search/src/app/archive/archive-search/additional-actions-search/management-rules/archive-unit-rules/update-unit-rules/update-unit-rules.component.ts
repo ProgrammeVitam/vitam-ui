@@ -234,8 +234,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
           this.ruleDetailsForm.patchValue({ endDate: null });
         }),
       );
-      this.ruleDetailsForm.controls.startDateUpdated.enable();
-      this.ruleDetailsForm.controls.ruleUpdated.enable();
+      this.ruleDetailsForm.controls['startDateUpdated'].enable();
+      this.ruleDetailsForm.controls['ruleUpdated'].enable();
       this.isShowCheckButton = true;
       return true;
     }

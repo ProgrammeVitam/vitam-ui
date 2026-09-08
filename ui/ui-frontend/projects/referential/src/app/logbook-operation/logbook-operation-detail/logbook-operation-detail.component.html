@@ -1,7 +1,7 @@
 <vitamui-common-sidenav-header
   [title]="event?.id | truncate: 30"
   (onclose)="emitClose()"
-  [badge]="event | eventTypeBadgeClass | slice: 13"
+  [badge]="event | eventTypeBadgeColor"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="event?.id"
   [toolTipTitleDuration]="300"

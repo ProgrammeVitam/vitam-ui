@@ -2,7 +2,7 @@
   @switch (uiComponent) {
     @case ('textfield') {
       <vitamui-editor-input
-        [control]="editObject.control"
+        [control]="control"
         [label]="editObject.displayRule?.ui?.label"
         [hint]="editObject.hint"
         [required]="editObject.required"
@@ -10,7 +10,7 @@
     }
     @case ('textarea') {
       <vitamui-editor-textarea
-        [control]="editObject.control"
+        [control]="control"
         [label]="editObject.displayRule?.ui?.label"
         [hint]="editObject.hint"
         [required]="editObject.required"
@@ -18,7 +18,7 @@
     }
     @case ('select') {
       <vitamui-editor-select
-        [control]="editObject.control"
+        [control]="control"
         [label]="editObject.displayRule?.ui?.label"
         [options]="editObject.options"
         [hint]="editObject.hint"
@@ -28,7 +28,7 @@
     }
     @case ('datepicker') {
       <vitamui-datepicker
-        [formControl]="editObject.control"
+        [formControl]="control"
         [label]="editObject.displayRule.ui.label | translate | empty"
         [required]="editObject.required"
         [pickerType]="getPickerType(editObject)"
@@ -39,7 +39,7 @@
     }
     @case ('datetime') {
       <vitamui-datepicker
-        [formControl]="editObject.control"
+        [formControl]="control"
         [label]="editObject.displayRule.ui.label | translate | empty"
         [required]="editObject.required"
         [pickerType]="getPickerType(editObject)"

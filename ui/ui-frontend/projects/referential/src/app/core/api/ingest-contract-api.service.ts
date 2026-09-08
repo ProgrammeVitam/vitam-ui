@@ -57,19 +57,19 @@ export class IngestContractApiService extends PaginatedHttpClient<IngestContract
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<IngestContract> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<IngestContract> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
-  create(ingestContract: IngestContract, headers?: HttpHeaders): Observable<IngestContract> {
+  override create(ingestContract: IngestContract, headers?: HttpHeaders): Observable<IngestContract> {
     return super.getHttp().post<any>(super.getApiUrl(), ingestContract, { headers });
   }
 
@@ -80,7 +80,7 @@ export class IngestContractApiService extends PaginatedHttpClient<IngestContract
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patch(partialIngestContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialIngestContract: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialIngestContract, headers);
   }
 

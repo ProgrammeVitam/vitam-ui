@@ -48,7 +48,7 @@
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>
       } @else {
-        @if (showText && itemsToUpdate !== '0') {
+        @if (showText && itemsToUpdate !== 0) {
           <div class="row message-text-ok">
             <div class="col-12 d-flex align-items-center">
               <i class="material-icons">check_circle</i
@@ -58,7 +58,7 @@
             </div>
           </div>
         }
-        @if (showText && itemsWithSameRule !== '0') {
+        @if (showText && itemsWithSameRule !== 0) {
           <div class="row message-text-ko">
             <div class="col-12 d-flex align-items-center">
               <i class="material-icons">error</i
@@ -105,7 +105,7 @@
 </ng-template>
 
 <ng-template #resultsFound>
-  @if (showText && itemsToUpdate !== '0') {
+  @if (showText && itemsToUpdate !== 0) {
     <div class="row message-text-ok">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">check_circle</i
@@ -113,7 +113,7 @@
       </div>
     </div>
   }
-  @if (showText && itemsWithSameRule !== '0') {
+  @if (showText && itemsWithSameRule !== 0) {
     <div class="row message-text-ko">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">error</i

@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
-import { Tenant } from './models';
+import { Tenant } from './models/customer/tenant.interface';
 import { TenantsByApplication } from './models/user/tenants-by-application.interface';
 import { StartupService } from './startup.service';
 import { TenantSelectionService } from './tenant-selection.service';
@@ -64,7 +64,7 @@ export class ActiveTenantGuard {
 
   checkTenants(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
     const tenantIdentifier = route.paramMap.get('tenantIdentifier');
-    const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data.appId);
+    const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find((element) => element.name === route.data['appId']);
     if (tenantsByApp) {
       const result = tenantsByApp.tenants.find((tenant: Tenant) => tenant.identifier === +tenantIdentifier);
       if (result) {

@@ -35,10 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, Observable, of, switchMap } from 'rxjs';
 import {
+  ApplicationId,
   CriteriaDataType,
   CriteriaOperator,
   Direction,
@@ -46,13 +47,12 @@ import {
   PagedResult,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
+  SnackBarService,
+  StartupService,
   Transaction,
   Unit,
   ZipFile,
   ZipFileStatus,
-  ApplicationId,
-  SnackBarService,
-  StartupService,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../archive-collect.service';
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
@@ -177,7 +177,7 @@ export class AddUnitsComponent implements OnInit {
       .pipe(
         switchMap((content) =>
           this.importType === ImportType.SIP
-            ? this.archiveCollectService.uploadSip(content, this.data.transaction.id)
+            ? this.archiveCollectService.uploadSip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0])
             : this.archiveCollectService.uploadZip(content, this.data.transaction.id, this.linkParentIdControl.value.included[0]),
         ),
         tap((httpEvent) => zipFile.updateUploadingZipFileStatus(httpEvent)),

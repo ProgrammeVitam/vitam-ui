@@ -34,22 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable no-magic-numbers, max-lines */
 
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { LoggerModule, Node } from 'vitamui-library';
+import { SnackBarService } from '../../../app/modules/components/snack-bar/snack-bar.service';
+import { FileType } from '../../../app/modules/file-type.enum';
+import { InjectorModule } from '../../../app/modules/helper/injector.module';
+import { BASE_URL } from '../../../app/modules/injection-tokens';
+import { LoggerModule } from '../../../app/modules/logger/logger.module';
+import { UnitType } from '../../../app/modules/models/units/unit-type.enum';
+import { AccessContractService } from '../../../app/modules/services/access-contract.service';
+import { VitamUICommonModule } from '../../../app/modules/vitamui-common.module';
 import { FilingPlanService } from './filing-plan.service';
-import {
-  AccessContractService,
-  BASE_URL,
-  FileType,
-  InjectorModule,
-  UnitType,
-  VitamUICommonModule,
-  SnackBarService,
-} from '../../../app/modules';
+import { Node } from '../../models/node.interface';
 import { DescriptionLevel } from '../../models/description-level.enum';
 import { EMPTY, firstValueFrom, of } from 'rxjs';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

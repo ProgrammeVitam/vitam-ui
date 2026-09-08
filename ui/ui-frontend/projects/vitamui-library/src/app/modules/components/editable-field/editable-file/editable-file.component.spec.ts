@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable no-magic-numbers */
+
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
@@ -46,7 +46,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 import { WINDOW_LOCATION } from '../../../injection-tokens';
-import { newFile } from '../../../models';
+import { newFile } from '../../../models/customer/identity-provider.interface';
 import { VitamUIFieldErrorComponent } from '../../vitamui-field-error/vitamui-field-error.component';
 import { EditableFileComponent } from './editable-file.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';

@@ -45,8 +45,8 @@ import { AuthService, BASE_URL, ExternalParametersService, InjectorModule, Logbo
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
-import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
 import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
 @Pipe({
   name: 'truncate',
@@ -69,16 +69,16 @@ describe('LogbookOperationDetailComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe, MockTruncatePipe],
+      declarations: [LogbookOperationDetailComponent, LastEventPipe, MockTruncatePipe],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
+        BrowserAnimationsModule,
+        EventTypeBadgeColorPipe,
         InjectorModule,
+        LoggerModule.forRoot(),
+        NoopAnimationsModule,
         RouterTestingModule,
         VitamUICommonTestModule,
-        BrowserAnimationsModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        NoopAnimationsModule,
       ],
       providers: [
         { provide: LogbookService, useValue: {} },

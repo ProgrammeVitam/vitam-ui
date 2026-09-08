@@ -39,7 +39,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Option, SecurityProfile, diff } from 'vitamui-library';
+import type { Option, SecurityProfile } from 'vitamui-library';
+import { diff } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
 
 @Component({
@@ -108,7 +109,7 @@ export class SecurityProfilePermissionsTabComponent {
 
     this.ruleFilter.valueChanges.subscribe((val) => {
       if (val === true) {
-        this.form.controls.ruleCategoryToFilter.setValue(new Array<string>());
+        this.form.controls['ruleCategoryToFilter'].setValue(new Array<string>());
       }
     });
   }

@@ -151,13 +151,13 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     });
     this.onWritingRestrictedDescChanges();
     this.selectNodesControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
-      this.form.controls.rootUnits.setValue(value.included);
-      this.form.controls.excludedRootUnits.setValue(value.excluded);
+      this.form.controls['rootUnits'].setValue(value.included);
+      this.form.controls['excludedRootUnits'].setValue(value.excluded);
     });
 
-    this.form.controls.name.valueChanges.subscribe((value) => {
+    this.form.controls['name'].valueChanges.subscribe((value) => {
       if (!this.isSlaveMode) {
-        this.form.controls.identifier.setValue(value);
+        this.form.controls['identifier'].setValue(value);
       }
     });
 
@@ -174,7 +174,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   onCancel(): void {
     if (this.form.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef, { subTitle: 'ACCESS_CONTRACT.CREATE_DIALOG.TITLE' });
+      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
     }
@@ -281,7 +281,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     return (
       this.allNodes.invalid ||
       this.allNodes.pending ||
-      (this.allNodes.value === false && (this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0))
+      (this.allNodes.value === false && (this.form.controls['rootUnits'].invalid || this.form.controls['rootUnits'].value.length === 0))
     );
   }
 

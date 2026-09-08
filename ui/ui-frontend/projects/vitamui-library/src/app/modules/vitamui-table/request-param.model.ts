@@ -64,7 +64,7 @@ export class RequestParam extends PageRequest {
   /**
    * get as URL params
    */
-  get httpParams() {
+  override get httpParams() {
     // @ts-ignore
     let params = super.httpParams;
     if (this.groups) {

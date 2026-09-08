@@ -35,14 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { ProfileApiService } from '../api/profile-api.service';
-import { Criterion, Profile } from '../models';
+import { Criterion } from '../models/criteria/criterion.interface';
+import { Profile } from '../models/profile/profile.interface';
 import { CriteriaSearchQuery } from '../models/criteria/criteria.interface';
-import { Operators } from '../vitamui-table';
+import { Operators } from '../vitamui-table/operators.enum';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({

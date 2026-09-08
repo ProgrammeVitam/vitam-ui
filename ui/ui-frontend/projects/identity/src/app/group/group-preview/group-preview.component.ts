@@ -36,7 +36,8 @@
  */
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService, Group, isLevelAllowed, StartupService } from 'vitamui-library';
+import type { Group } from 'vitamui-library';
+import { AuthService, isLevelAllowed } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 
@@ -49,7 +50,6 @@ import { GroupService } from '../group.service';
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   private groupService = inject(GroupService);
   private authService = inject(AuthService);
-  private startupService = inject(StartupService);
 
   @Input() isPopup: boolean;
 
@@ -85,19 +85,12 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
   }
-  openPopup() {
-    window.open(
-      this.startupService.getConfigStringValue('UI_URL') + '/group/' + this.group.id,
-      'detailPopup',
-      'width=584, height=713, resizable=no, location=no',
-    );
-    this.emitClose();
-  }
 
   levelNotAllowed(): boolean {
     if (this.group) {
       return !isLevelAllowed(this.authService.user, this.group.level);
     }
+    return false;
   }
 
   emitClose() {
@@ -106,11 +99,5 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.groupUpdateSub.unsubscribe();
-  }
-
-  filterEvents(event: any): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_GROUP') || event.outDetail.includes('EXT_VITAMUI_UPDATE_GROUP'))
-    );
   }
 }

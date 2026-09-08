@@ -41,7 +41,8 @@ import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
-import { AuthService, buildValidators, diff, Group } from 'vitamui-library';
+import type { Group } from 'vitamui-library';
+import { AuthService, buildValidators, diff } from 'vitamui-library';
 
 import { GroupService } from '../../group.service';
 import { GroupValidators } from '../../group.validators';

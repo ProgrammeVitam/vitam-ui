@@ -8,7 +8,7 @@
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle [formControl]="statusControl" checked="form.controls.status.value === 'ACTIVE'">
+        <vitamui-slide-toggle [formControl]="statusControl" [checked]="form.controls['status'].value === 'ACTIVE'">
           {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.STATUS' | translate }}
         </vitamui-slide-toggle>
 
@@ -47,14 +47,14 @@
           <vitamui-slide-toggle formControlName="enableControl">
             {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE' | translate }}
           </vitamui-slide-toggle>
-          @if (form?.controls.enableControl?.value === false) {
+          @if (form?.controls['enableControl']?.value === false) {
             <i
               class="vitamui-icon vitamui-icon-info primary ml-3"
               vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_FALSE' | translate }}"
             >
             </i>
           }
-          @if (form?.controls.enableControl?.value === true) {
+          @if (form?.controls['enableControl']?.value === true) {
             <i
               class="vitamui-icon vitamui-icon-info primary ml-3"
               vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_TRUE' | translate }}"
@@ -83,12 +83,12 @@
             </div>
           }
           <ng-container>
-            @if (!!form.get('permissions')?.errors?.permissionsTenant) {
+            @if (!!form.get('permissions')?.errors?.['permissionsTenant']) {
               <span class="text danger">
                 {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.TENANT_ERROR' | translate }}
               </span>
             }
-            @if (!!form.get('permissions')?.errors?.noPermissions) {
+            @if (!!form.get('permissions')?.errors?.['noPermissions']) {
               <span class="text danger">
                 {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.PERMISSION_ERROR' | translate }}
               </span>

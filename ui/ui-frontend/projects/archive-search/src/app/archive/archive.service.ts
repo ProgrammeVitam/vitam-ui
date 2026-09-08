@@ -91,7 +91,7 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
     this.archiveApiService = archiveApiService;
   }
 
-  headers = new HttpHeaders();
+  override headers = new HttpHeaders();
 
   rulesMap: Map<String, String> = new Map([
     [RuleTypeEnum.ACCESSRULE, 'ACCESS_RULE'],
@@ -319,6 +319,19 @@ export class ArchiveService extends SearchService<any> implements SearchArchiveU
       catchError(() => {
         return of(-1);
       }),
+    );
+  }
+
+  existsArchiveUnitByCriteria(criteriaElts: SearchCriteriaEltDto[]): Observable<boolean> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: false,
+      includedFields: ['#id'],
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria).pipe(
+      map((pagedResult: PagedResult) => (pagedResult.results ?? []).length > 0),
     );
   }
 

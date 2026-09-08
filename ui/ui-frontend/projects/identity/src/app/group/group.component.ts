@@ -89,7 +89,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class GroupComponent extends SidenavPage<Group> {
   route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   private dialog = inject(MatDialog);
   private downloadSnackBarService = inject(DownloadSnackBarService);
   private snackBarService = inject(SnackBarService);
@@ -111,7 +111,7 @@ export class GroupComponent extends SidenavPage<Group> {
     this.globalEventService = globalEventService;
   }
 
-  public openCreateGroupDialog(): void {
+  openCreateGroupDialog(): void {
     const dialogRef = this.dialog.open(GroupCreateComponent, { disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -120,7 +120,7 @@ export class GroupComponent extends SidenavPage<Group> {
     });
   }
 
-  public onSearchSubmit(search: string): void {
+  onSearchSubmit(search: string): void {
     this.search = search;
   }
 

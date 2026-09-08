@@ -37,10 +37,13 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, forwardRef, Input, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import type { AsyncValidator, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, CountryService, Customer, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BASE_URL, CountryService, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import type { Customer } from 'vitamui-library';
+import { OtpState } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';

@@ -43,7 +43,7 @@ export class CustomValidators {
       if (!control.value) return null;
 
       const error = Validators.pattern(pattern)(control);
-      if (error) return { pattern: { ...error.pattern, message: message || error.pattern.requiredPattern } };
+      if (error) return { pattern: { ...error['pattern'], message: message || error['pattern'].requiredPattern } };
 
       return null;
     };

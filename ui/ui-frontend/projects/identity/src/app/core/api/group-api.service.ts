@@ -55,27 +55,27 @@ export class GroupApiService extends PaginatedHttpClient<Group> {
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Group> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Group> {
     return super.getOne(id, headers);
   }
 
-  getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Group> {
+  override getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Group> {
     return super.getOneWithEmbedded(id, embedded, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
-  create(group: Group, headers?: HttpHeaders): Observable<Group> {
+  override create(group: Group, headers?: HttpHeaders): Observable<Group> {
     return super.create(group, headers);
   }
 
-  patch(groupPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
+  override patch(groupPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
     return super.patch(groupPartial, headers);
   }
 

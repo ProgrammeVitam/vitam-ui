@@ -165,11 +165,11 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyer$))
       .subscribe(() => this.onCancel());
 
-    this.form.controls.auditActions.valueChanges
+    this.form.controls['auditActions'].valueChanges
       .pipe(takeUntil(this.destroyer$))
       .subscribe((auditActions) => this.changeDefaultOnActionSelection(auditActions));
 
-    this.form.controls.auditPerimeter.valueChanges
+    this.form.controls['auditPerimeter'].valueChanges
       .pipe(takeUntil(this.destroyer$))
       .subscribe((value) => this.updateFieldsOnAuditPerimeterChange(value));
 
@@ -189,18 +189,18 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyer$))
       .subscribe((value) => this.updateIngestOperationsEntriesOnChange(value));
 
-    this.form.controls.evidenceAudit.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
+    this.form.controls['evidenceAudit'].valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
       if (this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION) {
-        this.form.controls.objectId.setValue(value);
+        this.form.controls['objectId'].setValue(value);
       }
     });
 
     this.startDateControl.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      this.form.controls.startDate.setValue(value);
+      this.form.controls['startDate'].setValue(value);
     });
 
     this.endDateControl.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      this.form.controls.endDate.setValue(value);
+      this.form.controls['endDate'].setValue(value);
     });
   }
 
@@ -250,6 +250,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     if (this.enterIngestOperationsIdentifiers()) return 'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS';
     if (this.chooseAttachmentPosition()) return 'AUDIT.CREATE_DIALOG.CHOOSE_ATTACHMENT_POSITION';
     if (this.chooseIngestOperationPeriod()) return 'AUDIT.CREATE_DIALOG.CHOOSE_INGEST_OPERATIONS_PERIOD';
+    return null;
   }
 
   public chooseAttachmentPosition(): boolean {
@@ -273,7 +274,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   public isStartDateRequired() {
-    return this.form.controls.startDate.hasValidator(Validators.required);
+    return this.form.controls['startDate'].hasValidator(Validators.required);
   }
 
   private loadAccessContractAndProducerServicesOptions(params: Map<string, string>) {
@@ -333,11 +334,11 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   private updateFieldsOnAllProducerServicesChange(allProducerServices: boolean): void {
-    if (this.form.controls.auditActions.value !== AuditAction.AUDIT_FILE_RECTIFICATION) {
+    if (this.form.controls['auditActions'].value !== AuditAction.AUDIT_FILE_RECTIFICATION) {
       const allOptions = this.producerServicesOptions.map((option) => option.key);
-      this.form.controls.originatingAgencyIds.setValue(allProducerServices ? allOptions : this.producerServicesMultiSelect.value);
+      this.form.controls['originatingAgencyIds'].setValue(allProducerServices ? allOptions : this.producerServicesMultiSelect.value);
     }
-    this.form.controls.objectId.setValue(this.startupService.getTenantIdentifier());
+    this.form.controls['objectId'].setValue(this.startupService.getTenantIdentifier());
     this.form.get('originatingAgencyIds').updateValueAndValidity();
     this.updateObjectIdValidators();
     this.form.updateValueAndValidity();
@@ -386,21 +387,21 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   private updateIngestOperationsEntriesOnChange(value: string) {
     if (value.length > 0) {
       const values = value.split(',');
-      this.form.controls.ingestOperationIds.setValue(values);
+      this.form.controls['ingestOperationIds'].setValue(values);
     } else {
-      this.form.controls.ingestOperationIds.setValue([]);
+      this.form.controls['ingestOperationIds'].setValue([]);
     }
   }
 
   private updateOriginatingAgencyIdsOnChange(values: Array<string>) {
-    this.form.controls.originatingAgencyIds.setValue(values);
+    this.form.controls['originatingAgencyIds'].setValue(values);
   }
 
   private updateAttachmentPositionIdsOnSelectionNodesChange(value: { included: Array<string>; excluded: Array<string> }) {
     if (value && value.included && value.included.length > 0) {
-      this.form.controls.attachmentPositionIds.setValue(value.included);
+      this.form.controls['attachmentPositionIds'].setValue(value.included);
     } else {
-      this.form.controls.attachmentPositionIds.setValue([]);
+      this.form.controls['attachmentPositionIds'].setValue([]);
     }
   }
 

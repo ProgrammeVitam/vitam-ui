@@ -49,7 +49,7 @@ export class ManagementContractApiService extends BaseHttpClient<any> {
     super(http, baseUrl + '/management-contract');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 }

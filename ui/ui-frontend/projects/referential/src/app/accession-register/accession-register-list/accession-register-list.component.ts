@@ -66,10 +66,10 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   direction = Direction.DESCENDANT;
   orderBy = 'EndDate';
 
-  filterMap: Map<string, string[]> = new Map<string, string[]>();
+  filterMap: Record<string, string[]> = {};
   statusFilterOptions$: Observable<Array<{ value: string; label: string }>>;
 
-  private filterChange = new BehaviorSubject<Map<string, Array<string>>>(null);
+  private filterChange = new BehaviorSubject<Record<string, string[]>>(null);
   private searchChange = new BehaviorSubject<string>(null);
   private orderChange = new BehaviorSubject<string>(this.orderBy);
   private textToSearch: string;
@@ -192,9 +192,9 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   onFilterChange(key: string, values: string[]) {
-    this.filterMap.set(key, values);
+    this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);
-    this.accessionRegistersService.notifyFilterChange(this.filterMap);
+    this.accessionRegistersService.notifyFilterChange();
   }
 
   onSelectRow(accessionRegisterDetail: AccessionRegisterDetail) {

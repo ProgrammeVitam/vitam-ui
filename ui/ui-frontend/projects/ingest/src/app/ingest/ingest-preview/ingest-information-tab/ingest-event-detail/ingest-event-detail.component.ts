@@ -34,23 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { LogbookOperation } from '../../../../models/logbook-event.interface';
-import { Event } from '../../event';
+import type { LogbookOperation } from '../../../../models/logbook-event.interface';
+import type { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
 
 @Component({
   selector: 'app-ingest-event-detail',
   templateUrl: './ingest-event-detail.component.html',
   styleUrls: ['./ingest-event-detail.component.scss'],
-  animations: [
-    trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ]),
-  ],
   standalone: false,
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
@@ -67,8 +59,8 @@ export class IngestEventDetailComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.ingest) {
-      this.events = this.eventDisplayHelper.initEvents(changes.ingest.currentValue);
+    if (changes['ingest']) {
+      this.events = this.eventDisplayHelper.initEvents(changes['ingest'].currentValue);
     }
   }
 

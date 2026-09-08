@@ -64,7 +64,7 @@
                       <mat-radio-button
                         class="mr-2"
                         [value]="false"
-                        [disabled]="form.get('objectUsagePolicies').at(i).get('intermediaryVersion').value === 'NONE'"
+                        [disabled]="objectUsagePolicies.at(i).get('intermediaryVersion').value === 'NONE'"
                         >{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.NO' | translate }}</mat-radio-button
                       >
                     </mat-radio-group>
@@ -78,12 +78,9 @@
                       <mat-radio-button class="mr-2" value="LAST">{{
                         'CONTRACT_MANAGEMENT.FORM_UPDATE.LAST' | translate
                       }}</mat-radio-button>
-                      <mat-radio-button
-                        class="mr-2"
-                        value="NONE"
-                        [disabled]="!form.get('objectUsagePolicies').at(i).get('initialVersion').value"
-                        >{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.NONE' | translate }}</mat-radio-button
-                      >
+                      <mat-radio-button class="mr-2" value="NONE" [disabled]="!objectUsagePolicies.at(i).get('initialVersion').value">{{
+                        'CONTRACT_MANAGEMENT.FORM_UPDATE.NONE' | translate
+                      }}</mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
@@ -97,10 +94,10 @@
                   </button>
                 </div>
               </div>
-              @if (form.get('objectUsagePolicies').at(i).hasError('invalidObjectUsagePolicy')) {
-                <vitamui-common-input-error>
+              @if (objectUsagePolicies.at(i).hasError('invalidObjectUsagePolicy')) {
+                <div>
                   {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_OBJECT_USAGE_POLICY' | translate }}
-                </vitamui-common-input-error>
+                </div>
               }
             </div>
           </div>
@@ -122,9 +119,9 @@
       </div>
     </div>
     @if (form.hasError('invalidPersistentIdentifierPolicyTarget')) {
-      <vitamui-common-input-error class="vitamui-input-errors">
+      <div class="vitamui-input-errors">
         {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
-      </vitamui-common-input-error>
+      </div>
     }
   }
 </div>

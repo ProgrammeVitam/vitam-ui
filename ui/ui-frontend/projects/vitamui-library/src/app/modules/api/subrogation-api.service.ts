@@ -35,13 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 import { BaseHttpClient } from '../base-http-client';
 import { BASE_URL } from '../injection-tokens';
-import { Group, Subrogation } from '../models';
+import { Group } from '../models/group/group.interface';
+import { Subrogation } from '../models/subrogation/subrogation.interface';
 import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
 
 @Injectable({
@@ -57,11 +58,11 @@ export class SubrogationApiService extends BaseHttpClient<Subrogation> {
     super(http, baseUrl + '/subrogations');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Subrogation> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Subrogation> {
     return super.getOne(id, headers);
   }
 
@@ -85,7 +86,7 @@ export class SubrogationApiService extends BaseHttpClient<Subrogation> {
     return this.http.delete<void>(this.apiUrl + '/surrogate/decline/' + id);
   }
 
-  create(subrogation: Subrogation, headers?: HttpHeaders): Observable<Subrogation> {
+  override create(subrogation: Subrogation, headers?: HttpHeaders): Observable<Subrogation> {
     return super.create(subrogation, headers);
   }
 

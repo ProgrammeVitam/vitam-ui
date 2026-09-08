@@ -52,7 +52,7 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
   private dialog = inject(MatDialog);
   route: ActivatedRoute;
-  globalEventService: GlobalEventService;
+  override globalEventService: GlobalEventService;
   customerService = inject(CustomerService);
 
   public customers: Customer[];

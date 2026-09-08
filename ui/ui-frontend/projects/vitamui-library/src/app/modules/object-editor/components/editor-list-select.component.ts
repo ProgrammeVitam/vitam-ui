@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { EditObject } from '../models/edit-object.model';
+import type { EditObject } from '../models/edit-object.model';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditorSelectComponent } from './editor-select.component';
@@ -44,7 +44,7 @@ import { EditorSelectComponent } from './editor-select.component';
   selector: 'vitamui-editor-list-select',
   template: `
     <vitamui-editor-select
-      [control]="control || editObject.control"
+      [control]="selectedControl"
       [label]="editObject.displayRule?.ui?.label"
       [hint]="editObject.hint"
       [options]="editObject.options"
@@ -58,6 +58,10 @@ export class EditorListSelectComponent implements OnInit, OnDestroy {
   @Input({ required: true }) editObject!: EditObject;
 
   control: FormControl;
+
+  get selectedControl(): FormControl {
+    return this.control || (this.editObject.control as FormControl);
+  }
 
   private subscriptions = new Subscription();
 

@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../injection-tokens';
-import { ExternalParamProfile } from '../models';
+import { ExternalParamProfile } from '../models/externalparamprofile/external-param-profile.interface';
 import { PaginatedHttpClient } from '../paginated-http-client';
 
 @Injectable({
@@ -52,19 +52,19 @@ export class ExternalParamProfileApiService extends PaginatedHttpClient<External
     super(http, baseUrl + '/externalparamprofile');
   }
 
-  create(externalParamProfile: ExternalParamProfile, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  override create(externalParamProfile: ExternalParamProfile, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.create(externalParamProfile, headers);
   }
 
-  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  override patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.getHttp().patch<any>(super.getApiUrl() + '/me', data, { headers });
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<ExternalParamProfile> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<ExternalParamProfile> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 }

@@ -75,7 +75,7 @@ export class VitamuiMenuButtonComponent {
   /**
    * Size of the menu button
    */
-  menuButtonSize = input<'large' | 'medium' | 'small' | 'xsmall link'>('large');
+  menuButtonSize = input<'large' | 'medium' | 'small' | 'xsmall tonal link'>('large');
   /**
    * When true, do not show an "X" button in place of the trigger button when opened and removes menu borders
    */

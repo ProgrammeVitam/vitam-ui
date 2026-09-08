@@ -55,17 +55,17 @@ export class TenantSelectionGuard {
   private snackBarService = inject(SnackBarService);
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    if (route.params.tenantIdentifier) {
+    if (route.params['tenantIdentifier']) {
       return true;
     } else if (this.tenantSelectionService.getSelectedTenant()) {
       this.appService.getApplications$().subscribe((data) => {
-        const application = data.find((appFromService) => appFromService.identifier === route.data.appId);
+        const application = data.find((appFromService) => appFromService.identifier === route.data['appId']);
         this.location.href = application.url + TENANT_SELECTION_URL_CONDITION + this.tenantSelectionService.getSelectedTenant().identifier;
       });
     }
 
     const tenantsByApp: TenantsByApplication = this.authService.user.tenantsByApp.find(
-      (applicationDetails) => applicationDetails.name === route.data.appId,
+      (applicationDetails) => applicationDetails.name === route.data['appId'],
     );
     if (tenantsByApp) {
       const tenants = tenantsByApp.tenants;
@@ -77,7 +77,7 @@ export class TenantSelectionGuard {
       }
       return true;
     } else {
-      this.snackBarService.open({ message: 'SNACK_BAR.TENANT_NOT_FOUND', translateParams: { appId: route.data.appId } });
+      this.snackBarService.open({ message: 'SNACK_BAR.TENANT_NOT_FOUND', translateParams: { appId: route.data['appId'] } });
     }
     return false;
   }

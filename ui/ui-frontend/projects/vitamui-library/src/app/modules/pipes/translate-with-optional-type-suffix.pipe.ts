@@ -44,7 +44,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 export class TranslateWithOptionalTypeSuffixPipe extends TranslatePipe implements PipeTransform {
   readonly #translateService = inject(TranslateService);
 
-  transform(key: string) {
+  override transform(key: string) {
     if (this.hasKey(key)) {
       // If the key exists, we use the corresponding translation
       return super.transform(key);

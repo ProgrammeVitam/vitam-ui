@@ -39,10 +39,13 @@ import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { Observable, of } from 'rxjs';
-import { ArchiveUnit, BASE_URL, LoggerModule, PagedResult } from '../../../app/modules';
+import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
+import { BASE_URL } from '../../../app/modules/injection-tokens';
+import { LoggerModule } from '../../../app/modules/logger/logger.module';
+import { PagedResult } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { BaseReclassificationDialogService } from './reclassification-dialog.service';
 import { VitamTenantConfigService } from '../../../app/modules/vitam-tenant-config.service';
-import { tenantConfigServiceMock } from '../../../../testing/src';
+import { tenantConfigServiceMock } from '../../../../testing/src/tenant-config.service.mock';
 
 const fakeArchiveUnits = (count: number): ArchiveUnit[] => {
   return [...Array(count).keys()].map((n): ArchiveUnit => ({ '#id': `${n}`, '#unitups': [] }));

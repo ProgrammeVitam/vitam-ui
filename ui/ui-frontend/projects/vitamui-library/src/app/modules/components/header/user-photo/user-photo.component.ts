@@ -37,7 +37,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../../auth.service';
-import { ThemeDataType } from '../../../models';
+import { ThemeDataType } from '../../../models/customer/theme/themeDataType.enum';
 import { ThemeService } from '../../../theme.service';
 
 @Component({

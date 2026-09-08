@@ -65,7 +65,7 @@ export class SearchBarComponent implements OnChanges {
   @Input() searchValue: string;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.searchValue) {
+    if (changes['searchValue']) {
       this.searchChanged.emit(this.searchValue);
     }
   }

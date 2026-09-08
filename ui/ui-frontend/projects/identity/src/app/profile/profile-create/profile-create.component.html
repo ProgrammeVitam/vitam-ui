@@ -27,10 +27,10 @@
       </div>
       <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
         @if (adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')) {
-          <vitamui-common-input-error>{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-input-error>
+          <div>{{ 'COMMON.ERROR.REQUIRED' | translate }}</div>
         }
         @if (adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')) {
-          <vitamui-common-input-error>{{ 'USER_PROFILE.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}</vitamui-common-input-error>
+          <div>{{ 'USER_PROFILE.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}</div>
         }
       </vitamui-common-level-input>
     </div>

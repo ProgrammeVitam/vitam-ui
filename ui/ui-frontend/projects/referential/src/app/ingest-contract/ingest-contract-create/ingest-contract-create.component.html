@@ -93,7 +93,7 @@
           ></i>
         </vitamui-slide-toggle>
 
-        @if (form?.controls.everyFormatType?.value === false) {
+        @if (form?.controls['everyFormatType']?.value === false) {
           <div class="d-flex mb-5">
             <vitamui-select
               [multiple]="true"
@@ -149,7 +149,7 @@
           ></i>
         </vitamui-slide-toggle>
 
-        @if (form?.controls.everyDataObjectVersion?.value === false) {
+        @if (form?.controls['everyDataObjectVersion']?.value === false) {
           <div class="d-flex">
             <vitamui-select
               formControlName="dataObjectVersion"

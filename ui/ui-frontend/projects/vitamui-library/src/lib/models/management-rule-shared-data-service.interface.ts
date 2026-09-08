@@ -35,7 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Observable } from 'rxjs';
-import { CriteriaSearchCriteria, SearchCriteriaAddAction, SearchCriteriaRemoveAction } from '../../app/modules/models/criteria/index';
+import {
+  CriteriaSearchCriteria,
+  SearchCriteriaAddAction,
+  SearchCriteriaRemoveAction,
+} from '../../app/modules/models/criteria/search-criteria.interface';
 import { InjectionToken } from '@angular/core';
 
 export const MANAGEMENT_RULE_SHARED_DATA_SERVICE = new InjectionToken<ManagementRuleSharedDataService>('ManagementRuleSharedDataService');

@@ -57,15 +57,15 @@ export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
     super(http, baseUrl + '/userinfos');
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<UserInfo> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<UserInfo> {
     return super.getOne(id, headers);
   }
 
-  create(userInfo: UserInfo, headers?: HttpHeaders): Observable<UserInfo> {
+  override create(userInfo: UserInfo, headers?: HttpHeaders): Observable<UserInfo> {
     return super.create(userInfo, headers);
   }
 
-  patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
+  override patch(data: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
     return super.patch(data, headers);
   }
 

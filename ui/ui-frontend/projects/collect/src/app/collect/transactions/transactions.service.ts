@@ -84,7 +84,7 @@ export class TransactionsService extends SearchService<Transaction> {
     return this.project$;
   }
 
-  public search(_: PageRequest = null): Observable<Transaction[]> {
+  public override search(_: PageRequest = null): Observable<Transaction[]> {
     return this.transactions$;
   }
 

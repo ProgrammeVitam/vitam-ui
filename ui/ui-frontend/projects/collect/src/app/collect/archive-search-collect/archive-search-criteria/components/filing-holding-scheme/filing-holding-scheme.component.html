@@ -5,7 +5,7 @@
     [nestedDataSourceFull]="nestedDataSourceFull"
     [nestedTreeControlFull]="nestedTreeControlFull"
     [showEveryNodes]="true"
-    [loadingNodeUnit]="loadingArchiveUnit.TREE"
+    [loadingNodeUnit]="loadingArchiveUnit['TREE']"
     (closePanel)="emitClose()"
     (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'TREE')"
     (switchView)="switchViewAllNodes()"

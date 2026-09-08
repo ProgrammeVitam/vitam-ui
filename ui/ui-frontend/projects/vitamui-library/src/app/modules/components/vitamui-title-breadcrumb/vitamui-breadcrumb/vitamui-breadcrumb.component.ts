@@ -38,7 +38,7 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
-import { Application } from '../../../models';
+import { Application } from '../../../models/application/application.interface';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -61,7 +61,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
 
   ngOnInit() {
     if (!this.data) {
-      const appId = this.route.snapshot.data.appId;
+      const appId = this.route.snapshot.data['appId'];
       if (appId) {
         this.applicationService.getAppById(appId).subscribe((app: Application) => {
           this.data = [{ identifier: ApplicationId.PORTAL_APP }, { label: app.name, identifier: appId }];

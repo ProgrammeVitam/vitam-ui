@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* eslint-disable @angular-eslint/component-selector, max-classes-per-file */
+/* eslint-disable @angular-eslint/component-selector */
 
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -44,7 +44,8 @@ import { EMPTY, of } from 'rxjs';
 import { Node } from '../../models/node.interface';
 import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
-import { AuthService, FileType } from '../../../app/modules';
+import { AuthService } from '../../../app/modules/auth.service';
+import { FileType } from '../../../app/modules/file-type.enum';
 
 @Component({
   selector: 'lib-vitamui-library-node',

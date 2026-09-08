@@ -70,7 +70,7 @@ export class EditableFileComponent extends EditableFieldComponent {
     this.control.markAsDirty();
   }
 
-  cancel() {
+  override cancel() {
     if (!this.editMode) {
       return;
     }

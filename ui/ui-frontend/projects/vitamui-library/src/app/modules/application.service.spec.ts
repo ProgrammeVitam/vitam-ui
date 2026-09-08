@@ -46,7 +46,7 @@ import { BASE_URL } from './injection-tokens';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { Category } from './models';
+import { Category } from './models/application/category.interface';
 
 describe('ApplicationService', () => {
   let httpTestingController: HttpTestingController;

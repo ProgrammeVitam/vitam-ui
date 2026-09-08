@@ -55,7 +55,7 @@ export class UserPopupComponent {
 
   constructor() {
     this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
-    this.user = this.route.snapshot.data.user;
+    this.user = this.route.snapshot.data['user'];
   }
 
   closePopup() {

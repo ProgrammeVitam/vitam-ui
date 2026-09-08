@@ -37,8 +37,8 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { LogbookOperation } from '../../../models/logbook-event.interface';
-import { Event } from '../event';
+import type { LogbookOperation } from '../../../models/logbook-event.interface';
+import type { Event } from '../event';
 import { EventDisplayHelperService } from '../event-display-helper.service';
 
 @Component({
@@ -69,8 +69,8 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.ingest) {
-      this.getAllEvents(changes.ingest.currentValue);
+    if (changes['ingest']) {
+      this.getAllEvents(changes['ingest'].currentValue);
     }
   }
 

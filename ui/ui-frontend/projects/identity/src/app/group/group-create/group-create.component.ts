@@ -38,7 +38,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, MiscValidators, rotateAnimation } from 'vitamui-library';
+import { AuthService, buildValidators, ConfirmDialogService, MiscValidators } from 'vitamui-library';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
@@ -47,7 +47,6 @@ import { GroupValidators } from '../group.validators';
   selector: 'app-group-create',
   templateUrl: './group-create.component.html',
   styleUrls: ['./group-create.component.scss'],
-  animations: [collapseAnimation, rotateAnimation],
   standalone: false,
 })
 export class GroupCreateComponent implements OnInit, OnDestroy {
@@ -106,15 +105,15 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-    const nameControl = this.form.controls.name;
-    const descriptionControl = this.form.controls.description;
-    const levelControl = this.form.controls.level;
+    const nameControl = this.form.controls['name'];
+    const descriptionControl = this.form.controls['description'];
+    const levelControl = this.form.controls['level'];
 
     return nameControl.invalid || nameControl.pending || descriptionControl.invalid || levelControl.invalid;
   }
 
   secondStepInvalid(): boolean {
-    const profileIdsControl = this.form.controls.profileIds;
+    const profileIdsControl = this.form.controls['profileIds'];
 
     return profileIdsControl.invalid || profileIdsControl.pending;
   }

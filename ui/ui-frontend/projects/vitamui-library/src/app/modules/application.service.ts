@@ -132,13 +132,15 @@ export class ApplicationService {
           const resultMap = this.fillCategoriesWithApps(this.categories, apps);
           const lastUsedApps = this.getLastUsedApps(this.categories, apps);
 
-          if (lastUsedApps) {
+          if (lastUsedApps.category) {
             resultMap.set(lastUsedApps.category.identifier, lastUsedApps.apps);
           }
 
           const convertedMap = this.convertToCategoryMap(resultMap);
           return this.sortMapByCategory(convertedMap);
         }
+
+        return new Map<Category, Application[]>();
       }),
     );
   }
@@ -182,6 +184,8 @@ export class ApplicationService {
       appTenants.sort((t1, t2) => t1.name.localeCompare(t2.name));
       return appTenants;
     }
+
+    return [];
   }
 
   public getAppById(identifier: string): Observable<Application> {
@@ -299,6 +303,8 @@ export class ApplicationService {
         return { category: lastUsedAppsCateg, apps: lastUsedApps };
       }
     }
+
+    return { category: undefined, apps: [] };
   }
 
   private getSortedAppsOfCategory(category: Category, applications: Application[]): Application[] {
@@ -306,6 +312,8 @@ export class ApplicationService {
       const apps = applications.filter((application: Application) => application.category === category.identifier) as Application[];
       return this.sortApplications(apps);
     }
+
+    return [];
   }
 
   private sortApplications(applications: Application[]): Application[] {

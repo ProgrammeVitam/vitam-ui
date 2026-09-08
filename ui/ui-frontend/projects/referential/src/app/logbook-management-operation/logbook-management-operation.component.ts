@@ -90,7 +90,7 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   constructor() {
     if (this.route && this.route.paramMap) {
       this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
-      this.tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
+      this.tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
     }
   }
 
@@ -113,12 +113,12 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
               Object.entries(this.dateRangeFilterForm.value).filter(([key, value]) => queryParams[key] !== value).length > 0;
             if (hasChanged) {
               this.dateRangeFilterForm.setValue({
-                startDateMin: queryParams?.startDateMin ? new Date(queryParams.startDateMin) : null,
-                startDateMax: queryParams?.startDateMax ? new Date(queryParams.startDateMax) : null,
+                startDateMin: queryParams?.['startDateMin'] ? new Date(queryParams['startDateMin']) : null,
+                startDateMax: queryParams?.['startDateMax'] ? new Date(queryParams['startDateMax']) : null,
               });
-              if (queryParams?.startDateMax) this.showIntervalDate(true);
+              if (queryParams?.['startDateMax']) this.showIntervalDate(true);
             }
-            this.searchValue = queryParams.search;
+            this.searchValue = queryParams['search'];
           }),
         )
         .subscribe(),

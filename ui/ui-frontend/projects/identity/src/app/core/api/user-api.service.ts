@@ -55,23 +55,23 @@ export class UserApiService extends PaginatedHttpClient<User> {
     this.baseUrl = baseUrl;
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<User> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<User> {
     return super.getOne(id, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
+  override checkExistsByParam(params: Array<{ key: string; value: string }>, headers?: HttpHeaders): Observable<boolean> {
     return super.checkExistsByParam(params, headers);
   }
 
-  create(user: User, headers?: HttpHeaders): Observable<User> {
+  override create(user: User, headers?: HttpHeaders): Observable<User> {
     return super.create(user, headers);
   }
 
-  patch(userPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<User> {
+  override patch(userPartial: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<User> {
     return super.patch(userPartial, headers);
   }
 

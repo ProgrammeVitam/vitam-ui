@@ -220,6 +220,8 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             case 'creation':
               this.create(result.data);
               return EMPTY;
+            default:
+              return EMPTY;
           }
         }),
       )

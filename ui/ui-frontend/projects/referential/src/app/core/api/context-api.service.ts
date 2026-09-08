@@ -53,19 +53,19 @@ export class ContextApiService extends PaginatedHttpClient<Context> {
     super(http, baseUrl + '/context');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
+  override getAllByParams(params: HttpParams, headers?: HttpHeaders) {
     return super.getAllByParams(params, headers);
   }
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Context> {
+  override getOne(id: string, headers?: HttpHeaders): Observable<Context> {
     return super.getOne(id, headers);
   }
 
-  patch(partialContext: { id: string; [key: string]: any }, headers?: HttpHeaders) {
+  override patch(partialContext: { id: string; [key: string]: any }, headers?: HttpHeaders) {
     return super.patch(partialContext, headers);
   }
 
-  create(context: Context, headers?: HttpHeaders): Observable<Context> {
+  override create(context: Context, headers?: HttpHeaders): Observable<Context> {
     return super.getHttp().post<any>(super.getApiUrl(), context, { headers });
   }
 

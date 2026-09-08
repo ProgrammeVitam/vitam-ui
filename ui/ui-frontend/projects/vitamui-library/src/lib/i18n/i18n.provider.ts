@@ -36,7 +36,7 @@
  */
 import { Provider } from '@angular/core';
 import { MissingTranslationHandler, provideTranslateService, TranslateLoader } from '@ngx-translate/core';
-import { VitamuiMissingTranslationHandler } from '../../app/modules';
+import { VitamuiMissingTranslationHandler } from '../../app/modules/missing-translation-handler';
 import { HttpBackend } from '@angular/common/http';
 import { ConfigService } from '../../app/modules/config.service';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
