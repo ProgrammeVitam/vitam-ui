@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NgModule, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -46,7 +46,8 @@ import { DomainsInputComponent } from './domains-input.component';
 
 @Component({
   template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
-  standalone: false,
+  imports: [DomainsInputComponent, FormsModule],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {
   @ViewChild(DomainsInputComponent, { static: false })
@@ -58,9 +59,6 @@ export class TestHostComponent {
 let testhost: TestHostComponent;
 let fixture: ComponentFixture<TestHostComponent>;
 
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
-
 describe('DomainsInputComponent', () => {
   beforeEach(async () => {
     const customerCreateValidatorsSpy = {
@@ -68,8 +66,7 @@ describe('DomainsInputComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule],
-      declarations: [TestHostComponent, DomainsInputComponent],
+      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, DomainsInputComponent, TestHostComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

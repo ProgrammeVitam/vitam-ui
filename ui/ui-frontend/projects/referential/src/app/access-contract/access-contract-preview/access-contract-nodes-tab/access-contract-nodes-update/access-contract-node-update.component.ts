@@ -34,16 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AccessContract, FilingPlanMode, AccessContractService } from 'vitamui-library';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import {
+  AccessContract,
+  AccessContractService,
+  DialogHeaderComponent,
+  FilingPlanComponent,
+  FilingPlanMode,
+  SlideToggleComponent,
+  TooltipDirective,
+} from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTreeModule } from '@angular/material/tree';
+import { CommonModule } from '@angular/common';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-access-contract-node-update',
   templateUrl: './access-contract-node-update.component.html',
   styleUrls: ['./access-contract-node-update.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    MatDialogContent,
+    SlideToggleComponent,
+    TooltipDirective,
+    MatDialogActions,
+    TranslatePipe,
+    CommonModule,
+    FilingPlanComponent,
+    FormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatTreeModule,
+  ],
 })
 export class AccessContractNodeUpdateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AccessContractNodeUpdateComponent>>(MatDialogRef);

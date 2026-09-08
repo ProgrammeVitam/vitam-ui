@@ -34,16 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import type { LogbookOperation } from '../../../../models/logbook-event.interface';
 import type { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
+import { EventDisplayComponent } from './event-display/event-display.component';
 
 @Component({
   selector: 'app-ingest-event-detail',
   templateUrl: './ingest-event-detail.component.html',
   styleUrls: ['./ingest-event-detail.component.scss'],
-  standalone: false,
+  imports: [EventDisplayComponent],
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
   private eventDisplayHelper = inject(EventDisplayHelperService);

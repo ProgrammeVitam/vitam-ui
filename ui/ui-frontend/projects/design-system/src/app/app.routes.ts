@@ -34,8 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { TableComponent } from './components/organisms/table/table.component';
 import { BreadcrumbsComponent } from './components/molecules/breadcrumbs/breadcrumbs.component';
 import { ButtonsComponent } from './components/atoms/buttons/buttons.component';
@@ -60,7 +59,6 @@ import { DesignSystemOldInputsComponent } from './components/molecules/inputs/ol
 import { DesignSystemInputComponent } from './components/molecules/inputs/input/design-system-input.component';
 import { DesignSystemSearchWithTypeSelectorComponent } from './components/molecules/inputs/search-with-type-selector/design-system-search-with-type-selector.component';
 import { DesignSystemDatepickerComponent } from './components/molecules/inputs/datepicker/design-system-datepicker.component';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TabGroupComponent } from './components/organisms/tab-group/tab-group.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { DialogComponent } from './components/organisms/dialog/dialog.component';
@@ -77,7 +75,7 @@ export interface RouteData {
   };
 }
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: DesignSystemComponent },
   {
     path: 'tokens',
@@ -141,14 +139,3 @@ const routes: Routes = [
   { path: 'upload', component: UploadComponent },
   { path: '**', redirectTo: '' },
 ];
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules,
-    }),
-  ],
-  exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
-})
-export class AppRoutingModule {}

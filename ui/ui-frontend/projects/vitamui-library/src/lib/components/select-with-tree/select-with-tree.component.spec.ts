@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectWithTreeComponent } from './select-with-tree.component';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 class Item {
   value: string;
@@ -49,7 +48,7 @@ describe('SelectWithTreeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, MatSelectModule],
+      imports: [MatSelectModule],
     }).compileComponents();
   });
 

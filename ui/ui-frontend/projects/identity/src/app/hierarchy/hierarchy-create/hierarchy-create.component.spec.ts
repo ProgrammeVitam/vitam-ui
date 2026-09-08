@@ -36,15 +36,16 @@
  */
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, LevelInputModule } from 'vitamui-library';
+import { AuthService, ConfirmDialogService, LevelInputComponent } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { HierarchyService } from '../hierarchy.service';
 import { HierarchyCreateComponent } from './hierarchy-create.component';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profiles-form',
@@ -56,7 +57,6 @@ import { HierarchyCreateComponent } from './hierarchy-create.component';
       multi: true,
     },
   ],
-  standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -81,8 +81,17 @@ describe('HierarchyCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputModule],
-      declarations: [ProfilesFormStubComponent, HierarchyCreateComponent],
+      imports: [
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        CommonModule,
+        FormsModule,
+        LevelInputComponent,
+        TranslatePipe,
+        HierarchyCreateComponent,
+        ProfilesFormStubComponent,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantId: 10 } },

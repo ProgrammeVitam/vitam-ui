@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from '../auth.service';
-import { BASE_URL, WINDOW_LOCATION } from './../injection-tokens';
+import { WINDOW_LOCATION } from './../injection-tokens';
 
 import { UserApiService } from './user-api.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UserApiService', () => {
   beforeEach(() =>
@@ -48,10 +46,7 @@ describe('UserApiService', () => {
       imports: [],
       providers: [
         { provide: AuthService, useValue: {} },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }),
   );

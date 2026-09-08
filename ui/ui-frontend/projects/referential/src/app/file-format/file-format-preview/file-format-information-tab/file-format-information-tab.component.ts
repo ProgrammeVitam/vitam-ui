@@ -34,24 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { formatDate } from '@angular/common';
-import { Component, EventEmitter, Input, LOCALE_ID, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AsyncPipe, formatDate } from '@angular/common';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty, omit } from 'underscore';
-import type { FileFormat, VitamuiSelectOptions } from 'vitamui-library';
-import { ApplicationId, Role } from 'vitamui-library';
-import { SecurityService } from 'vitamui-library';
-import { diff, FILE_FORMAT_EXTERNAL_PREFIX } from 'vitamui-library';
+import {
+  ApplicationId,
+  diff,
+  FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  InputComponent,
+  Role,
+  SecurityService,
+  SelectComponent,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { FileFormatService } from '../../file-format.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-format-information-tab',
   templateUrl: './file-format-information-tab.component.html',
   styleUrls: ['./file-format-information-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, InputComponent, SelectComponent, AsyncPipe, TranslatePipe],
 })
 export class FileFormatInformationTabComponent {
   private locale = inject(LOCALE_ID);

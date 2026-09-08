@@ -71,21 +71,40 @@ import { GroupService } from './group.service';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
+import {
+  GlobalEventService,
+  Group,
+  SidenavPage,
+  SnackBarService,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { finalize } from 'rxjs/operators';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { GroupPreviewComponent } from './group-preview/group-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    GroupPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    GroupListComponent,
+    TranslatePipe,
+  ],
 })
 export class GroupComponent extends SidenavPage<Group> {
   route: ActivatedRoute;

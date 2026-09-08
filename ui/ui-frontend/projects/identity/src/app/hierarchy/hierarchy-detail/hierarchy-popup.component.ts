@@ -38,11 +38,12 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Profile } from 'vitamui-library';
+import { HierarchyDetailComponent } from './hierarchy-detail.component';
 
 @Component({
   selector: 'app-hierarchy-popup',
   template: '<app-hierarchy-detail (previewClose)="closePopup()" [profile]="profile" [isPopup]="true"></app-hierarchy-detail>',
-  standalone: false,
+  imports: [HierarchyDetailComponent],
 })
 export class HierarchyPopupComponent {
   private route = inject(ActivatedRoute);

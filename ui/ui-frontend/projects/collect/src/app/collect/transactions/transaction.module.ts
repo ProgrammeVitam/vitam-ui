@@ -57,8 +57,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     MatProgressSpinnerModule,
     TranslatePipe,
+    TransactionsComponent,
+    TransactionListComponent,
   ],
   providers: [TransactionResolver],
-  declarations: [TransactionsComponent, TransactionListComponent],
 })
 export class TransactionModule {}

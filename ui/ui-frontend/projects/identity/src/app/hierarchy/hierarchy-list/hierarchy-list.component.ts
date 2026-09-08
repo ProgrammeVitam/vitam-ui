@@ -42,17 +42,23 @@ import {
   CriteriaSearchQuery,
   Criterion,
   Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   Operators,
   PageRequest,
+  PipesModule,
   Profile,
 } from 'vitamui-library';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DEFAULT_PAGE_SIZE } from '../../core/customer.service';
 import { HierarchyService } from '../hierarchy.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,7 +66,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-hierarchy-list',
   templateUrl: './hierarchy-list.component.html',
   styleUrls: ['./hierarchy-list.component.scss'],
-  standalone: false,
+  imports: [NgClass, MatProgressSpinner, PipesModule, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
 export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
   hierarchyService: HierarchyService;
@@ -89,25 +95,29 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
     this.hierarchyService = hierarchyService;
 
     this.updatedProfileSub = this.hierarchyService.updated.subscribe((updatedProfile: Profile) => {
-      const profileIndex = this.dataSource.findIndex((profile) => updatedProfile.id === profile.id);
-      if (profileIndex > -1) {
-        this.dataSource[profileIndex] = {
-          id: this.dataSource[profileIndex].id,
-          enabled: updatedProfile.enabled,
-          name: updatedProfile.name,
-          level: updatedProfile.level,
-          customerId: this.dataSource[profileIndex].customerId,
-          groupsCount: this.dataSource[profileIndex].groupsCount,
-          description: updatedProfile.description,
-          usersCount: this.dataSource[profileIndex].usersCount,
-          tenantName: this.dataSource[profileIndex].tenantName,
-          tenantIdentifier: this.dataSource[profileIndex].tenantIdentifier,
-          applicationName: this.dataSource[profileIndex].applicationName,
-          roles: this.dataSource[profileIndex].roles,
-          readonly: this.dataSource[profileIndex].readonly,
-          externalParamId: this.dataSource[profileIndex].externalParamId,
-        };
-      }
+      this.dataSource.update((profiles) => {
+        const list = [...(profiles ?? [])];
+        const profileIndex = list.findIndex((profile) => updatedProfile.id === profile.id);
+        if (profileIndex > -1) {
+          list[profileIndex] = {
+            id: list[profileIndex].id,
+            enabled: updatedProfile.enabled,
+            name: updatedProfile.name,
+            level: updatedProfile.level,
+            customerId: list[profileIndex].customerId,
+            groupsCount: list[profileIndex].groupsCount,
+            description: updatedProfile.description,
+            usersCount: list[profileIndex].usersCount,
+            tenantName: list[profileIndex].tenantName,
+            tenantIdentifier: list[profileIndex].tenantIdentifier,
+            applicationName: list[profileIndex].applicationName,
+            roles: list[profileIndex].roles,
+            readonly: list[profileIndex].readonly,
+            externalParamId: list[profileIndex].externalParamId,
+          };
+        }
+        return list;
+      });
     });
   }
 

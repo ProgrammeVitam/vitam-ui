@@ -38,24 +38,16 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of, Subject } from 'rxjs';
-import { CollapseModule } from 'vitamui-library';
+import { of, Subject } from 'rxjs';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ProfileValidators } from '../../hierarchy/profile.validators';
 import { ProfileService } from '../../profile/profile.service';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileListComponent } from './external-param-profile-list.component';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
+import { CollapseComponent } from 'vitamui-library';
+import { CommonModule } from '@angular/common';
 
 describe('ExternalParamProfileListComponent', () => {
   let component: ExternalParamProfileListComponent;
@@ -80,8 +72,15 @@ describe('ExternalParamProfileListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatProgressBarModule, CollapseModule, MatButtonToggleModule, VitamUICommonTestModule],
-      declarations: [ExternalParamProfileListComponent],
+      imports: [
+        ReactiveFormsModule,
+        MatProgressBarModule,
+        MatButtonToggleModule,
+        VitamUICommonTestModule,
+        ExternalParamProfileListComponent,
+        CollapseComponent,
+        CommonModule,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: ExternalParamProfileService, useValue: externalParamListServiceSpy },

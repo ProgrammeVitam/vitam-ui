@@ -41,7 +41,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment.prod';
 import { of } from 'rxjs';
 import { FilingHoldingSchemeNode, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
@@ -125,15 +124,18 @@ describe('FilingHoldingSchemeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
+        FilingHoldingSchemeComponent,
       ],
-      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveCollectServiceMock },
         { provide: StartupService, useValue: StartupServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'COLLECT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'COLLECT_APP' }),
+            snapshot: { data: { appId: 'COLLECT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
       ],

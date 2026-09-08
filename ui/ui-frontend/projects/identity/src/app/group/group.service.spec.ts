@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Direction, Group, Operators, PageRequest, SnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Direction, Group, Operators, PageRequest, SnackBarService } from 'vitamui-library';
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
 import { GroupService } from './group.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('GroupService', () => {
   let httpTestingController: HttpTestingController;
@@ -54,16 +53,7 @@ describe('GroupService', () => {
 
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        GroupService,
-        { provide: SnackBarService, useValue: snackBarSpy },
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [GroupService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

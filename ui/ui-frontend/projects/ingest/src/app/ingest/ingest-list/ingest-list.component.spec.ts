@@ -52,8 +52,7 @@ describe('IngestListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestListComponent],
-      imports: [],
+      imports: [IngestListComponent],
       providers: [{ provide: IngestService, useValue: ingestServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

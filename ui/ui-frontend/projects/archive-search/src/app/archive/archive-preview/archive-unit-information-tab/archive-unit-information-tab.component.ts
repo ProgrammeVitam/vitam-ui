@@ -34,18 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import type { Unit, VersionWithQualifierDto } from 'vitamui-library';
-import { AccessContract, AccessContractService, ObjectQualifierType } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractService,
+  DataComponent,
+  ObjectQualifierType,
+  PipesModule,
+  Unit,
+  VersionWithQualifierDto,
+} from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
-  standalone: false,
+  imports: [DataComponent, AsyncPipe, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   private archiveService = inject(ArchiveService);

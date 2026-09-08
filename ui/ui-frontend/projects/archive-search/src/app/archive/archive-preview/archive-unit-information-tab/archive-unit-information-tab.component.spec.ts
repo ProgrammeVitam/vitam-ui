@@ -46,14 +46,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { of } from 'rxjs';
 import {
   AccessContract,
   AccessContractService,
   ApiUnitObject,
-  BASE_URL,
   DataComponent,
   DescriptionLevel,
   ENVIRONMENT,
@@ -73,20 +71,14 @@ describe('ArchiveUnitInformationTabComponent', () => {
   let component: ArchiveUnitInformationTabComponent;
   let fixture: ComponentFixture<ArchiveUnitInformationTabComponent>;
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class UnitI18nStubPipe implements PipeTransform {
     transform(value: any, _attribute: string): string {
       return value?.Title ?? '';
     }
   }
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -100,6 +92,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
   const activatedRouteMock = {
     params: of({ tenantIdentifier: 1 }),
     data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+    snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
   };
 
   const archiveServiceMock = {
@@ -136,17 +129,17 @@ describe('ArchiveUnitInformationTabComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
         DataComponent,
         PipesModule,
+        ArchiveUnitInformationTabComponent,
+        UnitI18nStubPipe,
+        DateTimeStubPipe,
       ],
-      declarations: [ArchiveUnitInformationTabComponent, UnitI18nStubPipe, DateTimeStubPipe],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

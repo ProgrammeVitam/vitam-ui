@@ -39,7 +39,6 @@ import { SearchType, SearchWithTypeSelectorComponent } from './search-with-type-
 import { By } from '@angular/platform-browser';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { input } from '../../../../testing/src/helpers';
@@ -72,7 +71,7 @@ describe('SearchWithTypeSelectorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TestHostComponent],
+      imports: [TestHostComponent],
     }).compileComponents();
 
     hostFixture = TestBed.createComponent(TestHostComponent);

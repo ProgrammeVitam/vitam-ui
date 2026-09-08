@@ -36,12 +36,15 @@
  */
 import { Component } from '@angular/core';
 import { environment } from '../environments/environment';
+import { FooterComponent, HeaderModule, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
+import { MatToolbar } from '@angular/material/toolbar';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [HeaderModule, MatToolbar, VitamuiBodyComponent, RouterOutlet, FooterComponent, SubrogationModule],
 })
 export class AppComponent {
   title = 'Pastis Application';

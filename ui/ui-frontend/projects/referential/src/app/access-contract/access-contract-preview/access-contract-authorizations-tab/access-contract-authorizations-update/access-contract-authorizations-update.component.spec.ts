@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -43,7 +42,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update.component';
 import { of } from 'rxjs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { CdkStepper } from '@angular/cdk/stepper';
 
 describe('AccessContractAuthorizationsUpdateComponent', () => {
   let component: AccessContractAuthorizationsUpdateComponent;
@@ -62,16 +61,14 @@ describe('AccessContractAuthorizationsUpdateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AccessContractAuthorizationsUpdateComponent],
-      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), AccessContractAuthorizationsUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         FormBuilder,
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: AgencyService, useValue: agencyServiceMock },
         { provide: MAT_DIALOG_DATA, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
+        { provide: CdkStepper, useValue: { steps: [] } },
       ],
     }).compileComponents();
   });

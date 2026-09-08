@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, OnDestroy, OnInit, TemplateRef, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import {
@@ -45,10 +45,17 @@ import {
   CountryOption,
   CountryService,
   Customer,
+  DialogHeaderComponent,
+  InputComponent,
   Logo,
+  NextStepComponent,
   Option,
   OtpState,
+  PreviousStepComponent,
+  SelectComponent,
+  SlideToggleComponent,
   StartupService,
+  StepperComponent,
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
@@ -56,12 +63,41 @@ import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from './customer-create.validators';
 import { TenantService } from '../tenant.service';
+import { CdkStep, CdkStepperNext } from '@angular/cdk/stepper';
+import { NgTemplateOutlet } from '@angular/common';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { DomainsInputComponent } from '../../shared/domains-input/domains-input.component';
+import { GraphicIdentityComponent } from '../customer-preview/graphic-identity-tab/graphic-identity/graphic-identity.component';
+import { HomepageMessageComponent } from '../customer-preview/homepage-message-tab/homepage-message/homepage-message.component';
+import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer-create',
   templateUrl: './customer-create.component.html',
   styleUrls: ['./customer-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    MatDialogContent,
+    InputComponent,
+    SelectComponent,
+    SlideToggleComponent,
+    MatDialogActions,
+    NextStepComponent,
+    NgTemplateOutlet,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    DomainsInputComponent,
+    PreviousStepComponent,
+    GraphicIdentityComponent,
+    HomepageMessageComponent,
+    OwnerFormComponent,
+    CdkStepperNext,
+    TranslatePipe,
+  ],
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<CustomerCreateComponent>>(MatDialogRef);

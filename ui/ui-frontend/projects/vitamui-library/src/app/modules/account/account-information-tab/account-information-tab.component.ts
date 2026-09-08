@@ -34,16 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, effect, inject, input } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import type { Account } from '../../models/account/account.interface';
+import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
   styleUrls: ['./account-information-tab.component.scss'],
-  standalone: false,
+  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, TranslatePipe],
 })
 export class AccountInformationTabComponent {
   private formBuilder = inject(FormBuilder);
@@ -52,18 +54,7 @@ export class AccountInformationTabComponent {
 
   public language: string;
 
-  @Input()
-  set account(account: Account) {
-    this._account = account;
-    if (this.account?.userInfo) {
-      this.language = this.account.userInfo.language;
-    }
-    this.resetForm(this.account);
-  }
-  get account(): Account {
-    return this._account;
-  }
-  private _account: Account;
+  public account = input<Account | null>(null);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -78,6 +69,16 @@ export class AccountInformationTabComponent {
       address: [{ value: null, disabled: true }, Validators.required],
       type: [{ value: null, disabled: true }],
       profileGroup: [{ value: null, disabled: true }],
+    });
+
+    effect(() => {
+      const acc = this.account();
+      if (acc?.userInfo) {
+        this.language = acc.userInfo.language;
+      }
+      if (acc) {
+        this.resetForm(acc);
+      }
     });
   }
 

@@ -61,15 +61,15 @@
       }
     </div>
 
-    @if (!dataSource || pending) {
+    @if (!dataSource() || pending()) {
       <div class="vitamui-min-content">
         <mat-spinner class="vitamui-spinner medium"></mat-spinner>
       </div>
     }
-    @if (!pending && filteredDataSource?.length === 0) {
+    @if (!pending() && filteredDataSource?.length === 0) {
       <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
     }
-    @if (infiniteScrollDisabled && auditService.canLoadMore && !pending) {
+    @if (infiniteScrollDisabled() && auditService.canLoadMore && !pending()) {
       <div class="vitamui-min-content vitamui-table-message" (click)="auditService.loadMore()">
         <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
       </div>

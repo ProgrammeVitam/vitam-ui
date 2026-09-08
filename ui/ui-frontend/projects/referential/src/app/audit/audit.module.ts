@@ -45,7 +45,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
-import { PipesModule } from '../shared/pipes/pipes.module';
+
 import { AuditRoutingModule } from './audit-routing.module';
 import { AuditComponent } from './audit.component';
 import { MatInputModule } from '@angular/material/input';
@@ -57,7 +57,6 @@ import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [AuditComponent, AuditListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -74,8 +73,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
     TranslatePipe,
+    AuditComponent,
+    AuditListComponent,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

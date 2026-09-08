@@ -34,17 +34,43 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
 import type { EditObject } from '../../models/edit-object.model';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { GroupEditorComponent } from '../group-editor/group-editor.component';
+import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
+import { InputComponent } from '../../../../../lib/components/input/input.component';
+import { EditorListInputComponent } from '../editor-list-input.component';
+import { EditorListTextareaComponent } from '../editor-list-textarea.component';
+import { EditorListSelectComponent } from '../editor-list-select.component';
+import { EditorListDateComponent } from '../editor-list-date.component';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { AppendStarPipe } from '../../required.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-list-editor',
   templateUrl: './list-editor.component.html',
   styleUrls: ['./list-editor.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+    NgTemplateOutlet,
+    GroupEditorComponent,
+    PrimitiveEditorComponent,
+    InputComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    EditorListInputComponent,
+    EditorListTextareaComponent,
+    EditorListSelectComponent,
+    EditorListDateComponent,
+    EmptyPipe,
+    AppendStarPipe,
+    TranslatePipe,
+  ],
 })
 export class ListEditorComponent implements OnChanges {
   private favoriteEntryService = inject(FavoriteEntryService);

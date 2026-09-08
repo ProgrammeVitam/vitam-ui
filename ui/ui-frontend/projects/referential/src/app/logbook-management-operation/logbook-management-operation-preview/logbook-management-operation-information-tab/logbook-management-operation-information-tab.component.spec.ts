@@ -42,10 +42,7 @@ import { LogbookManagementOperationInformationTabComponent } from './logbook-man
 
 let expectedOperation: OperationDetails;
 
-@Component({
-  template: ``,
-  standalone: false,
-})
+@Component({ template: `` })
 class TestLogbookInformationComponent {
   operation = expectedOperation;
   tenantIdentifier = 1;
@@ -70,8 +67,7 @@ describe('LogbookManagementOperationInformationTabComponent', () => {
       forcedCancellation: false,
     };
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
-      imports: [],
+      imports: [LogbookManagementOperationInformationTabComponent, TestLogbookInformationComponent],
       providers: [{ provide: LogbookService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

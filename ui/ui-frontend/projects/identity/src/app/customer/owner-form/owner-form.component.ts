@@ -34,12 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { Component, forwardRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import type { CountryOption, Customer, Owner } from 'vitamui-library';
-import { CountryService, Option, StartupService } from 'vitamui-library';
+import { CountryOption, CountryService, Customer, InputComponent, Option, Owner, SelectComponent, StartupService } from 'vitamui-library';
 import {
   ALPHA_NUMERIC_REGEX,
   OWNER_CITY_MAX_LENGTH,
@@ -51,6 +50,7 @@ import {
   OWNER_ZIP_CODE_MAX_LENGTH,
   OwnerFormValidators,
 } from './owner-form.validators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const OWNER_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -64,7 +64,7 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './owner-form.component.html',
   styleUrls: ['./owner-form.component.scss'],
   providers: [OWNER_FORM_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [ReactiveFormsModule, InputComponent, SelectComponent, TranslatePipe],
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
   private formBuilder = inject(FormBuilder);

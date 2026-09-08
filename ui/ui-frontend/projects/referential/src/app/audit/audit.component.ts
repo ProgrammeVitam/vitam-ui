@@ -34,21 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, inject, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Event, GlobalEventService, SearchBarComponent, SidenavPage } from 'vitamui-library';
+import {
+  DatepickerComponent,
+  Event,
+  GlobalEventService,
+  SearchBarComponent,
+  SidenavPage,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { AuditChainCreateComponent } from './audit-chain-create/audit-chain-create.component';
 import { AuditCreateComponent } from './audit-create/audit-create.component';
 import { AuditListComponent } from './audit-list/audit-list.component';
 import { DateTime } from 'luxon';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { AuditPreviewComponent } from './audit-preview/audit-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-audit',
   templateUrl: './audit.component.html',
   styleUrls: ['./audit.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    AuditPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ReactiveFormsModule,
+    DatepickerComponent,
+    AuditListComponent,
+    TranslatePipe,
+    VitamuiMenuButtonComponent,
+  ],
 })
 export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);

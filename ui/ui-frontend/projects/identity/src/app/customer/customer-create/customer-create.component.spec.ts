@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -45,9 +44,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { ConfirmDialogService, CountryService, LoggerModule, OtpState, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
@@ -56,7 +54,6 @@ import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-domains-input',
@@ -68,7 +65,15 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -98,7 +103,15 @@ class DomainInputStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -121,7 +134,15 @@ class OwnerFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    VitamUICommonTestModule,
+  ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
   @Input()
@@ -230,7 +251,6 @@ describe('CustomerCreateComponent', () => {
         .mockReturnValue(() => of(null)),
     };
     await TestBed.configureTestingModule({
-      declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         LoggerModule.forRoot(),
@@ -239,15 +259,17 @@ describe('CustomerCreateComponent', () => {
         MatProgressBarModule,
         MatProgressSpinnerModule,
         MatSelectModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
+        CustomerCreateComponent,
+        OwnerFormStubComponent,
+        CustomerColorsInputStubComponent,
+        DomainInputStubComponent,
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: { getConfigNumberValue: () => 100 } },
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
@@ -258,8 +280,6 @@ describe('CustomerCreateComponent', () => {
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
         { provide: MatDialog, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(CustomerCreateComponent, {

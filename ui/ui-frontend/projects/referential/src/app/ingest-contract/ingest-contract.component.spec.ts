@@ -38,16 +38,20 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ApplicationService, BASE_URL, GlobalEventService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  Application,
+  ApplicationService,
+  GlobalEventService,
+  IngestContract,
+  InjectorModule,
+  LoggerModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
 import { IngestContractService } from './ingest-contract.service';
 import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractComponent', () => {
   let component: IngestContractComponent;
@@ -57,31 +61,63 @@ describe('IngestContractComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'INGEST_CONTRACT_APP' }),
+      snapshot: { data: { appId: 'INGEST_CONTRACT_APP' } },
     };
 
     const applicationServiceMock = {
       applications: new Array<any>(),
       isApplicationExternalIdentifierEnabled: () => of(true),
+      getAppById: () =>
+        of({
+          name: 'App name',
+        } satisfies Partial<Application>),
     };
 
     await TestBed.configureTestingModule({
-      declarations: [IngestContractComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [VitamUICommonTestModule, RouterTestingModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), IngestContractComponent],
       providers: [
         GlobalEventService,
-        { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: {} },
         { provide: MatDialog, useValue: {} },
-        { provide: BASE_URL, useValue: '' },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: IngestContractService, useValue: {} },
         { provide: DownloadSnackBarService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(IngestContractService, {
+        useValue: {
+          search: () => of([]),
+          updated: of({
+            tenant: 0,
+            version: 1,
+            description: 'desc',
+            status: 'ACTIVE',
+            id: 'vitam_id',
+            name: 'Name',
+            identifier: 'SP-000001',
+            everyDataObjectVersion: true,
+            dataObjectVersion: ['test'],
+            creationDate: '01-01-20',
+            lastUpdate: '01-01-20',
+            activationDate: '01-01-20',
+            deactivationDate: '01-01-20',
+            checkParentLink: '',
+            linkParentId: '',
+            checkParentId: [''],
+            masterMandatory: true,
+            formatUnidentifiedAuthorized: true,
+            everyFormatType: true,
+            formatType: [''],
+            archiveProfiles: [],
+            managementContractId: 'MC-000001',
+            computeInheritedRulesAtIngest: false,
+            signaturePolicy: undefined,
+          } satisfies IngestContract),
+        },
+      })
+      .overrideProvider(ApplicationService, { useValue: applicationServiceMock })
+      .compileComponents();
   });
 
   beforeEach(() => {

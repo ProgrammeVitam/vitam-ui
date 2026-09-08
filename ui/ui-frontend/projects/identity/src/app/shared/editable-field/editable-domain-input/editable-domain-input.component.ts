@@ -34,10 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, forwardRef, inject, Input, Output } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from 'vitamui-library';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { NgStyle } from '@angular/common';
+import { DomainsInputComponent } from '../../domains-input/domains-input.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
+
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
 
@@ -49,7 +55,7 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   selector: 'app-editable-domain-input',
   templateUrl: './editable-domain-input.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [CdkOverlayOrigin, NgStyle, DomainsInputComponent, ReactiveFormsModule, MatProgressSpinner, CdkConnectedOverlay, TranslatePipe],
 })
 export class EditableDomainInputComponent extends EditableFieldComponent {
   @Input()

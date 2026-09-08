@@ -35,18 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import type { AccessContract } from 'vitamui-library';
-import { ExternalParameters, VitamuiHttpHeaders } from 'vitamui-library';
-import { ExternalParametersService, SearchUnitApiService, SnackBarService } from 'vitamui-library';
+import {
+  AccessContract,
+  ExternalParameters,
+  ExternalParametersService,
+  SearchUnitApiService,
+  SnackBarService,
+  VitamuiHttpHeaders,
+} from 'vitamui-library';
 import { AccessContractNodeUpdateComponent } from './access-contract-nodes-update/access-contract-node-update.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-nodes-tab',
   templateUrl: './access-contract-nodes-tab.component.html',
   styleUrls: ['./access-contract-nodes-tab.component.scss'],
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class AccessContractNodesTabComponent {
   private unitService = inject(SearchUnitApiService);

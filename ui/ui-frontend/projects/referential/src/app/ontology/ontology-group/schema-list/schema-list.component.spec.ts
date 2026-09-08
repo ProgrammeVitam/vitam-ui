@@ -39,7 +39,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { AuthService, BASE_URL, SchemaService, TenantSelectionService } from 'vitamui-library';
+import { AuthService, SchemaService, TenantSelectionService } from 'vitamui-library';
 import { SchemaListComponent } from './schema-list.component';
 
 describe('SchemaListComponent', () => {
@@ -61,7 +61,6 @@ describe('SchemaListComponent', () => {
       declarations: [],
       imports: [SchemaListComponent],
       providers: [
-        { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },
         { provide: SchemaService, useValue: schemaServiceMock },
         { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },

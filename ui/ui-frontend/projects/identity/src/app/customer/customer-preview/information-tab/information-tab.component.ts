@@ -34,16 +34,40 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of, Subscription } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { CountryOption, Customer, OtpState } from 'vitamui-library';
-import { CountryService, diff, Option, StartupService } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  Customer,
+  diff,
+  EditableButtonToggleComponent,
+  EditableInputComponent,
+  EditableToggleGroupComponent,
+  FormFieldValueWrapperComponent,
+  Option,
+  OtpState,
+  SelectComponent,
+  SlideToggleComponent,
+  StartupService,
+  VitamUIFieldErrorComponent,
+} from 'vitamui-library';
 
 import { CustomerService } from '../../../core/customer.service';
 import { ALPHA_NUMERIC_REGEX, CUSTOMER_CODE_MAX_LENGTH, CustomerCreateValidators } from '../../customer-create/customer-create.validators';
+import { EditableDomainInputComponent } from '../../../shared/editable-field/editable-domain-input/editable-domain-input.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -51,7 +75,27 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    VitamUIFieldErrorComponent,
+    FormFieldValueWrapperComponent,
+    SelectComponent,
+    EditableDomainInputComponent,
+    SlideToggleComponent,
+    TranslatePipe,
+    CommonModule,
+    EditableButtonToggleComponent,
+    EditableInputComponent,
+    EditableToggleGroupComponent,
+    FormsModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+  ],
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
   private formBuilder = inject(FormBuilder);

@@ -34,18 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ApplicationId, BreadCrumbData, GlobalEventService, Project, SidenavPage, Transaction } from 'vitamui-library';
+import {
+  ApplicationId,
+  BreadCrumbData,
+  GlobalEventService,
+  Project,
+  SidenavPage,
+  Transaction,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { TransactionsService } from './transactions.service';
+import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { TransactionListComponent } from './transaction-list/transaction-list.component';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
-  standalone: false,
+  imports: [MatSidenavContainer, MatSidenavContent, VitamuiTitleBreadcrumbComponent, TransactionListComponent, AsyncPipe, TranslatePipe],
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
   private transactionsService = inject(TransactionsService);

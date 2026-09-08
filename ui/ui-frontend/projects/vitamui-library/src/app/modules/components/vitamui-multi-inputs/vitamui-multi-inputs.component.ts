@@ -35,9 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditableFieldComponent } from '../editable-field/editable-field.component';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { NgClass } from '@angular/common';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,7 +54,7 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './vitamui-multi-inputs.component.html',
   styleUrls: ['./vitamui-multi-inputs.component.scss'],
   providers: [MULTIPLE_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [CdkOverlayOrigin, FormsModule, ReactiveFormsModule, MatProgressSpinner, CdkConnectedOverlay, NgClass, TruncatePipe],
 })
 export class VitamuiMultiInputsComponent extends EditableFieldComponent implements OnDestroy, OnChanges {
   values: string[] = [];

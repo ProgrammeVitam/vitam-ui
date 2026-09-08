@@ -37,14 +37,17 @@
 
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { ApplicationApiService, ConfigService } from 'vitamui-library';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      imports: [],
+      imports: [AppComponent],
+      providers: [{ provide: ApplicationApiService, useValue: { getLocalAsset: () => of('') } }],
     })
       .overrideTemplate(AppComponent, '<div></div>')
+      .overrideProvider(ConfigService, { useValue: { config: { USER_LOGO: '', THEME_COLORS: [] } } })
       .compileComponents();
   });
 

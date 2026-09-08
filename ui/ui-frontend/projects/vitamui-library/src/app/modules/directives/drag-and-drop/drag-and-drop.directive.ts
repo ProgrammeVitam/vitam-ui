@@ -39,7 +39,6 @@ import { Logger } from '../../logger/logger';
 import { CustomFile } from '../../../../lib/models/custom-file';
 
 @Directive({
-  standalone: true,
   selector: '[vitamuiCommonDragAndDrop]',
 })
 export class DragAndDropDirective {

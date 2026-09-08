@@ -35,22 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { MatPseudoCheckboxModule } from '@angular/material/core';
 import { By } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
 import { TableFilterSearchComponent } from './table-filter-search.component';
-import { TableFilterComponent } from './table-filter.component';
 
 @Component({
   template: `
     <vitamui-common-table-filter-search [(filter)]="filter" [options]="options" (filterClose)="onClose()">
     </vitamui-common-table-filter-search>
   `,
-  standalone: false,
+  imports: [FormsModule, TableFilterSearchComponent],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {
   filter: any;
@@ -64,17 +63,13 @@ export class TestHostComponent {
   onClose() {}
 }
 
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
-
 describe('TableFilterSearchComponent', () => {
   let testhost: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatPseudoCheckboxModule, FormsModule, TableFilterSearchComponent, TableFilterComponent, TableFilterOptionComponent],
-      declarations: [TestHostComponent],
+      imports: [TestHostComponent],
     }).compileComponents();
   });
 

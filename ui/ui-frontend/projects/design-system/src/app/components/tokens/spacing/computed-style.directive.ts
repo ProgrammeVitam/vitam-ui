@@ -34,38 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
+import { AfterViewInit, Directive, ElementRef, inject, input } from '@angular/core';
 
-import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { SharedModule } from '../../shared/shared.module';
-import { UnitsFormModule } from '../units-form/units-form.module';
-import { GroupCreateComponent } from './group-create.component';
-import { TranslatePipe } from '@ngx-translate/core';
-
-@NgModule({
-  imports: [
-    CommonModule,
-    MatButtonToggleModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    SharedModule,
-    UnitsFormModule,
-    VitamUICommonModule,
-    VitamUILibraryModule,
-    TranslatePipe,
-  ],
-  declarations: [GroupCreateComponent],
+@Directive({
+  selector: '[designSystemComputedStyle]',
+  standalone: true,
 })
-export class GroupCreateModule {}
+export class ComputedStyleDirective implements AfterViewInit {
+  readonly property = input.required<'padding' | 'margin' | 'gap'>({ alias: 'designSystemComputedStyle' });
+  readonly target = input<HTMLElement | undefined>(undefined, { alias: 'designSystemComputedStyleTarget' });
+
+  private readonly host = inject(ElementRef<HTMLElement>);
+
+  ngAfterViewInit(): void {
+    const target = this.target() ?? this.host.nativeElement;
+    const value = getComputedStyle(target)[this.property()];
+    this.host.nativeElement.textContent = value;
+  }
+}

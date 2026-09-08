@@ -36,8 +36,7 @@
  */
 import { Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import type { Option, SchemaElement } from 'vitamui-library';
-import { SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Option, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
 import { TranslatePipe } from '@ngx-translate/core';
 

@@ -34,18 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { Colors, FacetDetails } from 'vitamui-library';
+import {
+  Colors,
+  EventTypeLabelComponent,
+  FacetDetails,
+  InfiniteScrollDirective,
+  LogbookOperationFacetComponent,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+  TooltipDirective,
+} from 'vitamui-library';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-logbook-management-operation-list',
   templateUrl: './logbook-management-operation-list.component.html',
   styleUrls: ['./logbook-management-operation-list.component.scss'],
-  standalone: false,
+  imports: [
+    LogbookOperationFacetComponent,
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    TooltipDirective,
+    EventTypeLabelComponent,
+    NgClass,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class LogbookManagementOperationListComponent implements OnInit {
   logbookManagementOperationService = inject(LogbookManagementOperationService);

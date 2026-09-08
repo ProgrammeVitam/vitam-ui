@@ -38,10 +38,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { Validators } from '@angular/forms';
 import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-common-test.module';
-import { BASE_URL } from '../../injection-tokens';
 
 import { EditableFieldComponent } from './editable-field.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('EditableFieldComponent', () => {
   let component: EditableFieldComponent;
@@ -49,14 +47,7 @@ describe('EditableFieldComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [VitamUICommonTestModule],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClientTesting()],
     }),
   );
   beforeEach(() => {

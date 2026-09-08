@@ -41,7 +41,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
 import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -58,7 +57,7 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, MatButtonToggleModule, MatSelectModule, VitamUICommonTestModule],
 })
 class PatternStubComponent implements ControlValueAccessor {
   @Input()
@@ -99,11 +98,11 @@ describe('IdentityProviderCreateComponent', () => {
         ReactiveFormsModule,
         MatButtonToggleModule,
         MatSelectModule,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
+        IdentityProviderCreateComponent,
+        PatternStubComponent,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [IdentityProviderCreateComponent, PatternStubComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },

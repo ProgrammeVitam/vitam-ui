@@ -34,40 +34,60 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { OverlayModule } from '@angular/cdk/overlay';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { OverlayModule } from '@angular/cdk/overlay';
 
-import { LevelInputModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { CustomParamsModule } from '../custom-params/custom-params.module';
-import { DomainsInputModule } from '../domains-input/domains-input.module';
+import { LevelInputComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { CustomParamsComponent } from '../custom-params/custom-params.component';
+import { DomainsInputComponent } from '../domains-input/domains-input.component';
 import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
 import { EditablePatternsComponent } from './editable-patterns/editable-patterns.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
-    CommonModule,
-    CustomParamsModule,
-    DomainsInputModule,
+    VitamUICommonModule,
+    VitamUILibraryModule,
     FormsModule,
-    LevelInputModule,
+    ReactiveFormsModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    ReactiveFormsModule,
+    TranslatePipe,
+    CustomParamsComponent,
+    DomainsInputComponent,
+    EditableDomainInputComponent,
+    EditablePatternsComponent,
+    EditableKeystoreComponent,
+    EditableCustomParamsComponent,
+    CommonModule,
+    LevelInputComponent,
+  ],
+  exports: [
+    LevelInputComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
     TranslatePipe,
+    CustomParamsComponent,
+    DomainsInputComponent,
+    EditableDomainInputComponent,
+    EditablePatternsComponent,
+    EditableKeystoreComponent,
+    EditableCustomParamsComponent,
   ],
-  declarations: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
-  exports: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
 })
 export class EditableFieldModule {}

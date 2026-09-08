@@ -37,12 +37,14 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogInputData } from './dialog-input-data.interface';
+import { CommonConfirmDialogComponent } from './common-confirm-dialog.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-close-popup-dialog',
   templateUrl: './close-popup-dialog.component.html',
   styleUrls: ['./close-popup-dialog.component.scss'],
-  standalone: false,
+  imports: [CommonConfirmDialogComponent, TranslatePipe],
 })
 export class ClosePopupDialogComponent {
   data? = inject<DialogInputData>(MAT_DIALOG_DATA);

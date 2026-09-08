@@ -36,25 +36,24 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterContentChecked,
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  inject,
 } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, take } from 'rxjs/operators';
 import {
   ACCESS_RULE,
   AccessContract,
@@ -68,20 +67,27 @@ import {
   ARCHIVE_UNIT_WITH_OBJECTS,
   ARCHIVE_UNIT_WITHOUT_OBJECTS,
   ArchiveSearchResultFacets,
+  ArchiveUnitModule,
   ConfigService,
   CriteriaDataType,
   CriteriaOperator,
   CriteriaSearchCriteria,
   CriteriaValue,
+  DialogHeaderComponent,
   Direction,
   DISSEMINATION_RULE,
   FilingHoldingSchemeNode,
+  HasRoleDirective,
+  InfiniteScrollDirective,
   Logger,
   MANAGEMENT_RULE_SHARED_DATA_SERVICE,
+  ManagementRuleSearchComponent,
   NODES,
+  OrderByButtonComponent,
   ORIGIN_WAITING_RECALCULATE,
   ORPHANS_NODE_ID,
   PagedResult,
+  PipesModule,
   QueryParamsService,
   ReclassificationDialogComponent,
   REUSE_RULE,
@@ -101,12 +107,15 @@ import {
   STORAGE_RULE,
   TermsFacet,
   toManagementRuleType,
+  TooltipDirective,
   Unit,
   UnitType,
   VALID_COMPUTED_INHERITED_RULES_FACET,
-  VitamuiRoles,
-  WAITING_RECALCULATE,
   VitamTenantConfigService,
+  VitamuiMenuButtonComponent,
+  VitamuiRoles,
+  VitamuiSupHeaderComponent,
+  WAITING_RECALCULATE,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
@@ -121,10 +130,31 @@ import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment/transfer-acknowledgment.component';
 import { PuaUpdateDialogComponent, PuaUpdateDialogComponentData } from './pua-update-dialog/pua-update-dialog.component';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 import { ReassignmentDialogService } from './additional-actions-search/originating-agency-reassignment-dialog/reassignment-dialog.service';
 import { PreservationDialogService } from './additional-actions-search/preservation-dialog/preservation-dialog.service';
 import { ReassignmentMode } from '../models/reassign-request.interface';
+import { TitleAndDescriptionCriteriaSearchComponent } from './title-and-description-criteria-search/title-and-description-criteria-search.component';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { CriteriaSearchComponent } from '../criteria-search/criteria-search.component';
+import { SearchCriteriaListComponent } from './search-criteria-list/search-criteria-list.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { AsyncPipe, CommonModule, NgClass, NgTemplateOutlet } from '@angular/common';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search-rules-facets/archive-search-rules-facets.component';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
+import { SimpleCriteriaSearchComponent } from './simple-criteria-search/simple-criteria-search.component';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+} from '@angular/material/table';
 
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -137,15 +167,57 @@ const NON_TREE_UNIT_TYPES = [ARCHIVE_UNIT_FILING_UNIT, ARCHIVE_UNIT_WITH_OBJECTS
   selector: 'app-archive-search',
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
-  standalone: false,
   providers: [
     {
       provide: MANAGEMENT_RULE_SHARED_DATA_SERVICE,
       useExisting: ArchiveSharedDataService,
     },
   ],
+  imports: [
+    TitleAndDescriptionCriteriaSearchComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    CriteriaSearchComponent,
+    MatMenuTrigger,
+    MatMenu,
+    SearchCriteriaListComponent,
+    MatProgressSpinner,
+    NgClass,
+    ArchiveSearchRulesFacetsComponent,
+    MatTabGroup,
+    MatTab,
+    SimpleCriteriaSearchComponent,
+    MatTabLabel,
+    ManagementRuleSearchComponent,
+    VitamuiSupHeaderComponent,
+    ArchiveUnitModule,
+    TooltipDirective,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    NgTemplateOutlet,
+    MatCellDef,
+    MatCell,
+    MatCheckbox,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    OrderByButtonComponent,
+    AsyncPipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
+export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   archiveService = inject(ArchiveService);
   private archiveFacetsService = inject(ArchiveFacetsService);
   private translateService = inject(TranslateService);
@@ -161,7 +233,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private computeInheritedRulesService = inject(ComputeInheritedRulesService);
   private archiveUnitDipService = inject(ArchiveUnitDipService);
   private accessContractService = inject(AccessContractService);
-  private cdr = inject(ChangeDetectorRef);
   private queryParamsService = inject(QueryParamsService);
   private searchCriteriaService = inject(SearchCriteriaService);
   private ruleService = inject(RuleService);
@@ -178,8 +249,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   direction = Direction.ASCENDANT;
   accessContractId: string;
-  accessContractAllowUpdating: boolean;
-  accessContractUpdatingRestrictedDesc: boolean;
+  accessContractAllowUpdating = signal(false);
+  accessContractUpdatingRestrictedDesc = signal(false);
   @Output() archiveUnitClick = new EventEmitter<any>();
 
   tenantIdentifier: number;
@@ -192,28 +263,37 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   isAllChecked: boolean;
   hasResults = false;
 
-  hasReassignmentRole = false;
-  hasDipExportRole = false;
-  hasTransferRequestRole = false;
-  hasUpdateManagementRuleRole = false;
-  hasEliminationAnalysisOrActionRole = false;
-  hasComputedInheritedRulesRole = false;
-  hasReclassificationRole = false;
-  hasPreservationRole = false;
+  hasReassignmentRole = signal(false);
+  hasDipExportRole = signal(false);
+  hasTransferRequestRole = signal(false);
+  hasUpdateManagementRuleRole = signal(false);
+  hasEliminationAnalysisOrActionRole = signal(false);
+  hasComputedInheritedRulesRole = signal(false);
+  hasReclassificationRole = signal(false);
+  hasPreservationRole = signal(false);
   waitingToGetFixedCount = false;
   showDuaEndDate = false;
-  pending = false;
+  pending = signal(false);
   pendingComputeFacets = false;
-  submitted = false;
+  submitted = signal(false);
   pendingGetFixedCount = false;
   submitedGetFixedCount = false;
   included = false;
   canLoadMore = false;
-  showCriteriaPanel = true;
+  // Starts visible: no search runs on portal landing, the user starts it explicitly.
+  // submit() collapses the panel once a search is launched.
+  showCriteriaPanel = signal(true);
+  /**
+   * True when the page is opened with query params already present (reload or deep link
+   * with search criteria): the search runs automatically once criteria are ready.
+   * False on portal landing (bare URL): default criteria are prefilled without searching.
+   * Captured from the arrival snapshot in ngOnInit, before default params are injected.
+   */
+  private shouldAutoSearchOnInit = false;
   defaultFacetTabIndex = 1;
   currentPage = 0;
   pageNumbers = 0;
-  totalResults = 0;
+  totalResults = signal(0);
   selectedItemCount = 0;
   selectedHoldingUnitItemCount = 0;
   itemNotSelected = 0;
@@ -242,7 +322,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
   bulkOperationsThreshold = -1;
-  hasTransferAcknowledgmentRole = false;
+  hasTransferAcknowledgmentRole = signal(false);
 
   selectedArchive$: Observable<Unit>;
   rulesToExport$: Observable<Rule[]>;
@@ -444,8 +524,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
     this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
       this.accessContractId = ac.identifier;
-      this.accessContractAllowUpdating = ac.writingPermission;
-      this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
+      this.accessContractAllowUpdating.set(ac.writingPermission);
+      this.accessContractUpdatingRestrictedDesc.set(ac.writingRestrictedDesc);
     });
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
@@ -464,6 +544,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         .addQueryParam('archiveUnitType', 'ARCHIVE_UNIT_WITHOUT_OBJECTS')
         .navigate({ replaceUrl: true });
     }
+
+    // Snapshot taken on arrival, before the default params are injected above:
+    // - portal landing (bare URL): prefill defaults, do NOT search;
+    // - reload or deep link with criteria: the search runs automatically (see ngAfterViewInit).
+    // Selecting criteria later never triggers a search by itself (submit stays explicit).
+    this.shouldAutoSearchOnInit = this.route.snapshot.queryParamMap.keys.length > 0;
 
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     searchCriteriaChange.subscribe(() => {
@@ -487,19 +573,34 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       .pipe(map((rules) => rules.sort((a, b) => a.ruleId.localeCompare(b.ruleId))));
   }
 
+  // No automatic search on portal landing (see shouldAutoSearchOnInit set in ngOnInit).
+  // On reload / deep link with criteria, the search runs automatically once the
+  // searchCriteriaService is ready (i.e.: schema retrieved, URL criteria applied).
+  // Reactive subscription (not snapshot): the default query params may be added by an async
+  // navigation, so the snapshot may still be empty here. take(1) guarantees a single submit:
+  // selecting criteria afterwards never triggers a search by itself.
+  // A schema failure must not block the initial search either.
   ngAfterViewInit() {
-    // Trigger the search if we land on the page with query params, but only after searchCriteriaService is ready (i.e.: schema has been retrieved) in order to trigger search only after criteria have been set from the URL query params
-    if (this.route.snapshot.queryParamMap.keys.length) this.searchCriteriaService.ready().then(() => setTimeout(() => this.submit(true)));
+    if (!this.shouldAutoSearchOnInit) return;
+    this.searchCriteriaService
+      .ready()
+      .catch((): void => undefined)
+      .then(() => {
+        this.subscriptions.add(
+          this.route.queryParamMap
+            .pipe(
+              filter((params) => params.keys.length > 0),
+              take(1),
+            )
+            .subscribe(() => setTimeout(() => this.submit(true))),
+        );
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['accessContract']) {
       this.archiveSharedDataService.emitToggle(true);
     }
-  }
-
-  ngAfterContentChecked(): void {
-    this.cdr.detectChanges();
   }
 
   toManagementRuleType = toManagementRuleType;
@@ -517,7 +618,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   showHidePanel(show: boolean) {
-    this.showCriteriaPanel = show;
+    this.showCriteriaPanel.set(show);
   }
 
   showStoredSearchCriteria(event: SearchCriteriaHistory) {
@@ -545,8 +646,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
     this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
     if (this.searchCriterias && this.searchCriterias.size === 0) {
-      this.submitted = false;
-      this.showCriteriaPanel = true;
+      this.submitted.set(false);
+      this.showCriteriaPanel.set(true);
       this.archiveUnits = [];
       this.archiveSharedDataService.emitNodeTarget(null);
     }
@@ -647,7 +748,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       pageNumber: 0,
       size: 1,
       sortingCriteria,
-      trackTotalHits: this.totalResults >= 10000,
+      trackTotalHits: this.totalResults() >= 10000,
       computeMgtRulesFacets: true,
       facets: facets,
     };
@@ -673,7 +774,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.pendingComputeFacets = true;
       this.showingFacets = false;
     }
-    this.pending = true;
+    this.pending.set(true);
     let facets: TermsFacet[] = [];
     facets.push(ALL_DESCENDANTS_FACET);
     if (includeFacets) {
@@ -703,16 +804,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.archiveSharedDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
           this.hasResults = true;
-          this.totalResults = pagedResult.totalResults;
-          this.archiveSharedDataService.emitTotalResults(this.totalResults);
+          this.totalResults.set(pagedResult.totalResults);
+          this.archiveSharedDataService.emitTotalResults(this.totalResults());
         } else if (pagedResult.results) {
           this.hasResults = true;
           this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
-        this.waitingToGetFixedCount = this.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
+        this.waitingToGetFixedCount = this.totalResults() === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
         if (this.isAllChecked) {
-          this.selectedItemCount = this.totalResults - this.itemNotSelected;
+          this.selectedItemCount = this.totalResults() - this.itemNotSelected;
         }
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
         this.archiveHelperService.updateCriteriaStatus(
@@ -720,12 +821,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           SearchCriteriaStatusEnum.IN_PROGRESS,
           SearchCriteriaStatusEnum.INCLUDED,
         );
-        this.pending = false;
+        this.pending.set(false);
         this.included = true;
       },
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
-        this.pending = false;
+        this.pending.set(false);
         if (includeFacets) {
           this.pendingComputeFacets = false;
           this.archiveSharedDataService.emitFacets([]);
@@ -742,7 +843,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   onArchiveUnitCountChange(resultCount: number) {
-    this.totalResults = resultCount;
+    this.totalResults.set(resultCount);
     this.archiveSharedDataService.emitTotalResults(resultCount);
   }
 
@@ -897,14 +998,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   loadMore() {
-    if (this.pending) {
+    if (this.pending()) {
       return;
     }
     this.canLoadMore = this.currentPage < this.pageNumbers - 1;
     if (!this.canLoadMore) {
       return;
     }
-    this.submitted = true;
+    this.submitted.set(true);
     this.currentPage = this.currentPage + 1;
     if (!this.hasSearchCriteria()) {
       return;
@@ -927,7 +1028,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
-          this.totalResults = exactCountResults;
+          this.totalResults.set(exactCountResults);
           this.waitingToGetFixedCount = false;
           this.managementRulesSharedDataService.emitHasExactCount(true);
           this.launchComputingManagementRulesFacets();
@@ -996,7 +1097,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.included = false;
     this.nbQueryCriteria = 0;
     this.pageNumbers = 0;
-    this.totalResults = 0;
+    this.totalResults.set(0);
     this.selectedItemCount = 0;
     this.isAllChecked = false;
     this.isIndeterminate = false;
@@ -1013,7 +1114,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const { checked } = event;
 
     this.isAllChecked = checked;
-    this.selectedItemCount = checked ? this.totalResults : 0;
+    this.selectedItemCount = checked ? this.totalResults() : 0;
     this.selectedHoldingUnitItemCount = 0;
     if (!checked) {
       this.isIndeterminate = false;
@@ -1049,7 +1150,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         }
         this.listOfUACriteriaSearch = [];
         this.selectedItemCount++;
-        if (this.selectedItemCount === this.totalResults) {
+        if (this.selectedItemCount === this.totalResults()) {
           this.isIndeterminate = false;
         }
         if (this.isAllChecked) {
@@ -1071,9 +1172,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   private initializeSelectionParams() {
-    this.pending = true;
-    this.submitted = true;
-    this.showCriteriaPanel = false;
+    this.pending.set(true);
+    this.submitted.set(true);
+    this.showCriteriaPanel.set(false);
     this.currentPage = 0;
     this.archiveUnits = [];
     this.criteriaSearchList = [];
@@ -1088,28 +1189,28 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveService.hasArchiveSearchRole(role, tenantIdentifier).subscribe((result) => {
       switch (role) {
         case VitamuiRoles.ROLE_EXPORT_DIP:
-          this.hasDipExportRole = result;
+          this.hasDipExportRole.set(result);
           break;
         case VitamuiRoles.ROLE_TRANSFER_REQUEST:
-          this.hasTransferRequestRole = result;
+          this.hasTransferRequestRole.set(result);
           break;
         case VitamuiRoles.ROLE_ELIMINATION:
-          this.hasEliminationAnalysisOrActionRole = result;
+          this.hasEliminationAnalysisOrActionRole.set(result);
           break;
         case VitamuiRoles.ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT:
-          this.hasUpdateManagementRuleRole = result;
+          this.hasUpdateManagementRuleRole.set(result);
           break;
         case VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES:
-          this.hasComputedInheritedRulesRole = result;
+          this.hasComputedInheritedRulesRole.set(result);
           break;
         case VitamuiRoles.ROLE_RECLASSIFICATION:
-          this.hasReclassificationRole = result;
+          this.hasReclassificationRole.set(result);
           break;
         case VitamuiRoles.ROLE_LAUNCH_PRESERVATION:
-          this.hasPreservationRole = result;
+          this.hasPreservationRole.set(result);
           break;
         case VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT:
-          this.hasTransferAcknowledgmentRole = result;
+          this.hasTransferAcknowledgmentRole.set(result);
           break;
         default:
           break;
@@ -1187,9 +1288,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
-          this.totalResults = exactCountResults;
+          this.totalResults.set(exactCountResults);
           if (this.isAllChecked) {
-            this.selectedItemCount = this.totalResults - this.itemNotSelected;
+            this.selectedItemCount = this.totalResults() - this.itemNotSelected;
           }
           this.waitingToGetFixedCount = false;
           this.managementRulesSharedDataService.emitHasExactCount(true);
@@ -1241,7 +1342,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private hasRole(role: string): void {
     const appId = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
     this.securityService.hasRole$(appId, role, this.tenantIdentifier).subscribe((result) => {
-      return (this.hasReassignmentRole = result);
+      return this.hasReassignmentRole.set(result);
     });
   }
 

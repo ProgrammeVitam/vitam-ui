@@ -38,7 +38,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { CollapseModule } from '../../components/collapse/collapse.module';
 import { PipesModule } from '../../pipes/pipes.module';
 import { MultiOperationHistoryTabComponent } from './multi-operation-history-tab/multi-operation-history-tab.component';
 import { OperationHistoryTabComponent } from './operation-history-tab/operation-history-tab.component';
@@ -47,7 +46,6 @@ import { EventTypeLabelComponent } from '../event-type-label/event-type-label.co
 @NgModule({
   imports: [
     CommonModule,
-    CollapseModule,
     MatProgressSpinnerModule,
     EventTypeLabelComponent,
     PipesModule,

@@ -34,16 +34,57 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { platformBrowser } from '@angular/platform-browser';
+import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
+import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
-import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import {
+  AuthenticationModule,
+  BASE_URL,
+  BytesPipe,
+  ENVIRONMENT,
+  InjectorModule,
+  provideI18n,
+  VitamUICommonModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { CoreModule } from './app/core/core.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app/app-routing.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppComponent } from './app/app.component';
 
 if (environment.production) {
   enableProdMode();
 }
 
-platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      CoreModule,
+      AuthenticationModule.forRoot(),
+      InjectorModule,
+      BrowserAnimationsModule,
+      BrowserModule,
+      VitamUICommonModule.forRoot(),
+      AppRoutingModule,
+      ServiceWorkerModule.register('ngsw-worker.js', {
+        enabled: environment.production,
+        // Register the ServiceWorker as soon as the application is stable
+        // or after 30 seconds (whichever comes first).
+        registrationStrategy: 'registerWhenStable:30000',
+      }),
+    ),
+    provideI18n(),
+    provideNativeDateAdapter(),
+    Title,
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: BASE_URL, useValue: './referential-api' },
+    { provide: ENVIRONMENT, useValue: environment },
+    { provide: WINDOW_LOCATION, useValue: window.location },
+    BytesPipe,
+    DatePipe,
+  ],
+}).catch((err) => console.error(err));

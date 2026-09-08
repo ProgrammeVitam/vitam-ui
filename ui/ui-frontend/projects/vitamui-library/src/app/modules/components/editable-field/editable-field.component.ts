@@ -43,14 +43,14 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
+  inject,
   Input,
   Output,
   QueryList,
   ViewChild,
-  inject,
 } from '@angular/core';
-import { ControlValueAccessor, FormControl } from '@angular/forms';
 import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { ControlValueAccessor, FormControl } from '@angular/forms';
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -58,7 +58,6 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'editable-field-component',
-  standalone: false,
 })
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
   protected elementRef: ElementRef;

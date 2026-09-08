@@ -34,13 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import { Direction, InfiniteScrollTable, PageRequest, DEFAULT_PAGE_SIZE } from 'vitamui-library';
-import type { Context, User, AdminUserProfile } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  Context,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+  User,
+} from 'vitamui-library';
 import { ContextService } from '../context.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -48,7 +65,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-context-list',
   templateUrl: './context-list.component.html',
   styleUrls: ['./context-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   contextService: ContextService;
@@ -114,7 +143,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     );
 
     this.contextService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Context[]) => {
-      this.dataSource = data;
+      this.dataSource.set(data);
     });
 
     const searchCriteriaChange = merge(tenantChange, this.searchChange, this.filterChange, this.orderChange).pipe(
@@ -172,10 +201,14 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
 
   private replaceUpdatedContext(): void {
     this.contextService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedContext: Context) => {
-      const index = this.dataSource.findIndex((item: Context) => item.id === updatedContext.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedContext;
-      }
+      this.dataSource.update((contexts) => {
+        const list = [...(contexts ?? [])];
+        const index = list.findIndex((item: Context) => item.id === updatedContext.id);
+        if (index !== -1) {
+          list[index] = updatedContext;
+        }
+        return list;
+      });
     });
   }
 }

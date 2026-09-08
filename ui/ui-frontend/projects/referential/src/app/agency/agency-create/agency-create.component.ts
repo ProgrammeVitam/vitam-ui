@@ -34,17 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Agency, ConfirmDialogService, AgencyService } from 'vitamui-library';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { Agency, AgencyService, ConfirmDialogService, DialogHeaderComponent, InputComponent } from 'vitamui-library';
 import { AgencyCreateValidators } from './agency-create.validators';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-agency-create',
   templateUrl: './agency-create.component.html',
   styleUrls: ['./agency-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    MatDialogContent,
+    ReactiveFormsModule,
+    InputComponent,
+    MatProgressSpinner,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class AgencyCreateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AgencyCreateComponent>>(MatDialogRef);

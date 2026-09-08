@@ -41,7 +41,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { FilingHoldingSchemeNode, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
@@ -71,15 +70,18 @@ describe('FilingHoldingSchemeComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
+        FilingHoldingSchemeComponent,
       ],
-      declarations: [FilingHoldingSchemeComponent],
       providers: [
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+            snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
       ],

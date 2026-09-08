@@ -38,10 +38,7 @@ import { Directive, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 
 const DEFAULT_SCROLL_THRESHOLD = 0.8;
 
-@Directive({
-  selector: '[vitamuiCommonInfiniteScroll]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonInfiniteScroll]' })
 export class InfiniteScrollDirective implements OnInit, OnDestroy {
   @Input() vitamuiCommonInfiniteScrollThreshold = DEFAULT_SCROLL_THRESHOLD;
   @Input() vitamuiCommonInfiniteScrollDisable = false;

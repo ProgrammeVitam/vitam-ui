@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { InputComponent } from 'vitamui-library';
+import { I18nPluralPipe } from '@angular/common';
 
 const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
 
@@ -44,7 +46,7 @@ const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
   selector: 'design-system-translation',
   templateUrl: './translation.component.html',
   styleUrls: ['./translation.component.scss'],
-  standalone: false,
+  imports: [InputComponent, ReactiveFormsModule, I18nPluralPipe, TranslatePipe],
 })
 export class TranslationComponent implements OnInit {
   private translateService = inject(TranslateService);

@@ -34,9 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, forwardRef, inject, Input, Output } from '@angular/core';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { CustomParamsComponent } from '../../custom-params/custom-params.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { KeyValuePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -50,7 +55,15 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   selector: 'editable-custom-params',
   templateUrl: './editable-custom-params.component.html',
   providers: [EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [
+    CdkOverlayOrigin,
+    CustomParamsComponent,
+    ReactiveFormsModule,
+    MatProgressSpinner,
+    CdkConnectedOverlay,
+    KeyValuePipe,
+    TranslatePipe,
+  ],
 })
 export class EditableCustomParamsComponent extends EditableFieldComponent {
   array: any[] = [];

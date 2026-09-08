@@ -39,13 +39,14 @@ import { DisplayObjectService } from '../../../object-viewer/models/display-obje
 import { DisplayRule } from '../../../object-viewer/models/display-rule.model';
 import { customTemplate } from '../../archive-unit-template';
 import { ArchiveUnitViewerService, AUMode } from './archive-unit-viewer.service';
+import { ObjectViewerComponent } from '../../../object-viewer/object-viewer.component';
 
 @Component({
   selector: 'vitamui-common-archive-unit-viewer',
   templateUrl: './archive-unit-viewer.component.html',
   styleUrls: ['./archive-unit-viewer.component.scss'],
   providers: [{ provide: DisplayObjectService, useClass: ArchiveUnitViewerService }],
-  standalone: false,
+  imports: [ObjectViewerComponent],
 })
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
   private displayObjectService = inject(DisplayObjectService);

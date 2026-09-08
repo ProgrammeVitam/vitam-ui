@@ -44,8 +44,9 @@ import { HistoryEvent } from '../../../models/logbook/event.interface';
 import { LogbookService } from '../../logbook.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
-import { CollapseModule } from '../../../components/collapse/collapse.module';
+
 import { HistoryEventsComponent } from '../history-events/history-events.component';
+import { CollapseComponent } from '../../../components/collapse/collapse.component';
 
 const EVENT_LIMIT = 100;
 
@@ -53,7 +54,7 @@ const EVENT_LIMIT = 100;
   selector: 'vitamui-common-multi-operation-history-tab',
   templateUrl: './multi-operation-history-tab.component.html',
   styleUrls: ['./multi-operation-history-tab.component.scss'],
-  imports: [MatProgressSpinner, TranslatePipe, CollapseModule, HistoryEventsComponent],
+  imports: [MatProgressSpinner, TranslatePipe, CollapseComponent, HistoryEventsComponent],
 })
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   private authService = inject(AuthService);

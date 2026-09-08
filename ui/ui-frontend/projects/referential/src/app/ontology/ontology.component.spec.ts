@@ -38,18 +38,17 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { InjectorModule, LoggerModule, SchemaService, SecurityService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
 import { OntologyService } from './ontology.service';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-ontology-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class OntologyPreviewStub {
   @Input()
@@ -59,7 +58,7 @@ class OntologyPreviewStub {
 @Component({
   selector: 'app-ontology-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class OntologyListStub {}
 
@@ -69,20 +68,20 @@ describe('OntologyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OntologyComponent, OntologyListStub, OntologyPreviewStub],
       imports: [
         VitamUICommonTestModule,
-        RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        OntologyComponent,
+        OntologyListStub,
+        OntologyPreviewStub,
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: OntologyService, useValue: {} },
-        { provide: SchemaService, useValue: {} },
+        { provide: OntologyService, useValue: { search: () => EMPTY, updated: EMPTY } },
+        { provide: SchemaService, useValue: { getSchemaTreeByCategory: () => EMPTY } },
         {
           provide: SecurityService,
           useValue: {

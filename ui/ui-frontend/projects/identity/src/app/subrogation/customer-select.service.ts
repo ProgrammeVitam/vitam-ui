@@ -39,7 +39,7 @@ import { catchError, map } from 'rxjs/operators';
 import { CriteriaSearchQuery, Customer, MenuOption, Operators } from 'vitamui-library';
 
 import { HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { CustomerApiService } from '../core/api/customer-api.service';
 

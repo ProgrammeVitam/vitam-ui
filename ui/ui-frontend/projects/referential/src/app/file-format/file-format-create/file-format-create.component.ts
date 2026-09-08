@@ -34,27 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import {
   ConfirmDialogService,
+  DialogHeaderComponent,
   FILE_FORMAT_EXTERNAL_PREFIX,
   FileFormat,
+  InputComponent,
   Option,
+  SelectComponent,
   StartupService,
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-file-format-create',
   templateUrl: './file-format-create.component.html',
   styleUrls: ['./file-format-create.component.scss'],
-  standalone: false,
+  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<FileFormatCreateComponent>>(MatDialogRef);

@@ -34,20 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  PageRequest,
+  SidenavPage,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsService } from './projects.service';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { NgClass } from '@angular/common';
+import { ProjectPreviewComponent } from './project-preview/project-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    NgClass,
+    ProjectPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ProjectListComponent,
+    TranslatePipe,
+  ],
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   private dialog = inject(MatDialog);

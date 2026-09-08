@@ -34,10 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { AccessContract, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, AccessContractService } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractService,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -45,7 +62,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-access-contract-list',
   templateUrl: './access-contract-list.component.html',
   styleUrls: ['./access-contract-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
   accessContractService: AccessContractService;
@@ -79,14 +108,14 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
   }
 
   ngOnInit() {
-    this.pending = true;
+    this.pending.set(true);
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     this.accessContractService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
-      .pipe(finalize(() => (this.pending = false)))
+      .pipe(finalize(() => this.pending.set(false)))
       .subscribe({
         next: (data: AccessContract[]) => {
-          this.dataSource = data;
+          this.dataSource.set(data);
         },
         error: (e) => console.error(e),
       });
@@ -117,10 +146,14 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
 
   private replaceUpdatedAccessContract(): void {
     this.accessContractService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAccessContract: AccessContract) => {
-      const index = this.dataSource.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedAccessContract;
-      }
+      this.dataSource.update((contracts) => {
+        const list = [...(contracts ?? [])];
+        const index = list.findIndex((item: AccessContract) => item.id === updatedAccessContract.id);
+        if (index !== -1) {
+          list[index] = updatedAccessContract;
+        }
+        return list;
+      });
     });
   }
 

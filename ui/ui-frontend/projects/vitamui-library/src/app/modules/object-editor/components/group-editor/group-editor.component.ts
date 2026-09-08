@@ -34,22 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Subscription, of } from 'rxjs';
+import { AfterViewInit, Component, inject, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig } from '@angular/material/dialog';
+import { of, Subscription } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { LayoutService } from '../../../object-viewer/services/layout.service';
 import { TypeService } from '../../../object-viewer/services/type.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
-import { Action } from '../../models/edit-object.model';
 import type { EditObject } from '../../models/edit-object.model';
+import { Action } from '../../models/edit-object.model';
+import { AccordionComponent } from '../../../components/accordion/accordion.component';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { VitamuiMenuButtonComponent } from '../../../components/vitamui-menu-button/vitamui-menu-button.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { ListEditorComponent } from '../list-editor/list-editor.component';
+import { PrimitiveEditorComponent } from '../primitive-editor/primitive-editor.component';
+import { DialogHeaderComponent } from '../../../../../lib/components/dialog/dialog-header/dialog-header.component';
+import { EmptyPipe } from '../../../pipes/empty.pipe';
+import { AppendStarPipe } from '../../required.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-group-editor',
   templateUrl: './group-editor.component.html',
   styleUrls: ['./group-editor.component.scss'],
-  standalone: false,
+  imports: [
+    AccordionComponent,
+    NgClass,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    NgTemplateOutlet,
+    ListEditorComponent,
+    PrimitiveEditorComponent,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    EmptyPipe,
+    AppendStarPipe,
+    TranslatePipe,
+  ],
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
   private layoutService = inject(LayoutService);

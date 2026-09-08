@@ -34,9 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, inject } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, ElementRef, forwardRef, inject, Input } from '@angular/core';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from '../editable-field.component';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { LevelInputComponent } from '../level-input/level-input.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { SubLevelPipe } from './sub-level.pipe';
 
 export const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,7 +53,7 @@ export const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
   templateUrl: './editable-level-input.component.html',
   styleUrls: ['./editable-level-input.component.scss'],
   providers: [EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [CdkOverlayOrigin, LevelInputComponent, FormsModule, ReactiveFormsModule, CdkConnectedOverlay, TranslatePipe, SubLevelPipe],
 })
 export class EditableLevelInputComponent extends EditableFieldComponent {
   @Input() prefix: string;

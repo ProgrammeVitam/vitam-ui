@@ -72,7 +72,7 @@ import { CriteriaSearchComponent } from './archive-search-criteria/components/cr
 import { ClassificationTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/classification-tree/classification-tree.component';
 import { FilingHoldingSchemeComponent } from './archive-search-criteria/components/filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './archive-search-criteria/components/filing-holding-scheme/leaves-tree/leaves-tree.component';
-import { ConfirmActionModule } from './archive-search-criteria/components/search-criteria-list/confirm-action/confirm-action.module';
+
 import { SearchCriteriaListComponent } from './archive-search-criteria/components/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search-criteria/components/search-criteria-saver/search-criteria-saver.component';
 
@@ -101,7 +101,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     ArchiveSearchCollectRoutingModule,
     CommonModule,
-    ConfirmActionModule,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -131,8 +130,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
     DiscussionPanelComponent,
     DiscussionIconComponent,
-  ],
-  declarations: [
     ArchivePreviewComponent,
     ArchiveSearchCollectComponent,
     ArchiveSearchRulesFacetsComponent,

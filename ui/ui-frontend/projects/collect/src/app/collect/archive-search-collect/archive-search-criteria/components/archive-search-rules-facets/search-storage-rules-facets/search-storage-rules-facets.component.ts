@@ -36,9 +36,9 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService } from 'vitamui-library';
+import { Component, inject, Input, OnChanges } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 
@@ -46,7 +46,7 @@ import { ArchiveFacetsService } from '../../../services/archive-facets.service';
   selector: 'app-search-storage-rules-facets',
   templateUrl: './search-storage-rules-facets.component.html',
   styleUrls: ['./search-storage-rules-facets.component.scss'],
-  standalone: false,
+  imports: [VitamuiFacetComponent, TranslatePipe],
 })
 export class SearchStorageRulesFacetsComponent implements OnChanges {
   private facetsService = inject(ArchiveFacetsService);

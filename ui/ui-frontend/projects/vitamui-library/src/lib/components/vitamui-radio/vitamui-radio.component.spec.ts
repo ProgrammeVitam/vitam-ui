@@ -46,7 +46,7 @@ describe('VitamUIRadioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [VitamUIRadioComponent],
+      imports: [VitamUIRadioComponent],
       providers: [{ provide: VitamUIRadioGroupService, useValue: { vitamUIRadioGroupMock } }],
     }).compileComponents();
   });

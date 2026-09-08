@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, VitamuiSelectOptions } from 'vitamui-library';
-import type { FileFormat, IngestContract } from 'vitamui-library';
+import { diff, FileFormat, IngestContract, SelectComponent, SlideToggleComponent, VitamuiSelectOptions } from 'vitamui-library';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-format-tab',
   templateUrl: './ingest-contract-format-tab.component.html',
   styleUrls: ['./ingest-contract-format-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
 export class IngestContractFormatTabComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
