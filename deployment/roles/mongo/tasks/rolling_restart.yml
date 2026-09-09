@@ -1,0 +1,56 @@
+---
+
+# One member of the replica set, included once per member from main.yml. The
+# loop is what makes the sequence sequential, and it has to be: "throttle: 1"
+# on a block only serialises each task across the hosts, so every member would
+# be restarted before the first wait had even started. Measured on Ansible
+# 2.9.27, three hosts, a block of restart then sleep 3: with throttle the three
+# sequences all ran between t and t+9.8s, with this loop they ran back to back.
+
+- name: "Check whether {{ mongod_member }} already belongs to an initiated replica set"
+  # db.hello() is answered before authentication, so this holds whether or not
+  # the security block has already been added to mongod.conf. A member with no
+  # setName either belongs to no replica set yet or is down: there is nothing to
+  # wait for after the restart, which is the case on a first installation since
+  # the replica set is only initiated further down the role.
+  command: >-
+    mongosh --host {{ hostvars[mongod_member]['ip_service'] }} --port {{ mongodb.mongod_port }}
+    --quiet --eval 'quit(db.hello().setName ? 0 : 1)'
+  delegate_to: "{{ mongod_member }}"
+  register: mongod_replicaset_initiated
+  failed_when: false
+  changed_when: false
+  when: mongod_member_restart_required | bool
+
+- name: "Restart vitamui-mongod on {{ mongod_member }}"
+  # Restarting the primary needs no explicit rs.stepDown(): a clean SIGTERM
+  # makes mongod hand the primary role over before exiting.
+  systemd:
+    name: vitamui-mongod
+    state: restarted
+    daemon_reload: yes
+  delegate_to: "{{ mongod_member }}"
+  when: mongod_member_restart_required | bool
+
+- name: "Wait for the vitamui-mongod port to be open on {{ mongod_member }}"
+  wait_for:
+    host: "{{ hostvars[mongod_member]['ip_service'] }}"
+    port: "{{ mongodb.mongod_port }}"
+    timeout: "{{ vitamui_defaults.services.start_timeout }}"
+  delegate_to: "{{ mongod_member }}"
+  when: mongod_member_restart_required | bool
+
+- name: "Wait for {{ mongod_member }} to be back in the replica set"
+  command: >-
+    mongosh --host {{ hostvars[mongod_member]['ip_service'] }} --port {{ mongodb.mongod_port }}
+    --quiet --eval 'const member = db.hello();
+    quit(member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
+  delegate_to: "{{ mongod_member }}"
+  register: mongod_member_state
+  until: mongod_member_state.rc == 0
+  retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
+  delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
+  changed_when: false
+  when:
+    - mongod_member_restart_required | bool
+    - mongod_replicaset_initiated.rc | default(1) == 0

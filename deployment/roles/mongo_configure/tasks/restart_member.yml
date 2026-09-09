@@ -1,0 +1,34 @@
+---
+
+# One member of the replica set, included once per member from main.yml, for the
+# same reason as roles/mongo/tasks/rolling_restart.yml: only a loop sequences a
+# whole sequence of tasks per host, "throttle: 1" on a block does not.
+
+- name: "Restart vitamui-mongod on {{ mongod_member }}"
+  service:
+    name: vitamui-mongod
+    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
+    state: restarted
+  delegate_to: "{{ mongod_member }}"
+
+# Make sure the service is open (mongod listening on 27017)
+- name: "Wait for the service port {{ mongodb.mongod_port }} to be open on {{ mongod_member }}"
+  wait_for:
+    host: "{{ hostvars[mongod_member]['ip_service'] }}"
+    port: "{{ mongodb.mongod_port }}"
+    timeout: "{{ vitamui_defaults.services.start_timeout }}"
+  delegate_to: "{{ mongod_member }}"
+
+# db.hello() is answered before authentication, which matters here since the
+# restart is precisely what enables it.
+- name: "Wait for {{ mongod_member }} to be back in the replica set"
+  command: >-
+    mongosh --host {{ hostvars[mongod_member]['ip_service'] }} --port {{ mongodb.mongod_port }}
+    --quiet --eval 'const member = db.hello();
+    quit(member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
+  delegate_to: "{{ mongod_member }}"
+  register: mongod_member_state
+  until: mongod_member_state.rc == 0
+  retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
+  delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
+  changed_when: false

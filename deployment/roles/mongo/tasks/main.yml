@@ -181,10 +181,9 @@
 # mongod must never be restarted on every member at once: with the default
 # parallelism (forks = 20 in ansible.cfg) the whole replica set goes down within
 # the same second and the quorum is lost, where a member by member restart is
-# just a failover. "throttle: 1" keeps the sequence below exclusive to a single
-# host, so the next member is only taken down once this one is serving again.
-# Restarting the primary needs no explicit rs.stepDown(): a clean SIGTERM makes
-# mongod hand the primary role over before exiting.
+# just a failover. The loop below is what serialises it, driven from a single
+# host so that each member is taken down, waited for, and only then followed by
+# the next one.
 
 - name: Check whether vitamui-mongod must be restarted
   set_fact:
@@ -197,47 +196,14 @@
   tags: update_mongodb_configuration
 
 - name: Restart vitamui-mongod, one replica set member at a time
-  when: mongod_restart_required | bool
-  throttle: 1
+  include_tasks: rolling_restart.yml
+  vars:
+    mongod_member_restart_required: "{{ hostvars[mongod_member]['mongod_restart_required'] | default(false) | bool }}"
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  loop_control:
+    loop_var: mongod_member
+  run_once: true
   tags: update_mongodb_configuration
-  block:
-
-    # db.hello() is answered before authentication, so this holds whether or not
-    # the security block has already been added to mongod.conf. A member with no
-    # setName either belongs to no replica set yet or is down: there is nothing
-    # to wait for after the restart, which is the case on a first installation
-    # since the replica set is only initiated further down this role.
-    - name: Check whether this member already belongs to an initiated replica set
-      command: >-
-        mongosh --host {{ ip_service }} --port {{ mongodb.mongod_port }}
-        --quiet --eval 'quit(db.hello().setName ? 0 : 1)'
-      register: mongod_replicaset_initiated
-      failed_when: false
-      changed_when: false
-
-    - name: Restart vitamui-mongod
-      systemd:
-        name: vitamui-mongod
-        state: restarted
-        daemon_reload: yes
-
-    - name: Wait for the vitamui-mongod port to be open
-      wait_for:
-        host: "{{ ip_service }}"
-        port: "{{ mongodb.mongod_port }}"
-        timeout: "{{ vitamui_defaults.services.start_timeout }}"
-
-    - name: Wait for the member to be back in the replica set
-      command: >-
-        mongosh --host {{ ip_service }} --port {{ mongodb.mongod_port }}
-        --quiet --eval 'const member = db.hello();
-        quit(member.isWritablePrimary || member.secondary || member.arbiterOnly ? 0 : 1)'
-      register: mongod_member_state
-      until: mongod_member_state.rc == 0
-      retries: "{{ vitamui_defaults.services.status_retries_number | default(60) }}"
-      delay: "{{ vitamui_defaults.services.status_retries_delay | default(5) }}"
-      changed_when: false
-      when: mongod_replicaset_initiated.rc == 0
 
 - name: Ensure vitamui-mongod is started
   service:
