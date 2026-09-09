@@ -65,7 +65,6 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.web.support.WebUtils;
-import org.apereo.services.persondir.IPersonAttributeDao;
 import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.jee.context.JEEContext;
 import org.springframework.webflow.execution.RequestContextHolder;
@@ -442,8 +441,4 @@ public class UserPrincipalResolver implements PrincipalResolver {
         );
     }
 
-    @Override
-    public IPersonAttributeDao getAttributeRepository() {
-        return null;
-    }
 }

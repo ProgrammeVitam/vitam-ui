@@ -56,7 +56,7 @@ import org.apereo.cas.authentication.DefaultAuthentication;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
-import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.junit.Before;
@@ -90,6 +90,8 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -140,8 +142,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         );
         final var utils = new Utils(null, 0, null, null, "");
         service = new IamPasswordManagementService(
-            passwordManagementProperties,
-            null,
+            casProperties,
             null,
             null,
             casApi,
@@ -346,6 +347,19 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         assertThatThrownBy(() -> service.findEmail(getPasswordManagementQuery())).isInstanceOf(
             PreventedException.class
         );
+    }
+
+    /**
+     * CAS 7.3 calls findEmail from PasswordChangeAction with a query built from the username alone, to send a
+     * confirmation email that did not exist in 7.0. Without a customer id the user cannot be looked up, and
+     * letting that fail turned a successful password change into "password could not be changed" on screen.
+     */
+    @Test
+    public void testFindEmailWithoutCustomerIdReturnsNull() {
+        final var queryWithoutRecord = PasswordManagementQuery.builder().username(EMAIL).build();
+
+        assertNull(service.findEmail(queryWithoutRecord));
+        verify(casApi, never()).getUser(any(), any(), any(), any(), any());
     }
 
     @Test

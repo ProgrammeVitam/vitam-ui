@@ -19,12 +19,11 @@
         <maven.compiler.release>21</maven.compiler.release>
 
         <!-- Spring & Spring Cloud Versions -->
-        <spring.boot.version>3.2.1</spring.boot.version>
+        <spring.boot.version>3.5.6</spring.boot.version>
 
         <!-- CAS & Security Versions -->
-        <cas.version>7.0.10.1</cas.version>
+        <cas.version>7.3.8</cas.version>
         <pac4j.version>6.3.3</pac4j.version>
-        <spring-webmvc-pac4j.version>6.0.3</spring-webmvc-pac4j.version>
 
         <!-- Logger & Utils Versions -->
         <slf4j.version>2.0.9</slf4j.version>
@@ -37,14 +36,12 @@
         <reactor.version>3.6.2</reactor.version>
         <micrometer.version>1.12.1</micrometer.version>
         <swagger.version>2.2.2</swagger.version>
-        <font-awesome.version>6.5.1</font-awesome.version>
         <jquery-ui.version>1.14.2</jquery-ui.version>
-        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
         <commons-io.version>2.15.1</commons-io.version>
         <inspektr.version>1.8.20.GA</inspektr.version>
 
         <!-- Test Versions -->
-        <junit-vintage-engine.version>5.7.2</junit-vintage-engine.version>
+        <junit.version>5.12.2</junit.version>
         <mockito.version>5.2.0</mockito.version>
         <assertj-core.version>3.11.1</assertj-core.version>
 
@@ -65,6 +62,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--
+                Declared first so it wins: the root parent (Spring Boot 4) manages junit-platform at 6.x while this
+                module pins Spring Boot 3.5, which manages junit at 5.12. Mixing the two breaks test discovery.
+            -->
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- CAS BOM -->
             <dependency>
                 <groupId>org.apereo.cas</groupId>
@@ -97,22 +106,12 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- HTTP Client 5 (External) -->
-            <dependency>
-                <groupId>org.apache.httpcomponents.client5</groupId>
-                <artifactId>httpclient5</artifactId>
-                <version>5.2.3</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents.core5</groupId>
-                <artifactId>httpcore5</artifactId>
-                <version>5.2.4</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents.core5</groupId>
-                <artifactId>httpcore5-h2</artifactId>
-                <version>5.2.4</version>
-            </dependency>
+            <!--
+                HTTP Client 5, hibernate-validator and font-awesome used to be pinned here. The CAS overlay WAR
+                ships its own, newer copies, and the war plugin keeps both files: two versions of the same library
+                then sit on the runtime classpath. Let the CAS BOM decide so the names collide and only one jar
+                survives.
+            -->
         </dependencies>
     </dependencyManagement>
 
@@ -144,6 +143,15 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+                <!--
+                    OpenSAML 5.2 (CAS 7.3) configures its parser pool with jdk.xml.maxElementDepth, which the
+                    Xerces implementation pulled in transitively does not recognise, and SAML2Client then fails
+                    to initialise. The JDK parser supports it, so keep Xerces off this classpath.
+                -->
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -349,10 +357,11 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apereo.cas</groupId>
-            <artifactId>cas-server-support-oauth-core</artifactId>
-        </dependency>
+        <!--
+            cas-server-support-oauth-core was removed in CAS 7.3: its only class,
+            CasOAuth20ProtocolTicketCatalogConfiguration, was folded into CasOAuth20Configuration,
+            which cas-server-support-oauth already brings in.
+        -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-oauth-core-api</artifactId>
@@ -503,11 +512,16 @@
         <!-- ========================================================== -->
         <!-- Security Libraries (pac4j, etc.)                           -->
         <!-- ========================================================== -->
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-javaee</artifactId>
-            <version>${pac4j.version}</version>
-        </dependency>
+        <!--
+            pac4j-javaee is deliberately absent. It carries the same class as pac4j-jakartaee,
+            org.pac4j.jee.context.JEEContext, built against javax.servlet instead of jakarta.servlet. Both jars
+            ended up in the WAR, the javax one won at class loading, and any request reaching the OIDC throttling
+            filter died on:
+                NoSuchMethodError: org.pac4j.jee.context.JEEContext.<init>(
+                    jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
+            The code here builds a JEEContext from CAS's jakarta request and response, so it compiles against
+            pac4j-jakartaee, which CAS brings in — the two copies simply disagreed at runtime.
+        -->
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-http</artifactId>
@@ -543,11 +557,11 @@
             <artifactId>pac4j-oidc</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.pac4j</groupId>
-            <artifactId>spring-webmvc-pac4j</artifactId>
-            <version>${spring-webmvc-pac4j.version}</version>
-        </dependency>
+        <!--
+            spring-webmvc-pac4j is deliberately absent too. Nothing here imports org.pac4j.springframework, CAS 7.3
+            does not ship it in its overlay, and it is a javax-era artifact whose only effect was to drag
+            pac4j-javaee 5.4.3 onto a Jakarta classpath.
+        -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -655,7 +669,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -678,7 +691,6 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>${font-awesome.version}</version>
         </dependency>
 
         <!-- ========================================================== -->
@@ -821,26 +833,19 @@
                                 <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/commons-io-*.jar</exclude>
                                 <exclude>WEB-INF/lib/jackson-*.jar</exclude>
-                                <exclude>WEB-INF/lib/jcl-over-slf4j-*.jar</exclude>
-                                <exclude>WEB-INF/lib/json-20160810.jar</exclude>
                                 <exclude>WEB-INF/lib/jul-to-slf4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-core-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jcl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jul-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-layout-template-json-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-slf4j-impl-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-slf4j18-impl-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-web-*.jar</exclude>
                                 <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
                                 <exclude>WEB-INF/lib/pac4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-expression-*.jar</exclude>
-                                <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-slf4j2-impl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-jakarta-web-*.jar</exclude>
-                                <exclude>WEB-INF/lib/log4j-spring-boot-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-spring-cloud-config-client-*.jar</exclude>
                                 <exclude>WEB-INF/lib/httpclient5-*.jar</exclude>
                                 <exclude>WEB-INF/lib/httpclient-*.jar</exclude>
@@ -848,36 +853,14 @@
                             </excludes>
                         </overlay>
                     </overlays>
-                    <packagingExcludes>
-                        WEB-INF/lib/slf4j-simple-1.7.31.jar,
-                        WEB-INF/lib/log4j-api-*.jar,
-                        WEB-INF/lib/log4j-jul-*.jar,
-                        WEB-INF/lib/log4j-core-*.jar,
-                        WEB-INF/lib/log4j-jcl-*.jar,
-                        WEB-INF/lib/log4j-web-*.jar,
-                        WEB-INF/lib/log4j-slf4j-impl-*.jar,
-                        WEB-INF/lib/log4j-slf4j18-impl-*.jar,
-                        WEB-INF/lib/log4j-layout-template-json-*.jar,
-                        WEB-INF/lib/spring-boot-starter-log4j2-*.jar,
-                        WEB-INF/lib/slf4j-api-1.8.0-beta4.jar,
-                        WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar,
-                        WEB-INF/lib/jul-to-slf4j-1.8.0-beta4.jar,
-                        WEB-INF/lib/jackson-core-2.8.10.jar,
-                        WEB-INF/lib/jackson-databind-2.8.10.jar,
-                        WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar,
-                        WEB-INF/lib/cas-server-core-logging-api-*.jar,
-                        WEB-INF/lib/slf4j-api-*.jar,
-                        WEB-INF/lib/oauth2-oidc-sdk-*.jar,
-                        WEB-INF/lib/pac4j-*.jar,
-                        WEB-INF/lib/spring-webmvc-pac4j-*.jar,
-                        WEB-INF/lib/log4j-slf4j2-impl-*.jar,
-                        WEB-INF/lib/log4j-jakarta-web-*.jar,
-                        WEB-INF/lib/log4j-spring-boot-*.jar,
-                        WEB-INF/lib/log4j-spring-cloud-config-client-*.jar,
-                        WEB-INF/lib/httpclient5-*.jar,
-                        WEB-INF/lib/httpclient-*.jar,
-                        WEB-INF/lib/httpcore-*.jar
-                    </packagingExcludes>
+                    <!--
+                        There used to be a packagingExcludes block here, listing 28 patterns. It never applied:
+                        the entries were written one per line, and the plugin keeps the surrounding whitespace when
+                        it splits the value on commas, so none of them ever matched. pac4j and slf4j-api are proof —
+                        both are listed there and both ship in the WAR, and the application needs them. Repairing
+                        the block would strip required jars, so it is removed rather than fixed. The overlay
+                        excludes above are the ones that actually do the work.
+                    -->
                 </configuration>
             </plugin>
 
@@ -896,7 +879,7 @@
                     </excludes>
                     <arguments>
                         <argument>
-                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
+                            --spring.config.additional-location=file:${basedir}/src/main/config/application-dev.yml
                         </argument>
                     </arguments>
                 </configuration>

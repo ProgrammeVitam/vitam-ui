@@ -57,7 +57,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
-import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.InvalidPasswordException;
 import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordHistoryService;
@@ -97,9 +97,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     private final PasswordValidator passwordValidator;
 
     public IamPasswordManagementService(
-        final PasswordManagementProperties passwordManagementProperties,
+        final CasConfigurationProperties casProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
-        final String issuer,
         final PasswordHistoryService passwordHistoryService,
         final CasApi casApi,
         final ProvidersService providersService,
@@ -107,7 +106,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final Utils utils,
         final PasswordValidator passwordValidator
     ) {
-        super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
+        super(casProperties, cipherExecutor, passwordHistoryService);
         this.casApi = casApi;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -270,7 +269,21 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     @Override
     public String findEmail(final PasswordManagementQuery query) {
         final var username = query.getUsername().toLowerCase().trim();
-        final String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
+        final var record = query.getRecord();
+        final String customerId = record == null
+            ? null
+            : (String) record.getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
+
+        // CAS 7.3 calls this a second time, from PasswordChangeAction, to send a password reset confirmation
+        // email that did not exist before — cas.authn.pm.reset.confirmation-mail is new in 7.3. It builds the
+        // query from the username alone, with no record, so there is no customer id to identify the user by, and
+        // the lookup below would fail. The failure surfaced well after the password had already been changed:
+        // PasswordChangeAction catches it and shows "password could not be changed" on a change that succeeded.
+        // Returning null leaves the email unresolved, which is how CAS skips that confirmation message.
+        if (StringUtils.isBlank(customerId)) {
+            LOGGER.debug("No customer id in the query for {}: no email to resolve", username);
+            return null;
+        }
 
         try {
             UserDto user = findUserByEmailAndCustomerId(username, customerId);
@@ -298,7 +311,14 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordAlreadyUsedException() {
-            super(".alreadyUsed", null, null);
+            super(null, null);
+        }
+
+        // CAS 7.3 hardcodes the exception code, but PasswordChangeAction still appends it to
+        // "pm.validationFailure" to build the message key, so the suffix has to come from here instead.
+        @Override
+        public String getCode() {
+            return ".alreadyUsed";
         }
 
         @Override
@@ -312,7 +332,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187076L;
 
         public PasswordNotMatchRegexException() {
-            super(".invalidPassword", null, null);
+            super(null, null);
+        }
+
+        @Override
+        public String getCode() {
+            return ".invalidPassword";
         }
 
         @Override
@@ -326,7 +351,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187076L;
 
         public PasswordConfirmException() {
-            super(".pwdNotConfirm", null, null);
+            super(null, null);
+        }
+
+        @Override
+        public String getCode() {
+            return ".pwdNotConfirm";
         }
 
         @Override
@@ -340,7 +370,12 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordContainsUserDictionaryException(String message) {
-            super(".invalidPwdDictionary", message, null);
+            super(message, null);
+        }
+
+        @Override
+        public String getCode() {
+            return ".invalidPwdDictionary";
         }
 
         @Override

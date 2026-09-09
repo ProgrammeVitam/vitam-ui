@@ -68,7 +68,7 @@ public final class LoginPwdAuthenticationHandlerTest {
     @Before
     public void setUp() {
         casApi = mock(CasApi.class);
-        handler = new LoginPwdAuthenticationHandler(null, new DefaultPrincipalFactory(), casApi, IP_HEADER_NAME);
+        handler = new LoginPwdAuthenticationHandler(new DefaultPrincipalFactory(), casApi, IP_HEADER_NAME);
         credential = new UsernamePasswordCredential("ignored", PASSWORD);
 
         RequestContext requestContext = mock(RequestContext.class);

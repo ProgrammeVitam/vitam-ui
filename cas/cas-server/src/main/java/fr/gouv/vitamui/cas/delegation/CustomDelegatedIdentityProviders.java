@@ -31,25 +31,33 @@
 package fr.gouv.vitamui.cas.delegation;
 
 import lombok.RequiredArgsConstructor;
+import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.pac4j.core.client.Client;
+import org.pac4j.core.context.WebContext;
 
 import java.util.List;
 import java.util.Optional;
 
-/** Wrapper of the ProvidersService for the CAS DelegatedIdentityProviders */
+/**
+ * Wrapper of the ProvidersService for the CAS DelegatedIdentityProviders.
+ *
+ * <p>CAS 7.3 hands a Service and a WebContext to both lookups so that providers can be filtered per service. We
+ * keep returning every configured provider, which is what this wrapper did before, since VitamUI selects the
+ * provider from the user's organisation rather than from the requested service.
+ */
 @RequiredArgsConstructor
 public class CustomDelegatedIdentityProviders implements DelegatedIdentityProviders {
 
     private final ProvidersService providerService;
 
     @Override
-    public List<Client> findAllClients() {
+    public List<? extends Client> findAllClients(final Service service, final WebContext webContext) {
         return providerService.getClients().findAllClients();
     }
 
     @Override
-    public Optional<Client> findClient(final String name) {
+    public Optional<? extends Client> findClient(final String name, final WebContext webContext) {
         return providerService.getClients().findClient(name);
     }
 }

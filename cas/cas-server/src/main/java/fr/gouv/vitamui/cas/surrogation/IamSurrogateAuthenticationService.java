@@ -33,7 +33,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.surrogate.BaseSurrogateAuthenticationService;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.services.RegisteredServicePrincipalAccessStrategyEnforcer;
 import org.apereo.cas.services.ServicesManager;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.webflow.execution.RequestContextHolder;
 
@@ -48,8 +51,14 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
 
     private final CasApi casApi;
 
-    public IamSurrogateAuthenticationService(final CasApi casApi, final ServicesManager servicesManager) {
-        super(servicesManager);
+    public IamSurrogateAuthenticationService(
+        final CasApi casApi,
+        final ServicesManager servicesManager,
+        final CasConfigurationProperties casProperties,
+        final RegisteredServicePrincipalAccessStrategyEnforcer principalAccessStrategyEnforcer,
+        final ConfigurableApplicationContext applicationContext
+    ) {
+        super(servicesManager, casProperties, principalAccessStrategyEnforcer, applicationContext);
         this.casApi = casApi;
     }
 
@@ -57,7 +66,7 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
     public boolean canImpersonateInternal(
         final String surrogate,
         final Principal principal,
-        final Optional<Service> service
+        final Optional<? extends Service> service
     ) {
         final var requestContext = RequestContextHolder.getRequestContext();
         final var flowScope = requestContext.getFlowScope();
@@ -104,12 +113,19 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
     }
 
     @Override
-    public boolean isWildcardedAccount(final String surrogate, final Principal principal) {
+    public boolean isWildcardedAccount(
+        final String surrogate,
+        final Principal principal,
+        final Optional<? extends Service> service
+    ) {
         return false;
     }
 
     @Override
-    public Collection<String> getImpersonationAccounts(String username) {
+    public Collection<String> getImpersonationAccounts(
+        final String username,
+        final Optional<? extends Service> service
+    ) {
         throw new UnsupportedOperationException("Not allowed to choose the surrogate");
     }
 }

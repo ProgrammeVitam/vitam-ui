@@ -96,7 +96,7 @@ export class PreservationDialogComponent {
 
   private scenarios = toSignal(this.preservationScenariosService.list(), { initialValue: [] as PreservationScenario[] });
   scenarioOptions = computed<VitamuiSelectOptions>(() => ({
-    options: this.scenarios().map((scenario) => ({ key: scenario.Identifier, label: scenario.Name })),
+    options: this.scenarios().map((scenario) => ({ key: scenario.Identifier, label: `${scenario.Identifier} - ${scenario.Name}` })),
   }));
 
   objectGroupsCount = toSignal(

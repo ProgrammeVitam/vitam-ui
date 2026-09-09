@@ -16,7 +16,7 @@
           <button class="btn primary" (click)="openCreateAuditDialog()">
             <span>{{ 'AUDIT.HOME.START_AUDIT' | translate }}</span>
           </button>
-          <vitamui-menu-button icon="vitamui-icon-more-horiz">
+          <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
             <button mat-menu-item (click)="openCreateChainAuditDialog()">
               {{ 'AUDIT.HOME.SECONDARY_ACTIONS.START_CHAIN_AUDIT' | translate }}
             </button>
