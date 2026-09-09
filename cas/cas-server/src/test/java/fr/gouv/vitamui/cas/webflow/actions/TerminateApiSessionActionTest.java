@@ -173,13 +173,13 @@ public final class TerminateApiSessionActionTest extends BaseWebflowActionTest {
                 mock(CasCookieBuilder.class),
                 casProperties.getLogout(),
                 mock(LogoutManager.class),
-                mock(ConfigurableApplicationContext.class),
                 utils,
                 casApi,
                 mock(ServicesManager.class),
                 casProperties,
                 mock(Action.class),
-                mock(TicketRegistry.class)
+                mock(TicketRegistry.class),
+                mock(ServiceFactory.class)
             );
         }
     }

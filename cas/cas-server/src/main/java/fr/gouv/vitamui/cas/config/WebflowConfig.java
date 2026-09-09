@@ -149,8 +149,9 @@ public class WebflowConfig {
         );
     }
 
-    // Pas un bean : consommé uniquement en direct par sendPasswordResetInstructionsAction.
-    private DefaultTransientSessionTicketFactory pmTicketFactory(final CasConfigurationProperties casProperties) {
+    // Bean requis par CAS 7.3 pour le flux de réinitialisation de mot de passe.
+    @Bean
+    public DefaultTransientSessionTicketFactory pmTicketFactory(final CasConfigurationProperties casProperties) {
         return new DefaultTransientSessionTicketFactory(
             new PmTransientSessionTicketExpirationPolicyBuilder(casProperties)
         );

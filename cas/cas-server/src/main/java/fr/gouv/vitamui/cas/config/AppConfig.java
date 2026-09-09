@@ -87,6 +87,7 @@ import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
 import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
+import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
@@ -102,6 +103,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;

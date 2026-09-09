@@ -86,7 +86,7 @@ public final class IamSurrogateAuthenticationServiceTest {
     public void testGetAccounts() {
         givenSubrogationInRequestContext();
 
-        service.getImpersonationAccounts(SU_EMAIL);
+        service.getImpersonationAccounts(SU_EMAIL, Optional.empty());
     }
 
     private Principal principal() {

@@ -128,8 +128,8 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderHelper = mock(IdentityProviderHelper.class);
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
-        PasswordManagementProperties passwordManagementProperties = new PasswordManagementProperties();
-        passwordManagementProperties.getCore().setPasswordPolicyPattern(encode(policyPattern));
+        CasConfigurationProperties casProperties = new CasConfigurationProperties();
+        casProperties.getAuthn().getPm().getCore().setPasswordPolicyPattern(encode(policyPattern));
         when(
             identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(EMAIL), eq(CUSTOMER_ID))
         ).thenReturn(Optional.of(identityProviderDto));
