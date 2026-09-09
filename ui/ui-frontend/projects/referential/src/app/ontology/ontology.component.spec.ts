@@ -40,7 +40,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+<<<<<<< HEAD
 import { InjectorModule, LoggerModule, SecurityService, SchemaService } from 'vitamui-library';
+=======
+import { InjectorModule, LoggerModule, SchemaService, SecurityService, StartupService } from 'vitamui-library';
+>>>>>>> c393f07fc (Bug #14841: [Ontology] The ontology import action is enabled for all tenants instead of being restricted to Tenant 1.)
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
@@ -86,6 +90,7 @@ describe('OntologyComponent', () => {
       providers: [
         { provide: OntologyService, useValue: {} },
         { provide: SchemaService, useValue: {} },
+        { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
         {
           provide: SecurityService,
           useValue: {
