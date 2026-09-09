@@ -131,6 +131,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   errorMessage: string;
   schemaOptions: ItemNode<SchemaElement>[];
   filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
+  jsltFileControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   zipFileStatus$: Observable<ZipFileStatus>;
   units: Unit[];
   compressedZip: Blob;
@@ -293,6 +294,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         this.logger.error('Error reading JSLT file:', error);
         this.isLoading = false;
       }
+    } else {
+      this.projectForm.get('transformationRules').setValue(null);
     }
   }
 
