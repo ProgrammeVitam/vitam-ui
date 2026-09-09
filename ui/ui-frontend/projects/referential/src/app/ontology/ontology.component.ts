@@ -43,12 +43,16 @@ import {
   ApplicationId,
   GlobalEventService,
   SidenavPage,
+<<<<<<< HEAD
   SecurityService,
   Role,
   SchemaService,
   Ontology,
   SchemaElement,
   FileTypes,
+=======
+  StartupService,
+>>>>>>> c393f07fc (Bug #14841: [Ontology] The ontology import action is enabled for all tenants instead of being restricted to Tenant 1.)
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -64,12 +68,24 @@ import { OntologyService } from './ontology.service';
   standalone: false,
 })
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
+<<<<<<< HEAD
+=======
+  dialog = inject(MatDialog);
+  route: ActivatedRoute;
+  private translateService = inject(TranslateService);
+  private securityService = inject(SecurityService);
+  private ontologyService = inject(OntologyService);
+  private schemaService = inject(SchemaService);
+  private startupService = inject(StartupService);
+
+>>>>>>> c393f07fc (Bug #14841: [Ontology] The ontology import action is enabled for all tenants instead of being restricted to Tenant 1.)
   private previousTab: string | null = null;
   private subscription: Subscription;
   @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
   search = '';
   filters: string;
   tenantId: number;
+  vitamAdminTenant: number;
   canImportOntology: boolean;
   canImportSchema: boolean;
   canCreateVocabulary: boolean;
@@ -87,8 +103,8 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   }
 
   ngOnInit(): void {
+    this.vitamAdminTenant = +this.startupService.getConfigStringValue('VITAM_ADMIN_TENANT');
     this.initializeTenantId();
-    this.initializePermissions();
     this.subscribeToTenantChanges();
 
     this.subscription = this.route.queryParams.subscribe((params) => {
@@ -102,7 +118,12 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
 
   private initializeTenantId(): void {
     this.route.params.subscribe((params) => {
+<<<<<<< HEAD
       this.tenantId = +params.tenantIdentifier;
+=======
+      this.tenantId = +params['tenantIdentifier'];
+      this.initializePermissions();
+>>>>>>> c393f07fc (Bug #14841: [Ontology] The ontology import action is enabled for all tenants instead of being restricted to Tenant 1.)
     });
   }
 
@@ -112,7 +133,9 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
 
   private initializePermissions(): void {
     this.canImportSchema = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_SCHEMAS, this.tenantId);
-    this.canImportOntology = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_ONTOLOGIES, this.tenantId);
+    this.canImportOntology =
+      this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_ONTOLOGIES, this.tenantId) &&
+      this.tenantId === this.vitamAdminTenant;
     this.canCreateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_CREATE_ONTOLOGIES, this.tenantId);
   }
 
