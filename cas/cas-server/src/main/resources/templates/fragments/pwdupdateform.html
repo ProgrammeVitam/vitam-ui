@@ -17,6 +17,26 @@
         th:object="${password}">
     <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
     <input type="hidden" name="_eventId" value="submit"/>
+    <!--
+      Since CAS 7.3, PasswordChangeAction rejects the change when the login flow submits no current password, or
+      one that does not match the credential, before the password management service is ever called. The field is
+      shown under the same condition CAS applies, so the reset flow, where there is no credential to compare
+      against, is left untouched.
+    -->
+    <div class="form-line" th:if="${activeFlowId} == 'login'">
+      <input required
+             id="currentPassword"
+             type="password"
+             name="currentPassword"
+             class="required"
+             size="25"
+             tabindex="2"
+             autocomplete="off"
+             th:field="*{currentPassword}"/>
+      <label for="currentPassword" th:text="#{screen.pm.currentpsw}">
+        Mot de passe actuel *
+      </label>
+    </div>
     <div class="form-line">
       <input required
              id="password"

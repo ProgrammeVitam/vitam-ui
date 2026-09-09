@@ -67,9 +67,6 @@ public final class CasBeans {
     public static final String PROTOCOL_TICKET_CIPHER_EXECUTOR = "protocolTicketCipherExecutor";
     public static final String PASSWORD_MANAGEMENT_CIPHER_EXECUTOR = "passwordManagementCipherExecutor";
 
-    // === Spring / REST ===
-    public static final String REST_CLIENT_CUSTOMIZER = "restClientCustomizer";
-
     // === Spring / Web ===
     public static final String MESSAGE_SOURCE = "messageSource";
     public static final String CORS_HTTP_WEB_REQUEST_CONFIGURATION_SOURCE = "corsHttpWebRequestConfigurationSource";
@@ -113,10 +110,12 @@ public final class CasBeans {
         "registeredServiceAuthenticationPolicyWebflowEventResolver";
 
     // === Webflow / Definitions ===
-    public static final String LOGIN_FLOW_DEFINITION_REGISTRY =
-        CasWebflowConstants.BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY;
-    public static final String LOGOUT_FLOW_DEFINITION_REGISTRY =
-        CasWebflowConstants.BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY;
+    /**
+     * CAS 7.3 merged the separate login and logout flow definition registries into a single registry, so the
+     * former BEAN_NAME_LOGIN_FLOW_DEFINITION_REGISTRY and BEAN_NAME_LOGOUT_FLOW_DEFINITION_REGISTRY are gone.
+     */
+    public static final String FLOW_DEFINITION_REGISTRY = CasWebflowConstants.BEAN_NAME_FLOW_DEFINITION_REGISTRY;
+
     public static final String FLOW_BUILDER_SERVICES = CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES;
     public static final String MFA_SIMPLE_AUTHENTICATOR_FLOW_REGISTRY = "mfaSimpleAuthenticatorFlowRegistry";
 

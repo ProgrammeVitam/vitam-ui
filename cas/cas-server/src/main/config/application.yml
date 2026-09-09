@@ -35,6 +35,11 @@ cas:
         crypto.enabled: true
         security-questions-enabled: false
         include-server-ip-address: false
+        # CAS 7.3 implements this property, which 7.0 declared but ignored: InitPasswordResetAction now sends the
+        # user through MFA before letting them reset, picking any registered provider rather than honouring the
+        # computedOtp trigger. With the simple SMS provider registered, every reset demanded an SMS, and accounts
+        # without a mobile number — which VitamUI allows — could no longer reset at all.
+        multifactor-authentication-enabled: false
     oauth:
       access-token:
         max-time-to-live-in-seconds: 28800 # 8 hours in seconds

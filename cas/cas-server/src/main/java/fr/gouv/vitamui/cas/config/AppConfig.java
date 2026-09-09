@@ -63,6 +63,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
+import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
 import org.apereo.cas.authentication.AuthenticationSystemSupport;
 import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
@@ -84,6 +85,7 @@ import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.services.RegisteredServicePrincipalAccessStrategyEnforcer;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
@@ -114,6 +116,8 @@ import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.autoconfigure.mongo.MongoClientSettingsBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestClientCustomizer;
@@ -122,22 +126,31 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.Ordered;
 import org.springframework.data.mongodb.observability.ContextProviderFactory;
 import org.springframework.data.mongodb.observability.MongoObservationCommandListener;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_EXTERNAL;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
+import static fr.gouv.vitamui.commons.api.CommonConstants.X_XSRF_TOKEN_HEADER;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -145,7 +158,13 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(
-    { CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class }
+    {
+        CasConfigurationProperties.class,
+        IamClientConfigurationProperties.class,
+        PasswordConfiguration.class,
+        // MailSenderAutoConfiguration normally registers these; CAS 7.3 excludes it, see javaMailSender below.
+        MailProperties.class,
+    }
 )
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
@@ -158,6 +177,36 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return null;
     }
 
+    /**
+     * CAS 7.3 added MailSenderAutoConfiguration to the list its CasWebApplication excludes, so Spring Boot no
+     * longer builds a JavaMailSender from spring.mail.* and the context fails on Utils, which needs one. This
+     * rebuilds it the way MailSenderPropertiesConfiguration used to.
+     *
+     * <p>Utils tolerates a null sender and simply logs, so leaving the dependency optional would have turned every
+     * password reset and MFA message into a silent no-op instead of a startup failure.
+     */
+    @Bean
+    @ConditionalOnMissingBean(JavaMailSender.class)
+    public JavaMailSender javaMailSender(final MailProperties mailProperties) {
+        final var sender = new JavaMailSenderImpl();
+        sender.setHost(mailProperties.getHost());
+        if (mailProperties.getPort() != null) {
+            sender.setPort(mailProperties.getPort());
+        }
+        sender.setUsername(mailProperties.getUsername());
+        sender.setPassword(mailProperties.getPassword());
+        sender.setProtocol(mailProperties.getProtocol());
+        if (mailProperties.getDefaultEncoding() != null) {
+            sender.setDefaultEncoding(mailProperties.getDefaultEncoding().name());
+        }
+        if (!mailProperties.getProperties().isEmpty()) {
+            final var javaMailProperties = new Properties();
+            javaMailProperties.putAll(mailProperties.getProperties());
+            sender.setJavaMailProperties(javaMailProperties);
+        }
+        return sender;
+    }
+
     @Bean
     public PasswordValidator passwordValidator() {
         return new PasswordValidator();
@@ -167,10 +216,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public LoginPwdAuthenticationHandler loginPwdAuthenticationHandler(
         final CasApi casApi,
         @Value("${ip.header}") final String ipHeaderName,
-        @Qualifier(CasBeans.PRINCIPAL_FACTORY) final PrincipalFactory principalFactory,
-        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
+        @Qualifier(CasBeans.PRINCIPAL_FACTORY) final PrincipalFactory principalFactory
     ) {
-        return new LoginPwdAuthenticationHandler(servicesManager, principalFactory, casApi, ipHeaderName);
+        return new LoginPwdAuthenticationHandler(principalFactory, casApi, ipHeaderName);
     }
 
     @Bean
@@ -183,7 +231,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         @Value("${vitamui.authn.x509.identifierAttributeParsing:}") final String x509IdentifierAttributeParsing,
         @Value("${vitamui.authn.x509.identifierAttributeExpansion:}") final String x509IdentifierAttributeExpansion,
         @Value("${vitamui.authn.x509.defaultDomain:}") final String x509DefaultDomain,
-        @Qualifier(
+        // In CAS 7.3 accessTokenJwtBuilder depends on the principal resolver, which closes a cycle:
+        //   accessTokenJwtBuilder -> defaultPrincipalResolver -> delegatedClientDistributedSessionStore
+        //     -> defaultTicketFactory -> defaultAccessTokenFactoryConfigurer -> defaultAccessTokenFactory
+        //       -> accessTokenJwtBuilder
+        // The session store is only read while resolving a principal, never during construction, so injecting it
+        // lazily breaks the cycle where it costs nothing.
+        @Lazy @Qualifier(
             CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
         ) final SessionStore delegatedClientDistributedSessionStore,
         @Qualifier(CasBeans.PRINCIPAL_FACTORY) PrincipalFactory principalFactory,
@@ -214,7 +268,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public AuthenticationEventExecutionPlanConfigurer registerInternalHandler(
-        final LoginPwdAuthenticationHandler loginPwdAuthenticationHandler,
+        // Injected as the interface: CAS 7.3 advises authentication handlers, so this arrives as a JDK dynamic
+        // proxy that cannot be cast back to the implementation class.
+        @Qualifier("loginPwdAuthenticationHandler") final AuthenticationHandler loginPwdAuthenticationHandler,
         @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
     ) {
         return plan ->
@@ -240,20 +296,57 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return defaultPrincipalResolver;
     }
 
+    private static final String MASKED_HEADER_VALUE = "***";
+
+    /**
+     * Headers whose value is a credential and must never reach the logs. The IAM service account token is
+     * long-lived, so a single DEBUG line is enough to leak a credential that stays replayable.
+     */
+    private static final Set<String> SENSITIVE_HEADERS = sensitiveHeaders();
+
+    private static Set<String> sensitiveHeaders() {
+        // HTTP header names are case-insensitive, so the lookup must be too.
+        final Set<String> names = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        names.addAll(List.of(X_USER_TOKEN_HEADER, X_XSRF_TOKEN_HEADER, HttpHeaders.AUTHORIZATION, HttpHeaders.COOKIE));
+        return Collections.unmodifiableSet(names);
+    }
+
+    /**
+     * Copies the headers, replacing the value of every credential-bearing one. The remaining headers
+     * (tenant, application, identity, trace) are what makes the log line useful, so they are kept as is.
+     *
+     * @param headers the outgoing request headers.
+     * @return a copy safe to log.
+     */
+    private static HttpHeaders maskSensitiveHeaders(final HttpHeaders headers) {
+        final HttpHeaders masked = new HttpHeaders();
+        headers.forEach(
+            (name, values) ->
+                masked.addAll(name, SENSITIVE_HEADERS.contains(name) ? List.of(MASKED_HEADER_VALUE) : values)
+        );
+        return masked;
+    }
+
     /**
      * We must define our customizer to replace X_ORIGIN header from
      * IamApiClient.java for CAS usage.
      *
-     * @return a rest client customizer.
+     * <p>Deliberately not a bean: Spring Boot applies every RestClientCustomizer bean to the auto-configured
+     * RestClient.Builder, so exposing it made the interceptor run twice on each IAM call and forced the
+     * EXTERNAL origin on every other rest client built from that builder.
+     *
+     * @return a rest client customizer for the IAM clients.
      */
-    @Bean
-    @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER)
-    public RestClientCustomizer restClientCustomizer() {
+    private RestClientCustomizer iamRestClientCustomizer() {
         return builder ->
             builder.requestInterceptor((request, body, execution) -> {
                 request.getHeaders().set(X_ORIGIN_HEADER_NAME, X_ORIGIN_HEADER_EXTERNAL);
 
-                LOGGER.debug("Final request URI: {}, headers: {}", request.getURI(), request.getHeaders());
+                LOGGER.debug(
+                    "Final request URI: {}, headers: {}",
+                    request.getURI(),
+                    maskSensitiveHeaders(request.getHeaders())
+                );
 
                 return execution.execute(request, body);
             });
@@ -262,10 +355,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public IamApiClientsFactory iamApiClientsFactory(
         final IamClientConfigurationProperties iamClientProperties,
-        final RestClient.Builder restClientBuilder,
-        @Qualifier(CasBeans.REST_CLIENT_CUSTOMIZER) final RestClientCustomizer restClientCustomizer
+        final RestClient.Builder restClientBuilder
     ) {
-        restClientCustomizer.customize(restClientBuilder);
+        iamRestClientCustomizer().customize(restClientBuilder);
 
         return new IamApiClientsFactory(iamClientProperties, restClientBuilder);
     }
@@ -360,7 +452,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public OAuth20AccessTokenFactory defaultAccessTokenFactory(
-        @Qualifier(CasBeans.ACCESS_TOKEN_ID_GENERATOR) final UniqueTicketIdGenerator accessTokenIdGenerator,
+        @Qualifier(CasBeans.TICKET_REGISTRY) final TicketRegistry ticketRegistry,
         @Qualifier(CasBeans.ACCESS_TOKEN_EXPIRATION_POLICY) final ExpirationPolicyBuilder accessTokenExpirationPolicy,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
         @Qualifier(CasBeans.ACCESS_TOKEN_JWT_BUILDER) final JwtBuilder accessTokenJwtBuilder,
@@ -369,7 +461,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         ) final TicketTrackingPolicy descendantTicketsTrackingPolicy
     ) {
         return new CustomOAuth20DefaultAccessTokenFactory(
-            accessTokenIdGenerator,
+            ticketRegistry,
             accessTokenExpirationPolicy,
             accessTokenJwtBuilder,
             servicesManager,
@@ -400,9 +492,20 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @SneakyThrows
     public SurrogateAuthenticationService surrogateAuthenticationService(
         final CasApi casApi,
-        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
+        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
+        final CasConfigurationProperties casProperties,
+        @Qualifier(
+            RegisteredServicePrincipalAccessStrategyEnforcer.BEAN_NAME
+        ) final RegisteredServicePrincipalAccessStrategyEnforcer principalAccessStrategyEnforcer,
+        final ConfigurableApplicationContext applicationContext
     ) {
-        return new IamSurrogateAuthenticationService(casApi, servicesManager);
+        return new IamSurrogateAuthenticationService(
+            casApi,
+            servicesManager,
+            casProperties,
+            principalAccessStrategyEnforcer,
+            applicationContext
+        );
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
@@ -423,9 +526,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final PasswordConfiguration passwordConfiguration
     ) {
         return new IamPasswordManagementService(
-            casProperties.getAuthn().getPm(),
+            casProperties,
             passwordManagementCipherExecutor,
-            casProperties.getServer().getPrefix(),
             passwordHistoryService,
             casApi,
             providersService,
@@ -551,7 +653,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         final var authorizers = delegatedClientIdentityProviderAuthorizers;
 
         return DelegatedClientAuthenticationConfigurationContext.builder()
-            .credentialExtractor(delegatedAuthenticationCredentialExtractor)
+            // CAS 7.3 accepts a list of credential extractors instead of a single one.
+            .credentialExtractors(List.of(delegatedAuthenticationCredentialExtractor))
             .initialAuthenticationAttemptWebflowEventResolver(initialAuthenticationAttemptWebflowEventResolver)
             .serviceTicketRequestWebflowEventResolver(serviceTicketRequestWebflowEventResolver)
             .adaptiveAuthenticationPolicy(adaptiveAuthenticationPolicy)

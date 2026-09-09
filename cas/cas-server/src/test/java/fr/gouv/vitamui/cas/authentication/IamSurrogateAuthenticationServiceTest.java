@@ -7,11 +7,14 @@ import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
+import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.services.RegisteredServicePrincipalAccessStrategyEnforcer;
 import org.apereo.cas.services.ServicesManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -49,7 +52,13 @@ public final class IamSurrogateAuthenticationServiceTest {
     @Before
     public void setUp() {
         casApi = mock(CasApi.class);
-        service = new IamSurrogateAuthenticationService(casApi, mock(ServicesManager.class));
+        service = new IamSurrogateAuthenticationService(
+            casApi,
+            mock(ServicesManager.class),
+            new CasConfigurationProperties(),
+            mock(RegisteredServicePrincipalAccessStrategyEnforcer.class),
+            mock(ConfigurableApplicationContext.class)
+        );
     }
 
     @After
@@ -102,7 +111,7 @@ public final class IamSurrogateAuthenticationServiceTest {
             casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(eq(null), eq(SU_EMAIL), eq(SU_CUSTOMER_ID))
         ).thenReturn(List.of(surrogation()));
 
-        service.getImpersonationAccounts(SU_EMAIL);
+        service.getImpersonationAccounts(SU_EMAIL, Optional.empty());
     }
 
     private Principal principal() {

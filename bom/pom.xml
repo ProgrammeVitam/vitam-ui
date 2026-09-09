@@ -17,7 +17,7 @@
         <apache.commons.codec.version>1.22.0</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.31</apache.pdfbox.version>
         <bouncycastle.version>1.85.2</bouncycastle.version>
-        <cas.version>7.0.10.1</cas.version>
+        <cas.version>7.3.8</cas.version>
         <commons.beanutils.version>1.11.0</commons.beanutils.version>
         <commons.collections4.version>4.5.0</commons.collections4.version>
         <commons.compress.version>1.26.1</commons.compress.version>

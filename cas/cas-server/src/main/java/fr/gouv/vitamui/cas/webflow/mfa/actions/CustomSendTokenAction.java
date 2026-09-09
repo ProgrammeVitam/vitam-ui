@@ -33,8 +33,10 @@ import org.apereo.cas.configuration.model.support.mfa.simple.CasSimpleMultifacto
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
 import org.apereo.cas.mfa.simple.validation.CasSimpleMultifactorAuthenticationService;
 import org.apereo.cas.mfa.simple.web.flow.CasSimpleMultifactorSendTokenAction;
+import org.apereo.cas.multitenancy.TenantExtractor;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.web.flow.CasWebflowConstants;
+import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
@@ -57,6 +59,7 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
         final CasSimpleMultifactorAuthenticationProperties properties,
         final CasSimpleMultifactorTokenCommunicationStrategy tokenCommunicationStrategy,
         final BucketConsumer bucketConsumer,
+        final TenantExtractor tenantExtractor,
         final Utils utils
     ) {
         super(
@@ -64,13 +67,14 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
             multifactorAuthenticationService,
             properties,
             tokenCommunicationStrategy,
-            bucketConsumer
+            bucketConsumer,
+            tenantExtractor
         );
         this.utils = utils;
     }
 
     @Override
-    protected Event doExecuteInternal(final RequestContext requestContext) {
+    protected Event doExecuteInternal(final RequestContext requestContext) throws Throwable {
         var authentication = WebUtils.getInProgressAuthentication();
         var principal = resolvePrincipal(authentication.getPrincipal(), requestContext);
 
@@ -82,8 +86,8 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
             return getEventFactorySupport().event(this, "missingPhone");
         }
 
-        // remove token
-        WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
+        // remove token (moved out of WebUtils into MultifactorAuthenticationWebflowUtils in CAS 7.3)
+        MultifactorAuthenticationWebflowUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
 
         var event = super.doExecuteInternal(requestContext);
 
