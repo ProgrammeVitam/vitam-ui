@@ -38,6 +38,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { Event } from 'vitamui-library';
+import { AuditCategoryFilter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
 import { AuditListComponent } from './audit-list.component';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -45,6 +46,31 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 describe('AuditListComponent', () => {
   let component: AuditListComponent;
   let fixture: ComponentFixture<AuditListComponent>;
+
+  const auditOfType = (evType: string, evDetDataType: string): Event => ({
+    id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+    idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+    type: evType,
+    typeProc: 'AUDIT',
+    obIdReq: 'obIdReq',
+    data: `{"type":"${evDetDataType}"}`,
+    outcome: 'OK',
+    outDetail: `${evType}.OK`,
+    outMessage: 'Audit terminé avec succès',
+    objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+    idAppSession: 'AUDIT_APP166149000110:18b963b9-129f-4704-ba6e-600278466343:Contexte UI Referential:1:-:1',
+    agId: '247521940',
+    agIdApp: 'vitamui-context',
+    rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+    parentId: null,
+    dateTime: null,
+    collectionName: 'collectionName',
+    parsedData: {
+      type: evDetDataType,
+    },
+    agIdExt: 'agIdExt',
+    events: [],
+  });
 
   beforeEach(async () => {
     TestBed.overrideComponent(AuditListComponent, {
@@ -262,5 +288,26 @@ describe('AuditListComponent', () => {
     // Then
     expect(response).toBeDefined();
     expect(response).toEqual(returnedMessage);
+  });
+
+  it('Only the audits of the selected type should be listed', () => {
+    // Given
+    const existenceAudit = auditOfType('PROCESS_AUDIT', 'AUDIT_FILE_EXISTING');
+    const integrityAudit = auditOfType('PROCESS_AUDIT', 'AUDIT_FILE_INTEGRITY');
+    component.dataSource = [existenceAudit, integrityAudit];
+    // When
+    component['_filters'] = { startDate: null, endDate: null, types: [AuditCategoryFilter.AUDIT_FILE_EXISTING] };
+    // Then
+    expect(component.filteredDataSource).toEqual([existenceAudit]);
+  });
+
+  it('All the audits should be listed when no type is selected', () => {
+    // Given
+    const audit = auditOfType('PROCESS_AUDIT', 'AUDIT_FILE_EXISTING');
+    component.dataSource = [audit];
+    // When
+    component['_filters'] = { startDate: null, endDate: null, types: [] };
+    // Then
+    expect(component.filteredDataSource).toEqual([audit]);
   });
 });

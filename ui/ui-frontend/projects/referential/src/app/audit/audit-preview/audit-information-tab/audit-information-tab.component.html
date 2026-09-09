@@ -1,28 +1,21 @@
 <div class="gap-2 align-items-stretch">
   <vitamui-common-data
-    [label]="'AUDIT.TAB.INFORMATIONS.OPERATION_CATEGORY' | translate"
-    [value]="'EVENT_TYPE_LABEL.' + audit?.type | translate"
+    [label]="'AUDIT.TAB.INFORMATIONS.AUDIT_TYPE' | translate"
+    [value]="'AUDIT.AUDIT_TYPES.' + (audit?.parsedData?.['type'] || audit?.type) | translate"
   />
 
-  <div class="hgap-4">
-    <vitamui-common-data
-      class="w-50"
-      [label]="'AUDIT.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate"
-      [value]="audit?.agIdExt"
-    />
-    <vitamui-common-data
-      class="w-50"
-      [label]="'AUDIT.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate"
-      [value]="associatedContract(audit)"
-    />
-  </div>
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate" [value]="audit?.agIdExt" />
 
-  <div class="hgap-4">
-    <vitamui-common-data class="w-50" [label]="'AUDIT.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate" [value]="audit?.agIdApp" />
-    <vitamui-common-data class="w-50" [label]="'AUDIT.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate" [value]="audit?.idRequest" />
-  </div>
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate" [value]="associatedContract(audit)" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.ASSIGMENT_DATE' | translate" [value]="audit?.dateTime | dateTime: 'dd/MM/yyyy'" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate" [value]="audit?.agIdApp" />
+
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate" [value]="audit?.idRequest" />
+
+  <vitamui-common-data
+    [label]="'AUDIT.TAB.INFORMATIONS.ASSIGMENT_DATE' | translate"
+    [value]="audit?.dateTime | dateTime: 'dd/MM/yyyy HH:mm:ss'"
+  />
 
   <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.OPERATION_IDENTIFIER' | translate" [value]="audit?.idRequest" />
 

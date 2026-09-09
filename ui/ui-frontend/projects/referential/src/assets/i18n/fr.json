@@ -1033,7 +1033,7 @@
       },
       "ARRAY": {
         "IDENTIFIER": "Identifiant",
-        "CATEGORY": "Catégorie",
+        "AUDIT_TYPE": "Type d'audit",
         "CREATION_DATE": "Date de création",
         "STATUS": "Statut",
         "MESSAGE": "Résultat"
@@ -1044,15 +1044,29 @@
       "AUDIT_FILE_INTEGRITY": "Intégrité",
       "EVIDENCE_AUDIT": "Cohérence",
       "RECTIFICATION_AUDIT": "Correctif",
-      "TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP": "Chainage du journal du cycle de vie des objets",
-      "TRACEABILITY_CHAIN_AUDIT_UNIT": "Chainage du journal du cycle de vie des unités archivistiques",
-      "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Chainage du journal des opérations"
+      "TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP": "Chaînage du journal du cycle de vie des objets",
+      "TRACEABILITY_CHAIN_AUDIT_UNIT": "Chaînage du journal du cycle de vie des unités archivistiques",
+      "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Chaînage du journal des opérations"
+    },
+    "AUDIT_TYPES": {
+      "PROCESS_AUDIT": "Audit d'existence et d'intégrité",
+      "AUDIT_FILE_EXISTING": "Audit d'existence",
+      "AUDIT_FILE_INTEGRITY": "Audit d'intégrité",
+      "EVIDENCE_AUDIT": "Audit de cohérence",
+      "RECTIFICATION_AUDIT": "Audit correctif",
+      "TRACEABILITY_CHAIN_AUDIT_OBJECTGROUP": "Audit de chaînage du journal du cycle de vie des objets",
+      "TRACEABILITY_CHAIN_AUDIT_UNIT": "Audit de chaînage du journal du cycle de vie des unités archivistiques",
+      "TRACEABILITY_CHAIN_AUDIT_LOGBOOK_OPERATION": "Audit de chaînage du journal des opérations",
+      "TRACEABILITY_CHAIN_AUDIT_OBJECT_GROUP": "Audit de chaînage du journal du cycle de vie des objets",
+      "OBJECT_GROUP": "Audit de chaînage du journal du cycle de vie des objets",
+      "UNIT": "Audit de chaînage du journal du cycle de vie des unités archivistiques",
+      "LOGBOOK_OPERATION": "Audit de chaînage du journal des opérations"
     },
     "TAB": {
       "INFORMATIONS": {
         "TITLE": "Informations",
         "DOWNLOAD_REPORT": "Télécharger le rapport",
-        "OPERATION_CATEGORY": "Catégorie d'opération",
+        "AUDIT_TYPE": "Type d'audit",
         "EXTERNAL_AGENTS_INDENTIFIERS": "Identifiant des agents externes",
         "ASSOCIATED_CONTRACT": "Contrat associé",
         "ASSIGMENT_DATE": "Date d'affectation",
