@@ -196,7 +196,14 @@
   tags: update_mongodb_configuration
 
 - name: Restart vitamui-mongod, one replica set member at a time
-  include_tasks: rolling_restart.yml
+  include_tasks:
+    file: rolling_restart.yml
+    # Without apply, the tag below only gates the include itself: the tasks it
+    # brings in carry no tag of their own and a run limited to
+    # --tags update_mongodb_configuration would skip every restart and every
+    # wait, leaving the configuration it just wrote inactive.
+    apply:
+      tags: update_mongodb_configuration
   vars:
     mongod_member_restart_required: "{{ hostvars[mongod_member]['mongod_restart_required'] | default(false) | bool }}"
   loop: "{{ groups['hosts_vitamui_mongod'] }}"

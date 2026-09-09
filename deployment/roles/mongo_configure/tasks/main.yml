@@ -39,7 +39,14 @@
 # times as there are members, all of them concurrently, and the only wait came
 # after the whole loop.
 - name: Restart vitamui-mongod service, one replica set member at a time
-  include_tasks: restart_member.yml
+  include_tasks:
+    file: restart_member.yml
+    # Without apply, the tag below only gates the include itself: the tasks it
+    # brings in carry no tag of their own and a run limited to
+    # --tags update_mongodb_configuration would skip every restart and every
+    # wait, leaving the configuration it just wrote inactive.
+    apply:
+      tags: update_mongodb_configuration
   loop: "{{ groups['hosts_vitamui_mongod'] }}"
   loop_control:
     loop_var: mongod_member
