@@ -1,0 +1,60 @@
+name: vitamui-keycloak-idp
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION:-26.1}
+    container_name: vitamui-keycloak-idp
+    # start-dev keeps the embedded H2 database: this instance is disposable, its
+    # whole configuration comes from the imported realm.
+    command:
+      - start-dev
+      - --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:-admin}
+      # No default on purpose: the credentials live in .env only, so that no
+      # password literal ever appears in a versioned file.
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?set KEYCLOAK_ADMIN_PASSWORD in .env}
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HEALTH_ENABLED: "true"
+    # Keycloak runs unprivileged on port 8080 and needs no capability at all.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    volumes:
+      # The realm signing key is generated at import time and copied into the
+      # VitamUI SAML provider. Losing the database regenerates it and every SAML
+      # assertion is then rejected with "Signature is not trusted", so the H2
+      # file outlives the container. `down -v` (./teardown.sh, ./setup.sh
+      # --recreate) is what deliberately resets it.
+      #
+      # Mounted on data/ and not on data/h2: the latter does not exist in the
+      # image, so docker would create it root-owned and keycloak (uid 1000)
+      # could not write to it. An empty volume over an existing directory
+      # inherits its content and its ownership. The import bind is nested
+      # inside and still applies, deeper paths being mounted last.
+      - keycloak-data:/opt/keycloak/data
+      - ./realms:/opt/keycloak/data/import:ro
+    ports:
+      # Loopback only: this instance ships an admin console with a well-known
+      # password, and it must not be reachable from outside the machine. CAS and
+      # the browser both run on the host, and the README already requires
+      # Keycloak to stay on http://localhost anyway.
+      - "127.0.0.1:${KEYCLOAK_HTTP_PORT:-8042}:8080"
+    healthcheck:
+      # The image ships neither curl nor wget; bash and its /dev/tcp redirection
+      # are the only HTTP client available.
+      test:
+        - CMD-SHELL
+        - >-
+          exec 3<>/dev/tcp/127.0.0.1/9000 &&
+          printf 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          grep -q '200 OK' <&3
+      interval: 5s
+      timeout: 5s
+      retries: 40
+      start_period: 10s
+
+volumes:
+  keycloak-data:
