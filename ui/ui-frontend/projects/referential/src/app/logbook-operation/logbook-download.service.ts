@@ -239,6 +239,10 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       // Evidence audit may not have a report if "data" has "No report generated" in it.
       return !event.events.some((e) => /No report generated/i.test(e.data));
     }
+    if (['TRACEABILITY_CHAIN_AUDIT'].includes(event.type)) {
+      // Chain audit report only exists once the reporting sub-step has completed successfully.
+      return event.events.some((e) => /REPORTING$/i.test(e.type) && e.outcome === 'OK');
+    }
     return true;
   }
 }

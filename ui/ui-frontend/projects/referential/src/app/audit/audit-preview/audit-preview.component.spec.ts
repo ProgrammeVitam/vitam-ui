@@ -91,4 +91,24 @@ describe('AuditPreviewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should report no report for a chain audit without a successful reporting sub-event', () => {
+    fixture.componentRef.setInput('audit', {
+      type: 'TRACEABILITY_CHAIN_AUDIT',
+      events: [{ type: 'STP_PREPARE_TRACEABILITY_CHAIN_AUDIT', outcome: 'KO', outDetail: 'STP_PREPARE_TRACEABILITY_CHAIN_AUDIT.KO' }],
+    });
+    fixture.detectChanges();
+
+    expect(component.hasReport()).toBe(false);
+  });
+
+  it('should report a report for a chain audit with a successful reporting sub-event, even when the audit is KO', () => {
+    fixture.componentRef.setInput('audit', {
+      type: 'TRACEABILITY_CHAIN_AUDIT',
+      events: [{ type: 'TRACEABILITY_CHAIN_AUDIT_REPORTING', outcome: 'OK', outDetail: 'TRACEABILITY_CHAIN_AUDIT_REPORTING.OK' }],
+    });
+    fixture.detectChanges();
+
+    expect(component.hasReport()).toBe(true);
+  });
 });
