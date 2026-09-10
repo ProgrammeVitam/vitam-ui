@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 /**
- * Custom certificate extractor from the request.
+ * Extracteur de certificat personnalisé depuis la requête.
  */
 @Slf4j
 public class CustomRequestHeaderX509CertificateExtractor implements X509CertificateExtractor {
@@ -105,32 +105,24 @@ public class CustomRequestHeaderX509CertificateExtractor implements X509Certific
         return certificates;
     }
 
+    // Nginx transmet le PEM encodé en URL, avec des tabulations pour les sauts de ligne et les '+' transformés en espaces.
     protected X509Certificate parseCertificateGeneratedByNginx(final String header) throws CertificateException {
-        final String data = header.replaceAll("\t", "\n");
-
-        final String decoded = URLDecoder.decode(data, StandardCharsets.UTF_8);
-        final String cert = decoded
-            .replace(BEGIN_CERT, "")
-            .replace(END_CERT, "")
-            .replaceAll(" ", "+")
-            .replaceAll("\\n", "");
-
-        final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certificateFactory.generateCertificate(
-            new ByteArrayInputStream(Base64.getDecoder().decode(cert))
-        );
+        final String decoded = URLDecoder.decode(header.replace("\t", "\n"), StandardCharsets.UTF_8);
+        return toCertificate(stripMarkers(decoded).replace(" ", "+"));
     }
 
+    // Apache transmet le PEM avec de simples espaces représentant les sauts de ligne.
     protected X509Certificate parseCertificateGeneratedByApache(final String header) throws CertificateException {
-        final String cert = header
-            .replace(BEGIN_CERT, "")
-            .replace(END_CERT, "")
-            .replaceAll(" ", "")
-            .replaceAll("\\n", "");
+        return toCertificate(stripMarkers(header).replace(" ", ""));
+    }
 
-        final CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certificateFactory.generateCertificate(
-            new ByteArrayInputStream(Base64.getDecoder().decode(cert))
+    private static String stripMarkers(final String pem) {
+        return pem.replace(BEGIN_CERT, "").replace(END_CERT, "");
+    }
+
+    private static X509Certificate toCertificate(final String base64Body) throws CertificateException {
+        return (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(
+            new ByteArrayInputStream(Base64.getDecoder().decode(base64Body.replace("\n", "")))
         );
     }
 }

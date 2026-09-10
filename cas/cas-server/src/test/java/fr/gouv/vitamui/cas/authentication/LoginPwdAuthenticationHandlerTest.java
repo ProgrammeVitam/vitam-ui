@@ -6,8 +6,10 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apereo.cas.authentication.Credential;
@@ -29,9 +31,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
-import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialException;
-import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
@@ -42,7 +42,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests {@link LoginPwdAuthenticationHandler}.
+ * Teste {@link LoginPwdAuthenticationHandler}.
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = LoginPwdAuthenticationHandlerTest.class)
@@ -91,15 +91,15 @@ public final class LoginPwdAuthenticationHandlerTest {
 
     @Test
     public void testSuccessfulAuthentication() throws Throwable {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
         when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.ENABLED));
 
-        // When
+        // Quand
         final var result = handler.authenticate(credential, null);
 
-        // Then
+        // Alors
         assertEquals(USERNAME, result.getPrincipal().getId());
         assertEquals(USERNAME, result.getPrincipal().getAttributes().get(Constants.FLOW_LOGIN_EMAIL).getFirst());
         assertEquals(
@@ -112,15 +112,15 @@ public final class LoginPwdAuthenticationHandlerTest {
 
     @Test
     public void testSuccessfulSubrogationAuthentication() throws Throwable {
-        // Given
+        // Étant donné
         givenSubrogationRequestInRequestContext();
 
         when(casApi.login(eq(surrogateCredentials()))).thenReturn(basicUser(UserStatusEnum.ENABLED));
 
-        // When
+        // Quand
         final var result = handler.authenticate(credential, null);
 
-        // Then
+        // Alors
         assertEquals(SUPER_USER_EMAIL, result.getPrincipal().getId());
         assertEquals(
             SUPER_USER_EMAIL,
@@ -139,47 +139,40 @@ public final class LoginPwdAuthenticationHandlerTest {
 
     @Test
     public void testNoUser() {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
-        when(casApi.login(eq(userCredentials()))).thenReturn(null);
+        // Le login de l'IAM retourne désormais un utilisateur ENABLED, NOMINATIVE ou lève une exception ; un utilisateur inconnu est une
+        // NotFoundException, que le handler convertit en PreventedException. (Il ne retourne plus null.)
+        when(casApi.login(eq(userCredentials()))).thenThrow(new NotFoundException(""));
 
-        // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountNotFoundException.class);
+        // Quand / Alors
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(PreventedException.class);
     }
 
     @Test
     public void testUserDisabled() {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
-        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.DISABLED));
+        // Un utilisateur dont l'IAM refuse le statut (par ex. DISABLED) remonte sous forme d'InvalidFormatException ; le
+        // handler ne revérifie plus le statut lui-même, il convertit cette exception en AccountDisabledException.
+        when(casApi.login(eq(userCredentials()))).thenThrow(new InvalidFormatException(""));
 
-        // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
-    }
-
-    @Test
-    public void testUserCannotLogin() {
-        // Given
-        givenLoginRequestInRequestContext();
-
-        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.BLOCKED));
-
-        // When / Then
+        // Quand / Alors
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
     }
 
     @Test
     public void testExpiredPassword() {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
         final var user = basicUser(UserStatusEnum.ENABLED);
-        user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
+        user.setMustChangePassword(true);
         when(casApi.login(eq(userCredentials()))).thenReturn(user);
 
-        // When / Then
+        // Quand / Alors
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(
             AccountPasswordMustChangeException.class
         );
@@ -187,34 +180,34 @@ public final class LoginPwdAuthenticationHandlerTest {
 
     @Test
     public void testUserBadCredentials() {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
         when(casApi.login(eq(userCredentials()))).thenThrow(new InvalidAuthenticationException(""));
 
-        // When / Then
+        // Quand / Alors
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(CredentialException.class);
     }
 
     @Test
     public void testUserLockedAccount() {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
         when(casApi.login(eq(userCredentials()))).thenThrow(new TooManyRequestsException(""));
 
-        // When / Then
+        // Quand / Alors
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountLockedException.class);
     }
 
     @Test
     public void testTechnicalError() {
-        // Given
+        // Étant donné
         givenLoginRequestInRequestContext();
 
         when(casApi.login(eq(userCredentials()))).thenThrow(new BadRequestException(""));
 
-        // When / Then
+        // Quand / Alors
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(PreventedException.class);
     }
 
@@ -222,7 +215,6 @@ public final class LoginPwdAuthenticationHandlerTest {
         final var user = new UserDto();
         user.setStatus(status);
         user.setType(UserTypeEnum.NOMINATIVE);
-        user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));
         return user;
     }
 

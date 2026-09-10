@@ -2453,36 +2453,6 @@ paths:
                                 type: boolean
                                 example: null
                             example: null
-    /iam/v1/cas/users:
-        get:
-            tags:
-                - Cas
-            summary: Get all users having a given email address
-            operationId: cas_getUsersByEmail
-            parameters:
-                - name: email
-                  in: query
-                  required: true
-                  schema:
-                      type: string
-                      example: null
-                - name: embedded
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        '*/*':
-                            schema:
-                                type: array
-                                example: null
-                                items:
-                                    $ref: "#/components/schemas/UserDto"
-                            example: null
     /iam/v1/cas/users/provisioning:
         get:
             tags:
@@ -2527,43 +2497,6 @@ paths:
                         '*/*':
                             schema:
                                 $ref: "#/components/schemas/AuthUserDto"
-                            example: null
-    /iam/v1/cas/subrogations:
-        get:
-            tags:
-                - Cas
-            summary: Get available subrogations for a super user by super user id or by
-                super user email and customerId
-            operationId: getSubrogationsBySuperUserIdOrEmailAndCustomerId
-            parameters:
-                - name: superUserId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserEmail
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserCustomerId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        '*/*':
-                            schema:
-                                type: array
-                                example: null
-                                items:
-                                    $ref: "#/components/schemas/SubrogationDto"
                             example: null
     /iam/v1/cas/logout:
         get:
@@ -2619,6 +2552,104 @@ paths:
                                 example: null
                                 items:
                                     $ref: "#/components/schemas/CustomerDto"
+                            example: null
+    /iam/v1/cas/hrd:
+        get:
+            tags:
+                - Cas
+            summary: Resolve the organisations and identity providers for an email
+            operationId: cas_resolveHrd
+            parameters:
+                - name: email
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                type: array
+                                example: null
+                                items:
+                                    $ref: "#/components/schemas/HrdEntryDto"
+                            example: null
+    /iam/v1/cas/certificate:
+        get:
+            tags:
+                - Cas
+            summary: Resolve the single X509 certificate identity provider for a user identifier
+            operationId: cas_resolveCertificateProvider
+            parameters:
+                - name: userIdentifier
+                  in: query
+                  required: true
+                  schema:
+                      type: string
+                      example: null
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/HrdEntryDto"
+                            example: null
+    /iam/v1/cas/users/principal-attributes:
+        post:
+            tags:
+                - Cas
+            summary: Build the authentication attributes of a user
+            operationId: cas_buildPrincipalAttributes
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PrincipalAttributesRequestDto"
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PrincipalAttributesResponseDto"
+    /iam/v1/cas/subrogations/validate:
+        post:
+            tags:
+                - Cas
+            summary: Validate a subrogation and resolve both users
+            operationId: cas_validateSubrogation
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/SubrogationValidateRequestDto"
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/SubrogationValidateResponseDto"
+                            example: null
+    /iam/v1/cas/password/policy:
+        get:
+            tags:
+                - Cas
+            summary: Get the password policy enforced by IAM
+            operationId: cas_getPasswordPolicy
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PasswordPolicyDto"
                             example: null
     /iam/v1/applications:
         get:
@@ -3712,6 +3743,199 @@ components:
                     type: integer
                     format: int32
                     example: null
+            example: null
+        PrincipalAttributesRequestDto:
+            required:
+                - loginCustomerId
+                - loginEmail
+            type: object
+            properties:
+                loginEmail:
+                    type: string
+                    example: null
+                loginCustomerId:
+                    type: string
+                    example: null
+                identityProviderId:
+                    type: string
+                    example: null
+                userIdentifier:
+                    type: string
+                    example: null
+                superUserEmail:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+                apiContext:
+                    type: boolean
+                    example: null
+            example: null
+        PrincipalAttributesResponseDto:
+            type: object
+            properties:
+                userId:
+                    type: string
+                customerId:
+                    type: string
+                email:
+                    type: string
+                firstname:
+                    type: string
+                lastname:
+                    type: string
+                identifier:
+                    type: string
+                otp:
+                    type: boolean
+                computedOtp:
+                    type: boolean
+                subrogeable:
+                    type: boolean
+                userInfoId:
+                    type: string
+                phone:
+                    type: string
+                mobile:
+                    type: string
+                status:
+                    type: string
+                type:
+                    type: string
+                readonly:
+                    type: boolean
+                level:
+                    type: string
+                lastConnection:
+                    type: string
+                    format: date-time
+                nbFailedAttempts:
+                    type: integer
+                    format: int32
+                passwordExpirationDate:
+                    type: string
+                    format: date-time
+                groupId:
+                    type: string
+                addressJson:
+                    type: string
+                analyticsJson:
+                    type: string
+                internalCode:
+                    type: string
+                authenticated:
+                    type: boolean
+                profileGroupJson:
+                    type: string
+                customerIdentifier:
+                    type: string
+                basicCustomerJson:
+                    type: string
+                authToken:
+                    type: string
+                proofTenantIdentifier:
+                    type: integer
+                    format: int32
+                tenantsByAppJson:
+                    type: string
+                siteCode:
+                    type: string
+                centerCodes:
+                    type: array
+                    items:
+                        type: string
+                roles:
+                    type: array
+                    items:
+                        type: string
+                superUserEmail:
+                    type: string
+                superUserCustomerId:
+                    type: string
+                superUserIdentifier:
+                    type: string
+                superUserId:
+                    type: string
+        SubrogationValidateRequestDto:
+            required:
+                - superUserCustomerId
+                - superUserEmail
+                - surrogateCustomerId
+                - surrogateEmail
+            type: object
+            properties:
+                superUserEmail:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+                surrogateEmail:
+                    type: string
+                    example: null
+                surrogateCustomerId:
+                    type: string
+                    example: null
+            example: null
+        SubrogationValidateResponseDto:
+            type: object
+            properties:
+                superUserId:
+                    type: string
+                    example: null
+                surrogateUserId:
+                    type: string
+                    example: null
+            example: null
+        HrdEntryDto:
+            type: object
+            properties:
+                customerId:
+                    type: string
+                    example: null
+                customerCode:
+                    type: string
+                    example: null
+                customerName:
+                    type: string
+                    example: null
+                identityProviderId:
+                    type: string
+                    example: null
+                identityProviderName:
+                    type: string
+                    example: null
+                internal:
+                    type: boolean
+                    example: null
+                protocoleType:
+                    type: string
+                    example: null
+                userStatus:
+                    type: string
+                    example: null
+            example: null
+        PasswordPolicyDto:
+            type: object
+            properties:
+                minLength:
+                    type: integer
+                    format: int32
+                    example: null
+                profile:
+                    type: string
+                    example: null
+                maxOldPassword:
+                    type: integer
+                    format: int32
+                    example: null
+                messages:
+                    type: array
+                    example: null
+                    items:
+                        type: string
+                        example: null
             example: null
         LoginRequestDto:
             required:

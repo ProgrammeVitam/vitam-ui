@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.password.CustomCasWebSecurityConfigurerAdapter;
 import fr.gouv.vitamui.cas.password.ResetPasswordController;
@@ -45,13 +44,10 @@ import fr.gouv.vitamui.cas.web.CustomCorsProcessor;
 import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
 import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.oidc.OidcConfigurationContext;
 import org.apereo.cas.oidc.util.OidcRequestSupport;
 import org.apereo.cas.oidc.web.controllers.token.OidcRevocationEndpointController;
-import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.web.support.RegisteredServiceCorsConfigurationSource;
@@ -84,7 +80,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 /**
- * Web customizations.
+ * Personnalisations web.
  */
 @Configuration
 public class WebConfig {
@@ -107,10 +103,11 @@ public class WebConfig {
         return builder;
     }
 
+    // Conservé volontairement : le RegisteredServiceCorsConfigurationSource propre à CAS est conditionnel, tandis que corsFilter
+    // ci-dessous a besoin d'une source de manière inconditionnelle - sans ce bean, le contexte ne démarre pas.
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CorsConfigurationSource corsHttpWebRequestConfigurationSource(
-        final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
         @Qualifier(CasBeans.ARGUMENT_EXTRACTOR) final ArgumentExtractor argumentExtractor,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
@@ -136,27 +133,9 @@ public class WebConfig {
     @Bean
     public ResetPasswordController resetPasswordController(
         @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
-        @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
-        @Qualifier(
-            CasBeans.PASSWORD_MANAGEMENT_SERVICE_DEFAULT
-        ) final PasswordManagementService passwordManagementService,
-        @Qualifier(CasBeans.MESSAGE_SOURCE) final HierarchicalMessageSource messageSource,
-        final CasConfigurationProperties casProperties,
-        final IdentityProviderHelper identityProviderHelper,
-        final ProvidersService providersService,
         final Utils utils
     ) {
-        return new ResetPasswordController(
-            casProperties,
-            passwordManagementService,
-            communicationsManager,
-            messageSource,
-            utils,
-            passwordResetUrlBuilder,
-            identityProviderHelper,
-            providersService,
-            new ObjectMapper()
-        );
+        return new ResetPasswordController(utils, passwordResetUrlBuilder);
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
@@ -177,7 +156,7 @@ public class WebConfig {
         final WebProperties webProperties,
         final CasConfigurationProperties casProperties
     ) {
-        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+        final CustomCasWebSecurityConfigurerAdapter adapter = new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
             managementServerProperties,
@@ -201,7 +180,7 @@ public class WebConfig {
         final CasConfigurationProperties casProperties,
         final ApplicationContext applicationContext
     ) throws Exception {
-        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+        final CustomCasWebSecurityConfigurerAdapter adapter = new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
             managementServerProperties,
@@ -210,7 +189,7 @@ public class WebConfig {
             securityContextRepository,
             webProperties
         );
-        // CAS 7.3 passes the application context to configureHttpSecurity.
+        // CAS 7.3 passe le contexte applicatif à configureHttpSecurity.
         return adapter.configureHttpSecurity(http, applicationContext).build();
     }
 }

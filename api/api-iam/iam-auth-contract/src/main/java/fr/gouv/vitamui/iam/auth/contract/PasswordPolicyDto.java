@@ -34,48 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.api.utils;
+package fr.gouv.vitamui.iam.auth.contract;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * A wrapper of data which outputs them as JSON (for CAS).
+ * The password policy in force, as IAM actually enforces it.
  *
+ * The authentication server displays the constraints to the user and IAM checks them. Today both read
+ * their own configuration, so any drift between the two files shows up as a form that accepts a password
+ * IAM will reject. Publishing the policy makes IAM's configuration the only one that counts.
  *
+ * {@code messages} carries the constraint labels already resolved, in the order they should be shown.
  */
 @Getter
 @Setter
-public class CasJsonWrapper implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class PasswordPolicyDto {
 
-    /**
-     *
-     */
-    @Serial
-    private static final long serialVersionUID = 1L;
+    private Integer minLength;
 
-    private final Object data;
+    private String profile;
 
-    public CasJsonWrapper() {
-        data = null;
-    }
+    private Integer maxOldPassword;
 
-    public CasJsonWrapper(final Object data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return JsonUtils.toJson(data);
-        } catch (JsonProcessingException e) {
-            throw new ApplicationServerException(e.getMessage(), e);
-        }
-    }
+    private List<String> messages;
 }

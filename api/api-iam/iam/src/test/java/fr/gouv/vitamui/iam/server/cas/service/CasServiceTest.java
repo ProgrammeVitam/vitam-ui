@@ -3,15 +3,24 @@ package fr.gouv.vitamui.iam.server.cas.service;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
 import fr.gouv.vitamui.iam.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.server.user.domain.User;
 import fr.gouv.vitamui.iam.server.user.service.UserInfoService;
 import fr.gouv.vitamui.iam.server.user.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -22,9 +31,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -43,6 +54,8 @@ class CasServiceTest {
     private static final String USER_INFO_ID = "userInfoId";
 
     private static final String CUSTOMER_ID = "customerID";
+
+    private static final String POLICY_PATTERN = "^.{12,}$";
 
     @InjectMocks
     private CasService casService;
@@ -67,6 +80,157 @@ class CasServiceTest {
 
     @Mock
     private CustomerRepository customerRepository;
+
+    @Mock
+    private IdentityProviderHelper identityProviderHelper;
+
+    @Mock
+    private PasswordValidator passwordValidator;
+
+    @Mock
+    private PasswordConfiguration passwordConfiguration;
+
+    @Test
+    void should_reject_a_password_not_matching_the_policy() {
+        givenAnEnabledUserAndCustomer();
+        givenAnInternalIdentityProvider();
+        when(passwordConfiguration.getPolicyPattern()).thenReturn(POLICY_PATTERN);
+        when(passwordValidator.isValid(POLICY_PATTERN, "weak")).thenReturn(false);
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "weak", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
+    }
+
+    @Test
+    void should_reject_a_password_containing_the_user_name() {
+        final User user = givenAnEnabledUserAndCustomer();
+        givenAnInternalIdentityProvider();
+        when(passwordConfiguration.getPolicyPattern()).thenReturn(POLICY_PATTERN);
+        when(passwordValidator.isValid(POLICY_PATTERN, "Dupont2026!")).thenReturn(true);
+        when(passwordConfiguration.isCheckOccurrence()).thenReturn(true);
+        when(passwordConfiguration.getOccurrencesCharsNumber()).thenReturn(3);
+        when(passwordValidator.isContainsUserOccurrences(user.getLastname(), "Dupont2026!", 3)).thenReturn(true);
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Dupont2026!", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
+    }
+
+    @Test
+    void should_reject_a_password_change_for_a_user_without_identity_provider() {
+        givenAnEnabledUserAndCustomer();
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.empty()
+        );
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
+    }
+
+    @Test
+    void should_reject_a_password_change_for_a_user_behind_an_external_provider() {
+        givenAnEnabledUserAndCustomer();
+        final IdentityProviderDto externalProvider = new IdentityProviderDto();
+        externalProvider.setInternal(false);
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.of(externalProvider)
+        );
+
+        assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID)).isInstanceOf(
+            BadRequestException.class
+        );
+    }
+
+    @Test
+    void resolveCertificateProvider_returns_the_single_matching_CERTIFICAT_provider() {
+        final IdentityProviderDto certProvider = certificateProvider("cert-idp", CUSTOMER_ID);
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(certProvider)
+        );
+        final Customer customer = new Customer();
+        customer.setCode("CUST");
+        customer.setName("Customer name");
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+
+        final HrdEntryDto entry = casService.resolveCertificateProvider("user@cert.test");
+
+        assertThat(entry.getIdentityProviderId()).isEqualTo("cert-idp");
+        assertThat(entry.getCustomerId()).isEqualTo(CUSTOMER_ID);
+        assertThat(entry.getProtocoleType()).isEqualTo("CERTIFICAT");
+    }
+
+    @Test
+    void resolveCertificateProvider_keeps_only_the_CERTIFICAT_protocol() {
+        final IdentityProviderDto certProvider = certificateProvider("cert-idp", CUSTOMER_ID);
+        final IdentityProviderDto samlProvider = new IdentityProviderDto();
+        samlProvider.setId("saml-idp");
+        samlProvider.setCustomerId(CUSTOMER_ID);
+        samlProvider.setProtocoleType("SAML");
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(samlProvider, certProvider)
+        );
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.empty());
+
+        final HrdEntryDto entry = casService.resolveCertificateProvider("user@cert.test");
+
+        assertThat(entry.getIdentityProviderId()).isEqualTo("cert-idp");
+    }
+
+    @Test
+    void resolveCertificateProvider_refuses_when_no_CERTIFICAT_provider_matches() {
+        final IdentityProviderDto samlProvider = new IdentityProviderDto();
+        samlProvider.setProtocoleType("SAML");
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(samlProvider)
+        );
+
+        assertThatThrownBy(() -> casService.resolveCertificateProvider("user@cert.test")).isInstanceOf(
+            NotFoundException.class
+        );
+    }
+
+    @Test
+    void resolveCertificateProvider_refuses_when_several_CERTIFICAT_providers_match() {
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(certificateProvider("cert-1", CUSTOMER_ID), certificateProvider("cert-2", "otherCustomer"))
+        );
+
+        assertThatThrownBy(() -> casService.resolveCertificateProvider("user@cert.test")).isInstanceOf(
+            NotFoundException.class
+        );
+    }
+
+    private IdentityProviderDto certificateProvider(final String id, final String customerId) {
+        final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setId(id);
+        provider.setCustomerId(customerId);
+        provider.setName("cert-idp-name");
+        provider.setProtocoleType("CERTIFICAT");
+        return provider;
+    }
+
+    private void givenAnInternalIdentityProvider() {
+        final IdentityProviderDto internalProvider = new IdentityProviderDto();
+        internalProvider.setInternal(true);
+        when(identityProviderHelper.findByUserIdentifierAndCustomerId(any(), anyString(), anyString())).thenReturn(
+            Optional.of(internalProvider)
+        );
+    }
+
+    private User givenAnEnabledUserAndCustomer() {
+        final User user = new User();
+        user.setEmail(USER_EMAIL);
+        user.setCustomerId(CUSTOMER_ID);
+        user.setLastname("Dupont");
+        user.setType(UserTypeEnum.NOMINATIVE);
+        user.setStatus(UserStatusEnum.ENABLED);
+
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(new Customer()));
+        when(userRepository.findByEmailIgnoreCaseAndCustomerId(USER_EMAIL, CUSTOMER_ID)).thenReturn(user);
+        return user;
+    }
 
     @ParameterizedTest
     @NullAndEmptySource

@@ -32,16 +32,16 @@ public class InitializeSubrogationActionTest extends BaseWebflowActionTest {
 
     @Test
     public void shouldReturnProceedWhenNoSubrogationParams() {
-        // When
+        // Quand
         Event event = initializeSubrogationAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
     }
 
     @Test
     public void shouldReturnProceedWhenValidParams() {
-        // Given
+        // Étant donné
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, "surrogate@vitamui.fr");
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, "customerSurrogate");
         requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, "admin@vitamui.fr");
@@ -52,20 +52,15 @@ public class InitializeSubrogationActionTest extends BaseWebflowActionTest {
         customerDto.setName("Surrogate Customer");
         when(casApi.getCustomersByIds(anyList())).thenReturn(List.of(customerDto));
 
-        // When
+        // Quand
         Event event = initializeSubrogationAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
         assertThat(flowParameters.get(Constants.FLOW_SURROGATE_EMAIL)).isEqualTo("surrogate@vitamui.fr");
         assertThat(flowParameters.get(Constants.FLOW_SURROGATE_CUSTOMER_ID)).isEqualTo("customerSurrogate");
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo("admin@vitamui.fr");
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo("customerAdmin");
-
-        assertThat(flowParameters.get("userEmail")).isEqualTo("surrogate@vitamui.fr");
-        assertThat(flowParameters.get("userCustomerId")).isEqualTo("customerSurrogate");
-        assertThat(flowParameters.get("superUserEmail")).isEqualTo("admin@vitamui.fr");
-        assertThat(flowParameters.get("superUserCustomerId")).isEqualTo("customerAdmin");
 
         assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_CODE)).isEqualTo("SURR");
         assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_NAME)).isEqualTo("Surrogate Customer");
@@ -73,16 +68,16 @@ public class InitializeSubrogationActionTest extends BaseWebflowActionTest {
 
     @Test
     public void shouldReturnProceedWhenInvalidEmail() {
-        // Given
+        // Étant donné
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, "invalid-email");
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, "customerSurrogate");
         requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, "admin@vitamui.fr");
         requestParameters.put(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, "customerAdmin");
 
-        // When
+        // Quand
         Event event = initializeSubrogationAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
     }
 }

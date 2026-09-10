@@ -41,13 +41,11 @@ import org.springframework.context.HierarchicalMessageSource;
 import java.util.Locale;
 
 /**
- * Message to send in the context of the password management.
+ * Message à envoyer dans le cadre de la gestion des mots de passe.
  *
  *
  */
 public class PmMessageToSend {
-
-    public static final String ONE_DAY = "1day";
 
     private static final String PM_RESET_SUBJECT_KEY = "cas.authn.pm.reset.subject";
 
@@ -55,9 +53,8 @@ public class PmMessageToSend {
 
     private static final String PM_RESET_TEXT_KEY_2 = "cas.authn.pm.reset.text2";
 
-    private static final String PM_ACCOUNTCREATION_SUBJECT_KEY = "cas.authn.pm.accountcreation.subject";
-
-    private static final String PM_ACCOUNTCREATION_TEXT_KEY = "cas.authn.pm.accountcreation.text";
+    // À partir de deux heures, la validité est exprimée en heures plutôt qu'en minutes.
+    private static final long HOURS_WORDING_THRESHOLD_MINUTES = 120;
 
     private final String subject;
 
@@ -78,39 +75,27 @@ public class PmMessageToSend {
 
     public static PmMessageToSend buildMessage(
         final HierarchicalMessageSource messageSource,
-        final String firstname,
-        final String lastname,
         final String ttlInMinutes,
         final String url,
         final String platformName,
         final Locale locale
     ) {
-        final String subject;
+        final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
         final String text;
-        if (ONE_DAY.equals(ttlInMinutes)) {
-            subject = messageSource.getMessage(PM_ACCOUNTCREATION_SUBJECT_KEY, null, locale);
+        if (validityDurationInMinutes >= HOURS_WORDING_THRESHOLD_MINUTES) {
             text = messageSource.getMessage(
-                PM_ACCOUNTCREATION_TEXT_KEY,
-                new Object[] { firstname, lastname, "24", url, platformName },
+                PM_RESET_TEXT_KEY_2,
+                new Object[] { "", "", validityDurationInMinutes / 60, url, platformName },
                 locale
             );
         } else {
-            final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
-            if (validityDurationInMinutes >= 120) {
-                text = messageSource.getMessage(
-                    PM_RESET_TEXT_KEY_2,
-                    new Object[] { firstname, lastname, validityDurationInMinutes / 60, url, platformName },
-                    locale
-                );
-            } else {
-                text = messageSource.getMessage(
-                    PM_RESET_TEXT_KEY_1,
-                    new Object[] { firstname, lastname, ttlInMinutes, url, platformName },
-                    locale
-                );
-            }
-            subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
+            text = messageSource.getMessage(
+                PM_RESET_TEXT_KEY_1,
+                new Object[] { "", "", ttlInMinutes, url, platformName },
+                locale
+            );
         }
+        final String subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
         return new PmMessageToSend(subject, text);
     }
 }

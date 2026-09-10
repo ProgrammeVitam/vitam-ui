@@ -73,7 +73,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
-/** Terminate session action with custom IAM logout call. */
+/** Action de fin de session avec un appel de déconnexion personnalisé vers l'IAM. */
 @Slf4j
 public class TerminateApiSessionAction extends TerminateSessionAction {
 
@@ -137,48 +137,64 @@ public class TerminateApiSessionAction extends TerminateSessionAction {
         if (StringUtils.isNotBlank(tgtId)) {
             try {
                 ticket = ticketRegistry.getTicket(tgtId, TicketGrantingTicket.class);
-                if (ticket != null) {
-                    final Principal principal = ticket.getAuthentication().getPrincipal();
-                    final Map<String, List<Object>> attributes = principal.getAttributes();
-                    final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
-                    final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
-                    final String superUserCustomerId = (String) utils.getAttributeValue(
-                        attributes,
-                        SUPER_USER_CUSTOMER_ID_ATTRIBUTE
-                    );
-
-                    LOGGER.debug(
-                        "Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
-                        authToken,
-                        superUserEmail,
-                        superUserCustomerId
-                    );
-
-                    casApi.logout(authToken, superUserEmail, superUserCustomerId);
-                }
             } catch (final InvalidTicketException e) {
                 LOGGER.warn("No TGT found for the CAS cookie: {}", tgtId);
             }
+            revokeIamSession(tgtId, ticket);
         }
 
         final Event event = super.terminate(context);
 
-        // Remove IdP cookie
+        // Supprime le cookie IdP
         response.addCookie(utils.buildIdpCookie(null, casProperties.getTgc()));
 
-        // Fallback general logout
+        // Déconnexion générale de repli
         if (tgtId == null || ticket == null || ticket.isExpired()) {
             List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId != null ? tgtId : "nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
         }
 
-        // Front channel logout in login flow
+        // Déconnexion par canal frontal (front channel) dans le flux de connexion
         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
             LOGGER.debug("Computing front channel logout URLs");
             frontChannelLogoutAction.execute(context);
         }
 
         return event;
+    }
+
+    protected void revokeIamSession(final String tgtId, final TicketGrantingTicket ticket) {
+        if (ticket == null) {
+            LOGGER.warn(
+                "The IAM token of the session behind TGT [{}] cannot be revoked: the TGT is gone. " +
+                "The token will only die by its own expiration.",
+                tgtId
+            );
+            return;
+        }
+
+        final Principal principal = ticket.getAuthentication().getPrincipal();
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        final String authToken = (String) utils.getAttributeValue(attributes, AUTHTOKEN_ATTRIBUTE);
+        final String superUserEmail = (String) utils.getAttributeValue(attributes, SUPER_USER_ATTRIBUTE);
+        final String superUserCustomerId = (String) utils.getAttributeValue(
+            attributes,
+            SUPER_USER_CUSTOMER_ID_ATTRIBUTE
+        );
+
+        if (StringUtils.isBlank(authToken)) {
+            LOGGER.warn("The CAS session behind TGT [{}] carries no IAM token: nothing to revoke", tgtId);
+            return;
+        }
+
+        LOGGER.debug(
+            "Calling logout for authToken={} and superUser={}, superUserCustomerId={}",
+            authToken,
+            superUserEmail,
+            superUserCustomerId
+        );
+
+        casApi.logout(authToken, superUserEmail, superUserCustomerId);
     }
 
     protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {

@@ -27,8 +27,7 @@
 package fr.gouv.vitamui.cas.surrogation;
 
 import fr.gouv.vitamui.cas.util.Constants;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.principal.Principal;
@@ -45,7 +44,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * Specific surrogate service based on the IAM API.
+ * Service de subrogation spécifique basé sur l'API de l'IAM.
  */
 @Slf4j
 public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticationService {
@@ -90,24 +89,26 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
             String.format("Invalid surrogate. Expected '%s', got: '%s'", surrogateEmail, surrogate)
         );
 
-        final var id = principal.getId();
         boolean canAuthenticate = false;
         try {
-            final var subrogations = casApi.getSubrogationsBySuperUserIdOrEmailAndCustomerId(id, null, null);
-            canAuthenticate = subrogations
-                .stream()
-                .filter(s -> s.getStatus() == SubrogationStatusEnum.ACCEPTED)
-                .anyMatch(
-                    s ->
-                        s.getSuperUser().equals(superUserEmail) &&
-                        s.getSuperUserCustomerId().equals(superUserCustomerId) &&
-                        s.getSurrogate().equals(surrogateEmail) &&
-                        s.getSurrogateCustomerId().equals(surrogateCustomerId)
-                );
-        } catch (final VitamUIException e) {
-            LOGGER.error("Cannot retrieve subrogations: {}", id, e);
+            casApi.validateSubrogation(
+                new SubrogationValidateRequestDto(
+                    superUserEmail,
+                    superUserCustomerId,
+                    surrogateEmail,
+                    surrogateCustomerId
+                )
+            );
+            canAuthenticate = true;
+        } catch (final RuntimeException e) {
+            LOGGER.debug(
+                "Subrogation refused for surrogate '{}' by '{}': {}",
+                surrogateEmail,
+                superUserEmail,
+                e.getMessage()
+            );
         }
-        LOGGER.debug("{} can surrogate: {}? -> {}", id, surrogate, canAuthenticate);
+        LOGGER.debug("{} can surrogate: {}? -> {}", superUserEmail, surrogate, canAuthenticate);
         return canAuthenticate;
     }
 

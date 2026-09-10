@@ -41,11 +41,11 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Initialize the subrogation flow by populating the flow scope with required
- * parameters.
- * This action replaces the former CheckSubrogationAction to align with CAS 7 /
- * OIDC requirements
- * and allows the standard webflow to handle view selection.
+ * Initialise le flux de subrogation en remplissant le flow scope avec les paramètres
+ * requis.
+ * Cette action remplace l'ancienne CheckSubrogationAction pour s'aligner sur les exigences CAS 7 /
+ * OIDC
+ * et permet au webflow standard de gérer la sélection de la vue.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -88,13 +88,7 @@ public class InitializeSubrogationAction extends AbstractAction {
                 flowScope.put(Constants.FLOW_LOGIN_EMAIL, superUserEmail);
                 flowScope.put(Constants.FLOW_LOGIN_CUSTOMER_ID, superUserCustomerId);
 
-                // Populate extra properties for CAS 7 / OIDC compatibility as used in v9.0
-                flowScope.put("userEmail", surrogateEmail);
-                flowScope.put("userCustomerId", surrogateCustomerId);
-                flowScope.put("superUserEmail", superUserEmail);
-                flowScope.put("superUserCustomerId", superUserCustomerId);
-
-                // Fetch surrogate customer info for display in subrogation validation mire
+                // Récupère les infos du client subrogé pour affichage dans la mire de validation de subrogation
                 CustomerDto surrogateCustomer = casApi
                     .getCustomersByIds(List.of(surrogateCustomerId))
                     .stream()
@@ -105,30 +99,23 @@ public class InitializeSubrogationAction extends AbstractAction {
 
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_CODE, surrogateCustomer.getCode());
                 flowScope.put(Constants.SHOW_SURROGATE_CUSTOMER_NAME, surrogateCustomer.getName());
-
-                return new Event(this, PROCEED);
             } catch (Exception e) {
                 LOGGER.error("Validation of subrogation parameters failed", e);
-                // If validation fails, we treat it as a normal login request
+                // Si la validation échoue, nous la traitons comme une requête de connexion normale
             }
         }
 
         return new Event(this, PROCEED);
     }
 
+    // Les paramètres arrivent non-null à ces contrôles (isNoneBlank protège l'appel).
     private void validateEmail(String email) {
-        if (email == null) {
-            throw new IllegalArgumentException("Null email");
-        }
         if (!EMAIL_VALID_REGEXP.matcher(email).matches()) {
             throw new IllegalArgumentException("email : '" + email + "' format is not allowed");
         }
     }
 
     private void validateCustomerId(String customerId) {
-        if (customerId == null) {
-            throw new IllegalArgumentException("Null customerId");
-        }
         if (!CUSTOMER_ID_VALIDATION_PATTERN.matcher(customerId).matches()) {
             throw new IllegalArgumentException("Invalid customerId: '" + customerId + "'");
         }

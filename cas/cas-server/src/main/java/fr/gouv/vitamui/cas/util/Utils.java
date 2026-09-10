@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.cas.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import jakarta.mail.internet.MimeMessage;
@@ -65,7 +68,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class.
+ * Classe utilitaire.
  *
  *
  */
@@ -74,6 +77,12 @@ import java.util.Map;
 public class Utils {
 
     private static final int BROWSER_SESSION_LIFETIME = -1;
+
+    // Longueur de la fin du jeton masquée lorsqu'une URL de réinitialisation de mot de passe est journalisée.
+    private static final int PASSWORD_RESET_URL_HIDDEN_TAIL = 15;
+
+    // Mapper partagé pour le jeton de réinitialisation de mot de passe CAS (un UserLoginModel à deux champs) ; configuration par défaut.
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String casToken;
 
@@ -122,6 +131,14 @@ public class Utils {
         return cookie;
     }
 
+    public String toJson(final Object value) throws JsonProcessingException {
+        return OBJECT_MAPPER.writeValueAsString(value);
+    }
+
+    public <T> T fromJson(final String json, final TypeReference<T> type) throws JsonProcessingException {
+        return OBJECT_MAPPER.readValue(json, type);
+    }
+
     public Object getAttributeValue(final Map<String, List<Object>> attributes, final String key) {
         final List<Object> attributeList = attributes.get(key);
         if (CollectionUtils.isNotEmpty(attributeList)) {
@@ -131,8 +148,8 @@ public class Utils {
     }
 
     public String sanitizePasswordResetUrl(final String url) {
-        if (url != null && url.length() > 15) {
-            return url.substring(0, url.length() - 15) + "...";
+        if (url != null && url.length() > PASSWORD_RESET_URL_HIDDEN_TAIL) {
+            return url.substring(0, url.length() - PASSWORD_RESET_URL_HIDDEN_TAIL) + "...";
         } else {
             return "\"passwordResetURL\"...";
         }
@@ -169,11 +186,11 @@ public class Utils {
             helper.setFrom(from);
             helper.setPriority(1);
 
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(cc)) {
+            if (StringUtils.isNotBlank(cc)) {
                 helper.setCc(cc);
             }
 
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(bcc)) {
+            if (StringUtils.isNotBlank(bcc)) {
                 helper.setBcc(bcc);
             }
             mailSender.send(message);

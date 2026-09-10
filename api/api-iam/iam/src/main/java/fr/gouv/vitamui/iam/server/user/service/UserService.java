@@ -109,15 +109,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
 
 import java.io.ByteArrayOutputStream;
@@ -151,7 +147,7 @@ import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDAT
 import static fr.gouv.vitamui.commons.logbook.common.EventType.EXT_VITAMUI_UPDATE_USER_INFO;
 
 /**
- * The service to read, create, update and delete the users.
+ * Le service pour lire, créer, mettre à jour et supprimer les utilisateurs.
  */
 @Getter
 @Setter
@@ -185,7 +181,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     private final CustomerRepository customerRepository;
     private final IamLogbookService iamLogbookService;
     private final UserConverter userConverter;
-    private final MongoTransactionManager mongoTransactionManager;
     private final LogbookService logbookService;
     private final AddressService addressService;
     private final ApplicationService applicationService;
@@ -206,7 +201,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final CustomerRepository customerRepository,
         final IamLogbookService iamLogbookService,
         final UserConverter userConverter,
-        final MongoTransactionManager mongoTransactionManager,
         final LogbookService logbookService,
         final AddressService addressService,
         final ApplicationService applicationService,
@@ -225,7 +219,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         this.customerRepository = customerRepository;
         this.iamLogbookService = iamLogbookService;
         this.userConverter = userConverter;
-        this.mongoTransactionManager = mongoTransactionManager;
         this.logbookService = logbookService;
         this.addressService = addressService;
         this.applicationService = applicationService;
@@ -247,7 +240,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * This method must be only used by the Authentification Service during the authentication process
+     * Cette méthode ne doit être utilisée que par le service d'authentification pendant le processus d'authentification
      */
     public UserDto findUserById(final String id) {
         return super.getOneByPassSecurity(id, Optional.empty());
@@ -261,11 +254,6 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         return convertFromEntityToDto(user);
     }
 
-    public List<UserDto> findUsersByEmail(final String email) {
-        List<User> users = getRepository().findAllByEmailIgnoreCase(email);
-        return users.stream().map(this::convertFromEntityToDto).collect(Collectors.toList());
-    }
-
     public AuthUserDto getMe() {
         return securityService.getUser();
     }
@@ -275,7 +263,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         final String message = "Unable to create user " + dto.getEmail() + " (" + dto.getCustomerId() + ")";
 
         if (UserTypeEnum.GENERIC != dto.getType()) {
-            //allow making generic users read Only
+            //permet de rendre les utilisateurs génériques en lecture seule
             checkSetReadonly(dto.isReadonly(), message);
         }
         checkCustomer(dto.getCustomerId(), message);
@@ -428,36 +416,15 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * User Creation.
-     * Email sent to user is not mandatory for user creation.
-     * Also we can't use {@link Transactional} because before sending an email, CAS check user existence and with the transaction the user isn't processed yet.
+     * Création d'utilisateur.
+     * L'e-mail envoyé à l'utilisateur n'est pas obligatoire pour la création d'utilisateur.
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public UserDto create(final UserDto userDto) {
-        UserDto createdUserDto = null;
-
-        TransactionStatus status = null;
-        if (mongoTransactionManager != null) {
-            final TransactionDefinition definition = new DefaultTransactionDefinition(
-                TransactionDefinition.PROPAGATION_REQUIRED
-            );
-            status = mongoTransactionManager.getTransaction(definition);
-        }
-
-        try {
-            createdUserDto = super.create(userDto);
-            iamLogbookService.createUserEvent(createdUserDto);
-
-            if (mongoTransactionManager != null) {
-                mongoTransactionManager.commit(status);
-            }
-        } catch (final Exception e) {
-            if (mongoTransactionManager != null) {
-                mongoTransactionManager.rollback(status);
-            }
-            throw e;
-        }
+        final UserDto createdUserDto = super.create(userDto);
+        iamLogbookService.createUserEvent(createdUserDto);
         userEmailService.sendCreationEmail(createdUserDto);
         return createdUserDto;
     }
@@ -479,7 +446,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         checkLevel(user.getLevel(), message);
 
         if (UserTypeEnum.GENERIC != dto.getType()) {
-            //allow making generic users read Only
+            //permet de rendre les utilisateurs génériques en lecture seule
             checkSetReadonly(dto.isReadonly(), message);
         }
         if (!StringUtils.equalsIgnoreCase(user.getEmail(), dto.getEmail())) {
@@ -506,70 +473,48 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * User Update.
-     * We can't use {@link Transactional} because before sending an email, CAS check user existence and with the transaction the user isn't processed yet.
+     * Mise à jour d'utilisateur.
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public UserDto update(final UserDto dto) {
         boolean sendMail = false;
-        UserDto updatedUser = null;
 
-        TransactionStatus status = null;
-        if (mongoTransactionManager != null) {
-            final TransactionDefinition definition = new DefaultTransactionDefinition(
-                TransactionDefinition.PROPAGATION_REQUIRED
-            );
-            status = mongoTransactionManager.getTransaction(definition);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        if (vitamContext != null) {
+            LOGGER.debug("Update User EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
 
-        try {
-            final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-            if (vitamContext != null) {
-                LOGGER.debug("Update User EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-            }
+        LOGGER.debug("Update {} {}", getObjectName(), dto);
+        beforeUpdate(dto);
+        final User entity = convertFromDtoToEntity(dto);
+        final String entityId = entity.getId();
+        final Optional<User> optExistingUser = getRepository().findById(entityId);
+        Assert.isTrue(
+            optExistingUser.isPresent(),
+            "Unable to update " + getObjectName() + ": no entity found with id: " + entityId
+        );
 
-            LOGGER.debug("Update {} {}", getObjectName(), dto);
-            beforeUpdate(dto);
-            final User entity = convertFromDtoToEntity(dto);
-            final String entityId = entity.getId();
-            final Optional<User> optExistingUser = getRepository().findById(entityId);
-            Assert.isTrue(
-                optExistingUser.isPresent(),
-                "Unable to update " + getObjectName() + ": no entity found with id: " + entityId
-            );
+        final User existingUser = optExistingUser.get();
+        entity.setPassword(existingUser.getPassword());
+        entity.setOldPasswords(existingUser.getOldPasswords());
 
-            final User existingUser = optExistingUser.get();
-            entity.setPassword(existingUser.getPassword());
-            entity.setOldPasswords(existingUser.getOldPasswords());
+        final UserStatusEnum existingStatus = existingUser.getStatus();
+        final UserStatusEnum newStatus = dto.getStatus();
+        if (statusEquals(newStatus, UserStatusEnum.ENABLED) && statusEquals(existingStatus, UserStatusEnum.DISABLED)) {
+            saveCurrentPasswordInOldPasswords(entity, entity.getPassword(), maxOldPassword);
+            entity.setPassword(null);
+            entity.setPasswordExpirationDate(OffsetDateTime.now());
+            entity.setNbFailedAttempts(0);
+            sendMail = true;
 
-            final UserStatusEnum existingStatus = existingUser.getStatus();
-            final UserStatusEnum newStatus = dto.getStatus();
-            if (
-                statusEquals(newStatus, UserStatusEnum.ENABLED) && statusEquals(existingStatus, UserStatusEnum.DISABLED)
-            ) {
-                saveCurrentPasswordInOldPasswords(entity, entity.getPassword(), maxOldPassword);
-                entity.setPassword(null);
-                entity.setPasswordExpirationDate(OffsetDateTime.now());
-                entity.setNbFailedAttempts(0);
-                sendMail = true;
-
-                final AuthUserDto authUserDto = securityService.getUser();
-                iamLogbookService.revokePasswordEvent(dto, authUserDto.getSuperUserIdentifier());
-            }
-
-            final User savedEntity = getRepository().save(entity);
-            updatedUser = convertFromEntityToDto(savedEntity);
-
-            if (mongoTransactionManager != null) {
-                mongoTransactionManager.commit(status);
-            }
-        } catch (final Exception e) {
-            if (mongoTransactionManager != null) {
-                mongoTransactionManager.rollback(status);
-            }
-            throw e;
+            final AuthUserDto authUserDto = securityService.getUser();
+            iamLogbookService.revokePasswordEvent(dto, authUserDto.getSuperUserIdentifier());
         }
+
+        final User savedEntity = getRepository().save(entity);
+        final UserDto updatedUser = convertFromEntityToDto(savedEntity);
 
         if (sendMail) {
             userEmailService.sendCreationEmail(updatedUser);
@@ -601,64 +546,42 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * User Patch.
-     * We can't use {@link Transactional} because before sending an email, CAS check user existence and with the transaction the user isn't processed yet.
+     * Patch d'utilisateur.
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public UserDto patch(final Map<String, Object> partialDto) {
         boolean sendMail = false;
-        UserDto dto = null;
 
-        TransactionStatus status = null;
-        if (mongoTransactionManager != null) {
-            final TransactionDefinition definition = new DefaultTransactionDefinition(
-                TransactionDefinition.PROPAGATION_REQUIRED
-            );
-            status = mongoTransactionManager.getTransaction(definition);
+        LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
+
+        // remplace l'e-mail par sa version en minuscules pendant la mise à jour
+        final String email = CastUtils.toString(partialDto.get("email"));
+        if (email != null) {
+            partialDto.put("email", email.toLowerCase());
+        }
+        final User entity = beforePatch(partialDto);
+        final UserStatusEnum existingStatus = entity.getStatus();
+        processPatch(entity, partialDto);
+        Assert.isTrue(
+            getRepository().existsById(entity.getId()),
+            "Unable to patch " + getObjectName() + ": no entity found with id: " + entity.getId()
+        );
+
+        final UserStatusEnum newStatus = entity.getStatus();
+        if (statusEquals(existingStatus, UserStatusEnum.DISABLED) && statusEquals(newStatus, UserStatusEnum.ENABLED)) {
+            entity.setPassword(null);
+            entity.setPasswordExpirationDate(OffsetDateTime.now());
+            entity.setNbFailedAttempts(0);
+            sendMail = true;
+
+            final AuthUserDto authUserDto = securityService.getUser();
+            iamLogbookService.revokePasswordEvent(entity, authUserDto.getSuperUserIdentifier());
         }
 
-        try {
-            LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
-
-            // replacing the email with the lowercase version during update
-            final String email = CastUtils.toString(partialDto.get("email"));
-            if (email != null) {
-                partialDto.put("email", email.toLowerCase());
-            }
-            final User entity = beforePatch(partialDto);
-            final UserStatusEnum existingStatus = entity.getStatus();
-            processPatch(entity, partialDto);
-            Assert.isTrue(
-                getRepository().existsById(entity.getId()),
-                "Unable to patch " + getObjectName() + ": no entity found with id: " + entity.getId()
-            );
-
-            final UserStatusEnum newStatus = entity.getStatus();
-            if (
-                statusEquals(existingStatus, UserStatusEnum.DISABLED) && statusEquals(newStatus, UserStatusEnum.ENABLED)
-            ) {
-                entity.setPassword(null);
-                entity.setPasswordExpirationDate(OffsetDateTime.now());
-                entity.setNbFailedAttempts(0);
-                sendMail = true;
-
-                final AuthUserDto authUserDto = securityService.getUser();
-                iamLogbookService.revokePasswordEvent(entity, authUserDto.getSuperUserIdentifier());
-            }
-
-            final User savedEntity = getRepository().save(entity);
-            dto = convertFromEntityToDto(savedEntity);
-
-            if (mongoTransactionManager != null) {
-                mongoTransactionManager.commit(status);
-            }
-        } catch (final Exception e) {
-            if (mongoTransactionManager != null) {
-                mongoTransactionManager.rollback(status);
-            }
-            throw e;
-        }
+        final User savedEntity = getRepository().save(entity);
+        final UserDto dto = convertFromEntityToDto(savedEntity);
 
         if (sendMail) {
             userEmailService.sendCreationEmail(dto);
@@ -886,8 +809,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     private User find(final String id, final String customerId, final String message) {
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
 
-        // We enforce session customerId (no cross customer allowed for user
-        // We make exception for cas user to be allowed for updating all users during provisioning process
+        // On impose le customerId de la session (pas de cross customer autorisé pour l'utilisateur
+        // On fait une exception pour l'utilisateur cas afin de l'autoriser à mettre à jour tous les utilisateurs pendant le processus de provisionnement
         if (!securityService.hasRole(ServicesData.ROLE_PROVISIONING_USER)) {
             Assert.isTrue(
                 StringUtils.equals(customerId, getSecurityService().getCustomerId()),
@@ -1211,10 +1134,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * Get levels matching the given criteria.
+     * Récupère les niveaux correspondant aux critères donnés.
      *
-     * @param criteriaJsonString criteria as json string
-     * @return Matching levels
+     * @param criteriaJsonString les critères sous forme de chaîne json
+     * @return Les niveaux correspondants
      */
     public List<String> getLevels(final Optional<String> criteriaJsonString) {
         final Document document = groupFields(criteriaJsonString, CommonConstants.LEVEL_ATTRIBUTE);
@@ -1327,8 +1250,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     /**
-     * If the user is not an admin, he can see only users with a sub LEVEL and himself
-     * Example : Users { id: 10, level: ROOT} can see only users with a LEVEL : ROOT..* and himself
+     * Si l'utilisateur n'est pas administrateur, il ne voit que les utilisateurs d'un LEVEL inférieur et lui-même
+     * Exemple : les utilisateurs { id: 10, level: ROOT} ne voient que les utilisateurs de LEVEL : ROOT..* et eux-mêmes
      *
      * @param query query
      */

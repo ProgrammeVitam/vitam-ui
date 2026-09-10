@@ -51,17 +51,18 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.ActionState;
 import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.History;
+import org.springframework.webflow.engine.Transition;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
 import java.util.Map;
 
 /**
- * A webflow configurer:
- * - to handle the change password action even if the user is already
- * authenticated
- * - with a username page
- * - with an optional customer selection page
- * - with a password page.
+ * Un configurateur de webflow :
+ * - pour gérer l'action de changement de mot de passe même si l'utilisateur est déjà
+ * authentifié
+ * - avec une page de nom d'utilisateur
+ * - avec une page facultative de sélection du client
+ * - avec une page de mot de passe.
  */
 public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
 
@@ -82,7 +83,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     public static final String TEMPLATE_CUSTOMER_FORM = "customerForm";
     public static final String TEMPLATE_EMAIL_FORM = "emailForm";
 
-    // FORMS FIELDS
+    // CHAMPS DES FORMULAIRES
     public static final String USERNAME = "username";
     public static final String PROCEED = "proceed";
     public static final String PASSWORD = "password";
@@ -114,7 +115,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK
         );
 
-        // CUSTO: instead of STATE_ID_GATEWAY_REQUEST_CHECK, send to
+        // CUSTO : au lieu de STATE_ID_GATEWAY_REQUEST_CHECK, rediriger vers
         // ACTION_STATE_CHECK_SUBROGATION
         createTransitionForState(
             action,
@@ -131,7 +132,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.STATE_ID_TERMINATE_SESSION
         );
 
-        // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to
+        // CUSTO : au lieu de STATE_ID_HAS_SERVICE_CHECK, rediriger vers
         // STATE_ID_TRIGGER_CHANGE_PASSWORD
         createTransitionForState(
             action,
@@ -169,17 +170,14 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_INIT_LOGIN_ACTION));
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 
-        // CUSTO: CasWebflowConstants.STATE_ID_REAL_SUBMIT becomes
+        // CUSTO : CasWebflowConstants.STATE_ID_REAL_SUBMIT devient
         // ACTION_STATE_LIST_CUSTOMERS
         val transition = createTransitionForState(
             state,
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
             ACTION_STATE_LIST_CUSTOMERS
         );
-        val attributes = transition.getAttributes();
-        attributes.put("bind", Boolean.TRUE);
-        attributes.put("validate", Boolean.TRUE);
-        attributes.put("history", History.INVALIDATE);
+        bindAndValidate(transition);
 
         createListCustomersAction(flow);
         createLoginCustomerFormView(flow);
@@ -191,7 +189,6 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     protected void createIntermediateSubmitAction(final Flow flow) {
         val action = createActionState(flow, ACTION_STATE_INTERMEDIATE_SUBMIT, "dispatcherAction");
         createTransitionForState(action, CasWebflowConstants.TRANSITION_ID_SUCCESS, VIEW_STATE_PASSWORD_FORM);
-        createTransitionForState(action, DispatcherAction.TRANSITION_SELECT_CUSTOMER, VIEW_STATE_LOGIN_CUSTOMER_FORM);
         createTransitionForState(
             action,
             CasWebflowConstants.TRANSITION_ID_STOP,
@@ -220,16 +217,21 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
             CasWebflowConstants.STATE_ID_REAL_SUBMIT
         );
-        val attributes = transition.getAttributes();
-        attributes.put("bind", Boolean.TRUE);
-        attributes.put("validate", Boolean.TRUE);
-        attributes.put("history", History.INVALIDATE);
+        bindAndValidate(transition);
 
         createTransitionForState(
             state,
             CasWebflowConstants.TRANSITION_ID_RESET_PASSWORD,
             CasWebflowConstants.STATE_ID_SEND_RESET_PASSWORD_ACCT_INFO
         );
+    }
+
+    // Une soumission de formulaire lie et valide le modèle, et ne revient jamais via l'historique du navigateur.
+    private static void bindAndValidate(final Transition transition) {
+        val attributes = transition.getAttributes();
+        attributes.put("bind", Boolean.TRUE);
+        attributes.put("validate", Boolean.TRUE);
+        attributes.put("history", History.INVALIDATE);
     }
 
     private void createListCustomersAction(final Flow flow) {
@@ -248,10 +250,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.TRANSITION_ID_SUBMIT,
             ACTION_STATE_SELECTED_CUSTOMER_SUBMIT
         );
-        val attributes = transition.getAttributes();
-        attributes.put("bind", Boolean.TRUE);
-        attributes.put("validate", Boolean.TRUE);
-        attributes.put("history", History.INVALIDATE);
+        bindAndValidate(transition);
     }
 
     private void createSelectedCustomerAction(final Flow flow) {
