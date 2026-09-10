@@ -14,7 +14,7 @@ spring:
         tags: vitamui, {{ vitamui_struct.vitamui_component }}
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
   mongodb:
-    uri: "mongodb://{{ mongodb.security.user }}:{{ mongodb.security.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.security.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+    uri: "mongodb://{{ mongodb.security.user }}:{{ mongodb.security.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.security.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}&appName=vitamui-security"
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml

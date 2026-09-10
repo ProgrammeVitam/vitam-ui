@@ -46,7 +46,7 @@ management:
 cas:
   server.prefix: https://dev.vitamui.com:8080/cas
   service-registry.mongo:
-    client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas
+    client-uri: mongodb://mongod_dbuser_cas:mongod_dbpwd_cas@localhost:27018/cas?appName=vitamui-cas
 
 # Root: iam-client - Internal VITAM-UI IAM service client
 iam-client:
