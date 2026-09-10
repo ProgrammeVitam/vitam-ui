@@ -63,18 +63,47 @@ function report(label, value) {
 // is what actually catches it. The try/catch is kept for whatever throws
 // synchronously, and an explicit await cannot be used instead: mongosh parses
 // the file as a plain script, where top level await is a syntax error.
+//
+// A refused command is not an error either: db.runCommand() hands back the raw
+// response document, {ok: 0, errmsg: "not authorized on admin..."}, without
+// throwing and without rejecting. Left alone that reads as a successful probe
+// whose every field happens to be missing, which is how an unreadable node ends
+// up reported as a healthy plain replica set. Anything carrying an "ok" other
+// than 1 is therefore turned into an unavailable probe. Collection helpers and
+// the wrappers below return arrays, numbers or plain objects with no "ok" field,
+// so they go through untouched.
 function probe(label, fn) {
     const unavailable = (error) => {
         print("  ! " + label + " unavailable: " + error.message);
         return null;
     };
 
+    const checkCommandOk = (result) => {
+        if (result && typeof result === "object" && result.ok !== undefined && result.ok !== 1) {
+            return unavailable(
+                new Error(result.errmsg || result.codeName || "command failed (ok=" + result.ok + ")")
+            );
+        }
+        return result;
+    };
+
     try {
         const result = fn();
-        return result && typeof result.catch === "function" ? result.catch(unavailable) : result;
+        return result && typeof result.then === "function"
+            ? result.then(checkCommandOk, unavailable)
+            : checkCommandOk(result);
     } catch (error) {
         return unavailable(error);
     }
+}
+
+// getParameter answers {parameterName: value, ok: 1}, so the value can only be
+// read once the probe has confirmed the command itself succeeded. Reading it
+// inside fn instead would hand back undefined on a refusal, which passes every
+// "!== null" guard downstream and turns into NaN a few lines later.
+function probeField(label, command, field) {
+    const response = probe(label, () => db.getSiblingDB("admin").runCommand(command));
+    return response ? response[field] : null;
 }
 
 function fail(message) {
@@ -97,7 +126,7 @@ const adminDb = db.getSiblingDB("admin");
 
 const hello = probe("hello", () => adminDb.runCommand({ hello: 1 }));
 if (hello) {
-    report("version", probe("version", () => adminDb.runCommand({ buildInfo: 1 }).version));
+    report("version", probeField("buildInfo", { buildInfo: 1 }, "version") || "(unknown)");
     report("replica set", hello.setName || "(none)");
     report("is primary", hello.isWritablePrimary === true);
     if (hello.isWritablePrimary !== true) {
@@ -106,6 +135,14 @@ if (hello) {
                 "so re-run this script against the primary before drawing conclusions."
         );
     }
+} else {
+    // Silence here would leave the whole topology section blank, which reads far
+    // too much like a node with nothing to report.
+    warn(
+        "hello could not be read, so neither the replica set this node belongs to " +
+            "nor its primary state is known. Every conclusion below is drawn without " +
+            "knowing whether the reaper is even expected to run here."
+    );
 }
 
 // probe() returns null on a command error, and an absent sharding section reads
@@ -172,14 +209,15 @@ const recordCache = serverStatus ? serverStatus.logicalSessionRecordCache : null
 // useful cycle happens after the node has been elected. A node that just
 // restarted legitimately shows no sessions collection and no refreshed entry,
 // so hold back the corresponding conclusions until a couple of cycles elapsed.
-const refreshMillisProbe = probe(
+const refreshMillisProbe = probeField(
     "logicalSessionRefreshMillis",
-    () => adminDb.runCommand({ getParameter: 1, logicalSessionRefreshMillis: 1 }).logicalSessionRefreshMillis
+    { getParameter: 1, logicalSessionRefreshMillis: 1 },
+    "logicalSessionRefreshMillis"
 );
 // Every timing conclusion below is measured against this interval. A server
 // started with a longer one than the 5 minute default would make them all wrong,
 // so an assumed value is reported as such and never concludes on its own.
-const refreshMillisKnown = refreshMillisProbe !== null && refreshMillisProbe !== undefined;
+const refreshMillisKnown = typeof refreshMillisProbe === "number";
 const refreshMillis = refreshMillisKnown ? refreshMillisProbe : 300000;
 const uptimeSeconds = serverStatus ? serverStatus.uptime : 0;
 const elapsedCycles = uptimeSeconds / (refreshMillis / 1000);
@@ -261,15 +299,20 @@ if (recordCache) {
                 "is running but doing nothing, so the cache can only grow."
         );
     }
-} else {
+} else if (serverStatus) {
     warn("logicalSessionRecordCache is not exposed by serverStatus on this node.");
+} else {
+    // Distinct from the case above on purpose: a server that does not expose the
+    // section is a known shape, a server nobody could read is an open question.
+    warn(
+        "serverStatus could not be read, so the session cache counters, the uptime " +
+            "and the open cursor metrics are all missing. Nothing below rules the " +
+            "reaper out; re-run with an account allowed to run serverStatus on admin."
+    );
 }
 
-const maxSessions = probe(
-    "maxSessions",
-    () => adminDb.runCommand({ getParameter: 1, maxSessions: 1 }).maxSessions
-);
-if (maxSessions !== null) {
+const maxSessions = probeField("maxSessions", { getParameter: 1, maxSessions: 1 }, "maxSessions");
+if (typeof maxSessions === "number") {
     report("maxSessions", maxSessions);
     if (recordCache && recordCache.activeSessionsCount) {
         const usage = (recordCache.activeSessionsCount / maxSessions) * 100;
@@ -334,11 +377,8 @@ if (collections !== null && collections.length === 0) {
     }
 }
 
-const ttlMonitor = probe(
-    "ttlMonitorEnabled",
-    () => adminDb.runCommand({ getParameter: 1, ttlMonitorEnabled: 1 }).ttlMonitorEnabled
-);
-if (ttlMonitor !== null) {
+const ttlMonitor = probeField("ttlMonitorEnabled", { getParameter: 1, ttlMonitorEnabled: 1 }, "ttlMonitorEnabled");
+if (typeof ttlMonitor === "boolean") {
     report("ttlMonitorEnabled", ttlMonitor);
     if (ttlMonitor === false) {
         fail("The TTL monitor is disabled, so no TTL index expires anything.");
