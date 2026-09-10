@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,72 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+/** Which lifecycle logbook (unit or object group) a raw event was fetched from. */
+export type LifecycleOrigin = 'UA' | 'GOT';
 
-import java.io.Serializable;
+/**
+ * One event (or sub-event) of the consolidated unit/object-group lifecycle history, rebuilt into a tree
+ * from the flat `evParentId` references returned by Vitam.
+ */
+export interface ConsolidatedLifecycleEvent {
+  evId: string;
+  evParentId: string;
+  evType: string;
+  evTypeProc: string;
+  evIdProc: string;
+  evDateTime: string;
+  outcome: string;
+  outDetail: string;
+  outMessg: string;
+  origin: LifecycleOrigin;
+  /** Parsed JSON content of evDetData, or null if evDetData is empty or not valid JSON. */
+  parsedDetail: unknown;
+  /** Raw evDetData content, kept as a fallback when it cannot be parsed as JSON. */
+  rawDetail: string;
+  hasDetail: boolean;
+  children: ConsolidatedLifecycleEvent[];
+}
 
-@Getter
-@Setter
-@ToString
-public class LogbookEventDto extends IdDto implements Serializable {
-
-    @JsonProperty("evId")
-    private String evId;
-
-    @JsonProperty("evIdReq")
-    private String evIdReq;
-
-    @JsonProperty("evParentId")
-    private String evParentId;
-
-    @JsonProperty("evIdProc")
-    private String evIdProc;
-
-    @JsonProperty("evType")
-    private String evType;
-
-    @JsonProperty("evTypeProc")
-    private String evTypeProc;
-
-    @JsonProperty("evDateTime")
-    private String evDateTime;
-
-    @JsonProperty("outcome")
-    private String outcome;
-
-    @JsonProperty("outDetail")
-    private String outDetail;
-
-    @JsonProperty("outMessg")
-    private String outMessg;
-
-    @JsonProperty("evDetData")
-    private String evDetData;
-
-    @JsonProperty("obId")
-    private String obId;
-
-    @JsonProperty("obIdReq")
-    private String obIdReq;
-
-    @JsonProperty("evIdAppSession")
-    private String evIdAppSession;
-
-    @JsonProperty("agId")
-    private String agId;
-
-    @JsonProperty("agIdApp")
-    private String agIdApp;
-
-    @JsonProperty("agIdExt")
-    private String agIdExt;
-
-    @JsonProperty("rightsStatementIdentifier")
-    private String rightsStatementIdentifier;
+/** One operation (identified by evIdProc/evTypeProc) grouping the lifecycle events it triggered. */
+export interface OperationLifecycleGroup {
+  evTypeProc: string;
+  evIdProc: string;
+  /** Date used to sort operations, taken from their most recent triggering event. */
+  date: string;
+  events: ConsolidatedLifecycleEvent[];
 }

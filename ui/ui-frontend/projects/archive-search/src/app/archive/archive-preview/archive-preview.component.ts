@@ -113,19 +113,9 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
   }
 
   selectedTabChangeEvent($event: MatTabChangeEvent) {
-    switch ($event.index) {
-      case 0:
-        this.isPanelextended = false;
-        this.backToNormalLateralPanel.emit();
-        break;
-      case 1:
-      case 2:
-      case 3:
-        this.isPanelextended = true;
-        this.showExtendedLateralPanel.emit();
-        break;
-    }
+    this.isPanelextended = $event.index !== 0;
     this.selectedIndex = $event.index;
+    (this.isPanelextended ? this.showExtendedLateralPanel : this.backToNormalLateralPanel).emit();
   }
 
   @HostListener('window:beforeunload', ['$event'])

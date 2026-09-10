@@ -1,5 +1,5 @@
-/**
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+/*
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2022)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
  * contact@programmevitam.fr
@@ -34,72 +34,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.dto;
+import { Component, computed, input, signal } from '@angular/core';
+import type { ConsolidatedLifecycleEvent } from '../archive-unit-lifecycle-history.model';
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+@Component({
+  selector: 'app-lifecycle-event-node',
+  templateUrl: './lifecycle-event-node.component.html',
+  styleUrls: ['./lifecycle-event-node.component.scss'],
+  standalone: false,
+})
+export class LifecycleEventNodeComponent {
+  event = input<ConsolidatedLifecycleEvent>();
+  isLastInList = input(false);
+  isFirstInList = input(false);
+  bridgeToNextRow = input(false);
 
-import java.io.Serializable;
+  childrenExpanded = signal(false);
+  detailExpanded = signal(false);
 
-@Getter
-@Setter
-@ToString
-public class LogbookEventDto extends IdDto implements Serializable {
+  hasVisibleChildren = computed(() => this.childrenExpanded() && !!this.event().children?.length);
 
-    @JsonProperty("evId")
-    private String evId;
+  suppressLine = computed(() => this.isLastInList() && !this.hasVisibleChildren() && !this.bridgeToNextRow());
 
-    @JsonProperty("evIdReq")
-    private String evIdReq;
+  bridgeRow = computed(() => this.bridgeToNextRow() && !this.hasVisibleChildren());
 
-    @JsonProperty("evParentId")
-    private String evParentId;
+  childBridgeToNextRow = computed(() => this.isLastInList() && this.bridgeToNextRow());
 
-    @JsonProperty("evIdProc")
-    private String evIdProc;
+  isWarning = computed(() => this.event().outcome === 'WARNING');
 
-    @JsonProperty("evType")
-    private String evType;
+  isKo = computed(() => this.event().outcome === 'KO' || this.event().outcome === 'FATAL');
 
-    @JsonProperty("evTypeProc")
-    private String evTypeProc;
+  detailText = computed(() => {
+    const event = this.event();
+    return event.parsedDetail !== null && event.parsedDetail !== undefined ? JSON.stringify(event.parsedDetail) : event.rawDetail;
+  });
 
-    @JsonProperty("evDateTime")
-    private String evDateTime;
+  hasMeaningfulDetail = computed(() => this.event().hasDetail && this.detailText() !== '{}');
 
-    @JsonProperty("outcome")
-    private String outcome;
+  toggleChildren(): void {
+    this.childrenExpanded.update((expanded) => !expanded);
+  }
 
-    @JsonProperty("outDetail")
-    private String outDetail;
-
-    @JsonProperty("outMessg")
-    private String outMessg;
-
-    @JsonProperty("evDetData")
-    private String evDetData;
-
-    @JsonProperty("obId")
-    private String obId;
-
-    @JsonProperty("obIdReq")
-    private String obIdReq;
-
-    @JsonProperty("evIdAppSession")
-    private String evIdAppSession;
-
-    @JsonProperty("agId")
-    private String agId;
-
-    @JsonProperty("agIdApp")
-    private String agIdApp;
-
-    @JsonProperty("agIdExt")
-    private String agIdExt;
-
-    @JsonProperty("rightsStatementIdentifier")
-    private String rightsStatementIdentifier;
+  toggleDetail(): void {
+    this.detailExpanded.update((expanded) => !expanded);
+  }
 }

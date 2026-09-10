@@ -37,9 +37,15 @@
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
+@Getter
+@Setter
+@ToString(callSuper = true)
 public class LogbookLifecycleDto extends LogbookEventDto {
 
     @JsonProperty("_id")

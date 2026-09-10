@@ -60,6 +60,7 @@ import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -251,6 +252,26 @@ public class ArchivesSearchController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find a ObjectGroup by id {} ", id);
         return archiveSearchService.findObjectById(id);
+    }
+
+    @GetMapping(RestApi.ARCHIVE_UNIT_LIFECYCLES + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
+    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(final @PathVariable("id") String id)
+        throws PreconditionFailedException, VitamClientException, InvalidParseOperationException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the unit lifecycle logbook for unit id {} ", id);
+        return archiveSearchService.findUnitLifeCyclesByUnitId(id);
+    }
+
+    @GetMapping(RestApi.OBJECT_GROUP_LIFECYCLES + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ARCHIVE_SEARCH_GET_ARCHIVE_SEARCH_ROLE)
+    public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(final @PathVariable("id") String id)
+        throws PreconditionFailedException, VitamClientException, InvalidParseOperationException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the object group lifecycle logbook for object group id {} ", id);
+        return archiveSearchService.findObjectGroupLifeCyclesByUnitId(id);
     }
 
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)

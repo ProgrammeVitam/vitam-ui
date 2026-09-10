@@ -1,0 +1,36 @@
+{
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 1,
+    "size": 1
+  },
+  "$results": [
+    {
+      "_id": "aeaqaaaaa4ecgoguawzpoam6kaj6m3yaaaca",
+      "_tenant": 1,
+      "_v": 0,
+      "evId": "aedqaaaaa6ecgoguawzpoam6kaj6pvqaaaaq",
+      "evType": "LFC.LFC_CREATION",
+      "evTypeProc": "INGEST",
+      "evDateTime": "2026-07-24T12:16:04.180",
+      "outcome": "OK",
+      "outDetail": "LFC.LFC_CREATION.OK",
+      "outMessg": "Succès de l'alimentation du journal du cycle de vie",
+      "events": [
+        {
+          "evId": "aedqaaaaa6ecgoguawzpoam6kaj6pvqaaaaq",
+          "evParentId": null,
+          "evType": "LFC.LFC_CREATION",
+          "evTypeProc": "INGEST",
+          "evDateTime": "2026-07-24T12:16:04.180",
+          "outcome": "OK",
+          "outDetail": "LFC.LFC_CREATION.OK",
+          "outMessg": "Succès de l'alimentation du journal du cycle de vie"
+        }
+      ]
+    }
+  ],
+  "$facetResults": [],
+  "$context": {}
+}

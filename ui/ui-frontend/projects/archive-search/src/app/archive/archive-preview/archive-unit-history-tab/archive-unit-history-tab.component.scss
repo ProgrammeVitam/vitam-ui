@@ -1,0 +1,45 @@
+.history-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--vitamui-primary);
+  padding: 5px 0;
+  margin-bottom: 8px;
+}
+
+.no-history {
+  color: var(--vitamui-grey-600);
+}
+
+.operation-group-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--vitamui-grey-900);
+}
+
+.operation-id-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  min-width: 0;
+}
+
+.operation-id {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 330px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  a {
+    color: var(--vitamui-secondary);
+  }
+}
+
+.event-column {
+  min-width: 0;
+}

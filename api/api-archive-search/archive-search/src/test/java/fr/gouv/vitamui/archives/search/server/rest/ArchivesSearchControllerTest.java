@@ -51,6 +51,7 @@ import fr.gouv.vitamui.commons.api.dtos.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.dtos.VitamUiOntologyDto;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.PersistentIdentifierResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -360,6 +361,42 @@ class ArchivesSearchControllerTest extends ApiArchiveSearchControllerTest<IdDto>
 
         // Then
         verify(archiveSearchService, times(1)).findObjectsByPersistentIdentifier(arkId);
+        assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testFindUnitLifeCyclesByUnitId()
+        throws PreconditionFailedException, VitamClientException, InvalidParseOperationException {
+        // Given
+        final String unitId = "aeaqaaaaa4ecgoguawzpoam6kaj6m3yaaaca";
+        final LogbookLifeCycleResponseDto expectedResponse = new LogbookLifeCycleResponseDto();
+
+        // When
+        Mockito.when(archiveSearchService.findUnitLifeCyclesByUnitId(unitId)).thenReturn(expectedResponse);
+        final LogbookLifeCycleResponseDto response = archivesSearchController.findUnitLifeCyclesByUnitId(unitId);
+
+        // Then
+        verify(archiveSearchService, times(1)).findUnitLifeCyclesByUnitId(unitId);
+        assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void testFindObjectGroupLifeCyclesByUnitId()
+        throws PreconditionFailedException, VitamClientException, InvalidParseOperationException {
+        // Given
+        final String objectGroupId = "aebqaaaaacec2k2dac3ssam7lpe5k4qaaaba";
+        final LogbookLifeCycleResponseDto expectedResponse = new LogbookLifeCycleResponseDto();
+
+        // When
+        Mockito.when(archiveSearchService.findObjectGroupLifeCyclesByUnitId(objectGroupId)).thenReturn(
+            expectedResponse
+        );
+        final LogbookLifeCycleResponseDto response = archivesSearchController.findObjectGroupLifeCyclesByUnitId(
+            objectGroupId
+        );
+
+        // Then
+        verify(archiveSearchService, times(1)).findObjectGroupLifeCyclesByUnitId(objectGroupId);
         assertEquals(response, expectedResponse);
     }
 }

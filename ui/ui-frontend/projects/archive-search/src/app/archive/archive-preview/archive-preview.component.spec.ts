@@ -227,13 +227,13 @@ describe('ArchivePreviewComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 4 mat-tab', () => {
+    it('should have 5 mat-tab', () => {
       // When
       const nativeElement = fixture.nativeElement;
       const matTabElements = nativeElement.querySelectorAll('mat-tab');
 
       // Then
-      expect(matTabElements.length).toEqual(4);
+      expect(matTabElements.length).toEqual(5);
     });
 
     it('should have 1 mat-tab-group', () => {

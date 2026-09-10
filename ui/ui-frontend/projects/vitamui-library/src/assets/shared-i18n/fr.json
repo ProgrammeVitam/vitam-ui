@@ -2369,6 +2369,9 @@
     "CHECK_HEADER.KO": "Échec de la vérification générale du bordereau de transfert",
     "STP_IMPORT_INGEST_CONTRACT.PROFILE_NOT_FOUND.KO": "Échec de l'import du contrat d'entrée : profil d'archivage non trouvé",
     "LFC.UNIT_DETACHMENT": "Modification d'arborescence de l'unité archivistique",
+    "LFC.UNIT_DETACHMENT.OK": "Succès du détachement de l'unité archivistique",
+    "LFC.UNIT_ATTACHMENT": "Rattachement de l'unité archivistique",
+    "LFC.UNIT_ATTACHMENT.OK": "Succès du rattachement de l'unité archivistique",
     "ELIMINATION_ACTION_REPORT_GENERATION.WARNING": "Avertissement lors de la de génération du rapport d'élimination définitive des unités archivistiques",
     "LFC.CHECK_UNIT_SCHEMA.CONSISTENCY": "Vérification de la cohérence entre les champs Date de début et Date de fin",
     "OG_OBJECTS_FORMAT_CHECK.UNKNOWN.KO": "Échec de l'identification des formats : le format de ou des objet(s) ne peut pas être identifié",
@@ -3190,7 +3193,9 @@
     "CHECK_DATAOBJECTPACKAGE.CHECK_MANIFEST_OBJECTNUMBER.INVALID_URI.KO": "Au moins un objet déclare une URI à laquelle ne correspond pas de fichier ou déclare une URI déjà utilisée par un autre objet",
     "LFC.CHECK_ARCHIVE_UNIT_PROFILE.INVALID_AU_PROFILE.KO": "Échec de la vérification de la conformité aux profils d'unité archivistique : profil d'unité archivistique non conforme",
     "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE": "Vérification de la taille d'un fichier binaire",
+    "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE.OK": "Succès de la vérification de la taille du fichier binaire",
     "LFC.CHECK_OBJECT_SIZE": "Vérification de la taille des fichiers",
+    "LFC.CHECK_OBJECT_SIZE.OK": "Succès de la vérification de la taille des fichiers",
     "CHECK_OBJECT_SIZE.CHECK_SIZE": "Vérification de la taille d'un fichier binaire",
     "CHECK_OBJECT_SIZE.OK": "Succès de la vérification de la taille des fichiers",
     "CHECK_OBJECT_SIZE.KO": "Échec de la vérification de la taille des fichiers",
@@ -3874,6 +3879,10 @@
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_UNITS.KO": "Échec du processus de réattribution du service producteur des unités archivistiques",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_UNITS.WARNING": "Avertissement lors du processus de réattribution du service producteur des unités archivistiques",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_UNITS.FATAL": "Erreur technique lors du processus de réattribution du service producteur des unités archivistiques",
+    "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_OBJECT_GROUPS": "Processus de réattribution du service producteur des groupes d'objets",
+    "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_OBJECT_GROUPS.OK": "Succès du processus de réattribution des services producteurs des groupes d'objets",
+    "LFC.DELETE_GOT_VERSIONS_ACTION": "Suppression des versions des groupes d'objets",
+    "LFC.DELETE_GOT_VERSIONS_ACTION.OK": "Succès de la suppression des versions des groupes d'objets",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_CHILD_UNITS": "Processus de réattribution des services producteurs des unités archivistiques héritières",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_CHILD_UNITS.STARTED": "Début du processus de réattribution des services producteurs des unités archivistiques héritières",
     "LFC.ORIGINATING_AGENCY_REASSIGNMENT_UPDATE_CHILD_UNITS.STARTED.OK": "Succès du début du processus de réattribution des services producteurs des unités archivistiques héritières",
@@ -4063,12 +4072,27 @@
         "USAGE": "Usage",
         "USAGE_VERSION": "Version d'usage",
         "PHYSICAL_ID": "Identifiant de l'objet physique",
-        "PhysicalDimensions": "CARACTÉRISTIQUES PHYSIQUES"
+        "PhysicalDimensions": "CARACTÉRISTIQUES PHYSIQUES",
+        "SHOW_HIDE_DETAIL": "Voir/Masquer le détail"
       },
       "TABS": {
         "INFORMATIONS": "Informations",
         "OBJECTS": "Objets",
-        "RULES": "Règles"
+        "RULES": "Règles",
+        "HISTORY": "Historique"
+      },
+      "HISTORY": {
+        "TITLE": "Journaux du cycle de vie de l'unité archivistique et du groupe d'objets techniques",
+        "OPERATION_COLUMN": "Opération",
+        "EVENT_COLUMN": "Événement",
+        "JOURNAL_COLUMN": "Journal",
+        "JOURNAL_UNIT": "Cycle de vie de l'unité archivistique",
+        "JOURNAL_OBJECT_GROUP": "Cycle de vie du groupe d'objets",
+        "OUTCOME_OK": "Succès",
+        "OUTCOME_WARNING": "Avertissement",
+        "OUTCOME_KO": "Échec",
+        "ACCESS_OPERATIONS_LOG": "Accéder au journal des opérations",
+        "LOAD_ERROR": "Une erreur est survenue lors du chargement de l'historique de l'unité archivistique."
       }
     },
     "ARCHIVE_UNIT_RULES_DETAILS": {

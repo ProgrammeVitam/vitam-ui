@@ -38,6 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import type { ApiEvent } from 'vitamui-library';
 import {
   ApiUnitObject,
   ArchiveUnit,
@@ -294,5 +295,25 @@ export class ArchiveApiService extends PaginatedHttpClient<any> {
    */
   countObjectGroups(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<number> {
     return this.http.post<number>(`${this.apiUrl}/preservation/object-groups-count`, criteriaDto, { headers });
+  }
+
+  /**
+   * Gets the lifecycle logbook of an archive unit.
+   *
+   * @param unitId the archive unit id.
+   * @param headers optionnal headers.
+   */
+  getUnitLifecycles(unitId: string, headers?: HttpHeaders): Observable<{ $results: ApiEvent[] }> {
+    return this.http.get<{ $results: ApiEvent[] }>(`${this.apiUrl}/archiveunit/unitlifecycles/${unitId}`, { headers });
+  }
+
+  /**
+   * Gets the lifecycle logbook of an object group.
+   *
+   * @param objectGroupId the object group id.
+   * @param headers optionnal headers.
+   */
+  getObjectGroupLifecycles(objectGroupId: string, headers?: HttpHeaders): Observable<{ $results: ApiEvent[] }> {
+    return this.http.get<{ $results: ApiEvent[] }>(`${this.apiUrl}/object/objectslifecycles/${objectGroupId}`, { headers });
   }
 }

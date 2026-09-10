@@ -52,9 +52,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
-import { AgenciesModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { AgenciesModule, DiscussionIconComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitDescriptionTabComponent } from './archive-preview/archive-unit-description-tab/archive-unit-description-tab.component';
+import { ArchiveUnitHistoryTabComponent } from './archive-preview/archive-unit-history-tab/archive-unit-history-tab.component';
+import { LifecycleEventNodeComponent } from './archive-preview/archive-unit-history-tab/lifecycle-event-node/lifecycle-event-node.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-preview/archive-unit-objects-details-tab/archive-unit-objects-details-tab.component';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
@@ -119,6 +121,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUILibraryModule,
     MatTableModule,
     TranslatePipe,
+    DiscussionIconComponent,
   ],
   declarations: [
     AddManagementRulesComponent,
@@ -128,6 +131,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     ArchiveSearchComponent,
     ArchiveSearchRulesFacetsComponent,
     ArchiveUnitDescriptionTabComponent,
+    ArchiveUnitHistoryTabComponent,
     ArchiveUnitInformationTabComponent,
     ArchiveUnitObjectsDetailsTabComponent,
     ArchiveUnitRulesComponent,
@@ -141,6 +145,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     DipRequestCreateComponent,
     FilingHoldingSchemeComponent,
     LeavesTreeComponent,
+    LifecycleEventNodeComponent,
     ManagementRulesComponent,
     SearchAccessRulesFacetsComponent,
     SearchAppraisalRulesFacetsComponent,
