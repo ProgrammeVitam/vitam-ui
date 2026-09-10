@@ -63,5 +63,6 @@
       "order": 5
     }
   ],
-  "REASSIGNMENT_ENABLED": false
+  "REASSIGNMENT_ENABLED": false,
+  "NON_SORTABLE_FIELDS": { "Unit": ["Title"] }
 }

@@ -76,4 +76,7 @@
   {% if (vitamui_struct.vitamui_component == "ui-archive-search") %}
   ,"REASSIGNMENT_ENABLED": {{ vitamui.ui_archive_search.reassignment_enabled | default(false) | bool | lower }}
   {% endif %}
+  {% if (vitamui_struct.vitamui_component in ["ui-archive-search", "ui-collect"]) %}
+  ,"NON_SORTABLE_FIELDS": {{ vitamui_struct.non_sortable_fields | default({'Unit': ['Title']}) | to_json }}
+  {% endif %}
 }

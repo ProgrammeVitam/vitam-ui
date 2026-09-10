@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.commons.api.dsl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -36,6 +37,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.QueryProjection;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.utils.NonSortableFields;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,6 +68,9 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 public class VitamQueryHelper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VitamQueryHelper.class);
+
+    private static final String FILTER = "$filter";
+    private static final String ORDER_BY = "$orderby";
 
     public static void addParameterCriteria(
         BooleanQuery query,
@@ -239,5 +245,35 @@ public class VitamQueryHelper {
 
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
+    }
+
+    /**
+     * Sorting on an analyzed (text) field is very expensive in Elasticsearch: it forces the use of fielddata,
+     * which loads the whole field into heap memory and can saturate it at scale (see bug #16651).
+     * <p>
+     * This method strips the {@code $orderby} entries from the final DSL for fields blocked in the configuration
+     * ({@link NonSortableFields}) for the given {@code collection}, before the query is sent to Vitam. If
+     * {@code $orderby} becomes empty after this cleanup, it is removed entirely.
+     * <p>
+     */
+    public static void stripNonSortableOrderBy(final String collection, final JsonNode dslQuery) {
+        final Set<String> blocklist = NonSortableFields.getNonSortableFields(collection);
+        if (blocklist.isEmpty() || dslQuery == null || !dslQuery.hasNonNull(FILTER)) {
+            return;
+        }
+        final JsonNode filter = dslQuery.get(FILTER);
+        if (!filter.isObject() || !filter.hasNonNull(ORDER_BY) || !filter.get(ORDER_BY).isObject()) {
+            return;
+        }
+        final ObjectNode orderBy = (ObjectNode) filter.get(ORDER_BY);
+        final Iterator<String> fields = orderBy.fieldNames();
+        while (fields.hasNext()) {
+            if (blocklist.contains(fields.next())) {
+                fields.remove();
+            }
+        }
+        if (orderBy.isEmpty()) {
+            ((ObjectNode) filter).remove(ORDER_BY);
+        }
     }
 }
