@@ -130,7 +130,7 @@
           type="submit"
           class="btn primary mr-4"
           [disabled]="
-            ruleDetailsForm.untouched ||
+            disabledControl ||
             !ruleDetailsForm.valid ||
             (ruleDetailsForm.dirty && ruleDetailsForm.errors && ruleDetailsForm.errors['mustUpdateRuleOrStartDate'])
           "

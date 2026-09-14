@@ -37,7 +37,7 @@
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Observable, combineLatest, of, timer } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { RuleCategoryAction } from '../models/ruleAction.interface';
@@ -84,21 +84,24 @@ export class ManagementRulesValidatorService {
   uniquePreventRuleId(codeToIgnore?: string): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
-        filter(() => control.value),
-        switchMap(() => (control.value !== codeToIgnore ? this.filterPreventRulesId(control.value) : of(false))),
+        switchMap(() => (control.value && control.value !== codeToIgnore ? this.filterPreventRulesId(control.value) : of(false))),
         take(1),
         map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null)),
+        catchError(() => of(null)),
       );
     };
   }
 
-  uniqueRuleId(codeToIgnore?: string): AsyncValidatorFn {
+  uniqueRuleId(codeToIgnore?: string | (() => string)): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
-        filter(() => control.value),
-        switchMap(() => (control.value !== codeToIgnore ? this.filterRuleActions(control.value) : of(false))),
+        switchMap(() => {
+          const ignored = typeof codeToIgnore === 'function' ? codeToIgnore() : codeToIgnore;
+          return control.value && control.value !== ignored ? this.filterRuleActions(control.value) : of(false);
+        }),
         take(1),
         map((exists: boolean) => (exists ? { uniqueRuleId: true } : null)),
+        catchError(() => of(null)),
       );
     };
   }
@@ -106,18 +109,17 @@ export class ManagementRulesValidatorService {
   checkRuleIdExistence(ruleIdToIgnore?: string): AsyncValidatorFn {
     return (control: AbstractControl) =>
       timer(this.debounceTime).pipe(
-        filter(() => control.value),
-        switchMap(() => this.managementRulesSharedDataService.getRuleCategory()),
-        switchMap((ruleCategory) => {
-          const properties: any = {
-            ruleId: control.value,
-            ruleType: ruleCategory,
-          };
+        switchMap(() => {
+          if (!control.value || control.value === ruleIdToIgnore) return of(true);
 
-          return control.value !== ruleIdToIgnore ? this.ruleService.existsProperties(properties) : of(false);
+          return this.managementRulesSharedDataService.getRuleCategory().pipe(
+            switchMap((ruleCategory) => this.ruleService.existsProperties({ ruleId: control.value, ruleType: ruleCategory })),
+            take(1),
+          );
         }),
         take(1),
         map((exists: boolean) => (exists ? null : { ruleIdExists: true })),
+        catchError(() => of(null)),
       );
   }
 }
