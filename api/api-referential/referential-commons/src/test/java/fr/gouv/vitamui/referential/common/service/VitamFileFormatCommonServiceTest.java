@@ -44,19 +44,27 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
+import fr.gouv.vitam.common.error.VitamError;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.FileFormatModel;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.InputStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -122,6 +130,53 @@ class VitamFileFormatCommonServiceTest {
         assertThatCode(() -> vitamFileFormatCommonService.findFileFormats(vitamContext, select)).isInstanceOf(
             VitamClientException.class
         );
+    }
+
+    @Test
+    void importFileFormats_should_return_response_when_vitamclient_created() throws Exception {
+        VitamContext vitamContext = new VitamContext(0);
+        MockMultipartFile file = new MockMultipartFile("file", "formats.xml", "text/xml", "<xml/>".getBytes());
+
+        when(adminExternalClient.createFormats(eq(vitamContext), any(InputStream.class), eq("formats.xml"))).thenReturn(
+            new RequestResponseOK<>().setHttpCode(201)
+        );
+
+        assertThat(
+            vitamFileFormatCommonService.importFileFormats(vitamContext, "formats.xml", file).getStatus()
+        ).isEqualTo(201);
+    }
+
+    @Test
+    void importFileFormats_should_throw_BadRequestException_with_vitam_description_when_vitamclient_400()
+        throws Exception {
+        VitamContext vitamContext = new VitamContext(0);
+        MockMultipartFile file = new MockMultipartFile("file", "formats.xml", "text/xml", "<xml/>".getBytes());
+        String parsingError = "Invalid xml file format: Attribute 'PUID' must appear on element 'FileFormat'.";
+
+        when(adminExternalClient.createFormats(eq(vitamContext), any(InputStream.class), eq("formats.xml"))).thenReturn(
+            new VitamError<>("020020")
+                .setHttpCode(400)
+                .setMessage("Admin external bad request error")
+                .setDescription(parsingError)
+        );
+
+        assertThatCode(() -> vitamFileFormatCommonService.importFileFormats(vitamContext, "formats.xml", file))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(parsingError);
+    }
+
+    @Test
+    void importFileFormats_should_throw_when_vitamclient_500() throws Exception {
+        VitamContext vitamContext = new VitamContext(0);
+        MockMultipartFile file = new MockMultipartFile("file", "formats.xml", "text/xml", "<xml/>".getBytes());
+
+        when(adminExternalClient.createFormats(eq(vitamContext), any(InputStream.class), eq("formats.xml"))).thenReturn(
+            new VitamError<>("020000").setHttpCode(500).setMessage("Internal error")
+        );
+
+        assertThatCode(
+            () -> vitamFileFormatCommonService.importFileFormats(vitamContext, "formats.xml", file)
+        ).isInstanceOf(InternalServerException.class);
     }
 
     @Test

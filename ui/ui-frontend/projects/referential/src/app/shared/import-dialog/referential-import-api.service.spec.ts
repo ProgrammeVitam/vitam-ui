@@ -34,12 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { ReferentialImportService } from './referential-import.service';
+import { ReferentialImportInvalidFileError, ReferentialTypes } from './import-dialog-param.interface';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 describe('ReferentialImportService', () => {
   beforeEach(() =>
@@ -54,8 +56,37 @@ describe('ReferentialImportService', () => {
     }),
   );
 
+  afterEach(() => TestBed.inject(HttpTestingController).verify());
+
   it('should be created', () => {
     const service: ReferentialImportService = TestBed.inject(ReferentialImportService);
     expect(service).toBeTruthy();
+  });
+
+  describe('importReferential', () => {
+    const file = new File(['<xml/>'], 'formats.xml');
+
+    it('should map an HTTP 400 to a ReferentialImportInvalidFileError carrying the backend message', async () => {
+      const service = TestBed.inject(ReferentialImportService);
+      const detail = "Invalid xml file format: Attribute 'PUID' must appear on element 'FileFormat'.";
+
+      const result = firstValueFrom(service.importReferential(ReferentialTypes.FILE_FORMAT, file));
+      TestBed.inject(HttpTestingController)
+        .expectOne('/fake-api/fileformat/import')
+        .flush(JSON.stringify({ status: 400, message: detail }), { status: 400, statusText: 'Bad Request' });
+
+      await expect(result).rejects.toEqual(new ReferentialImportInvalidFileError(detail));
+    });
+
+    it('should propagate other HTTP errors unchanged', async () => {
+      const service = TestBed.inject(ReferentialImportService);
+
+      const result = firstValueFrom(service.importReferential(ReferentialTypes.FILE_FORMAT, file));
+      TestBed.inject(HttpTestingController)
+        .expectOne('/fake-api/fileformat/import')
+        .flush('failure', { status: 500, statusText: 'Internal Server Error' });
+
+      await expect(result).rejects.toMatchObject({ status: 500 });
+    });
   });
 });
