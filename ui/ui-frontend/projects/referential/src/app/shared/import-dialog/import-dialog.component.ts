@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FileTypes } from 'projects/vitamui-library/src/public-api';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApplicationId, VitamUISnackBarService } from 'vitamui-library';
-import { ImportDialogParam, ImportError } from './import-dialog-param.interface';
+import { ImportDialogParam, ImportError, ReferentialImportInvalidFileError } from './import-dialog-param.interface';
 import { ReferentialImportService } from './referential-import.service';
 
 @Component({
@@ -86,9 +87,18 @@ export class ImportDialogComponent implements OnDestroy {
 
           this.dialogRef.close({ successfulImport: true });
         },
-        error: (error) => {
+        error: (error: unknown) => {
+          if (error instanceof ReferentialImportInvalidFileError) {
+            // The file was rejected before any operation was created: no link to the operations log
+            this.snackBarService.open({
+              message: 'SNACKBAR.IMPORT_REFERENTIAL_INVALID_FILE',
+              translateParams: { detail: error.detail },
+              icon: this.dialogParams.iconMessage,
+            });
+            return;
+          }
           let showSnackbar = true;
-          if (error.error) {
+          if (error instanceof HttpErrorResponse && error.error) {
             const errorJson = JSON.parse(error.error);
             if (errorJson.args) {
               (errorJson.args as []).forEach((arg) => {

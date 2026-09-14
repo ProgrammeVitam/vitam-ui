@@ -209,7 +209,22 @@ public class VitamFileFormatCommonService {
     public RequestResponse<?> importFileFormats(VitamContext vitamContext, String fileName, MultipartFile file)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         LOGGER.debug("Import file format file {}", fileName);
-        return adminExternalClient.createFormats(vitamContext, file.getInputStream(), fileName);
+        RequestResponse<?> response = adminExternalClient.createFormats(vitamContext, file.getInputStream(), fileName);
+        if (response.getStatus() == HttpStatus.BAD_REQUEST.value()) {
+            // The file was rejected by Vitam (e.g. invalid XML): no operation has been created in the logbook,
+            // so we propagate the explicit parsing error returned by Vitam instead of the generic error code message
+            throw new BadRequestException(extractVitamErrorDescription(response));
+        }
+        VitamRestUtils.checkResponse(response);
+        return response;
+    }
+
+    private static String extractVitamErrorDescription(RequestResponse<?> response) {
+        JsonNode description = response.toJsonNode().get("description");
+        if (description != null && !description.isNull() && !description.asText().isBlank()) {
+            return description.asText();
+        }
+        return "Invalid file format referential file";
     }
 
     private RequestResponse<?> importFileFormats(
