@@ -77,9 +77,14 @@ export class AuditPreviewComponent implements OnInit {
 
   accessContractId: string;
   hasReport: Signal<boolean> = computed(() => {
-    if (this.audit().type === 'EVIDENCE_AUDIT') {
+    const audit = this.audit();
+    if (audit.type === 'EVIDENCE_AUDIT') {
       // Evidence audit may not have a report if "data" has "No report generated" in it.
-      return !this.audit().events.some((e) => /No report generated/i.test(e.data));
+      return !audit.events.some((e) => /No report generated/i.test(e.data));
+    }
+    if (audit.type === AuditOperation.TRACEABILITY_CHAIN_AUDIT) {
+      // Chain audit report only exists once the reporting sub-step has completed successfully.
+      return audit.events.some((e) => /REPORTING$/i.test(e.type) && e.outcome === 'OK');
     }
     return true;
   });
