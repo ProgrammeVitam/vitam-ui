@@ -78,6 +78,7 @@ export class EllipsisDirective implements OnInit, AfterViewInit, OnDestroy {
   private isTruncated = false;
   private overlayRef: OverlayRef;
   private tooltipRef: ComponentRef<CommonTooltipComponent>;
+  private isConnectedInterval: ReturnType<typeof setInterval>;
 
   ngOnInit(): void {
     this.domElement = this.elementRef.nativeElement;
@@ -109,6 +110,7 @@ export class EllipsisDirective implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @HostListener('mouseleave')
+  @HostListener('click')
   onMouseLeave() {
     this.closeTooltip();
   }
@@ -124,10 +126,15 @@ export class EllipsisDirective implements OnInit, AfterViewInit, OnDestroy {
       this.tooltipRef = this.overlayRef.attach(new ComponentPortal(CommonTooltipComponent));
       this.tooltipRef.instance.text = this.domElement.textContent;
       this.tooltipRef.instance.position = 'BOTTOM';
+
+      this.isConnectedInterval = setInterval(() => {
+        if (!this.domElement.isConnected) this.closeTooltip();
+      }, 100);
     }
   }
 
   private closeTooltip() {
+    clearInterval(this.isConnectedInterval);
     if (this.overlayRef?.hasAttached()) this.overlayRef.detach();
   }
 
