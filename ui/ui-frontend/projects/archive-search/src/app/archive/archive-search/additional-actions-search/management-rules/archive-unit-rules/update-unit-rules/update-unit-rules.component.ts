@@ -157,7 +157,10 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
         oldRule: [
           null,
           [Validators.required, ManagementRuleValidators.ruleIdPattern],
-          [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
+          [
+            this.managementRulesValidatorService.uniqueRuleId(() => this.lastRuleId),
+            this.managementRulesValidatorService.checkRuleIdExistence(),
+          ],
         ],
         newRule: [null, [ManagementRuleValidators.ruleIdPattern], [this.managementRulesValidatorService.checkRuleIdExistence()]],
         startDate: [null],
@@ -198,7 +201,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
         filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
-        this.ruleDetailsForm.patchValue(this.previousRuleDetails);
+        this.ruleDetailsForm.patchValue(this.previousRuleDetails, { emitEvent: false });
       });
   }
 
