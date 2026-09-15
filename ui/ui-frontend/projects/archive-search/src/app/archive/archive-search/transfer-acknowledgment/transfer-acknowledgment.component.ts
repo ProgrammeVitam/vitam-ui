@@ -105,7 +105,10 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
     this.tenantIdentifier = this.data.tenantIdentifier;
   }
 
-  atrContentValidator = async (file: File): Promise<FileValidationErrors> => {
+  atrContentValidator = async (file: File, hasErrors?: boolean): Promise<FileValidationErrors> => {
+    // Skip reading the file content when a previous validator (extension, max size) already rejected it
+    if (hasErrors) return null;
+
     const xmlFileContent = await readFileContent(file);
 
     const parser = new XMLParser();
