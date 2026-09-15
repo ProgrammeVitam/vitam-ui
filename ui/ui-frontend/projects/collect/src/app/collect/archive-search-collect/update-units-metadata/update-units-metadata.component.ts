@@ -77,7 +77,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   updateUnitsMetadata() {
     const fileToUpload = this.fileControl.value[0];
     this.isLoadingData = true;
-    this.snackBarService.open({
+    const waitSnackBarRef = this.snackBarService.open({
       message: 'COLLECT.UPDATE_UNITS_METADATA.WAIT_MESSAGE',
       duration: 100_000,
     });
@@ -96,6 +96,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
         error: (error: any) => {
           this.isLoadingData = false;
           this.dialogRef.close(true);
+          waitSnackBarRef.then((snackBarRef) => snackBarRef.dismiss());
           this.logger.error('Error message :', error);
           return throwError(error);
         },
