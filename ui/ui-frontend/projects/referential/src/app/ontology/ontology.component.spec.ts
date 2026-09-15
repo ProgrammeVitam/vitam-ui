@@ -40,7 +40,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, SchemaService, SecurityService } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SchemaService, SecurityService, StartupService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';
@@ -83,6 +83,7 @@ describe('OntologyComponent', () => {
       providers: [
         { provide: OntologyService, useValue: {} },
         { provide: SchemaService, useValue: {} },
+        { provide: StartupService, useValue: { getConfigStringValue: (_param: string) => '' } },
         {
           provide: SecurityService,
           useValue: {
