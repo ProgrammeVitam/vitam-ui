@@ -121,6 +121,9 @@ describe('ArchiveSearchCollectComponent', () => {
       queryParamMap: of({ keys: Object.keys(queryParams) }),
       data: of(),
       snapshot: {
+        data: {
+          appId: 'SomeAppId',
+        },
         queryParamMap: {
           keys: Object.keys(queryParams),
         },

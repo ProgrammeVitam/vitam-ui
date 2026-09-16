@@ -38,7 +38,7 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { InjectorModule, LoggerModule, SchemaService, SecurityService } from 'vitamui-library';
+import { InjectorModule, LoggerModule, SchemaService, SecurityService, StartupService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { OntologyComponent } from './ontology.component';

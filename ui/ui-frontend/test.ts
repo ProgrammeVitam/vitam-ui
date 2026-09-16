@@ -49,12 +49,13 @@ import { BASE_URL, LoggerModule, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION }
 import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { PipesModule } from './projects/vitamui-library/src/app/modules/pipes/pipes.module';
 
 const configureTestingModule = TestBed.configureTestingModule.bind(TestBed);
 TestBed.configureTestingModule = ((moduleDef: any) =>
   configureTestingModule({
     ...moduleDef,
-    imports: [...(moduleDef?.imports ?? []), LoggerModule.forRoot(), TranslatePipe],
+    imports: [...(moduleDef?.imports ?? []), LoggerModule.forRoot(), TranslatePipe, PipesModule],
     schemas: [...(moduleDef?.schemas ?? []), CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     providers: [
       provideTranslateService({ fallbackLang: 'fr' }),

@@ -35,11 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, switchMap } from 'rxjs/operators';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
-import { AppRootComponent } from '../app-root-component.class';
 import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
@@ -56,10 +54,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./account.component.scss'],
   imports: [VitamuiTitleBreadcrumbComponent, UserPhotoComponent, MatTabGroup, MatTab, AccountInformationTabComponent, TranslatePipe],
 })
-export class AccountComponent extends AppRootComponent {
+export class AccountComponent {
   private accountService = inject(AccountService);
   private userInfoApiService = inject(BaseUserInfoApiService);
-  route: ActivatedRoute;
 
   public displayAppTab = false;
   public dataBreadcrumb: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
@@ -70,12 +67,4 @@ export class AccountComponent extends AppRootComponent {
       .pipe(switchMap((account) => this.userInfoApiService.getMyUserInfo().pipe(map((userInfo) => ({ ...account, userInfo }) as Account)))),
     { initialValue: null as Account | null },
   );
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-
-    super(route);
-
-    this.route = route;
-  }
 }

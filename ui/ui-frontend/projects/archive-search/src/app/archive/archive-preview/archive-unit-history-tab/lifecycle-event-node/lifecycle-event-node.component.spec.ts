@@ -34,30 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LifecycleEventNodeComponent } from './lifecycle-event-node.component';
 import { ConsolidatedLifecycleEvent } from '../archive-unit-lifecycle-history.model';
-
-@Pipe({
-  name: 'dateTime',
-  standalone: false,
-})
-class DateTimeStubPipe implements PipeTransform {
-  transform(value: string = ''): string {
-    return value;
-  }
-}
-
-@Pipe({
-  name: 'translate',
-  standalone: false,
-})
-class TranslateStubPipe implements PipeTransform {
-  transform(value: string = ''): string {
-    return value;
-  }
-}
 
 function event(partial: Partial<ConsolidatedLifecycleEvent>): ConsolidatedLifecycleEvent {
   return {
@@ -85,7 +65,7 @@ describe('LifecycleEventNodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LifecycleEventNodeComponent, DateTimeStubPipe, TranslateStubPipe],
+      imports: [LifecycleEventNodeComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
