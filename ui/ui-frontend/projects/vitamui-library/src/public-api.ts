@@ -126,7 +126,6 @@ export * from './app/modules/api/profile-api.service';
 export * from './app/modules/api/rule-api.service';
 export * from './app/modules/api/subrogation-api.service';
 export * from './app/modules/api/user-api.service';
-export * from './app/modules/app-root-component.class';
 export * from './app/modules/app.guard';
 export * from './app/modules/application-id.enum';
 export * from './app/modules/application.service';

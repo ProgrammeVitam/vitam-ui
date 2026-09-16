@@ -84,7 +84,7 @@ describe('AccountComponent', () => {
       providers: [
         { provide: AccountService, useValue: accountServiceSpy },
         { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
-        { provide: ActivatedRoute, useValue: { data: EMPTY } },
+        { provide: ActivatedRoute, useValue: { data: { appId: 'SomeAppId' }, snapshot: { data: { appId: 'SomeAppId' } } } },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: location },
       ],
