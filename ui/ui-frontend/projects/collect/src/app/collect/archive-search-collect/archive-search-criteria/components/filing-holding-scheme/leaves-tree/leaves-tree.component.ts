@@ -36,14 +36,7 @@
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import {
-  MatNestedTreeNode,
-  MatTree,
-  MatTreeNestedDataSource,
-  MatTreeNode,
-  MatTreeNodeDef,
-  MatTreeNodeOutlet,
-} from '@angular/material/tree';
+import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNodeDef, MatTreeNodeOutlet } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
   ConfigurationsApiService,
@@ -80,7 +73,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     NgClass,
     VitamuiTreeNodeComponent,
     MatTreeNodeOutlet,
-    MatTreeNode,
     DecimalPipe,
     TranslatePipe,
   ],
