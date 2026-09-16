@@ -215,7 +215,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private externalParameterService = inject(ExternalParametersService);
   private translateService = inject(TranslateService);
   private archiveUnitCollectService = inject(ArchiveCollectService);
@@ -329,11 +329,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   discussionEntities: DiscussionEntity[];
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
+    super(inject(GlobalEventService));
     const archiveSharedDataService = this.archiveSharedDataService;
 
     this.subscriptions.add(

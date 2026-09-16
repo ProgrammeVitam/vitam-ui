@@ -76,8 +76,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
   private formBuilder = inject(FormBuilder);
 
   public dateRangeFilterForm: FormGroup;
@@ -90,11 +88,8 @@ export class AuditComponent extends SidenavPage<Event> {
 
   constructor() {
     const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
 
-    super(route, globalEventService);
-    this.route = route;
-    this.globalEventService = globalEventService;
+    super(inject(GlobalEventService));
 
     route.params.subscribe((params) => {
       this.tenantIdentifier = params['tenantIdentifier'];

@@ -36,7 +36,6 @@
  */
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -46,7 +45,6 @@ import {
   Customer,
   DEFAULT_PAGE_SIZE,
   Direction,
-  GlobalEventService,
   Group,
   PageRequest,
   SidenavPage,
@@ -82,9 +80,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class UserComponent extends SidenavPage<User> implements OnInit {
   dialog = inject(MatDialog);
   userService = inject(UserService);
-  route: ActivatedRoute;
   customerService = inject(CustomerService);
-  override globalEventService: GlobalEventService;
   groupService = inject(GroupService);
   private authService = inject(AuthService);
   private downloadSnackBarService = inject(DownloadSnackBarService);
@@ -98,16 +94,6 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   public exportLoading = false;
 
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-    this.globalEventService = globalEventService;
-  }
 
   ngOnInit() {
     this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));

@@ -40,7 +40,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import {
-  AppRootComponent,
   Customer,
   CustomerSelectionService,
   GlobalEventService,
@@ -67,11 +66,11 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
   ],
 })
-export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
+export class SubrogateUserComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   globalEventService = inject(GlobalEventService);
   private router = inject(Router);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private subrogationModalService = inject(SubrogationModalService);
   private customerSelectService = inject(CustomerSelectService);
   private customerSelectionService = inject(CustomerSelectionService);
@@ -81,14 +80,6 @@ export class SubrogateUserComponent extends AppRootComponent implements OnInit, 
   public search: string;
 
   private destroyer$ = new Subject<void>();
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-
-    super(route);
-
-    this.route = route;
-  }
 
   ngOnInit() {
     this.customerSelectService

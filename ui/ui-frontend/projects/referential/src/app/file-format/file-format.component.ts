@@ -44,7 +44,6 @@ import {
   ApplicationId,
   FileFormat,
   FileTypes,
-  GlobalEventService,
   Role,
   SecurityService,
   SidenavPage,
@@ -77,7 +76,7 @@ import { AsyncPipe } from '@angular/common';
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
 
@@ -88,15 +87,6 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   hasImportRole = new Observable<boolean>();
 
   @ViewChild(FileFormatListComponent, { static: true }) fileFormatListComponentListComponent: FileFormatListComponent;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   openCreateFileFormatDialog() {
     const dialogRef = this.dialog.open(FileFormatCreateComponent, { disableClose: true });

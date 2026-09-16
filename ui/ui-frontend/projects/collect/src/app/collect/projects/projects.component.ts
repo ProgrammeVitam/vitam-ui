@@ -84,7 +84,7 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
     const projectsService = inject(ProjectsService);
     const route = inject(ActivatedRoute);
 
-    super(route, projectsService);
+    super(projectsService);
     route.params.subscribe((params) => {
       this.tenantIdentifier = params['tenantIdentifier'];
     });

@@ -45,7 +45,6 @@ import {
   ApplicationService,
   DownloadUtils,
   FileTypes,
-  GlobalEventService,
   SidenavPage,
   SnackBarService,
   VitamuiBannerComponent,
@@ -84,9 +83,8 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
   ],
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
-  override globalEventService: GlobalEventService;
   private dialog = inject(MatDialog);
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private readonly accessContractService = inject(AccessContractService);
   private applicationService = inject(ApplicationService);
   private translateService = inject(TranslateService);
@@ -99,16 +97,6 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').pipe(shareReplay(1));
-
-  constructor() {
-    const globalEventService = inject(GlobalEventService);
-    const route = inject(ActivatedRoute);
-
-    super(route, globalEventService);
-
-    this.globalEventService = globalEventService;
-    this.route = route;
-  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => (this.tenantIdentifier = params['tenantIdentifier']));

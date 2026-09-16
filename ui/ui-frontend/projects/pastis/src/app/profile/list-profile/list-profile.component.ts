@@ -154,7 +154,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   private dialog = inject(MatDialog);
   private startupService = inject(StartupService);
   private pastisConfig = inject(PastisConfiguration);
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private dataGeneriquePopupService = inject(DataGeneriquePopupService);
   private translateService = inject(TranslateService);
   private toggleService = inject(ToggleSidenavService);
@@ -218,11 +218,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   profilesChargees = false;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
+    super(inject(GlobalEventService));
 
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
       this.pending = status;

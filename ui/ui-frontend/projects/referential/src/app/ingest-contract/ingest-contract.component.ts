@@ -111,7 +111,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     const route = inject(ActivatedRoute);
     const globalEventService = inject(GlobalEventService);
 
-    super(route, globalEventService);
+    super(globalEventService);
     this.route = route;
 
     globalEventService.tenantEvent.subscribe(() => {

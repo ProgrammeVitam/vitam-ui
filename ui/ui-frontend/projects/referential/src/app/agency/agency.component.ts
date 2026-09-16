@@ -80,7 +80,7 @@ import { map } from 'rxjs/operators';
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
   override globalEventService: GlobalEventService;
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private securityService = inject(SecurityService);
   private agencyService = inject(AgencyService);
   private translateService = inject(TranslateService);
@@ -95,16 +95,6 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   hasImportRole = false;
   hasExportRole = false;
   hasUpdateRole = false;
-
-  constructor() {
-    const globalEventService = inject(GlobalEventService);
-    const route = inject(ActivatedRoute);
-
-    super(route, globalEventService);
-
-    this.globalEventService = globalEventService;
-    this.route = route;
-  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

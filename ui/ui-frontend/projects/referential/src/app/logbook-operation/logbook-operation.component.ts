@@ -38,13 +38,7 @@ import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/co
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import {
-  DatepickerComponent,
-  GlobalEventService,
-  SidenavPage,
-  VitamuiBannerComponent,
-  VitamuiTitleBreadcrumbComponent,
-} from 'vitamui-library';
+import { DatepickerComponent, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -69,7 +63,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
   private formBuilder = inject(FormBuilder);
 
@@ -81,15 +75,6 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   public dateRangeFilterForm: FormGroup;
   public filters: Readonly<EventFilter> = {};
   private openOperationDetailAfterLoading: boolean;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));

@@ -43,7 +43,6 @@ import {
   ApplicationId,
   ClickOutsideDirective,
   FileTypes,
-  GlobalEventService,
   Ontology,
   Role,
   SchemaElement,
@@ -86,7 +85,7 @@ import { OntologyGroupComponent } from './ontology-group/ontology-group.componen
 })
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
   private ontologyService = inject(OntologyService);
@@ -103,15 +102,6 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   canImportOntology: boolean;
   canImportSchema: boolean;
   canCreateVocabulary: boolean;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   ngOnInit(): void {
     this.vitamAdminTenant = +this.startupService.getConfigStringValue('VITAM_ADMIN_TENANT');

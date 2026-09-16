@@ -41,7 +41,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
   AccessContractService,
-  AppRootComponent,
   DslQueryType,
   InputComponent,
   Option,
@@ -68,7 +67,7 @@ import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/mat
     TranslatePipe,
   ],
 })
-export class AdminDslComponent extends AppRootComponent {
+export class AdminDslComponent {
   private route: ActivatedRoute;
   private adminDslService = inject(AdminDslService);
   private snackBarService = inject(SnackBarService);
@@ -86,10 +85,7 @@ export class AdminDslComponent extends AppRootComponent {
   }));
 
   constructor() {
-    const route = inject(ActivatedRoute);
-
-    super(route);
-    this.route = route;
+    this.route = inject(ActivatedRoute);
 
     this.route.params.subscribe((params) => {
       if (params['tenantIdentifier']) {

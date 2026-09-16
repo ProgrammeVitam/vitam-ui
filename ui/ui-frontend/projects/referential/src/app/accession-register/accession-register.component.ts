@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -85,9 +84,8 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
 
   constructor() {
     const accessionRegistersService = inject(AccessionRegistersService);
-    const route = inject(ActivatedRoute);
 
-    super(route, accessionRegistersService);
+    super(accessionRegistersService);
 
     this.accessionRegistersService = accessionRegistersService;
   }

@@ -85,12 +85,11 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
 
   constructor() {
     const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
 
-    super(route, globalEventService);
+    super(inject(GlobalEventService));
     this.route = route;
 
-    globalEventService.tenantEvent.subscribe(() => {
+    this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });
 
