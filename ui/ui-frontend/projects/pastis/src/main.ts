@@ -49,6 +49,7 @@ import {
   StartupService,
   ThemeService,
   VitamUICommonModule,
+  VitamUILibraryModule,
   WINDOW_LOCATION,
 } from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -92,6 +93,7 @@ bootstrapApplication(AppComponent, {
         // or after 30 seconds (whichever comes first).
         registrationStrategy: 'registerWhenStable:30000',
       }),
+      VitamUILibraryModule, // For Material tokens
     ),
     provideI18n(),
     provideNativeDateAdapter(),
