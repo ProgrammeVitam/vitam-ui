@@ -38,7 +38,7 @@ import { enableProdMode, importProvidersFrom, LOCALE_ID } from '@angular/core';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { environment } from './environments/environment';
-import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AuthenticationModule, BytesPipe, provideI18n, VitamUICommonModule, VitamUILibraryModule, WINDOW_LOCATION } from 'vitamui-library';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
 import { CoreModule } from './app/core/core.module';
@@ -70,6 +70,7 @@ bootstrapApplication(AppComponent, {
         // or after 30 seconds (whichever comes first).
         registrationStrategy: 'registerWhenStable:30000',
       }),
+      VitamUILibraryModule, // For Material tokens
     ),
     provideI18n(),
     provideNativeDateAdapter(),
