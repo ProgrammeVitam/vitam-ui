@@ -70,6 +70,7 @@ import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-detail
 import { ArchiveUnitObjectsDetailsTabComponent } from './archive-unit-objects-details-tab/archive-unit-objects-details-tab.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ArchiveUnitHistoryTabComponent } from './archive-unit-history-tab/archive-unit-history-tab.component';
 
 @Component({
   selector: 'app-archive-preview',
@@ -82,8 +83,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTabGroup,
     NgClass,
     MatTab,
-    ArchiveUnitInformationTabComponent,
     ArchiveUnitDescriptionTabComponent,
+    ArchiveUnitHistoryTabComponent,
+    ArchiveUnitInformationTabComponent,
     ClickOutsideDirective,
     ArchiveUnitRulesDetailsTabComponent,
     ArchiveUnitObjectsDetailsTabComponent,

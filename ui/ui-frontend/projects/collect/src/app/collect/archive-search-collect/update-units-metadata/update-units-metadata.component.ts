@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
 import {
@@ -67,6 +67,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     FileSelectorComponent,
     MatDialogActions,
     TranslatePipe,
+    ReactiveFormsModule,
   ],
 })
 export class UpdateUnitsMetadataComponent implements OnDestroy {
