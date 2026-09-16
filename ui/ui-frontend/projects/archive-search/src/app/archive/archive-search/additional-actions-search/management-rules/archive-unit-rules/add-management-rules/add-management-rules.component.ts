@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { merge, Observable, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, finalize, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -135,8 +135,8 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   getRuleSuscription: Subscription;
   searchArchiveUnitsByCriteriaSubscription: Subscription;
 
-  isLoading = false;
-  isWarningLoading = false;
+  isLoading = signal(false);
+  isWarningLoading = signal(false);
   isDisabled = true;
   managementRules: ManagementRules[] = [];
   managementRulesSubscription: Subscription;
@@ -216,7 +216,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   }
 
   addRuleToQuery() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
@@ -241,25 +241,30 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     if (this.hasExactCount) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
-        .subscribe((resultsNumber) => {
-          this.itemsWithSameRule = resultsNumber;
-          this.itemsToUpdate = this.selectedItem - resultsNumber;
-          this.isLoading = false;
+        .pipe(finalize(() => this.isLoading.set(false)))
+        .subscribe({
+          next: (resultsNumber) => {
+            this.itemsWithSameRule = resultsNumber;
+            this.itemsToUpdate = this.selectedItem - resultsNumber;
+          },
+          error: () => this.isLoading.set(false),
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
-        .subscribe((data) => {
-          this.itemsWithSameRule = data.totalResults;
+        .pipe(finalize(() => this.isLoading.set(false)))
+        .subscribe({
+          next: (data) => {
+            this.itemsWithSameRule = data.totalResults;
 
-          this.itemsToUpdate =
-            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
-              ? this.resultNumberToShow
-              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+            this.itemsToUpdate =
+              data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
-                : this.selectedItem - data.totalResults;
-
-          this.isLoading = false;
+                : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+                  ? this.resultNumberToShow
+                  : this.selectedItem - data.totalResults;
+          },
+          error: () => this.isLoading.set(false),
         });
     }
     if (this.ruleDetailsForm.get('startDate').value) {
@@ -268,7 +273,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   }
 
   addRuleAndStartDateToQuery() {
-    this.isWarningLoading = true;
+    this.isWarningLoading.set(true);
     this.initDSLQuery();
     if (this.ruleDetailsForm.get('startDate').value) {
       const criteriaWithId: SearchCriteriaEltDto = {
@@ -302,18 +307,26 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
       this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
       if (this.hasExactCount) {
-        this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList).subscribe((resultsNumber) => {
-          this.itemsWithSameRuleAndDate = resultsNumber;
-          this.isWarningLoading = false;
-        });
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
+          .pipe(finalize(() => this.isWarningLoading.set(false)))
+          .subscribe({
+            next: (resultsNumber) => (this.itemsWithSameRuleAndDate = resultsNumber),
+            error: () => this.isWarningLoading.set(false),
+          });
       } else {
-        this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery).subscribe((data) => {
-          this.itemsWithSameRuleAndDate =
-            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
-              ? this.resultNumberToShow
-              : data.totalResults;
-        });
-        this.isWarningLoading = false;
+        this.archiveService
+          .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
+          .pipe(finalize(() => this.isWarningLoading.set(false)))
+          .subscribe({
+            next: (data) => {
+              this.itemsWithSameRuleAndDate =
+                data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+                  ? this.resultNumberToShow
+                  : data.totalResults;
+            },
+            error: () => this.isWarningLoading.set(false),
+          });
       }
     }
   }
@@ -381,7 +394,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   submit() {
     this.isDisabled = true;
     this.showText = true;
-    this.isLoading = !this.isLoading;
+    this.isLoading.set(true);
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
