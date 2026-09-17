@@ -3248,6 +3248,7 @@
     "EXT_VITAMUI_CREATE_CUSTOMER": "Creation of the organization",
     "EXT_VITAMUI_CREATE_CUSTOMER.OK": "Success of the creation of the organization",
     "EXT_VITAMUI_UPDATE_CUSTOMER": "Modification of the organization",
+    "EXT_VITAMUI_UPDATE_CUSTOMER.OK": "Success of the modification of the organization",
     "EXT_VITAMUI_CREATE_GROUP": "Group creation",
     "EXT_VITAMUI_CREATE_GROUP.OK": "Success of the group creation",
     "EXT_VITAMUI_UPDATE_GROUP": "Modification of the group",
