@@ -3255,6 +3255,7 @@
     "EXT_VITAMUI_CREATE_IDP": "Creation of the IDP of the organization",
     "EXT_VITAMUI_CREATE_IDP.OK": "Success of the creation of the IDP of the organization",
     "EXT_VITAMUI_UPDATE_IDP": "Modification of the organization's IDP",
+    "EXT_VITAMUI_UPDATE_IDP.OK": "Success of the modification of the organization's IDP",
     "EXT_VITAMUI_CREATE_OWNER": "Creation of the owner",
     "EXT_VITAMUI_CREATE_OWNER.OK": "Success of the creation of the owner",
     "EXT_VITAMUI_UPDATE_OWNER": "Modification of the owner",
