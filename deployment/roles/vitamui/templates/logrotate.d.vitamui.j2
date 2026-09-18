@@ -1,0 +1,9 @@
+{{ vitamui_folder_log }}/accesslog*.log {{ vitamui_folder_log }}/management_accesslog*.log {
+    daily
+    rotate {{ vitamui_struct.access_retention_days | default(access_retention_days) }}
+    compress
+    missingok
+    notifempty
+    create 640 root root
+    dateext
+}
