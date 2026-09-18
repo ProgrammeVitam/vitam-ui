@@ -34,19 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import type { OperationDetails } from '../../models/operation-response.interface';
+import {
+  DialogHeaderComponent,
+  EventTypeLabelComponent,
+  InputComponent,
+  PipesModule,
+  VitamuiMenuButtonComponent,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';
+import { CommonModule, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-logbook-management-operation-preview',
   templateUrl: './logbook-management-operation-preview.component.html',
   styleUrls: ['./logbook-management-operation-preview.component.scss'],
-  standalone: false,
+  imports: [
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    MatTabGroup,
+    MatTab,
+    LogbookManagementOperationInformationTabComponent,
+    DialogHeaderComponent,
+    MatDialogContent,
+    EventTypeLabelComponent,
+    NgClass,
+    MatDialogActions,
+    MatDialogClose,
+    InputComponent,
+    ReactiveFormsModule,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
   private matDialog = inject(MatDialog);

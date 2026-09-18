@@ -69,13 +69,13 @@ describe('InfiniteScrollTable', () => {
       const serviceMock = new SearchServiceMock();
       const infiniteScrollTable = new InfiniteScrollTable(serviceMock);
       vi.spyOn(serviceMock, 'search').mockReturnValue(timer(10).pipe(map(() => ['value1', 'value2'])));
-      expect(infiniteScrollTable.pending).toBe(false);
+      expect(infiniteScrollTable.pending()).toBe(false);
       infiniteScrollTable.search();
-      expect(infiniteScrollTable.pending).toBe(true);
+      expect(infiniteScrollTable.pending()).toBe(true);
       expect(serviceMock.search).toHaveBeenCalledTimes(1);
       await vi.advanceTimersByTimeAsync(10);
-      expect(infiniteScrollTable.pending).toBe(false);
-      expect(infiniteScrollTable.dataSource).toEqual(['value1', 'value2']);
+      expect(infiniteScrollTable.pending()).toBe(false);
+      expect(infiniteScrollTable.dataSource()).toEqual(['value1', 'value2']);
     });
   });
 
@@ -88,13 +88,13 @@ describe('InfiniteScrollTable', () => {
       const serviceMock = new SearchServiceMock();
       const infiniteScrollTable = new InfiniteScrollTable(serviceMock);
       vi.spyOn(serviceMock, 'loadMore').mockReturnValue(timer(10).pipe(map(() => bigList)));
-      expect(infiniteScrollTable.infiniteScrollDisabled).toBe(false);
-      expect(infiniteScrollTable.pending).toBe(false);
+      expect(infiniteScrollTable.infiniteScrollDisabled()).toBe(false);
+      expect(infiniteScrollTable.pending()).toBe(false);
       infiniteScrollTable.loadMore();
-      expect(infiniteScrollTable.pending).toBe(true);
+      expect(infiniteScrollTable.pending()).toBe(true);
       await vi.advanceTimersByTimeAsync(10);
-      expect(infiniteScrollTable.pending).toBe(false);
-      expect(infiniteScrollTable.infiniteScrollDisabled).toBe(true);
+      expect(infiniteScrollTable.pending()).toBe(false);
+      expect(infiniteScrollTable.infiniteScrollDisabled()).toBe(true);
     });
   });
 });

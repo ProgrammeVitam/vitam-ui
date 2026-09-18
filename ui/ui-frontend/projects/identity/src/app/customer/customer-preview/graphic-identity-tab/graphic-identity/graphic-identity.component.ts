@@ -34,13 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import type { Customer, Logo, Theme } from 'vitamui-library';
-import { ThemeColorType, ThemeService } from 'vitamui-library';
+import { Customer, Logo, SlideToggleComponent, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
 import type { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
+import { GraphicIdentityFormComponent } from './graphic-identity-form/graphic-identity-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 interface ThemeColorGroup {
   [ThemeColorType.VITAMUI_PRIMARY]: FormControl<string>;
@@ -54,7 +55,7 @@ interface ThemeColorGroup {
   selector: 'app-graphic-identity',
   templateUrl: './graphic-identity.component.html',
   styleUrls: ['./graphic-identity.component.scss'],
-  standalone: false,
+  imports: [SlideToggleComponent, ReactiveFormsModule, GraphicIdentityFormComponent, TranslatePipe],
 })
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<GraphicIdentityComponent>>(MatDialogRef);

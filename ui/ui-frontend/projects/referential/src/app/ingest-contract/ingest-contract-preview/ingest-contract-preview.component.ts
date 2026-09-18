@@ -38,31 +38,53 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  forwardRef,
   HostListener,
+  inject,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
   ViewChild,
-  inject,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import { ConfirmActionComponent } from 'vitamui-library';
-import type { IngestContract } from 'vitamui-library';
+import { ConfirmActionComponent, IngestContract, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
 import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
 import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
 import { IngestContractSignatureTabComponent } from './ingest-contract-signature-tab/ingest-contract-signature-tab.component';
+import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab/ingest-contract-attachment-tab.component';
+
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ingest-contract-preview',
   templateUrl: './ingest-contract-preview.component.html',
   styleUrls: ['./ingest-contract-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    IngestContractInformationTabComponent,
+    IngestContractFormatTabComponent,
+    IngestContractObjectTabComponent,
+    IngestContractHeritageTabComponent,
+    IngestContractAttachmentTabComponent,
+    IngestContractSignatureTabComponent,
+    OperationHistoryTabComponent,
+    forwardRef(() => IngestContractPreviewComponent),
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class IngestContractPreviewComponent implements OnChanges, AfterViewInit {
   private matDialog = inject(MatDialog);

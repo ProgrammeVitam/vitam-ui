@@ -72,12 +72,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonConfirmDialogComponent } from 'vitamui-library';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // FIXME: should be factorized in vitamui-library ConfirmActionComponent
 @Component({
   selector: 'vitamui-confirm-action',
   templateUrl: './confirm-action.component.html',
-  standalone: false,
+  imports: [DatePipe, TranslatePipe, CommonConfirmDialogComponent, CommonModule, MatDialogModule],
 })
 export class ConfirmActionComponent {
   // delete or changeTab

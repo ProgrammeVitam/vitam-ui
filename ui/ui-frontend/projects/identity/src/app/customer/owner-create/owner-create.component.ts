@@ -34,21 +34,47 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { concatMap, finalize, Observable, Subscription } from 'rxjs';
-import { ConfirmDialogService, Customer, Owner, Tenant } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  Customer,
+  DialogHeaderComponent,
+  InputComponent,
+  Owner,
+  PreviousStepComponent,
+  SelectComponent,
+  StepperComponent,
+  Tenant,
+} from 'vitamui-library';
 import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { TenantService } from '../tenant.service';
 import { map, tap } from 'rxjs/operators';
+import { CdkStep, CdkStepperNext } from '@angular/cdk/stepper';
+import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-owner-create',
   templateUrl: './owner-create.component.html',
   styleUrls: ['./owner-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperComponent,
+    CdkStep,
+    ReactiveFormsModule,
+    MatDialogContent,
+    OwnerFormComponent,
+    MatDialogActions,
+    CdkStepperNext,
+    InputComponent,
+    SelectComponent,
+    PreviousStepComponent,
+    TranslatePipe,
+  ],
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<OwnerCreateComponent>>(MatDialogRef);

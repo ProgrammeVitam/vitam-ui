@@ -91,7 +91,7 @@ import { ClassificationTreeComponent } from './filing-holding-scheme/classificat
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { LeavesTreeComponent } from './filing-holding-scheme/leaves-tree/leaves-tree.component';
 import { MatTableModule } from '@angular/material/table';
-import { ConfirmActionModule } from './archive-search/search-criteria-list/confirm-action/confirm-action.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
@@ -116,14 +116,11 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatTabsModule,
     MatTreeModule,
     ReactiveFormsModule,
-    ConfirmActionModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     MatTableModule,
     TranslatePipe,
     DiscussionIconComponent,
-  ],
-  declarations: [
     AddManagementRulesComponent,
     AddUpdatePropertyComponent,
     ArchiveComponent,

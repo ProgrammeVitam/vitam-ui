@@ -35,13 +35,30 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import type { AccessionRegisterDetail } from 'vitamui-library';
+import { AccessionRegisterDetail, VitamuiSidenavHeaderComponent } from 'vitamui-library';
+import { AccessionRegisterDetailComponent } from './accession-register-detail/accession-register-detail.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { AccessionRegisterOperationsListComponent } from './accession-register-operations-list/accession-register-operations-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-accession-register-preview',
   templateUrl: './accession-register-preview.component.html',
   styleUrls: ['./accession-register-preview.component.scss'],
-  standalone: false,
+  imports: [
+    AccessionRegisterDetailComponent,
+    MatTabGroup,
+    MatTab,
+    AccessionRegisterOperationsListComponent,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class AccessionRegisterPreviewComponent {
   @Input()

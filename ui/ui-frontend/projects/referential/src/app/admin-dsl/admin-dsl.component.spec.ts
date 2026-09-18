@@ -38,7 +38,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AccessContractService, DslQueryType, InjectorModule, LoggerModule, SnackBarService, VitamUILibraryModule } from 'vitamui-library';
@@ -75,6 +74,7 @@ describe('AdminDslComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'DSL_APP' }),
+      snapshot: { data: { appId: 'DSL_APP' } },
     };
 
     await TestBed.configureTestingModule({
@@ -82,12 +82,11 @@ describe('AdminDslComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         MatSelectModule,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
         VitamUILibraryModule,
+        AdminDslComponent,
       ],
-      declarations: [AdminDslComponent],
       providers: [
         FormBuilder,
         { provide: Router, useValue: {} },

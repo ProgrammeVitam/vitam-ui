@@ -55,12 +55,6 @@ import { MatMenuItem } from '@angular/material/menu';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    LogbookManagementOperationComponent,
-    LogbookManagementOperationListComponent,
-    LogbookManagementOperationPreviewComponent,
-    LogbookManagementOperationInformationTabComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -76,6 +70,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUILibraryModule,
     MatMenuItem,
     TranslatePipe,
+    LogbookManagementOperationComponent,
+    LogbookManagementOperationListComponent,
+    LogbookManagementOperationPreviewComponent,
+    LogbookManagementOperationInformationTabComponent,
   ],
   exports: [
     LogbookManagementOperationListComponent,

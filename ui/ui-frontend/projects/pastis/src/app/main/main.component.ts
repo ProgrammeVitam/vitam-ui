@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
@@ -86,12 +86,26 @@ import { SpinnerOverlayService } from 'vitamui-library';
 import { tap } from 'rxjs/operators';
 import { ProfileType } from '../models/profile-type.enum';
 import { ProfileVersion } from '../models/profile-version.enum';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { FileTreeMetadataComponent } from '../profile/edit-profile/file-tree-metadata/file-tree-metadata.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    MatButton,
+    MatIcon,
+    MatSidenavContainer,
+    MatSidenav,
+    EditProfileComponent,
+    MatSidenavContent,
+    FileTreeMetadataComponent,
+  ],
 })
 export class MainComponent implements OnInit, OnDestroy {
   fileService = inject(FileService);

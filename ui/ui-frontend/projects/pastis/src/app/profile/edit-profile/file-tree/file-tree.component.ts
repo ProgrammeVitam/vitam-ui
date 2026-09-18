@@ -71,8 +71,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { FileService } from '../../../core/services/file.service';
@@ -88,10 +88,22 @@ import { DuplicateMetadataComponent } from '../../../user-actions/duplicate-meta
 import { UserActionRemoveMetadataComponent } from '../../../user-actions/remove-metadata/remove-metadata.component';
 import { FileTreeMetadataService } from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
-import { Logger, SnackBarService } from 'vitamui-library';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { Logger, SnackBarService, TooltipDirective } from 'vitamui-library';
+import {
+  MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNodeDef,
+  MatTreeNodeOutlet,
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { filter, map, tap } from 'rxjs/operators';
+import { MatDivider, MatListItem } from '@angular/material/list';
+import { NgClass, NgStyle } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { ModifyTextButtonComponent } from '../../../shared/modify-text-button/modify-text-button.component';
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -131,7 +143,22 @@ function constantToTranslate() {
   selector: 'pastis-file-tree',
   templateUrl: './file-tree.component.html',
   styleUrls: ['./file-tree.component.scss'],
-  standalone: false,
+  imports: [
+    MatTree,
+    MatTreeNodeDef,
+    MatNestedTreeNode,
+    MatListItem,
+    NgClass,
+    NgStyle,
+    MatDivider,
+    MatIcon,
+    MatIconButton,
+    MatTreeNodeToggle,
+    ModifyTextButtonComponent,
+    TooltipDirective,
+    MatTreeNodeOutlet,
+    TranslatePipe,
+  ],
 })
 export class FileTreeComponent implements OnInit, OnDestroy {
   fileTreeService = inject(FileTreeService);

@@ -39,7 +39,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -49,14 +48,14 @@ import { AppComponent } from './app.component';
 @Component({
   selector: 'router-outlet',
   template: '',
-  standalone: false,
+  imports: [MatSidenavModule],
 })
 class RouterOutletStubComponent {}
 
 @Component({
   selector: 'vitamui-common-subrogation-banner',
   template: '',
-  standalone: false,
+  imports: [MatSidenavModule],
 })
 class SubrogationBannerStubComponent {}
 
@@ -64,8 +63,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {}, getPlatformName: () => '' };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule],
-      declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
+      imports: [MatSidenavModule, SubrogationBannerStubComponent, RouterOutletStubComponent, AppComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },

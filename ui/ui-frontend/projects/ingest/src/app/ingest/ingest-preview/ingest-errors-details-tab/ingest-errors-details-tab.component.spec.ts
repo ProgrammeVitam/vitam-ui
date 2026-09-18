@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IngestService } from '../../ingest.service';
 import { EventDisplayHelperService } from '../event-display-helper.service';
 import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestErrorsDetailsTabComponent', () => {
   let component: IngestErrorsDetailsTabComponent;
@@ -48,14 +46,11 @@ describe('IngestErrorsDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestErrorsDetailsTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [],
+      imports: [IngestErrorsDetailsTabComponent],
       providers: [
         { provide: IngestService, useValue: {} },
         { provide: EventDisplayHelperService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

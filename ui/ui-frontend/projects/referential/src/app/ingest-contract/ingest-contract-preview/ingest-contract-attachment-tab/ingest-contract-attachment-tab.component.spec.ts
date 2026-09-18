@@ -34,21 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import {
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  IngestContract,
-  LoggerModule,
-  SearchUnitApiService,
-} from 'vitamui-library';
+import { ExternalParameters, ExternalParametersService, IngestContract, LoggerModule, SearchUnitApiService } from 'vitamui-library';
 import { IngestContractAttachmentTabComponent } from './ingest-contract-attachment-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractAttachmentTabComponent', () => {
   let component: IngestContractAttachmentTabComponent;
@@ -93,16 +84,12 @@ describe('IngestContractAttachmentTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [IngestContractAttachmentTabComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), IngestContractAttachmentTabComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialog, useValue: {} },
         { provide: SearchUnitApiService, useValue: unitValueMock },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

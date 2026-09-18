@@ -34,18 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
 import {
   ConfirmDialogComponent,
   ConfirmDialogData,
   Direction,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   SnackBarService,
   StartupService,
   Transaction,
   TransactionStatus,
+  VitamuiMenuButtonComponent,
+  VitamuiSupHeaderComponent,
 } from 'vitamui-library';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
@@ -54,12 +58,23 @@ import { SipImportTrackingService } from '../../shared/sip-import-tracking.servi
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
 import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
+import { MatMenuItem } from '@angular/material/menu';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-list',
   templateUrl: './transaction-list.component.html',
   styleUrls: ['./transaction-list.component.css'],
-  standalone: false,
+  imports: [
+    VitamuiSupHeaderComponent,
+    OrderByButtonComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
   private transactionService: TransactionsService;
@@ -76,12 +91,12 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   orderBy = 'archivalAgreement';
   orderChange = new BehaviorSubject<string>(this.orderBy);
   tenantIdentifier: string;
-  hasAbortTransactionRole = false;
-  hasEditTransactionRole = false;
-  hasSendTransactionRole = false;
-  hasCloseTransactionRole = false;
-  hasDownloadTransactionRole = false;
-  isAutomaticIngest = false;
+  hasAbortTransactionRole = signal(false);
+  hasEditTransactionRole = signal(false);
+  hasSendTransactionRole = signal(false);
+  hasCloseTransactionRole = signal(false);
+  hasDownloadTransactionRole = signal(false);
+  isAutomaticIngest = signal(false);
 
   constructor() {
     const transactionService = inject(TransactionsService);
@@ -98,7 +113,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     this.route.params.subscribe((params) => {
       const projectId = params['projectId'];
       this.projectService.getProjectById(projectId).subscribe((project) => {
-        this.isAutomaticIngest = project?.automaticIngest;
+        this.isAutomaticIngest.set(project?.automaticIngest);
       });
     });
   }
@@ -151,7 +166,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     confirmation$
       .pipe(
         switchMap(() => {
-          return this.transactionService.validate(transaction, validationMode, { isAutomaticIngest: this.isAutomaticIngest }).pipe(
+          return this.transactionService.validate(transaction, validationMode, { isAutomaticIngest: this.isAutomaticIngest() }).pipe(
             finalize(() => {
               this.snackBarService.open({
                 message: 'COLLECT.VALIDATE_TRANSACTION_VALIDATED',
@@ -175,7 +190,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
     const allowedStatus = [TransactionStatus.VALIDATED];
     const isAllowedStatus = allowedStatus.includes(transaction.status);
 
-    return this.hasSendTransactionRole && !this.isAutomaticIngest && isAllowedStatus;
+    return this.hasSendTransactionRole() && !this.isAutomaticIngest() && isAllowedStatus;
   }
 
   abortTransaction(transaction: Transaction) {
@@ -225,7 +240,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   transactionIsEditable(transaction: Transaction): boolean {
-    if (this.isAutomaticIngest && [TransactionStatus.READY, TransactionStatus.VALIDATED].includes(transaction.status)) {
+    if (this.isAutomaticIngest() && [TransactionStatus.READY, TransactionStatus.VALIDATED].includes(transaction.status)) {
       return false;
     }
 
@@ -235,7 +250,7 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
   }
 
   transactionIsAbortable(transaction: Transaction): boolean {
-    if (this.isAutomaticIngest && [TransactionStatus.READY, TransactionStatus.VALIDATED].includes(transaction.status)) {
+    if (this.isAutomaticIngest() && [TransactionStatus.READY, TransactionStatus.VALIDATED].includes(transaction.status)) {
       return false;
     }
     return [
@@ -263,19 +278,19 @@ export class TransactionListComponent extends InfiniteScrollTable<Transaction> i
 
   private checkTransactionsPermissions() {
     this.archiveCollectService.hasCollectRole('ROLE_ABORT_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
-      this.hasAbortTransactionRole = result;
+      this.hasAbortTransactionRole.set(result);
     });
     this.archiveCollectService.hasCollectRole('ROLE_SEND_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
-      this.hasSendTransactionRole = result;
+      this.hasSendTransactionRole.set(result);
     });
     this.archiveCollectService.hasCollectRole('ROLE_REOPEN_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
-      this.hasEditTransactionRole = result;
+      this.hasEditTransactionRole.set(result);
     });
     this.archiveCollectService.hasCollectRole('ROLE_CLOSE_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
-      this.hasCloseTransactionRole = result;
+      this.hasCloseTransactionRole.set(result);
     });
     this.archiveCollectService.hasCollectRole('ROLE_DOWNLOAD_SIP_TRANSACTIONS', Number(this.tenantIdentifier)).subscribe((result) => {
-      this.hasDownloadTransactionRole = result;
+      this.hasDownloadTransactionRole.set(result);
     });
   }
 }

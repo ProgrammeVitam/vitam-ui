@@ -34,21 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import type { Customer, Theme } from 'vitamui-library';
-import { ThemeColorType, ThemeService } from 'vitamui-library';
+import { Customer, PipesModule, Theme, ThemeColorType, ThemeService } from 'vitamui-library';
 import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',
   styleUrls: ['./graphic-identity-tab.component.scss'],
-  standalone: false,
+  imports: [MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   private customerService = inject(CustomerService);

@@ -55,7 +55,7 @@ import { Unit } from '../../../app/modules/models/units/unit.interface';
 import { StartupService } from '../../../app/modules/startup.service';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
 import { DialogHeaderComponent } from '../dialog/dialog-header/dialog-header.component';
-import { FilingPlanModule } from '../filing-plan/filing-plan.module';
+
 import { FilingPlanMode } from '../filing-plan/filing-plan.service';
 import { InputComponent } from '../input/input.component';
 import { NextStepComponent } from '../next-step/next-step.component';
@@ -67,6 +67,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { searchAllRecordsQuery } from './reclassification-dialog.queries';
 import { BaseReclassificationDialogService, BuildQueryParams } from './reclassification-dialog.service';
 import { ReclassificationMode } from './reclassification-dialog.types';
+import { FilingPlanComponent } from '../filing-plan/filing-plan.component';
 
 export { ReclassificationMode };
 
@@ -96,7 +97,7 @@ const atLeastOneFilingPlan: ValidatorFn = (control) => {
     SelectComponent,
     MatButtonToggleGroup,
     MatButtonToggle,
-    FilingPlanModule,
+    FilingPlanComponent,
     MatDialogContent,
     MatDialogActions,
     NextStepComponent,

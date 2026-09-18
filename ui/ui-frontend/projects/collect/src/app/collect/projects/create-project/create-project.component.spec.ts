@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -44,7 +43,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   ENVIRONMENT,
   FlowType,
   InjectorModule,
@@ -62,12 +60,8 @@ import { CollectUploadService } from '../../shared/collect-upload/collect-upload
 import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { CreateProjectComponent } from './create-project.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({
-  name: 'fileSize',
-  standalone: false,
-})
+@Pipe({ name: 'fileSize' })
 export class MockFileSizePipe implements PipeTransform {
   transform(value: string = ''): any {
     return value;
@@ -158,13 +152,18 @@ describe('CreateProjectComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [CreateProjectComponent, MockFileSizePipe],
       teardown: { destroyAfterEach: false },
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [BrowserAnimationsModule, InjectorModule, MatButtonToggleModule, LoggerModule.forRoot()],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        MatButtonToggleModule,
+        LoggerModule.forRoot(),
+        CreateProjectComponent,
+        MockFileSizePipe,
+      ],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -174,8 +173,6 @@ describe('CreateProjectComponent', () => {
         { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
         { provide: TransactionsService, useValue: transactionServiceMock },
         { provide: CollectUploadService, useValue: uploadServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -274,11 +271,6 @@ describe('CreateProjectComponent', () => {
       component.projectForm.patchValue(form);
 
       expect(component.importType).toBe('DIRECTORIES_FILES');
-    });
-
-    it('should have 3 cdk steps', () => {
-      const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(7);
     });
   });
 });

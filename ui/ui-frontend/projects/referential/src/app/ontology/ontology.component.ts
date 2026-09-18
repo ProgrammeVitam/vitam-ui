@@ -38,11 +38,11 @@ import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   ApplicationId,
+  ClickOutsideDirective,
   FileTypes,
-  GlobalEventService,
   Ontology,
   Role,
   SchemaElement,
@@ -50,6 +50,9 @@ import {
   SecurityService,
   SidenavPage,
   StartupService,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -57,16 +60,32 @@ import { OntologyCreateComponent } from './ontology-create/ontology-create.compo
 import { OntologyListComponent } from './ontology-group/ontology-list/ontology-list.component';
 import { Subscription } from 'rxjs';
 import { OntologyService } from './ontology.service';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { OntologyPreviewComponent } from './ontology-preview/ontology-preview.component';
+import { MatMenuItem } from '@angular/material/menu';
+import { OntologyGroupComponent } from './ontology-group/ontology-group.component';
 
 @Component({
   selector: 'app-ontology',
   templateUrl: './ontology.component.html',
   styleUrls: ['./ontology.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ClickOutsideDirective,
+    OntologyPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    OntologyGroupComponent,
+    TranslatePipe,
+  ],
 })
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
   private ontologyService = inject(OntologyService);
@@ -83,15 +102,6 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   canImportOntology: boolean;
   canImportSchema: boolean;
   canCreateVocabulary: boolean;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   ngOnInit(): void {
     this.vitamAdminTenant = +this.startupService.getConfigStringValue('VITAM_ADMIN_TENANT');

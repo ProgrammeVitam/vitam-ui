@@ -71,13 +71,26 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, of, Subscription, switchMap } from 'rxjs';
-import { Direction, GlobalEventService, SidenavPage, SnackBarService, StartupService } from 'vitamui-library';
+import {
+  CommonConfirmDialogComponent,
+  Direction,
+  GlobalEventService,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  PipesModule,
+  SidenavPage,
+  SnackBarService,
+  StartupService,
+  TooltipDirective,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
@@ -94,6 +107,14 @@ import { Profile } from '../../models/profile';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { NoticeService } from '../../core/services/notice.service';
 import { map } from 'rxjs/operators';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { ProfilePreviewComponent } from '../profile-preview/profile-preview.component';
+import { PastisPopupOptionComponent } from '../../shared/pastis-popup-option/pastis-popup-option.component';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatMenuItem } from '@angular/material/menu';
+import { FilterByStringNamePipe } from './pipes/filterByStringName.pipe';
+import { FilterByTypePipe } from './pipes/filterByType.pipe';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
@@ -103,7 +124,28 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: ['./list-profile.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    MatSidenavContainer,
+    MatSidenav,
+    ProfilePreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    PastisPopupOptionComponent,
+    NgClass,
+    OrderByButtonComponent,
+    TooltipDirective,
+    MatMenuItem,
+    PipesModule,
+    TranslatePipe,
+    FilterByStringNamePipe,
+    FilterByTypePipe,
+    CommonConfirmDialogComponent,
+    CommonModule,
+    InfiniteScrollDirective,
+    MatDialogModule,
+  ],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
@@ -112,7 +154,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   private dialog = inject(MatDialog);
   private startupService = inject(StartupService);
   private pastisConfig = inject(PastisConfiguration);
-  route: ActivatedRoute;
+  route = inject(ActivatedRoute);
   private dataGeneriquePopupService = inject(DataGeneriquePopupService);
   private translateService = inject(TranslateService);
   private toggleService = inject(ToggleSidenavService);
@@ -176,11 +218,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   profilesChargees = false;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
+    super(inject(GlobalEventService));
 
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
       this.pending = status;

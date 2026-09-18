@@ -9,7 +9,6 @@
     "declaration": false,
     "module": "preserve",
     "moduleResolution": "bundler",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",

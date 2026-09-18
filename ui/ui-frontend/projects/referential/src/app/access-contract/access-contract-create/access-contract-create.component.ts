@@ -63,7 +63,6 @@ import { AccessContractCreateValidators } from './access-contract-create.validat
 
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AccessContractPreviewModule } from '../access-contract-preview/access-contract-preview.module';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -72,6 +71,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
+import { AccessContractAuthorizationsUpdateComponent } from '../access-contract-preview/access-contract-authorizations-tab/access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -79,7 +79,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './access-contract-create.component.html',
   styleUrls: ['./access-contract-create.component.scss'],
   imports: [
-    AccessContractPreviewModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -90,6 +89,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     ReactiveFormsModule,
     SelectComponent,
     SharedModule,
+    AccessContractAuthorizationsUpdateComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

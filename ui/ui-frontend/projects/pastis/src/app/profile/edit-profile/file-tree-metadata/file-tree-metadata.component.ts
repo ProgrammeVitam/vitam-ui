@@ -35,13 +35,38 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation, inject } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
 import { Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/pastis/src/environments/environment';
 import { mergeMap, Subscription } from 'rxjs';
-import { DatePatternConstants, Logger, Option, SnackBarService, StartupService } from 'vitamui-library';
+import {
+  ChipComponent,
+  DatePatternConstants,
+  EditableInputComponent,
+  EditableTextareaComponent,
+  InputComponent,
+  Logger,
+  Option,
+  SelectComponent,
+  SnackBarService,
+  StartupService,
+  TooltipDirective,
+  VitamuiBannerComponent,
+} from 'vitamui-library';
 import { FileService } from '../../../core/services/file.service';
 import { ProfileService } from '../../../core/services/profile.service';
 import { SedaService } from '../../../core/services/seda.service';
@@ -68,6 +93,28 @@ import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
 import { filter, map, tap } from 'rxjs/operators';
 import { BreadcrumbService } from '../../../core/services/breadcrumb.service';
+import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { PastisTitleBreadcrumbComponent } from '../../../shared/pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
+import { PastisBreadcrumbComponent } from '../../../shared/pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
+import { AllowAdditionalPropertiesComponent } from '../../../user-actions/allow-additional-properties/allow-additional-properties.component';
+import { UserActionSaveProfileComponent } from '../../../user-actions/save-profile/save-profile.component';
+import { UserActionsDownloadDocComponent } from '../../../user-actions/download-doc/download-doc.component';
+import { PastisPopupMetadataLanguageComponent } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.component';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { MatDivider } from '@angular/material/list';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
@@ -104,7 +151,57 @@ function constantToTranslate() {
   // Encapsulation has to be disabled in order for the
   // component style to apply to the select panel.
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenavContent,
+    PastisTitleBreadcrumbComponent,
+    ChipComponent,
+    PastisBreadcrumbComponent,
+    TooltipDirective,
+    AllowAdditionalPropertiesComponent,
+    UserActionSaveProfileComponent,
+    UserActionsDownloadDocComponent,
+    PastisPopupMetadataLanguageComponent,
+    VitamuiBannerComponent,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    NgClass,
+    MatIcon,
+    FormsModule,
+    MatSelect,
+    MatOption,
+    MatIconButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatDivider,
+    MatMenuItem,
+    MatCheckbox,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatDialogTitle,
+    MatRadioGroup,
+    MatRadioButton,
+    SelectComponent,
+    InputComponent,
+    TranslatePipe,
+    CommonModule,
+    EditableInputComponent,
+    EditableTextareaComponent,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+    ReactiveFormsModule,
+  ],
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   profileService = inject(ProfileService);

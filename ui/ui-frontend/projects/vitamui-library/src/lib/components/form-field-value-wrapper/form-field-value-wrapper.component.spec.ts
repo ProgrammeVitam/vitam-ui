@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormFieldValueWrapperComponent } from './form-field-value-wrapper.component';
@@ -72,7 +71,7 @@ describe('FormFieldValueWrapperComponent', () => {
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, TestHostWithSearchWithTypeSelectorComponent],
+        imports: [TestHostWithSearchWithTypeSelectorComponent],
       }).compileComponents();
 
       hostFixture = TestBed.createComponent(TestHostWithSearchWithTypeSelectorComponent);

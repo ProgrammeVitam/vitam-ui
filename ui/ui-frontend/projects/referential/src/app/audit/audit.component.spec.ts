@@ -43,10 +43,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL, DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditComponent } from './audit.component';
 import { DatePipe } from '@angular/common';
@@ -64,6 +63,7 @@ describe('AuditComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'AUDIT_APP' }),
+      snapshot: { data: { appId: 'AUDIT_APP' } },
     };
     const routerSpy = {
       navigate: vi.fn().mockName('Router.navigate'),
@@ -78,14 +78,12 @@ describe('AuditComponent', () => {
         MatSelectModule,
         MatSidenavModule,
         DatepickerComponent,
-        NoopAnimationsModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
+        AuditComponent,
       ],
-      declarations: [AuditComponent],
       providers: [
         provideNativeDateAdapter(),
-        { provide: BASE_URL, useValue: '/pastis-api' },
         DatePipe,
         FormBuilder,
         GlobalEventService,

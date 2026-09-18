@@ -39,12 +39,16 @@ import type { DisplayObject } from '../../models/display-object.model';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { TypeService } from '../../services/type.service';
 import { DisplayObjectType } from '../../types';
+import { GroupComponent } from '../group/group.component';
+import { PrimitiveComponent } from '../primitive/primitive.component';
+import { DataComponent } from '../../../components/data/data.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
-  standalone: false,
+  imports: [GroupComponent, PrimitiveComponent, DataComponent, TranslatePipe],
 })
 export class ListComponent implements OnChanges {
   private typeService = inject(TypeService);
