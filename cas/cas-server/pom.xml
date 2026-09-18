@@ -919,6 +919,10 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
                 <configuration>
+                    <from>
+                        <image>gcr.io/distroless/java21</image>
+                    </from>
+                    <allowInsecureRegistries>true</allowInsecureRegistries>
                     <to>
                         <image>${env.SERVICE_DOCKER_PUSH_URL}/vitamui/cas-server</image>
                         <tags>${project.version}</tags>
@@ -928,6 +932,7 @@
                             <path>
                                 <from>target/</from>
                                 <into>/app/</into>
+                                <includes>cas-server.war</includes>
                             </path>
                         </paths>
                     </extraDirectories>
@@ -935,6 +940,14 @@
                         <entrypoint>java,-jar,/app/cas-server.war</entrypoint>
                     </container>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
