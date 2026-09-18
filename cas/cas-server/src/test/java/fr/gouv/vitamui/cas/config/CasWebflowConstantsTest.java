@@ -28,6 +28,7 @@ public class CasWebflowConstantsTest {
     private static final Map<String, String> EXPECTED_VALUES = Map.ofEntries(
         entry("ACTION_ID_DELEGATED_AUTHENTICATION", "delegatedAuthenticationAction"),
         entry("ACTION_ID_DELEGATED_AUTHENTICATION_CLIENT_LOGOUT", "delegatedAuthenticationClientLogoutAction"),
+        entry("ACTION_ID_FINISH_LOGOUT", "finishLogoutAction"),
         entry("ACTION_ID_FRONT_CHANNEL_LOGOUT", "frontChannelLogoutAction"),
         entry("ACTION_ID_INITIAL_FLOW_SETUP", "initialFlowSetupAction"),
         entry("ACTION_ID_INIT_LOGIN_ACTION", "initializeLoginAction"),

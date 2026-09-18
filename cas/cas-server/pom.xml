@@ -335,6 +335,13 @@
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-pac4j-webflow</artifactId>
         </dependency>
+        <!-- Delegated SAML2 logout: since CAS 7.1 the actions handling the SAML2 single logout (LogoutRequest
+             sent to the provider, LogoutResponse posted back on /logout with the client in the RelayState) live
+             in this module rather than in pac4j-webflow. Without it the provider session stays open. -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-pac4j-saml</artifactId>
+        </dependency>
 
         <!-- SAML & OAuth & OIDC -->
         <dependency>
