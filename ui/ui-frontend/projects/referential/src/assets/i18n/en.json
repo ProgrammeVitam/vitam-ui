@@ -1105,6 +1105,7 @@
     "DOWNLOAD_NOT_ALLOWED": "Unable to download the report for this operation",
     "IMPORT_REFERENTIAL_SUCCESSED": "Import completed successfully. Please consult the import details in the operations log",
     "IMPORT_REFERENTIAL_FAILED": "The import failed. Please consult the error details in the operations log",
+    "IMPORT_REFERENTIAL_INVALID_FILE": "The import failed: the file is invalid and has not been processed. {{detail}}",
     "RULE_CREATE_SUCCESS": "Management rule {{ name }} has been successfully created.",
     "RULE_CREATE_FAILED": "Management rule {{ name }} could not be created.",
     "RULE_UPDATE_SUCCESS": "Management rule {{ name }} has been successfully updated.",
