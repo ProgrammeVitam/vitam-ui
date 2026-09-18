@@ -36,7 +36,12 @@ server {
     {% endfor %}
     deny all; # Deny access to all other IP addresses
 
-    proxy_pass {{ 'https' if vitamui.api_gateway.secure | default(secure) | bool else 'http' }}://API-GATEWAY;
+    {% if vitamui.api_gateway.secure | default(secure) | bool %}
+    set $api_gateway_dns "vitamui-{{ vitamui.api_gateway.vitamui_component }}.service.{{ consul_domain }}";
+    proxy_pass https://$api_gateway_dns:{{ vitamui.api_gateway.port_service }};
+    {% else %}
+    proxy_pass http://API-GATEWAY;
+    {% endif %}
     proxy_ssl_certificate {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.crt;
     proxy_ssl_certificate_key {{ nginx_ssl_dir }}/{{ vitamui_struct.vitamui_component }}.key;
     proxy_ssl_session_reuse off;
