@@ -169,7 +169,7 @@ public final class MetadataSearchCriteriaUtils {
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
 
-            if (orderBy.isPresent()) {
+            if (orderBy.isPresent() && NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, orderBy.get())) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
                 } else {
@@ -208,7 +208,7 @@ public final class MetadataSearchCriteriaUtils {
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
-            if (orderBy.isPresent()) {
+            if (orderBy.isPresent() && NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, orderBy.get())) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
                 } else {
