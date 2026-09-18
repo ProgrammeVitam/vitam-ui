@@ -63,3 +63,14 @@ export interface ImportError {
   error: string;
   data: string;
 }
+
+/**
+ * Raised when the imported file was rejected by the backend before any operation was created
+ * (e.g. invalid XML/CSV). `detail` holds the backend error message.
+ */
+export class ReferentialImportInvalidFileError extends Error {
+  constructor(public readonly detail: string) {
+    super(detail);
+    this.name = 'ReferentialImportInvalidFileError';
+  }
+}

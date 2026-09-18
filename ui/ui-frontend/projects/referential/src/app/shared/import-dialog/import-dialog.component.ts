@@ -39,7 +39,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ApplicationId, FileTypes, FileValidationErrors, FileValidatorFunction, SnackBarService } from 'vitamui-library';
 import { firstValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ImportDialogParam, ReferentialTypes } from './import-dialog-param.interface';
+import { ImportDialogParam, ReferentialImportInvalidFileError, ReferentialTypes } from './import-dialog-param.interface';
 import { FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ReferentialImportService } from './referential-import.service';
@@ -89,10 +89,16 @@ export class ImportDialogComponent implements OnDestroy {
 
           this.dialogRef.close({ successfulImport: true });
         },
-        error: (_) => {
+        error: (error: unknown) => {
           this.isLoading = false;
-          let showSnackbar = true;
-          if (showSnackbar && this.dialogParams.errorMessage) {
+          if (error instanceof ReferentialImportInvalidFileError) {
+            // The file was rejected before any operation was created: no link to the operations log
+            this.snackBarService.open({
+              message: 'SNACKBAR.IMPORT_REFERENTIAL_INVALID_FILE',
+              translateParams: { detail: error.detail },
+              icon: this.dialogParams.iconMessage,
+            });
+          } else if (this.dialogParams.errorMessage) {
             this.snackBarService.open({
               message: this.dialogParams.errorMessage,
               icon: this.dialogParams.iconMessage,

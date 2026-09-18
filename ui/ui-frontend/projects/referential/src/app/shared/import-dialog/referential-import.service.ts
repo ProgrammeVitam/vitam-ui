@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
-import { ReferentialTypes } from './import-dialog-param.interface';
-import { Observable } from 'rxjs';
+import { ReferentialImportInvalidFileError, ReferentialTypes } from './import-dialog-param.interface';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +53,17 @@ export class ReferentialImportService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' });
+    return this.http
+      .post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' })
+      .pipe(
+        catchError((error: unknown) =>
+          throwError(() =>
+            error instanceof HttpErrorResponse && error.status === HttpStatusCode.BadRequest
+              ? new ReferentialImportInvalidFileError(extractErrorMessage(error))
+              : error,
+          ),
+        ),
+      );
   }
 
   getCSVCheckResults(referential: ReferentialTypes, file: File): Observable<void> {
@@ -61,5 +72,18 @@ export class ReferentialImportService {
     formData.append('file', file);
 
     return this.http.post<void>(this.baseUrl + '/' + referential + '/import/check', formData, { headers });
+  }
+}
+
+/** The import request uses responseType 'text', so the VitamUIError body has to be parsed manually. */
+function extractErrorMessage(error: HttpErrorResponse): string {
+  const body: unknown = error.error;
+  if (typeof body !== 'string') {
+    return (body as { message?: string })?.message ?? '';
+  }
+  try {
+    return JSON.parse(body)?.message ?? '';
+  } catch {
+    return body;
   }
 }
