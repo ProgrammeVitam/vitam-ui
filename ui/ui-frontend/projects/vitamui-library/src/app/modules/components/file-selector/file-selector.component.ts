@@ -283,7 +283,8 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
         ? this.fileValidators
         : [this.fileValidators]
       : [];
-    const validators: FileValidatorFunction[] = [this.fileExtensionValidator, ...customFileValidators];
+    // fileSizeValidator MUST run first so custom validators (e.g. reading file content) can skip oversized files via the hasErrors flag
+    const validators: FileValidatorFunction[] = [this.fileSizeValidator, this.fileExtensionValidator, ...customFileValidators];
     const errors = await this.runValidators(validators, file);
 
     console.groupEnd();
@@ -356,6 +357,22 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     console.log(`Valid extension`);
     return undefined;
   }
+
+  /**
+   * Rejects a file exceeding maxSizeInBytes before any other (potentially content-reading) validator runs on it,
+   */
+  private fileSizeValidator = async (file: File): Promise<FileValidationErrors | undefined> => {
+    if (!this.maxSizeInBytes || (file.size || 0) <= this.maxSizeInBytes) return undefined;
+    console.warn(`File "${file.name}" exceeds maximum size: ${file.size}/${this.maxSizeInBytes}`);
+    const details = {
+      size: this.bytesPipe.transform(file.size),
+      maxSize: this.bytesPipe.transform(this.maxSizeInBytes),
+    };
+    return {
+      fileErrors: { maxSizeInBytes: details },
+      controlErrors: { maxSizeInBytes: details },
+    };
+  };
 
   private async directoryForbiddenValidator(displayFile: DisplayFile): Promise<FileValidationErrors | undefined> {
     if (this.directoryMode) return undefined;
