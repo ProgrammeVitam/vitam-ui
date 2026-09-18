@@ -76,6 +76,7 @@ import {
   SearchCriteriaTypeEnum,
   SidenavPage,
   SnackBarService,
+  StartupService,
   TermsFacet,
   Transaction,
   TransactionStatus,
@@ -111,6 +112,8 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
+  private nonSortableFields: string[];
+
   readonly UnitType = UnitType;
 
   DEFAULT_DELETION_THRESHOLD = 10_000;
@@ -227,8 +230,11 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
     private snackBarService: SnackBarService,
     private transactionService: TransactionsService,
     private sipImportTrackingService: SipImportTrackingService,
+    private startupService: StartupService,
   ) {
     super(route, globalEventService);
+
+    this.nonSortableFields = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
 
     this.subscriptions.add(
       this.archiveSharedDataService.getNodes().subscribe((node) => {
@@ -679,6 +685,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  isSortableField(field: string): boolean {
+    return !this.nonSortableFields.includes(field);
   }
 
   showPreviewArchiveUnit(item: Unit) {

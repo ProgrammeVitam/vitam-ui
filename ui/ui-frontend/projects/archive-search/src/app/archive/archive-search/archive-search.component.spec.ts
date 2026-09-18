@@ -58,6 +58,7 @@ import {
   SearchCriteriaStatusEnum,
   UnitType,
   VitamuiRoles,
+  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -170,6 +171,7 @@ describe('ArchiveSearchComponent', () => {
         { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
