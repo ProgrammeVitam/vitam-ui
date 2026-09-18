@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BASE_URL, VitamuiHttpHeaders } from 'vitamui-library';
-import { ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
+import { ReferentialImportInvalidFileError, ReferentialTypes } from '../../shared/import-dialog/import-dialog-param.interface';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +55,35 @@ export class ReferentialImportApiService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' });
+    return this.http.post(this.baseUrl + '/' + referential + '/import', formData, { headers, responseType: 'text' }).pipe(
+      catchError((error: unknown) =>
+        throwError(() => {
+          if (!(error instanceof HttpErrorResponse) || error.status !== HttpStatusCode.BadRequest) {
+            return error;
+          }
+          const body = parseErrorBody(error);
+          // A 400 carrying `args` lists per-line CSV errors: the dialog displays them itself
+          return body.args?.length ? error : new ReferentialImportInvalidFileError(body.message ?? '');
+        }),
+      ),
+    );
+  }
+}
+
+interface VitamUIErrorBody {
+  message?: string;
+  args?: string[];
+}
+
+/** The import request uses responseType 'text', so the VitamUIError body has to be parsed manually. */
+function parseErrorBody(error: HttpErrorResponse): VitamUIErrorBody {
+  const body: unknown = error.error;
+  if (typeof body !== 'string') {
+    return (body as VitamUIErrorBody) ?? {};
+  }
+  try {
+    return JSON.parse(body) ?? {};
+  } catch {
+    return { message: body };
   }
 }
