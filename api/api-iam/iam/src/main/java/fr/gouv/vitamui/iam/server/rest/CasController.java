@@ -45,10 +45,15 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
+import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.user.domain.User;
@@ -78,16 +83,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * The controller for CAS operations.
+ * Le contrôleur pour les opérations CAS.
  */
 @RestController
-@RequestMapping(RestApi.V1_CAS_URL)
+@RequestMapping(AuthContractApi.V1_AUTH_URL)
 @Tag(name = "Cas", description = "User authentication management for CAS")
 public class CasController {
 
@@ -119,7 +122,7 @@ public class CasController {
         this.userService = userService;
     }
 
-    @PostMapping(value = RestApi.CAS_LOGIN_PATH)
+    @PostMapping(value = AuthContractApi.LOGIN_PATH)
     @Operation(operationId = "cas_login", summary = "Performs the login of a user")
     @Secured(ServicesData.ROLE_CAS_LOGIN)
     public ResponseEntity<UserDto> login(final @Valid @RequestBody LoginRequestDto dto) {
@@ -165,6 +168,7 @@ public class CasController {
             throw new TooManyRequestsException(message);
         } else if (passwordMatch) {
             final UserDto userDto = userService.internalConvertFromEntityToDto(user);
+            userDto.setMustChangePassword(isPasswordExpired(user.getPasswordExpirationDate(), now));
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), null);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         } else {
@@ -172,6 +176,10 @@ public class CasController {
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
             throw new UnAuthorizedException(message);
         }
+    }
+
+    private boolean isPasswordExpired(final OffsetDateTime expirationDate, final OffsetDateTime now) {
+        return expirationDate == null || expirationDate.isBefore(now);
     }
 
     private String findSurrogateDescriptionStringForLogging(final LoginRequestDto loginRequest) {
@@ -187,7 +195,7 @@ public class CasController {
         return null;
     }
 
-    @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
+    @PostMapping(AuthContractApi.CHANGE_PASSWORD_PATH)
     @Operation(operationId = "cas_changePassword", summary = "Change password of a user")
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
@@ -213,19 +221,7 @@ public class CasController {
         return "true";
     }
 
-    @GetMapping(value = RestApi.CAS_USERS_PATH, params = "email")
-    @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
-    @Secured(ServicesData.ROLE_CAS_USERS)
-    public List<UserDto> getUsersByEmail(
-        @RequestParam final String email,
-        @RequestParam final Optional<String> embedded
-    ) {
-        LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
-        ParameterChecker.checkParameter("The email is mandatory : ", email);
-        return casService.getUsersByEmail(email, embedded.orElse(null));
-    }
-
-    @GetMapping(value = RestApi.CAS_USERS_PATH + RestApi.USERS_PROVISIONING)
+    @GetMapping(value = AuthContractApi.USERS_PATH + AuthContractApi.USERS_PROVISIONING_PATH)
     @Operation(
         operationId = "cas_getUser",
         summary = "Get a user by their loginEmail, loginCustomerId and optional idp"
@@ -256,41 +252,7 @@ public class CasController {
         return casService.getUser(loginEmail, loginCustomerId, idp, userIdentifier, embedded);
     }
 
-    @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH)
-    @Operation(
-        operationId = "getSubrogationsBySuperUserIdOrEmailAndCustomerId",
-        summary = "Get available subrogations for a super user by super user id or by super user email and customerId"
-    )
-    @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserIdOrEmailAndCustomerId(
-        @RequestParam(required = false) final String superUserId,
-        @RequestParam(required = false) final String superUserEmail,
-        @RequestParam(required = false) final String superUserCustomerId
-    ) {
-        LOGGER.debug(
-            "getSubrogationsBySuperUserIdOrEmailAndCustomerId: id: {} | email: {} / customerId: {}",
-            superUserId,
-            superUserEmail,
-            superUserCustomerId
-        );
-        String email = superUserEmail, customerId = superUserCustomerId;
-        if (superUserId != null && !superUserId.isEmpty() && !superUserId.trim().isEmpty()) {
-            SanityChecker.checkSecureParameter(superUserId);
-            final UserDto user = userService.findUserById(superUserId);
-            if (user != null && user.getStatus() == UserStatusEnum.ENABLED) {
-                email = user.getEmail();
-                customerId = user.getCustomerId();
-                LOGGER.debug("-> email: {}, customerId: {}", email, customerId);
-            } else {
-                return new ArrayList<>();
-            }
-        }
-        ParameterChecker.checkParameter("The superUserEmail is mandatory : ", email);
-        ParameterChecker.checkParameter("The superUserCustomerId is mandatory : ", customerId);
-        return casService.getSubrogationsBySuperUser(email, customerId);
-    }
-
-    @GetMapping(value = RestApi.CAS_LOGOUT_PATH)
+    @GetMapping(value = AuthContractApi.LOGOUT_PATH)
     @Operation(
         operationId = "cas_logout",
         summary = "Logout a user, remove the token and delete the subrogation if needed"
@@ -321,7 +283,7 @@ public class CasController {
         }
     }
 
-    @GetMapping(value = RestApi.CAS_CUSTOMERS_PATH)
+    @GetMapping(value = AuthContractApi.CUSTOMERS_PATH)
     @Operation(operationId = "cas_getCustomersByIds", summary = "Get all customers by ids")
     @Secured(ServicesData.ROLE_CAS_CUSTOMER_IDS)
     public Collection<CustomerDto> getCustomersByIds(final @RequestParam List<String> customerIds) {
@@ -329,5 +291,96 @@ public class CasController {
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
         SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
+    }
+
+    /**
+     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
+     *
+     * Le serveur d'authentification n'a plus à connaître les noms d'attributs, ni la façon dont chacun dérive
+     * du modèle utilisateur : il recopie la map sans l'interpréter.
+     */
+    @PostMapping(value = AuthContractApi.PRINCIPAL_ATTRIBUTES_PATH)
+    @Operation(operationId = "cas_buildPrincipalAttributes", summary = "Build the authentication attributes of a user")
+    @Secured(ServicesData.ROLE_CAS_PRINCIPAL_ATTRIBUTES)
+    public PrincipalAttributesResponseDto buildPrincipalAttributes(
+        final @Valid @RequestBody PrincipalAttributesRequestDto request
+    ) throws InvalidParseOperationException {
+        LOGGER.debug("build the principal attributes");
+        SanityChecker.checkSecureParameter(request.getLoginEmail(), request.getLoginCustomerId());
+        return casService.buildPrincipalAttributes(request);
+    }
+
+    /**
+     * Valide qu'une subrogation autorise ce super-utilisateur à prendre la place de cet utilisateur.
+     *
+     * Une réponse équivaut à une autorisation ; un refus prend la forme d'un 404, jamais d'une réponse vide.
+     * Le serveur d'authentification ne récupère donc plus les subrogations pour les filtrer lui-même.
+     */
+    @PostMapping(value = AuthContractApi.SUBROGATION_VALIDATE_PATH)
+    @Operation(operationId = "cas_validateSubrogation", summary = "Validate a subrogation and resolve both users")
+    @Secured(ServicesData.ROLE_CAS_SUBROGATION_VALIDATE)
+    public SubrogationValidateResponseDto validateSubrogation(
+        final @Valid @RequestBody SubrogationValidateRequestDto request
+    ) throws InvalidParseOperationException {
+        LOGGER.debug("validate a subrogation");
+        SanityChecker.checkSecureParameter(
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId(),
+            request.getSurrogateEmail(),
+            request.getSurrogateCustomerId()
+        );
+        return casService.validateSubrogation(request);
+    }
+
+    /**
+     * La politique de mot de passe que l'IAM applique, afin que le serveur d'authentification affiche exactement les
+     * contraintes qui seront vérifiées plutôt que sa propre copie de la configuration.
+     */
+    @GetMapping(value = AuthContractApi.PASSWORD_POLICY_PATH)
+    @Operation(operationId = "cas_getPasswordPolicy", summary = "Get the password policy enforced by IAM")
+    @Secured(ServicesData.ROLE_CAS_PASSWORD_POLICY)
+    public PasswordPolicyDto getPasswordPolicy() {
+        LOGGER.debug("get the password policy");
+        return casService.getPasswordPolicy();
+    }
+
+    /**
+     * Home Realm Discovery : les clients et fournisseurs d'identité à travers lesquels un e-mail donné peut s'authentifier.
+     *
+     * La cardinalité de la réponse porte la décision du serveur d'authentification — aucune entrée pour une
+     * configuration inutilisable, une seule pour poursuivre directement, plusieurs pour faire choisir d'abord le client. Une
+     * adresse inconnue est routée exactement comme une adresse connue, de sorte que le flux ne révèle jamais si un
+     * compte existe.
+     */
+    @GetMapping(value = AuthContractApi.HRD_PATH, params = "email")
+    @Operation(
+        operationId = "cas_resolveHrd",
+        summary = "Resolve the organisations and identity providers for an email"
+    )
+    @Secured(ServicesData.ROLE_CAS_HRD)
+    public List<HrdEntryDto> resolveHrd(final @RequestParam String email) {
+        LOGGER.debug("resolve HRD entries");
+        ParameterChecker.checkParameter("The email is mandatory : ", email);
+        SanityChecker.checkSecureParameter(email);
+        return casService.resolveHrdEntries(email);
+    }
+
+    /**
+     * Résout l'unique fournisseur d'identité par certificat X509 correspondant à un identifiant d'utilisateur (un e-mail
+     * extrait du certificat, ou un simple repli {@code @domain}). L'authentification par certificat ne
+     * prend pas en charge le multi-domaine, donc exactement un fournisseur doit correspondre ; sinon un 404 est renvoyé et le
+     * serveur d'authentification le transforme en refus d'authentification.
+     */
+    @GetMapping(value = AuthContractApi.CERTIFICATE_PATH, params = "userIdentifier")
+    @Operation(
+        operationId = "cas_resolveCertificateProvider",
+        summary = "Resolve the single X509 certificate identity provider for a user identifier"
+    )
+    @Secured(ServicesData.ROLE_CAS_HRD)
+    public HrdEntryDto resolveCertificateProvider(final @RequestParam String userIdentifier) {
+        LOGGER.debug("resolve certificate identity provider");
+        ParameterChecker.checkParameter("The userIdentifier is mandatory : ", userIdentifier);
+        SanityChecker.checkSecureParameter(userIdentifier);
+        return casService.resolveCertificateProvider(userIdentifier);
     }
 }

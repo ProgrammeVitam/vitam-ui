@@ -39,7 +39,7 @@ package fr.gouv.vitamui.cas.ticket;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.Authentication;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Specific factory for access tokens using the auth token as identifier.
+ * Fabrique spécifique de jetons d'accès utilisant le auth token comme identifiant.
  *
  *
  */

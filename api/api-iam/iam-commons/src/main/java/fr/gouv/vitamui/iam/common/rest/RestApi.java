@@ -67,21 +67,8 @@ public abstract class RestApi {
 
     public static final String V1_APPLICATIONS_URL = "/iam/v1/applications";
 
-    public static final String V1_CAS_URL = "/iam/v1/cas";
-
-    public static final String CAS_LOGIN_PATH = "/login";
-
-    public static final String CAS_LOGOUT_PATH = "/logout";
-
-    public static final String CAS_CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String CAS_USERS_PATH = "/users";
-
-    public static final String CAS_CUSTOMERS_PATH = "/customers";
-
-    public static final String USERS_PROVISIONING = "/provisioning";
-
-    public static final String CAS_SUBROGATIONS_PATH = "/subrogations";
+    // Les chemins du contrat d'authentification vivent dans iam-auth-contract
+    // (fr.gouv.vitamui.iam.auth.contract.AuthContractApi).
 
     public static final String V1_EXTERNAL_PARAMETERS_URL = "/iam/v1/externalparameters";
 

@@ -37,15 +37,17 @@ import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 
 /**
- * Check the MFA token.
+ * Vérifie le jeton MFA.
  */
 @Slf4j
 @RequiredArgsConstructor
 public class CheckMfaTokenAction extends AbstractAction {
+
+    private static final Duration TOKEN_VALIDITY = Duration.ofSeconds(60);
 
     private final TicketRegistry ticketRegistry;
 
@@ -57,17 +59,17 @@ public class CheckMfaTokenAction extends AbstractAction {
         LOGGER.debug("Checking token: {}", token);
         WebUtils.putCredential(requestContext, new CasSimpleMultifactorTokenCredential(token));
 
+        // Un jeton dont le ticket est manquant, absent du registre, ou plus ancien que la fenêtre de validité est refusé
+        // (un ticket disparu passait auparavant à travers le contrôle d'expiration).
         try {
             var acct = this.ticketRegistry.getTicket(token, CasSimpleMultifactorAuthenticationTicket.class);
-            if (acct != null) {
-                var creationTime = acct.getCreationTime();
-                var now_less_one_minute = ZonedDateTime.now().minus(60, ChronoUnit.SECONDS);
-                // considered expired after 60 seconds
-                if (creationTime.isBefore(now_less_one_minute)) {
-                    return error();
-                }
+            if (acct == null || acct.getCreationTime().isBefore(ZonedDateTime.now().minus(TOKEN_VALIDITY))) {
+                return error();
             }
-        } catch (InvalidTicketException e) {}
+        } catch (final InvalidTicketException e) {
+            LOGGER.debug("MFA token {} is invalid: {}", token, e.getMessage());
+            return error();
+        }
         return success();
     }
 }

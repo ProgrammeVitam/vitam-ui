@@ -38,7 +38,6 @@ package fr.gouv.vitamui.cas.password;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.util.Constants;
@@ -47,8 +46,8 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import jakarta.validation.constraints.NotNull;
@@ -56,7 +55,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.PreventedException;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
@@ -65,7 +63,6 @@ import org.apereo.cas.pm.PasswordChangeRequest;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.impl.BasePasswordManagementService;
-import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -82,14 +79,12 @@ import java.util.Objects;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
 /**
- * Specific password management service based on the IAM API.
+ * Service spécifique de gestion des mots de passe basé sur l'API de l'IAM.
  */
 @Getter
 @Setter
 @Slf4j
 public class IamPasswordManagementService extends BasePasswordManagementService {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final CasApi casApi;
 
@@ -97,18 +92,10 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final IdentityProviderHelper identityProviderHelper;
 
-    private final CentralAuthenticationService centralAuthenticationService;
-
     private final Utils utils;
-
-    private final TicketRegistry ticketRegistry;
 
     private final PasswordValidator passwordValidator;
 
-    private final PasswordConfiguration passwordConfiguration;
-
-    // CAS 7.3 takes the whole CasConfigurationProperties and derives the issuer from it, so the
-    // PasswordManagementProperties and issuer arguments are gone.
     public IamPasswordManagementService(
         final CasConfigurationProperties casProperties,
         final CipherExecutor<Serializable, String> cipherExecutor,
@@ -116,34 +103,28 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         final CasApi casApi,
         final ProvidersService providersService,
         final IdentityProviderHelper identityProviderHelper,
-        final CentralAuthenticationService centralAuthenticationService,
         final Utils utils,
-        final TicketRegistry ticketRegistry,
-        final PasswordValidator passwordValidator,
-        final PasswordConfiguration passwordConfiguration
+        final PasswordValidator passwordValidator
     ) {
         super(casProperties, cipherExecutor, passwordHistoryService);
         this.casApi = casApi;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
-        this.centralAuthenticationService = centralAuthenticationService;
         this.utils = utils;
-        this.ticketRegistry = ticketRegistry;
         this.passwordValidator = passwordValidator;
-        this.passwordConfiguration = passwordConfiguration;
     }
 
     protected RequestContext blockIfSubrogation() {
         final var requestContext = RequestContextHolder.getRequestContext();
         final var authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
-            // login/pwd subrogation
+            // subrogation par identifiant/mot de passe
             String superUsername = (String) utils.getAttributeValue(
                 authentication.getAttributes(),
                 SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL
             );
             if (superUsername == null) {
-                // authn delegation subrogation
+                // subrogation par authentification déléguée
                 superUsername = (String) utils.getAttributeValue(
                     authentication.getPrincipal().getAttributes(),
                     SUPER_USER_ATTRIBUTE
@@ -172,14 +153,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             throw new PasswordConfirmException();
         }
 
-        if (
-            !passwordValidator.isValid(casProperties.getAuthn().getPm().getCore().getPasswordPolicyPattern(), password)
-        ) {
-            throw new PasswordNotMatchRegexException();
-        }
-
         final var username = bean.getUsername();
-        LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
         Assert.notNull(username, "username can not be null");
 
         final UserLoginModel userLogin = extractUserLoginAndCustomerIdModel(flowScope, username);
@@ -193,31 +167,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         if (user.getStatus() != UserStatusEnum.ENABLED) {
             LOGGER.debug("User cannot login: {} - User {}", userLogin.getUserEmail(), user.toString());
             throw new InvalidPasswordException();
-        }
-
-        if (
-            (passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
-                passwordConfiguration.isCheckOccurrence() &&
-                passwordConfiguration.getOccurrencesCharsNumber() != null &&
-                passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
-            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") &&
-                passwordConfiguration.isCheckOccurrence() &&
-                passwordConfiguration.getOccurrencesCharsNumber() != null &&
-                passwordConfiguration.getOccurrencesCharsNumber() > 0)
-        ) {
-            String userLastName = user.getLastname();
-            Assert.notNull(userLastName, "user last name can not be null");
-            if (
-                passwordValidator.isContainsUserOccurrences(
-                    userLastName,
-                    password,
-                    passwordConfiguration.getOccurrencesCharsNumber()
-                )
-            ) {
-                throw new PasswordContainsUserDictionaryException(
-                    "Invalid password containing an occurence of user name !"
-                );
-            }
         }
 
         final var identityProvider = identityProviderHelper.findByUserIdentifierAndCustomerId(
@@ -240,19 +189,35 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
         } catch (final VitamUIException e) {
+            final InvalidPasswordException refusal = toPasswordScreenRefusal(e);
+            if (refusal != null) {
+                throw refusal;
+            }
             LOGGER.error("Cannot change password", e);
             return false;
         }
     }
 
+    private InvalidPasswordException toPasswordScreenRefusal(final VitamUIException e) {
+        if (PasswordChangeErrorKeys.POLICY_NOT_MATCHED.equals(e.getKey())) {
+            return new PasswordNotMatchRegexException();
+        }
+        if (PasswordChangeErrorKeys.CONTAINS_USER_NAME.equals(e.getKey())) {
+            return new PasswordContainsUserDictionaryException(
+                "Invalid password containing an occurence of user name !"
+            );
+        }
+        return null;
+    }
+
     @NotNull
     private UserLoginModel extractUserLoginAndCustomerIdModel(MutableAttributeMap<Object> flowScope, String username) {
-        // IMPORTANT: 2 possible workflows :
-        // -> If we came from password expiration workflow ==> We already have the
-        // username/customerId from flow scope
-        // -> If we came from password reset link by email ==> We use a dirty hack to
-        // encode a username+password pair as
-        // a json-serialized UserLoginModel encoded into the `username` field.
+        // IMPORTANT : 2 workflows possibles :
+        // -> Si l'on vient du workflow d'expiration de mot de passe ==> On dispose déjà du
+        // username/customerId dans le flow scope
+        // -> Si l'on vient du lien de réinitialisation de mot de passe par e-mail ==> On utilise une astuce peu propre pour
+        // encoder une paire username+password sous la forme
+        // d'un UserLoginModel sérialisé en json encodé dans le champ `username`.
 
         String loginEmailFromFlowScope = null;
         String loginCustomerIdFromFlowScope = null;
@@ -261,7 +226,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             loginCustomerIdFromFlowScope = flowScope.getString(Constants.FLOW_LOGIN_CUSTOMER_ID);
         }
         if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginCustomerIdFromFlowScope)) {
-            // User customerId already in the scope ==> We came from password expired flow
+            // Le customerId de l'utilisateur est déjà dans le scope ==> On vient du flux de mot de passe expiré
             Assert.isTrue(
                 Objects.equals(loginEmailFromFlowScope, username),
                 "Email does not match login email from flow"
@@ -273,7 +238,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
 
         try {
-            UserLoginModel userLoginNode = OBJECT_MAPPER.readValue(username, new TypeReference<>() {});
+            UserLoginModel userLoginNode = utils.fromJson(username, new TypeReference<>() {});
 
             if (StringUtils.isBlank(userLoginNode.getUserEmail())) {
                 LOGGER.error("Could not find the user email for password changing ");

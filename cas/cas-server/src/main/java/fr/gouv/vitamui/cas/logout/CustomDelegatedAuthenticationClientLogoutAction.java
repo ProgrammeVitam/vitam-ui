@@ -44,7 +44,7 @@ import org.pac4j.core.profile.UserProfile;
 import java.util.Optional;
 
 /**
- * Propagate the logout from CAS to the authn delegated server.
+ * Propage la déconnexion de CAS vers le serveur d'authentification déléguée.
  */
 @Slf4j
 public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAuthenticationClientLogoutAction {
@@ -83,15 +83,11 @@ public class CustomDelegatedAuthenticationClientLogoutAction extends DelegatedAu
             return Optional.empty();
         }
 
-        val client = optClient.get();
-        val provider = identityProviderHelper
-            .findByTechnicalName(providersService.getProviders(), client.getName())
-            .get();
-        LOGGER.debug("provider: {}", provider);
-        if (!provider.isPropagateLogout()) {
-            return Optional.empty();
-        }
-
-        return optClient;
+        // Propage la déconnexion uniquement quand le fournisseur est connu et la demande : un fournisseur inconnu n'est pas une erreur.
+        val propagateLogout = identityProviderHelper
+            .findByTechnicalName(providersService.getProviders(), optClient.get().getName())
+            .map(provider -> Boolean.TRUE.equals(provider.isPropagateLogout()))
+            .orElse(false);
+        return propagateLogout ? optClient : Optional.empty();
     }
 }

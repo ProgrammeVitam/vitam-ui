@@ -58,10 +58,7 @@ import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
@@ -75,13 +72,7 @@ import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
-import org.apereo.cas.logout.LogoutExecutionPlan;
-import org.apereo.cas.logout.slo.SingleLogoutRequestExecutor;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
-import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
-import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationRequestCustomizer;
-import org.apereo.cas.pac4j.client.DelegatedClientIdentityProviderRedirectionStrategy;
-import org.apereo.cas.pac4j.client.DelegatedClientNameExtractor;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
@@ -91,7 +82,6 @@ import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TicketCatalog;
 import org.apereo.cas.ticket.TicketDefinition;
-import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.TicketGrantingTicketFactory;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
@@ -101,16 +91,6 @@ import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.ticket.tracking.TicketTrackingPolicy;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
-import org.apereo.cas.util.spring.beans.BeanSupplier;
-import org.apereo.cas.web.cookie.CasCookieBuilder;
-import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
-import org.apereo.cas.web.flow.DelegatedClientIdentityProviderAuthorizer;
-import org.apereo.cas.web.flow.DelegatedClientIdentityProviderConfigurationPostProcessor;
-import org.apereo.cas.web.flow.DelegatedClientIdentityProviderConfigurationProducer;
-import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
-import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
-import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
-import org.apereo.cas.web.support.ArgumentExtractor;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
@@ -153,7 +133,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_USER_TOKEN_HEADER;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_XSRF_TOKEN_HEADER;
 
 /**
- * Configure all beans to customize the CAS server.
+ * Configure tous les beans pour personnaliser le serveur d'authentification.
  */
 @Slf4j
 @Configuration
@@ -168,10 +148,10 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.X_XSRF_TOKEN_HEADER;
 )
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
-    // overrides the CAS specific message converter to prevent
-    // the CasRestExternalClient to use the
+    // remplace le convertisseur de message spécifique à CAS pour empêcher
+    // le CasRestExternalClient d'utiliser le type de contenu
     // 'application/vnd.cas.services+yaml;charset=UTF-8'
-    // content type and to fail
+    // et d'échouer
     @Bean
     public HttpMessageConverter yamlHttpMessageConverter() {
         return null;
@@ -280,17 +260,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             );
     }
 
-    @Bean
+    // Les modules de subrogation et X509 recherchent chacun leur propre bean de résolveur : les deux pointent vers l'unique bean par défaut.
+    @Bean(name = { "surrogatePrincipalResolver", "x509SubjectDNPrincipalResolver" })
     @RefreshScope
-    public PrincipalResolver surrogatePrincipalResolver(
-        @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
-    ) {
-        return defaultPrincipalResolver;
-    }
-
-    @Bean
-    @RefreshScope
-    public PrincipalResolver x509SubjectDNPrincipalResolver(
+    public PrincipalResolver surrogateAndX509PrincipalResolvers(
         @Qualifier(PrincipalResolver.BEAN_NAME_PRINCIPAL_RESOLVER) final PrincipalResolver defaultPrincipalResolver
     ) {
         return defaultPrincipalResolver;
@@ -328,14 +301,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     /**
-     * We must define our customizer to replace X_ORIGIN header from
-     * IamApiClient.java for CAS usage.
+     * Nous devons définir notre customizer pour remplacer l'en-tête X_ORIGIN de
+     * IamApiClient.java pour l'usage de CAS.
      *
-     * <p>Deliberately not a bean: Spring Boot applies every RestClientCustomizer bean to the auto-configured
-     * RestClient.Builder, so exposing it made the interceptor run twice on each IAM call and forced the
-     * EXTERNAL origin on every other rest client built from that builder.
+     * <p>Volontairement pas un bean : Spring Boot applique tout bean RestClientCustomizer au
+     * RestClient.Builder auto-configuré, donc l'exposer faisait s'exécuter l'intercepteur deux fois à
+     * chaque appel IAM et forçait l'origine EXTERNAL sur tous les autres rest clients issus de ce builder.
      *
-     * @return a rest client customizer for the IAM clients.
+     * @return un customizer de rest client pour les clients IAM.
      */
     private RestClientCustomizer iamRestClientCustomizer() {
         return builder ->
@@ -363,8 +336,11 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
-    public IamApiDecorator iamApiDecorator(Utils utils) {
-        return new IamApiDecorator(utils);
+    public IamApiDecorator iamApiDecorator(
+        final Utils utils,
+        @Value("${vitamui.cas.service-account:admin@change-it.fr}") final String serviceAccount
+    ) {
+        return new IamApiDecorator(utils, serviceAccount);
     }
 
     @Bean
@@ -489,7 +465,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @RefreshScope
     @Bean
-    @SneakyThrows
     public SurrogateAuthenticationService surrogateAuthenticationService(
         final CasApi casApi,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
@@ -515,15 +490,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         @Qualifier(CasBeans.PASSWORD_MANAGEMENT_CIPHER_EXECUTOR) final CipherExecutor passwordManagementCipherExecutor,
         @Qualifier(PasswordHistoryService.BEAN_NAME) final PasswordHistoryService passwordHistoryService,
         final ProvidersService providersService,
-        final TicketRegistry ticketRegistry,
         final CasApi casApi,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
-        final PasswordValidator passwordValidator,
-        @Qualifier(
-            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
-        ) final CentralAuthenticationService centralAuthenticationService,
-        final PasswordConfiguration passwordConfiguration
+        final PasswordValidator passwordValidator
     ) {
         return new IamPasswordManagementService(
             casProperties,
@@ -532,25 +502,15 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             casApi,
             providersService,
             identityProviderHelper,
-            centralAuthenticationService,
             utils,
-            ticketRegistry,
-            passwordValidator,
-            passwordConfiguration
+            passwordValidator
         );
     }
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy() {
-        return new CasSimpleMultifactorTokenCommunicationStrategy() {
-            @Override
-            public EnumSet<TokenSharingStrategyOptions> determineStrategy(
-                final CasSimpleMultifactorAuthenticationTicket token
-            ) {
-                return EnumSet.of(TokenSharingStrategyOptions.SMS);
-            }
-        };
+        return token -> EnumSet.of(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.SMS);
     }
 
     @Bean
@@ -578,114 +538,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return new CustomDelegatedIdentityProviders(providersService);
     }
 
-    @Bean
-    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public DelegatedClientAuthenticationConfigurationContext delegatedClientAuthenticationConfigurationContext(
-        @Qualifier(
-            SingleLogoutRequestExecutor.BEAN_NAME
-        ) final SingleLogoutRequestExecutor defaultSingleLogoutRequestExecutor,
-        @Qualifier(
-            AuditableExecution.AUDITABLE_EXECUTION_DELEGATED_AUTHENTICATION_ACCESS
-        ) final AuditableExecution registeredServiceDelegatedAuthenticationPolicyAuditableEnforcer,
-        @Qualifier(
-            CasBeans.SERVICE_TICKET_REQUEST_WEBFLOW_EVENT_RESOLVER
-        ) final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
-        @Qualifier(
-            CasBeans.INITIAL_AUTHENTICATION_ATTEMPT_WEBFLOW_EVENT_RESOLVER
-        ) final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
-        @Qualifier(
-            CasBeans.ADAPTIVE_AUTHENTICATION_POLICY
-        ) final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
-        final CasConfigurationProperties casProperties,
-        @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
-        @Qualifier(DelegatedIdentityProviders.BEAN_NAME) final DelegatedIdentityProviders identityProviders,
-        @Qualifier(
-            DelegatedClientIdentityProviderConfigurationProducer.BEAN_NAME
-        ) final DelegatedClientIdentityProviderConfigurationProducer delegatedClientIdentityProviderConfigurationProducer,
-        @Qualifier(
-            CasBeans.DELEGATED_CLIENT_IDENTITY_PROVIDER_CONFIGURATION_POST_PROCESSOR
-        ) final DelegatedClientIdentityProviderConfigurationPostProcessor delegatedClientIdentityProviderConfigurationPostProcessor,
-        @Qualifier(
-            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_COOKIE_GENERATOR
-        ) final CasCookieBuilder delegatedClientDistributedSessionCookieGenerator,
-        @Qualifier(
-            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
-        ) final CentralAuthenticationService centralAuthenticationService,
-        @Qualifier(
-            CasBeans.PAC4J_DELEGATED_CLIENT_NAME_EXTRACTOR
-        ) final DelegatedClientNameExtractor pac4jDelegatedClientNameExtractor,
-        @Qualifier(AuthenticationSystemSupport.BEAN_NAME) final AuthenticationSystemSupport authenticationSystemSupport,
-        @Qualifier(ArgumentExtractor.BEAN_NAME) final ArgumentExtractor argumentExtractor,
-        @Qualifier(TicketRegistry.BEAN_NAME) final TicketRegistry ticketRegistry,
-        @Qualifier(
-            CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE
-        ) final SessionStore delegatedClientDistributedSessionStore,
-        @Qualifier(TicketFactory.BEAN_NAME) final TicketFactory ticketFactory,
-        @Qualifier(
-            AuditableExecution.AUDITABLE_EXECUTION_REGISTERED_SERVICE_ACCESS
-        ) final AuditableExecution registeredServiceAccessStrategyEnforcer,
-        @Qualifier(
-            CasBeans.DELEGATED_CLIENT_IDENTITY_PROVIDER_REDIRECTION_STRATEGY
-        ) final DelegatedClientIdentityProviderRedirectionStrategy delegatedClientIdentityProviderRedirectionStrategy,
-        @Qualifier(
-            SingleSignOnParticipationStrategy.BEAN_NAME
-        ) final SingleSignOnParticipationStrategy webflowSingleSignOnParticipationStrategy,
-        @Qualifier(
-            AuthenticationServiceSelectionPlan.BEAN_NAME
-        ) final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
-        @Qualifier(
-            CasBeans.DELEGATED_AUTHENTICATION_COOKIE_GENERATOR
-        ) final CasCookieBuilder delegatedAuthenticationCookieGenerator,
-        @Qualifier(
-            CasBeans.DELEGATED_AUTHENTICATION_CREDENTIAL_EXTRACTOR
-        ) final DelegatedAuthenticationCredentialExtractor delegatedAuthenticationCredentialExtractor,
-        final ConfigurableApplicationContext applicationContext,
-        @Qualifier(LogoutExecutionPlan.BEAN_NAME) final LogoutExecutionPlan logoutExecutionPlan,
-        final ObjectProvider<List<DelegatedClientAuthenticationRequestCustomizer>> customizersProvider,
-        final List<DelegatedClientIdentityProviderAuthorizer> delegatedClientIdentityProviderAuthorizers
-    ) {
-        final var customizers = Optional.ofNullable(customizersProvider.getIfAvailable())
-            .orElseGet(ArrayList::new)
-            .stream()
-            .filter(BeanSupplier::isNotProxy)
-            .collect(Collectors.toList());
-
-        final var authorizers = delegatedClientIdentityProviderAuthorizers;
-
-        return DelegatedClientAuthenticationConfigurationContext.builder()
-            // CAS 7.3 accepts a list of credential extractors instead of a single one.
-            .credentialExtractors(List.of(delegatedAuthenticationCredentialExtractor))
-            .initialAuthenticationAttemptWebflowEventResolver(initialAuthenticationAttemptWebflowEventResolver)
-            .serviceTicketRequestWebflowEventResolver(serviceTicketRequestWebflowEventResolver)
-            .adaptiveAuthenticationPolicy(adaptiveAuthenticationPolicy)
-            .identityProviders(identityProviders)
-            .ticketRegistry(ticketRegistry)
-            .applicationContext(applicationContext)
-            .servicesManager(servicesManager)
-            .delegatedAuthenticationPolicyEnforcer(registeredServiceDelegatedAuthenticationPolicyAuditableEnforcer)
-            .authenticationSystemSupport(authenticationSystemSupport)
-            .casProperties(casProperties)
-            .centralAuthenticationService(centralAuthenticationService)
-            .authenticationRequestServiceSelectionStrategies(authenticationRequestServiceSelectionStrategies)
-            .singleSignOnParticipationStrategy(webflowSingleSignOnParticipationStrategy)
-            .sessionStore(delegatedClientDistributedSessionStore)
-            .argumentExtractor(argumentExtractor)
-            .ticketFactory(ticketFactory)
-            .delegatedClientIdentityProvidersProducer(delegatedClientIdentityProviderConfigurationProducer)
-            .delegatedClientIdentityProviderConfigurationPostProcessor(
-                delegatedClientIdentityProviderConfigurationPostProcessor
-            )
-            .delegatedClientCookieGenerator(delegatedAuthenticationCookieGenerator)
-            .delegatedClientDistributedSessionCookieGenerator(delegatedClientDistributedSessionCookieGenerator)
-            .registeredServiceAccessStrategyEnforcer(registeredServiceAccessStrategyEnforcer)
-            .delegatedClientAuthenticationRequestCustomizers(customizers)
-            .delegatedClientNameExtractor(pac4jDelegatedClientNameExtractor)
-            .delegatedClientIdentityProviderAuthorizers(authorizers)
-            .delegatedClientIdentityProviderRedirectionStrategy(delegatedClientIdentityProviderRedirectionStrategy)
-            .singleLogoutRequestExecutor(defaultSingleLogoutRequestExecutor)
-            .logoutExecutionPlan(logoutExecutionPlan)
-            .build();
-    }
+    // Le contexte d'authentification déléguée est celui par défaut de CAS : il récupère déjà les deux beans
+    // surchargés ici, delegatedIdentityProviders et delegatedAuthenticationCredentialExtractor.
 
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
@@ -694,9 +548,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     /**
-     * Override the default CAS delegatedAuthenticationCredentialExtractor to avoid a NoClassDefFoundError
-     * on PasswordlessWebflowUtils when the passwordless module is not in the classpath.
-     * External surrogate feature is not supported.
+     * Surcharge le delegatedAuthenticationCredentialExtractor par défaut de CAS pour éviter une NoClassDefFoundError
+     * sur PasswordlessWebflowUtils lorsque le module passwordless n'est pas dans le classpath.
+     * La fonctionnalité de subrogation externe n'est pas supportée.
      */
     @Bean(
         name = { "delegatedAuthenticationCredentialExtractor", "surrogateDelegatedAuthenticationCredentialExtractor" }

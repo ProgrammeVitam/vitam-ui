@@ -37,11 +37,13 @@
 package fr.gouv.vitamui.cas.util;
 
 /**
- * Constants.
+ * Constantes.
  *
- * @sicne 0.1.0
+ * @since 0.1.0
  */
-public abstract class Constants {
+public final class Constants {
+
+    private Constants() {}
 
     public static final String PROVIDED_USERNAME = "providedUsername";
     public static final String SHOW_SURROGATE_CUSTOMER_NAME = "surrogateCustomerName";
@@ -62,7 +64,7 @@ public abstract class Constants {
     public static final String FLOW_LOGIN_CUSTOMER_ID = "loginCustomerId";
     public static final String FLOW_LOGIN_AVAILABLE_CUSTOMER_LIST = "availableCustomerList";
 
-    // web:
+    // web :
     public static final String PORTAL_URL = "portalUrl";
 
     public static final String VITAM_UI_FAVICON = "vitamuiFavicon";

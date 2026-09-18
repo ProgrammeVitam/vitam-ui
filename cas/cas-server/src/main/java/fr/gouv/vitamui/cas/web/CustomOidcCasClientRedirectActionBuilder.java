@@ -19,7 +19,7 @@ import org.pac4j.core.exception.http.RedirectionAction;
 import java.util.Optional;
 
 /**
- * Propagates custom parameters from OIDC to CAS.
+ * Propage les paramètres personnalisés depuis OIDC vers CAS.
  */
 
 @Slf4j
@@ -73,6 +73,13 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
 
         final var serviceUrl = casClient.computeFinalCallbackUrl(context);
         final var casServerLoginUrl = casClient.getConfiguration().getLoginUrl();
+        // CUSTO : les indices de subrogation et de connexion sont transmis, encodés en URL (un e-mail peut contenir un '+').
+        final var subrogationParams = subrogationMode
+            ? param(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, superUserEmail.get()) +
+            param(Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM, superUserCustomerId.get()) +
+            param(Constants.LOGIN_SURROGATE_EMAIL_PARAM, surrogateEmail.get()) +
+            param(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, surrogateCustomerId.get())
+            : StringUtils.EMPTY;
         final var redirectionUrl =
             casServerLoginUrl +
             (casServerLoginUrl.contains("?") ? "&" : "?") +
@@ -81,29 +88,15 @@ public class CustomOidcCasClientRedirectActionBuilder extends OAuth20DefaultCasC
             EncodingUtils.urlEncode(serviceUrl) +
             (renew ? '&' + CasProtocolConstants.PARAMETER_RENEW + "=true" : StringUtils.EMPTY) +
             (gateway ? '&' + CasProtocolConstants.PARAMETER_GATEWAY + "=true" : StringUtils.EMPTY) +
-            // CUSTO:
-            (subrogationMode
-                    ? '&' +
-                    Constants.LOGIN_SUPER_USER_EMAIL_PARAM +
-                    '=' +
-                    superUserEmail.get() +
-                    '&' +
-                    Constants.LOGIN_SUPER_USER_CUSTOMER_ID_PARAM +
-                    '=' +
-                    superUserCustomerId.get() +
-                    '&' +
-                    Constants.LOGIN_SURROGATE_EMAIL_PARAM +
-                    '=' +
-                    surrogateEmail.get() +
-                    '&' +
-                    Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM +
-                    '=' +
-                    surrogateCustomerId.get()
-                    : StringUtils.EMPTY) +
-            (username.isPresent() ? '&' + Constants.LOGIN_USER_EMAIL_PARAM + '=' + username.get() : StringUtils.EMPTY) +
-            (idp.isPresent() ? '&' + CommonConstants.IDP_PARAMETER + '=' + idp.get() : StringUtils.EMPTY);
+            subrogationParams +
+            username.map(value -> param(Constants.LOGIN_USER_EMAIL_PARAM, value)).orElse(StringUtils.EMPTY) +
+            idp.map(value -> param(CommonConstants.IDP_PARAMETER, value)).orElse(StringUtils.EMPTY);
 
         LOGGER.debug("Final redirect url is [{}]", redirectionUrl);
         return Optional.of(new FoundAction(redirectionUrl));
+    }
+
+    private static String param(final String name, final String value) {
+        return '&' + name + '=' + EncodingUtils.urlEncode(value);
     }
 }

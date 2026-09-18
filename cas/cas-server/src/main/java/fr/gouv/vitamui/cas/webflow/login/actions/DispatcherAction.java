@@ -31,10 +31,9 @@ import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,14 +49,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * This class can dispatch the user:
- * - either to customer selection page (if user have multiple accounts for
- * different customers)
- * - or to the password page
- * - or to an external IdP (authentication delegation)
- * - or to the bad configuration page if the user is not linked to any identity
- * provider
- * - or to the disabled account page if the user is disabled.
+ * Cette classe peut aiguiller l'utilisateur :
+ * - soit vers la page de sélection du client (si l'utilisateur a plusieurs comptes pour
+ * différents clients)
+ * - soit vers la page de mot de passe
+ * - soit vers un IdP externe (authentification déléguée)
+ * - soit vers la page de mauvaise configuration si l'utilisateur n'est lié à aucun fournisseur
+ * d'identité
+ * - soit vers la page de compte désactivé si l'utilisateur est désactivé.
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -65,11 +64,8 @@ public class DispatcherAction extends AbstractAction {
 
     public static final String DISABLED = "disabled";
     public static final String BAD_CONFIGURATION = "badConfiguration";
-    public static final String TRANSITION_SELECT_CUSTOMER = "selectCustomer";
 
     private final ProvidersService providersService;
-
-    private final IdentityProviderHelper identityProviderHelper;
 
     private final CasApi casApi;
 
@@ -90,7 +86,7 @@ public class DispatcherAction extends AbstractAction {
 
     private Event processSubrogationRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
         throws IOException {
-        // We came from subrogation validation
+        // Nous venons de la validation de subrogation
         String surrogateEmail = (String) flowScope.get(Constants.FLOW_SURROGATE_EMAIL);
         String surrogateCustomerId = (String) flowScope.get(Constants.FLOW_SURROGATE_CUSTOMER_ID);
         String superUserEmail = (String) flowScope.get(Constants.FLOW_LOGIN_EMAIL);
@@ -112,14 +108,25 @@ public class DispatcherAction extends AbstractAction {
             superUserCustomerId
         );
 
-        if (isUserDisabledOrMissing(superUserEmail, superUserCustomerId)) {
+        // Résout chaque entrée HRD une seule fois et la réutilise pour le contrôle de désactivation et l'aiguillage (resolveHrd est
+        // un GET idempotent ; cela évite de résoudre deux fois le même utilisateur).
+        Optional<HrdEntryDto> superUserEntry = resolveEntry(superUserEmail, superUserCustomerId);
+        if (isEntryDisabled(superUserEntry)) {
             return handleUserDisabled(superUserEmail, superUserCustomerId);
         }
-        if (isUserDisabledOrMissing(surrogateEmail, surrogateCustomerId)) {
-            return handleUserDisabled(superUserEmail, surrogateCustomerId);
+        Optional<HrdEntryDto> surrogateEntry = resolveEntry(surrogateEmail, surrogateCustomerId);
+        if (isEntryDisabled(surrogateEntry)) {
+            return handleUserDisabled(surrogateEmail, surrogateCustomerId);
         }
 
-        return dispatchUser(requestContext, superUserEmail, superUserCustomerId, surrogateEmail, surrogateCustomerId);
+        return dispatchUser(
+            requestContext,
+            superUserEntry,
+            superUserEmail,
+            superUserCustomerId,
+            surrogateEmail,
+            surrogateCustomerId
+        );
     }
 
     private Event processLoginRequest(RequestContext requestContext, MutableAttributeMap<Object> flowScope)
@@ -131,36 +138,33 @@ public class DispatcherAction extends AbstractAction {
 
         ParameterChecker.checkParameter("Missing authn params", userEmail, customerId);
 
-        if (isUserDisabledOrMissing(userEmail, customerId)) {
+        Optional<HrdEntryDto> entry = resolveEntry(userEmail, customerId);
+        if (isEntryDisabled(entry)) {
             return handleUserDisabled(userEmail, customerId);
         }
 
-        return dispatchUser(requestContext, userEmail, customerId, null, null);
+        return dispatchUser(requestContext, entry, userEmail, customerId, null, null);
     }
 
     private Event dispatchUser(
         RequestContext requestContext,
+        Optional<HrdEntryDto> entryOpt,
         String loginEmail,
         String loginCustomerId,
         String surrogateEmail,
         String surrogateCustomerId
     ) throws IOException {
-        Optional<IdentityProviderDto> providerOpt = identityProviderHelper.findByUserIdentifierAndCustomerId(
-            providersService.getProviders(),
-            loginEmail,
-            loginCustomerId
-        );
-        if (providerOpt.isEmpty()) {
+        if (entryOpt.isEmpty() || entryOpt.get().getIdentityProviderId() == null) {
             LOGGER.error("No provider found for superUserCustomerId: {}", loginCustomerId);
             return new Event(this, BAD_CONFIGURATION);
         }
-        var identityProviderDto = providerOpt.get();
+        var entry = entryOpt.get();
 
         var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         var response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         var webContext = new JEEContext(request, response);
 
-        if (identityProviderDto.getInternal()) {
+        if (entry.isInternal()) {
             sessionStore.set(webContext, Constants.FLOW_LOGIN_EMAIL, null);
             sessionStore.set(webContext, Constants.FLOW_LOGIN_CUSTOMER_ID, null);
             sessionStore.set(webContext, Constants.FLOW_SURROGATE_EMAIL, null);
@@ -169,6 +173,12 @@ public class DispatcherAction extends AbstractAction {
             LOGGER.debug("Redirect the user to the password page...");
             return success();
         } else {
+            Optional<IdentityProviderDto> providerOpt = findLoadedProvider(entry.getIdentityProviderId());
+            if (providerOpt.isEmpty()) {
+                LOGGER.error("Identity provider '{}' is not loaded yet", entry.getIdentityProviderId());
+                return new Event(this, BAD_CONFIGURATION);
+            }
+
             LOGGER.debug(
                 "Saving surrogate for after authentication delegation: loginEmail : {}, " +
                 "loginCustomerId : {}, surrogateEmail : {}, surrogateCustomerId : {}",
@@ -184,15 +194,16 @@ public class DispatcherAction extends AbstractAction {
 
             return utils.performClientRedirection(
                 this,
-                ((Pac4jClientIdentityProviderDto) identityProviderDto).getClient(),
+                ((Pac4jClientIdentityProviderDto) providerOpt.get()).getClient(),
                 requestContext
             );
         }
     }
 
-    private boolean isUserDisabledOrMissing(String email, String customerId) {
-        return findUserAcrossProviders(email, customerId)
-            .map(user -> user.getStatus() != UserStatusEnum.ENABLED)
+    private boolean isEntryDisabled(Optional<HrdEntryDto> entry) {
+        return entry
+            .map(HrdEntryDto::getUserStatus)
+            .map(status -> !UserStatusEnum.ENABLED.name().equals(status))
             .orElse(false);
     }
 
@@ -201,20 +212,19 @@ public class DispatcherAction extends AbstractAction {
         return new Event(this, DISABLED);
     }
 
-    private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
-        return flowScope.contains(Constants.FLOW_SURROGATE_EMAIL);
+    private Optional<HrdEntryDto> resolveEntry(String email, String customerId) {
+        return casApi.resolveHrd(email).stream().filter(entry -> customerId.equals(entry.getCustomerId())).findFirst();
     }
 
-    private Optional<UserDto> findUserAcrossProviders(String login, String customerId) {
-        IdentityProviderDto provider = identityProviderHelper
-            .findByUserIdentifierAndCustomerId(providersService.getProviders(), login, customerId)
-            .orElse(null);
+    private Optional<IdentityProviderDto> findLoadedProvider(String identityProviderId) {
+        return providersService
+            .getProviders()
+            .stream()
+            .filter(provider -> identityProviderId.equals(provider.getId()))
+            .findFirst();
+    }
 
-        if (provider == null) {
-            LOGGER.error("No provider found for login {} and customer id {}", login, customerId);
-            return Optional.empty();
-        }
-
-        return Optional.ofNullable(casApi.getUser(login, customerId, provider.getId(), null, null));
+    private static boolean isSubrogationMode(MutableAttributeMap<Object> flowScope) {
+        return flowScope.contains(Constants.FLOW_SURROGATE_EMAIL);
     }
 }

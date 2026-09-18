@@ -37,31 +37,6 @@
 package fr.gouv.vitamui.cas.x509;
 
 /**
- * Attribute mapping definition for X509 authentication
+ * Définition du mapping d'attributs pour l'authentification X509.
  */
-public class X509AttributeMapping {
-
-    private final String name;
-
-    private final String parsing;
-
-    private final String expansion;
-
-    public X509AttributeMapping(final String name, final String parsing, final String expansion) {
-        this.name = name;
-        this.parsing = parsing;
-        this.expansion = expansion;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getParsing() {
-        return parsing;
-    }
-
-    public String getExpansion() {
-        return expansion;
-    }
-}
+public record X509AttributeMapping(String name, String parsing, String expansion) {}

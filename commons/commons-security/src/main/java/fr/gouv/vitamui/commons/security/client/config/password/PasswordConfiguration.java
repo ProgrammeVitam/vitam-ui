@@ -52,12 +52,13 @@ public class PasswordConfiguration {
     public static String ANSSI = "anssi";
     public static String CUSTOM = "custom";
 
-    // default profile is anssi, custom otherwise
+    // le profil par défaut est anssi, custom sinon
     private String profile = "anssi";
     private Integer length = 12;
     private boolean checkOccurrence = true;
     private Integer occurrencesCharsNumber = 3;
     private Integer maxOldPassword = 12;
+    private String policyPattern;
     private PasswordConstraints constraints;
 
     @Data

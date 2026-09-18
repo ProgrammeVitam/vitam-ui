@@ -49,7 +49,6 @@ import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.client.IndirectClient;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -57,7 +56,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Retrieve all the identity providers from the IAM API.
+ * Récupère tous les fournisseurs d'identité depuis l'API de l'IAM.
  *
  *
  */
@@ -65,6 +64,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class ProvidersService {
+
+    private static final long RELOAD_INTERVAL_MS = 60_000L;
 
     @Getter
     private List<IdentityProviderDto> providers = new ArrayList<>();
@@ -78,12 +79,17 @@ public class ProvidersService {
 
     @PostConstruct
     public void afterPropertiesSet() {
-        loadData();
-        Assert.notNull(providers, "No provider found");
+        try {
+            loadData();
+        } catch (final RuntimeException e) {
+            LOGGER.warn(
+                "Cannot load the identity providers at startup: starting with none, and retrying every minute",
+                e
+            );
+        }
     }
 
-    // every minute, reload the data
-    @Scheduled(initialDelay = 60 * 1000, fixedRate = 60 * 1000)
+    @Scheduled(initialDelay = RELOAD_INTERVAL_MS, fixedRate = RELOAD_INTERVAL_MS)
     public void reloadData() {
         try {
             loadData();
@@ -98,7 +104,7 @@ public class ProvidersService {
             null,
             embedded
         );
-        // sort by identifier. This is needed in order to take the internal provider first.
+        // tri par identifiant. Nécessaire afin de prendre le fournisseur interne en premier.
         temporaryProviders.sort(Comparator.comparing(IdentityProviderDto::getIdentifier));
         LOGGER.debug(
             "Reloaded {} providers: {}",
@@ -118,7 +124,12 @@ public class ProvidersService {
             }
             newProviders.add(new Pac4jClientIdentityProviderDto(p, client));
         });
+        final boolean noProviderWasAvailable = providers.isEmpty();
         clients.setClients(newClients);
         providers = newProviders;
+
+        if (noProviderWasAvailable && !newProviders.isEmpty()) {
+            LOGGER.info("Identity providers are available again: {} loaded", newProviders.size());
+        }
     }
 }

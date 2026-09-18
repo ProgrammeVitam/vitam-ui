@@ -39,9 +39,16 @@ api.token.ttl: 480
 generic.users.subrogation.ttl: 180
 subrogation.ttl: 30
 
-cas.reset.password.url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&customerId={customerId}&ttl=1day
+cas.password-reset-url.path: /extras/passwordResetUrl
+
+mail.sender: noreply@change-it.fr
+mail.platform-name: VITAM-UI
 
 user.connection.tracing.enabled: false
 
 gateway:
   enabled: true
+
+password:
+  length: 12
+  policy-pattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
