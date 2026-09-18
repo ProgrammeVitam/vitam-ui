@@ -62,6 +62,7 @@ import {
   TransactionStatus,
   UnitType,
   VitamTenantConfigService,
+  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { DiscussionServiceMock, tenantConfigServiceMock } from 'vitamui-library/testing';
 import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
@@ -181,6 +182,7 @@ describe('ArchiveSearchCollectComponent', () => {
         { provide: Router, useValue: routerSpy },
         { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
         { provide: environment, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
         {
           provide: VitamTenantConfigService,
           useValue: tenantConfigServiceMock,

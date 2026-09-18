@@ -63,6 +63,7 @@ import {
   UnitType,
   VitamuiRoles,
   VitamTenantConfigService,
+  WINDOW_LOCATION,
 } from 'vitamui-library';
 import { tenantConfigServiceMock } from 'vitamui-library/testing';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
@@ -218,6 +219,7 @@ describe('ArchiveSearchComponent', () => {
         { provide: SearchCriteriaService, useValue: searchCriteriaServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
         { provide: environment, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
         {
           provide: VitamTenantConfigService,
           useValue: tenantConfigServiceMock,

@@ -87,6 +87,7 @@ import {
   SearchCriteriaTypeEnum,
   SidenavPage,
   SnackBarService,
+  StartupService,
   STORAGE_RULE,
   VitamTenantConfigService,
   TermsFacet,
@@ -143,6 +144,9 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   private transactionService = inject(TransactionsService);
   private vitamConfigurationService = inject(VitamTenantConfigService);
   private sipImportTrackingService = inject(SipImportTrackingService);
+  private startupService = inject(StartupService);
+
+  private nonSortableFields: string[] = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
 
   readonly UnitType = UnitType;
 
@@ -730,6 +734,10 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  isSortableField(field: string): boolean {
+    return !this.nonSortableFields.includes(field);
   }
 
   showPreviewArchiveUnit(item: Unit) {

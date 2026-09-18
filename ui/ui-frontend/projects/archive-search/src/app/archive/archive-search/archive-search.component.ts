@@ -98,6 +98,7 @@ import {
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
   SecurityService,
+  StartupService,
   STORAGE_RULE,
   TermsFacet,
   toManagementRuleType,
@@ -170,6 +171,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   protected configService = inject(ConfigService);
   private securityService = inject(SecurityService);
   private vitamConfigurationService = inject(VitamTenantConfigService);
+  private startupService = inject(StartupService);
+
+  private nonSortableFields: string[] = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
 
   readonly UnitType = UnitType;
   readonly ReassignmentMode = ReassignmentMode;
@@ -532,6 +536,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   emitOrderChange() {
     this.orderChange.next();
+  }
+
+  isSortableField(field: string): boolean {
+    return !this.nonSortableFields.includes(field);
   }
 
   removeCriteriaEvent(criteriaToRemove: any) {

@@ -68,6 +68,7 @@ export interface AppConfiguration {
   };
   [key: string]: any;
   REASSIGNMENT_ENABLED: boolean;
+  NON_SORTABLE_FIELDS?: { [collection: string]: string[] };
 }
 
 export type SearchProvider = 'agencies' | 'archive-unit-profiles';

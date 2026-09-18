@@ -73,6 +73,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.utils.ArchiveSearchConsts;
+import fr.gouv.vitamui.commons.api.utils.NonSortableFields;
 import fr.gouv.vitamui.commons.api.utils.OntologyServiceReader;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyCommonService;
 import fr.gouv.vitamui.commons.vitam.api.administration.RuleCommonService;
@@ -1263,7 +1264,7 @@ public class TransactionArchiveUnitService {
             }
             selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
 
-            if (orderBy.isPresent()) {
+            if (orderBy.isPresent() && NonSortableFields.isSortable(NonSortableFields.UNIT_COLLECTION, orderBy.get())) {
                 if (DirectionDto.DESC.equals(direction.get())) {
                     selectMultiQuery.addOrderByDescFilter(orderBy.get());
                 } else {
