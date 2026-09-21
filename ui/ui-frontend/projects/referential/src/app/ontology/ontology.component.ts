@@ -49,6 +49,7 @@ import {
   Ontology,
   SchemaElement,
   FileTypes,
+  StartupService,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -70,6 +71,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   search = '';
   filters: string;
   tenantId: number;
+  vitamAdminTenant: number;
   canImportOntology: boolean;
   canImportSchema: boolean;
   canCreateVocabulary: boolean;
@@ -82,13 +84,14 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
     private securityService: SecurityService,
     private ontologyService: OntologyService,
     private schemaService: SchemaService,
+    private startupService: StartupService,
   ) {
     super(route, globalEventService);
   }
 
   ngOnInit(): void {
+    this.vitamAdminTenant = +this.startupService.getConfigStringValue('VITAM_ADMIN_TENANT');
     this.initializeTenantId();
-    this.initializePermissions();
     this.subscribeToTenantChanges();
 
     this.subscription = this.route.queryParams.subscribe((params) => {
@@ -103,6 +106,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   private initializeTenantId(): void {
     this.route.params.subscribe((params) => {
       this.tenantId = +params.tenantIdentifier;
+      this.initializePermissions();
     });
   }
 
@@ -112,7 +116,9 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
 
   private initializePermissions(): void {
     this.canImportSchema = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_SCHEMAS, this.tenantId);
-    this.canImportOntology = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_ONTOLOGIES, this.tenantId);
+    this.canImportOntology =
+      this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_IMPORT_ONTOLOGIES, this.tenantId) &&
+      this.tenantId === this.vitamAdminTenant;
     this.canCreateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_CREATE_ONTOLOGIES, this.tenantId);
   }
 
@@ -178,7 +184,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
       'IMPORT_DIALOG.SCHEMA_TITLE',
       'IMPORT_DIALOG.SCHEMA_SUBTITLE',
       [FileTypes.CSV],
-      'IMPORT_DIALOG.SCHEMA_FORMAT_CSV',
+      'IMPORT_DIALOG.SCHEMA_FORMAT_CSV_SEMICOLON',
     );
     this.openImportDialog(params);
   }
