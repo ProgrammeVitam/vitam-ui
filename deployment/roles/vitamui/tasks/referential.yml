@@ -71,5 +71,5 @@
     - update_vitamui_configuration
     - update_vitamui_certificates
 
-- include: copy_internal_ontology_fields.yml
+- import_tasks: copy_internal_ontology_fields.yml
   tags: update_vitamui_configuration

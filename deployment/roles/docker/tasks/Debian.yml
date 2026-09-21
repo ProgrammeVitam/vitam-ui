@@ -9,25 +9,35 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
 
-- name: Make sure curl and gnupg is installed
+- name: Install Docker repository prerequisites
   apt:
-    name: ['curl','gnupg']
+    name: ['ca-certificates','curl','gnupg','python3-apt']
     state: present
   register: result
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
 
-- name: add GPG docker repo key
-  shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -"
-  environment:
-    https_proxy: "{{ http_proxy_environnement }}"
-    http_proxy:  "{{ http_proxy_environnement }}"
-  when: http_proxy_environnement is defined and http_proxy_environnement != ""
+- name: Create APT keyring directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 
-- name: add GPG docker repo key
-  shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -"
-  when: http_proxy_environnement is not defined or http_proxy_environnement == ""
+- name: Download Docker repository signing key
+  get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
+    mode: '0644'
+  environment: "{{ {'http_proxy': http_proxy_environnement, 'https_proxy': http_proxy_environnement} if http_proxy_environnement | default('') | length > 0 else {} }}"
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
 
 - name: install apt-transport-https as Docker repository is https
   package:
@@ -38,12 +48,20 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
 
+# Remove the entry created by earlier versions of this role before adding
+# signed-by, otherwise APT rejects conflicting options for the same repository.
+- name: Remove legacy Docker repository entry
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+    state: absent
+    update_cache: no
+
 - name: check docker repo are present
   apt_repository:
     repo: "{{ item }}"
     state: present
   loop:
-    - "deb [arch=amd64] https://download.docker.com/linux/debian  {{ ansible_distribution_release }} stable"
+    - "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
   register: result
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
@@ -75,7 +93,7 @@
   retries: "{{ packages_install_retries_number }}"
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
-  when: ansible_distribution_version | int == 11 or ansible_distribution_version | int == 12
+  when: ansible_distribution_major_version | int in [11, 12, 13]
 
 - block:
 
