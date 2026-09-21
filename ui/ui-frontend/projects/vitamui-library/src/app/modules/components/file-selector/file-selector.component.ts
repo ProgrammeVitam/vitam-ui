@@ -140,7 +140,16 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     return this.multiple || this.directoryMode || !this.displayFiles?.length;
   }
 
+<<<<<<< HEAD
   handleFilesSelection(files: FileList | File[]) {
+=======
+  async handleFilesSelection(files: FileList | File[]) {
+    // Some browsers fire an empty "change" event when the native file picker is cancelled; skip to avoid wrongly resetting the control's errors.
+    if (!files || files.length === 0) return;
+
+    // We mark the control as touched only AFTER the value has been set
+    await this.updateFiles(files);
+>>>>>>> e63d8925b (Bug #15770: [Search] Display error: non-XML file incorrectly marked as valid after cancellation.)
     this.control.markAsTouched();
     if (!this.multiple && (this.control.value?.length > 0 || files.length > 1)) {
       this.resetInput();
