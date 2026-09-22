@@ -36,36 +36,55 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
- * Chemins du contrat d'authentification exposé par l'IAM.
+ * A candidate customer for an email address, along with the identity provider to authenticate against
+ * there.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les modifier casserait le contrat REST
- * avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de nommer un produit,
- * puisque le contrat n'est plus spécifique à Apereo CAS.
+ * Home Realm Discovery returns zero, one or several entries, and that cardinality alone carries the
+ * authentication server's decision: no entry signals an unusable configuration, one entry lets the flow
+ * carry on directly, several require the customer to be chosen first.
+ *
+ * {@code userStatus} is null when no account in the customer carries this email. That is a normal case
+ * rather than an error: an external provider provisions on first login, and an unknown address must be
+ * routed exactly like a known one so that the flow never reveals whether an account exists.
  */
-public final class AuthContractApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class HrdEntryDto {
 
-    public static final String V1_AUTH_URL = "/iam/v1/cas";
+    private String customerId;
 
-    public static final String LOGIN_PATH = "/login";
+    private String customerCode;
 
-    public static final String LOGOUT_PATH = "/logout";
+    private String customerName;
 
-    public static final String CHANGE_PASSWORD_PATH = "/password/change";
+    private String identityProviderId;
 
-    public static final String USERS_PATH = "/users";
+    private String identityProviderName;
 
-    public static final String USERS_PROVISIONING_PATH = "/provisioning";
+    /**
+     * True for a password authentication carried by VITAMUI itself, false for a delegation to an
+     * external provider.
+     */
+    private boolean internal;
 
-    public static final String CUSTOMERS_PATH = "/customers";
+    private String protocoleType;
 
-    public static final String SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String HRD_PATH = "/hrd";
-
-    public static final String PASSWORD_POLICY_PATH = "/password/policy";
-
-    private AuthContractApi() {
-        // constantes uniquement
-    }
+    /**
+     * Status of the account in this customer, or null when no account there carries this email. It is
+     * meant for the authentication server, which has to decide the fate of a disabled account; it must
+     * not surface in what the end user observes.
+     */
+    private String userStatus;
 }

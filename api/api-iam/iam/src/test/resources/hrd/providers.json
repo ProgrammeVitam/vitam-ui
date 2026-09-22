@@ -1,0 +1,92 @@
+[
+  {
+    "_id": "system_idp",
+    "identifier": 1,
+    "code": "000002",
+    "name": "system_idp",
+    "internal": true,
+    "enabled": true,
+    "readonly": true,
+    "patterns": [
+      "admin.*@change-it.fr",
+      "support.*@change-it.fr",
+      "superadmin.*@change-it.fr",
+      "demo.*@change-it.fr"
+    ],
+    "customerId": "system_customer"
+  },
+  {
+    "_id": "5c7927af7884583d1ebb6e7ddda2807afe234014846b3f4b0c68fdc49261f881",
+    "identifier": "51",
+    "name": "default",
+    "internal": true,
+    "enabled": true,
+    "patterns": [
+      ".*@gmail.com"
+    ],
+    "readonly": false,
+    "customerId": "5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9",
+    "_class": "providers"
+  },
+  {
+    "_id": "5c7928337884583d1ebb6ebd3b672beb39d04beda4c55d70d5352184d926ed31",
+    "identifier": "52",
+    "name": "default",
+    "internal": true,
+    "enabled": true,
+    "patterns": [
+      ".*@client2.fr",
+      ".*@change-it.fr"
+    ],
+    "readonly": false,
+    "customerId": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
+    "_class": "providers"
+  },
+  {
+    "_id": "keycloak_test_idp_oidc",
+    "identifier": "53",
+    "name": "Keycloak (OIDC)",
+    "technicalName": "keycloak-oidc",
+    "internal": false,
+    "enabled": true,
+    "readonly": false,
+    "patterns": [
+      ".*@keycloak-oidc\\.fr"
+    ],
+    "mailAttribute": "email",
+    "autoProvisioningEnabled": false,
+    "propagateLogout": false,
+    "clientId": "vitamui-oidc",
+    "discoveryUrl": "http://localhost:8042/realms/vitamui/.well-known/openid-configuration",
+    "scope": "openid email profile",
+    "preferredJwsAlgorithm": "RS256",
+    "useState": true,
+    "useNonce": true,
+    "usePkce": false,
+    "protocoleType": "OIDC",
+    "customerId": "5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9",
+    "_class": "providers"
+  },
+  {
+    "_id": "keycloak_test_idp_saml",
+    "identifier": "54",
+    "name": "Keycloak (SAML)",
+    "technicalName": "keycloak-saml",
+    "internal": false,
+    "enabled": true,
+    "readonly": false,
+    "patterns": [
+      ".*@keycloak-saml\\.fr"
+    ],
+    "mailAttribute": "",
+    "autoProvisioningEnabled": false,
+    "propagateLogout": false,
+    "maximumAuthenticationLifetime": 3600,
+    "authnRequestBinding": "POST",
+    "authnRequestSigned": false,
+    "wantsAssertionsSigned": true,
+    "protocoleType": "SAML",
+    "customerId": "5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9",
+    "_class": "providers"
+  }
+]

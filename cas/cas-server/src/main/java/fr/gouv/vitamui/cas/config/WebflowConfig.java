@@ -123,12 +123,8 @@ public class WebflowConfig {
     private static final int MFA_WEBFLOW_CONFIGURER_ORDER = 100;
 
     @Bean
-    public ListCustomersAction listCustomersAction(
-        ProvidersService providersService,
-        IdentityProviderHelper identityProviderHelper,
-        CasApi casApi
-    ) {
-        return new ListCustomersAction(providersService, identityProviderHelper, casApi);
+    public ListCustomersAction listCustomersAction(CasApi casApi) {
+        return new ListCustomersAction(casApi);
     }
 
     @Bean
@@ -139,7 +135,6 @@ public class WebflowConfig {
     @Bean
     public DispatcherAction dispatcherAction(
         ProvidersService providersService,
-        IdentityProviderHelper identityProviderHelper,
         CasApi casApi,
         Utils utils,
         @Qualifier(CasBeans.DELEGATED_CLIENT_DISTRIBUTED_SESSION_STORE) ObjectProvider<
@@ -148,7 +143,6 @@ public class WebflowConfig {
     ) {
         return new DispatcherAction(
             providersService,
-            identityProviderHelper,
             casApi,
             utils,
             delegatedClientDistributedSessionStore.getObject()

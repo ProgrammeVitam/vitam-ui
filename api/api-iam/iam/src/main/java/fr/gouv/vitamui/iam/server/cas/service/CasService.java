@@ -53,6 +53,7 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -65,6 +66,8 @@ import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
+import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
@@ -99,16 +102,20 @@ import org.springframework.util.Assert;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Specific CAS service.
@@ -165,6 +172,9 @@ public class CasService {
 
     @Autowired
     private IdentityProviderService identityProviderService;
+
+    @Autowired
+    private IdentityProviderRepository identityProviderRepository;
 
     @Autowired
     private IdentityProviderHelper identityProviderHelper;
@@ -806,6 +816,131 @@ public class CasService {
             passwordConfiguration != null ? passwordConfiguration.getProfile() : null,
             passwordConfiguration != null ? passwordConfiguration.getMaxOldPassword() : null,
             messages
+        );
+    }
+
+    /**
+     * Home Realm Discovery : résout un e-mail vers les clients à travers lesquels son porteur peut s'authentifier, et
+     * vers le fournisseur d'identité à utiliser dans chacun d'eux.
+     *
+     * Deux sources peuvent désigner un client, mais elles n'ont pas le même poids. Les comptes existants ont
+     * le dernier mot : dès qu'au moins un compte porte l'adresse, seuls leurs clients sont
+     * proposés. Les patterns de fournisseur n'interviennent qu'en second, lorsqu'aucun compte n'existe — un fournisseur externe
+     * provisionne à la première connexion, et l'adresse est alors le seul indice disponible.
+     *
+     * C'est cet ordonnancement qui préserve la non-divulgation. Une adresse inconnue dont le domaine correspond à un fournisseur
+     * est routée exactement comme une adresse connue, et l'échec ne survient qu'après la saisie du mot de passe, sous une
+     * forme générique. Résoudre les deux sources en union, ou écarter les fournisseurs internes sans
+     * compte, rendrait l'absence de compte observable avant toute authentification.
+     *
+     * Seul le routage est indiscernable, pas toute la réponse : {@code userStatus} reste vide faute
+     * de compte. Ce champ est destiné au serveur d'authentification, qui doit décider du sort
+     * d'un compte désactivé et détenait déjà l'information ; il ne doit pas transparaître dans ce que l'utilisateur
+     * observe.
+     *
+     * Au sein d'un client, le fournisseur retenu est le premier dont le pattern correspond, pris dans l'ordre des
+     * identifiants — l'ordre même qui place le fournisseur interne devant les délégations. Un client
+     * n'apparaît donc qu'une seule fois. Le fournisseur peut être absent lorsqu'un compte existe dans un client où
+     * aucun fournisseur ne couvre l'adresse : il revient au serveur d'authentification de transformer ce cas en
+     * erreur de configuration.
+     *
+     * @return les entrées triées par code client, éventuellement vides lorsque rien ne correspond.
+     */
+    public List<HrdEntryDto> resolveHrdEntries(final String email) {
+        Assert.hasText(email, "email must not be empty");
+
+        // L'ordre des identifiants place le fournisseur interne devant les délégations d'un même client ; il
+        // décide donc lequel est retenu lorsque plusieurs d'entre elles couvrent la même adresse.
+        final List<IdentityProvider> providers = StreamSupport.stream(
+            identityProviderRepository.findAll().spliterator(),
+            false
+        )
+            .sorted(Comparator.comparing(IdentityProvider::getIdentifier, Comparator.nullsLast(String::compareTo)))
+            .collect(Collectors.toList());
+
+        final List<User> existingUsers = userRepository.findAllByEmailIgnoreCase(email);
+        final Map<String, User> userByCustomerId = new LinkedHashMap<>();
+        existingUsers.forEach(user -> userByCustomerId.putIfAbsent(user.getCustomerId(), user));
+
+        final Map<String, IdentityProvider> providerByCustomerId = new LinkedHashMap<>();
+        if (userByCustomerId.isEmpty()) {
+            providers
+                .stream()
+                .filter(provider -> matchesAnyPattern(provider, email))
+                .forEach(provider -> providerByCustomerId.putIfAbsent(provider.getCustomerId(), provider));
+        } else {
+            userByCustomerId
+                .keySet()
+                .forEach(
+                    customerId ->
+                        providerByCustomerId.put(customerId, firstMatchingProvider(providers, customerId, email))
+                );
+        }
+
+        if (providerByCustomerId.isEmpty()) {
+            LOGGER.debug("HRD: no identity provider resolved for this email (existingUsers={})", existingUsers.size());
+            return List.of();
+        }
+
+        final Map<String, Customer> customersById = new HashMap<>();
+        customerRepository
+            .findAllById(providerByCustomerId.keySet())
+            .forEach(customer -> customersById.put(customer.getId(), customer));
+
+        return providerByCustomerId
+            .entrySet()
+            .stream()
+            .map(
+                entry ->
+                    toHrdEntry(
+                        entry.getKey(),
+                        entry.getValue(),
+                        customersById.get(entry.getKey()),
+                        userByCustomerId.get(entry.getKey())
+                    )
+            )
+            .sorted(Comparator.comparing(HrdEntryDto::getCustomerCode, Comparator.nullsLast(String::compareTo)))
+            .collect(Collectors.toList());
+    }
+
+    private IdentityProvider firstMatchingProvider(
+        final List<IdentityProvider> providers,
+        final String customerId,
+        final String email
+    ) {
+        return providers
+            .stream()
+            .filter(provider -> customerId.equals(provider.getCustomerId()))
+            .filter(provider -> matchesAnyPattern(provider, email))
+            .findFirst()
+            .orElse(null);
+    }
+
+    private boolean matchesAnyPattern(final IdentityProvider provider, final String email) {
+        return (
+            provider.getPatterns() != null &&
+            provider
+                .getPatterns()
+                .stream()
+                .anyMatch(pattern -> Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(email).matches())
+        );
+    }
+
+    private HrdEntryDto toHrdEntry(
+        final String customerId,
+        final IdentityProvider provider,
+        final Customer customer,
+        final User user
+    ) {
+        return new HrdEntryDto(
+            customerId,
+            customer != null ? customer.getCode() : null,
+            customer != null ? customer.getName() : customerId,
+            provider != null ? provider.getId() : null,
+            provider != null ? provider.getName() : null,
+            provider != null && Boolean.TRUE.equals(provider.getInternal()),
+            provider != null ? provider.getProtocoleType() : null,
+            user != null && user.getStatus() != null ? user.getStatus().toString() : null
         );
     }
 

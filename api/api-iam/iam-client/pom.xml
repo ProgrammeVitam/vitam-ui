@@ -81,6 +81,8 @@
                                 </importMapping>
                                 <importMapping>LoginRequestDto=fr.gouv.vitamui.iam.auth.contract.LoginRequestDto
                                 </importMapping>
+                                <importMapping>HrdEntryDto=fr.gouv.vitamui.iam.auth.contract.HrdEntryDto
+                                </importMapping>
                                 <importMapping>
                                     PasswordPolicyDto=fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto
                                 </importMapping>
@@ -135,6 +137,8 @@
                                     LogbookOperationsCommonResponseDto=fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsCommonResponseDto
                                 </typeMapping>
                                 <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.auth.contract.LoginRequestDto
+                                </typeMapping>
+                                <typeMapping>HrdEntryDto=fr.gouv.vitamui.iam.auth.contract.HrdEntryDto
                                 </typeMapping>
                                 <typeMapping>
                                     PasswordPolicyDto=fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto

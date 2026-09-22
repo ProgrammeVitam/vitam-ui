@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -347,5 +348,26 @@ public class CasController {
     public PasswordPolicyDto getPasswordPolicy() {
         LOGGER.debug("get the password policy");
         return casService.getPasswordPolicy();
+    }
+
+    /**
+     * Home Realm Discovery : les clients et fournisseurs d'identité à travers lesquels un e-mail donné peut s'authentifier.
+     *
+     * La cardinalité de la réponse porte la décision du serveur d'authentification — aucune entrée pour une
+     * configuration inutilisable, une seule pour poursuivre directement, plusieurs pour faire choisir d'abord le client. Une
+     * adresse inconnue est routée exactement comme une adresse connue, de sorte que le flux ne révèle jamais si un
+     * compte existe.
+     */
+    @GetMapping(value = AuthContractApi.HRD_PATH, params = "email")
+    @Operation(
+        operationId = "cas_resolveHrd",
+        summary = "Resolve the organisations and identity providers for an email"
+    )
+    @Secured(ServicesData.ROLE_CAS_HRD)
+    public List<HrdEntryDto> resolveHrd(final @RequestParam String email) {
+        LOGGER.debug("resolve HRD entries");
+        ParameterChecker.checkParameter("The email is mandatory : ", email);
+        SanityChecker.checkSecureParameter(email);
+        return casService.resolveHrdEntries(email);
     }
 }
