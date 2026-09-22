@@ -3,8 +3,8 @@ package fr.gouv.vitamui.iam.server.rest;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
+import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
 import fr.gouv.vitamui.iam.server.common.rest.ApiIamControllerTest;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
@@ -63,7 +63,7 @@ class CasControllerTest extends ApiIamControllerTest<IdDto> {
 
         ResultActions result =
             this.performPost(
-                    getUriBuilder(RestApi.CAS_LOGIN_PATH),
+                    getUriBuilder(AuthContractApi.LOGIN_PATH),
                     asJsonString(loginRequestDto),
                     status().isBadRequest()
                 );
@@ -83,7 +83,7 @@ class CasControllerTest extends ApiIamControllerTest<IdDto> {
 
         ResultActions result =
             this.performPost(
-                    getUriBuilder(RestApi.CAS_LOGIN_PATH),
+                    getUriBuilder(AuthContractApi.LOGIN_PATH),
                     asJsonString(loginRequestDto),
                     status().isBadRequest()
                 );
@@ -109,7 +109,7 @@ class CasControllerTest extends ApiIamControllerTest<IdDto> {
 
     @Override
     protected String getRessourcePrefix() {
-        return RestApi.V1_CAS_URL;
+        return AuthContractApi.V1_AUTH_URL;
     }
 
     @Override
