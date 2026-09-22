@@ -22,10 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CasBeanOverridesTest {
 
     /**
-     * CAS beans replaced by VitamUI, as of CAS 7.0.10.1.
+     * CAS beans replaced by VitamUI, as of CAS 7.3.8.
      *
      * <p>Do not edit this list to make the build pass again. Each removal is a functional regression to investigate
      * first: find the new CAS bean name, then rename ours to match.
+     *
+     * <p>Exception (Story #16712 decoupling): {@code delegatedClientAuthenticationConfigurationContext} and
+     * {@code initialAuthenticationAttemptWebflowEventResolver} were intentionally dropped - CAS's default beans
+     * already pick up our remaining overrides once identity resolution moved to the IAM.
      */
     private static final Set<String> EXPECTED_OVERRIDES = new TreeSet<>(
         Set.of(
@@ -40,9 +44,7 @@ public class CasBeanOverridesTest {
             "delegatedAuthenticationAction",
             "delegatedAuthenticationClientLogoutAction",
             "delegatedAuthenticationCredentialExtractor",
-            "delegatedClientAuthenticationConfigurationContext",
             "delegatedIdentityProviders",
-            "initialAuthenticationAttemptWebflowEventResolver",
             "loadSurrogatesListAction",
             "mfaSimpleMultifactorSendTokenAction",
             "mfaSimpleMultifactorTokenCommunicationStrategy",
