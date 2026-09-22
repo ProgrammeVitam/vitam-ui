@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.cas.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.rest.client.HttpContext;
 import jakarta.mail.internet.MimeMessage;
@@ -74,6 +77,9 @@ import java.util.Map;
 public class Utils {
 
     private static final int BROWSER_SESSION_LIFETIME = -1;
+
+    // Mapper partagé pour le jeton de réinitialisation de mot de passe CAS (un UserLoginModel à deux champs) ; configuration par défaut.
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final String casToken;
 
@@ -120,6 +126,14 @@ public class Utils {
         cookie.setSecure(tgc.isSecure());
         cookie.setHttpOnly(tgc.isHttpOnly());
         return cookie;
+    }
+
+    public String toJson(final Object value) throws JsonProcessingException {
+        return OBJECT_MAPPER.writeValueAsString(value);
+    }
+
+    public <T> T fromJson(final String json, final TypeReference<T> type) throws JsonProcessingException {
+        return OBJECT_MAPPER.readValue(json, type);
     }
 
     public Object getAttributeValue(final Map<String, List<Object>> attributes, final String key) {
