@@ -2498,43 +2498,6 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/AuthUserDto"
                             example: null
-    /iam/v1/cas/subrogations:
-        get:
-            tags:
-                - Cas
-            summary: Get available subrogations for a super user by super user id or by
-                super user email and customerId
-            operationId: getSubrogationsBySuperUserIdOrEmailAndCustomerId
-            parameters:
-                - name: superUserId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserEmail
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-                - name: superUserCustomerId
-                  in: query
-                  required: false
-                  schema:
-                      type: string
-                      example: null
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        '*/*':
-                            schema:
-                                type: array
-                                example: null
-                                items:
-                                    $ref: "#/components/schemas/SubrogationDto"
-                            example: null
     /iam/v1/cas/logout:
         get:
             tags:
