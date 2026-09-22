@@ -2598,6 +2598,25 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/HrdEntryDto"
                             example: null
+    /iam/v1/cas/users/principal-attributes:
+        post:
+            tags:
+                - Cas
+            summary: Build the authentication attributes of a user
+            operationId: cas_buildPrincipalAttributes
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/PrincipalAttributesRequestDto"
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        '*/*':
+                            schema:
+                                $ref: "#/components/schemas/PrincipalAttributesResponseDto"
     /iam/v1/cas/subrogations/validate:
         post:
             tags:
@@ -3725,6 +3744,119 @@ components:
                     format: int32
                     example: null
             example: null
+        PrincipalAttributesRequestDto:
+            required:
+                - loginCustomerId
+                - loginEmail
+            type: object
+            properties:
+                loginEmail:
+                    type: string
+                    example: null
+                loginCustomerId:
+                    type: string
+                    example: null
+                identityProviderId:
+                    type: string
+                    example: null
+                userIdentifier:
+                    type: string
+                    example: null
+                superUserEmail:
+                    type: string
+                    example: null
+                superUserCustomerId:
+                    type: string
+                    example: null
+                apiContext:
+                    type: boolean
+                    example: null
+            example: null
+        PrincipalAttributesResponseDto:
+            type: object
+            properties:
+                userId:
+                    type: string
+                customerId:
+                    type: string
+                email:
+                    type: string
+                firstname:
+                    type: string
+                lastname:
+                    type: string
+                identifier:
+                    type: string
+                otp:
+                    type: boolean
+                computedOtp:
+                    type: boolean
+                subrogeable:
+                    type: boolean
+                userInfoId:
+                    type: string
+                phone:
+                    type: string
+                mobile:
+                    type: string
+                status:
+                    type: string
+                type:
+                    type: string
+                readonly:
+                    type: boolean
+                level:
+                    type: string
+                lastConnection:
+                    type: string
+                    format: date-time
+                nbFailedAttempts:
+                    type: integer
+                    format: int32
+                passwordExpirationDate:
+                    type: string
+                    format: date-time
+                groupId:
+                    type: string
+                addressJson:
+                    type: string
+                analyticsJson:
+                    type: string
+                internalCode:
+                    type: string
+                authenticated:
+                    type: boolean
+                profileGroupJson:
+                    type: string
+                customerIdentifier:
+                    type: string
+                basicCustomerJson:
+                    type: string
+                authToken:
+                    type: string
+                proofTenantIdentifier:
+                    type: integer
+                    format: int32
+                tenantsByAppJson:
+                    type: string
+                siteCode:
+                    type: string
+                centerCodes:
+                    type: array
+                    items:
+                        type: string
+                roles:
+                    type: array
+                    items:
+                        type: string
+                superUserEmail:
+                    type: string
+                superUserCustomerId:
+                    type: string
+                superUserIdentifier:
+                    type: string
+                superUserId:
+                    type: string
         SubrogationValidateRequestDto:
             required:
                 - superUserCustomerId

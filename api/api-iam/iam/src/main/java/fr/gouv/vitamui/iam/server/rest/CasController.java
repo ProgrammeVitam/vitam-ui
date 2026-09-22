@@ -49,6 +49,8 @@ import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -289,6 +291,23 @@ public class CasController {
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
         SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
+    }
+
+    /**
+     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
+     *
+     * Le serveur d'authentification n'a plus à connaître les noms d'attributs, ni la façon dont chacun dérive
+     * du modèle utilisateur : il recopie la map sans l'interpréter.
+     */
+    @PostMapping(value = AuthContractApi.PRINCIPAL_ATTRIBUTES_PATH)
+    @Operation(operationId = "cas_buildPrincipalAttributes", summary = "Build the authentication attributes of a user")
+    @Secured(ServicesData.ROLE_CAS_PRINCIPAL_ATTRIBUTES)
+    public PrincipalAttributesResponseDto buildPrincipalAttributes(
+        final @Valid @RequestBody PrincipalAttributesRequestDto request
+    ) throws InvalidParseOperationException {
+        LOGGER.debug("build the principal attributes");
+        SanityChecker.checkSecureParameter(request.getLoginEmail(), request.getLoginCustomerId());
+        return casService.buildPrincipalAttributes(request);
     }
 
     /**

@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.cas.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -53,8 +54,11 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -740,6 +744,163 @@ public class CasService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerService.getAllById(customerIds);
+    }
+
+    /**
+     * Les attributs d'authentification d'un utilisateur, prêts à être portés tels quels par le jeton.
+     *
+     * Le serveur d'authentification construit lui-même cette map aujourd'hui, ce qui l'oblige à connaître les soixante et quelques
+     * noms d'attributs de {@link CommonConstants} et la façon dont chacun dérive du modèle utilisateur. Ajouter un
+     * attribut ici imposait auparavant de modifier également le serveur d'authentification.
+     *
+     * Chaque valeur est une chaîne, booléens et dates compris. Ce n'est pas une perte de fidélité : c'est la
+     * forme sous laquelle ils parviennent déjà aux applications, puisque {@code AuthUserDto.buildFromAttributes}
+     * les relit avec {@code Boolean.parseBoolean((String) value)} ou
+     * {@code OffsetDateTime.parse((String) value)}. Les attributs composites sont sérialisés en JSON avec
+     * {@link JsonUtils}, de sorte que la chaîne transmise est identique à celle que les applications recevaient
+     * auparavant.
+     *
+     * Un attribut dont la valeur est absente est omis plutôt que mis à {@code null} : le lecteur
+     * s'appuie sur les clés présentes, et une clé absente y équivaut à une clé nulle.
+     */
+    public PrincipalAttributesResponseDto buildPrincipalAttributes(final PrincipalAttributesRequestDto request) {
+        Assert.notNull(request, "request must not be null");
+
+        final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
+
+        // Le jeton d'authentification est toujours demandé ; la subrogation et les appels hors navigateur
+        // requièrent en plus leur propre bloc, exactement comme le résolveur du serveur d'authentification aujourd'hui.
+        String embedded = CommonConstants.AUTH_TOKEN_PARAMETER;
+        if (subrogation) {
+            embedded += "," + CommonConstants.SURROGATION_PARAMETER;
+        } else if (request.isApiContext()) {
+            embedded += "," + CommonConstants.API_PARAMETER;
+        }
+
+        final UserDto user = getUser(
+            request.getLoginEmail(),
+            request.getLoginCustomerId(),
+            request.getIdentityProviderId(),
+            request.getUserIdentifier(),
+            embedded
+        );
+        if (user == null) {
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getLoginEmail());
+        }
+
+        UserDto superUser = null;
+        if (subrogation) {
+            superUser = getUserByEmailAndCustomerId(
+                request.getSuperUserEmail(),
+                request.getSuperUserCustomerId(),
+                null
+            );
+            if (superUser == null) {
+                throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getSuperUserEmail());
+            }
+        }
+        return toPrincipalAttributes(user, request, superUser);
+    }
+
+    /**
+     * Transforme un utilisateur déjà résolu en la map d'attributs. Maintenue à l'écart de la résolution, cette
+     * conversion peut être vérifiée isolément : ce qui rend le comportement identique est la forme des
+     * valeurs, non la façon dont l'utilisateur a été recherché.
+     */
+    public PrincipalAttributesResponseDto toPrincipalAttributes(
+        final UserDto user,
+        final PrincipalAttributesRequestDto request,
+        final UserDto superUser
+    ) {
+        final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
+        final PrincipalAttributesResponseDto dto = new PrincipalAttributesResponseDto();
+
+        dto.setUserId(user.getId());
+        dto.setCustomerId(user.getCustomerId());
+        dto.setEmail(user.getEmail());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setIdentifier(user.getIdentifier());
+        dto.setOtp(user.isOtp());
+        dto.setComputedOtp(
+            user.isOtp() &&
+            authenticatesWithInternalProvider(otpEmail(request, subrogation), otpCustomerId(request, subrogation))
+        );
+        dto.setSubrogeable(user.isSubrogeable());
+        dto.setUserInfoId(user.getUserInfoId());
+        dto.setPhone(user.getPhone());
+        dto.setMobile(user.getMobile());
+        dto.setStatus(user.getStatus() != null ? user.getStatus().name() : null);
+        dto.setType(user.getType() != null ? user.getType().name() : null);
+        dto.setReadonly(user.isReadonly());
+        dto.setLevel(user.getLevel());
+        dto.setLastConnection(user.getLastConnection());
+        dto.setNbFailedAttempts(user.getNbFailedAttempts());
+        dto.setPasswordExpirationDate(user.getPasswordExpirationDate());
+        dto.setGroupId(user.getGroupId());
+        dto.setAddressJson(toJson(user.getAddress()));
+        dto.setAnalyticsJson(toJson(user.getAnalytics()));
+        dto.setInternalCode(user.getInternalCode());
+
+        if (subrogation) {
+            dto.setSuperUserEmail(request.getSuperUserEmail());
+            dto.setSuperUserCustomerId(request.getSuperUserCustomerId());
+            if (superUser != null) {
+                dto.setSuperUserIdentifier(superUser.getIdentifier());
+                dto.setSuperUserId(superUser.getId());
+            }
+        }
+        if (user instanceof AuthUserDto authUser && authUser.getProfileGroup() != null) {
+            dto.setAuthenticated(true);
+            dto.setProfileGroupJson(toJson(authUser.getProfileGroup()));
+            dto.setCustomerIdentifier(authUser.getCustomerIdentifier());
+            dto.setBasicCustomerJson(toJson(authUser.getBasicCustomer()));
+            dto.setAuthToken(authUser.getAuthToken());
+            dto.setProofTenantIdentifier(authUser.getProofTenantIdentifier());
+            dto.setTenantsByAppJson(toJson(authUser.getTenantsByApp()));
+            dto.setSiteCode(authUser.getSiteCode());
+            dto.setCenterCodes(authUser.getCenterCodes());
+            final Set<String> roles = new HashSet<>();
+            authUser
+                .getProfileGroup()
+                .getProfiles()
+                .forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
+            dto.setRoles(new ArrayList<>(roles));
+        }
+        return dto;
+    }
+
+    private String toJson(final Object value) {
+        try {
+            return JsonUtils.toJson(value);
+        } catch (final JsonProcessingException e) {
+            throw new ApplicationServerException(e.getMessage(), e);
+        }
+    }
+
+    private String otpEmail(final PrincipalAttributesRequestDto request, final boolean subrogation) {
+        return subrogation ? request.getSuperUserEmail() : request.getLoginEmail();
+    }
+
+    private String otpCustomerId(final PrincipalAttributesRequestDto request, final boolean subrogation) {
+        return subrogation ? request.getSuperUserCustomerId() : request.getLoginCustomerId();
+    }
+
+    /**
+     * Reflète {@code IdentityProviderHelper.identifierMatchProviderPattern} : l'utilisateur s'authentifie
+     * réellement avec un mot de passe plutôt que via une délégation. Le OTP n'a de sens que dans ce cas.
+     */
+    private boolean authenticatesWithInternalProvider(final String email, final String customerId) {
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(customerId)) {
+            return false;
+        }
+        return StreamSupport.stream(identityProviderRepository.findAll().spliterator(), false)
+            .filter(provider -> customerId.equals(provider.getCustomerId()))
+            .filter(provider -> provider.getPatterns() != null)
+            .filter(provider -> matchesAnyPattern(provider, email))
+            .findFirst()
+            .map(provider -> Boolean.TRUE.equals(provider.getInternal()))
+            .orElse(false);
     }
 
     /**
