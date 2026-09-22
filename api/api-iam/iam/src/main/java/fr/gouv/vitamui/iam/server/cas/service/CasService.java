@@ -55,10 +55,13 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
@@ -760,6 +763,54 @@ public class CasService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerService.getAllById(customerIds);
+    }
+
+    /**
+     * Valide qu'une subrogation autorise réellement ce super-utilisateur à prendre la place de cet utilisateur, et résout les deux
+     * identifiants.
+     *
+     * Le serveur d'authentification demande aujourd'hui toutes les subrogations du super-utilisateur et les filtre
+     * lui-même. Une requête ciblée suffit, et la liste des subrogations cesse de circuler sur le réseau.
+     *
+     * La date d'expiration est vérifiée ici, ce que le filtrage actuel ne fait pas. L'index TTL de Mongo
+     * ({@code expireAfterSeconds = 0} sur {@code Subrogation.date}) est censé purger les entrées périmées, mais
+     * il ne s'exécute qu'une fois par minute et peut être désactivé selon le déploiement : s'y fier laisse une
+     * fenêtre pendant laquelle une subrogation expirée reste utilisable.
+     *
+     * @throws NotFoundException lorsqu'aucune subrogation acceptée et encore valide ne correspond, ou lorsque l'un
+     *                           des comptes est introuvable. Un refus n'est jamais une réponse vide.
+     */
+    public SubrogationValidateResponseDto validateSubrogation(final SubrogationValidateRequestDto request) {
+        Assert.notNull(request, "request must not be null");
+
+        final Optional<Subrogation> subrogation =
+            subrogationRepository.findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
+                request.getSuperUserEmail(),
+                request.getSuperUserCustomerId(),
+                request.getSurrogateEmail(),
+                request.getSurrogateCustomerId()
+            );
+
+        if (subrogation.isEmpty() || subrogation.get().getStatus() != SubrogationStatusEnum.ACCEPTED) {
+            throw new NotFoundException("No accepted subrogation between the given super-user and surrogate");
+        }
+        if (subrogation.get().getDate() != null && subrogation.get().getDate().before(new Date())) {
+            throw new NotFoundException("The subrogation between the given super-user and surrogate has expired");
+        }
+
+        final User superUser = userRepository.findByEmailIgnoreCaseAndCustomerId(
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId()
+        );
+        final User surrogate = userRepository.findByEmailIgnoreCaseAndCustomerId(
+            request.getSurrogateEmail(),
+            request.getSurrogateCustomerId()
+        );
+        if (superUser == null || surrogate == null) {
+            throw new NotFoundException("Could not resolve both users of the subrogation");
+        }
+
+        return new SubrogationValidateResponseDto(superUser.getId(), surrogate.getId());
     }
 
     /**

@@ -36,40 +36,29 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
- * Chemins du contrat d'authentification exposé par l'IAM.
+ * The two resolved identities of a validated subrogation.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les modifier casserait le contrat REST
- * avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de nommer un produit,
- * puisque le contrat n'est plus spécifique à Apereo CAS.
+ * Receiving this response amounts to authorisation: IAM only produces it when the subrogation exists, is
+ * accepted and has not expired. A refusal takes the form of an error, never of an empty response, so
+ * that a caller cannot mistake "not allowed" for "nothing to report".
  */
-public final class AuthContractApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class SubrogationValidateResponseDto {
 
-    public static final String V1_AUTH_URL = "/iam/v1/cas";
+    private String superUserId;
 
-    public static final String LOGIN_PATH = "/login";
-
-    public static final String LOGOUT_PATH = "/logout";
-
-    public static final String CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String USERS_PATH = "/users";
-
-    public static final String USERS_PROVISIONING_PATH = "/provisioning";
-
-    public static final String CUSTOMERS_PATH = "/customers";
-
-    public static final String SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String HRD_PATH = "/hrd";
-
-    public static final String CERTIFICATE_PATH = "/certificate";
-
-    public static final String PASSWORD_POLICY_PATH = "/password/policy";
-
-    public static final String SUBROGATION_VALIDATE_PATH = "/subrogations/validate";
-
-    private AuthContractApi() {
-        // constantes uniquement
-    }
+    private String surrogateUserId;
 }

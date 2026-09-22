@@ -49,6 +49,8 @@ import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -323,6 +325,28 @@ public class CasController {
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
         SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
+    }
+
+    /**
+     * Valide qu'une subrogation autorise ce super-utilisateur à prendre la place de cet utilisateur.
+     *
+     * Une réponse équivaut à une autorisation ; un refus prend la forme d'un 404, jamais d'une réponse vide.
+     * Le serveur d'authentification ne récupère donc plus les subrogations pour les filtrer lui-même.
+     */
+    @PostMapping(value = AuthContractApi.SUBROGATION_VALIDATE_PATH)
+    @Operation(operationId = "cas_validateSubrogation", summary = "Validate a subrogation and resolve both users")
+    @Secured(ServicesData.ROLE_CAS_SUBROGATION_VALIDATE)
+    public SubrogationValidateResponseDto validateSubrogation(
+        final @Valid @RequestBody SubrogationValidateRequestDto request
+    ) throws InvalidParseOperationException {
+        LOGGER.debug("validate a subrogation");
+        SanityChecker.checkSecureParameter(
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId(),
+            request.getSurrogateEmail(),
+            request.getSurrogateCustomerId()
+        );
+        return casService.validateSubrogation(request);
     }
 
     /**

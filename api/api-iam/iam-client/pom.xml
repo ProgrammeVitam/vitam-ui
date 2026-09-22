@@ -84,6 +84,12 @@
                                 <importMapping>HrdEntryDto=fr.gouv.vitamui.iam.auth.contract.HrdEntryDto
                                 </importMapping>
                                 <importMapping>
+                                    SubrogationValidateRequestDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto
+                                </importMapping>
+                                <importMapping>
+                                    SubrogationValidateResponseDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto
+                                </importMapping>
+                                <importMapping>
                                     PasswordPolicyDto=fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto
                                 </importMapping>
                                 <importMapping>OwnerDto=fr.gouv.vitamui.commons.api.domain.OwnerDto</importMapping>
@@ -139,6 +145,12 @@
                                 <typeMapping>LoginRequestDto=fr.gouv.vitamui.iam.auth.contract.LoginRequestDto
                                 </typeMapping>
                                 <typeMapping>HrdEntryDto=fr.gouv.vitamui.iam.auth.contract.HrdEntryDto
+                                </typeMapping>
+                                <typeMapping>
+                                    SubrogationValidateRequestDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto
+                                </typeMapping>
+                                <typeMapping>
+                                    SubrogationValidateResponseDto=fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto
                                 </typeMapping>
                                 <typeMapping>
                                     PasswordPolicyDto=fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto
