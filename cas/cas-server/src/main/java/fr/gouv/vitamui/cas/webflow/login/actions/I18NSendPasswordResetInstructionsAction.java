@@ -152,9 +152,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             return success();
         }
 
-        // Hack: Encode loginEmail+loginCustomerId pair into a json-serialized
-        // UserLoginModel as we are not able to
-        // persist 2 separate fields.
+        // Hack : encode la paire loginEmail+loginCustomerId dans un
+        // UserLoginModel sérialisé en json car nous ne sommes pas en mesure de
+        // persister 2 champs séparés.
         UserLoginModel userLoginModel = new UserLoginModel();
         userLoginModel.setUserEmail(email);
         userLoginModel.setCustomerId(customerId);
@@ -228,8 +228,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
             messageSource,
-            "",
-            "",
             String.valueOf(duration.toMinutes()),
             url.toString(),
             vitamuiPlatformName,

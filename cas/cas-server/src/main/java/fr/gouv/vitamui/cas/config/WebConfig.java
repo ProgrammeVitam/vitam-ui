@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.password.CustomCasWebSecurityConfigurerAdapter;
 import fr.gouv.vitamui.cas.password.ResetPasswordController;
@@ -46,11 +45,9 @@ import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
 import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.oidc.OidcConfigurationContext;
 import org.apereo.cas.oidc.util.OidcRequestSupport;
 import org.apereo.cas.oidc.web.controllers.token.OidcRevocationEndpointController;
-import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.PasswordResetUrlBuilder;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.services.web.support.RegisteredServiceCorsConfigurationSource;
@@ -136,27 +133,9 @@ public class WebConfig {
     @Bean
     public ResetPasswordController resetPasswordController(
         @Qualifier(CasBeans.PASSWORD_RESET_URL_BUILDER) final PasswordResetUrlBuilder passwordResetUrlBuilder,
-        @Qualifier(CasBeans.COMMUNICATIONS_MANAGER) final CommunicationsManager communicationsManager,
-        @Qualifier(
-            CasBeans.PASSWORD_MANAGEMENT_SERVICE_DEFAULT
-        ) final PasswordManagementService passwordManagementService,
-        @Qualifier(CasBeans.MESSAGE_SOURCE) final HierarchicalMessageSource messageSource,
-        final CasConfigurationProperties casProperties,
-        final IdentityProviderHelper identityProviderHelper,
-        final ProvidersService providersService,
         final Utils utils
     ) {
-        return new ResetPasswordController(
-            casProperties,
-            passwordManagementService,
-            communicationsManager,
-            messageSource,
-            utils,
-            passwordResetUrlBuilder,
-            identityProviderHelper,
-            providersService,
-            new ObjectMapper()
-        );
+        return new ResetPasswordController(utils, passwordResetUrlBuilder);
     }
 
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
