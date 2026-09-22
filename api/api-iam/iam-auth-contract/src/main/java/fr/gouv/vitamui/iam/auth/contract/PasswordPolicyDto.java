@@ -36,34 +36,37 @@
  */
 package fr.gouv.vitamui.iam.auth.contract;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
 /**
- * Chemins du contrat d'authentification exposé par l'IAM.
+ * The password policy in force, as IAM actually enforces it.
  *
- * Les valeurs d'URL conservent le segment historique {@code /cas} : les modifier casserait le contrat REST
- * avec les serveurs d'authentification déjà déployés. Seuls les noms des constantes cessent de nommer un produit,
- * puisque le contrat n'est plus spécifique à Apereo CAS.
+ * The authentication server displays the constraints to the user and IAM checks them. Today both read
+ * their own configuration, so any drift between the two files shows up as a form that accepts a password
+ * IAM will reject. Publishing the policy makes IAM's configuration the only one that counts.
+ *
+ * {@code messages} carries the constraint labels already resolved, in the order they should be shown.
  */
-public final class AuthContractApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class PasswordPolicyDto {
 
-    public static final String V1_AUTH_URL = "/iam/v1/cas";
+    private Integer minLength;
 
-    public static final String LOGIN_PATH = "/login";
+    private String profile;
 
-    public static final String LOGOUT_PATH = "/logout";
+    private Integer maxOldPassword;
 
-    public static final String CHANGE_PASSWORD_PATH = "/password/change";
-
-    public static final String USERS_PATH = "/users";
-
-    public static final String USERS_PROVISIONING_PATH = "/provisioning";
-
-    public static final String CUSTOMERS_PATH = "/customers";
-
-    public static final String SUBROGATIONS_PATH = "/subrogations";
-
-    public static final String PASSWORD_POLICY_PATH = "/password/policy";
-
-    private AuthContractApi() {
-        // constantes uniquement
-    }
+    private List<String> messages;
 }

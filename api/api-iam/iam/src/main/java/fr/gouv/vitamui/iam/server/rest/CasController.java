@@ -47,6 +47,7 @@ import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.iam.auth.contract.AuthContractApi;
 import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.server.cas.service.CasService;
@@ -334,5 +335,17 @@ public class CasController {
         ParameterChecker.checkParameter("CustomerIds are mandatory : ", customerIds);
         SanityChecker.checkSecureParameter(customerIds.toArray(new String[0]));
         return casService.getCustomersByIds(customerIds);
+    }
+
+    /**
+     * La politique de mot de passe que l'IAM applique, afin que le serveur d'authentification affiche exactement les
+     * contraintes qui seront vérifiées plutôt que sa propre copie de la configuration.
+     */
+    @GetMapping(value = AuthContractApi.PASSWORD_POLICY_PATH)
+    @Operation(operationId = "cas_getPasswordPolicy", summary = "Get the password policy enforced by IAM")
+    @Secured(ServicesData.ROLE_CAS_PASSWORD_POLICY)
+    public PasswordPolicyDto getPasswordPolicy() {
+        LOGGER.debug("get the password policy");
+        return casService.getPasswordPolicy();
     }
 }

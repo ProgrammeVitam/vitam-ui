@@ -53,6 +53,7 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
@@ -761,6 +762,51 @@ public class CasService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerService.getAllById(customerIds);
+    }
+
+    /**
+     * La politique de mot de passe que l'IAM applique, afin que le serveur d'authentification affiche exactement les
+     * contraintes qui seront vérifiées.
+     *
+     * Les libellés sont aplatis dans l'ordre de la configuration : d'abord les contraintes par défaut, avec celles des
+     * caractères spéciaux intercalées, puis les contraintes personnalisées.
+     */
+    public PasswordPolicyDto getPasswordPolicy() {
+        final List<String> messages = new ArrayList<>();
+        if (passwordConfiguration != null && passwordConfiguration.getConstraints() != null) {
+            final var constraints = passwordConfiguration.getConstraints();
+            if (constraints.getDefaults() != null) {
+                constraints
+                    .getDefaults()
+                    .values()
+                    .forEach(constraint -> {
+                        if (constraint.getMessages() != null) {
+                            messages.addAll(constraint.getMessages());
+                        }
+                        if (
+                            constraint.getSpecialChars() != null && constraint.getSpecialChars().getMessages() != null
+                        ) {
+                            messages.addAll(constraint.getSpecialChars().getMessages());
+                        }
+                    });
+            }
+            if (constraints.getCustoms() != null) {
+                constraints
+                    .getCustoms()
+                    .values()
+                    .forEach(constraint -> {
+                        if (constraint.getMessages() != null) {
+                            messages.addAll(constraint.getMessages());
+                        }
+                    });
+            }
+        }
+        return new PasswordPolicyDto(
+            passwordConfiguration != null ? passwordConfiguration.getLength() : null,
+            passwordConfiguration != null ? passwordConfiguration.getProfile() : null,
+            passwordConfiguration != null ? passwordConfiguration.getMaxOldPassword() : null,
+            messages
+        );
     }
 
     @Getter
