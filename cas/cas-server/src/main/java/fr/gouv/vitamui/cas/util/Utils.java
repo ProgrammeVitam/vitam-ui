@@ -78,6 +78,9 @@ public class Utils {
 
     private static final int BROWSER_SESSION_LIFETIME = -1;
 
+    // Longueur de la fin du jeton masquée lorsqu'une URL de réinitialisation de mot de passe est journalisée.
+    private static final int PASSWORD_RESET_URL_HIDDEN_TAIL = 15;
+
     // Mapper partagé pour le jeton de réinitialisation de mot de passe CAS (un UserLoginModel à deux champs) ; configuration par défaut.
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -145,8 +148,8 @@ public class Utils {
     }
 
     public String sanitizePasswordResetUrl(final String url) {
-        if (url != null && url.length() > 15) {
-            return url.substring(0, url.length() - 15) + "...";
+        if (url != null && url.length() > PASSWORD_RESET_URL_HIDDEN_TAIL) {
+            return url.substring(0, url.length() - PASSWORD_RESET_URL_HIDDEN_TAIL) + "...";
         } else {
             return "\"passwordResetURL\"...";
         }
@@ -183,11 +186,11 @@ public class Utils {
             helper.setFrom(from);
             helper.setPriority(1);
 
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(cc)) {
+            if (StringUtils.isNotBlank(cc)) {
                 helper.setCc(cc);
             }
 
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(bcc)) {
+            if (StringUtils.isNotBlank(bcc)) {
                 helper.setBcc(bcc);
             }
             mailSender.send(message);

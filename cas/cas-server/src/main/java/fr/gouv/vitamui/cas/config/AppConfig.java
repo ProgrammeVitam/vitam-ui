@@ -58,7 +58,6 @@ import fr.gouv.vitamui.iam.openapiclient.IamApiClientsFactory;
 import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
@@ -75,7 +74,6 @@ import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
-import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.pac4j.client.DelegatedIdentityProviders;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
@@ -468,7 +466,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @RefreshScope
     @Bean
-    @SneakyThrows
     public SurrogateAuthenticationService surrogateAuthenticationService(
         final CasApi casApi,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager,
@@ -522,14 +519,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasSimpleMultifactorTokenCommunicationStrategy mfaSimpleMultifactorTokenCommunicationStrategy() {
-        return new CasSimpleMultifactorTokenCommunicationStrategy() {
-            @Override
-            public EnumSet<TokenSharingStrategyOptions> determineStrategy(
-                final CasSimpleMultifactorAuthenticationTicket token
-            ) {
-                return EnumSet.of(TokenSharingStrategyOptions.SMS);
-            }
-        };
+        return token -> EnumSet.of(CasSimpleMultifactorTokenCommunicationStrategy.TokenSharingStrategyOptions.SMS);
     }
 
     @Bean

@@ -120,6 +120,8 @@ import org.springframework.webflow.execution.Action;
 @Configuration
 public class WebflowConfig {
 
+    private static final int MFA_WEBFLOW_CONFIGURER_ORDER = 100;
+
     @Bean
     public ListCustomersAction listCustomersAction(
         ProvidersService providersService,
@@ -153,6 +155,7 @@ public class WebflowConfig {
         );
     }
 
+    // Bean requis par CAS 7.3 pour le flux de réinitialisation de mot de passe.
     @Bean
     public DefaultTransientSessionTicketFactory pmTicketFactory(final CasConfigurationProperties casProperties) {
         return new DefaultTransientSessionTicketFactory(
@@ -400,7 +403,7 @@ public class WebflowConfig {
             casProperties,
             MultifactorAuthenticationWebflowUtils.getMultifactorAuthenticationWebflowCustomizers(applicationContext)
         );
-        cfg.setOrder(100);
+        cfg.setOrder(MFA_WEBFLOW_CONFIGURER_ORDER);
         return cfg;
     }
 
@@ -488,7 +491,7 @@ public class WebflowConfig {
                 casProperties
             );
         } else {
-            return new StaticEventExecutionAction("error");
+            return new StaticEventExecutionAction(CasWebflowConstants.TRANSITION_ID_ERROR);
         }
     }
 

@@ -45,7 +45,6 @@ import fr.gouv.vitamui.cas.web.CustomCorsProcessor;
 import fr.gouv.vitamui.cas.web.CustomOidcCasClientRedirectActionBuilder;
 import fr.gouv.vitamui.cas.web.CustomOidcRevocationEndpointController;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.oidc.OidcConfigurationContext;
@@ -107,10 +106,11 @@ public class WebConfig {
         return builder;
     }
 
+    // Conservé volontairement : le RegisteredServiceCorsConfigurationSource propre à CAS est conditionnel, tandis que corsFilter
+    // ci-dessous a besoin d'une source de manière inconditionnelle - sans ce bean, le contexte ne démarre pas.
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CorsConfigurationSource corsHttpWebRequestConfigurationSource(
-        final ConfigurableApplicationContext applicationContext,
         final CasConfigurationProperties casProperties,
         @Qualifier(CasBeans.ARGUMENT_EXTRACTOR) final ArgumentExtractor argumentExtractor,
         @Qualifier(CasBeans.SERVICES_MANAGER) final ServicesManager servicesManager
@@ -177,7 +177,7 @@ public class WebConfig {
         final WebProperties webProperties,
         final CasConfigurationProperties casProperties
     ) {
-        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+        final CustomCasWebSecurityConfigurerAdapter adapter = new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
             managementServerProperties,
@@ -201,7 +201,7 @@ public class WebConfig {
         final CasConfigurationProperties casProperties,
         final ApplicationContext applicationContext
     ) throws Exception {
-        val adapter = new CustomCasWebSecurityConfigurerAdapter(
+        final CustomCasWebSecurityConfigurerAdapter adapter = new CustomCasWebSecurityConfigurerAdapter(
             casProperties,
             webEndpointProperties,
             managementServerProperties,
