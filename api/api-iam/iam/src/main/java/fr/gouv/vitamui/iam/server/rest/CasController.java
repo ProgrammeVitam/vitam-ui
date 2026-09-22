@@ -165,6 +165,7 @@ public class CasController {
             throw new TooManyRequestsException(message);
         } else if (passwordMatch) {
             final UserDto userDto = userService.internalConvertFromEntityToDto(user);
+            userDto.setMustChangePassword(isPasswordExpired(user.getPasswordExpirationDate(), now));
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), null);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         } else {
@@ -172,6 +173,10 @@ public class CasController {
             iamLogbookService.loginEvent(user, findSurrogateDescriptionStringForLogging(dto), dto.getIp(), message);
             throw new UnAuthorizedException(message);
         }
+    }
+
+    private boolean isPasswordExpired(final OffsetDateTime expirationDate, final OffsetDateTime now) {
+        return expirationDate == null || expirationDate.isBefore(now);
     }
 
     private String findSurrogateDescriptionStringForLogging(final LoginRequestDto loginRequest) {
