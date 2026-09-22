@@ -83,7 +83,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * The controller for CAS operations.
@@ -218,18 +217,6 @@ public class CasController {
         SanityChecker.checkSecureParameter(username);
         casService.updatePassword(username, password, customerId);
         return "true";
-    }
-
-    @GetMapping(value = AuthContractApi.USERS_PATH, params = "email")
-    @Operation(operationId = "cas_getUsersByEmail", summary = "Get all users having a given email address")
-    @Secured(ServicesData.ROLE_CAS_USERS)
-    public List<UserDto> getUsersByEmail(
-        @RequestParam final String email,
-        @RequestParam final Optional<String> embedded
-    ) {
-        LOGGER.debug("getUserByEmail: {} embedded: {}", email, embedded);
-        ParameterChecker.checkParameter("The email is mandatory : ", email);
-        return casService.getUsersByEmail(email, embedded.orElse(null));
     }
 
     @GetMapping(value = AuthContractApi.USERS_PATH + AuthContractApi.USERS_PROVISIONING_PATH)
