@@ -6,9 +6,11 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -29,6 +31,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -138,6 +141,74 @@ class CasServiceTest {
         assertThatThrownBy(() -> casService.updatePassword(USER_EMAIL, "Str0ng!Password", CUSTOMER_ID)).isInstanceOf(
             BadRequestException.class
         );
+    }
+
+    @Test
+    void resolveCertificateProvider_returns_the_single_matching_CERTIFICAT_provider() {
+        final IdentityProviderDto certProvider = certificateProvider("cert-idp", CUSTOMER_ID);
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(certProvider)
+        );
+        final Customer customer = new Customer();
+        customer.setCode("CUST");
+        customer.setName("Customer name");
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+
+        final HrdEntryDto entry = casService.resolveCertificateProvider("user@cert.test");
+
+        assertThat(entry.getIdentityProviderId()).isEqualTo("cert-idp");
+        assertThat(entry.getCustomerId()).isEqualTo(CUSTOMER_ID);
+        assertThat(entry.getProtocoleType()).isEqualTo("CERTIFICAT");
+    }
+
+    @Test
+    void resolveCertificateProvider_keeps_only_the_CERTIFICAT_protocol() {
+        final IdentityProviderDto certProvider = certificateProvider("cert-idp", CUSTOMER_ID);
+        final IdentityProviderDto samlProvider = new IdentityProviderDto();
+        samlProvider.setId("saml-idp");
+        samlProvider.setCustomerId(CUSTOMER_ID);
+        samlProvider.setProtocoleType("SAML");
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(samlProvider, certProvider)
+        );
+        when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.empty());
+
+        final HrdEntryDto entry = casService.resolveCertificateProvider("user@cert.test");
+
+        assertThat(entry.getIdentityProviderId()).isEqualTo("cert-idp");
+    }
+
+    @Test
+    void resolveCertificateProvider_refuses_when_no_CERTIFICAT_provider_matches() {
+        final IdentityProviderDto samlProvider = new IdentityProviderDto();
+        samlProvider.setProtocoleType("SAML");
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(samlProvider)
+        );
+
+        assertThatThrownBy(() -> casService.resolveCertificateProvider("user@cert.test")).isInstanceOf(
+            NotFoundException.class
+        );
+    }
+
+    @Test
+    void resolveCertificateProvider_refuses_when_several_CERTIFICAT_providers_match() {
+        when(identityProviderHelper.findAllProvidersByUserIdentifier(any(), anyString())).thenReturn(
+            List.of(certificateProvider("cert-1", CUSTOMER_ID), certificateProvider("cert-2", "otherCustomer"))
+        );
+
+        assertThatThrownBy(() -> casService.resolveCertificateProvider("user@cert.test")).isInstanceOf(
+            NotFoundException.class
+        );
+    }
+
+    private IdentityProviderDto certificateProvider(final String id, final String customerId) {
+        final IdentityProviderDto provider = new IdentityProviderDto();
+        provider.setId(id);
+        provider.setCustomerId(customerId);
+        provider.setName("cert-idp-name");
+        provider.setProtocoleType("CERTIFICAT");
+        return provider;
     }
 
     private void givenAnInternalIdentityProvider() {
