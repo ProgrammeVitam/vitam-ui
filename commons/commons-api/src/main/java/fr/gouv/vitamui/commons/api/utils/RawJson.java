@@ -36,46 +36,37 @@
  */
 package fr.gouv.vitamui.commons.api.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * A wrapper of data which outputs them as JSON (for CAS).
+ * Contient une charge utile JSON déjà sérialisée et la restitue telle quelle (pour CAS).
  *
- *
+ * Le JSON est produit en amont plutôt qu'en sérialisant un objet ici : le serveur d'authentification
+ * transporte ainsi un attribut de principal construit par l'IAM sans avoir à dépendre du modèle
+ * d'administration qui l'a produit.
  */
-@Getter
-@Setter
-public class CasJsonWrapper implements Serializable {
+public class RawJson implements Serializable {
 
-    /**
-     *
-     */
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final Object data;
+    private final String json;
 
-    public CasJsonWrapper() {
-        data = null;
+    public RawJson() {
+        json = null;
     }
 
-    public CasJsonWrapper(final Object data) {
-        this.data = data;
+    public RawJson(final String json) {
+        this.json = json;
+    }
+
+    public String getJson() {
+        return json;
     }
 
     @Override
     public String toString() {
-        try {
-            return JsonUtils.toJson(data);
-        } catch (JsonProcessingException e) {
-            throw new ApplicationServerException(e.getMessage(), e);
-        }
+        return json;
     }
 }
