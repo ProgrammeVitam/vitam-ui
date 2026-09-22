@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
@@ -56,6 +57,8 @@ import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
@@ -163,6 +166,9 @@ public class CasService {
     private IdentityProviderService identityProviderService;
 
     @Autowired
+    private IdentityProviderHelper identityProviderHelper;
+
+    @Autowired
     private GroupService groupService;
 
     @Autowired
@@ -234,6 +240,9 @@ public class CasService {
             }
         }
 
+        checkPasswordChangeAllowedForProvider(email, customerId);
+        checkPasswordPolicy(rawPassword, user);
+
         final String encodedPassword = passwordEncoder.encode(rawPassword);
         userService.saveCurrentPasswordInOldPasswords(
             user,
@@ -256,6 +265,54 @@ public class CasService {
             iamLogbookService.createPasswordEvent(user);
         } else {
             iamLogbookService.updatePasswordEvent(user);
+        }
+    }
+
+    private void checkPasswordChangeAllowedForProvider(final String email, final String customerId) {
+        final Optional<IdentityProviderDto> provider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            identityProviderService.getAll(Optional.empty(), Optional.empty()),
+            email,
+            customerId
+        );
+        if (provider.isEmpty()) {
+            throw new BadRequestException(
+                "No identity provider found for user " + email,
+                PasswordChangeErrorKeys.NO_IDENTITY_PROVIDER
+            );
+        }
+        if (!Boolean.TRUE.equals(provider.get().getInternal())) {
+            throw new BadRequestException(
+                "Only a user linked to an internal identity provider can change password",
+                PasswordChangeErrorKeys.EXTERNAL_IDENTITY_PROVIDER
+            );
+        }
+    }
+
+    private void checkPasswordPolicy(final String rawPassword, final User user) {
+        final String policyPattern = passwordConfiguration != null ? passwordConfiguration.getPolicyPattern() : null;
+        if (StringUtils.isNotBlank(policyPattern) && !passwordValidator.isValid(policyPattern, rawPassword)) {
+            throw new BadRequestException(
+                "The given password does not match the password policy",
+                PasswordChangeErrorKeys.POLICY_NOT_MATCHED
+            );
+        }
+
+        if (
+            passwordConfiguration != null &&
+            passwordConfiguration.isCheckOccurrence() &&
+            passwordConfiguration.getOccurrencesCharsNumber() != null &&
+            passwordConfiguration.getOccurrencesCharsNumber() > 0 &&
+            StringUtils.isNotBlank(user.getLastname()) &&
+            passwordValidator.isContainsUserOccurrences(
+                user.getLastname(),
+                rawPassword,
+                passwordConfiguration.getOccurrencesCharsNumber()
+            )
+        ) {
+            throw new BadRequestException(
+                "The given password contains an occurrence of the user name",
+                PasswordChangeErrorKeys.CONTAINS_USER_NAME
+            );
         }
     }
 

@@ -59,7 +59,6 @@ import fr.gouv.vitamui.iam.openapiclient.IdentityProvidersApi;
 import io.micrometer.observation.ObservationRegistry;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
@@ -491,15 +490,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         @Qualifier(CasBeans.PASSWORD_MANAGEMENT_CIPHER_EXECUTOR) final CipherExecutor passwordManagementCipherExecutor,
         @Qualifier(PasswordHistoryService.BEAN_NAME) final PasswordHistoryService passwordHistoryService,
         final ProvidersService providersService,
-        final TicketRegistry ticketRegistry,
         final CasApi casApi,
         final IdentityProviderHelper identityProviderHelper,
         final Utils utils,
-        final PasswordValidator passwordValidator,
-        @Qualifier(
-            CasBeans.CENTRAL_AUTHENTICATION_SERVICE
-        ) final CentralAuthenticationService centralAuthenticationService,
-        final PasswordConfiguration passwordConfiguration
+        final PasswordValidator passwordValidator
     ) {
         return new IamPasswordManagementService(
             casProperties,
@@ -508,11 +502,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             casApi,
             providersService,
             identityProviderHelper,
-            centralAuthenticationService,
             utils,
-            ticketRegistry,
-            passwordValidator,
-            passwordConfiguration
+            passwordValidator
         );
     }
 

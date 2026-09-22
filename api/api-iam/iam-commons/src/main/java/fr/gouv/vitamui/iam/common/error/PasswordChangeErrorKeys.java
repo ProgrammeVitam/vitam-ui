@@ -34,58 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.security.client.config.password;
+package fr.gouv.vitamui.iam.common.error;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+public final class PasswordChangeErrorKeys {
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+    public static final String NO_IDENTITY_PROVIDER = "iam.password.change.no-identity-provider";
 
-@Data
-@Configuration
-@ConfigurationProperties(prefix = "password")
-public class PasswordConfiguration {
+    public static final String EXTERNAL_IDENTITY_PROVIDER = "iam.password.change.external-identity-provider";
 
-    public static String ANSSI = "anssi";
-    public static String CUSTOM = "custom";
+    public static final String POLICY_NOT_MATCHED = "iam.password.policy.not-matched";
 
-    // le profil par défaut est anssi, custom sinon
-    private String profile = "anssi";
-    private Integer length = 12;
-    private boolean checkOccurrence = true;
-    private Integer occurrencesCharsNumber = 3;
-    private Integer maxOldPassword = 12;
-    private String policyPattern;
-    private PasswordConstraints constraints;
+    public static final String CONTAINS_USER_NAME = "iam.password.policy.contains-user-name";
 
-    @Data
-    public static class PasswordConstraints {
-
-        private Map<String, PasswordDefaultConstraints> defaults = new HashMap<>();
-        private Map<String, PasswordCustomConstraints> customs = new HashMap<>();
-    }
-
-    @Data
-    public static class PasswordDefaultConstraints {
-
-        private SpecialChars specialChars;
-        private List<String> messages;
-    }
-
-    @Data
-    public static class SpecialChars {
-
-        private String title;
-        private List<String> messages;
-    }
-
-    @Data
-    public static class PasswordCustomConstraints {
-
-        private String title;
-        private List<String> messages;
-    }
+    private PasswordChangeErrorKeys() {}
 }
