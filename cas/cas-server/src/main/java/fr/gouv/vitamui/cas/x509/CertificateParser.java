@@ -45,7 +45,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- * Certificate parser
+ * Analyseur de certificat
  */
 public class CertificateParser {
 

@@ -330,7 +330,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     @Test
     public void testResolveAuthnDelegationIsCaseInsensitiveOnTheEmailReturnedByTheIdp() throws Throwable {
-        // the user typed "user@test.com" in the login form: the webflow stored it in lower case in the session
+        // l'utilisateur a saisi "user@test.com" dans le formulaire de login : le webflow l'a stocké en minuscules dans la session
         givenLoginInfoInSessionForDeleguatedAuthn();
 
         final var provider = new IdentityProviderDto();
@@ -340,12 +340,12 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             identityProviderHelper.findByTechnicalName(eq(providersService.getProviders()), eq(PROVIDER_NAME))
         ).thenReturn(Optional.of(provider));
 
-        //  the IdP returns "USER@test.com"
+        //  l'IdP retourne "USER@test.com"
         final var princAttributes = new HashMap<String, List<Object>>();
         princAttributes.put(MAIL, Collections.singletonList(USERNAME_EMAIL_WITH_OTHER_CASE));
 
-        // the user must be loaded from the lower case email of the session, not from the one of the IdP:
-        // this mock only answers to that value.
+        // l'utilisateur doit être chargé à partir de l'e-mail en minuscules de la session, pas à partir de celui de l'IdP :
+        // ce mock ne répond qu'à cette valeur.
         when(
             casApi.getUser(
                 eq(USERNAME),
@@ -363,7 +363,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
             Optional.empty()
         );
 
-        // the authentication succeeds despite the difference of case
+        // l'authentification réussit malgré la différence de casse
         assertEquals(USERNAME_ID, principal.getId());
         assertEquals(USERNAME, principal.getAttributes().get(CommonConstants.EMAIL_ATTRIBUTE).getFirst());
     }

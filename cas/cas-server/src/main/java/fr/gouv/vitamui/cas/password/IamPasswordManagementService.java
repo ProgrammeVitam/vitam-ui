@@ -226,7 +226,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             loginCustomerIdFromFlowScope = flowScope.getString(Constants.FLOW_LOGIN_CUSTOMER_ID);
         }
         if (StringUtils.isNoneBlank(loginEmailFromFlowScope, loginCustomerIdFromFlowScope)) {
-            // User customerId already in the scope ==> We came from password expired flow
+            // Le customerId de l'utilisateur est déjà dans le scope ==> On vient du flux de mot de passe expiré
             Assert.isTrue(
                 Objects.equals(loginEmailFromFlowScope, username),
                 "Email does not match login email from flow"

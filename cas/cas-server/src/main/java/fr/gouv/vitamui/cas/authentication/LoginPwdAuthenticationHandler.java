@@ -70,7 +70,7 @@ import static fr.gouv.vitamui.cas.util.Constants.FLOW_SURROGATE_CUSTOMER_ID;
 import static fr.gouv.vitamui.cas.util.Constants.FLOW_SURROGATE_EMAIL;
 
 /**
- * Authentication handler to check the username/password on the IAM API.
+ * Gestionnaire d'authentification qui vérifie l'identifiant/mot de passe via l'API de l'IAM.
  */
 @Slf4j
 public class LoginPwdAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {

@@ -53,7 +53,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * A DTO with an identifier.
+ * Un DTO doté d'un identifiant.
  *
  *
  */
@@ -74,7 +74,7 @@ public class UserDto extends CustomerIdDto {
     @Size(min = 2, max = 50)
     private String firstname;
 
-    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
+    // aucune validation pour l'identifiant. Car lors de l'étape de création, l'identifiant est défini par le backend.
     private String identifier;
 
     @NotNull

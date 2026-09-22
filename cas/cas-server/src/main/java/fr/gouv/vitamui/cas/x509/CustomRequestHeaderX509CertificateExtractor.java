@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.Base64;
 
 /**
- * Custom certificate extractor from the request.
+ * Extracteur de certificat personnalisé depuis la requête.
  */
 @Slf4j
 public class CustomRequestHeaderX509CertificateExtractor implements X509CertificateExtractor {

@@ -73,7 +73,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.AUTHTOKEN_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_CUSTOMER_ID_ATTRIBUTE;
 
-/** Terminate session action with custom IAM logout call. */
+/** Action de fin de session avec un appel de déconnexion personnalisé vers l'IAM. */
 @Slf4j
 public class TerminateApiSessionAction extends TerminateSessionAction {
 

@@ -63,7 +63,7 @@ import java.util.Base64;
 import java.util.List;
 
 /**
- * General authentication provider for the External API.
+ * Fournisseur d'authentification général pour l'API externe.
  *
  *
  */
@@ -83,7 +83,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     }
 
     /**
-     * This method is called by the Spring Security Filter
+     * Cette méthode est appelée par le filtre Spring Security
      *
      * {@inheritDoc}
      */
@@ -130,7 +130,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     }
 
     /**
-     * Method for build X-Application-Id params
+     * Méthode pour construire les paramètres X-Application-Id
      * @param user
      * @param httpContext
      * @param context
@@ -148,7 +148,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     }
 
     /**
-     * Retrieve Security Context associated with the request and check context security.
+     * Récupère le contexte de sécurité associé à la requête et vérifie la sécurité du contexte.
      *
      * @param httpContext
      * @param certificate
@@ -196,7 +196,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
     }
 
     /**
-     * Get Roles looking at the security context and user profile.
+     * Récupère les rôles en examinant le contexte de sécurité et le profil de l'utilisateur.
      * @param context
      * @param userProfile
      * @return
@@ -210,7 +210,7 @@ public class ExternalApiAuthenticationProvider implements AuthenticationProvider
         return contextRoles
             .stream()
             .filter(userRoles::contains)
-            // Prevent using "ROLE_INTERNAL" from external
+            // Empêche l'utilisation de « ROLE_INTERNAL » depuis l'extérieur
             .filter(role -> !ServicesData.ROLE_INTERNAL.equals(role))
             .toList();
     }

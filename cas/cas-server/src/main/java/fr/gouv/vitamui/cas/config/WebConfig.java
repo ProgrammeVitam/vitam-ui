@@ -80,7 +80,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 /**
- * Web customizations.
+ * Personnalisations web.
  */
 @Configuration
 public class WebConfig {
@@ -189,7 +189,7 @@ public class WebConfig {
             securityContextRepository,
             webProperties
         );
-        // CAS 7.3 passes the application context to configureHttpSecurity.
+        // CAS 7.3 passe le contexte applicatif à configureHttpSecurity.
         return adapter.configureHttpSecurity(http, applicationContext).build();
     }
 }

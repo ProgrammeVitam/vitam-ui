@@ -87,7 +87,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * The controller for CAS operations.
+ * Le contrôleur pour les opérations CAS.
  */
 @RestController
 @RequestMapping(AuthContractApi.V1_AUTH_URL)

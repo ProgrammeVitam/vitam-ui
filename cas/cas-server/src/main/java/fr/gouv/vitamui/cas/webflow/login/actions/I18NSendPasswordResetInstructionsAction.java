@@ -64,7 +64,7 @@ import org.springframework.webflow.execution.RequestContext;
 import java.net.URL;
 
 /**
- * Send reset password emails with i18n messages.
+ * Envoie les e-mails de réinitialisation de mot de passe avec des messages i18n.
  */
 @Slf4j
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
@@ -140,8 +140,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         var service = WebUtils.getService(requestContext);
         final String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
 
-        // CUSTO: only retrieve email (and not phone) and force success event (instead
-        // of error) when failure
+        // CUSTO : ne récupère que l'e-mail (et pas le téléphone) et force l'événement de succès (au lieu
+        // d'erreur) en cas d'échec
         if (StringUtils.isBlank(email) || customerId == null) {
             LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
             return success();
@@ -176,7 +176,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                 url,
                 duration
             );
-            // CUSTO: only send email (and not SMS)
+            // CUSTO : envoie uniquement l'e-mail (et pas de SMS)
             var sendEmail = sendPasswordResetEmailToAccount(email, url);
             if (sendEmail.isSuccess()) {
                 return success(url);
@@ -196,8 +196,8 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     protected PasswordManagementQuery buildPasswordManagementQuery(final RequestContext requestContext) {
         var request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
-        // CUSTO: try to get the username from the credentials also (after a password
-        // expiration)
+        // CUSTO : essaie de récupérer aussi le nom d'utilisateur depuis les identifiants (après une expiration
+        // de mot de passe)
         String username = request.getParameter(REQUEST_PARAMETER_USERNAME);
         if (StringUtils.isBlank(username)) {
             final Object credential = flowScope.get("credential");

@@ -32,16 +32,16 @@ public class InitializeSubrogationActionTest extends BaseWebflowActionTest {
 
     @Test
     public void shouldReturnProceedWhenNoSubrogationParams() {
-        // When
+        // Quand
         Event event = initializeSubrogationAction.doExecute(context);
 
-        // Then
+        // Alors
         assertThat(event.getId()).isEqualTo(InitializeSubrogationAction.PROCEED);
     }
 
     @Test
     public void shouldReturnProceedWhenValidParams() {
-        // Given
+        // Étant donné
         requestParameters.put(Constants.LOGIN_SURROGATE_EMAIL_PARAM, "surrogate@vitamui.fr");
         requestParameters.put(Constants.LOGIN_SURROGATE_CUSTOMER_ID_PARAM, "customerSurrogate");
         requestParameters.put(Constants.LOGIN_SUPER_USER_EMAIL_PARAM, "admin@vitamui.fr");

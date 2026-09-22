@@ -19,7 +19,7 @@ import org.pac4j.core.exception.http.RedirectionAction;
 import java.util.Optional;
 
 /**
- * Propagates custom parameters from OIDC to CAS.
+ * Propage les paramètres personnalisés depuis OIDC vers CAS.
  */
 
 @Slf4j

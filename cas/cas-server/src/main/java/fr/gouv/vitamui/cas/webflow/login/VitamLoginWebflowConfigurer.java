@@ -83,7 +83,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     public static final String TEMPLATE_CUSTOMER_FORM = "customerForm";
     public static final String TEMPLATE_EMAIL_FORM = "emailForm";
 
-    // FORMS FIELDS
+    // CHAMPS DES FORMULAIRES
     public static final String USERNAME = "username";
     public static final String PROCEED = "proceed";
     public static final String PASSWORD = "password";
@@ -115,7 +115,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.ACTION_ID_TICKET_GRANTING_TICKET_CHECK
         );
 
-        // CUSTO: instead of STATE_ID_GATEWAY_REQUEST_CHECK, send to
+        // CUSTO : au lieu de STATE_ID_GATEWAY_REQUEST_CHECK, rediriger vers
         // ACTION_STATE_CHECK_SUBROGATION
         createTransitionForState(
             action,
@@ -132,7 +132,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
             CasWebflowConstants.STATE_ID_TERMINATE_SESSION
         );
 
-        // CUSTO: instead of STATE_ID_HAS_SERVICE_CHECK, send to
+        // CUSTO : au lieu de STATE_ID_HAS_SERVICE_CHECK, rediriger vers
         // STATE_ID_TRIGGER_CHANGE_PASSWORD
         createTransitionForState(
             action,
