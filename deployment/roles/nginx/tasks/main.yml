@@ -11,6 +11,30 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
 
+# Older Ansible DNF modules report success when a transaction error contains
+# "already installed", even though none of the requested packages were installed.
+# Retry this specific false success through the system CLI on AlmaLinux 10 only.
+- name: Install nginx packages after a masked DNF transaction error on AlmaLinux 10
+  command:
+    argv:
+      - dnf
+      - --refresh
+      - --assumeyes
+      - install
+      - nginx
+      - nginx-mod-stream
+  environment:
+    LC_ALL: C
+  register: nginx_cli_install
+  changed_when: "'Nothing to do.' not in nginx_cli_install.stdout"
+  retries: "{{ packages_install_retries_number }}"
+  until: nginx_cli_install is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+  when:
+    - ansible_distribution == 'AlmaLinux'
+    - ansible_distribution_major_version | int == 10
+    - "'Package already installed: Transaction test error:' in (result.results | default([]) | join('\n'))"
+
 - name: Create nginx folders
   file:
     path: "{{ item }}"
