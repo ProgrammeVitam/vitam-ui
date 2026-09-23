@@ -71,7 +71,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -169,7 +170,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
   private translateService = inject(TranslateService);
   private logger = inject(Logger);
-  private cdr = inject(ChangeDetectorRef);
   private snackBarService = inject(SnackBarService);
 
   static archiveUnits: FileNode;
@@ -189,13 +189,13 @@ export class FileTreeComponent implements OnInit, OnDestroy {
 
   dataSource = new MatTreeNestedDataSource<FileNode>();
   treeControl = new NestedTreeControl<FileNode>((node) => node.children);
-  updating = false;
+  updating = signal(false);
 
   data: FileNode;
   parentNodeMap = new Map<FileNode, FileNode>();
   dataChange = new BehaviorSubject<FileNode>(null);
-  selectedNode: FileNode;
-  sedaLanguage: boolean;
+  selectedNode = signal<FileNode>(null);
+  sedaLanguage = toSignal(this.sedaLanguageService.sedaLanguage, { initialValue: true });
   viewChild: FileNode[] = [];
 
   notificationRemoveSuccessOne: string;
@@ -265,16 +265,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.popupDuplicateTitreTwo = 'son contenu et son paramétrage (cardinalités et commentaire)';
     }
     this.subscriptions.add(
-      this.sedaLanguageService.sedaLanguage.subscribe({
-        next: (value: boolean) => {
-          this.sedaLanguage = value;
-        },
-        error: (error) => {
-          this.logger.error(this, error);
-        },
-      }),
-    );
-    this.subscriptions.add(
       this.sedaService.sedaRules$.subscribe((value) => {
         this.sedaService.selectedSedaNode.next(value);
         this.sedaService.selectedSedaNodeParent.next(value);
@@ -289,18 +279,17 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.fileTreeService.data$
         .pipe(
           filter((data: FileNode[]) => Boolean(data.length)),
-          tap(() => (this.updating = true)),
+          tap(() => this.updating.set(true)),
           tap((data: FileNode[]) => {
             this.dataSource.data = data;
-            this.cdr.detectChanges();
+            this.updating.set(false);
           }),
-          tap(() => (this.updating = false)),
         )
         .subscribe(),
     );
     this.subscriptions.add(
       this.fileTreeService.selectedNode$.subscribe((selectedNode) => {
-        this.selectedNode = selectedNode;
+        this.selectedNode.set(selectedNode);
       }),
     );
   }
@@ -553,7 +542,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   onResolveName(node: FileNode) {
-    if (!this.sedaLanguage && node.sedaData?.nameFr) {
+    if (!this.sedaLanguage() && node.sedaData?.nameFr) {
       return node.sedaData.nameFr;
     }
     return node.name;
@@ -770,9 +759,9 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   selectedItem(node: FileNode): boolean {
-    if (!this.selectedNode) return false;
+    if (!this.selectedNode()) return false;
 
-    return this.selectedNode.id === node.id;
+    return this.selectedNode().id === node.id;
   }
 
   expandChildren(node: FileNode) {

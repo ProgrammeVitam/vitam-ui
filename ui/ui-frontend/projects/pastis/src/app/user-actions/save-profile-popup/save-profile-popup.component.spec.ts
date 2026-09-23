@@ -118,7 +118,7 @@ describe('SaveProfilePopupComponent', () => {
     fixture.detectChanges();
     component.valueSelected.set(true);
     component.gestionNotice.set(true);
-    component.externalIdentifierEnabled = false;
+    component.externalIdentifierEnabled.set(false);
 
     component.noticeForm.controls['name'].setValue('test-name');
     component.noticeForm.controls['identifier'].setValue('test-id');
