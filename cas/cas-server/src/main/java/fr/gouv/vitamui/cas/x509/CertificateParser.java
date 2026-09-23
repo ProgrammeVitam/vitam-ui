@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.cas.x509;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.cryptacular.x509.GeneralNameType;
 
 import java.security.cert.CertificateParsingException;
@@ -53,7 +53,7 @@ public class CertificateParser {
 
     public static String extract(final X509Certificate cert, final X509AttributeMapping mapping)
         throws CertificateParsingException {
-        final var name = mapping.getName();
+        final var name = mapping.name();
         String value = null;
         if (X509CertificateAttributes.ISSUER_DN.name().equalsIgnoreCase(name)) {
             value = cert.getIssuerDN().getName();
@@ -79,8 +79,8 @@ public class CertificateParser {
         if (value == null) {
             throw new CertificateParsingException("Cannot find X509 value for: " + name);
         }
-        var parsing = mapping.getParsing();
-        var expansion = mapping.getExpansion();
+        var parsing = mapping.parsing();
+        var expansion = mapping.expansion();
         if (StringUtils.isNotBlank(parsing)) {
             var pattern = Pattern.compile(parsing);
             var matcher = pattern.matcher(value);

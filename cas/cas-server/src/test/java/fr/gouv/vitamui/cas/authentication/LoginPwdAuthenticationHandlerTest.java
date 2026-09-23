@@ -6,8 +6,10 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
+import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.LoginRequestDto;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apereo.cas.authentication.Credential;
@@ -29,9 +31,7 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountLockedException;
-import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialException;
-import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
@@ -142,10 +142,10 @@ public final class LoginPwdAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casApi.login(eq(userCredentials()))).thenReturn(null);
+        when(casApi.login(eq(userCredentials()))).thenThrow(new NotFoundException(""));
 
         // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountNotFoundException.class);
+        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(PreventedException.class);
     }
 
     @Test
@@ -153,18 +153,7 @@ public final class LoginPwdAuthenticationHandlerTest {
         // Given
         givenLoginRequestInRequestContext();
 
-        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.DISABLED));
-
-        // When / Then
-        assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
-    }
-
-    @Test
-    public void testUserCannotLogin() {
-        // Given
-        givenLoginRequestInRequestContext();
-
-        when(casApi.login(eq(userCredentials()))).thenReturn(basicUser(UserStatusEnum.BLOCKED));
+        when(casApi.login(eq(userCredentials()))).thenThrow(new InvalidFormatException(""));
 
         // When / Then
         assertThatThrownBy(() -> handler.authenticate(credential, null)).isInstanceOf(AccountException.class);
@@ -176,7 +165,7 @@ public final class LoginPwdAuthenticationHandlerTest {
         givenLoginRequestInRequestContext();
 
         final var user = basicUser(UserStatusEnum.ENABLED);
-        user.setPasswordExpirationDate(OffsetDateTime.now().minusDays(1));
+        user.setMustChangePassword(true);
         when(casApi.login(eq(userCredentials()))).thenReturn(user);
 
         // When / Then
@@ -222,7 +211,6 @@ public final class LoginPwdAuthenticationHandlerTest {
         final var user = new UserDto();
         user.setStatus(status);
         user.setType(UserTypeEnum.NOMINATIVE);
-        user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));
         return user;
     }
 

@@ -5,10 +5,9 @@ import fr.gouv.vitamui.cas.delegation.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.openapiclient.CasApi;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +19,10 @@ import org.springframework.webflow.execution.Event;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,16 +36,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     private static final String USER_1 = "user1@vitamui.com";
     private static final String CUSTOMER_ID_1 = "customer1";
+    private static final String PROVIDER_ID_1 = "provider1";
     private static final String USER_2 = "user2@vitamui.fr";
     private static final String CUSTOMER_ID_2 = "customer2";
-
-    private IdentityProviderHelper identityProviderHelper;
+    private static final String PROVIDER_ID_2 = "provider2";
 
     private CasApi casApi;
 
     private DispatcherAction action;
-
-    private Pac4jClientIdentityProviderDto provider;
 
     @Override
     @Before
@@ -54,39 +51,23 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         super.setUp();
 
         ProvidersService providersService = mock(ProvidersService.class);
-        identityProviderHelper = mock(IdentityProviderHelper.class);
         casApi = mock(CasApi.class);
 
-        final Utils utils = new Utils(null, 0, null, null, "");
-        action = new DispatcherAction(
-            providersService,
-            identityProviderHelper,
-            casApi,
-            utils,
-            mock(SessionStore.class)
-        );
-
         final SAML2Client client = new SAML2Client();
-        provider = new Pac4jClientIdentityProviderDto(new IdentityProviderDto(), client);
-        provider.setInternal(true);
-        when(
-            identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1))
-        ).thenReturn(Optional.of(provider));
-        when(
-            identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_2), eq(CUSTOMER_ID_2))
-        ).thenReturn(Optional.of(provider));
+        IdentityProviderDto providerDto = new IdentityProviderDto();
+        providerDto.setId(PROVIDER_ID_1);
+        Pac4jClientIdentityProviderDto provider = new Pac4jClientIdentityProviderDto(providerDto, client);
+        when(providersService.getProviders()).thenReturn(List.of(provider));
+
+        final Utils utils = new Utils(null, 0, null, null, "");
+        action = new DispatcherAction(providersService, casApi, utils, mock(SessionStore.class));
     }
 
     @Test
     public void testNoIdentityProvider() throws IOException {
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
-        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        givenLogin(USER_1, CUSTOMER_ID_1);
 
-        when(
-            identityProviderHelper.findByUserIdentifierAndCustomerId(anyList(), eq(USER_1), eq(CUSTOMER_ID_1))
-        ).thenReturn(Optional.empty());
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(emptyList());
 
         final Event event = action.doExecute(context);
 
@@ -95,10 +76,11 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalAuthnOK() throws IOException {
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
-        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        givenLogin(USER_1, CUSTOMER_ID_1);
+
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, true, UserStatusEnum.ENABLED))
+        );
 
         final Event event = action.doExecute(context);
 
@@ -107,16 +89,10 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalAuthnDisabled() throws IOException {
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
-        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        givenLogin(USER_1, CUSTOMER_ID_1);
 
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_1);
-        userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
-            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, true, UserStatusEnum.BLOCKED))
         );
 
         final Event event = action.doExecute(context);
@@ -126,10 +102,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogation() throws IOException {
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
-        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
+        givenSubrogation();
+
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, true, UserStatusEnum.ENABLED))
+        );
+        when(casApi.resolveHrd(eq(USER_2))).thenReturn(
+            List.of(entry(CUSTOMER_ID_2, PROVIDER_ID_2, true, UserStatusEnum.ENABLED))
+        );
 
         final Event event = action.doExecute(context);
 
@@ -138,16 +118,13 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogationSurrogateDisabled() throws IOException {
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
-        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
+        givenSubrogation();
 
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_2);
-        userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(null), eq(null), eq(null))).thenReturn(
-            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, true, UserStatusEnum.ENABLED))
+        );
+        when(casApi.resolveHrd(eq(USER_2))).thenReturn(
+            List.of(entry(CUSTOMER_ID_2, PROVIDER_ID_2, true, UserStatusEnum.BLOCKED))
         );
 
         final Event event = action.doExecute(context);
@@ -157,16 +134,10 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testInternalSubrogationSuperUserDisabled() throws IOException {
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
-        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
+        givenSubrogation();
 
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_1);
-        userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
-            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, true, UserStatusEnum.BLOCKED))
         );
 
         final Event event = action.doExecute(context);
@@ -176,12 +147,11 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testExternal() throws IOException {
-        provider.setInternal(false);
+        givenLogin(USER_1, CUSTOMER_ID_1);
 
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
-        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, false, UserStatusEnum.ENABLED))
+        );
 
         final Event event = action.doExecute(context);
 
@@ -190,18 +160,10 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testExternalDisabled() throws IOException {
-        provider.setInternal(false);
+        givenLogin(USER_1, CUSTOMER_ID_1);
 
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
-        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
-
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_1);
-        userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
-            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, false, UserStatusEnum.BLOCKED))
         );
 
         final Event event = action.doExecute(context);
@@ -211,12 +173,14 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testExternalSubrogation() throws IOException {
-        provider.setInternal(false);
+        givenSubrogation();
 
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
-        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, false, UserStatusEnum.ENABLED))
+        );
+        when(casApi.resolveHrd(eq(USER_2))).thenReturn(
+            List.of(entry(CUSTOMER_ID_2, PROVIDER_ID_2, false, UserStatusEnum.ENABLED))
+        );
 
         final Event event = action.doExecute(context);
 
@@ -225,18 +189,13 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testExternalSubrogationSurrogateDisabled() throws IOException {
-        provider.setInternal(false);
+        givenSubrogation();
 
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
-        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
-
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_2);
-        userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_2), eq(CUSTOMER_ID_2), eq(null), eq(null), eq(null))).thenReturn(
-            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, false, UserStatusEnum.ENABLED))
+        );
+        when(casApi.resolveHrd(eq(USER_2))).thenReturn(
+            List.of(entry(CUSTOMER_ID_2, PROVIDER_ID_2, false, UserStatusEnum.BLOCKED))
         );
 
         final Event event = action.doExecute(context);
@@ -246,22 +205,37 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Test
     public void testExternalSubrogationSuperUserDisabled() throws IOException {
-        provider.setInternal(false);
+        givenSubrogation();
 
-        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
-        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
-        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
-        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
-
-        UserDto userDto = new UserDto();
-        userDto.setCustomerId(CUSTOMER_ID_1);
-        userDto.setStatus(UserStatusEnum.BLOCKED);
-        when(casApi.getUser(eq(USER_1), eq(CUSTOMER_ID_1), eq(null), eq(null), eq(null))).thenReturn(
-            new fr.gouv.vitamui.commons.security.client.dto.AuthUserDto(userDto)
+        when(casApi.resolveHrd(eq(USER_1))).thenReturn(
+            List.of(entry(CUSTOMER_ID_1, PROVIDER_ID_1, false, UserStatusEnum.BLOCKED))
         );
 
         final Event event = action.doExecute(context);
 
         assertEquals("disabled", event.getId());
+    }
+
+    private void givenLogin(String email, String customerId) {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, email);
+        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, customerId);
+        flowParameters.remove(Constants.FLOW_SURROGATE_EMAIL);
+        flowParameters.remove(Constants.FLOW_SURROGATE_CUSTOMER_ID);
+    }
+
+    private void givenSubrogation() {
+        flowParameters.put(Constants.FLOW_LOGIN_EMAIL, USER_1);
+        flowParameters.put(Constants.FLOW_LOGIN_CUSTOMER_ID, CUSTOMER_ID_1);
+        flowParameters.put(Constants.FLOW_SURROGATE_EMAIL, USER_2);
+        flowParameters.put(Constants.FLOW_SURROGATE_CUSTOMER_ID, CUSTOMER_ID_2);
+    }
+
+    private static HrdEntryDto entry(String customerId, String providerId, boolean internal, UserStatusEnum status) {
+        HrdEntryDto entry = new HrdEntryDto();
+        entry.setCustomerId(customerId);
+        entry.setIdentityProviderId(providerId);
+        entry.setInternal(internal);
+        entry.setUserStatus(status == null ? null : status.name());
+        return entry;
     }
 }

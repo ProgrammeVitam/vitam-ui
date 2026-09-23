@@ -62,11 +62,6 @@ public class InitializeSubrogationActionTest extends BaseWebflowActionTest {
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_EMAIL)).isEqualTo("admin@vitamui.fr");
         assertThat(flowParameters.get(Constants.FLOW_LOGIN_CUSTOMER_ID)).isEqualTo("customerAdmin");
 
-        assertThat(flowParameters.get("userEmail")).isEqualTo("surrogate@vitamui.fr");
-        assertThat(flowParameters.get("userCustomerId")).isEqualTo("customerSurrogate");
-        assertThat(flowParameters.get("superUserEmail")).isEqualTo("admin@vitamui.fr");
-        assertThat(flowParameters.get("superUserCustomerId")).isEqualTo("customerAdmin");
-
         assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_CODE)).isEqualTo("SURR");
         assertThat(flowParameters.get(Constants.SHOW_SURROGATE_CUSTOMER_NAME)).isEqualTo("Surrogate Customer");
     }
