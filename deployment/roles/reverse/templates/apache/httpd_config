@@ -93,7 +93,7 @@
 
     # CAS SERVER
 {% for host in groups['hosts_cas_server'] %}
-    ProxyPassMatch ^/cas/((login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc).*)$ {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.cas_server.port_service }}/cas/$1 {{ reverse_connection_params }}
+    ProxyPassMatch ^/cas/((login|logout|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc).*)$ {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.cas_server.port_service }}/cas/$1 {{ reverse_connection_params }}
     ProxyPassReverse /cas {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.cas_server.port_service }}
 {% endfor %}
 

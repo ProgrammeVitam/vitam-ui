@@ -139,7 +139,7 @@ server {
     return 302 $scheme://$host/cas/login;
   }
 
-  location ~ ^/cas/(login|logout|extras|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
+  location ~ ^/cas/(login|logout|webjars|css|icons|favicon|images|js|serviceValidate|oauth2.0|clientredirect|oidc) {
     proxy_pass {{ 'https' if vitamui.cas_server.secure | default(secure) | bool else 'http' }}://CAS;
     include {{ nginx_conf_dir }}/proxy_params;
   }
