@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.referential.common.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import fr.gouv.vitam.common.model.chainAudit.TraceabilityType;
+import fr.gouv.vitam.common.model.traceability.chainaudit.TraceabilityType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
