@@ -35,18 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-  ApplicationId,
-  BreadCrumbData,
-  GlobalEventService,
-  Project,
-  SidenavPage,
-  Transaction,
-  VitamuiTitleBreadcrumbComponent,
-} from 'vitamui-library';
+import { ApplicationId, BreadCrumbData, Project, SidenavPage, Transaction, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { TransactionsService } from './transactions.service';
 import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { TransactionListComponent } from './transaction-list/transaction-list.component';
@@ -66,13 +57,6 @@ export class TransactionsComponent extends SidenavPage<any> implements OnInit {
   projectName$: Observable<string>;
   transactions$: Observable<Transaction[]>;
   dataBreadcrumb: BreadCrumbData[];
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-  }
 
   ngOnInit(): void {
     const TRANSACTION_MONITORING = 'TRANSACTIONS_MONITORING';

@@ -41,7 +41,6 @@ import { ActivatedRoute } from '@angular/router';
 import {
   DatepickerComponent,
   Event,
-  GlobalEventService,
   SearchBarComponent,
   SidenavPage,
   VitamuiBannerComponent,
@@ -76,8 +75,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
+  private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
 
   public dateRangeFilterForm: FormGroup;
@@ -89,14 +87,9 @@ export class AuditComponent extends SidenavPage<Event> {
   @ViewChild(AuditListComponent, { static: true }) auditListComponent: AuditListComponent;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
+    super();
 
-    super(route, globalEventService);
-    this.route = route;
-    this.globalEventService = globalEventService;
-
-    route.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.tenantIdentifier = params['tenantIdentifier'];
     });
 

@@ -42,7 +42,6 @@ import { Observable } from 'rxjs';
 import {
   ApplicationId,
   FileTypes,
-  GlobalEventService,
   Role,
   Rule,
   RuleService,
@@ -82,7 +81,7 @@ import { AsyncPipe } from '@angular/common';
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   ruleService = inject(RuleService);
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private translateService = inject(TranslateService);
   private securityService = inject(SecurityService);
@@ -99,13 +98,9 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   checkExportRole = new Observable<boolean>();
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
+    super();
 
-    super(route, globalEventService);
-    this.route = route;
-
-    globalEventService.tenantEvent.subscribe(() => {
+    this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });
 

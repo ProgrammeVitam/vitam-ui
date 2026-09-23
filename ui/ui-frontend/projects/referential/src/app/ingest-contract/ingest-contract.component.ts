@@ -41,7 +41,6 @@ import {
   ApplicationService,
   DownloadUtils,
   FileTypes,
-  GlobalEventService,
   IngestContract,
   Role,
   SecurityService,
@@ -88,7 +87,7 @@ const IMPORT_FILE_MODEL_NAME = 'Import_ingest_contract_template.csv';
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private applicationService = inject(ApplicationService);
   private securityService = inject(SecurityService);
   private translateService = inject(TranslateService);
@@ -108,13 +107,9 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').pipe(shareReplay(1));
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
+    super();
 
-    super(route, globalEventService);
-    this.route = route;
-
-    globalEventService.tenantEvent.subscribe(() => {
+    this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });
 

@@ -52,7 +52,7 @@ export class SidenavPage<T> implements AfterViewInit, OnDestroy {
   @ViewChild('panel') panel: MatSidenav;
 
   private destroy = new Subject<void>();
-  private logger = inject(Logger);
+  protected logger = inject(Logger);
 
   constructor(globalEventService: GlobalEventService = inject(GlobalEventService)) {
     this.globalEventService = globalEventService;

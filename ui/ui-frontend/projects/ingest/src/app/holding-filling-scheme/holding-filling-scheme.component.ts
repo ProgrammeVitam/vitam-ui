@@ -37,7 +37,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
+import { SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { IngestType } from '../core/common/ingest-type.enum';
 import { UploadComponent } from '../core/common/upload.component';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -60,21 +60,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
   private router = inject(Router);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
 
   IngestType = IngestType;
 
   tenantIdentifier: string;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => {

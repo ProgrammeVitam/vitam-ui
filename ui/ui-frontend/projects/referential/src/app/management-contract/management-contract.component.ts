@@ -40,7 +40,6 @@ import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import {
   ApplicationService,
-  GlobalEventService,
   ManagementContract,
   SidenavPage,
   TooltipDirective,
@@ -72,7 +71,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private applicationService = inject(ApplicationService);
 
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
@@ -84,13 +83,9 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
+    super();
 
-    super(route, globalEventService);
-    this.route = route;
-
-    globalEventService.tenantEvent.subscribe(() => {
+    this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });
 
