@@ -34,22 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.dto.cas;
+package fr.gouv.vitamui.iam.auth.contract;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Authentication request with username & its customerId, password, surrogate & its customerId and IP.
+ * The user whose authentication attributes are requested, and the context they log in from.
+ *
+ * {@code identityProviderId} is only set for a delegated authentication: it triggers just-in-time provisioning when
+ * the provider allows it. The two subrogation fields are only set when a super user takes someone else's place.
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @EqualsAndHashCode
-@ToString(exclude = "password")
-public class LoginRequestDto {
+@ToString
+public class PrincipalAttributesRequestDto {
 
     @NotNull
     private String loginEmail;
@@ -57,11 +62,24 @@ public class LoginRequestDto {
     @NotNull
     private String loginCustomerId;
 
-    @NotNull
-    private String password;
+    private String identityProviderId;
 
-    private String surrogateEmail;
-    private String surrogateCustomerId;
+    private String userIdentifier;
 
-    private String ip;
+    private String superUserEmail;
+
+    private String superUserCustomerId;
+
+    /**
+     * True when the login does not come from a browser but from a programmatic call. The blocks embedded in the
+     * response depend on it.
+     */
+    private boolean apiContext;
+
+    /**
+     * Only set for a delegated authentication (OIDC / SAML): the raw identity returned by the external IdP. When
+     * present, IAM resolves the email and technical identifier from it (using the provider mapping) and checks the
+     * returned email against the one the user asked to log in with.
+     */
+    private DelegatedIdpContextDto delegatedIdp;
 }

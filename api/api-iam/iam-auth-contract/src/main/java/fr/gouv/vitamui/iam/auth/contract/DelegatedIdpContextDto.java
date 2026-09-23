@@ -34,47 +34,38 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.rest;
+package fr.gouv.vitamui.iam.auth.contract;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+import java.util.Map;
 
 /**
- * The URLs of the REST API.
+ * The raw identity returned by an external IdP for a delegated authentication (OIDC / SAML).
+ *
+ * The authentication server forwards it as is; IAM owns the rules that turn it into a VitamUI identity: it reads the
+ * provider's {@code mailAttribute} / {@code identifierAttribute} to extract the email and the technical identifier
+ * from {@code attributes} (falling back to {@code principalId} when the provider defines no specific attribute), and
+ * it checks that the email returned by the IdP is the one the user asked to log in with.
  */
-public abstract class RestApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class DelegatedIdpContextDto {
 
-    public static final String STATUS_URL = "/status";
+    /** Id of the identity provider (pac4j client) that authenticated the user. */
+    private String providerId;
 
-    public static final String AUTOTEST_URL = "/autotest";
+    /** The id the IdP asserted for the principal, used when the provider defines no mail/identifier attribute. */
+    private String principalId;
 
-    public static final String IAM_API_PATH = "/iam/v1";
-
-    public static final String V1_CUSTOMERS_URL = "/iam/v1/customers";
-
-    public static final String V1_TENANTS_URL = "/iam/v1/tenants";
-
-    public static final String V1_OWNERS_URL = "/iam/v1/owners";
-
-    public static final String V1_PROVIDERS_URL = "/iam/v1/providers";
-
-    public static final String V1_USERS_URL = "/iam/v1/users";
-
-    public static final String V1_USERS_INFO_URL = "/iam/v1/userinfos";
-
-    public static final String V1_GROUPS_URL = "/iam/v1/groups";
-
-    public static final String V1_PROFILES_URL = "/iam/v1/profiles";
-
-    public static final String V1_SUBROGATIONS_URL = "/iam/v1/subrogations";
-
-    public static final String V1_APPLICATIONS_URL = "/iam/v1/applications";
-
-    // The authentication contract paths live in iam-auth-contract
-    // (fr.gouv.vitamui.iam.auth.contract.AuthContractApi).
-
-    public static final String V1_EXTERNAL_PARAMETERS_URL = "/iam/v1/externalparameters";
-
-    public static final String V1_EXTERNAL_PARAM_PROFILE_URL = "/iam/v1/externalparamprofile";
-
-    private RestApi() {
-        // do nothing
-    }
+    /** The raw attributes returned by the IdP, keyed as the provider exposes them. */
+    private Map<String, List<String>> attributes;
 }

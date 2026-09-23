@@ -34,47 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.rest;
+package fr.gouv.vitamui.iam.auth.contract;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * The URLs of the REST API.
+ * The two resolved identities of a validated subrogation.
+ *
+ * Receiving this response amounts to authorisation: IAM only produces it when the subrogation exists, is
+ * accepted and has not expired. A refusal takes the form of an error, never of an empty response, so
+ * that a caller cannot mistake "not allowed" for "nothing to report".
  */
-public abstract class RestApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class SubrogationValidateResponseDto {
 
-    public static final String STATUS_URL = "/status";
+    private String superUserId;
 
-    public static final String AUTOTEST_URL = "/autotest";
-
-    public static final String IAM_API_PATH = "/iam/v1";
-
-    public static final String V1_CUSTOMERS_URL = "/iam/v1/customers";
-
-    public static final String V1_TENANTS_URL = "/iam/v1/tenants";
-
-    public static final String V1_OWNERS_URL = "/iam/v1/owners";
-
-    public static final String V1_PROVIDERS_URL = "/iam/v1/providers";
-
-    public static final String V1_USERS_URL = "/iam/v1/users";
-
-    public static final String V1_USERS_INFO_URL = "/iam/v1/userinfos";
-
-    public static final String V1_GROUPS_URL = "/iam/v1/groups";
-
-    public static final String V1_PROFILES_URL = "/iam/v1/profiles";
-
-    public static final String V1_SUBROGATIONS_URL = "/iam/v1/subrogations";
-
-    public static final String V1_APPLICATIONS_URL = "/iam/v1/applications";
-
-    // The authentication contract paths live in iam-auth-contract
-    // (fr.gouv.vitamui.iam.auth.contract.AuthContractApi).
-
-    public static final String V1_EXTERNAL_PARAMETERS_URL = "/iam/v1/externalparameters";
-
-    public static final String V1_EXTERNAL_PARAM_PROFILE_URL = "/iam/v1/externalparamprofile";
-
-    private RestApi() {
-        // do nothing
-    }
+    private String surrogateUserId;
 }

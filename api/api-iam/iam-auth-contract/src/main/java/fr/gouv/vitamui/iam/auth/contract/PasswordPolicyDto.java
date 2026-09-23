@@ -34,47 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.rest;
+package fr.gouv.vitamui.iam.auth.contract;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
 
 /**
- * The URLs of the REST API.
+ * The password policy in force, as IAM actually enforces it.
+ *
+ * The authentication server displays the constraints to the user and IAM checks them. Today both read
+ * their own configuration, so any drift between the two files shows up as a form that accepts a password
+ * IAM will reject. Publishing the policy makes IAM's configuration the only one that counts.
+ *
+ * {@code messages} carries the constraint labels already resolved, in the order they should be shown.
  */
-public abstract class RestApi {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class PasswordPolicyDto {
 
-    public static final String STATUS_URL = "/status";
+    private Integer minLength;
 
-    public static final String AUTOTEST_URL = "/autotest";
+    private String profile;
 
-    public static final String IAM_API_PATH = "/iam/v1";
+    private Integer maxOldPassword;
 
-    public static final String V1_CUSTOMERS_URL = "/iam/v1/customers";
-
-    public static final String V1_TENANTS_URL = "/iam/v1/tenants";
-
-    public static final String V1_OWNERS_URL = "/iam/v1/owners";
-
-    public static final String V1_PROVIDERS_URL = "/iam/v1/providers";
-
-    public static final String V1_USERS_URL = "/iam/v1/users";
-
-    public static final String V1_USERS_INFO_URL = "/iam/v1/userinfos";
-
-    public static final String V1_GROUPS_URL = "/iam/v1/groups";
-
-    public static final String V1_PROFILES_URL = "/iam/v1/profiles";
-
-    public static final String V1_SUBROGATIONS_URL = "/iam/v1/subrogations";
-
-    public static final String V1_APPLICATIONS_URL = "/iam/v1/applications";
-
-    // The authentication contract paths live in iam-auth-contract
-    // (fr.gouv.vitamui.iam.auth.contract.AuthContractApi).
-
-    public static final String V1_EXTERNAL_PARAMETERS_URL = "/iam/v1/externalparameters";
-
-    public static final String V1_EXTERNAL_PARAM_PROFILE_URL = "/iam/v1/externalparamprofile";
-
-    private RestApi() {
-        // do nothing
-    }
+    private List<String> messages;
 }
