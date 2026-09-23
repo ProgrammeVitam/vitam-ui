@@ -240,8 +240,10 @@ export class LogbookDownloadService extends SearchService<IEvent> {
       return !event.events.some((e) => /No report generated/i.test(e.data));
     }
     if (['TRACEABILITY_CHAIN_AUDIT'].includes(event.type)) {
-      // Chain audit report only exists once the reporting sub-step has completed successfully.
-      return event.events.some((e) => /REPORTING$/i.test(e.type) && e.outcome === 'OK');
+      // Chain audit report is only generated when the workflow completes with OK or WARNING;
+      // the reporting step is never reached if the workflow aborts on KO/FATAL.
+      const status = this.getOperationStatus(event);
+      return status === 'OK' || status === 'WARNING';
     }
     return true;
   }

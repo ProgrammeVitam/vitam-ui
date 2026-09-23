@@ -83,8 +83,10 @@ export class AuditPreviewComponent implements OnInit {
       return !audit.events.some((e) => /No report generated/i.test(e.data));
     }
     if (audit.type === AuditOperation.TRACEABILITY_CHAIN_AUDIT) {
-      // Chain audit report only exists once the reporting sub-step has completed successfully.
-      return audit.events.some((e) => /REPORTING$/i.test(e.type) && e.outcome === 'OK');
+      // Chain audit report is only generated when the workflow completes with OK or WARNING;
+      // the reporting step is never reached if the workflow aborts on KO/FATAL.
+      const status = this.getLastStepStatus(audit);
+      return status === `${AuditOperation.TRACEABILITY_CHAIN_AUDIT}.OK` || status === `${AuditOperation.TRACEABILITY_CHAIN_AUDIT}.WARNING`;
     }
     return true;
   });

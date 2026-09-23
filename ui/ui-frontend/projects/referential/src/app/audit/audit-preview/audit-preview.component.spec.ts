@@ -92,20 +92,40 @@ describe('AuditPreviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should report no report for a chain audit without a successful reporting sub-event', () => {
+  it('should report no report for a chain audit that aborted on KO before the reporting step', () => {
     fixture.componentRef.setInput('audit', {
       type: 'TRACEABILITY_CHAIN_AUDIT',
-      events: [{ type: 'STP_PREPARE_TRACEABILITY_CHAIN_AUDIT', outcome: 'KO', outDetail: 'STP_PREPARE_TRACEABILITY_CHAIN_AUDIT.KO' }],
+      events: [{ type: 'TRACEABILITY_CHAIN_AUDIT', outcome: 'KO', outDetail: 'TRACEABILITY_CHAIN_AUDIT.KO' }],
     });
     fixture.detectChanges();
 
     expect(component.hasReport()).toBe(false);
   });
 
-  it('should report a report for a chain audit with a successful reporting sub-event, even when the audit is KO', () => {
+  it('should report no report for a chain audit that aborted on FATAL before the reporting step', () => {
     fixture.componentRef.setInput('audit', {
       type: 'TRACEABILITY_CHAIN_AUDIT',
-      events: [{ type: 'TRACEABILITY_CHAIN_AUDIT_REPORTING', outcome: 'OK', outDetail: 'TRACEABILITY_CHAIN_AUDIT_REPORTING.OK' }],
+      events: [{ type: 'TRACEABILITY_CHAIN_AUDIT', outcome: 'FATAL', outDetail: 'TRACEABILITY_CHAIN_AUDIT.FATAL' }],
+    });
+    fixture.detectChanges();
+
+    expect(component.hasReport()).toBe(false);
+  });
+
+  it('should report a report for a chain audit that completed with OK', () => {
+    fixture.componentRef.setInput('audit', {
+      type: 'TRACEABILITY_CHAIN_AUDIT',
+      events: [{ type: 'TRACEABILITY_CHAIN_AUDIT', outcome: 'OK', outDetail: 'TRACEABILITY_CHAIN_AUDIT.OK' }],
+    });
+    fixture.detectChanges();
+
+    expect(component.hasReport()).toBe(true);
+  });
+
+  it('should report a report for a chain audit that completed with WARNING', () => {
+    fixture.componentRef.setInput('audit', {
+      type: 'TRACEABILITY_CHAIN_AUDIT',
+      events: [{ type: 'TRACEABILITY_CHAIN_AUDIT', outcome: 'WARNING', outDetail: 'TRACEABILITY_CHAIN_AUDIT.WARNING' }],
     });
     fixture.detectChanges();
 
