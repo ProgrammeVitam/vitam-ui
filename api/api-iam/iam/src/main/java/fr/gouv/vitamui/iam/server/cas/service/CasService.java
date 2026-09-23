@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.iam.server.cas.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -43,7 +44,9 @@ import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -52,21 +55,32 @@ import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.commons.utils.JsonUtils;
+import fr.gouv.vitamui.iam.auth.contract.DelegatedIdpContextDto;
+import fr.gouv.vitamui.iam.auth.contract.HrdEntryDto;
+import fr.gouv.vitamui.iam.auth.contract.PasswordPolicyDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.PrincipalAttributesResponseDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateRequestDto;
+import fr.gouv.vitamui.iam.auth.contract.SubrogationValidateResponseDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
+import fr.gouv.vitamui.iam.common.error.PasswordChangeErrorKeys;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.server.customer.service.CustomerService;
 import fr.gouv.vitamui.iam.server.group.service.GroupService;
+import fr.gouv.vitamui.iam.server.idp.dao.IdentityProviderRepository;
+import fr.gouv.vitamui.iam.server.idp.domain.IdentityProvider;
 import fr.gouv.vitamui.iam.server.idp.service.IdentityProviderService;
 import fr.gouv.vitamui.iam.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.server.provisioning.service.ProvisioningService;
 import fr.gouv.vitamui.iam.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
-import fr.gouv.vitamui.iam.server.subrogation.service.SubrogationService;
 import fr.gouv.vitamui.iam.server.tenant.service.TenantService;
 import fr.gouv.vitamui.iam.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.server.token.domain.Token;
@@ -95,16 +109,20 @@ import org.springframework.util.Assert;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Specific CAS service.
@@ -126,6 +144,8 @@ public class CasService {
 
     private static final String TOKEN_PREFIX = "TOK";
 
+    private static final String PROVIDER_PROTOCOL_TYPE_CERTIFICAT = "CERTIFICAT";
+
     @Autowired
     private TokenRepository tokenRepository;
 
@@ -140,9 +160,6 @@ public class CasService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
-
-    @Autowired
-    private SubrogationService subrogationService;
 
     @Autowired
     private SubrogationRepository subrogationRepository;
@@ -161,6 +178,12 @@ public class CasService {
 
     @Autowired
     private IdentityProviderService identityProviderService;
+
+    @Autowired
+    private IdentityProviderRepository identityProviderRepository;
+
+    @Autowired
+    private IdentityProviderHelper identityProviderHelper;
 
     @Autowired
     private GroupService groupService;
@@ -234,6 +257,9 @@ public class CasService {
             }
         }
 
+        checkPasswordChangeAllowedForProvider(email, customerId);
+        checkPasswordPolicy(rawPassword, user);
+
         final String encodedPassword = passwordEncoder.encode(rawPassword);
         userService.saveCurrentPasswordInOldPasswords(
             user,
@@ -256,6 +282,54 @@ public class CasService {
             iamLogbookService.createPasswordEvent(user);
         } else {
             iamLogbookService.updatePasswordEvent(user);
+        }
+    }
+
+    private void checkPasswordChangeAllowedForProvider(final String email, final String customerId) {
+        final Optional<IdentityProviderDto> provider = identityProviderHelper.findByUserIdentifierAndCustomerId(
+            identityProviderService.getAll(Optional.empty(), Optional.empty()),
+            email,
+            customerId
+        );
+        if (provider.isEmpty()) {
+            throw new ForbiddenException(
+                "No identity provider found for user " + email,
+                PasswordChangeErrorKeys.NO_IDENTITY_PROVIDER
+            );
+        }
+        if (!Boolean.TRUE.equals(provider.get().getInternal())) {
+            throw new ForbiddenException(
+                "Only a user linked to an internal identity provider can change password",
+                PasswordChangeErrorKeys.EXTERNAL_IDENTITY_PROVIDER
+            );
+        }
+    }
+
+    private void checkPasswordPolicy(final String rawPassword, final User user) {
+        final String policyPattern = passwordConfiguration != null ? passwordConfiguration.getPolicyPattern() : null;
+        if (StringUtils.isNotBlank(policyPattern) && !passwordValidator.isValid(policyPattern, rawPassword)) {
+            throw new BadRequestException(
+                "The given password does not match the password policy",
+                PasswordChangeErrorKeys.POLICY_NOT_MATCHED
+            );
+        }
+
+        if (
+            passwordConfiguration != null &&
+            passwordConfiguration.isCheckOccurrence() &&
+            passwordConfiguration.getOccurrencesCharsNumber() != null &&
+            passwordConfiguration.getOccurrencesCharsNumber() > 0 &&
+            StringUtils.isNotBlank(user.getLastname()) &&
+            passwordValidator.isContainsUserOccurrences(
+                user.getLastname(),
+                rawPassword,
+                passwordConfiguration.getOccurrencesCharsNumber()
+            )
+        ) {
+            throw new BadRequestException(
+                "The given password contains an occurrence of the user name",
+                PasswordChangeErrorKeys.CONTAINS_USER_NAME
+            );
         }
     }
 
@@ -293,20 +367,6 @@ public class CasService {
         if (badStatus) {
             throw new InvalidFormatException("User unavailable: " + userEmail);
         }
-    }
-
-    @Transactional
-    public List<UserDto> getUsersByEmail(final String email, final String optEmbedded) {
-        boolean loadFullProfile = checkEmbeddedOption(optEmbedded, CommonConstants.AUTH_TOKEN_PARAMETER);
-        boolean isSubrogation = checkEmbeddedOption(optEmbedded, CommonConstants.SURROGATION_PARAMETER);
-        boolean isApi = checkEmbeddedOption(optEmbedded, CommonConstants.API_PARAMETER);
-
-        final List<UserDto> usersDto = userService.findUsersByEmail(email);
-
-        return usersDto
-            .stream()
-            .map(user -> loadFullUserProfileIfRequired(user, loadFullProfile, isSubrogation, isApi))
-            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -644,24 +704,6 @@ public class CasService {
         mongoTemplate.updateFirst(query, update, MongoDbCollections.USERS);
     }
 
-    public List<SubrogationDto> getSubrogationsBySuperUser(final String superUser, String superUserCustomerId) {
-        final List<Subrogation> subrogations = subrogationRepository.findBySuperUserAndSuperUserCustomerId(
-            superUser,
-            superUserCustomerId
-        );
-        final List<SubrogationDto> dtos = new ArrayList<>();
-        subrogations.forEach(subrogation -> dtos.add(convertFromSubrogationToDto(subrogation)));
-        return dtos;
-    }
-
-    protected final SubrogationDto convertFromSubrogationToDto(final Subrogation entity) {
-        if (entity != null) {
-            return subrogationService.internalConvertFromEntityToDto(entity);
-        } else {
-            return null;
-        }
-    }
-
     @Transactional
     public void deleteSubrogationBySuperUserAndSurrogate(
         final String superUser,
@@ -704,6 +746,508 @@ public class CasService {
 
     public List<CustomerDto> getCustomersByIds(List<String> customerIds) {
         return customerService.getAllById(customerIds);
+    }
+
+    /**
+     * Assembles the full authentication attribute set of a user, as the token will carry it.
+     *
+     * What moved here is the derivation, not the naming: the authentication server still writes the
+     * attribute keys itself, but it no longer decides what each one is worth. The OTP verdict, the
+     * super-user resolution, the profile group and the auth token are all computed from IAM's own data.
+     * Adding a rule here no longer means touching the authentication server.
+     *
+     * The response keeps the types the token needs, so the authentication server rebuilds the very same
+     * principal without depending on the administration model: scalars stay typed, {@code status} and
+     * {@code type} travel as their enum name, and the five composite attributes ({@code address},
+     * {@code analytics}, {@code profileGroup}, {@code basicCustomer}, {@code tenantsByApp}) travel as
+     * their already-serialized JSON, so the bytes reaching the applications are unchanged.
+     *
+     * This is not a read-only call, despite the name. Resolving the user mints an authentication token
+     * and stamps {@code lastConnection}; a subrogation writes its logbook event; and a login through an
+     * external provider with auto-provisioning enabled creates or updates the account on the way.
+     *
+     * @throws NotFoundException when no user matches, which is how a refusal reaches the authentication
+     *                           server — never an empty response.
+     */
+    public PrincipalAttributesResponseDto buildPrincipalAttributes(final PrincipalAttributesRequestDto request) {
+        Assert.notNull(request, "request must not be null");
+
+        final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
+
+        // The auth token is always requested; subrogation and non-browser calls also require their own block.
+        String embedded = CommonConstants.AUTH_TOKEN_PARAMETER;
+        if (subrogation) {
+            embedded += "," + CommonConstants.SURROGATION_PARAMETER;
+        } else if (request.isApiContext()) {
+            embedded += "," + CommonConstants.API_PARAMETER;
+        }
+
+        // A delegated authentication forwards the raw identity returned by the external IdP: IAM owns the rules that
+        // turn it into a VitamUI identity (which attribute is the email, which is the technical identifier, and that
+        // the email matches the one the user asked to log in with).
+        String userIdentifier = request.getUserIdentifier();
+        if (request.getDelegatedIdp() != null) {
+            final String expectedEmail = subrogation ? request.getSuperUserEmail() : request.getLoginEmail();
+            final String resolvedIdentifier = resolveDelegatedIdentity(request.getDelegatedIdp(), expectedEmail);
+            // The identifier drives just-in-time provisioning of the logged-in user, which never happens for the
+            // surrogated user; keep the identifier of the subrogation call untouched.
+            if (!subrogation) {
+                userIdentifier = resolvedIdentifier;
+            }
+        }
+
+        final UserDto user = getUser(
+            request.getLoginEmail(),
+            request.getLoginCustomerId(),
+            request.getIdentityProviderId(),
+            userIdentifier,
+            embedded
+        );
+        if (user == null) {
+            throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getLoginEmail());
+        }
+
+        UserDto superUser = null;
+        if (subrogation) {
+            superUser = getUserByEmailAndCustomerId(
+                request.getSuperUserEmail(),
+                request.getSuperUserCustomerId(),
+                null
+            );
+            if (superUser == null) {
+                throw new NotFoundException(USER_NOT_FOUND_MESSAGE + request.getSuperUserEmail());
+            }
+        }
+        return toPrincipalAttributes(user, request, superUser);
+    }
+
+    /**
+     * Turns the raw identity returned by an external IdP into the technical identifier VitamUI provisions on, and
+     * enforces that the email asserted by the IdP is the one the user asked to log in with.
+     *
+     * @return the resolved technical identifier (used for just-in-time provisioning)
+     */
+    String resolveDelegatedIdentity(final DelegatedIdpContextDto delegatedIdp, final String expectedEmail) {
+        final IdentityProviderDto provider = identityProviderService.getOne(delegatedIdp.getProviderId());
+        final Map<String, List<String>> attributes = delegatedIdp.getAttributes();
+        final String principalId = delegatedIdp.getPrincipalId();
+
+        final String email = resolveIdpAttribute(
+            provider,
+            provider.getMailAttribute(),
+            attributes,
+            principalId,
+            "mail"
+        );
+        final String identifier = resolveIdpAttribute(
+            provider,
+            provider.getIdentifierAttribute(),
+            attributes,
+            principalId,
+            "identifier"
+        );
+
+        if (
+            StringUtils.isBlank(email) || StringUtils.isBlank(expectedEmail) || !email.equalsIgnoreCase(expectedEmail)
+        ) {
+            throw new InvalidAuthenticationException(
+                String.format("Invalid user from Idp : Expected: '%s', actual: '%s'", expectedEmail, email)
+            );
+        }
+
+        return identifier;
+    }
+
+    /**
+     * Reads the attribute the provider maps to {@code kind} among the IdP attributes, falling back to the principal
+     * identifier when the provider defines no specific attribute. A provider requiring an attribute the IdP did not
+     * return is a configuration error and refuses the login.
+     */
+    private String resolveIdpAttribute(
+        final IdentityProviderDto provider,
+        final String attributeName,
+        final Map<String, List<String>> attributes,
+        final String fallback,
+        final String kind
+    ) {
+        if (StringUtils.isBlank(attributeName)) {
+            return fallback;
+        }
+        final List<String> values = attributes == null ? null : attributes.get(attributeName);
+        if (values == null || values.isEmpty() || StringUtils.isBlank(values.getFirst())) {
+            throw new BadRequestException(
+                String.format(
+                    "Provider: '%s' requested specific %s attribute: '%s' for id, but attribute does not exist or has no value",
+                    provider.getTechnicalName(),
+                    kind,
+                    attributeName
+                )
+            );
+        }
+        return values.getFirst();
+    }
+
+    /**
+     * Turns an already resolved user into the attribute map. Kept apart from the resolution, this conversion can be
+     * checked in isolation: what makes the behaviour identical is the shape of the values, not how the user was
+     * looked up.
+     */
+    public PrincipalAttributesResponseDto toPrincipalAttributes(
+        final UserDto user,
+        final PrincipalAttributesRequestDto request,
+        final UserDto superUser
+    ) {
+        final boolean subrogation = StringUtils.isNotBlank(request.getSuperUserEmail());
+        final PrincipalAttributesResponseDto dto = new PrincipalAttributesResponseDto();
+
+        dto.setUserId(user.getId());
+        dto.setCustomerId(user.getCustomerId());
+        dto.setEmail(user.getEmail());
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setIdentifier(user.getIdentifier());
+        dto.setOtp(user.isOtp());
+        dto.setComputedOtp(
+            user.isOtp() &&
+            authenticatesWithInternalProvider(otpEmail(request, subrogation), otpCustomerId(request, subrogation))
+        );
+        dto.setSubrogeable(user.isSubrogeable());
+        dto.setUserInfoId(user.getUserInfoId());
+        dto.setPhone(user.getPhone());
+        dto.setMobile(user.getMobile());
+        dto.setStatus(user.getStatus() != null ? user.getStatus().name() : null);
+        dto.setType(user.getType() != null ? user.getType().name() : null);
+        dto.setReadonly(user.isReadonly());
+        dto.setLevel(user.getLevel());
+        dto.setLastConnection(user.getLastConnection());
+        dto.setNbFailedAttempts(user.getNbFailedAttempts());
+        dto.setPasswordExpirationDate(user.getPasswordExpirationDate());
+        dto.setGroupId(user.getGroupId());
+        dto.setAddressJson(toJson(user.getAddress()));
+        dto.setAnalyticsJson(toJson(user.getAnalytics()));
+        dto.setInternalCode(user.getInternalCode());
+
+        if (subrogation) {
+            dto.setSuperUserEmail(request.getSuperUserEmail());
+            dto.setSuperUserCustomerId(request.getSuperUserCustomerId());
+            if (superUser != null) {
+                dto.setSuperUserIdentifier(superUser.getIdentifier());
+                dto.setSuperUserId(superUser.getId());
+            }
+        }
+        if (user instanceof AuthUserDto authUser && authUser.getProfileGroup() != null) {
+            dto.setAuthenticated(true);
+            dto.setProfileGroupJson(toJson(authUser.getProfileGroup()));
+            dto.setCustomerIdentifier(authUser.getCustomerIdentifier());
+            dto.setBasicCustomerJson(toJson(authUser.getBasicCustomer()));
+            dto.setAuthToken(authUser.getAuthToken());
+            dto.setProofTenantIdentifier(authUser.getProofTenantIdentifier());
+            dto.setTenantsByAppJson(toJson(authUser.getTenantsByApp()));
+            dto.setSiteCode(authUser.getSiteCode());
+            dto.setCenterCodes(authUser.getCenterCodes());
+            final Set<String> roles = new HashSet<>();
+            authUser
+                .getProfileGroup()
+                .getProfiles()
+                .forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
+            dto.setRoles(new ArrayList<>(roles));
+        }
+        return dto;
+    }
+
+    private String toJson(final Object value) {
+        try {
+            return JsonUtils.toJson(value);
+        } catch (final JsonProcessingException e) {
+            throw new ApplicationServerException(e.getMessage(), e);
+        }
+    }
+
+    private String otpEmail(final PrincipalAttributesRequestDto request, final boolean subrogation) {
+        return subrogation ? request.getSuperUserEmail() : request.getLoginEmail();
+    }
+
+    private String otpCustomerId(final PrincipalAttributesRequestDto request, final boolean subrogation) {
+        return subrogation ? request.getSuperUserCustomerId() : request.getLoginCustomerId();
+    }
+
+    /**
+     * Mirrors {@code IdentityProviderHelper.identifierMatchProviderPattern}: the user actually authenticates with a
+     * password rather than through a delegation. OTP only makes sense in that case.
+     */
+    private boolean authenticatesWithInternalProvider(final String email, final String customerId) {
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(customerId)) {
+            return false;
+        }
+        return StreamSupport.stream(identityProviderRepository.findAll().spliterator(), false)
+            .filter(provider -> customerId.equals(provider.getCustomerId()))
+            .filter(provider -> provider.getPatterns() != null)
+            .filter(provider -> matchesAnyPattern(provider, email))
+            .findFirst()
+            .map(provider -> Boolean.TRUE.equals(provider.getInternal()))
+            .orElse(false);
+    }
+
+    /**
+     * Validates that a subrogation really allows this super user to take this user's place, and resolves both
+     * identifiers.
+     *
+     * A targeted query is used, so the list of subrogations does not travel over the network.
+     *
+     * The expiration date is checked here. The Mongo TTL index ({@code expireAfterSeconds = 0} on
+     * {@code Subrogation.date}) is meant to purge stale entries, but it only runs once a minute and can be disabled
+     * depending on the deployment: relying on it leaves a window during which an expired subrogation is still usable.
+     *
+     * @throws NotFoundException when no accepted and still valid subrogation matches, or when one of the accounts
+     *                           cannot be found. A refusal is never an empty response.
+     */
+    public SubrogationValidateResponseDto validateSubrogation(final SubrogationValidateRequestDto request) {
+        Assert.notNull(request, "request must not be null");
+
+        final Optional<Subrogation> subrogation =
+            subrogationRepository.findBySuperUserAndSuperUserCustomerIdAndSurrogateAndSurrogateCustomerId(
+                request.getSuperUserEmail(),
+                request.getSuperUserCustomerId(),
+                request.getSurrogateEmail(),
+                request.getSurrogateCustomerId()
+            );
+
+        if (subrogation.isEmpty() || subrogation.get().getStatus() != SubrogationStatusEnum.ACCEPTED) {
+            throw new NotFoundException("No accepted subrogation between the given super-user and surrogate");
+        }
+        if (subrogation.get().getDate() != null && subrogation.get().getDate().before(new Date())) {
+            throw new NotFoundException("The subrogation between the given super-user and surrogate has expired");
+        }
+
+        final User superUser = userRepository.findByEmailIgnoreCaseAndCustomerId(
+            request.getSuperUserEmail(),
+            request.getSuperUserCustomerId()
+        );
+        final User surrogate = userRepository.findByEmailIgnoreCaseAndCustomerId(
+            request.getSurrogateEmail(),
+            request.getSurrogateCustomerId()
+        );
+        if (superUser == null || surrogate == null) {
+            throw new NotFoundException("Could not resolve both users of the subrogation");
+        }
+
+        return new SubrogationValidateResponseDto(superUser.getId(), surrogate.getId());
+    }
+
+    /**
+     * The password policy IAM enforces, so that the authentication server displays exactly the constraints that will
+     * be checked.
+     *
+     * The labels are flattened in configuration order: default constraints first, with the special characters ones
+     * interleaved, then the custom constraints.
+     */
+    public PasswordPolicyDto getPasswordPolicy() {
+        final List<String> messages = new ArrayList<>();
+        if (passwordConfiguration != null && passwordConfiguration.getConstraints() != null) {
+            final var constraints = passwordConfiguration.getConstraints();
+            if (constraints.getDefaults() != null) {
+                constraints
+                    .getDefaults()
+                    .values()
+                    .forEach(constraint -> {
+                        if (constraint.getMessages() != null) {
+                            messages.addAll(constraint.getMessages());
+                        }
+                        if (
+                            constraint.getSpecialChars() != null && constraint.getSpecialChars().getMessages() != null
+                        ) {
+                            messages.addAll(constraint.getSpecialChars().getMessages());
+                        }
+                    });
+            }
+            if (constraints.getCustoms() != null) {
+                constraints
+                    .getCustoms()
+                    .values()
+                    .forEach(constraint -> {
+                        if (constraint.getMessages() != null) {
+                            messages.addAll(constraint.getMessages());
+                        }
+                    });
+            }
+        }
+        return new PasswordPolicyDto(
+            passwordConfiguration != null ? passwordConfiguration.getLength() : null,
+            passwordConfiguration != null ? passwordConfiguration.getProfile() : null,
+            passwordConfiguration != null ? passwordConfiguration.getMaxOldPassword() : null,
+            messages
+        );
+    }
+
+    /**
+     * Resolves the single X509 certificate identity provider matching a user identifier (an email extracted from the
+     * certificate, or a plain {@code @domain} fallback).
+     *
+     * <p>Only the providers whose pattern matches the identifier (case-insensitive) and whose protocol is
+     * {@code CERTIFICAT} are kept, and certificate authentication does not support multi-domain: exactly one provider
+     * must match.
+     *
+     * @return the resolved entry (identity provider id + customer id).
+     * @throws NotFoundException when no single {@code CERTIFICAT} provider matches (none or several).
+     */
+    public HrdEntryDto resolveCertificateProvider(final String userIdentifier) {
+        Assert.hasText(userIdentifier, "userIdentifier must not be empty");
+
+        final List<IdentityProviderDto> certProviders = identityProviderHelper
+            .findAllProvidersByUserIdentifier(
+                identityProviderService.getAll(Optional.empty(), Optional.empty()),
+                userIdentifier
+            )
+            .stream()
+            .filter(provider -> PROVIDER_PROTOCOL_TYPE_CERTIFICAT.equals(provider.getProtocoleType()))
+            .toList();
+
+        if (certProviders.isEmpty()) {
+            LOGGER.warn("No certificate identity provider matches: {}", userIdentifier);
+            throw new NotFoundException("No certificate identity provider matches: " + userIdentifier);
+        }
+        if (certProviders.size() > 1) {
+            LOGGER.warn("Several certificate identity providers match (multi-domain unsupported): {}", userIdentifier);
+            throw new NotFoundException(
+                "Several certificate identity providers match (multi-domain unsupported): " + userIdentifier
+            );
+        }
+
+        final IdentityProviderDto provider = certProviders.getFirst();
+        final Customer customer = customerRepository.findById(provider.getCustomerId()).orElse(null);
+        return new HrdEntryDto(
+            provider.getCustomerId(),
+            customer != null ? customer.getCode() : null,
+            customer != null ? customer.getName() : provider.getCustomerId(),
+            provider.getId(),
+            provider.getName(),
+            Boolean.TRUE.equals(provider.getInternal()),
+            provider.getProtocoleType(),
+            null
+        );
+    }
+
+    /**
+     * Home Realm Discovery: resolves an email to the customers through which its owner can authenticate, and to the
+     * identity provider to use in each of them.
+     *
+     * Two sources can designate a customer, but they do not weigh the same. Existing accounts have the last word: as
+     * soon as at least one account holds the address, only their customers are offered. Provider patterns only come
+     * second, when no account exists - an external provider provisions on first login, and the address is then the
+     * only clue available.
+     *
+     * This ordering is what preserves non-disclosure. An unknown address whose domain matches a provider is routed
+     * exactly like a known one, and the failure only happens after the password is entered, in a generic form.
+     * Resolving both sources as a union, or dropping internal providers without an account, would make the absence of
+     * an account observable before any authentication.
+     *
+     * Only the routing is indistinguishable, not the whole response: {@code userStatus} stays empty when there is no
+     * account. This field is meant for the authentication server, which has to decide what to do with a disabled
+     * account; it must not show in what the user observes.
+     *
+     * Within a customer, the selected provider is the first whose pattern matches, taken in identifier order - the very
+     * order that puts the internal provider before the delegations. A customer therefore appears only once. The
+     * provider may be missing when an account exists in a customer where no provider covers the address: it is up to
+     * the authentication server to turn this case into a configuration error.
+     *
+     * @return the entries sorted by customer code, possibly empty when nothing matches.
+     */
+    public List<HrdEntryDto> resolveHrdEntries(final String email) {
+        Assert.hasText(email, "email must not be empty");
+
+        // Identifier order puts the internal provider before the delegations of the same customer; it therefore
+        // decides which one is kept when several of them cover the same address.
+        final List<IdentityProvider> providers = StreamSupport.stream(
+            identityProviderRepository.findAll().spliterator(),
+            false
+        )
+            .sorted(Comparator.comparing(IdentityProvider::getIdentifier, Comparator.nullsLast(String::compareTo)))
+            .collect(Collectors.toList());
+
+        final List<User> existingUsers = userRepository.findAllByEmailIgnoreCase(email);
+        final Map<String, User> userByCustomerId = new LinkedHashMap<>();
+        existingUsers.forEach(user -> userByCustomerId.putIfAbsent(user.getCustomerId(), user));
+
+        final Map<String, IdentityProvider> providerByCustomerId = new LinkedHashMap<>();
+        if (userByCustomerId.isEmpty()) {
+            providers
+                .stream()
+                .filter(provider -> matchesAnyPattern(provider, email))
+                .forEach(provider -> providerByCustomerId.putIfAbsent(provider.getCustomerId(), provider));
+        } else {
+            userByCustomerId
+                .keySet()
+                .forEach(
+                    customerId ->
+                        providerByCustomerId.put(customerId, firstMatchingProvider(providers, customerId, email))
+                );
+        }
+
+        if (providerByCustomerId.isEmpty()) {
+            LOGGER.debug("HRD: no identity provider resolved for this email (existingUsers={})", existingUsers.size());
+            return List.of();
+        }
+
+        final Map<String, Customer> customersById = new HashMap<>();
+        customerRepository
+            .findAllById(providerByCustomerId.keySet())
+            .forEach(customer -> customersById.put(customer.getId(), customer));
+
+        return providerByCustomerId
+            .entrySet()
+            .stream()
+            .map(
+                entry ->
+                    toHrdEntry(
+                        entry.getKey(),
+                        entry.getValue(),
+                        customersById.get(entry.getKey()),
+                        userByCustomerId.get(entry.getKey())
+                    )
+            )
+            .sorted(Comparator.comparing(HrdEntryDto::getCustomerCode, Comparator.nullsLast(String::compareTo)))
+            .collect(Collectors.toList());
+    }
+
+    private IdentityProvider firstMatchingProvider(
+        final List<IdentityProvider> providers,
+        final String customerId,
+        final String email
+    ) {
+        return providers
+            .stream()
+            .filter(provider -> customerId.equals(provider.getCustomerId()))
+            .filter(provider -> matchesAnyPattern(provider, email))
+            .findFirst()
+            .orElse(null);
+    }
+
+    private boolean matchesAnyPattern(final IdentityProvider provider, final String email) {
+        return (
+            provider.getPatterns() != null &&
+            provider
+                .getPatterns()
+                .stream()
+                .anyMatch(pattern -> Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(email).matches())
+        );
+    }
+
+    private HrdEntryDto toHrdEntry(
+        final String customerId,
+        final IdentityProvider provider,
+        final Customer customer,
+        final User user
+    ) {
+        return new HrdEntryDto(
+            customerId,
+            customer != null ? customer.getCode() : null,
+            customer != null ? customer.getName() : customerId,
+            provider != null ? provider.getId() : null,
+            provider != null ? provider.getName() : null,
+            provider != null && Boolean.TRUE.equals(provider.getInternal()),
+            provider != null ? provider.getProtocoleType() : null,
+            user != null && user.getStatus() != null ? user.getStatus().toString() : null
+        );
     }
 
     @Getter

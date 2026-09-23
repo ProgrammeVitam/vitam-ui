@@ -34,48 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.api.utils;
+package fr.gouv.vitamui.iam.common.error;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
-import lombok.Getter;
-import lombok.Setter;
+public final class PasswordChangeErrorKeys {
 
-import java.io.Serial;
-import java.io.Serializable;
+    public static final String NO_IDENTITY_PROVIDER = "iam.password.change.no-identity-provider";
 
-/**
- * A wrapper of data which outputs them as JSON (for CAS).
- *
- *
- */
-@Getter
-@Setter
-public class CasJsonWrapper implements Serializable {
+    public static final String EXTERNAL_IDENTITY_PROVIDER = "iam.password.change.external-identity-provider";
 
-    /**
-     *
-     */
-    @Serial
-    private static final long serialVersionUID = 1L;
+    public static final String POLICY_NOT_MATCHED = "iam.password.policy.not-matched";
 
-    private final Object data;
+    public static final String CONTAINS_USER_NAME = "iam.password.policy.contains-user-name";
 
-    public CasJsonWrapper() {
-        data = null;
-    }
-
-    public CasJsonWrapper(final Object data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return JsonUtils.toJson(data);
-        } catch (JsonProcessingException e) {
-            throw new ApplicationServerException(e.getMessage(), e);
-        }
-    }
+    private PasswordChangeErrorKeys() {}
 }

@@ -39,7 +39,6 @@ package fr.gouv.vitamui.iam.server.subrogation.dao;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.server.subrogation.domain.Subrogation;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,8 +47,6 @@ import java.util.Optional;
  *
  */
 public interface SubrogationRepository extends VitamUIRepository<Subrogation, String> {
-    List<Subrogation> findBySuperUserAndSuperUserCustomerId(String superUser, String superUserCustomerId);
-
     Subrogation findOneBySuperUserAndSuperUserCustomerId(String superUser, String superUserCustomerId);
 
     Subrogation findOneBySurrogateAndSurrogateCustomerId(String email, String customerId);

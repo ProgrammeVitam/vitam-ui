@@ -117,10 +117,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -407,7 +408,6 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final GroupService groupService,
         final IamLogbookService iamLogbookService,
         final UserConverter userConverter,
-        final MongoTransactionManager mongoTransactionManager,
         final LogbookService logbookService,
         final AddressService addressService,
         final ApplicationService applicationService,
@@ -427,7 +427,6 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
             customerRepository,
             iamLogbookService,
             userConverter,
-            mongoTransactionManager,
             logbookService,
             addressService,
             applicationService,
@@ -522,6 +521,15 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     ) {
         final BaseRestClientFactory factory = new BaseRestClientFactory(casClientProperties, restClientBuilder);
         return new UserEmailService(factory);
+    }
+
+    @Bean
+    public MessageSource iamMessageSource() {
+        final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("iam-messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setUseCodeAsDefaultMessage(true);
+        return messageSource;
     }
 
     @Bean

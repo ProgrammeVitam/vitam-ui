@@ -34,58 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.security.client.config.password;
+package fr.gouv.vitamui.commons.api.utils;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import java.io.Serial;
+import java.io.Serializable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+/**
+ * A CAS principal attribute holding JSON already serialized by IAM, output as is.
+ */
+public class CasJsonAttribute implements Serializable {
 
-@Data
-@Configuration
-@ConfigurationProperties(prefix = "password")
-public class PasswordConfiguration {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    public static String ANSSI = "anssi";
-    public static String CUSTOM = "custom";
+    private final String json;
 
-    // default profile is anssi, custom otherwise
-    private String profile = "anssi";
-    private Integer length = 12;
-    private boolean checkOccurrence = true;
-    private Integer occurrencesCharsNumber = 3;
-    private Integer maxOldPassword = 12;
-    private String policyPattern;
-    private PasswordConstraints constraints;
-
-    @Data
-    public static class PasswordConstraints {
-
-        private Map<String, PasswordDefaultConstraints> defaults = new HashMap<>();
-        private Map<String, PasswordCustomConstraints> customs = new HashMap<>();
+    public CasJsonAttribute() {
+        json = null;
     }
 
-    @Data
-    public static class PasswordDefaultConstraints {
-
-        private SpecialChars specialChars;
-        private List<String> messages;
+    public CasJsonAttribute(final String json) {
+        this.json = json;
     }
 
-    @Data
-    public static class SpecialChars {
-
-        private String title;
-        private List<String> messages;
+    public String getJson() {
+        return json;
     }
 
-    @Data
-    public static class PasswordCustomConstraints {
-
-        private String title;
-        private List<String> messages;
+    @Override
+    public String toString() {
+        return json;
     }
 }
