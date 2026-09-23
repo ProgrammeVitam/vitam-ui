@@ -38,14 +38,7 @@ import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import {
-  ApplicationService,
-  Context,
-  GlobalEventService,
-  SidenavPage,
-  VitamuiBannerComponent,
-  VitamuiTitleBreadcrumbComponent,
-} from 'vitamui-library';
+import { ApplicationService, Context, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 
 import { ContextCreateComponent } from './context-create/context-create.component';
 import { ContextListComponent } from './context-list/context-list.component';
@@ -72,7 +65,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private applicationService = inject(ApplicationService);
 
   search = '';
@@ -81,15 +74,6 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
   @ViewChild(ContextListComponent, { static: true }) contextListComponent: ContextListComponent;
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('CONTEXT').pipe(shareReplay(1));
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   async openCreateContextDialog() {
     const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);

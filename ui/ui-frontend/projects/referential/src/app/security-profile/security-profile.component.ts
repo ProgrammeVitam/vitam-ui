@@ -36,15 +36,7 @@
  */
 import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import {
-  ApplicationService,
-  GlobalEventService,
-  SecurityProfile,
-  SidenavPage,
-  VitamuiBannerComponent,
-  VitamuiTitleBreadcrumbComponent,
-} from 'vitamui-library';
+import { ApplicationService, SecurityProfile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { shareReplay } from 'rxjs/operators';
@@ -77,13 +69,6 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
   @ViewChild(SecurityProfileListComponent, { static: true }) contextListComponent: SecurityProfileListComponent;
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('SECURITY_PROFILE').pipe(shareReplay(1));
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-  }
 
   async openCreateSecurityProfileDialog() {
     const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);

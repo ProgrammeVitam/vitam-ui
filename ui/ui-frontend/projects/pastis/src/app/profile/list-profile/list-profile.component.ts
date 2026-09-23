@@ -44,7 +44,6 @@ a web application to create, edit, import and export archive
 profiles based on the french SEDA standard
 (https://redirect.francearchives.fr/seda/).
 
-
 This software is governed by the CeCILL-C  license under French law and
 abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL-C
@@ -80,7 +79,6 @@ import { filter, of, Subscription, switchMap } from 'rxjs';
 import {
   CommonConfirmDialogComponent,
   Direction,
-  GlobalEventService,
   InfiniteScrollDirective,
   OrderByButtonComponent,
   PipesModule,
@@ -154,7 +152,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   private dialog = inject(MatDialog);
   private startupService = inject(StartupService);
   private pastisConfig = inject(PastisConfiguration);
-  route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private dataGeneriquePopupService = inject(DataGeneriquePopupService);
   private translateService = inject(TranslateService);
   private toggleService = inject(ToggleSidenavService);
@@ -218,11 +216,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   profilesChargees = false;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
+    super();
 
     this.pendingSub = this.toggleService.isPending.subscribe((status) => {
       this.pending = status;

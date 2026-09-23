@@ -37,7 +37,7 @@
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, Profile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
+import { Profile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { HierarchyCreateComponent } from './hierarchy-create/hierarchy-create.component';
 import { HierarchyListComponent } from './hierarchy-list/hierarchy-list.component';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -61,24 +61,13 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
+  private route = inject(ActivatedRoute);
 
   public profiles: Profile[];
   public search: string;
   private tenantIdentifier: number;
 
   @ViewChild(HierarchyListComponent, { static: true }) hierarchyListComponent: HierarchyListComponent;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-    this.globalEventService = globalEventService;
-  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {

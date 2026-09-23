@@ -37,11 +37,9 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import {
   DatepickerComponent,
   Event,
-  GlobalEventService,
   SearchBarComponent,
   SidenavPage,
   VitamuiBannerComponent,
@@ -72,8 +70,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class SecurisationComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
   private formBuilder = inject(FormBuilder);
 
   search: string;
@@ -84,12 +80,7 @@ export class SecurisationComponent extends SidenavPage<Event> {
   @ViewChild(SecurisationListComponent, { static: true }) securisationListComponent: SecurisationListComponent;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
-    this.globalEventService = globalEventService;
+    super();
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,

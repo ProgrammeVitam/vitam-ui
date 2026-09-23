@@ -42,7 +42,6 @@ import {
   Collection,
   ExternalParameters,
   ExternalParametersService,
-  GlobalEventService,
   ResizeSidebarDirective,
   SchemaService,
   SidenavPage,
@@ -81,7 +80,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
   dialog = inject(MatDialog);
   private archiveSharedDataService = inject(ArchiveSharedDataService);
@@ -102,11 +101,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
   hasUpdateDescriptiveUnitMetadataRole = false;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
+    super();
 
     this.schemaService.getSchema(Collection.ARCHIVE_UNIT);
   }

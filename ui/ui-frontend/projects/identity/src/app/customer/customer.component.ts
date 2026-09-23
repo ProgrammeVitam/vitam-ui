@@ -36,17 +36,8 @@
  */
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 
-import {
-  Customer,
-  GlobalEventService,
-  Owner,
-  SidenavPage,
-  Tenant,
-  VitamuiBannerComponent,
-  VitamuiTitleBreadcrumbComponent,
-} from 'vitamui-library';
+import { Customer, Owner, SidenavPage, Tenant, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { CustomerService } from '../core/customer.service';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
@@ -73,8 +64,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
   private dialog = inject(MatDialog);
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
   customerService = inject(CustomerService);
 
   public customers: Customer[];
@@ -83,16 +72,6 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
   gdprReadOnlySettingStatus = true;
 
   @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-    this.globalEventService = globalEventService;
-  }
 
   ngOnInit() {
     this.customerService.getGdprReadOnlySettingStatus().subscribe((settingStatus) => {

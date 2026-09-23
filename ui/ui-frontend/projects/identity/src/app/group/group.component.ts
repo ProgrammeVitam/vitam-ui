@@ -73,10 +73,10 @@ import { GroupService } from './group.service';
  */
 import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 
 import {
- DownloadSnackBarService, GlobalEventService,
+  DownloadSnackBarService,
+  GlobalEventService,
   Group,
   SidenavPage,
   SnackBarService,
@@ -106,8 +106,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class GroupComponent extends SidenavPage<Group> {
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
   private dialog = inject(MatDialog);
   private downloadSnackBarService = inject(DownloadSnackBarService);
   private snackBarService = inject(SnackBarService);
@@ -118,16 +116,6 @@ export class GroupComponent extends SidenavPage<Group> {
   public exportButtonDisabled = false;
 
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-    this.globalEventService = globalEventService;
-  }
 
   openCreateGroupDialog(): void {
     const dialogRef = this.dialog.open(GroupCreateComponent, { disableClose: true });

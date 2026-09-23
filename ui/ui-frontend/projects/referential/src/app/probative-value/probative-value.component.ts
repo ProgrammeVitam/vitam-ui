@@ -41,7 +41,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   DatepickerComponent,
   Event,
-  GlobalEventService,
   SearchBarComponent,
   SidenavPage,
   VitamuiBannerComponent,
@@ -74,7 +73,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class ProbativeValueComponent extends SidenavPage<Event> implements OnDestroy {
   dialog = inject(MatDialog);
   private router = inject(Router);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
 
   search: string;
@@ -87,11 +86,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
   @ViewChild(ProbativeValueListComponent, { static: true }) probativeValueListComponent: ProbativeValueListComponent;
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
+    super();
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,

@@ -42,7 +42,6 @@ import {
   AdminUserProfile,
   DatepickerComponent,
   Direction,
-  GlobalEventService,
   SearchBarComponent,
   SidenavPage,
   TooltipDirective,
@@ -104,12 +103,6 @@ export class IngestComponent extends SidenavPage<LogbookOperation> implements On
   filters: { startDate?: Date; endDate?: Date } = {};
   ingestList: IngestList = new IngestList();
   ingestThatHasChanged: LogbookOperation | null = null;
-
-  constructor() {
-    const globalEventService = inject(GlobalEventService);
-    const route = inject(ActivatedRoute);
-    super(route, globalEventService);
-  }
 
   ngOnInit(): void {
     this.initTenantFromRoute();
