@@ -86,7 +86,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   firstChoiceGestionNotice: string;
   secondChoiceGestionNotice: string;
   titleGestionNotice: string;
-  externalIdentifierEnabled: boolean;
+  externalIdentifierEnabled = signal(false);
 
   okLabel: string;
   editProfile: boolean;
@@ -161,7 +161,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
 
     const action = this.gestionNotice() ? 'creation' : 'rattachement';
     if (this.gestionNotice()) {
-      if (!this.externalIdentifierEnabled && !this.editProfile) {
+      if (!this.externalIdentifierEnabled() && !this.editProfile) {
         this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
       }
       if (this.noticeForm.invalid) {
@@ -251,9 +251,9 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         const identifierCtrl = this.noticeForm.controls['identifier'];
 
-        this.externalIdentifierEnabled = value;
+        this.externalIdentifierEnabled.set(value);
 
-        if (!this.externalIdentifierEnabled || this.editProfile) {
+        if (!this.externalIdentifierEnabled() || this.editProfile) {
           identifierCtrl.clearValidators();
         } else {
           identifierCtrl.setValidators([

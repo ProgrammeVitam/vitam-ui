@@ -70,7 +70,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -162,21 +163,21 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   @ViewChild('confirmReplacement') confirmReplacement: TemplateRef<any>;
 
-  retrievedProfiles: ProfileDescription[] = [];
+  retrievedProfiles = signal<ProfileDescription[]>([]);
 
   matDataSource: MatTableDataSource<ProfileDescription>;
 
-  numPA: number;
+  numPA = signal<number>(0);
 
-  numPUA: number;
+  numPUA = signal<number>(0);
 
-  totalProfileNum: number;
+  totalProfileNum = signal<number>(0);
 
-  search: string;
+  search = signal<string>('');
 
   numProfilesFiltered: ProfileDescription[];
 
-  filterType: string;
+  filterType = signal<string>(undefined);
 
   isStandalone: boolean = environment.standalone;
 
@@ -194,11 +195,9 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   promise: Promise<any>;
 
-  expanded: number;
+  expanded = signal<number>(undefined);
 
-  pending: boolean;
-
-  pendingSub: Subscription;
+  pending = toSignal(this.toggleService.isPending, { initialValue: false });
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
 
@@ -213,14 +212,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     popupUploadOkLabel: 'CONFIRMER',
   };
 
-  profilesChargees = false;
+  profilesChargees = signal(false);
 
   constructor() {
     super();
-
-    this.pendingSub = this.toggleService.isPending.subscribe((status) => {
-      this.pending = status;
-    });
   }
 
   ngOnInit() {
@@ -257,14 +252,14 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.profileService.refreshListProfiles();
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
-        this.retrievedProfiles = profileList;
-        this.profilesChargees = true;
+        this.retrievedProfiles.set(profileList);
+        this.profilesChargees.set(true);
         this.toggleService.hidePending();
       }
-      this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles);
-      this.numPA = this.retrievePAorPUA(ProfileType.PA, false);
-      this.numPUA = this.retrievePAorPUA(ProfileType.PUA, false);
-      this.totalProfileNum = this.retrievedProfiles ? this.retrievedProfiles.length : 0;
+      this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles());
+      this.numPA.set(this.retrievePAorPUA(ProfileType.PA, false));
+      this.numPUA.set(this.retrievePAorPUA(ProfileType.PUA, false));
+      this.totalProfileNum.set(this.retrievedProfiles() ? this.retrievedProfiles().length : 0);
     });
   }
 
@@ -273,7 +268,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   retrievePAorPUA(term: string, filter: boolean): number {
-    const profiles: ProfileDescription[] = filter === false ? this.retrievedProfiles : this.numProfilesFiltered;
+    const profiles: ProfileDescription[] = filter === false ? this.retrievedProfiles() : this.numProfilesFiltered;
     const profileNum = profiles.filter((p) => p.type === term).length;
     return profileNum ? profileNum : 0;
   }
@@ -345,28 +340,27 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (!search) {
       search = '';
     }
-    this.search = search;
-    const profileDescriptions = this.retrievedProfiles.filter(
+    this.search.set(search);
+    const profileDescriptions = this.retrievedProfiles().filter(
       (profile) =>
         profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 ||
         profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0,
     );
     // console.log(this.retrievedProfiles)
-    this.totalProfileNum = profileDescriptions.length;
-    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PA).length;
-    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PUA).length;
+    this.totalProfileNum.set(profileDescriptions.length);
+    this.numPA.set(profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PA).length);
+    this.numPUA.set(profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PUA).length);
   }
 
   changeType(type: string) {
     if (type !== undefined) {
-      this.filterType = type;
+      this.filterType.set(type);
     }
   }
 
   override ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
-    if (this.pendingSub) this.pendingSub.unsubscribe();
   }
 
   showProfile(element: ProfileDescription) {

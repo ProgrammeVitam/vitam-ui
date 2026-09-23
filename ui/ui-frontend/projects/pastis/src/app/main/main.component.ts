@@ -73,6 +73,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, map, Subscription, switchMap } from 'rxjs';
 import { FileService } from '../core/services/file.service';
@@ -121,9 +122,8 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild(EditProfileComponent)
   editProfileComponent: EditProfileComponent;
 
-  opened: boolean;
-  pending: boolean;
-  pendingSub: Subscription;
+  opened = toSignal(this.sideNavService.isOpened, { initialValue: true });
+  pending = toSignal(this.sideNavService.isPending, { initialValue: false });
   events: string[] = [];
 
   uploadedProfileResponse: ProfileResponse;
@@ -133,18 +133,12 @@ export class MainComponent implements OnInit, OnDestroy {
   private _profileLoadingSubscription: Subscription;
 
   constructor() {
-    this.sideNavService.isOpened.subscribe((status) => {
-      this.opened = status;
-    });
-    this.pendingSub = this.sideNavService.isPending.subscribe((status) => {
-      this.pending = status;
-    });
     const navigation = this.router.getCurrentNavigation();
     this.uploadedProfileByFile = navigation?.extras.state?.['payload'];
   }
 
   ngOnInit() {
-    this.fileService.currentTreeLoaded = false;
+    this.fileService.currentTreeLoaded.set(false);
     this._routeParamsSubscription = this.route.params.subscribe((params) => {
       const profileId = params['id'];
 
@@ -167,12 +161,19 @@ export class MainComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.opened = true;
+    this.sideNavService.show();
   }
 
   openSideNav() {
-    this.opened = true;
     this.sideNavService.show();
+  }
+
+  openedChanged(opened: boolean) {
+    if (opened) {
+      this.sideNavService.show();
+    } else {
+      this.sideNavService.hide();
+    }
   }
 
   insertionItem($event: FileNodeInsertParams) {
@@ -205,7 +206,6 @@ export class MainComponent implements OnInit, OnDestroy {
     if (this._profileLoadingSubscription != null) {
       this._profileLoadingSubscription.unsubscribe();
     }
-    if (this.pendingSub) this.pendingSub.unsubscribe();
   }
 
   private loadProfileById(profileId: string) {
