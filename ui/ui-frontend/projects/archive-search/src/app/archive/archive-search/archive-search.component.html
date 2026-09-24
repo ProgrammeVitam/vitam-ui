@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-3 form-control text-right">
-      <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys?.length" (click)="submit(true)">
+      <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys()?.length" (click)="submit(true)">
         {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
       </button>
     </div>
@@ -34,7 +34,7 @@
   <div class="row justify-content-around">
     <div class="col-11">
       <div class="area-criteria">
-        @for (criteriaKey of searchCriteriaKeys; track criteriaKey) {
+        @for (criteriaKey of searchCriteriaKeys(); track criteriaKey) {
           @if (searchCriterias.get(criteriaKey); as criteriaVal) {
             <app-criteria-search
               [criteriaKey]="criteriaKey"
