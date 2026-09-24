@@ -26,7 +26,6 @@
  */
 package fr.gouv.vitamui.cas.webflow.login.actions;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.cas.delegation.ProvidersService;
 import fr.gouv.vitamui.cas.model.UserLoginModel;
 import fr.gouv.vitamui.cas.password.PmMessageToSend;
@@ -80,8 +79,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private final String vitamuiPlatformName;
 
-    private final ObjectMapper objectMapper;
-
     public I18NSendPasswordResetInstructionsAction(
         final CasConfigurationProperties casProperties,
         final CommunicationsManager communicationsManager,
@@ -117,7 +114,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         this.identityProviderHelper = identityProviderHelper;
         this.utils = utils;
         this.vitamuiPlatformName = vitamuiPlatformName;
-        this.objectMapper = new ObjectMapper();
     }
 
     @Audit(
@@ -162,7 +158,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         UserLoginModel userLoginModel = new UserLoginModel();
         userLoginModel.setUserEmail(email);
         userLoginModel.setCustomerId(customerId);
-        String userLoginModelToToken = objectMapper.writeValueAsString(userLoginModel);
+        String userLoginModelToToken = utils.toJson(userLoginModel);
 
         URL url;
         try {
@@ -232,8 +228,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(
             messageSource,
-            "",
-            "",
             String.valueOf(duration.toMinutes()),
             url.toString(),
             vitamuiPlatformName,

@@ -34,34 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.common.dto.cas;
+package fr.gouv.vitamui.iam.auth.contract;
 
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
- * Authentication request with username & its customerId, password, surrogate & its customerId and IP.
+ * The password policy in force, as IAM actually enforces it.
+ *
+ * The authentication server displays the constraints to the user and IAM checks them. Today both read
+ * their own configuration, so any drift between the two files shows up as a form that accepts a password
+ * IAM will reject. Publishing the policy makes IAM's configuration the only one that counts.
+ *
+ * {@code messages} carries the constraint labels already resolved, in the order they should be shown.
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
-@ToString(exclude = "password")
-public class LoginRequestDto {
+@ToString
+public class PasswordPolicyDto {
 
-    @NotNull
-    private String loginEmail;
+    private Integer minLength;
 
-    @NotNull
-    private String loginCustomerId;
+    private String profile;
 
-    @NotNull
-    private String password;
+    private Integer maxOldPassword;
 
-    private String surrogateEmail;
-    private String surrogateCustomerId;
-
-    private String ip;
+    private List<String> messages;
 }

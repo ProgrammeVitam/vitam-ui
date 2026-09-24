@@ -79,7 +79,8 @@ vitamui:
     tenant.identifier: -1
     identity: cas
 
-
+# Consumed by Pac4jClientBuilder (iam-commons) via @Value("${login.url}") to build the delegated
+# clients' callback URL and the SAML SP entityId. Must match what the IdP has registered.
 login.url: ${cas.server.prefix}/login
 ip.header: X-Real-IP
 

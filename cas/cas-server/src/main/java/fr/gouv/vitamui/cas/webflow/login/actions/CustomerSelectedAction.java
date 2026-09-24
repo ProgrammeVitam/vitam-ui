@@ -28,13 +28,11 @@ package fr.gouv.vitamui.cas.webflow.login.actions;
 
 import fr.gouv.vitamui.cas.model.CustomerModel;
 import fr.gouv.vitamui.cas.util.Constants;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.webflow.action.AbstractAction;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import java.io.IOException;
 import java.util.List;
 
 import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRANSITION_TO_CUSTOMER_SELECTED;
@@ -44,11 +42,10 @@ import static fr.gouv.vitamui.cas.webflow.login.VitamLoginWebflowConfigurer.TRAN
  * dispatcher
  */
 @Slf4j
-@RequiredArgsConstructor
 public class CustomerSelectedAction extends AbstractAction {
 
     @Override
-    protected Event doExecute(final RequestContext requestContext) throws IOException {
+    protected Event doExecute(final RequestContext requestContext) {
         var flowScope = requestContext.getFlowScope();
 
         String loginEmail = flowScope.getRequiredString(Constants.FLOW_LOGIN_EMAIL);
@@ -60,7 +57,7 @@ public class CustomerSelectedAction extends AbstractAction {
 
         CustomerModel customerModel = customerModels
             .stream()
-            .filter(c -> c.getCustomerId().equals(customerId))
+            .filter(c -> c.customerId().equals(customerId))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException("Invalid customerId '" + customerId + "'"));
 

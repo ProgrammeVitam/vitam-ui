@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "system_customer",
+    "code": "000000",
+    "identifier": 1,
+    "name": "system_customer",
+    "companyName": "system company",
+    "enabled": true
+  },
+  {
+    "_id": "5c7927af7884583d1ebb6e7a74547a15e35d431599d976a9708eb12d6c5e56c9",
+    "identifier": "11",
+    "code": "654852",
+    "name": "Client1",
+    "companyName": "Client1",
+    "enabled": true
+  },
+  {
+    "_id": "5c7928337884583d1ebb6ebaa3f3eb30bc0542178127d1572b8f70c7c0b0cb68",
+    "identifier": "12",
+    "code": "659845",
+    "name": "Client2",
+    "companyName": "Client2",
+    "enabled": true
+  }
+]

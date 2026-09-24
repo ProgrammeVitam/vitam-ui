@@ -34,48 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.api.utils;
+package fr.gouv.vitamui.iam.auth.contract;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
+import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serial;
-import java.io.Serializable;
+import lombok.ToString;
 
 /**
- * A wrapper of data which outputs them as JSON (for CAS).
+ * The user whose authentication attributes are requested, and the context they log in from.
  *
- *
+ * {@code identityProviderId} is only set for a delegated authentication: it triggers just-in-time provisioning when
+ * the provider allows it. The two subrogation fields are only set when a super user takes someone else's place.
  */
 @Getter
 @Setter
-public class CasJsonWrapper implements Serializable {
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class PrincipalAttributesRequestDto {
+
+    @NotNull
+    private String loginEmail;
+
+    @NotNull
+    private String loginCustomerId;
+
+    private String identityProviderId;
+
+    private String userIdentifier;
+
+    private String superUserEmail;
+
+    private String superUserCustomerId;
 
     /**
-     *
+     * True when the login does not come from a browser but from a programmatic call. The blocks embedded in the
+     * response depend on it.
      */
-    @Serial
-    private static final long serialVersionUID = 1L;
+    private boolean apiContext;
 
-    private final Object data;
-
-    public CasJsonWrapper() {
-        data = null;
-    }
-
-    public CasJsonWrapper(final Object data) {
-        this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return JsonUtils.toJson(data);
-        } catch (JsonProcessingException e) {
-            throw new ApplicationServerException(e.getMessage(), e);
-        }
-    }
+    /**
+     * Only set for a delegated authentication (OIDC / SAML): the raw identity returned by the external IdP. When
+     * present, IAM resolves the email and technical identifier from it (using the provider mapping) and checks the
+     * returned email against the one the user asked to log in with.
+     */
+    private DelegatedIdpContextDto delegatedIdp;
 }
