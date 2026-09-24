@@ -64,6 +64,8 @@ export class LifecycleEventNodeComponent {
 
   isKo = computed(() => this.event().outcome === 'KO' || this.event().outcome === 'FATAL');
 
+  originTranslationKey = computed(() => `ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.HISTORY.ORIGIN_${this.event().origin}`);
+
   detailText = computed(() => {
     const event = this.event();
     return event.parsedDetail !== null && event.parsedDetail !== undefined ? JSON.stringify(event.parsedDetail) : event.rawDetail;
