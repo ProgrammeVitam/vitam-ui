@@ -34,15 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SnackBarService } from 'vitamui-library';
+import { CriteriaSearchQuery, Customer, ENVIRONMENT, LoggerModule, Operators, OtpState, SnackBarService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { Type } from '@angular/core';
 import { CustomerService } from './customer.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomer: Customer = {
   id: '42',
@@ -99,14 +98,7 @@ describe('CustomerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        CustomerService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-        { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [CustomerService, { provide: ENVIRONMENT, useValue: environment }, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

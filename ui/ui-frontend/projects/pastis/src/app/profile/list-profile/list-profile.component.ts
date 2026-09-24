@@ -44,7 +44,6 @@ a web application to create, edit, import and export archive
 profiles based on the french SEDA standard
 (https://redirect.francearchives.fr/seda/).
 
-
 This software is governed by the CeCILL-C  license under French law and
 abiding by the rules of distribution of free software.  You can  use,
 modify and/ or redistribute the software under the terms of the CeCILL-C
@@ -71,13 +70,26 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, of, Subscription, switchMap } from 'rxjs';
-import { Direction, GlobalEventService, SidenavPage, SnackBarService, StartupService } from 'vitamui-library';
+import {
+  CommonConfirmDialogComponent,
+  Direction,
+  InfiniteScrollDirective,
+  OrderByButtonComponent,
+  PipesModule,
+  SidenavPage,
+  SnackBarService,
+  StartupService,
+  TooltipDirective,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { environment } from '../../../environments/environment';
 import { PastisConfiguration } from '../../core/classes/pastis-configuration';
 import { ProfileService } from '../../core/services/profile.service';
@@ -94,6 +106,14 @@ import { Profile } from '../../models/profile';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { NoticeService } from '../../core/services/notice.service';
 import { map } from 'rxjs/operators';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { ProfilePreviewComponent } from '../profile-preview/profile-preview.component';
+import { PastisPopupOptionComponent } from '../../shared/pastis-popup-option/pastis-popup-option.component';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatMenuItem } from '@angular/material/menu';
+import { FilterByStringNamePipe } from './pipes/filterByStringName.pipe';
+import { FilterByTypePipe } from './pipes/filterByType.pipe';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
@@ -103,7 +123,28 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
   selector: 'pastis-list-profile',
   templateUrl: './list-profile.component.html',
   styleUrls: ['./list-profile.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    MatSidenavContainer,
+    MatSidenav,
+    ProfilePreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    PastisPopupOptionComponent,
+    NgClass,
+    OrderByButtonComponent,
+    TooltipDirective,
+    MatMenuItem,
+    PipesModule,
+    TranslatePipe,
+    FilterByStringNamePipe,
+    FilterByTypePipe,
+    CommonConfirmDialogComponent,
+    CommonModule,
+    InfiniteScrollDirective,
+    MatDialogModule,
+  ],
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);
@@ -112,7 +153,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   private dialog = inject(MatDialog);
   private startupService = inject(StartupService);
   private pastisConfig = inject(PastisConfiguration);
-  route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private dataGeneriquePopupService = inject(DataGeneriquePopupService);
   private translateService = inject(TranslateService);
   private toggleService = inject(ToggleSidenavService);
@@ -122,21 +163,21 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   @ViewChild('confirmReplacement') confirmReplacement: TemplateRef<any>;
 
-  retrievedProfiles: ProfileDescription[] = [];
+  retrievedProfiles = signal<ProfileDescription[]>([]);
 
   matDataSource: MatTableDataSource<ProfileDescription>;
 
-  numPA: number;
+  numPA = signal<number>(0);
 
-  numPUA: number;
+  numPUA = signal<number>(0);
 
-  totalProfileNum: number;
+  totalProfileNum = signal<number>(0);
 
-  search: string;
+  search = signal<string>('');
 
   numProfilesFiltered: ProfileDescription[];
 
-  filterType: string;
+  filterType = signal<string>(undefined);
 
   isStandalone: boolean = environment.standalone;
 
@@ -154,11 +195,9 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   promise: Promise<any>;
 
-  expanded: number;
+  expanded = signal<number>(undefined);
 
-  pending: boolean;
-
-  pendingSub: Subscription;
+  pending = toSignal(this.toggleService.isPending, { initialValue: false });
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
 
@@ -173,18 +212,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     popupUploadOkLabel: 'CONFIRMER',
   };
 
-  profilesChargees = false;
+  profilesChargees = signal(false);
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-    this.route = route;
-
-    this.pendingSub = this.toggleService.isPending.subscribe((status) => {
-      this.pending = status;
-    });
+    super();
   }
 
   ngOnInit() {
@@ -221,14 +252,14 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     this.profileService.refreshListProfiles();
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
-        this.retrievedProfiles = profileList;
-        this.profilesChargees = true;
+        this.retrievedProfiles.set(profileList);
+        this.profilesChargees.set(true);
         this.toggleService.hidePending();
       }
-      this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles);
-      this.numPA = this.retrievePAorPUA(ProfileType.PA, false);
-      this.numPUA = this.retrievePAorPUA(ProfileType.PUA, false);
-      this.totalProfileNum = this.retrievedProfiles ? this.retrievedProfiles.length : 0;
+      this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles());
+      this.numPA.set(this.retrievePAorPUA(ProfileType.PA, false));
+      this.numPUA.set(this.retrievePAorPUA(ProfileType.PUA, false));
+      this.totalProfileNum.set(this.retrievedProfiles() ? this.retrievedProfiles().length : 0);
     });
   }
 
@@ -237,7 +268,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   retrievePAorPUA(term: string, filter: boolean): number {
-    const profiles: ProfileDescription[] = filter === false ? this.retrievedProfiles : this.numProfilesFiltered;
+    const profiles: ProfileDescription[] = filter === false ? this.retrievedProfiles() : this.numProfilesFiltered;
     const profileNum = profiles.filter((p) => p.type === term).length;
     return profileNum ? profileNum : 0;
   }
@@ -309,28 +340,27 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     if (!search) {
       search = '';
     }
-    this.search = search;
-    const profileDescriptions = this.retrievedProfiles.filter(
+    this.search.set(search);
+    const profileDescriptions = this.retrievedProfiles().filter(
       (profile) =>
         profile.identifier.toLowerCase().indexOf(search.toLowerCase()) >= 0 ||
         profile.name.toLowerCase().indexOf(search.toLowerCase()) >= 0,
     );
     // console.log(this.retrievedProfiles)
-    this.totalProfileNum = profileDescriptions.length;
-    this.numPA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PA).length;
-    this.numPUA = profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PUA).length;
+    this.totalProfileNum.set(profileDescriptions.length);
+    this.numPA.set(profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PA).length);
+    this.numPUA.set(profileDescriptions.filter((profile: ProfileDescription) => profile.type === ProfileType.PUA).length);
   }
 
   changeType(type: string) {
     if (type !== undefined) {
-      this.filterType = type;
+      this.filterType.set(type);
     }
   }
 
   override ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
-    if (this.pendingSub) this.pendingSub.unsubscribe();
   }
 
   showProfile(element: ProfileDescription) {

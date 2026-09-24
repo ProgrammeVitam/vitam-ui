@@ -36,11 +36,13 @@
  */
 import { User } from 'vitamui-library';
 
-import { Component, forwardRef, OnInit, inject } from '@angular/core';
+import { Component, forwardRef, inject, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
+import { GroupListComponent } from './group-list/group-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,7 +56,7 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   templateUrl: './group-attribution.component.html',
   styleUrls: ['./group-attribution.component.scss'],
   providers: [GROUP_ATTRIBUTION_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [MatDialogContent, GroupListComponent, MatDialogActions, TranslatePipe],
 })
 export class GroupAttributionComponent implements OnInit {
   private userService = inject(UserService);

@@ -34,22 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, OnInit, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GlobalEventService, SidenavPage, VitamuiBannerComponent } from 'vitamui-library';
+import { DatepickerComponent, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-logbook-operation',
   templateUrl: './logbook-operation.component.html',
   styleUrls: ['./logbook-operation.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    LogbookOperationDetailComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ReactiveFormsModule,
+    DatepickerComponent,
+    LogbookOperationListComponent,
+    TranslatePipe,
+  ],
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
-  route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
   private formBuilder = inject(FormBuilder);
 
@@ -61,15 +75,6 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   public dateRangeFilterForm: FormGroup;
   public filters: Readonly<EventFilter> = {};
   private openOperationDetailAfterLoading: boolean;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
@@ -114,7 +119,7 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   }
 
   private openOperationDetail(): void {
-    this.list.eventClick.emit(this.list.dataSource[0]);
+    this.list.eventClick.emit(this.list.dataSource()[0]);
   }
 
   onFinishedLoading() {

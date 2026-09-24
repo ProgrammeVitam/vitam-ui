@@ -34,14 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { Directive, inject, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SecurityService } from './security.service';
 
-@Directive({
-  selector: '[vitamuiCommonHasRole]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonHasRole]' })
 export class HasRoleDirective implements OnDestroy {
   private templateRef = inject<TemplateRef<any>>(TemplateRef);
   private viewContainer = inject(ViewContainerRef);

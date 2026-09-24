@@ -39,16 +39,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AgencyService, BASE_URL, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
+import { AgencyService, InjectorModule, LoggerModule, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AgencyComponent } from './agency.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-agency-preview',
@@ -75,16 +71,7 @@ describe('AgencyComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [
-        VitamUICommonTestModule,
-        RouterTestingModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        NoopAnimationsModule,
-        MatSidenavModule,
-        MatDialogModule,
-        MatMenuModule,
-      ],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), MatSidenavModule, MatDialogModule, MatMenuModule],
       providers: [
         { provide: AgencyService, useValue: {} },
         {
@@ -100,13 +87,10 @@ describe('AgencyComponent', () => {
             queryParams: of({}),
             paramMap: of(),
             data: of({ appId: 'AGENCIES_APP' }),
-            snapshot: { data: {} },
+            snapshot: { data: { appId: 'AGENCIES_APP' } },
           },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();

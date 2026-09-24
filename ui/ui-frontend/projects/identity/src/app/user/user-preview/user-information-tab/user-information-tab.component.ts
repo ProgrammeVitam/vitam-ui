@@ -34,17 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { AdminUserProfile, CountryOption, Customer, User, UserInfo } from 'vitamui-library';
-import { CountryService, diff, Option, OtpState, StartupService } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  CountryOption,
+  CountryService,
+  Customer,
+  diff,
+  EditableEmailInputComponent,
+  EditableInputComponent,
+  FormFieldValueWrapperComponent,
+  Option,
+  OtpState,
+  PipesModule,
+  SelectComponent,
+  SlideToggleComponent,
+  StartupService,
+  TooltipDirective,
+  User,
+  UserInfo,
+  VitamUIFieldErrorComponent,
+} from 'vitamui-library';
 import { UserInfoService } from '../../user-info.service';
 
 import { UserCreateValidators } from '../../user-create/user-create.validators';
 import { UserService } from '../../user.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -52,7 +79,27 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-user-info-tab',
   templateUrl: './user-information-tab.component.html',
   styleUrls: ['./user-information-tab.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    VitamUIFieldErrorComponent,
+    FormFieldValueWrapperComponent,
+    SelectComponent,
+    SlideToggleComponent,
+    TooltipDirective,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EditableEmailInputComponent,
+    EditableInputComponent,
+    FormsModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+  ],
 })
 export class UserInfoTabComponent implements OnChanges, OnInit {
   private userService = inject(UserService);

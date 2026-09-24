@@ -58,13 +58,23 @@ describe('LogbookOperationComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, LoggerModule.forRoot(), MatMenuModule, DatepickerComponent, ReactiveFormsModule, SearchBarComponent],
-      declarations: [LogbookOperationComponent],
+      imports: [
+        InjectorModule,
+        LoggerModule.forRoot(),
+        MatMenuModule,
+        DatepickerComponent,
+        ReactiveFormsModule,
+        SearchBarComponent,
+        LogbookOperationComponent,
+      ],
       providers: [
         provideNativeDateAdapter(),
         DatePipe,
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({}) } },
+        {
+          provide: ActivatedRoute,
+          useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({}), snapshot: { data: { appId: 'App Id' } } },
+        },
         { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
         { provide: Router, useValue: { navigate: () => {} } },
         GlobalEventService,

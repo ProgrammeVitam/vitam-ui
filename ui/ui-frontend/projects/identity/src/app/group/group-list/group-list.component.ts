@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 
 import {
@@ -42,18 +42,42 @@ import {
   CriteriaSearchQuery,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
   Group,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+  TableFilterSearchComponent,
 } from 'vitamui-library';
 import { GroupService } from '../group.service';
 import { buildCriteriaFromGroupFilters } from './group-criteria-builder.util';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-group-list',
   templateUrl: './group-list.component.html',
   styleUrls: ['./group-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    OrderByButtonComponent,
+    TableFilterSearchComponent,
+    NgClass,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
   groupService: GroupService;
@@ -98,10 +122,14 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     this.refreshLevelOptions();
 
     this.updatedGroupSub = this.groupService.updated.subscribe((updatedGroup: Group) => {
-      const profileGroupIndex = this.dataSource.findIndex((group) => updatedGroup.id === group.id);
-      if (profileGroupIndex > -1) {
-        this.dataSource[profileGroupIndex] = updatedGroup;
-      }
+      this.dataSource.update((groups) => {
+        const list = [...(groups ?? [])];
+        const profileGroupIndex = list.findIndex((group) => updatedGroup.id === group.id);
+        if (profileGroupIndex > -1) {
+          list[profileGroupIndex] = updatedGroup;
+        }
+        return list;
+      });
     });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange);

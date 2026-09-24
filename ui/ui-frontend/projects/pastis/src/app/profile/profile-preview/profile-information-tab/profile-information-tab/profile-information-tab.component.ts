@@ -34,23 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ProfileService } from '../../../../core/services/profile.service';
 import { ProfileType } from '../../../../models/profile-type.enum';
-import { MiscValidators, SnackBarService } from 'vitamui-library';
+import { InputComponent, MiscValidators, SlideToggleComponent, SnackBarService } from 'vitamui-library';
 import type { Profile } from '../../../../models/profile';
 import type { ArchivalProfileUnit } from '../../../../models/archival-profile-unit';
 import type { ProfileDescription } from '../../../../models/profile-description.model';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'profile-information-tab',
   templateUrl: './profile-information-tab.component.html',
   styleUrls: ['./profile-information-tab.component.scss'],
-  standalone: false,
+  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ProfileInformationTabComponent {
   private formBuilder = inject(FormBuilder);
@@ -102,10 +104,10 @@ export class ProfileInformationTabComponent {
 
   statusProfile = new FormControl();
 
-  submited = false;
+  submited = signal(false);
 
   private _inputProfile: ProfileDescription;
-  pending = false;
+  pending = signal(false);
 
   updateProfile(inputProfile: ProfileDescription): Observable<Profile | ArchivalProfileUnit | ProfileDescription> {
     const profileDescription = { ...inputProfile, ...this.form.value };
@@ -117,7 +119,7 @@ export class ProfileInformationTabComponent {
   }
 
   canSubmit() {
-    return this.form.valid && !this.submited && this.formHasChanged();
+    return this.form.valid && !this.submited() && this.formHasChanged();
   }
 
   formHasChanged() {
@@ -135,20 +137,20 @@ export class ProfileInformationTabComponent {
   }
 
   onSubmit() {
-    this.pending = !this.pending;
-    this.submited = true;
+    this.pending.update((pending) => !pending);
+    this.submited.set(true);
     this.updateProfile(this.inputProfile).subscribe(
       () => {
-        this.submited = false;
-        this.pending = !this.pending;
+        this.submited.set(false);
+        this.pending.update((pending) => !pending);
         this.inputProfile = this._inputProfile;
         this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS', duration: 5000 });
         this.profileService.refreshListProfiles();
         this.closed.emit(true);
       },
       () => {
-        this.submited = false;
-        this.pending = !this.pending;
+        this.submited.set(false);
+        this.pending.update((pending) => !pending);
         this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR', duration: 5000 });
       },
     );

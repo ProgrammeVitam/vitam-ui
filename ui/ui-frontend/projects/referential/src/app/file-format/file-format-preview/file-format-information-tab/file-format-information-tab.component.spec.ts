@@ -93,13 +93,16 @@ describe('FileFormatInformationTabComponent', () => {
       getTenantIdentifier: () => '',
     };
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule],
-      declarations: [FileFormatInformationTabComponent],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, FileFormatInformationTabComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }),
+            snapshot: { data: { appId: 'MANAGEMENT_CONTRACT_APP' } },
+          },
         },
         {
           provide: SecurityService,
@@ -108,10 +111,11 @@ describe('FileFormatInformationTabComponent', () => {
           },
         },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: FileFormatService, useValue: fileFormatServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(FileFormatService, { useValue: fileFormatServiceMock })
+      .compileComponents();
   });
 
   beforeEach(() => {

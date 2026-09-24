@@ -38,7 +38,7 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { BASE_URL, SearchCriteriaHistory } from 'vitamui-library';
+import { SearchCriteriaHistory } from 'vitamui-library';
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -49,14 +49,7 @@ describe('SearchCriteriaSaverService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '/fake-api',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);
     service = TestBed.inject(SearchCriteriaSaverService);

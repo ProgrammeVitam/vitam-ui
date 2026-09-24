@@ -34,23 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { Subject, merge } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { merge, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import type { AdminUserProfile, FileFormat, User } from 'vitamui-library';
 import {
+  AdminUserProfile,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
   FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  HasRoleDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   PageRequest,
-  StartupService,
+  PipesModule,
   SnackBarService,
+  StartupService,
+  User,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -58,7 +67,16 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-file-format-list',
   templateUrl: './file-format-list.component.html',
   styleUrls: ['./file-format-list.component.scss'],
-  standalone: false,
+  imports: [
+    OrderByButtonComponent,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   fileFormatService: FileFormatService;
@@ -117,7 +135,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     this.fileFormatService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: FileFormat[]) => {
-        this.dataSource = data;
+        this.dataSource.set(data);
       });
 
     const searchCriteriaChange = merge(this.searchChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -191,10 +209,14 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   private replaceUpdatedFileFormat(): void {
     this.fileFormatService.updated.pipe(takeUntil(this.destroy$)).subscribe((ffUpdated: FileFormat) => {
-      const index = this.dataSource.findIndex((item: FileFormat) => item.id === ffUpdated.id);
-      if (index !== -1) {
-        this.dataSource[index] = ffUpdated;
-      }
+      this.dataSource.update((formats) => {
+        const list = [...(formats ?? [])];
+        const index = list.findIndex((item: FileFormat) => item.id === ffUpdated.id);
+        if (index !== -1) {
+          list[index] = ffUpdated;
+        }
+        return list;
+      });
     });
   }
 }

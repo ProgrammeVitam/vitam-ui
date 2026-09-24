@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { LoggerModule } from '../logger/logger.module';
 import { InjectorModule } from '../helper/injector.module';
 import { BASE_URL, ENVIRONMENT } from '../injection-tokens';
 import { environment } from '../../../environments/environment';
 import { AccessContractApiService } from './access-contract-api.service';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessContractApiService', () => {
@@ -49,10 +49,10 @@ describe('AccessContractApiService', () => {
     TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot()],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
     });
     service = TestBed.inject(AccessContractApiService);

@@ -39,16 +39,35 @@ import { Component, computed, effect, inject, input, signal } from '@angular/cor
 import { rxResource, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { catchError, of } from 'rxjs';
-import type { Unit } from 'vitamui-library';
+import {
+  EventTypeLabelComponent,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+  TooltipDirective,
+  Unit,
+} from 'vitamui-library';
 import { AccessContract, AccessContractService, ApplicationId, ApplicationService, SnackBarService } from 'vitamui-library';
 import { ArchiveUnitLifecycleHistoryService } from './archive-unit-lifecycle-history.service';
 import { LifecycleOrigin, OperationLifecycleGroup } from './archive-unit-lifecycle-history.model';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LifecycleEventNodeComponent } from './lifecycle-event-node/lifecycle-event-node.component';
 
 @Component({
   selector: 'app-archive-unit-history-tab',
   templateUrl: './archive-unit-history-tab.component.html',
   styleUrls: ['./archive-unit-history-tab.component.scss'],
-  standalone: false,
+  imports: [
+    MatProgressSpinner,
+    TableFilterDirective,
+    EventTypeLabelComponent,
+    TooltipDirective,
+    TranslatePipe,
+    LifecycleEventNodeComponent,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+  ],
 })
 export class ArchiveUnitHistoryTabComponent {
   private route = inject(ActivatedRoute);

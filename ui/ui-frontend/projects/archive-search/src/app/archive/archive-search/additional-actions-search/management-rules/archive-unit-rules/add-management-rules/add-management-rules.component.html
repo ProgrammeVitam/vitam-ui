@@ -43,7 +43,7 @@
         <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>
       </div>
 
-      @if (isLoading) {
+      @if (isLoading()) {
         <div class="vitamui-min-content">
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>

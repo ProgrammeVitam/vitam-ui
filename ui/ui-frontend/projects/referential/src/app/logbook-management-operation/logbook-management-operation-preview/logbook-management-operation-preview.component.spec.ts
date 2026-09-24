@@ -34,16 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { BASE_URL, WINDOW_LOCATION } from 'vitamui-library';
+import { WINDOW_LOCATION } from 'vitamui-library';
 import { OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LogbookManagementOperationPreviewComponent', () => {
   let component: LogbookManagementOperationPreviewComponent;
@@ -55,10 +53,7 @@ describe('LogbookManagementOperationPreviewComponent', () => {
     context: [],
   };
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -76,15 +71,11 @@ describe('LogbookManagementOperationPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
-      imports: [],
+      imports: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -92,6 +83,8 @@ describe('LogbookManagementOperationPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookManagementOperationPreviewComponent);
     component = fixture.componentInstance;
+    component.tenant = {};
+    component.tenantIdentifier = 42;
     component.operation = {
       globalState: 'PAUSE',
       nextStep: '',

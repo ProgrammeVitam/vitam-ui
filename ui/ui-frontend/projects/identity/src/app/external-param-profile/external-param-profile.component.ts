@@ -34,38 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { ExternalParamProfile, GlobalEventService, SidenavPage } from 'vitamui-library';
+import { ExternalParamProfile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create/external-param-profile-create.component';
 import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-external-param-profile',
   templateUrl: './external-param-profile.component.html',
   styleUrls: ['./external-param-profile.component.css'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ExternalParamProfileDetailComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    ExternalParamProfileListComponent,
+    TranslatePipe,
+  ],
 })
 export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProfile> implements OnInit {
   dialog = inject(MatDialog);
-  route: ActivatedRoute;
-  override globalEventService: GlobalEventService;
+  private route = inject(ActivatedRoute);
 
   dto: ExternalParamProfile;
   tenantIdentifier: string;
   public search: string;
   @ViewChild(ExternalParamProfileListComponent, { static: true }) externalParamProfileListComponent: ExternalParamProfileListComponent;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-
-    this.route = route;
-    this.globalEventService = globalEventService;
-  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

@@ -41,36 +41,25 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { VitamUICommonModule } from 'vitamui-library';
-import { SharedModule } from '../shared/shared.module';
-import { CustomerCreateModule } from './customer-create/customer-create.module';
-import { CustomerListModule } from './customer-list/customer-list.module';
-import { CustomerPreviewModule } from './customer-preview/customer-preview.module';
+
 import { CustomerPopupComponent } from './customer-preview/customer-popup.component';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
-import { OwnerCreateModule } from './owner-create/owner-create.module';
-import { OwnerPreviewModule } from './owner-preview/owner-preview.module';
-import { TenantCreateModule } from './tenant-create/tenant-create.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
     VitamUICommonModule,
-    CustomerCreateModule,
-    CustomerListModule,
-    CustomerPreviewModule,
     MatDialogModule,
     MatMenuModule,
-    OwnerPreviewModule,
-    OwnerCreateModule,
-    TenantCreateModule,
     MatSidenavModule,
     CustomerRoutingModule,
     TranslatePipe,
+    CustomerComponent,
+    CustomerPopupComponent,
   ],
-  declarations: [CustomerComponent, CustomerPopupComponent],
   exports: [],
 })
 export class CustomerModule {}

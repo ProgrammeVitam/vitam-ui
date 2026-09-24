@@ -36,13 +36,14 @@
  */
 import { Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { StartupService } from 'vitamui-library';
+import { FooterComponent, HeaderModule, StartupService, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [HeaderModule, VitamuiBodyComponent, RouterOutlet, FooterComponent, SubrogationModule],
 })
 export class AppComponent {
   title = 'Identity App';

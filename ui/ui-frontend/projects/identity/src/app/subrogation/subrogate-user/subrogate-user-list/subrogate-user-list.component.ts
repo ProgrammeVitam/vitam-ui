@@ -44,7 +44,9 @@ import {
   Criterion,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
   Group,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   Operators,
   PageRequest,
@@ -53,11 +55,14 @@ import {
   SubrogationUser,
 } from 'vitamui-library';
 
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
 import { SubrogationService } from '../../subrogation.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const MINIMUM_CRITICALITY = 0;
 const AVERAGE_CRITICALITY = 1;
@@ -67,7 +72,7 @@ const MAXIMUM_CRITICALITY = 2;
   selector: 'app-subrogate-user-list',
   templateUrl: './subrogate-user-list.component.html',
   styleUrls: ['./subrogate-user-list.component.scss'],
-  standalone: false,
+  imports: [NgClass, MatProgressSpinner, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
   subrogationService: SubrogationService;
@@ -110,7 +115,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
 
     // when the list is reloaded, we retrieve the groups .
     this.updatedData.subscribe(() => {
-      const groupIds = new Set(this.dataSource.map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
+      const groupIds = new Set((this.dataSource() ?? []).map((subrogationUser: SubrogationUser) => subrogationUser.groupId));
 
       const observables = new Array<Observable<Group>>();
       groupIds.forEach((groupId) => {
@@ -127,7 +132,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
           });
 
           const subrogations = results[1];
-          this.dataSource
+          (this.dataSource() ?? [])
             .filter((subrogationUser: SubrogationUser) => !subrogationUser.criticality)
             .forEach((subrogationUser: SubrogationUser) => {
               const subrogateUserGroup = this.getGroup(subrogationUser);
@@ -141,11 +146,11 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
             });
 
           this.loaded = true;
-          this.pending = false;
+          this.pending.set(false);
         });
       } else {
         this.loaded = true;
-        this.pending = false;
+        this.pending.set(false);
       }
     });
 

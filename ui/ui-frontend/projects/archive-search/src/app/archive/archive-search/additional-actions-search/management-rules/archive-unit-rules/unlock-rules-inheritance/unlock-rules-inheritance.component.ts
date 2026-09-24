@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -46,19 +46,22 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
+  DialogHeaderComponent,
   diff,
   ManagementRuleValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  VitamuiSelectOptions,
+  SelectComponent,
   VitamTenantConfigService,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../../../archive.service';
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const APPRAISAL_PREVENT_RULE_IDENTIFIER = 'APPRAISAL_PREVENT_RULE_IDENTIFIER';
@@ -68,7 +71,15 @@ const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
   selector: 'app-unlock-rules-inheritance',
   templateUrl: './unlock-rules-inheritance.component.html',
   styleUrls: ['./unlock-rules-inheritance.component.css'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    MatProgressSpinner,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   private managementRulesValidatorService = inject(ManagementRulesValidatorService);

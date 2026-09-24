@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -130,7 +130,6 @@ function constantToTranslate(edit: boolean) {
   selector: 'pastis-user-action-save-profile',
   templateUrl: './save-profile.component.html',
   styleUrls: ['./save-profile.component.scss'],
-  standalone: false,
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   private profileService = inject(ProfileService);

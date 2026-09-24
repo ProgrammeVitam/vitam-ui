@@ -45,10 +45,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
-import { AccessContractPreviewModule } from './access-contract-preview/access-contract-preview.module';
+
 import { AccessContractRoutingModule } from './access-contract-routing.module';
 import { AccessContractComponent } from './access-contract.component';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
@@ -68,10 +67,9 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatTabsModule,
     AccessContractRoutingModule,
     AccessContractCreateComponent,
-    AccessContractPreviewModule,
-    ImportDialogModule,
     TranslatePipe,
+    AccessContractComponent,
+    AccessContractListComponent,
   ],
-  declarations: [AccessContractComponent, AccessContractListComponent],
 })
 export class AccessContractModule {}

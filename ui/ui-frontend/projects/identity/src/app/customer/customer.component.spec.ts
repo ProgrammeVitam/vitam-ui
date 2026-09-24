@@ -36,20 +36,25 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, InjectorModule, LoggerModule } from 'vitamui-library';
+import { EMPTY, of, Subject } from 'rxjs';
+import { ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerCreateComponent } from './customer-create/customer-create.component';
 import { CustomerComponent } from './customer.component';
+import { CustomerListComponent } from './customer-list/customer-list.component';
+import { CustomerPreviewComponent } from './customer-preview/customer-preview.component';
+import { OwnerPreviewComponent } from './owner-preview/owner-preview.component';
 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { CustomerService } from '../core/customer.service';
+import { CustomerDataService } from './customer.data.service';
+import { OwnerService } from './owner.service';
+import { TenantService } from './tenant.service';
 
 let component: CustomerComponent;
 let fixture: ComponentFixture<CustomerComponent>;
@@ -59,7 +64,7 @@ class Page {
     return fixture.nativeElement.querySelector('app-customer-list');
   }
   get createCustomer() {
-    return fixture.nativeElement.querySelector('.vitamui-heading button:first-child');
+    return fixture.nativeElement.querySelector('.vitamui-heading vitamui-banner button.btn.primary');
   }
 }
 
@@ -68,7 +73,7 @@ let page: Page;
 @Component({
   selector: 'app-customer-list',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class CustomerListStubComponent {
   search() {}
@@ -77,7 +82,7 @@ class CustomerListStubComponent {
 @Component({
   selector: 'app-customer-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class CustomerPreviewStubComponent {
   @Input()
@@ -91,7 +96,7 @@ class CustomerPreviewStubComponent {
 @Component({
   selector: 'app-owner-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class OwnerPreviewStubComponent {
   @Input()
@@ -105,6 +110,18 @@ class OwnerPreviewStubComponent {
 describe('CustomerComponent', () => {
   const customerServiceSpy = {
     getGdprReadOnlySettingStatus: () => of(true),
+    updated: new Subject(),
+  };
+  const tenantServiceSpy = {
+    updated: new Subject(),
+  };
+  const ownerServiceSpy = {
+    updated: new Subject(),
+  };
+  const startupServiceStub = {
+    getPortalUrl: () => 'https://dev.vitamui.com',
+    getConfigStringValue: () => 'https://dev.vitamui.com/identity',
+    getConfigNumberValue: () => 0,
   };
 
   beforeEach(async () => {
@@ -114,15 +131,37 @@ describe('CustomerComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatMenuModule, MatSidenavModule, NoopAnimationsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
-      declarations: [CustomerComponent, CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+      imports: [
+        MatMenuModule,
+        MatSidenavModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        CustomerComponent,
+        CustomerListStubComponent,
+        CustomerPreviewStubComponent,
+        OwnerPreviewStubComponent,
+      ],
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
+        { provide: TenantService, useValue: tenantServiceSpy },
+        { provide: OwnerService, useValue: ownerServiceSpy },
+        { provide: CustomerDataService, useValue: {} },
+        { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { data: EMPTY } },
+        { provide: ActivatedRoute, useValue: { data: EMPTY, snapshot: { data: { appId: 'CUSTOMERS_APP' } } } },
         { provide: ENVIRONMENT, useValue: environment },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(CustomerComponent, {
+        remove: {
+          imports: [CustomerListComponent, CustomerPreviewComponent, OwnerPreviewComponent],
+        },
+        add: {
+          imports: [CustomerListStubComponent, CustomerPreviewStubComponent, OwnerPreviewStubComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

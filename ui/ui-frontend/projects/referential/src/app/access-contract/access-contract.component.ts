@@ -38,16 +38,18 @@ import { HttpResponse } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   AccessContract,
   AccessContractService,
   ApplicationService,
   DownloadUtils,
   FileTypes,
-  GlobalEventService,
   SidenavPage,
   SnackBarService,
+  VitamuiBannerComponent,
+  VitamuiMenuButtonComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/import-dialog-param.interface';
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
@@ -57,6 +59,9 @@ import { DownloadSnackBarService } from '../core/service/download-snack-bar.serv
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { finalize, shareReplay } from 'rxjs/operators';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { AccessContractPreviewComponent } from './access-contract-preview/access-contract-preview.component';
+import { MatMenuItem } from '@angular/material/menu';
 
 const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
 
@@ -64,12 +69,22 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
   selector: 'app-access',
   templateUrl: './access-contract.component.html',
   styleUrls: ['./access-contract.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    AccessContractPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    VitamuiMenuButtonComponent,
+    MatMenuItem,
+    AccessContractListComponent,
+    TranslatePipe,
+  ],
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
-  override globalEventService: GlobalEventService;
   private dialog = inject(MatDialog);
-  route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private readonly accessContractService = inject(AccessContractService);
   private applicationService = inject(ApplicationService);
   private translateService = inject(TranslateService);
@@ -82,16 +97,6 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').pipe(shareReplay(1));
-
-  constructor() {
-    const globalEventService = inject(GlobalEventService);
-    const route = inject(ActivatedRoute);
-
-    super(route, globalEventService);
-
-    this.globalEventService = globalEventService;
-    this.route = route;
-  }
 
   ngOnInit() {
     this.route.params.subscribe((params) => (this.tenantIdentifier = params['tenantIdentifier']));

@@ -11,7 +11,7 @@
 
     <div class="vitamui-table-body">
       <div class="vitamui-table-rows">
-        @for (customer of dataSource; track customer) {
+        @for (customer of dataSource(); track customer) {
           <div
             class="vitamui-row"
             [vitamuiCommonCollapse]
@@ -54,15 +54,15 @@
     </div>
   </div>
 
-  @if (!dataSource || pending) {
+  @if (!dataSource() || pending()) {
     <div class="vitamui-min-content">
       <mat-spinner class="vitamui-spinner medium"></mat-spinner>
     </div>
   }
-  @if (!pending && dataSource?.length === 0) {
+  @if (!pending() && dataSource()?.length === 0) {
     <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
   }
-  @if (infiniteScrollDisabled && customerListService.canLoadMore && !pending) {
+  @if (infiniteScrollDisabled() && customerListService.canLoadMore && !pending()) {
     <div class="vitamui-min-content vitamui-table-message" (click)="customerListService.loadMore()">
       <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
     </div>

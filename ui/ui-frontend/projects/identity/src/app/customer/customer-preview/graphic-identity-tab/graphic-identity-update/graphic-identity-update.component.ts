@@ -34,20 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Customer, Logo } from 'vitamui-library';
 import { CustomerService } from '../../../../core/customer.service';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
+import { GraphicIdentityComponent } from '../graphic-identity/graphic-identity.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-graphic-identity-update',
   templateUrl: './graphic-identity-update.component.html',
   styleUrls: ['./graphic-identity-update.component.scss'],
-  standalone: false,
+  imports: [GraphicIdentityComponent, MatDialogActions, TranslatePipe],
 })
 export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<GraphicIdentityUpdateComponent>>(MatDialogRef);

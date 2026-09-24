@@ -35,27 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { of } from 'rxjs';
+import { BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { AddUnitsComponent } from './add-units.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DecimalPipe } from '@angular/common';
 import { ArchiveCollectService } from '../archive-collect.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const selectedTransaction: Transaction = {
   id: 'transactionId',
@@ -103,11 +92,9 @@ describe('AddUnitsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddUnitsComponent],
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), AddUnitsComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },
@@ -116,8 +103,6 @@ describe('AddUnitsComponent', () => {
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         DecimalPipe,
         BytesPipe,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

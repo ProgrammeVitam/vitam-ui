@@ -71,8 +71,9 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, inject, Input, OnDestroy, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { FileService } from '../../../core/services/file.service';
@@ -88,10 +89,22 @@ import { DuplicateMetadataComponent } from '../../../user-actions/duplicate-meta
 import { UserActionRemoveMetadataComponent } from '../../../user-actions/remove-metadata/remove-metadata.component';
 import { FileTreeMetadataService } from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
-import { Logger, SnackBarService } from 'vitamui-library';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { Logger, SnackBarService, TooltipDirective } from 'vitamui-library';
+import {
+  MatNestedTreeNode,
+  MatTree,
+  MatTreeNestedDataSource,
+  MatTreeNodeDef,
+  MatTreeNodeOutlet,
+  MatTreeNodeToggle,
+} from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { filter, map, tap } from 'rxjs/operators';
+import { MatDivider, MatListItem } from '@angular/material/list';
+import { NgClass, NgStyle } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { ModifyTextButtonComponent } from '../../../shared/modify-text-button/modify-text-button.component';
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -131,7 +144,22 @@ function constantToTranslate() {
   selector: 'pastis-file-tree',
   templateUrl: './file-tree.component.html',
   styleUrls: ['./file-tree.component.scss'],
-  standalone: false,
+  imports: [
+    MatTree,
+    MatTreeNodeDef,
+    MatNestedTreeNode,
+    MatListItem,
+    NgClass,
+    NgStyle,
+    MatDivider,
+    MatIcon,
+    MatIconButton,
+    MatTreeNodeToggle,
+    ModifyTextButtonComponent,
+    TooltipDirective,
+    MatTreeNodeOutlet,
+    TranslatePipe,
+  ],
 })
 export class FileTreeComponent implements OnInit, OnDestroy {
   fileTreeService = inject(FileTreeService);
@@ -142,7 +170,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
   private translateService = inject(TranslateService);
   private logger = inject(Logger);
-  private cdr = inject(ChangeDetectorRef);
   private snackBarService = inject(SnackBarService);
 
   static archiveUnits: FileNode;
@@ -158,17 +185,19 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   @Input() rootTabMetadataName: string;
   @Input() activeTabIndex: number;
 
+  @ViewChildren(MatNestedTreeNode) private nestedTreeNodes: QueryList<MatNestedTreeNode<FileNode>>;
+
   isStandalone: boolean = environment.standalone;
 
   dataSource = new MatTreeNestedDataSource<FileNode>();
   treeControl = new NestedTreeControl<FileNode>((node) => node.children);
-  updating = false;
+  updating = signal(false);
 
   data: FileNode;
   parentNodeMap = new Map<FileNode, FileNode>();
   dataChange = new BehaviorSubject<FileNode>(null);
-  selectedNode: FileNode;
-  sedaLanguage: boolean;
+  selectedNode = signal<FileNode>(null);
+  sedaLanguage = toSignal(this.sedaLanguageService.sedaLanguage, { initialValue: true });
   viewChild: FileNode[] = [];
 
   notificationRemoveSuccessOne: string;
@@ -238,16 +267,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.popupDuplicateTitreTwo = 'son contenu et son paramétrage (cardinalités et commentaire)';
     }
     this.subscriptions.add(
-      this.sedaLanguageService.sedaLanguage.subscribe({
-        next: (value: boolean) => {
-          this.sedaLanguage = value;
-        },
-        error: (error) => {
-          this.logger.error(this, error);
-        },
-      }),
-    );
-    this.subscriptions.add(
       this.sedaService.sedaRules$.subscribe((value) => {
         this.sedaService.selectedSedaNode.next(value);
         this.sedaService.selectedSedaNodeParent.next(value);
@@ -262,18 +281,17 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.fileTreeService.data$
         .pipe(
           filter((data: FileNode[]) => Boolean(data.length)),
-          tap(() => (this.updating = true)),
+          tap(() => this.updating.set(true)),
           tap((data: FileNode[]) => {
             this.dataSource.data = data;
-            this.cdr.detectChanges();
+            this.updating.set(false);
           }),
-          tap(() => (this.updating = false)),
         )
         .subscribe(),
     );
     this.subscriptions.add(
       this.fileTreeService.selectedNode$.subscribe((selectedNode) => {
-        this.selectedNode = selectedNode;
+        this.selectedNode.set(selectedNode);
       }),
     );
   }
@@ -302,9 +320,27 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   /** Add an item (or a list of items) in the Tree */
   insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
     this.logger.log(this, 'After data is :', this.fileTreeService.getNestedDataSource().data);
+    if (!parent) {
+      this.logger.error(this, 'insertItem called without parent node, nothing to add', elementsToAdd);
+      return;
+    }
+    if (!parent.sedaData) {
+      this.logger.error(this, 'insertItem called on a node without sedaData, cannot resolve elements', parent, elementsToAdd);
+      return;
+    }
+    parent.children ??= [];
     const sedaNodesToAdd = elementsToAdd
       .map((nodeName) => this.sedaService.findSedaNode(nodeName, parent.sedaData))
       .filter((node) => Boolean(node));
+
+    if (sedaNodesToAdd.length !== elementsToAdd.length) {
+      this.logger.error(
+        this,
+        'Some elements could not be resolved against the SEDA model and were ignored',
+        elementsToAdd,
+        parent.sedaData,
+      );
+    }
 
     if (parent.children && sedaNodesToAdd) {
       this.insertItemIterate(sedaNodesToAdd, insertItemDuplicate, node, parent);
@@ -491,8 +527,31 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       ? this.fileService.getFileNodeById(root, nodeIdToExpand)
       : this.fileService.getFileNodeByName(root, this.rootTabMetadataName);
     if (data) {
+      // Always republish so service-level data stays in sync; the data$
+      // subscription also flips the updating signal for zoneless change detection.
       this.fileTreeService.setNestedDataSourceData([data]);
       this.fileTreeService.nestedTreeControl.expand(node);
+      // In-place children mutations (push/splice) are invisible to the data source
+      // differ (same root reference): re-run the mutated parent's own differ so
+      // added/removed rows render immediately.
+      this.refreshRenderedChildren(node);
+    }
+  }
+
+  // Re-run the rendered nested node's own children differ. MatTree only emits
+  // the top-level data array on dataSource change; nested children rendered once
+  // never refresh on in-place mutation without this call.
+  private refreshRenderedChildren(parent: FileNode): void {
+    const nestedNode = this.nestedTreeNodes?.find((nested) => nested.data === parent);
+    if (nestedNode) {
+      // updateChildrenNodes is protected on CdkNestedTreeNode: accessed through a
+      // minimal structural interface to avoid `any`.
+      (nestedNode as unknown as { updateChildrenNodes(children?: FileNode[]): void }).updateChildrenNodes();
+    } else {
+      // Parent not currently rendered: force a full tree rebuild on next microtask
+      // (destroy + recreate from current data) so the mutation is never invisible.
+      this.updating.set(true);
+      queueMicrotask(() => this.updating.set(false));
     }
   }
 
@@ -526,7 +585,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   onResolveName(node: FileNode) {
-    if (!this.sedaLanguage && node.sedaData?.nameFr) {
+    if (!this.sedaLanguage() && node.sedaData?.nameFr) {
       return node.sedaData.nameFr;
     }
     return node.name;
@@ -701,7 +760,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   // For a given node, searches the required node in the seda.json file and
   // returns true if the node's value of "Collection" is equal to the clicked tab
   isPartOfCollection(node: FileNode): boolean {
-    if (!node.sedaData) {
+    if (!node?.sedaData?.collection) {
       return false;
     }
     return this.collectionName === node.sedaData.collection.valueOf();
@@ -743,9 +802,9 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   selectedItem(node: FileNode): boolean {
-    if (!this.selectedNode) return false;
+    if (!this.selectedNode()) return false;
 
-    return this.selectedNode.id === node.id;
+    return this.selectedNode().id === node.id;
   }
 
   expandChildren(node: FileNode) {

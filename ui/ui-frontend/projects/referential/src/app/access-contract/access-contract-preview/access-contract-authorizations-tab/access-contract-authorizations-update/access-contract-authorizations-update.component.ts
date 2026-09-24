@@ -34,25 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import {
   AccessContract,
-  AccessRightType,
-  Option,
-  VitamuiSelectOptions,
   AccessContractDisplay,
   AccessContractService,
+  AccessRightType,
   AgencyService,
+  DialogHeaderComponent,
+  NextStepComponent,
+  Option,
+  PreviousStepComponent,
+  SelectComponent,
+  SlideToggleComponent,
+  TooltipDirective,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { RULE_TYPES } from '../../../../rule/rules.constants';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-authorizations-update',
   templateUrl: './access-contract-authorizations-update.component.html',
   styleUrls: ['./access-contract-authorizations-update.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    MatDialogContent,
+    MatRadioGroup,
+    MatRadioButton,
+    SelectComponent,
+    SlideToggleComponent,
+    TooltipDirective,
+    MatDialogActions,
+    NextStepComponent,
+    PreviousStepComponent,
+    TranslatePipe,
+  ],
 })
 export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AccessContractAuthorizationsUpdateComponent>>(MatDialogRef);

@@ -35,7 +35,7 @@
     </div>
 
     <div class="vitamui-table-body">
-      @for (format of dataSource; track format; let index = $index) {
+      @for (format of dataSource(); track format; let index = $index) {
         <div class="vitamui-table-rows" (click)="fileFormatClick.emit(format)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-1"><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></div>
@@ -64,15 +64,15 @@
       }
     </div>
 
-    @if (!dataSource || pending) {
+    @if (!dataSource() || pending()) {
       <div class="vitamui-min-content">
         <mat-spinner class="vitamui-spinner medium"></mat-spinner>
       </div>
     }
-    @if (!pending && dataSource?.length === 0) {
+    @if (!pending() && dataSource()?.length === 0) {
       <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
     }
-    @if (infiniteScrollDisabled && fileFormatService.canLoadMore && !pending) {
+    @if (infiniteScrollDisabled() && fileFormatService.canLoadMore && !pending()) {
       <div class="vitamui-min-content vitamui-table-message" (click)="fileFormatService.loadMore()">
         <span class="clickable">{{ 'COMMON.SHOW_MORE_RESULTS' | translate }}</span>
       </div>

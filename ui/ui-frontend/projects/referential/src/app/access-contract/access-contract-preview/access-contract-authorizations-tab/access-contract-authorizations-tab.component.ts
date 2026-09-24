@@ -34,20 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import type { AccessContract, AccessContractDisplay, Option, VitamuiSelectOptions } from 'vitamui-library';
-import { AccessRightType } from 'vitamui-library';
-import { accessRightTypeOf, AgencyService } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractDisplay,
+  AccessRightType,
+  accessRightTypeOf,
+  AgencyService,
+  Option,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { MatDialog } from '@angular/material/dialog';
 import { AccessContractAuthorizationsUpdateComponent } from './access-contract-authorizations-update/access-contract-authorizations-update.component';
 import { RULE_TYPES } from '../../../rule/rules.constants';
+import { NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-access-contract-authorizations-tab',
   templateUrl: './access-contract-authorizations-tab.component.html',
   styleUrls: ['./access-contract-authorizations-tab.component.scss'],
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
 })
 export class AccessContractAuthorizationsTabComponent implements OnInit {
   private agencyService = inject(AgencyService);

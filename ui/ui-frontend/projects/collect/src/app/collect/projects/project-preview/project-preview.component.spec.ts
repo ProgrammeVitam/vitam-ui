@@ -45,13 +45,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  BASE_URL,
   FilingPlanService,
   LoggerModule,
   PaginatedResponse,
   Project,
   ProjectStatus,
   SchemaService,
+  SnackBarService,
   TenantSelectionService,
   Transaction,
   TransactionStatus,
@@ -112,6 +112,7 @@ describe('ProjectPreviewComponent', () => {
     updateProjectContext: () => of(projectAfterUpdate),
     updateProjectAttachments: () => of(projectAfterUpdate),
     updateProjectConfiguration: () => of(projectAfterUpdate),
+    nextUpdatedProject: () => {},
     getLegalStatusList: () => [
       { id: 'Public Archive', value: 'Public archives' },
       { id: 'Private Archive', value: 'Private archives' },
@@ -155,30 +156,34 @@ describe('ProjectPreviewComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ProjectsService, useValue: projectServiceMock },
         {
           provide: MatDialogRef,
           useValue: {
             close: () => {},
           },
         },
-        { provide: ProjectsApiService, useValue: projectApiServiceMock },
         { provide: ActivatedRoute, useValue: { params: of('11') } },
-        { provide: TenantSelectionService, useValue: tenantSelectionServiceMock },
-        { provide: SchemaService, useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } },
-        {
-          provide: FilingPlanService,
-          useValue: {
-            tree$: of([]),
-            expandChange$: EMPTY,
-            loadTree: () => of([]),
-            loadFilingPlan: () => of([]),
-          },
-        },
         { provide: Router, useValue: {} },
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ProjectsService, { useValue: projectServiceMock })
+      .overrideProvider(ProjectsApiService, { useValue: projectApiServiceMock })
+      .overrideProvider(TenantSelectionService, { useValue: tenantSelectionServiceMock })
+      .overrideProvider(SchemaService, { useValue: { getDescriptiveSchemaTree: () => of(), getSchema: () => of([]) } })
+      .overrideProvider(FilingPlanService, {
+        useValue: {
+          tree$: of([]),
+          expandChange$: EMPTY,
+          loadTree: () => of([]),
+          loadFilingPlan: () => of([]),
+        },
+      })
+      .overrideProvider(SnackBarService, {
+        useValue: {
+          open: vi.fn(),
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(async () => {
@@ -227,8 +232,6 @@ describe('ProjectPreviewComponent', () => {
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(true);
-    fixture.whenStable().then(() => {
-      expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
-    });
+    expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
   }));
 });

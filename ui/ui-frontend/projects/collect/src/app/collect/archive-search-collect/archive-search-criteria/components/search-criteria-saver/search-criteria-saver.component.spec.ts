@@ -42,10 +42,8 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { environment } from 'projects/collect/src/environments/environment';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -60,21 +58,10 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 import { SearchCriteriaSaverService } from '../../services/search-criteria-saver.service';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
-  }
-}
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
   }
 }
 
@@ -102,8 +89,7 @@ describe('SearchCriteriaSaverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
-      declarations: [SearchCriteriaSaverComponent, MockTruncatePipe],
+      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), SearchCriteriaSaverComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
         ArchiveSharedDataService,
@@ -114,7 +100,11 @@ describe('SearchCriteriaSaverComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'COLLECT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'COLLECT_APP' }),
+            snapshot: { data: { appId: 'COLLECT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
         { provide: SnackBarService, useValue: {} },

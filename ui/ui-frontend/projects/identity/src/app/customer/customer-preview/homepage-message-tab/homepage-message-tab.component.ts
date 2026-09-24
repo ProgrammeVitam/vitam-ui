@@ -34,18 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import type { Customer } from 'vitamui-library';
-import { StartupService } from 'vitamui-library';
+import { Customer, StartupService } from 'vitamui-library';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';
+import { KeyValuePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-homepage-message-tab',
   templateUrl: './homepage-message-tab.component.html',
   styleUrls: ['./homepage-message-tab.component.scss'],
-  standalone: false,
+  imports: [KeyValuePipe, TranslatePipe],
 })
 export class HomepageMessageTabComponent implements OnDestroy {
   private dialog = inject(MatDialog);

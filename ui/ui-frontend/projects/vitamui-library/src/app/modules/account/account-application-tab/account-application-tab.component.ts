@@ -40,6 +40,5 @@ import { Component } from '@angular/core';
   selector: 'vitamui-common-account-application-tab',
   templateUrl: './account-application-tab.component.html',
   styleUrls: ['./account-application-tab.component.scss'],
-  standalone: false,
 })
 export class AccountApplicationTabComponent {}

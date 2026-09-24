@@ -35,21 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, of } from 'rxjs';
-import {
-  AccessContractService,
-  BASE_URL,
-  ConfirmDialogService,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-} from 'vitamui-library';
+import { AccessContractService, ConfirmDialogService, ExternalParameters, ExternalParametersService, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
@@ -57,8 +48,6 @@ import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateComponent } from './ingest-contract-create.component';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('IngestContractCreateComponent', () => {
   let component: IngestContractCreateComponent;
@@ -100,16 +89,9 @@ describe('IngestContractCreateComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        IngestContractCreateComponent,
-        NoopAnimationsModule,
-        VitamUICommonTestModule,
-        LoggerModule.forRoot(),
-        MatButtonToggleModule,
-      ],
+      imports: [IngestContractCreateComponent, VitamUICommonTestModule, LoggerModule.forRoot(), MatButtonToggleModule],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: IngestContractService, useValue: {} },
@@ -120,8 +102,6 @@ describe('IngestContractCreateComponent', () => {
         { provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: AccessContractService, useValue: accessContractServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
