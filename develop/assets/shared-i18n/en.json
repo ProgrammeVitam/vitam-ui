@@ -4104,6 +4104,8 @@
         "JOURNAL_COLUMN": "Logbook",
         "JOURNAL_UNIT": "Archival unit lifecycle",
         "JOURNAL_OBJECT_GROUP": "Object group lifecycle",
+        "ORIGIN_UA": "AU",
+        "ORIGIN_GOT": "GOT",
         "OUTCOME_OK": "Success",
         "OUTCOME_WARNING": "Warning",
         "OUTCOME_KO": "Failure",
