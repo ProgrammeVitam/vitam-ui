@@ -312,7 +312,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   searchCriteriaHistory: SearchCriteriaHistory[] = [];
   criteriaSearchList: SearchCriteriaEltDto[] = [];
   listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
-  searchCriteriaKeys: string[];
+  searchCriteriaKeys = signal<string[]>([]);
   additionalSearchCriteriaCategories: SearchCriteriaCategory[];
 
   subscriptions: Subscription = new Subscription();
@@ -539,7 +539,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     });
     this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
     this.searchCriterias = new Map();
-    this.searchCriteriaKeys = [];
+    this.searchCriteriaKeys.set([]);
 
     if (!this.route.snapshot.queryParamMap.keys.length) {
       this.queryParamsService
@@ -628,7 +628,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   showStoredSearchCriteria(event: SearchCriteriaHistory) {
     if (this.searchCriterias.size > 0) {
       this.searchCriterias = new Map();
-      this.searchCriteriaKeys = [];
+      this.searchCriteriaKeys.set([]);
       this.included = false;
     }
     this.clearCriteria();
@@ -652,7 +652,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
-    this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
+    this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys(), this.searchCriterias, this.nbQueryCriteria);
+    // The helper mutates the keys array in place: publish a new reference so zoneless change detection re-renders the chips.
+    this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
     if (this.searchCriterias && this.searchCriterias.size === 0) {
       this.submitted.set(false);
       this.showCriteriaPanel.set(true);
@@ -996,9 +998,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.nodeArray,
           nodeId.value,
           this.searchCriterias,
-          this.searchCriteriaKeys,
+          this.searchCriteriaKeys(),
           this.nbQueryCriteria,
         );
+        this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
       });
       this.nodeArray = null;
       this.archiveSharedDataService.emitToggle(true);
@@ -1087,7 +1090,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   clearCriteria() {
-    const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys);
+    const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys());
     searchCriteriaKeysCloned.forEach((criteriaKey) => {
       if (this.searchCriterias.has(criteriaKey)) {
         const criteria = this.searchCriterias.get(criteriaKey);
@@ -1101,7 +1104,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.removeCriteriaCategory(category);
     });
     this.searchCriterias = new Map();
-    this.searchCriteriaKeys = [];
+    this.searchCriteriaKeys.set([]);
     this.included = false;
     this.nbQueryCriteria = 0;
     this.pageNumbers = 0;
@@ -1598,7 +1601,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   ) {
     this.archiveHelperService.addCriteria(
       this.searchCriterias,
-      this.searchCriteriaKeys,
+      this.searchCriteriaKeys(),
       this.nbQueryCriteria,
       keyElt,
       valueElt,
@@ -1610,6 +1613,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       dataType,
       emit,
     );
+    // The helper mutates the keys array in place: publish a new reference so zoneless change detection re-renders the chips.
+    this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
   }
 
   trackBy(_: number, unit: Unit) {
