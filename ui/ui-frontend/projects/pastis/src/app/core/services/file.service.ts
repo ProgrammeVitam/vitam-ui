@@ -176,7 +176,7 @@ export class FileService implements OnDestroy {
         node.external = node.sedaData.external;
       }
 
-      this.linkFileNodeToSedaData(node, node.children);
+      this.linkFileNodeToSedaData(node, node.children ?? []);
     });
   }
 
@@ -205,10 +205,13 @@ export class FileService implements OnDestroy {
   }
 
   findChildById(nodeId: number, node: FileNode): FileNode {
+    if (!node) {
+      return undefined;
+    }
     if (nodeId === node.id) {
       return node;
     }
-    for (const child of node.children) {
+    for (const child of node.children ?? []) {
       if (child.id === nodeId) {
         return child;
       }
@@ -263,7 +266,7 @@ export class FileService implements OnDestroy {
       return fileTree;
     }
 
-    for (const child of fileTree.children) {
+    for (const child of fileTree.children ?? []) {
       const result = this.getFileNodeByPredicate(child, predicate);
       if (result) {
         return result;
