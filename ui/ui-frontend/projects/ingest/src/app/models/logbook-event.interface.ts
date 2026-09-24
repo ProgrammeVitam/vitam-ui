@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { IngestStatus } from 'vitamui-library';
+
 export interface LogbookEvent {
   id?: string;
   evId?: string;
@@ -58,15 +60,6 @@ export interface LogbookEvent {
 export interface LogbookOperation extends LogbookEvent {
   obIdIn?: string;
   events?: LogbookEvent[];
-}
-
-export enum IngestStatus {
-  STARTED = 'STARTED',
-  IN_PROGRESS = 'En cours',
-  OK = 'OK',
-  WARNING = 'WARNING',
-  KO = 'KO',
-  FATAL = 'FATAL',
 }
 
 // evDetData

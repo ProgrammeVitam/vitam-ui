@@ -34,50 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { environment } from 'projects/collect/src/environments/environment';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
-import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
-  let component: ArchiveUnitRulesDetailsTabComponent;
-  let fixture: ComponentFixture<ArchiveUnitRulesDetailsTabComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesDetailsTabComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [InjectorModule, LoggerModule.forRoot()],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: environment, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
-    }).compileComponents();
-  });
-
-  beforeEach(async () => {
-    fixture = TestBed.createComponent(ArchiveUnitRulesDetailsTabComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    component.archiveUnit = {
-      '#allunitups': [],
-      '#id': 'id',
-      '#object': '',
-      '#unitType': undefined,
-      '#unitups': [],
-      '#opi': '',
-      Title_: { fr: 'Teste', en: 'Test' },
-      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+export enum IngestStatus {
+  STARTED = 'STARTED',
+  IN_PROGRESS = 'En cours',
+  OK = 'OK',
+  WARNING = 'WARNING',
+  KO = 'KO',
+  FATAL = 'FATAL',
+}

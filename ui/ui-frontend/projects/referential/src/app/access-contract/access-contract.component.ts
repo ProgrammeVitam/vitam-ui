@@ -43,6 +43,7 @@ import {
   AccessContract,
   AccessContractService,
   ApplicationService,
+  DownloadSnackBarService,
   DownloadUtils,
   FileTypes,
   GlobalEventService,
@@ -53,7 +54,6 @@ import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/imp
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 
 import { firstValueFrom, Subscription } from 'rxjs';
-import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { AccessContractCreateComponent } from './access-contract-create/access-contract-create.component';
 import { AccessContractListComponent } from './access-contract-list/access-contract-list.component';
 import { finalize, shareReplay } from 'rxjs/operators';

@@ -38,7 +38,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
+import { DownloadSnackBarService, ENVIRONMENT, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
 import type { Group } from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
@@ -49,7 +49,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupComponent } from './group.component';
-import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { GroupService } from './group.service';
 
 let component: GroupComponent;

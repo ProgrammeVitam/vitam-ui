@@ -55,7 +55,6 @@ import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from '../validators/management-contract-create.validators';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -81,7 +80,6 @@ import { PersistentIdentifierPoliciesFormModule } from '../components/create-per
     MatSelectModule,
     PersistentIdentifierPoliciesFormModule,
     ReactiveFormsModule,
-    SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

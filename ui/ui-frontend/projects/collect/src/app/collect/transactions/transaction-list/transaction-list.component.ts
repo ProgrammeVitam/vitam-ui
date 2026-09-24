@@ -38,6 +38,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, filter, finalize, of, switchMap } from 'rxjs';
 import {
+  BatchStatus,
   ConfirmDialogComponent,
   ConfirmDialogData,
   Direction,
@@ -53,7 +54,6 @@ import { ProjectsService } from '../../projects/projects.service';
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TransactionValidationMode } from '../../models/transaction-validation-mode.enum';
-import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
 
 @Component({
   selector: 'app-transaction-list',

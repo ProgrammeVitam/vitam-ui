@@ -73,7 +73,7 @@ import { SimpleCriteriaSearchComponent } from './archive-search-criteria/compone
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NodeData } from '../../../../../archive-search/src/app/archive/models/nodedata.interface';
+import { NodeData } from './archive-search-criteria/models/nodedata.interface';
 
 const arrayWithExactContents = <T>(arr: T[]) => expect.arrayContaining(arr as any);
 

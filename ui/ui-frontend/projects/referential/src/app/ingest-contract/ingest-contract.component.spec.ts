@@ -40,13 +40,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ApplicationService, BASE_URL, GlobalEventService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import {
+  ApplicationService,
+  BASE_URL,
+  DownloadSnackBarService,
+  GlobalEventService,
+  InjectorModule,
+  LoggerModule,
+  WINDOW_LOCATION,
+} from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { IngestContractComponent } from './ingest-contract.component';
 import { IngestContractService } from './ingest-contract.service';
-import { DownloadSnackBarService } from '../core/service/download-snack-bar.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('IngestContractComponent', () => {

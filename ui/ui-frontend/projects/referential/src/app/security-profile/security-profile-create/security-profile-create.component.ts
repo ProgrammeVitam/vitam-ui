@@ -42,7 +42,6 @@ import { ConfirmDialogService, VitamUICommonModule, VitamUILibraryModule } from 
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
-import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -64,7 +63,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     ReactiveFormsModule,
     SecurityProfileEditPermissionModule,
-    SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

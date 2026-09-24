@@ -51,6 +51,7 @@ import {
   APPRAISAL_RULE,
   ArchiveSearchResultFacets,
   ArchiveUnit,
+  BatchStatus,
   BreadCrumbData,
   ConfirmDialogComponent,
   ConfirmDialogData,
@@ -110,7 +111,6 @@ import { TransactionsService } from '../transactions/transactions.service';
 import { SipImportTrackingService } from '../shared/sip-import-tracking.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { TransactionValidationMode } from '../models/transaction-validation-mode.enum';
-import { BatchStatus } from 'projects/vitamui-library/src/app/modules/models/collect/batch-status';
 
 const PAGE_SIZE = 10;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
