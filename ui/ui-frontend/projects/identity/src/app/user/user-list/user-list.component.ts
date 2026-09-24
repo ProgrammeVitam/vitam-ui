@@ -63,14 +63,17 @@ import {
 
 import {
   Component,
+  effect,
   ElementRef,
   EventEmitter,
   inject,
   Input,
+  input,
   LOCALE_ID,
   OnDestroy,
   OnInit,
   Output,
+  signal,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -131,8 +134,8 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     level: null,
     group: null,
   };
-  groupFilterOptions: Array<{ value: string; label: string }> = [];
-  levelFilterOptions: Array<{ value: string; label: string }> = [];
+  groupFilterOptions = signal<Array<{ value: string; label: string }>>([]);
+  levelFilterOptions = signal<Array<{ value: string; label: string }>>([]);
   orderBy = 'lastname';
   direction = Direction.ASCENDANT;
   genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
@@ -155,22 +158,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   }
   private _connectedUserInfo: AdminUserProfile;
 
-  @Input()
-  get groups(): Group[] {
-    return this._groups;
-  }
-  set groups(groupList: Group[]) {
-    this._groups = groupList;
-    if (groupList) {
-      this.updateData(groupList);
-
-      this.updatedData.subscribe(() => {
-        this.updateData(groupList);
-      });
-    }
-  }
-
-  private _groups: Group[];
+  readonly groups = input<Group[]>(null);
 
   constructor() {
     const userService = inject(UserService);
@@ -183,6 +171,13 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
       roles: [Role.ROLE_GENERIC_USERS],
     };
+
+    effect(() => {
+      const groupList = this.groups();
+      if (groupList) {
+        this.updateData(groupList);
+      }
+    });
   }
 
   ngOnInit() {
@@ -203,6 +198,15 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
     });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+
+    this.updatedUserSub.add(
+      this.updatedData.subscribe(() => {
+        const groupList = this.groups();
+        if (groupList) {
+          this.updateData(groupList);
+        }
+      }),
+    );
 
     searchCriteriaChange.subscribe(() => {
       const query: CriteriaSearchQuery = {
@@ -226,14 +230,14 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
         }
       }
     });
-    this.groupFilterOptions = this.userGroups.map((group) => ({ value: group.id, label: group.group.name }));
-    this.groupFilterOptions.sort(sortByLabel(this.locale));
+    this.groupFilterOptions.set(this.userGroups.map((group) => ({ value: group.id, label: group.group.name })));
+    this.groupFilterOptions().sort(sortByLabel(this.locale));
   }
 
   refreshLevelOptions(query?: CriteriaSearchQuery) {
     this.userService.getLevelsNoEmpty(query).subscribe((levels) => {
-      this.levelFilterOptions = levels.map((level) => ({ value: level, label: level }));
-      this.levelFilterOptions.sort(sortByLabel(this.locale));
+      this.levelFilterOptions.set(levels.map((level) => ({ value: level, label: level })));
+      this.levelFilterOptions().sort(sortByLabel(this.locale));
     });
   }
 
@@ -243,7 +247,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   }
 
   getGroup(user: User) {
-    const userGroup = this.groups.find((group) => group.id === user.groupId);
+    const userGroup = this.groups()?.find((group) => group.id === user.groupId);
     return userGroup ? userGroup : undefined;
   }
 
