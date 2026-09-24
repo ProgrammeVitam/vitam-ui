@@ -6,7 +6,7 @@
         <vitamui-select
           class="col"
           formControlName="oldRule"
-          [options]="ruleOptions"
+          [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
         ></vitamui-select>
@@ -25,9 +25,9 @@
         <vitamui-select
           class="col"
           formControlName="newRule"
-          [options]="ruleOptions"
+          [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
-          [disabled]="isNewRuleDisabled"
+          [disabled]="isNewRuleDisabled()"
         ></vitamui-select>
       </div>
     </div>
@@ -48,7 +48,7 @@
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
-              [disabled]="isStartDateDisabled"
+              [disabled]="isStartDateDisabled()"
             ></vitamui-datepicker>
             <button
               [ngStyle]="{
@@ -57,7 +57,7 @@
                 width: '30',
                 height: '30',
               }"
-              [style.visibility]="ruleDetailsForm.get('startDate').value && isShowCheckButton ? 'visible' : 'hidden'"
+              [style.visibility]="ruleDetailsForm.get('startDate').value && isShowCheckButton() ? 'visible' : 'hidden'"
               type="button"
               mat-mini-fab
               (click)="addStartDate()"
@@ -81,24 +81,24 @@
       </div>
     </div>
 
-    @if (isLoading) {
+    @if (isLoading()) {
       <div class="vitamui-min-content">
         <mat-spinner class="vitamui-spinner large"></mat-spinner>
       </div>
     } @else {
-      @if (showText && itemsWithSameRule !== '0') {
+      @if (showText() && itemsWithSameRule() !== '0') {
         <div class="row message-text-ok">
           <div class="col-12 d-flex align-items-center">
             <i class="material-icons">check_circle</i
-            ><span class="p-2">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+            ><span class="p-2">{{ itemsWithSameRule() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
           </div>
         </div>
       }
-      @if (showText && itemsToUpdate !== '0') {
+      @if (showText() && itemsToUpdate() !== '0') {
         <div class="row message-text-ko">
           <div class="col-12 d-flex align-items-center">
             <i class="material-icons">error</i
-            ><span class="p-2">{{ itemsToUpdate }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
+            ><span class="p-2">{{ itemsToUpdate() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
           </div>
         </div>
       }
@@ -130,7 +130,7 @@
           type="submit"
           class="btn primary mr-4"
           [disabled]="
-            disabledControl ||
+            disabledControl() ||
             !ruleDetailsForm.valid ||
             (ruleDetailsForm.dirty && ruleDetailsForm.errors && ruleDetailsForm.errors['mustUpdateRuleOrStartDate'])
           "
@@ -151,20 +151,20 @@
 </ng-template>
 
 <ng-template #okTotalFound>
-  @if (showText && itemsWithSameRule !== '0') {
+  @if (showText() && itemsWithSameRule() !== '0') {
     <div class="row message-text-ok">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">check_circle</i
-        ><span class="p-2">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+        ><span class="p-2">{{ itemsWithSameRule() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
       </div>
     </div>
   }
 
-  @if (showText && itemsToUpdate !== '0') {
+  @if (showText() && itemsToUpdate() !== '0') {
     <div class="row message-text-ko">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">error</i
-        ><span class="p-2">{{ itemsToUpdate }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
+        ><span class="p-2">{{ itemsToUpdate() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
       </div>
     </div>
   }
