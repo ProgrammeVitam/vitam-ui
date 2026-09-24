@@ -165,6 +165,6 @@ function findMostRecentEventDate(event: ConsolidatedLifecycleEvent): string {
 }
 
 function sortEventsByDate(events: ConsolidatedLifecycleEvent[]): void {
-  events.sort((a, b) => (a.evDateTime < b.evDateTime ? -1 : a.evDateTime > b.evDateTime ? 1 : 0));
+  events.sort((a, b) => (a.evDateTime < b.evDateTime ? 1 : a.evDateTime > b.evDateTime ? -1 : 0));
   events.forEach((event) => sortEventsByDate(event.children));
 }
