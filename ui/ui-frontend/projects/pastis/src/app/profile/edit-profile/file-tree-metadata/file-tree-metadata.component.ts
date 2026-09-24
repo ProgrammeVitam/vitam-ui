@@ -517,7 +517,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
 
   onAddNode() {
     if (this.clickedNode().name === 'DescriptiveMetadata') {
-      let elements: SedaData[];
+      const elements: SedaData[] = [];
       elements.push({
         name: 'ArchiveUnit',
         nameFr: null,

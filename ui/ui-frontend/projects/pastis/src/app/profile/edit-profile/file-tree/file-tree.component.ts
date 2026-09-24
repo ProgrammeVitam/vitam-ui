@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -184,6 +184,8 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   @Input() collectionName: string;
   @Input() rootTabMetadataName: string;
   @Input() activeTabIndex: number;
+
+  @ViewChildren(MatNestedTreeNode) private nestedTreeNodes: QueryList<MatNestedTreeNode<FileNode>>;
 
   isStandalone: boolean = environment.standalone;
 
@@ -318,9 +320,27 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   /** Add an item (or a list of items) in the Tree */
   insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
     this.logger.log(this, 'After data is :', this.fileTreeService.getNestedDataSource().data);
+    if (!parent) {
+      this.logger.error(this, 'insertItem called without parent node, nothing to add', elementsToAdd);
+      return;
+    }
+    if (!parent.sedaData) {
+      this.logger.error(this, 'insertItem called on a node without sedaData, cannot resolve elements', parent, elementsToAdd);
+      return;
+    }
+    parent.children ??= [];
     const sedaNodesToAdd = elementsToAdd
       .map((nodeName) => this.sedaService.findSedaNode(nodeName, parent.sedaData))
       .filter((node) => Boolean(node));
+
+    if (sedaNodesToAdd.length !== elementsToAdd.length) {
+      this.logger.error(
+        this,
+        'Some elements could not be resolved against the SEDA model and were ignored',
+        elementsToAdd,
+        parent.sedaData,
+      );
+    }
 
     if (parent.children && sedaNodesToAdd) {
       this.insertItemIterate(sedaNodesToAdd, insertItemDuplicate, node, parent);
@@ -507,8 +527,31 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       ? this.fileService.getFileNodeById(root, nodeIdToExpand)
       : this.fileService.getFileNodeByName(root, this.rootTabMetadataName);
     if (data) {
+      // Always republish so service-level data stays in sync; the data$
+      // subscription also flips the updating signal for zoneless change detection.
       this.fileTreeService.setNestedDataSourceData([data]);
       this.fileTreeService.nestedTreeControl.expand(node);
+      // In-place children mutations (push/splice) are invisible to the data source
+      // differ (same root reference): re-run the mutated parent's own differ so
+      // added/removed rows render immediately.
+      this.refreshRenderedChildren(node);
+    }
+  }
+
+  // Re-run the rendered nested node's own children differ. MatTree only emits
+  // the top-level data array on dataSource change; nested children rendered once
+  // never refresh on in-place mutation without this call.
+  private refreshRenderedChildren(parent: FileNode): void {
+    const nestedNode = this.nestedTreeNodes?.find((nested) => nested.data === parent);
+    if (nestedNode) {
+      // updateChildrenNodes is protected on CdkNestedTreeNode: accessed through a
+      // minimal structural interface to avoid `any`.
+      (nestedNode as unknown as { updateChildrenNodes(children?: FileNode[]): void }).updateChildrenNodes();
+    } else {
+      // Parent not currently rendered: force a full tree rebuild on next microtask
+      // (destroy + recreate from current data) so the mutation is never invisible.
+      this.updating.set(true);
+      queueMicrotask(() => this.updating.set(false));
     }
   }
 
@@ -717,7 +760,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   // For a given node, searches the required node in the seda.json file and
   // returns true if the node's value of "Collection" is equal to the clicked tab
   isPartOfCollection(node: FileNode): boolean {
-    if (!node.sedaData) {
+    if (!node?.sedaData?.collection) {
       return false;
     }
     return this.collectionName === node.sedaData.collection.valueOf();
