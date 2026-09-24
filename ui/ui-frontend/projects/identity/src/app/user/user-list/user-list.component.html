@@ -85,7 +85,7 @@
         <ng-template #levelFilterTemplate>
           <vitamui-common-table-filter-search
             [(filter)]="filterMap['level']"
-            [options]="levelFilterOptions"
+            [options]="levelFilterOptions()"
             (filterChange)="onFilterChange('level', $event)"
             (filterClose)="levelFilterTrigger?.close()"
             [emptyValueOption]="'USER.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate"
@@ -110,7 +110,7 @@
         <ng-template #groupFilterTemplate>
           <vitamui-common-table-filter-search
             [(filter)]="filterMap['group']"
-            [options]="groupFilterOptions"
+            [options]="groupFilterOptions()"
             (filterChange)="onFilterChange('group', $event)"
             (filterClose)="groupFilterTrigger?.close()"
           >
@@ -120,7 +120,7 @@
         <span>{{ 'USER.HOME.RESULTS_TABLE.GROUP' | translate }}</span>
       </div>
     </div>
-    @if (groups) {
+    @if (groups()) {
       <div class="vitamui-table-body">
         @for (user of dataSource(); track user; let index = $index) {
           <div class="vitamui-table-rows" (click)="userClick.emit(user)">
@@ -178,7 +178,7 @@
     }
   </div>
 
-  @if (!dataSource() || pending() || !groups) {
+  @if (!dataSource() || pending() || !groups()) {
     <div class="vitamui-min-content">
       <mat-spinner class="vitamui-spinner medium"></mat-spinner>
     </div>
