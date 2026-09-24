@@ -35,47 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, forwardRef, Input, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, ViewChild, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelect } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { EditablePatternsComponent } from './editable-patterns.component';
+import { PatternComponent } from '../pattern/pattern.component';
 
 @Component({
-  selector: 'app-pattern',
-  template: '',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => PatternStubComponent),
-      multi: true,
-    },
-  ],
-  standalone: false,
-})
-class PatternStubComponent implements ControlValueAccessor {
-  @Input()
-  options: Array<{
-    value: string;
-    disabled?: boolean;
-  }>;
-  @Input()
-  vitamuiMiniMode = false;
-
-  @ViewChild('select', { static: true })
-  select: MatSelect;
-
-  writeValue() {}
-  registerOnChange() {}
-  registerOnTouched() {}
-}
-
-@Component({
-  template: ` <app-editable-patterns [(ngModel)]="value" [label]="label" [options]="options"></app-editable-patterns> `,
+  template: ` <vitamui-editable-patterns [(ngModel)]="value" [label]="label" [options]="options"></vitamui-editable-patterns> `,
   standalone: false,
 })
 class TesthostComponent {
@@ -102,8 +73,17 @@ describe('EditablePatternsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule],
-      declarations: [TesthostComponent, EditablePatternsComponent, PatternStubComponent],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        OverlayModule,
+        MatProgressSpinnerModule,
+        NoopAnimationsModule,
+        VitamUICommonTestModule,
+        EditablePatternsComponent,
+        PatternComponent,
+      ],
+      declarations: [TesthostComponent],
     }).compileComponents();
 
     inject([OverlayContainer], (oc: OverlayContainer) => {

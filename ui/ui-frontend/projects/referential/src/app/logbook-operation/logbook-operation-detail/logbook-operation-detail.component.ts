@@ -42,12 +42,12 @@ import {
   IEvent,
   ExternalParameters,
   ExternalParametersService,
+  IngestStatus,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
   SnackBarService,
 } from 'vitamui-library';
-import { IngestStatus } from '../../../../../ingest/src/app/models/logbook-event.interface';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
 

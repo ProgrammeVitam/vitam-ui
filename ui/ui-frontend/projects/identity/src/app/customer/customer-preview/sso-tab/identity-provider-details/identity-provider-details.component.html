@@ -83,7 +83,7 @@
 
   <div class="row">
     <div class="col-12">
-      <app-editable-patterns
+      <vitamui-editable-patterns
         formControlName="patterns"
         [label]="'CUSTOMER.SSO.PATTERNS' | translate"
         [options]="domains"
@@ -91,7 +91,7 @@
         [asyncValidator]="form?.get('patterns')?.asyncValidator"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.ERROR.REQUIRED' | translate }}</vitamui-common-field-error>
-      </app-editable-patterns>
+      </vitamui-editable-patterns>
     </div>
   </div>
 
