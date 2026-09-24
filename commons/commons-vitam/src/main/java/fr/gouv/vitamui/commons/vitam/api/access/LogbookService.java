@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 package fr.gouv.vitamui.commons.vitam.api.access;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -53,9 +54,9 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.external.client.IngestCollection;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.chainAudit.TraceabilityChainAuditRequest;
 import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
+import fr.gouv.vitam.common.model.traceability.chainaudit.TraceabilityChainAuditRequest;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
@@ -113,6 +114,7 @@ public class LogbookService {
 
     /**
      * Gets an operation by id.
+     *
      * @param operationId
      * @param vitamContext
      * @return
@@ -133,6 +135,7 @@ public class LogbookService {
 
     /**
      * Finds {@link LogbookLifecycle} by archive unit id.
+     *
      * @param unitId
      * @param vitamContext
      * @return
@@ -153,6 +156,7 @@ public class LogbookService {
 
     /**
      * Finds {@link LogbookLifecycle} by archive unit id.
+     *
      * @param unitId
      * @param vitamContext
      * @return
@@ -180,7 +184,6 @@ public class LogbookService {
     }
 
     /**
-     *
      * @param identifier
      * @param collectionName
      * @param vitamContext
@@ -333,7 +336,7 @@ public class LogbookService {
     /**
      * Download the manifest of an ingest operation
      *
-     * @param id           The id of the operation
+     * @param id The id of the operation
      * @param vitamContext The Vitam context
      * @return
      */
@@ -344,7 +347,7 @@ public class LogbookService {
     /**
      * Download the Archive Transfer Reply of an ingest operation
      *
-     * @param id           The id of the operation
+     * @param id The id of the operation
      * @param vitamContext The Vitam context
      * @return
      */
