@@ -44,7 +44,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 
 import { SelectComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { FileFormatCreateComponent } from './file-format-create.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -60,7 +59,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     ReactiveFormsModule,
     SelectComponent,
-    SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

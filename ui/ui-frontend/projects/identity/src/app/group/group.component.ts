@@ -75,10 +75,9 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
+import { DownloadSnackBarService, GlobalEventService, Group, SidenavPage, SnackBarService } from 'vitamui-library';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupListComponent } from './group-list/group-list.component';
-import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({

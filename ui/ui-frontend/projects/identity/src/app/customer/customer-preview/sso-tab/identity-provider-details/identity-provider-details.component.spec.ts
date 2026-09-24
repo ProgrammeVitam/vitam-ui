@@ -74,7 +74,8 @@ class EditableKeystoreStubComponent implements ControlValueAccessor {
 }
 
 @Component({
-  selector: 'app-editable-patterns',
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'vitamui-editable-patterns',
   template: '',
   providers: [
     {
@@ -92,6 +93,8 @@ class EditablePatternStubComponent implements ControlValueAccessor {
   asyncValidator: AsyncValidator;
   @Input()
   options: any;
+  @Input()
+  label: any;
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}

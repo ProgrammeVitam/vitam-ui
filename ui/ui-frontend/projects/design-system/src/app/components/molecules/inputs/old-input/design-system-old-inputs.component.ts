@@ -38,8 +38,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { CountryOption, CountryService, Option, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { EditableFieldModule } from '../../../../../../../identity/src/app/shared/editable-field/editable-field.module';
+import {
+  CountryOption,
+  CountryService,
+  EditablePatternsComponent,
+  Option,
+  VitamUICommonModule,
+  VitamUILibraryModule,
+} from 'vitamui-library';
 
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -50,7 +56,7 @@ import { extend } from 'underscore';
 @Component({
   selector: 'design-system-old-inputs',
   imports: [
-    EditableFieldModule,
+    EditablePatternsComponent,
     MatButtonToggleModule,
     MatDatepickerModule,
     MatFormFieldModule,

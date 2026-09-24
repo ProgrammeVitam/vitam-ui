@@ -36,9 +36,12 @@
  */
 import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { EditableFieldComponent, PatternComponent } from 'vitamui-library';
+import { EditableFieldComponent } from '../../../app/modules/components/editable-field/editable-field.component';
+import { PatternComponent } from '../pattern/pattern.component';
 
 export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -48,10 +51,11 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'app-editable-patterns',
+  selector: 'vitamui-editable-patterns',
   templateUrl: './editable-patterns.component.html',
   providers: [EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR],
-  standalone: false,
+  standalone: true,
+  imports: [ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, PatternComponent],
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
   private document = inject<Document>(DOCUMENT);

@@ -52,7 +52,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
 
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
@@ -78,7 +77,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatButtonToggleModule,
     MatSelectModule,
     ReactiveFormsModule,
-    GroupAttributionModule,
     MatProgressBarModule,
     MatTabsModule,
     RoleToggleModule,

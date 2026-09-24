@@ -49,7 +49,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { SharedModule } from '../../../../../identity/src/app/shared/shared.module';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -65,7 +64,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressBarModule,
     MatSelectModule,
     ReactiveFormsModule,
-    SharedModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

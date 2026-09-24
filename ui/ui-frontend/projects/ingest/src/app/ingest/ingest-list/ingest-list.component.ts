@@ -38,8 +38,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } fro
 import { Subject, merge } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
-import { DEFAULT_PAGE_SIZE } from 'vitamui-library';
-import { IngestStatus } from '../../models/logbook-event.interface';
+import { DEFAULT_PAGE_SIZE, IngestStatus } from 'vitamui-library';
 import type { LogbookOperation } from '../../models/logbook-event.interface';
 import { ingestStatus, ingestStatusVisualColor } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
