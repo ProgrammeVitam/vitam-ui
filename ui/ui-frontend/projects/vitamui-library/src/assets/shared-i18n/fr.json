@@ -4104,6 +4104,8 @@
         "JOURNAL_COLUMN": "Journal",
         "JOURNAL_UNIT": "Cycle de vie de l'unité archivistique",
         "JOURNAL_OBJECT_GROUP": "Cycle de vie du groupe d'objets",
+        "ORIGIN_UA": "UA",
+        "ORIGIN_GOT": "GOT",
         "OUTCOME_OK": "Succès",
         "OUTCOME_WARNING": "Avertissement",
         "OUTCOME_KO": "Échec",
