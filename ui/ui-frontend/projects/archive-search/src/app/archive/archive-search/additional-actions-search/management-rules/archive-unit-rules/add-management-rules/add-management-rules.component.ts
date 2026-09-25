@@ -34,7 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+<<<<<<< HEAD
 import { Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewChild } from '@angular/core';
+=======
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+>>>>>>> c1fae60e2 (Bug #16723: Adding a management rule - end date miscalculation)
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -50,6 +54,11 @@ import {
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
+<<<<<<< HEAD
+=======
+  VitamTenantConfigService,
+  VitamuiSelectOptions,
+>>>>>>> c1fae60e2 (Bug #16723: Adding a management rule - end date miscalculation)
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -330,7 +339,7 @@ export class AddManagementRulesComponent implements OnDestroy {
           startDateSelected.setMonth(startDateSelected.getMonth() + Number(this.rule.ruleDuration));
           break;
         case 'DAY':
-          startDateSelected.setDate(startDateSelected.getDay() + Number(this.rule.ruleDuration));
+          startDateSelected.setDate(startDateSelected.getDate() + Number(this.rule.ruleDuration));
           break;
       }
 
