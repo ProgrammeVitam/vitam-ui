@@ -85,7 +85,8 @@
       "USER_ALREADY_DELETED": "L'utilisateur que vous cherchez est déjà supprimé",
       "USER_TO_DELETE": "Un ou plusieurs utilisateur(s) inactif(s) dans votre organisation nécessitent l'effacement de leurs données personnelles",
       "USER_EXPORT_SUCCESS": "Export des utilisateurs effectué avec succès.",
-      "GROUP_EXPORT_SUCCESS": "Export des groupes de profils effectué avec succès."
+      "GROUP_EXPORT_SUCCESS": "Export des groupes de profils effectué avec succès.",
+      "USER_RESET_PASSWORD": "Un e-mail de réinitialisation de mot de passe a bien été envoyé à l'utilisateur {{ param1 }} {{ param2 }}"
     }
   },
   "CUSTOMER": {
@@ -373,6 +374,16 @@
     "OTHER_ACTION": {
       "ACTIVATE": "Activer",
       "DEACTIVATE": "Désactiver",
+      "RESET_PASSWORD": {
+        "ACTION": "Réinitialiser le mot de passe",
+        "DIALOG": {
+          "TITLE": "Voulez vous réinitialiser le mot de passe de l'utilisateur ?",
+          "SUBTITLE": "",
+          "MESSAGE": "Un email de réinitialisation de mot de passe utilisateur est sur le point d'être envoyé.",
+          "CONFIRM": "Confirmer",
+          "CANCEL": "Annuler"
+        }
+      },
       "DELETE_PERSONAL_DATA": "Supprimer les données personnelles",
       "DEACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir désactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
       "REACTIVATE_MESSAGE": "Êtes-vous sûr de vouloir réactiver l'utilisateur {{ param1 }} {{ param2 }} - {{ param3 }} ?",
