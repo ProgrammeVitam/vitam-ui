@@ -35,8 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input, OnChanges, inject } from '@angular/core';
-import { ApplicationId, ApplicationService } from 'vitamui-library';
-import { IngestStatus } from '../../../models/logbook-event.interface';
+import { ApplicationId, ApplicationService, IngestStatus } from 'vitamui-library';
 import type {
   AgIdExtDeflateJson,
   EvDetDataDeflateJson,

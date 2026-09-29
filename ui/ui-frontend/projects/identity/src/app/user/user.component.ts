@@ -37,7 +37,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { DownloadSnackBarService } from 'projects/referential/src/app/core/service/download-snack-bar.service';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import {
@@ -46,6 +45,7 @@ import {
   Customer,
   DEFAULT_PAGE_SIZE,
   Direction,
+  DownloadSnackBarService,
   GlobalEventService,
   Group,
   PageRequest,

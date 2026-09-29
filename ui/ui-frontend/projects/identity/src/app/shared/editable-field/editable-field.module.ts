@@ -42,13 +42,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 
-import { LevelInputModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { EditablePatternsComponent, LevelInputModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CustomParamsModule } from '../custom-params/custom-params.module';
 import { DomainsInputModule } from '../domains-input/domains-input.module';
 import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
-import { EditablePatternsComponent } from './editable-patterns/editable-patterns.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
@@ -56,6 +55,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     CommonModule,
     CustomParamsModule,
     DomainsInputModule,
+    EditablePatternsComponent,
     FormsModule,
     LevelInputModule,
     MatButtonToggleModule,
@@ -67,7 +67,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUILibraryModule,
     TranslatePipe,
   ],
-  declarations: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
+  declarations: [EditableDomainInputComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
   exports: [EditableDomainInputComponent, EditablePatternsComponent, EditableKeystoreComponent, EditableCustomParamsComponent],
 })
 export class EditableFieldModule {}

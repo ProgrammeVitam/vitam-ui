@@ -44,7 +44,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { SharedModule } from 'projects/identity/src/app/shared/shared.module';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { CreatePersistentIdentifierPolicyFormComponent } from './create-persistent-identifier-policy-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -53,7 +52,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   declarations: [CreatePersistentIdentifierPolicyFormComponent],
   imports: [
     CommonModule,
-    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonToggleModule,

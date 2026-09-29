@@ -65,6 +65,7 @@ export * from './lib/components/discussions/discussion/message/message.component
 export * from './lib/components/discussions/discussion-icon/discussion-icon.component';
 export * from './lib/components/discussions/discussion-list/discussion-list.component';
 export * from './lib/components/discussions/discussion.service';
+export * from './lib/components/editable-patterns/editable-patterns.component';
 export * from './lib/components/next-step/next-step.component';
 export * from './lib/components/pattern/pattern.component';
 export * from './lib/components/previous-step/previous-step.component';
@@ -87,6 +88,7 @@ export * from './lib/models/dsl-query-type.enum';
 export * from './lib/models/event';
 export * from './lib/models/file-format';
 export * from './lib/models/file-types.enum';
+export * from './lib/models/ingest-status.enum';
 export * from './lib/models/metadata.interface';
 export * from './lib/models/node.interface';
 export * from './lib/models/ontology';
@@ -102,6 +104,7 @@ export * from './lib/models/confirm-dialog-data.interface';
 
 /* SERVICES */
 export * from './lib/components/filing-plan/filing-plan.service';
+export * from './lib/services/download-snack-bar.service';
 export * from './lib/services/metadata.service';
 export * from './lib/services/spinner-overlay.service';
 /* UTILS */
@@ -219,6 +222,7 @@ export * from './app/modules/models/application/vitam-configuration.interface';
 export * from './app/modules/models/archive-search/archive-search.interface';
 export * from './app/modules/models/breadcrumb/breadcrumb.interface';
 export * from './app/modules/models/collect/legal-status';
+export * from './app/modules/models/collect/batch-status';
 export * from './app/modules/models/collect/project-status';
 export * from './app/modules/models/collect/project';
 export * from './app/modules/models/collect/transaction-status';

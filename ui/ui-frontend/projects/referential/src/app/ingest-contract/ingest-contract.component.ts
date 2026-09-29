@@ -39,6 +39,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
   ApplicationService,
+  DownloadSnackBarService,
   DownloadUtils,
   FileTypes,
   GlobalEventService,
@@ -48,7 +49,6 @@ import {
   SidenavPage,
   SnackBarService,
 } from 'vitamui-library';
-import { DownloadSnackBarService } from './../core/service/download-snack-bar.service';
 import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { mergeMap, shareReplay } from 'rxjs/operators';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
