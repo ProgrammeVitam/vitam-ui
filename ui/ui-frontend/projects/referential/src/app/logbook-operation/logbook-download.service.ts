@@ -70,6 +70,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'IMPORT_PRESERVATION_SCENARIO',
     'IMPORT_GRIFFIN',
     'STP_IMPORT_GRIFFIN',
+    'STP_IMPORT_PRESERVATION_SCENARIO',
     'PRESERVATION',
     'INGEST_CLEANUP',
     'COLLECT_DELETION_ACTION',
@@ -147,6 +148,8 @@ export class LogbookDownloadService extends SearchService<IEvent> {
           case 'IMPORT_ONTOLOGY':
           case 'STP_REFERENTIAL_FORMAT_IMPORT':
           case 'IMPORT_GRIFFIN':
+          case 'STP_IMPORT_GRIFFIN':
+          case 'STP_IMPORT_PRESERVATION_SCENARIO':
           case 'IMPORT_PRESERVATION_SCENARIO':
             return DOWNLOAD_TYPE_REPORT;
           case 'HOLDINGSCHEME':
