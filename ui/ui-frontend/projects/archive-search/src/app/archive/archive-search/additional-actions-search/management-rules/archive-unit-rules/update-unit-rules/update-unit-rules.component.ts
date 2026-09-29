@@ -132,8 +132,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
 
   ruleDetailsForm: FormGroup;
   isShowCheckButton = signal(true);
-  isStartDateDisabled = signal(true);
-  isNewRuleDisabled = signal(true);
   showText = signal(false);
   isLoading = signal(false);
   ruleTypeDUA: RuleCategoryAction;
@@ -181,8 +179,12 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
             this.managementRulesValidatorService.checkRuleIdExistence(),
           ],
         ],
-        newRule: [null, [ManagementRuleValidators.ruleIdPattern], [this.managementRulesValidatorService.checkRuleIdExistence()]],
-        startDate: [null],
+        newRule: [
+          { value: null, disabled: true },
+          [ManagementRuleValidators.ruleIdPattern],
+          [this.managementRulesValidatorService.checkRuleIdExistence()],
+        ],
+        startDate: [{ value: null, disabled: true }],
         endDate: [{ value: null, disabled: true }],
         ruleUpdated: [{ value: false, disabled: true }],
         startDateUpdated: [{ value: false, disabled: true }],
@@ -193,7 +195,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     );
 
     this.ruleDetailsForm.get('ruleUpdated').valueChanges.subscribe((value) => {
-      this.isNewRuleDisabled.set(!value);
+      const newRuleControl = this.ruleDetailsForm.get('newRule');
+      !!value ? newRuleControl.enable() : newRuleControl.disable();
       if (!value) {
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ newRule: null });
@@ -204,7 +207,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     });
 
     this.ruleDetailsForm.get('startDateUpdated').valueChanges.subscribe((value) => {
-      this.isStartDateDisabled.set(!value);
+      const startDateControl = this.ruleDetailsForm.get('startDate');
+      !!value ? startDateControl.enable() : startDateControl.disable();
       if (!value) {
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ startDate: null });

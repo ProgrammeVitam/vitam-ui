@@ -27,7 +27,6 @@
           formControlName="newRule"
           [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
-          [disabled]="isNewRuleDisabled()"
         ></vitamui-select>
       </div>
     </div>
@@ -48,7 +47,6 @@
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
-              [disabled]="isStartDateDisabled()"
             ></vitamui-datepicker>
             <button
               [ngStyle]="{
