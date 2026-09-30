@@ -36,7 +36,6 @@
  */
 import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import {
@@ -46,7 +45,6 @@ import {
   DEFAULT_PAGE_SIZE,
   Direction,
   DownloadSnackBarService,
-  GlobalEventService,
   Group,
   PageRequest,
   SidenavPage,

@@ -76,7 +76,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import {
   DownloadSnackBarService,
-  GlobalEventService,
   Group,
   SidenavPage,
   SnackBarService,

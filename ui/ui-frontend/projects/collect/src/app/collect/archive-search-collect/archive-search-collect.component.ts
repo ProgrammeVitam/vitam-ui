@@ -52,6 +52,7 @@ import {
   ArchiveSearchResultFacets,
   ArchiveUnit,
   ArchiveUnitModule,
+  BatchStatus,
   BreadCrumbData,
   ConfirmDialogComponent,
   ConfirmDialogData,

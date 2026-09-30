@@ -45,6 +45,7 @@ import {
   EditableButtonToggleComponent,
   EditableFileComponent,
   EditableInputComponent,
+  EditablePatternsComponent,
   EditableToggleGroupComponent,
   FormFieldValueWrapperComponent,
   IdentityProvider,
@@ -56,7 +57,6 @@ import {
 } from 'vitamui-library';
 import { IdentityProviderService } from '../identity-provider.service';
 import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
-import { EditablePatternsComponent } from '../../../../shared/editable-field/editable-patterns/editable-patterns.component';
 import { EditableKeystoreComponent } from '../../../../shared/editable-field/editable-keystore/editable-keystore.component';
 import { EditableCustomParamsComponent } from '../../../../shared/editable-field/editable-custom-params/editable-custom-params.component';
 import { TranslatePipe } from '@ngx-translate/core';

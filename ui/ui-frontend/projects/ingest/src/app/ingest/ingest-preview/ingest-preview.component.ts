@@ -37,7 +37,6 @@
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs/operators';
 import {
-  CommonTooltipComponent,
   IngestStatus,
   LogbookService,
   PipesModule,

@@ -41,7 +41,8 @@ import { MatSelectModule } from '@angular/material/select';
 import {
   CountryOption,
   CountryService,
-  EditablePatternsComponent, Option,
+  EditablePatternsComponent,
+  Option,
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
