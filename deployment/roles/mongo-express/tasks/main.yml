@@ -57,7 +57,7 @@
     dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/mongo-express/env.sh"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
-    mode: 0755
+    mode: 0750
   notify: restart mongo-express
   tags: mongo-express
 
