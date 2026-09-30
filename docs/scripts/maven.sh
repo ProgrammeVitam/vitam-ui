@@ -2,7 +2,7 @@
 set -vx
 MAVEN_ARCHIVE="apache-maven-3.6.3-bin.tar.gz"
 MAVEN_DIR="apache-maven-3.6.3"
-MAVEN_URL="http://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/$MAVEN_ARCHIVE"
+MAVEN_URL="https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/$MAVEN_ARCHIVE"
 
 
 #### MAVEN ####
