@@ -6,15 +6,15 @@ fileid="118CHBep4FXNZ18bw1Ver5-P8W0cjoZTL"
 
 JCE_ARCHIVE="jce_policy-8.zip"
 JCE_DIR="UnlimitedJCEPolicyJDK8"
-JCE_URL="http://download.oracle.com/otn-pub/java/jce/8/$JCE_ARCHIVE"
+JCE_URL="https://download.oracle.com/otn-pub/java/jce/8/$JCE_ARCHIVE"
 
 #### CURL ####
 apt install curl
 
 #### JDK8 ####
 cd /usr/local
-curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id=${fileid}" > /dev/null
-curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=${fileid}" -o ${JAVA_ARCHIVE}
+curl -c ./cookie -s -L --proto '=https' "https://drive.google.com/uc?export=download&id=${fileid}" > /dev/null
+curl -Lb ./cookie --proto '=https' "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=${fileid}" -o ${JAVA_ARCHIVE}
 
 tar -xzvf $JAVA_ARCHIVE
 ln -s $JAVA_DIR/ java

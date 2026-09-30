@@ -7,7 +7,7 @@ apt-get -y install \
     curl \
     software-properties-common
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+curl -fsSL --proto '=https' https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
 sudo apt-key fingerprint 0EBFCD88
 
