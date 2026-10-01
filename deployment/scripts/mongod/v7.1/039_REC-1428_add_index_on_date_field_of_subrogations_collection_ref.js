@@ -1,4 +1,4 @@
-var collectionExists = dbIam.getCollectionNames().indexOf('subrogations') > -1;
+const collectionExists = dbIam.getCollectionNames().indexOf('subrogations') > -1;
 
 if (collectionExists) {
     dbIam.subrogations.dropIndex("idx_subrogation_date");

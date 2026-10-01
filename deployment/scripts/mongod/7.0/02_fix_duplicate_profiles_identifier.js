@@ -11,7 +11,7 @@ const duplicates = dbIam.profiles.aggregate([
     }
 ]).toArray();
 
-var maxIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+let maxIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
 duplicates.forEach(dup => {
     dup.docs.slice(1).forEach((docId, index) => { // Skip first, update the rest
