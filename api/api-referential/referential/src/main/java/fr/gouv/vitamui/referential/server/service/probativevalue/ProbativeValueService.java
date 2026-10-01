@@ -84,6 +84,7 @@ import java.util.Optional;
 public class ProbativeValueService {
 
     private static final String TEMPLATE_PROBATIVEVALUEREPORT_ODT = "templates/probativevaluereport.ftl.odt";
+    private static final String JSON_EXTENSION = ".json";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProbativeValueService.class);
 
@@ -128,7 +129,7 @@ public class ProbativeValueService {
         final String workspaceOperationPath
     ) {
         try (InputStream reportStream = vitamBatchReportCommonService.downloadBatchReport(vitamContext, operationId)) {
-            File file = new File(workspaceOperationPath, operationId + ".json");
+            File file = new File(workspaceOperationPath, operationId + JSON_EXTENSION);
             FileUtils.copyInputStreamToFile(reportStream, file);
         } catch (VitamClientException e) {
             LOGGER.error("Error while getting probative value report from Vitam", e.getMessage());
@@ -145,7 +146,7 @@ public class ProbativeValueService {
         final String workspaceOperationPath
     ) {
         try {
-            File jsonReport = new File(workspaceOperationPath, operationId + ".json");
+            File jsonReport = new File(workspaceOperationPath, operationId + JSON_EXTENSION);
             ProbativeReportDto report = JsonHandler.getFromFile(jsonReport, ProbativeReportDto.class);
             reportEntriesConsolidation(vitamContext, report);
 
@@ -178,7 +179,9 @@ public class ProbativeValueService {
         try {
             final List<Path> filesPaths = new ArrayList<>();
 
-            filesPaths.add(Path.of(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".json")));
+            filesPaths.add(
+                Path.of(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + JSON_EXTENSION))
+            );
             filesPaths.add(Path.of(SecurePathUtils.buildFilePath(workspaceOperationPath, operationId + ".pdf")));
 
             SecureZipUtils.zipFiles(filesPaths, outputStream);

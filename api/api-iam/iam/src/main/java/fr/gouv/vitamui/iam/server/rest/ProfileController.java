@@ -99,6 +99,7 @@ public class ProfileController implements CrudController<ProfileDto> {
     protected static final String CUSTOMER_ID_KEY = "customerId";
     protected static final String TENANT_IDENTIFIER_KEY = "tenantIdentifier";
     protected static final String LEVEL_KEY = "level";
+    private static final String UNABLE_TO_PATCH_PROFILE = "Unable to patch profile";
 
     private final ProfileService profileService;
     private final SecurityService securityService;
@@ -209,13 +210,13 @@ public class ProfileController implements CrudController<ProfileDto> {
         final Integer tenantIdentifier = CastUtils.toInteger(partialDto.get(TENANT_IDENTIFIER_KEY));
         final String level = CastUtils.toString(partialDto.get(LEVEL_KEY));
         if (StringUtils.isNotEmpty(customerId)) {
-            profileService.checkCustomerId(customerId, "Unable to patch profile");
+            profileService.checkCustomerId(customerId, UNABLE_TO_PATCH_PROFILE);
         }
         if (tenantIdentifier != null) {
-            profileService.checkTenantIdentifier(tenantIdentifier, "Unable to patch profile");
+            profileService.checkTenantIdentifier(tenantIdentifier, UNABLE_TO_PATCH_PROFILE);
         }
         if (StringUtils.isNotEmpty(level)) {
-            profileService.checkLevel(level, "Unable to patch profile");
+            profileService.checkLevel(level, UNABLE_TO_PATCH_PROFILE);
         }
         partialDto.put(CUSTOMER_ID_KEY, securityService.getCustomerId());
         partialDto.put(TENANT_IDENTIFIER_KEY, securityService.getTenantIdentifier());

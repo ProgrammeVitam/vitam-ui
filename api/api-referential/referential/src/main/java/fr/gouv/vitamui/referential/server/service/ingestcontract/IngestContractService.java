@@ -105,6 +105,7 @@ import java.util.stream.Collectors;
 public class IngestContractService extends AbstractService {
 
     private static final String INGEST_CONTRACT = "INGEST_CONTRACT";
+    private static final String MANAGEMENT_CONTRACT_ID = "managementContractId";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IngestContractService.class);
 
@@ -276,8 +277,8 @@ public class IngestContractService extends AbstractService {
         if (partialDto.get("linkParentId") != null) {
             propertiesToUpdate.put("LinkParentId", (String) partialDto.get("linkParentId"));
         }
-        if (partialDto.get("managementContractId") != null) {
-            propertiesToUpdate.put("ManagementContractId", (String) partialDto.get("managementContractId"));
+        if (partialDto.get(MANAGEMENT_CONTRACT_ID) != null) {
+            propertiesToUpdate.put("ManagementContractId", (String) partialDto.get(MANAGEMENT_CONTRACT_ID));
         }
         if (partialDto.get("status") != null) {
             propertiesToUpdate.put("Status", (String) partialDto.get("status"));
@@ -370,7 +371,7 @@ public class IngestContractService extends AbstractService {
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
 
             ArrayNode actions = JsonHandler.createArrayNode();
-            if (partialDto.containsKey("managementContractId") && partialDto.get("managementContractId") == null) {
+            if (partialDto.containsKey(MANAGEMENT_CONTRACT_ID) && partialDto.get(MANAGEMENT_CONTRACT_ID) == null) {
                 ObjectNode unsetAction = JsonNodeFactory.instance.objectNode();
                 ArrayNode unsetArray = JsonNodeFactory.instance.arrayNode();
                 unsetArray.add("ManagementContractId");

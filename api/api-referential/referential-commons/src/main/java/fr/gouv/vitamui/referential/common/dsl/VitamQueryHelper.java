@@ -85,6 +85,7 @@ public class VitamQueryHelper {
     private static final String EV_TYPE = "evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
+    private static final String EV_DATE_TIME = "evDateTime";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
     private static final String SEDAVERSION = "SedaVersion";
@@ -209,10 +210,10 @@ public class VitamQueryHelper {
                         query.add(in(searchKey, stringValues.toArray(new String[] {})));
                         break;
                     case EV_DATE_TIME_START:
-                        query.add(gt("evDateTime", (String) entry.getValue()));
+                        query.add(gt(EV_DATE_TIME, (String) entry.getValue()));
                         break;
                     case EV_DATE_TIME_END:
-                        query.add(lt("evDateTime", (String) entry.getValue()));
+                        query.add(lt(EV_DATE_TIME, (String) entry.getValue()));
                         break;
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);
@@ -266,7 +267,7 @@ public class VitamQueryHelper {
 
         select.setQuery(query);
         select.setLimitFilter(0, 1);
-        select.addOrderByDescFilter("evDateTime");
+        select.addOrderByDescFilter(EV_DATE_TIME);
 
         return select.getFinalSelect();
     }

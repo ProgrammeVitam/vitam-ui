@@ -124,6 +124,10 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
     private static final String DESCRIPTION_KEY = "description";
     private static final String UNITS_KEY = "units";
     private static final String READONLY_KEY = "readonly";
+    private static final String CUSTOMER_ID = "customerId";
+    private static final String LEVEL = "level";
+    private static final String PROFILE_IDS = "profileIds";
+    private static final String IS_NOT_ALLOWED_SUFFIX = " is not allowed";
 
     private final GroupRepository groupRepository;
     private final CustomerRepository customerRepository;
@@ -223,7 +227,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         if (getVitamContext() != null) {
             LOGGER.debug("Patch Group EvIdAppSession : {} ", getVitamContext().getApplicationSessionId());
         }
-        final String customerId = CastUtils.toString(partialDto.get("customerId"));
+        final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_ID));
         final Group group = find(id, customerId, message);
 
         checkLevel(group.getLevel(), message);
@@ -231,23 +235,23 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         Assert.isTrue(
             !checkMapContainsOnlyFieldsUnmodifiable(
                 partialDto,
-                Arrays.asList("id", "customerId", "readonly", "identifier")
+                Arrays.asList("id", CUSTOMER_ID, READONLY_KEY, IDENTIFIER_KEY)
             ),
             message
         );
-        final String level = CastUtils.toString(partialDto.get("level"));
+        final String level = CastUtils.toString(partialDto.get(LEVEL));
         if (level != null) {
             checkLevel(level, message);
             checkModifyLevel(group, level, message);
         }
 
-        final Boolean readonly = CastUtils.toBoolean(partialDto.get("readonly"));
+        final Boolean readonly = CastUtils.toBoolean(partialDto.get(READONLY_KEY));
         if (readonly != null) {
             checkSetReadonly(readonly, message);
         }
 
         @SuppressWarnings("unchecked")
-        final List<String> profileIds = (List<String>) partialDto.get("profileIds");
+        final List<String> profileIds = (List<String>) partialDto.get(PROFILE_IDS);
         if (profileIds != null) {
             checkProfiles(group.getLevel(), customerId, profileIds, message);
         }
@@ -257,7 +261,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
             checkNameExist(group.getName(), name, customerId, message);
         }
 
-        final Boolean enabled = CastUtils.toBoolean(partialDto.get("enabled"));
+        final Boolean enabled = CastUtils.toBoolean(partialDto.get(ENABLED_KEY));
         if (enabled != null) {
             checkEnabled(group.getId(), enabled, message);
         }
@@ -278,29 +282,29 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id":
-                case "customerId":
-                case "readonly":
-                case "identifier":
+                case CUSTOMER_ID:
+                case READONLY_KEY:
+                case IDENTIFIER_KEY:
                     break;
                 case "name":
                     logbooks.add(new EventDiffDto(GroupConverter.NAME_KEY, group.getName(), entry.getValue()));
                     group.setName(CastUtils.toString(entry.getValue()));
                     break;
-                case "description":
+                case DESCRIPTION_KEY:
                     logbooks.add(
                         new EventDiffDto(GroupConverter.DESCRIPTION_KEY, group.getDescription(), entry.getValue())
                     );
                     group.setDescription(CastUtils.toString(entry.getValue()));
                     break;
-                case "enabled":
+                case ENABLED_KEY:
                     logbooks.add(new EventDiffDto(GroupConverter.ENABLED_KEY, group.isEnabled(), entry.getValue()));
                     group.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "level":
+                case LEVEL:
                     logbooks.add(new EventDiffDto(GroupConverter.LEVEL_KEY, group.getLevel(), entry.getValue()));
                     group.setLevel(CastUtils.toString(entry.getValue()));
                     break;
-                case "profileIds":
+                case PROFILE_IDS:
                     final List<String> profileIds = CastUtils.toList(entry.getValue());
                     logbooks.add(
                         new EventDiffDto(
@@ -311,7 +315,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
                     );
                     group.setProfileIds(profileIds);
                     break;
-                case "units":
+                case UNITS_KEY:
                     final Collection<String> unitsDto = CollectionUtils.emptyIfNull(CastUtils.toList(entry.getValue()));
                     final Set<String> units = new HashSet<String>(unitsDto);
                     logbooks.add(
@@ -325,7 +329,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Unable to patch group " + group.getId() + ": key " + entry.getKey() + " is not allowed"
+                        "Unable to patch group " + group.getId() + ": key " + entry.getKey() + IS_NOT_ALLOWED_SUFFIX
                     );
             }
         }
@@ -347,7 +351,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         Assert.isTrue(StringUtils.isNotEmpty(id), message + ": no id");
         Assert.isTrue(
             StringUtils.equals(customerId, getSecurityService().getCustomerId()),
-            message + ": customerId " + customerId + " is not allowed"
+            message + ": customerId " + customerId + IS_NOT_ALLOWED_SUFFIX
         );
         return getRepository()
             .findByIdAndCustomerId(id, customerId)
@@ -371,7 +375,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
             Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level),
             "level : " + level + " format is not allowed"
         );
-        Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
+        Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + IS_NOT_ALLOWED_SUFFIX);
     }
 
     private void checkModifyLevel(final Group group, final String dtoLevel, final String message) {
@@ -478,7 +482,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
     private void checkCustomer(final String customerId, final String message) {
         Assert.isTrue(
             StringUtils.equals(customerId, getSecurityService().getCustomerId()),
-            message + ": customerId " + customerId + " is not allowed"
+            message + ": customerId " + customerId + IS_NOT_ALLOWED_SUFFIX
         );
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
@@ -494,7 +498,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
         final String message
     ) {
         if (!StringUtils.equals(oldName, newName)) {
-            final Criteria criteria = Criteria.where("customerId").is(customerId).and("name").is(newName);
+            final Criteria criteria = Criteria.where(CUSTOMER_ID).is(customerId).and("name").is(newName);
             Assert.isTrue(!getRepository().exists(criteria), message + ": group already exists");
         }
     }
@@ -511,8 +515,8 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
                 .filter(unit -> !CollectionUtils.emptyIfNull(oldUnits).contains(unit))
                 .forEach(unit -> {
                     List<CriteriaDefinition> criteria = new ArrayList<>();
-                    criteria.add(Criteria.where("customerId").is(customerId));
-                    MongoUtils.addCriteriaIgnoreCase("units", Optional.of(unit), criteria);
+                    criteria.add(Criteria.where(CUSTOMER_ID).is(customerId));
+                    MongoUtils.addCriteriaIgnoreCase(UNITS_KEY, Optional.of(unit), criteria);
                     Assert.isTrue(
                         !getRepository().exists(criteria),
                         String.format(message + ": unit already exists", unit)
@@ -554,7 +558,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
      */
     public void updateProfilesById(final String id, final List<String> profileIds) {
         final Query query = new Query(Criteria.where("id").is(id));
-        final Update update = Update.update("profileIds", profileIds);
+        final Update update = Update.update(PROFILE_IDS, profileIds);
 
         final Optional<Group> optionalGroup = groupRepository.findOne(query);
         if (optionalGroup.isPresent()) {
@@ -579,10 +583,10 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
      */
     public List<String> getSubLevels(final String level, final String customerId) {
         final ArrayList<CriteriaDefinition> criterias = new ArrayList<>();
-        criterias.add(Criteria.where("customerId").in(customerId));
-        criterias.add(Criteria.where("enabled").is(true));
+        criterias.add(Criteria.where(CUSTOMER_ID).in(customerId));
+        criterias.add(Criteria.where(ENABLED_KEY).is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where(LEVEL).regex("^" + level + "\\..+$"));
         }
         return getRepository().findAll(criterias).stream().map(Group::getLevel).collect(Collectors.toList());
     }
@@ -785,7 +789,7 @@ public class GroupService extends AbstractResourceClientService<GroupDto, Group>
     private void addLevelRestriction(final QueryDto query) {
         final QueryDto levelQuery = new QueryDto();
         levelQuery.setQueryOperator(QueryOperator.OR);
-        levelQuery.addCriterion("level", securityService.getLevel() + ".", CriterionOperator.STARTWITH);
+        levelQuery.addCriterion(LEVEL, securityService.getLevel() + ".", CriterionOperator.STARTWITH);
         levelQuery.addCriterion("id", securityService.getUser().getProfileGroup().getId(), CriterionOperator.EQUALS);
         query.addQuery(levelQuery);
     }

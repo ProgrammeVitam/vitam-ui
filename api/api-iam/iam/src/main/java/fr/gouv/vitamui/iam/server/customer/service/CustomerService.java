@@ -113,6 +113,9 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerService.class);
 
+    private static final String EMAIL_DOMAINS = "emailDomains";
+    private static final String DEFAULT_EMAIL_DOMAIN = "defaultEmailDomain";
+
     @Value("${gdpr_alert_readonly:true}")
     private boolean gdprAlertReadonly;
 
@@ -260,8 +263,8 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
             checkCode(Optional.of(customer.getId()), code);
         }
 
-        final List<String> emailDomains = CastUtils.toList(partialDto.get("emailDomains"));
-        final String defaultEmailDomain = CastUtils.toString(partialDto.get("defaultEmailDomain"));
+        final List<String> emailDomains = CastUtils.toList(partialDto.get(EMAIL_DOMAINS));
+        final String defaultEmailDomain = CastUtils.toString(partialDto.get(DEFAULT_EMAIL_DOMAIN));
         if (emailDomains != null) {
             checkEmailDomains(emailDomains, id, message);
         }
@@ -336,14 +339,14 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
                     updateOtpforUsers(customer.getOtp(), newOtp, customer.getId());
                     customer.setOtp(newOtp);
                     break;
-                case "emailDomains":
+                case EMAIL_DOMAINS:
                     final List<String> emailDomains = CastUtils.toList(entry.getValue());
                     logbooks.add(
                         new EventDiffDto(CustomerConverter.EMAIL_DOMAINS_KEY, customer.getEmailDomains(), emailDomains)
                     );
                     customer.setEmailDomains(emailDomains);
                     break;
-                case "defaultEmailDomain":
+                case DEFAULT_EMAIL_DOMAIN:
                     final String defaultEmailDomain = CastUtils.toString(entry.getValue());
                     logbooks.add(
                         new EventDiffDto(
@@ -791,8 +794,8 @@ public class CustomerService extends AbstractResourceClientService<CustomerDto, 
             "enabled",
             "language",
             "otp",
-            "defaultEmailDomain",
-            "emailDomains",
+            DEFAULT_EMAIL_DOMAIN,
+            EMAIL_DOMAINS,
             "subrogeable"
         );
     }

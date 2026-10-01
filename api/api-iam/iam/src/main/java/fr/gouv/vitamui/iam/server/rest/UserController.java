@@ -111,6 +111,7 @@ public class UserController implements CrudController<UserDto> {
     private static final String SIGNED_DOWNLOAD_EXPORT_ENDPOINT = "/signed-download/export";
     private static final String SIGNED_DOWNLOAD_USER_EXPORT_PATH = "/users" + SIGNED_DOWNLOAD_EXPORT_ENDPOINT;
     private static final String CRITERIA_PARAMETER = "criteria";
+    private static final String IDENTIFIER_IS_MANDATORY_PARAMETER = "The Identifier is a mandatory parameter: ";
     private static final DateTimeFormatter EXPORT_FILE_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(
         "yyyy-MM-dd'T'HH_mm_ss"
     );
@@ -201,7 +202,7 @@ public class UserController implements CrudController<UserDto> {
     @Secured(ServicesData.ROLE_GET_USERS)
     public UserDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
         return userService.getOne(id);
@@ -247,7 +248,7 @@ public class UserController implements CrudController<UserDto> {
     @Secured(ServicesData.ROLE_UPDATE_USERS)
     public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
@@ -286,7 +287,7 @@ public class UserController implements CrudController<UserDto> {
     @Secured(ServicesData.ROLE_GET_USERS)
     public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws VitamClientException, InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for users with id :{}", id);
         return userService.findHistoryById(id);

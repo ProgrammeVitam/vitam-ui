@@ -51,6 +51,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenAPIConfig {
 
+    private static final String BEARER = "bearer";
+
     @Value("${spring.application.name}")
     private String applicationName;
 
@@ -65,10 +67,10 @@ public class OpenAPIConfig {
             .components(
                 new Components()
                     .addSecuritySchemes(
-                        "bearer",
+                        BEARER,
                         new SecurityScheme()
                             .type(SecurityScheme.Type.HTTP)
-                            .scheme("bearer")
+                            .scheme(BEARER)
                             .in(SecurityScheme.In.HEADER)
                             .description("Bearer token")
                     )
@@ -81,6 +83,6 @@ public class OpenAPIConfig {
                             .description("Tenant ID")
                     )
             )
-            .addSecurityItem(new SecurityRequirement().addList("bearer").addList("x-tenant-id"));
+            .addSecurityItem(new SecurityRequirement().addList(BEARER).addList("x-tenant-id"));
     }
 }

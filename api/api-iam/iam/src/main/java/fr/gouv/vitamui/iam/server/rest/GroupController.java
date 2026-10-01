@@ -113,6 +113,7 @@ public class GroupController implements CrudController<GroupDto> {
     private static final String SIGNED_DOWNLOAD_PROFILE_GROUP_EXPORT_PATH = "/groups" + SIGNED_DOWNLOAD_EXPORT_ENDPOINT;
     private static final String GROUP_CRITERIA_PARAMETER = "groupCriteria";
     private static final String PROFILE_CRITERIA_PARAMETER = "profileCriteria";
+    private static final String IDENTIFIER_IS_MANDATORY = "Identifier is mandatory: ";
 
     private final GroupService groupService;
     private final ProfileService profileService;
@@ -161,7 +162,7 @@ public class GroupController implements CrudController<GroupDto> {
         final @RequestParam Optional<String> criteria,
         final @RequestParam Optional<String> embedded
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
@@ -219,7 +220,7 @@ public class GroupController implements CrudController<GroupDto> {
     @Secured(ServicesData.ROLE_UPDATE_GROUPS)
     public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch group {} with {}", id, partialDto);
@@ -244,7 +245,7 @@ public class GroupController implements CrudController<GroupDto> {
     @Secured(ServicesData.ROLE_GET_GROUPS)
     public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for group with id :{}", id);
         return groupService.findHistoryById(id);

@@ -204,7 +204,7 @@ public class ExternalParamProfileService {
         LOGGER.debug(
             "findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}",
             id,
-            "externalparamprofile",
+            EXTERNAL_PARAM_PROFILE,
             vitamContext
         );
         return logbookService.findEventsByIdentifierAndCollectionNames(

@@ -69,6 +69,8 @@ import java.net.URL;
 @Slf4j
 public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetInstructionsAction {
 
+    private static final String CONTACT_FAILED_MESSAGE_CODE = "contact.failed";
+
     private final HierarchicalMessageSource messageSource;
 
     private final ProvidersService providersService;
@@ -125,7 +127,11 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
     @Override
     protected Event doExecuteInternal(final RequestContext requestContext) throws Exception {
         if (!communicationsManager.isMailSenderDefined() && !communicationsManager.isSmsSenderDefined()) {
-            return getErrorEvent("contact.failed", "Unable to send email as no mail sender is defined", requestContext);
+            return getErrorEvent(
+                CONTACT_FAILED_MESSAGE_CODE,
+                "Unable to send email as no mail sender is defined",
+                requestContext
+            );
         }
 
         var query = buildPasswordManagementQuery(requestContext);
@@ -135,7 +141,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             email = passwordManagementService.findEmail(query);
         } catch (final Throwable e) {
             LOGGER.error("Error finding email", e);
-            return getErrorEvent("contact.failed", "Error finding email", requestContext);
+            return getErrorEvent(CONTACT_FAILED_MESSAGE_CODE, "Error finding email", requestContext);
         }
         var service = WebUtils.getService(requestContext);
         final String customerId = (String) query.getRecord().getFirst(Constants.RESET_PWD_CUSTOMER_ID_ATTR);
@@ -165,7 +171,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
             url = buildPasswordResetUrl(userLoginModelToToken, service);
         } catch (final Throwable e) {
             LOGGER.error("Error building password reset URL", e);
-            return getErrorEvent("contact.failed", "Error building password reset URL", requestContext);
+            return getErrorEvent(CONTACT_FAILED_MESSAGE_CODE, "Error building password reset URL", requestContext);
         }
 
         if (url != null) {
@@ -186,7 +192,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         }
         LOGGER.error("Failed to notify account [{}]", email);
         return getErrorEvent(
-            "contact.failed",
+            CONTACT_FAILED_MESSAGE_CODE,
             "Failed to send the password reset link via email address or phone",
             requestContext
         );
