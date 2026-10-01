@@ -103,6 +103,8 @@ public class SubrogationService extends AbstractResourceClientService<Subrogatio
     private final SubrogationConverter subrogationConverter;
     private final IamLogbookService iamLogbookService;
 
+    private static final String USERS_PREFIX = "Users ";
+
     @Value("${subrogation.ttl}")
     @NotNull
     @Setter
@@ -296,11 +298,11 @@ public class SubrogationService extends AbstractResourceClientService<Subrogatio
 
         Assert.isTrue(
             subro.getSurrogate().equals(currentUser.getEmail()),
-            "Users " + currentUser.getEmail() + " can't accept subrogation of " + subro.getSurrogate()
+            USERS_PREFIX + currentUser.getEmail() + " can't accept subrogation of " + subro.getSurrogate()
         );
         Assert.isTrue(
             subro.getSurrogateCustomerId().equals(currentUser.getCustomerId()),
-            "Users " + currentUser.getCustomerId() + " can't accept subrogation of " + subro.getSurrogate()
+            USERS_PREFIX + currentUser.getCustomerId() + " can't accept subrogation of " + subro.getSurrogate()
         );
         subro.setStatus(SubrogationStatusEnum.ACCEPTED);
 
@@ -326,7 +328,7 @@ public class SubrogationService extends AbstractResourceClientService<Subrogatio
         final String emailCurrentUser = securityService.getUser().getEmail();
         Assert.isTrue(
             subro.getSurrogate().equals(emailCurrentUser),
-            "Users " + emailCurrentUser + " can't decline subrogation of " + subro.getSurrogate()
+            USERS_PREFIX + emailCurrentUser + " can't decline subrogation of " + subro.getSurrogate()
         );
         subrogationRepository.deleteById(id);
     }

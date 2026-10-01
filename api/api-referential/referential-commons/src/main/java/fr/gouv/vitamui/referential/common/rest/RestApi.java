@@ -69,7 +69,9 @@ public abstract class RestApi {
 
     public static final String ONTOLOGIES_URL = REFERENTIAL_API_PATH + "/ontology";
 
-    public static final String OPERATIONS_URL = REFERENTIAL_API_PATH + "/operations";
+    public static final String OPERATIONS_PATH = "/operations";
+
+    public static final String OPERATIONS_URL = REFERENTIAL_API_PATH + OPERATIONS_PATH;
 
     public static final String RULES_URL = REFERENTIAL_API_PATH + "/rules";
 
@@ -94,8 +96,6 @@ public abstract class RestApi {
 
     public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH =
         REFERENTIAL_API_PATH + "/logbook-management-operation";
-
-    public static final String OPERATIONS_PATH = "/operations";
 
     public static final String ARCHIVAL_PROFILE_URL = REFERENTIAL_API_PATH + ARCHIVAL_PROFILE;
 

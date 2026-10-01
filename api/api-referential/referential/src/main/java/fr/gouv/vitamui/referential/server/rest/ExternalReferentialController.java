@@ -62,6 +62,9 @@ import java.util.Collection;
 @Setter
 public class ExternalReferentialController {
 
+    private static final String ARCHIVING_SYSTEM_ID_MANDATORY_MESSAGE = "archivingSystemId is mandatory: ";
+    private static final String TENANT_IDENTIFIER_MANDATORY_MESSAGE = "tenantIdentifier is mandatory: ";
+
     private final ExternalReferentialService externalReferentialService;
 
     @Autowired
@@ -84,8 +87,8 @@ public class ExternalReferentialController {
         @RequestParam(RestApi.ARCHIVING_SYSTEM_ID_PARAM) String archivingSystemId,
         @RequestParam(RestApi.TENANT_IDENTIFIER_PARAM) Integer tenantIdentifier
     ) {
-        ParameterChecker.checkParameter("archivingSystemId is mandatory: ", archivingSystemId);
-        ParameterChecker.checkParameter("tenantIdentifier is mandatory: ", tenantIdentifier);
+        ParameterChecker.checkParameter(ARCHIVING_SYSTEM_ID_MANDATORY_MESSAGE, archivingSystemId);
+        ParameterChecker.checkParameter(TENANT_IDENTIFIER_MANDATORY_MESSAGE, tenantIdentifier);
         return externalReferentialService.listAgencies(archivingSystemId, tenantIdentifier);
     }
 
@@ -98,8 +101,8 @@ public class ExternalReferentialController {
         @RequestParam(RestApi.ARCHIVING_SYSTEM_ID_PARAM) String archivingSystemId,
         @RequestParam(RestApi.TENANT_IDENTIFIER_PARAM) Integer tenantIdentifier
     ) {
-        ParameterChecker.checkParameter("archivingSystemId is mandatory: ", archivingSystemId);
-        ParameterChecker.checkParameter("tenantIdentifier is mandatory: ", tenantIdentifier);
+        ParameterChecker.checkParameter(ARCHIVING_SYSTEM_ID_MANDATORY_MESSAGE, archivingSystemId);
+        ParameterChecker.checkParameter(TENANT_IDENTIFIER_MANDATORY_MESSAGE, tenantIdentifier);
         return externalReferentialService.listIngestContracts(archivingSystemId, tenantIdentifier);
     }
 
@@ -112,8 +115,8 @@ public class ExternalReferentialController {
         @RequestParam(RestApi.ARCHIVING_SYSTEM_ID_PARAM) String archivingSystemId,
         @RequestParam(RestApi.TENANT_IDENTIFIER_PARAM) Integer tenantIdentifier
     ) {
-        ParameterChecker.checkParameter("archivingSystemId is mandatory: ", archivingSystemId);
-        ParameterChecker.checkParameter("tenantIdentifier is mandatory: ", tenantIdentifier);
+        ParameterChecker.checkParameter(ARCHIVING_SYSTEM_ID_MANDATORY_MESSAGE, archivingSystemId);
+        ParameterChecker.checkParameter(TENANT_IDENTIFIER_MANDATORY_MESSAGE, tenantIdentifier);
         return externalReferentialService.listArchiveProfiles(archivingSystemId, tenantIdentifier);
     }
 }

@@ -40,6 +40,15 @@ public class ExportSearchResultParam {
     public static final String EN_AU_WITHOUT_OBJECT = "Archive without object";
     public static final String EN_AU_WITH_OBJECT = "Archive with object";
 
+    //Description level values
+    private static final String RECORD_GRP = "RecordGrp";
+    private static final String FONDS = "Fonds";
+    private static final String SUBFONDS = "Subfonds";
+    private static final String CLASS = "Class";
+    private static final String COLLECTION = "Collection";
+    private static final String SERIE = "Serie";
+    private static final String SUBSERIES = "Subseries";
+
     //Date patterns
     private static final String FR_PATTERN_DATE = "dd/MM/yyyy";
     private static final String EN_PATTERN_DATE = "MM/dd/yyyy";
@@ -67,20 +76,20 @@ public class ExportSearchResultParam {
                 "Dossier",
                 "Item",
                 "Document",
-                "RecordGrp",
+                RECORD_GRP,
                 "Dossier",
-                "Fonds",
-                "Fonds",
-                "Subfonds",
-                "Subfonds",
-                "Class",
-                "Class",
-                "Collection",
-                "Collection",
-                "Serie",
-                "Serie",
-                "Subseries",
-                "Subseries",
+                FONDS,
+                FONDS,
+                SUBFONDS,
+                SUBFONDS,
+                CLASS,
+                CLASS,
+                COLLECTION,
+                COLLECTION,
+                SERIE,
+                SERIE,
+                SUBSERIES,
+                SUBSERIES,
                 "SubGrp :SubGrp",
                 "OtherLevel :OtherLevel"
             );
@@ -101,20 +110,20 @@ public class ExportSearchResultParam {
                 "File",
                 "Item",
                 "File",
-                "RecordGrp",
-                "RecordGrp",
-                "Fonds",
-                "Fonds",
-                "Subfonds",
-                "Subfonds",
-                "Class",
-                "Class",
-                "Collection",
-                "Collection",
-                "Serie",
-                "Serie",
-                "Subseries",
-                "Subseries",
+                RECORD_GRP,
+                RECORD_GRP,
+                FONDS,
+                FONDS,
+                SUBFONDS,
+                SUBFONDS,
+                CLASS,
+                CLASS,
+                COLLECTION,
+                COLLECTION,
+                SERIE,
+                SERIE,
+                SUBSERIES,
+                SUBSERIES,
                 "SubGrp :SubGrp",
                 "OtherLevel :OtherLevel"
             );

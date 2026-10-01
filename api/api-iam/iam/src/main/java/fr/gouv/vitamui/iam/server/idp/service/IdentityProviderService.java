@@ -109,6 +109,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
     private static final String CUSTOMER = "customerId";
     private static final String AUTO_PROVISIONING_ENABLED = "autoProvisioningEnabled";
     private static final String READ_ONLY = "readonly";
+    private static final String INTERNAL = "internal";
 
     @Autowired
     public IdentityProviderService(
@@ -205,7 +206,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
         }
 
         boolean autoProvisioningEnabled = false;
-        final Boolean internal = (Boolean) partialDto.get("internal");
+        final Boolean internal = (Boolean) partialDto.get(INTERNAL);
         if (partialDto.get(AUTO_PROVISIONING_ENABLED) != null) {
             autoProvisioningEnabled = (boolean) partialDto.get(AUTO_PROVISIONING_ENABLED);
         }
@@ -332,7 +333,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
                     );
                     entity.setName(CastUtils.toString(entry.getValue()));
                     break;
-                case "internal":
+                case INTERNAL:
                     logbooks.add(
                         new EventDiffDto(IdentityProviderConverter.INTERNAL_KEY, entity.getInternal(), entry.getValue())
                     );
@@ -812,7 +813,7 @@ public class IdentityProviderService extends AbstractResourceClientService<Ident
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return List.of("id", "name", "internal", "enabled", "patterns", CUSTOMER_ID_KEY);
+        return List.of("id", "name", INTERNAL, "enabled", "patterns", CUSTOMER_ID_KEY);
     }
 
     @Override
