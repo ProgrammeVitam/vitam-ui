@@ -10,7 +10,7 @@
 #
 # Re-exec under bash when invoked via `sh` (dash lacks pipefail and
 # associative arrays). This test must stay POSIX: dash still reads it.
-if [ -z "${BASH_VERSION:-}" ]; then
+if [ -z "${BASH_VERSION:-}" ]; then # NOSONAR (shelldre:S7688) - single bracket required for POSIX dash compatibility before re-exec
   exec bash "$0" "$@"
 fi
 
