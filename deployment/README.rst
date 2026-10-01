@@ -5,6 +5,48 @@ Déploiement VITAM-UI
 Préparation
 ============
 
+Préparation de la compatibilité Debian 13
+----------------------------------------
+
+Debian 13 (Trixie) utilise Python 3.13. Le contrôleur Ansible doit utiliser
+une version prenant en charge ce Python sur les hôtes gérés (à partir
+d'``ansible-core`` 2.18), même si le contrôleur reste sur une autre distribution.
+Si le contrôleur est aussi sous Debian 13, vérifier également le support de
+Python 3.13 côté contrôleur. Choisir une version encore maintenue et qualifier
+les playbooks avec cette version ; les changements de templating de la version
+2.19 nécessitent notamment une validation à l'exécution.
+
+Le script ``tools/setup_ansible_venv.sh``, utilisé par les outils de développement,
+sélectionne actuellement ``ansible-core`` 2.14 pour Python 3.9 et suivants : cet
+environnement ne convient pas pour déployer vers les Python 3.13 de Debian 13.
+``ansible-core`` seul ne fournit pas les collections utilisées par les rôles,
+notamment ``community.general``, ``ansible.posix`` et ``community.docker``.
+
+Le rôle Docker accepte Debian 13 et utilise une clé dédiée
+``/etc/apt/keyrings/docker.asc`` avec ``signed-by``, sans ``apt-key``.
+Le SDK Docker Python est installé par APT (``python3-docker``).
+Les dépôts Docker restent configurés pour l'architecture ``amd64``.
+
+Avant de qualifier un déploiement complet sur Debian 13 :
+
+* Fournir dans ``vitam_repositories`` des dépôts de paquets VITAM/VITAM-UI
+  et de dépendances compatibles avec Trixie, puis vérifier leurs signatures APT.
+* En mode ``legacy``, vérifier la disponibilité du paquet Java ``jdk-21``
+  attendu par le rôle ``normalize`` dans ces dépôts. Le paquet natif Debian
+  ``openjdk-21-jre-headless`` porte un autre nom ; toute substitution doit aussi
+  tenir compte des dépendances des paquets applicatifs.
+* Vérifier le support de MongoDB pour l'OS cible. La documentation MongoDB 8.0
+  Community pour Debian liste Debian 12, pas Debian 13 ; la compatibilité des
+  paquets fournis par les dépôts VITAM reste donc à qualifier.
+* Sur une VM de recette Debian 13, exécuter le bootstrap puis le déploiement,
+  vérifier les services, la résolution DNS Consul et l'accès aux applications.
+  Rejouer ensuite les rôles pour vérifier l'idempotence, notamment du dépôt Docker.
+
+Ces adaptations ne constituent pas une qualification complète de Debian 13.
+Références : `matrice de compatibilité Ansible <https://docs.ansible.com/projects/ansible-core/2.19/reference_appendices/release_and_maintenance.html>`_,
+`installation Docker sur Debian <https://docs.docker.com/engine/install/debian/>`_
+et `installation MongoDB 8.0 sur Debian <https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-debian/>`_.
+
 Inventaire
 -----------
 
