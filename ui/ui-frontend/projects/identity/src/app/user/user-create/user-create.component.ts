@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import {
   AdminUserProfile,
@@ -45,12 +45,19 @@ import {
   CountryOption,
   CountryService,
   Customer,
+  DialogHeaderComponent,
   Group,
+  InputComponent,
   isRootLevel,
   Logger,
+  NextStepComponent,
   Option,
   OtpState,
+  PreviousStepComponent,
+  SelectComponent,
+  SlideToggleComponent,
   StartupService,
+  StepperComponent,
   UserInfo,
 } from 'vitamui-library';
 import { GroupSelection } from './../group-selection.interface';
@@ -59,6 +66,10 @@ import { UserInfoService } from './../user-info.service';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { UserCreateValidators } from './user-create.validators';
+import { CdkStep } from '@angular/cdk/stepper';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { GroupListComponent } from '../group-attribution/group-list/group-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
 
@@ -66,7 +77,23 @@ const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    StepperComponent,
+    CdkStep,
+    MatDialogContent,
+    SlideToggleComponent,
+    InputComponent,
+    SelectComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatDialogActions,
+    NextStepComponent,
+    GroupListComponent,
+    PreviousStepComponent,
+    TranslatePipe,
+  ],
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<UserCreateComponent>>(MatDialogRef);

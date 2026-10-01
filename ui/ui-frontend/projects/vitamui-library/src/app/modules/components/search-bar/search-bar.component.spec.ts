@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -42,12 +42,10 @@ import { SearchBarComponent } from './search-bar.component';
 
 @Component({
   template: ` <vitamui-common-search-bar name="searchTest"></vitamui-common-search-bar>`,
-  standalone: false,
+  imports: [FormsModule, SearchBarComponent],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {}
-
-@NgModule({ declarations: [TestHostComponent], schemas: [NO_ERRORS_SCHEMA] })
-class TestHostModule {}
 
 describe('SearchBarComponent', () => {
   let testhost: TestHostComponent;
@@ -55,8 +53,7 @@ describe('SearchBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, SearchBarComponent],
-      declarations: [TestHostComponent],
+      imports: [TestHostComponent],
     }).compileComponents();
   });
 

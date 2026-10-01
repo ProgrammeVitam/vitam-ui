@@ -34,15 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { BASE_URL, CriteriaSearchQuery, Operators, Owner, SnackBarService, Tenant } from 'vitamui-library';
+import { CriteriaSearchQuery, Operators, Owner, SnackBarService, Tenant } from 'vitamui-library';
 
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { TenantService } from './tenant.service';
 
 import { Type } from '@angular/core';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedTenant: Tenant = {
   id: '42',
@@ -130,13 +129,7 @@ describe('TenantService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        TenantService,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: SnackBarService, useValue: snackBarSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [TenantService, { provide: SnackBarService, useValue: snackBarSpy }],
     });
 
     httpTestingController = TestBed.inject(HttpTestingController as Type<HttpTestingController>);

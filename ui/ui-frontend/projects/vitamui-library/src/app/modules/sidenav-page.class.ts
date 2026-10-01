@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, OnDestroy, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Directive, inject, OnDestroy, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AppRootComponent } from './app-root-component.class';
 import { GlobalEventService } from './global-event.service';
 
+import { Logger } from './logger/logger';
+
 @Directive()
-export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, OnDestroy {
+export class SidenavPage<T> implements AfterViewInit, OnDestroy {
   globalEventService: GlobalEventService;
 
   openedItem: T;
@@ -52,9 +52,9 @@ export class SidenavPage<T> extends AppRootComponent implements AfterViewInit, O
   @ViewChild('panel') panel: MatSidenav;
 
   private destroy = new Subject<void>();
+  protected logger = inject(Logger);
 
-  constructor(route: ActivatedRoute = inject(ActivatedRoute), globalEventService: GlobalEventService = inject(GlobalEventService)) {
-    super(route);
+  constructor(globalEventService: GlobalEventService = inject(GlobalEventService)) {
     this.globalEventService = globalEventService;
 
     merge(this.globalEventService.pageEvent, this.globalEventService.customerEvent, this.globalEventService.tenantEvent)

@@ -34,15 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Directive, Input, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 import {
-  BASE_URL,
   InheritedPropertyDto,
   InjectorModule,
   LoggerModule,
@@ -75,10 +72,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     @Input() vitamuiCommonCollapse: any;
   }
 
-  @Pipe({
-    name: 'dateTime',
-    standalone: false,
-  })
+  @Pipe({ name: 'dateTime' })
   class DateTimeStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -121,22 +115,17 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitRulesInformationsTabComponent, DateTimeStubPipe],
       imports: [
         CollapseStubDirective,
         CollapseTriggerForStubDirective,
         BrowserAnimationsModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         VitamUICommonTestModule,
+        ArchiveUnitRulesInformationsTabComponent,
+        DateTimeStubPipe,
       ],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideI18n(),
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideI18n()],
     }).compileComponents();
   });
 

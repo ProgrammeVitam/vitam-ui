@@ -34,26 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateService } from '@ngx-translate/core';
 
-import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ENVIRONMENT, LoggerModule, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
+import { EMPTY } from 'rxjs';
+import { ENVIRONMENT, LoggerModule, SnackBarService, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { environment } from './../../../environments/environment';
 import { OwnerPreviewComponent } from './owner-preview.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-information-tab',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatTabsModule, VitamUICommonTestModule],
 })
 export class InformationTabStubComponent {
   @Input() owner: any;
@@ -67,16 +63,19 @@ describe('OwnerPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OwnerPreviewComponent, InformationTabStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule, MatTabsModule, NoopAnimationsModule, LoggerModule.forRoot(), VitamUICommonTestModule],
+      imports: [
+        MatMenuModule,
+        MatTabsModule,
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule,
+        OwnerPreviewComponent,
+        InformationTabStubComponent,
+      ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: { instant: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -34,20 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { Application, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractComponent } from './management-contract.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractComponent', () => {
   let component: ManagementContractComponent;
@@ -55,6 +52,10 @@ describe('ManagementContractComponent', () => {
 
   const applicationServiceSpy = {
     isApplicationExternalIdentifierEnabled: vi.fn().mockName('ApplicationService.isApplicationExternalIdentifierEnabled'),
+    getAppById: () =>
+      of({
+        name: 'App name',
+      } satisfies Partial<Application>),
   };
   applicationServiceSpy.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
 
@@ -66,30 +67,31 @@ describe('ManagementContractComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         ReactiveFormsModule,
         MatSidenavModule,
         InjectorModule,
         VitamUICommonTestModule,
-        RouterTestingModule,
         LoggerModule.forRoot(),
         BrowserAnimationsModule,
-        NoopAnimationsModule,
+        ManagementContractComponent,
       ],
       providers: [
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'MANAGEMENT_CONTRACT_APP' }),
+            snapshot: { data: { appId: 'MANAGEMENT_CONTRACT_APP' } },
+          },
         },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: ApplicationService, useValue: applicationServiceSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ApplicationService, { useValue: applicationServiceSpy })
+      .compileComponents();
   });
 
   beforeEach(() => {

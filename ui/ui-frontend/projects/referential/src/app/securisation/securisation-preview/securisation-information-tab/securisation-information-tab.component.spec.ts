@@ -108,8 +108,7 @@ describe.skip('SecurisationInformationTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [NgxFilesizeModule],
-      declarations: [SecurisationInformationTabComponent],
+      imports: [NgxFilesizeModule, SecurisationInformationTabComponent],
       providers: [{ provide: SecurisationService, useValue: securisationServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

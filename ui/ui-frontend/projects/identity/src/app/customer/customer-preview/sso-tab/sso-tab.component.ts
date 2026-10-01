@@ -34,21 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import type { Customer, IdentityProvider } from 'vitamui-library';
-import { DownloadUtils, SnackBarService } from 'vitamui-library';
+import { DownloadUtils, SnackBarService, TooltipDirective } from 'vitamui-library';
 import { IdentityProviderCreateComponent } from './identity-provider-create/identity-provider-create.component';
 import { IdentityProviderService } from './identity-provider.service';
 import { ProviderApiService } from './provider-api.service';
+import { IdentityProviderDetailsComponent } from './identity-provider-details/identity-provider-details.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sso-tab',
   templateUrl: './sso-tab.component.html',
   styleUrls: ['./sso-tab.component.scss'],
-  standalone: false,
+  imports: [TooltipDirective, IdentityProviderDetailsComponent, TranslatePipe],
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
   dialog = inject(MatDialog);

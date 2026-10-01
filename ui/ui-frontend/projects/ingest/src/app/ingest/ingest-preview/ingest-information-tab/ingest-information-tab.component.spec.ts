@@ -48,8 +48,7 @@ describe('IngestInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestInformationTabComponent],
-      imports: [VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule, IngestInformationTabComponent],
       providers: [
         { provide: ApplicationService, useValue: { getUrl$: () => of('') } },
         { provide: IngestReferentialService, useValue: { resolveNames: () => of({}) } },

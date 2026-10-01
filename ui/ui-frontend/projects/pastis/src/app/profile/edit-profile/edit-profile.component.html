@@ -24,7 +24,7 @@
         <mat-tab label="{{ tabLabels[0] | translate }}">
           <div class="pastis-tab-container">
             <ng-template matTabContent>
-              @if (fileService.currentTreeLoaded) {
+              @if (fileService.currentTreeLoaded()) {
                 <pastis-file-tree
                   [childrenListToExclude]="headerTabChildrenToExclude"
                   [collectionName]="collectionNames[0]"
@@ -44,7 +44,7 @@
         <mat-tab label="{{ tabLabels[1] | translate }}">
           <div class="pastis-tab-container">
             <ng-template matTabContent>
-              @if (fileService.currentTreeLoaded) {
+              @if (fileService.currentTreeLoaded()) {
                 <pastis-file-tree
                   [childrenListToExclude]="rulesTabChildrenToExclude"
                   [childrenListToInclude]="rulesTabChildrenToInclude"
@@ -65,7 +65,7 @@
         <mat-tab label="{{ (isAUP ? tabLabels[4] : tabLabels[2]) | translate }}">
           <div class="pastis-tab-container">
             <ng-template matTabContent>
-              @if (fileService.currentTreeLoaded) {
+              @if (fileService.currentTreeLoaded()) {
                 <pastis-file-tree
                   [childrenListToExclude]="treeTabChildrenToExclude"
                   [childrenListToInclude]="treeTabChildrenToInclude"
@@ -86,7 +86,7 @@
         <mat-tab label="{{ tabLabels[3] | translate }}">
           <div class="pastis-tab-container">
             <ng-template matTabContent>
-              @if (fileService.currentTreeLoaded) {
+              @if (fileService.currentTreeLoaded()) {
                 <pastis-file-tree
                   [childrenListToExclude]="objectTabChildrenToExclude"
                   [childrenListToInclude]="objectTabChildrenToInclude"

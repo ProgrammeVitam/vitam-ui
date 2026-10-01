@@ -39,8 +39,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
-import type { AdminUserProfile, Agency } from 'vitamui-library';
 import {
+  AdminUserProfile,
+  Agency,
   AgencyService,
   ApplicationId,
   DEFAULT_PAGE_SIZE,
@@ -51,9 +52,7 @@ import {
   SecurityService,
   VitamUICommonModule,
 } from 'vitamui-library';
-import { AgencyCreateModule } from '../agency-create/agency-create.module';
 
-import { ImportDialogModule } from '../../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -64,7 +63,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-agency-list',
   templateUrl: './agency-list.component.html',
   styleUrls: ['./agency-list.component.scss'],
-  imports: [AgencyCreateModule, ImportDialogModule, MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule, TranslatePipe],
+  imports: [MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule, TranslatePipe],
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   agencyService: AgencyService;
@@ -168,10 +167,14 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
   private replaceUpdatedAgency(): void {
     this.agencyService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAgency: Agency) => {
-      const index = this.dataSource.findIndex((item: Agency) => item.id === updatedAgency.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedAgency;
-      }
+      this.dataSource.update((agencies) => {
+        const list = [...(agencies ?? [])];
+        const index = list.findIndex((item: Agency) => item.id === updatedAgency.id);
+        if (index !== -1) {
+          list[index] = updatedAgency;
+        }
+        return list;
+      });
     });
   }
 

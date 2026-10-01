@@ -34,23 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Customer, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, Owner, PageRequest, Tenant } from 'vitamui-library';
+import {
+  CollapseDirective,
+  Customer,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  EllipsisDirective,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  Owner,
+  PageRequest,
+  Tenant,
+} from 'vitamui-library';
 import { CustomerService } from '../../core/customer.service';
 import { CustomerDataService } from '../customer.data.service';
 import { OwnerCreateComponent } from '../owner-create/owner-create.component';
 import { TenantService } from '../tenant.service';
 import { CustomerListService } from './customer-list.service';
+import { OwnerListComponent } from './owner-list/owner-list.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
-  standalone: false,
+  imports: [
+    OwnerListComponent,
+    MatProgressSpinner,
+    TranslatePipe,
+    CollapseDirective,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class CustomerListComponent extends InfiniteScrollTable<Customer> implements OnDestroy, OnInit {
   customerListService: CustomerListService;
@@ -84,7 +107,7 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
     });
 
     this.updatedData.subscribe(() => {
-      const customerIds = this.dataSource
+      const customerIds = (this.dataSource() ?? [])
         .filter((customer: Customer) => {
           const existingTenant = this.tenants.find((tenant) => tenant.customerId === customer.id);
           if (!existingTenant) {
@@ -99,19 +122,23 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
         this.tenantService.getTenantsByCustomerIds(customerIds).subscribe((results) => {
           this.customerDataService.addTenants(results);
           this.loaded = true;
-          this.pending = false;
+          this.pending.set(false);
         });
       } else {
         this.loaded = true;
-        this.pending = false;
+        this.pending.set(false);
       }
     });
 
     this.updatedCustomerSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {
-      const customerIndex = this.dataSource.findIndex((customer) => updatedCustomer.id === customer.id);
-      if (customerIndex > -1) {
-        this.dataSource[customerIndex] = updatedCustomer;
-      }
+      this.dataSource.update((customers) => {
+        const list = [...(customers ?? [])];
+        const customerIndex = list.findIndex((customer) => updatedCustomer.id === customer.id);
+        if (customerIndex > -1) {
+          list[customerIndex] = updatedCustomer;
+        }
+        return list;
+      });
     });
   }
 

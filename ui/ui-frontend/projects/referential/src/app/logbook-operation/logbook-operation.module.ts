@@ -46,7 +46,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { VitamUICommonModule } from 'vitamui-library';
-import { PipesModule } from '../shared/pipes/pipes.module';
+
 import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
 import { LogbookOperationPopupComponent } from './logbook-operation-detail/logbook-operation-popup.component';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
@@ -57,7 +57,6 @@ import { FR_DATE_FORMAT } from '../helpers/dates.constants';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [LogbookOperationComponent, LogbookOperationListComponent, LogbookOperationDetailComponent, LogbookOperationPopupComponent],
   imports: [
     CommonModule,
     MatSidenavModule,
@@ -71,8 +70,11 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    PipesModule,
     TranslatePipe,
+    LogbookOperationComponent,
+    LogbookOperationListComponent,
+    LogbookOperationDetailComponent,
+    LogbookOperationPopupComponent,
   ],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: FR_DATE_FORMAT }],
 })

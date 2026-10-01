@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -42,13 +41,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
   AccessContract,
-  BASE_URL,
   InjectorModule,
   LoggerModule,
   SearchBarComponent,
@@ -60,7 +56,6 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveComponent } from './archive.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ArchiveComponent', () => {
   let component: ArchiveComponent;
@@ -108,20 +103,16 @@ describe('ArchiveComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      declarations: [ArchiveComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         MatDatepickerModule,
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
-        BrowserAnimationsModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
-        NoopAnimationsModule,
         SearchBarComponent,
+        ArchiveComponent,
       ],
       providers: [
         FormBuilder,
@@ -129,16 +120,17 @@ describe('ArchiveComponent', () => {
         { provide: ArchiveApiService, useValue: archiveServiceMock },
         { provide: SecurityService, useValue: securityServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        {
-          provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
-        },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: environment, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ActivatedRoute, {
+        useValue: {
+          params: of({ tenantIdentifier: 1 }),
+          data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+          snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

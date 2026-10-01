@@ -34,11 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import {
   ClickOutsideDirective,
-  CommonTooltipModule,
   ItemFlatNode,
   ItemNode,
   ItemNodeUtils,
@@ -46,6 +45,7 @@ import {
   SchemaElement,
   SchemaService,
   TenantSelectionService,
+  TooltipDirective,
   VitamUICommonModule,
 } from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -68,7 +68,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
     MatButtonToggleModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    CommonTooltipModule,
+    TooltipDirective,
     ClickOutsideDirective,
   ],
   selector: 'app-schema-list',

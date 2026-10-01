@@ -39,11 +39,12 @@ import { DatePipe } from '@angular/common';
 import { Discussion, DiscussionDto, Message } from '../discussion.service';
 import { ContentDividerComponent } from '../content-divider/content-divider.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { EllipsisDirectiveModule } from '../../../../app/modules/directives/ellipsis/ellipsis.directive.module';
+
+import { EllipsisDirective } from '../../../../app/modules/directives/ellipsis/ellipsis.directive';
 
 @Component({
   selector: 'vitamui-discussion-list',
-  imports: [DatePipe, TranslatePipe, ContentDividerComponent, EllipsisDirectiveModule],
+  imports: [DatePipe, TranslatePipe, ContentDividerComponent, EllipsisDirective],
   templateUrl: './discussion-list.component.html',
   styleUrl: './discussion-list.component.scss',
 })

@@ -34,10 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,7 +52,7 @@ export const EDITABLE_FILE_VALUE_ACCESSOR: any = {
   selector: 'vitamui-common-editable-file',
   templateUrl: './editable-file.component.html',
   providers: [EDITABLE_FILE_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [CdkOverlayOrigin, MatProgressSpinner, CdkConnectedOverlay, TranslatePipe],
 })
 export class EditableFileComponent extends EditableFieldComponent {
   @Input() accept: string;

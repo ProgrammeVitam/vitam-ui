@@ -34,16 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Pipe, PipeTransform, inject } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import DOMPurify from 'dompurify';
 import { normalizeString } from '../../../lib/utils/string.util';
 
-@Pipe({
-  name: 'highlight',
-  standalone: false,
-})
+@Pipe({ name: 'highlight' })
 export class HighlightPipe implements PipeTransform {
   private sanitizer: DomSanitizer;
 

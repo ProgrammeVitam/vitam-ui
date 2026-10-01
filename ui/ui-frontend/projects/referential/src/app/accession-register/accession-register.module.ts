@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -51,7 +51,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
-import { RoleToggleModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { RoleComponent, RoleToggleComponent, SlideToggleComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
@@ -79,7 +79,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     ReactiveFormsModule,
     MatProgressBarModule,
     MatTabsModule,
-    RoleToggleModule,
     MatCheckboxModule,
     MatCardModule,
     MatPseudoCheckboxModule,
@@ -87,8 +86,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     MatRadioModule,
     TranslatePipe,
-  ],
-  declarations: [
     AccessionRegisterComponent,
     AccessionRegisterListComponent,
     AccessionRegisterFacetsComponent,
@@ -96,6 +93,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     AccessionRegisterPreviewComponent,
     AccessionRegisterDetailComponent,
     AccessionRegisterOperationsListComponent,
+    FormsModule,
+    RoleComponent,
+    RoleToggleComponent,
+    SlideToggleComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

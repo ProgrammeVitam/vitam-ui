@@ -42,12 +42,12 @@ import {
   Directive,
   ElementRef,
   HostListener,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
-  inject,
 } from '@angular/core';
 import type { TooltipPosition } from './TooltipPosition.enum';
 import { CommonTooltipComponent } from './common-tooltip.component';
@@ -81,10 +81,7 @@ const VITAMUI_TOOL_TIP_POSITIONS: { [key: string]: ConnectedPosition } = {
 
 const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
 
-@Directive({
-  selector: '[vitamuiTooltip]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiTooltip]' })
 export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
   private overlay = inject(Overlay);
   private overlayPositionBuilder = inject(OverlayPositionBuilder);

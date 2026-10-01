@@ -35,17 +35,54 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject } from '@angular/core';
-import { Route, Router, Routes } from '@angular/router';
-import { VitamuiSelectOptions } from 'vitamui-library';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { RouteData } from './app-routing.module';
+import { Route, Router, RouterLink, RouterLinkActive, RouterOutlet, Routes } from '@angular/router';
+import {
+  AppConfiguration,
+  ApplicationApiService,
+  AuthService,
+  ConfigService,
+  SelectComponent,
+  SelectLanguageComponent,
+  ThemeService,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { RouteData } from './app.routes';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { MatList } from '@angular/material/list';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'design-system-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ReactiveFormsModule,
+    SelectComponent,
+    MatList,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    RouterLinkActive,
+    RouterLink,
+    NgTemplateOutlet,
+    MatSidenavContent,
+    RouterOutlet,
+    TranslatePipe,
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSelectModule,
+    SelectLanguageComponent,
+  ],
 })
 export class AppComponent {
   private router = inject(Router);
@@ -58,6 +95,23 @@ export class AppComponent {
   url: string;
 
   constructor() {
+    const authService = inject(AuthService);
+    const configService = inject(ConfigService);
+    const themeService = inject(ThemeService);
+    const applicationApiService = inject(ApplicationApiService);
+
+    authService.userInfo = { id: '42', language: 'FRENCH' };
+
+    applicationApiService.getLocalAsset(configService.config.USER_LOGO).subscribe((userLogo) => {
+      themeService.init(
+        {
+          USER_LOGO: userLogo,
+          THEME_COLORS: configService.config.THEME_COLORS,
+        } as AppConfiguration,
+        {},
+      );
+    });
+
     const router = this.router;
     const fb = inject(FormBuilder);
     const translateService = inject(TranslateService);

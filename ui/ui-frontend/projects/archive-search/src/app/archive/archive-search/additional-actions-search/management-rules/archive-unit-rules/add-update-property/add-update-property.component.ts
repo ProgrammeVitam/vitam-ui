@@ -34,19 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { RuleTypeEnum } from '../../../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
+import { DialogHeaderComponent, SelectComponent } from 'vitamui-library';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-update-property',
   templateUrl: './add-update-property.component.html',
   styleUrls: ['./add-update-property.component.css'],
-  standalone: false,
+  imports: [SelectComponent, ReactiveFormsModule, FormsModule, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);

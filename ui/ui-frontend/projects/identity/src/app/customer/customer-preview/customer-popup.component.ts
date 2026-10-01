@@ -38,11 +38,12 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Customer } from 'vitamui-library';
+import { CustomerPreviewComponent } from './customer-preview.component';
 
 @Component({
   selector: 'app-customer-popup',
   template: '<app-customer-preview (previewClose)="closePopup()" [customer]="customer" [isPopup]="true"></app-customer-preview>',
-  standalone: false,
+  imports: [CustomerPreviewComponent],
 })
 export class CustomerPopupComponent {
   private route = inject(ActivatedRoute);

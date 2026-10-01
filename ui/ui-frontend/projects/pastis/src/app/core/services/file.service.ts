@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Injectable, OnDestroy, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, finalize, mergeMap, Observable, Subscription } from 'rxjs';
 import { FileNode, TypeConstants } from '../../models/file-node';
@@ -102,7 +102,7 @@ export class FileService implements OnDestroy {
   nodeChange = new BehaviorSubject<FileNode>(null);
   filteredNode = new BehaviorSubject<FileNode>(null);
 
-  currentTreeLoaded = false;
+  currentTreeLoaded = signal(false);
   parentNodeMap = new Map<FileNode, FileNode>();
 
   private _profileServiceGetProfileSubscription: Subscription;
@@ -120,7 +120,7 @@ export class FileService implements OnDestroy {
     this.profileService.profileId = profileResponse.id;
 
     this.currentTree.next([profileResponse.profile]);
-    this.currentTreeLoaded = true;
+    this.currentTreeLoaded.set(true);
     if (profileResponse.notice) {
       this.notice.next(profileResponse.notice);
       this.setNotice(false);
@@ -176,7 +176,7 @@ export class FileService implements OnDestroy {
         node.external = node.sedaData.external;
       }
 
-      this.linkFileNodeToSedaData(node, node.children);
+      this.linkFileNodeToSedaData(node, node.children ?? []);
     });
   }
 
@@ -205,10 +205,13 @@ export class FileService implements OnDestroy {
   }
 
   findChildById(nodeId: number, node: FileNode): FileNode {
+    if (!node) {
+      return undefined;
+    }
     if (nodeId === node.id) {
       return node;
     }
-    for (const child of node.children) {
+    for (const child of node.children ?? []) {
       if (child.id === nodeId) {
         return child;
       }
@@ -263,7 +266,7 @@ export class FileService implements OnDestroy {
       return fileTree;
     }
 
-    for (const child of fileTree.children) {
+    for (const child of fileTree.children ?? []) {
       const result = this.getFileNodeByPredicate(child, predicate);
       if (result) {
         return result;

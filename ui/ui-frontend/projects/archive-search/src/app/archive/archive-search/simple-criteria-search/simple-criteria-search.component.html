@@ -1,13 +1,14 @@
 <div class="container">
   <form [formGroup]="form" class="p-4">
     <div class="hgap-4 align-items-start pb-4">
-      @if (titleSearchTypes) {
-        @if (titleSearchTypes?.length) {
+      @if (titleSearchTypes()) {
+        @if (titleSearchTypes()?.length) {
           <vitamui-form-field-value-wrapper formControlName="title" class="w-100">
             <vitamui-search-with-type-selector
               [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate"
-              [types]="titleSearchTypes"
-              [(selectedType)]="titleSelectedType"
+              [types]="titleSearchTypes()"
+              [selectedType]="titleSelectedType()"
+              (selectedTypeChange)="titleSelectedType.set($event)"
             ></vitamui-search-with-type-selector>
           </vitamui-form-field-value-wrapper>
         } @else {
@@ -54,7 +55,7 @@
         [multiple]="true"
         [enableSelectAll]="false"
         formControlName="agencies"
-        [options]="selectOptions.agency"
+        [options]="selectOptions().agency"
         [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate"
         [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_PLACEHOLDER' | translate"
         class="w-100"
@@ -64,7 +65,7 @@
         [multiple]="true"
         [enableSelectAll]="false"
         formControlName="archiveUnitProfiles"
-        [options]="selectOptions.archiveUnitProfile"
+        [options]="selectOptions().archiveUnitProfile"
         [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.AUP' | translate"
         [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.AUP_PLACEHOLDER' | translate"
         class="w-100"
@@ -123,13 +124,13 @@
     <div class="hgap-4 align-items-start">
       <p class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate }}</p>
     </div>
-    @if (otherCriteriaOptions) {
+    @if (otherCriteriaOptions()) {
       <div class="hgap-4 align-items-start align-items-start pb-4">
         <vitamui-select-with-tree
           formControlName="otherCriteriaList"
           class="w-100"
           [multiple]="true"
-          [options]="otherCriteriaOptions"
+          [options]="otherCriteriaOptions()"
           [getDisplayValue]="getOtherCriteriaDisplayValue"
           [placeholder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELDS' | translate"
           [searchBarPlaceHolder]="'Entrer les premières lettres de votre recherche' | translate"
@@ -137,12 +138,13 @@
         </vitamui-select-with-tree>
         <div class="gap-4 w-100" formArrayName="otherCriteria">
           @for (otherCriteria of otherCriteriaList.value; track otherCriteria.ApiPath) {
-            @if (['Title'].includes(otherCriteria.ApiPath) && titleSearchTypes?.length) {
+            @if (['Title'].includes(otherCriteria.ApiPath) && titleSearchTypes()?.length) {
               <vitamui-form-field-value-wrapper [formControlName]="otherCriteria.Path" class="w-100">
                 <vitamui-search-with-type-selector
                   [placeholder]="getCriteriaName(otherCriteria)"
-                  [types]="titleSearchTypes"
-                  [(selectedType)]="titleSelectedType"
+                  [types]="titleSearchTypes()"
+                  [selectedType]="titleSelectedType()"
+                  (selectedTypeChange)="titleSelectedType.set($event)"
                 ></vitamui-search-with-type-selector>
               </vitamui-form-field-value-wrapper>
             } @else if (['TEXT', 'KEYWORD', 'BOOLEAN', 'LONG'].includes(otherCriteria.Type)) {

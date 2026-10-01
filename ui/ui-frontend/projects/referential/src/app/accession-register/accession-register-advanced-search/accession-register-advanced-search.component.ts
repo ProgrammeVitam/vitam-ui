@@ -34,18 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { OjectUtils } from 'vitamui-library';
+import { OjectUtils, SelectComponent, VitamuiMultiInputsModule } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-accession-register-advanced-search',
   templateUrl: './accession-register-advanced-search.component.html',
   styleUrls: ['./accession-register-advanced-search.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, VitamuiMultiInputsModule, SelectComponent, MatRadioGroup, MatRadioButton, AsyncPipe, TranslatePipe],
 })
 export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
   private formBuilder = inject(FormBuilder);

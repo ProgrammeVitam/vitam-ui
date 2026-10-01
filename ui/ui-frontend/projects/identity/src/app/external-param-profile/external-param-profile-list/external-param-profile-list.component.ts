@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
@@ -43,19 +43,24 @@ import {
   DEFAULT_PAGE_SIZE,
   Direction,
   ExternalParamProfile,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
   PageRequest,
+  PipesModule,
   Profile,
 } from 'vitamui-library';
 import { ProfileService } from '../../profile/profile.service';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { SharedService } from '../shared.service';
+import { CommonModule, DecimalPipe, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-external-param-profile-list',
   templateUrl: './external-param-profile-list.component.html',
   styleUrls: ['./external-param-profile-list.component.css'],
-  standalone: false,
+  imports: [NgClass, MatProgressSpinner, DecimalPipe, PipesModule, TranslatePipe, CommonModule, InfiniteScrollDirective],
 })
 export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnDestroy, OnInit {
   externalParamProfileServiceService: ExternalParamProfileService;
@@ -100,22 +105,26 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
 
   private subscribeOnExteralParamProfilePatchOperation() {
     this.updatedProfileSub = this.externalParamProfileServiceService.updated.subscribe((externalParamProfile: ExternalParamProfile) => {
-      const extParamProfileIndex = this.dataSource.findIndex((extParamProfile) => extParamProfile.id === externalParamProfile.id);
-      if (extParamProfileIndex > -1) {
-        this.dataSource[extParamProfileIndex] = {
-          id: externalParamProfile.id,
-          enabled: externalParamProfile.enabled,
-          name: externalParamProfile.name,
-          description: externalParamProfile.description,
-          accessContract: externalParamProfile.accessContract,
-          externalParamIdentifier: externalParamProfile.externalParamIdentifier,
-          profileIdentifier: externalParamProfile.profileIdentifier,
-          idExternalParam: externalParamProfile.idExternalParam,
-          idProfile: externalParamProfile.idProfile,
-          bulkOperationsThreshold: externalParamProfile.bulkOperationsThreshold,
-          usePlatformThreshold: externalParamProfile.usePlatformThreshold,
-        };
-      }
+      this.dataSource.update((profiles) => {
+        const list = [...(profiles ?? [])];
+        const extParamProfileIndex = list.findIndex((extParamProfile) => extParamProfile.id === externalParamProfile.id);
+        if (extParamProfileIndex > -1) {
+          list[extParamProfileIndex] = {
+            id: externalParamProfile.id,
+            enabled: externalParamProfile.enabled,
+            name: externalParamProfile.name,
+            description: externalParamProfile.description,
+            accessContract: externalParamProfile.accessContract,
+            externalParamIdentifier: externalParamProfile.externalParamIdentifier,
+            profileIdentifier: externalParamProfile.profileIdentifier,
+            idExternalParam: externalParamProfile.idExternalParam,
+            idProfile: externalParamProfile.idProfile,
+            bulkOperationsThreshold: externalParamProfile.bulkOperationsThreshold,
+            usePlatformThreshold: externalParamProfile.usePlatformThreshold,
+          };
+        }
+        return list;
+      });
     });
   }
 

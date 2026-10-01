@@ -38,33 +38,22 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
+import { Application, ApplicationService, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of } from 'rxjs';
 import { ContextComponent } from './context.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ContextListComponent } from './context-list/context-list.component';
 
 @Component({
   selector: 'app-agency-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class ContextPreviewStub {
   @Input()
   accessContract: any;
 }
-
-@Component({
-  selector: 'app-agency-list',
-  template: '',
-  standalone: false,
-})
-class ContextListStub {}
 
 describe('ContextComponent', () => {
   let component: ContextComponent;
@@ -73,29 +62,26 @@ describe('ContextComponent', () => {
   const applicationServiceMock = {
     applications: new Array<any>(),
     isApplicationExternalIdentifierEnabled: () => of(true),
+    getAppById: () =>
+      of({
+        name: 'App name',
+      } satisfies Partial<Application>),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContextComponent, ContextListStub, ContextPreviewStub],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        VitamUICommonTestModule,
-        RouterTestingModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        NoopAnimationsModule,
-        MatSidenavModule,
-        MatDialogModule,
-      ],
+      imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), MatSidenavModule, MatDialogModule, ContextPreviewStub],
       providers: [
-        { provide: ApplicationService, useValue: applicationServiceMock },
-        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY } },
+        { provide: ActivatedRoute, useValue: { params: EMPTY, data: EMPTY, paramMap: EMPTY, snapshot: { data: { appId: 'App Id' } } } },
         { provide: GlobalEventService, useValue: { pageEvent: EMPTY, customerEvent: EMPTY, tenantEvent: EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
-    }).compileComponents();
+    })
+      .overrideProvider(ApplicationService, { useValue: applicationServiceMock })
+      .overrideComponent(ContextListComponent, {
+        set: { template: '' },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
