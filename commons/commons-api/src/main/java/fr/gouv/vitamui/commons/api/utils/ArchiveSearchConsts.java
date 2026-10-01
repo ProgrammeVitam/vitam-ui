@@ -307,7 +307,7 @@ public class ArchiveSearchConsts {
     public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING = Map.ofEntries(
         entry("GUID", GUID),
         entry("GUID_OPI", "#opi"),
-        entry("VIRTUAL", "#vups"),
+        entry("VIRTUAL", ARCHIVE_UNIT_VIRTUAL_PATHS),
         entry(ORIGINATING_AGENCY_ID_FIELD, PRODUCER_SERVICE),
         entry("START_DATE", START_DATE),
         entry("END_DATE", END_DATE),

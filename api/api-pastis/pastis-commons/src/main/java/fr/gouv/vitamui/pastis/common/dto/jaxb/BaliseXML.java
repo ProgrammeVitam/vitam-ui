@@ -62,6 +62,7 @@ public class BaliseXML {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaliseXML.class);
     private static final String UNDEFINED = "undefined";
+    private static final String CODE_LIST_VERSIONS = "CodeListVersions";
     private static BaliseXML baliseXMLStatic;
     String name;
     String dataType;
@@ -134,7 +135,7 @@ public class BaliseXML {
             null != node.getValueOrData() &&
             !node.getValueOrData().equals(UNDEFINED) &&
             node.getValueOrData().equals("data") &&
-            !node.getName().equals("CodeListVersions") &&
+            !node.getName().equals(CODE_LIST_VERSIONS) &&
             null == node.getValue()
         ) {
             dataRNG = new DataXML();
@@ -142,7 +143,7 @@ public class BaliseXML {
 
         if (
             (node.getName() != null &&
-                ((node.getName().equals("CodeListVersions") && presenceChildrenNode) || presenceChildrenNode) &&
+                ((node.getName().equals(CODE_LIST_VERSIONS) && presenceChildrenNode) || presenceChildrenNode) &&
                 null == node.getValue()) &&
             (valueRNG == null && RNGConstants.getTypesMap().containsKey(node.getName()))
         ) {
@@ -163,7 +164,7 @@ public class BaliseXML {
             if (null != valueRNG) {
                 valueRNG.setDataType(node.getDataType());
             }
-            if (null != dataRNG && !node.getName().equals("CodeListVersions")) {
+            if (null != dataRNG && !node.getName().equals(CODE_LIST_VERSIONS)) {
                 dataRNG.setDataType(node.getDataType());
             }
         }
