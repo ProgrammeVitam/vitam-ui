@@ -42,7 +42,7 @@ import { normalizeString } from '../../../lib/utils/string.util';
 
 @Pipe({ name: 'highlight' })
 export class HighlightPipe implements PipeTransform {
-  private sanitizer: DomSanitizer;
+  private readonly sanitizer: DomSanitizer;
 
   constructor(sanitizer: DomSanitizer = inject(DomSanitizer)) {
     this.sanitizer = sanitizer;

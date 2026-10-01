@@ -45,8 +45,8 @@ import { RouterOutlet } from '@angular/router';
   imports: [HeaderModule, VitamuiBodyComponent, RouterOutlet, FooterComponent, SubrogationModule],
 })
 export class AppComponent implements OnInit {
-  private startupService = inject(StartupService);
-  private logger = inject(Logger);
+  private readonly startupService = inject(StartupService);
+  private readonly logger = inject(Logger);
 
   title = 'Portal App';
 

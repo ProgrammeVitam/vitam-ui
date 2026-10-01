@@ -49,13 +49,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CustomerSelectContentComponent, RouterModule, TranslatePipe],
 })
 export class CustomerSelectComponent implements OnInit, OnDestroy {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private globalEventService = inject(GlobalEventService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly globalEventService = inject(GlobalEventService);
 
   public customers: MenuOption[];
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   ngOnInit() {
     this.route.data.pipe(takeUntil(this.destroyer$)).subscribe((data) => {

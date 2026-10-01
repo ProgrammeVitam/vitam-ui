@@ -49,8 +49,8 @@ import { Agency } from '../../../lib/models/agency';
   providedIn: 'root',
 })
 export class AgencyService extends SearchService<Agency> {
-  private agencyApiService: AgencyApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly agencyApiService: AgencyApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Agency>();
 

@@ -50,9 +50,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatCardModule, TranslatePipe],
 })
 export class ApplicationCardComponent implements OnInit {
-  private applicationService = inject(ApplicationService);
-  private startupService = inject(StartupService);
-  private router = inject(Router);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly startupService = inject(StartupService);
+  private readonly router = inject(Router);
 
   @Input() application: Application;
   protected link: string;

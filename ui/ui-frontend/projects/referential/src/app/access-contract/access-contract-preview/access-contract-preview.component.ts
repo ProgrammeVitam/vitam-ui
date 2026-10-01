@@ -76,8 +76,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private accessContractService = inject(AccessContractService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly accessContractService = inject(AccessContractService);
 
   @Input() accessContract: AccessContract;
   @Input() tenantIdentifier: number;

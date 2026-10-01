@@ -51,8 +51,8 @@ const keySnackbar = 'APPLICATION.RULES_APP.MESSAGES.';
   providedIn: 'root',
 })
 export class RuleService extends SearchService<Rule> {
-  private ruleApiService: RuleApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly ruleApiService: RuleApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Rule>();
 

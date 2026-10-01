@@ -41,7 +41,7 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class CustomerMenuService {
-  private selectedCustomerSubject = new Subject<string>();
+  private readonly selectedCustomerSubject = new Subject<string>();
 
   constructor() {}
 

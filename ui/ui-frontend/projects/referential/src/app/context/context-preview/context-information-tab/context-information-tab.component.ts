@@ -53,10 +53,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, DatepickerComponent, TranslatePipe],
 })
 export class ContextInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private contextService = inject(ContextService);
-  private securityProfileService = inject(SecurityProfileService);
-  private contextCreateValidators = inject(ContextCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly contextService = inject(ContextService);
+  private readonly securityProfileService = inject(SecurityProfileService);
+  private readonly contextCreateValidators = inject(ContextCreateValidators);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

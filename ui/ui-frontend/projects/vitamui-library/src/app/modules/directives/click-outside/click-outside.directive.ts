@@ -40,7 +40,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } fro
   selector: '[vitamuiClickOutside]',
 })
 export class ClickOutsideDirective {
-  private elementRef = inject(ElementRef);
+  private readonly elementRef = inject(ElementRef);
 
   @Output() vitamuiClickOutside = new EventEmitter<void>();
 

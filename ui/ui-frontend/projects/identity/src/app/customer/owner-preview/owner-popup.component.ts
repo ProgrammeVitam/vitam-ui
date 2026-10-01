@@ -47,8 +47,8 @@ import { OwnerPreviewComponent } from './owner-preview.component';
   imports: [OwnerPreviewComponent],
 })
 export class OwnerPopupComponent {
-  private route = inject(ActivatedRoute);
-  private ownerService = inject(OwnerService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly ownerService = inject(OwnerService);
 
   owner: Owner;
   tenant: Tenant;

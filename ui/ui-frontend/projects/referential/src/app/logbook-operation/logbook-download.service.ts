@@ -57,12 +57,12 @@ const DOWNLOAD_TYPE_OBJECT: LogbookDownloadType = 'object';
   providedIn: 'root',
 })
 export class LogbookDownloadService extends SearchService<IEvent> {
-  private logbookApiService: LogbookApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly logbookApiService: LogbookApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   logbookOperationsReloaded = new Subject<IEvent[]>();
 
-  private evTypeAllowed = [
+  private readonly evTypeAllowed = [
     'STP_IMPORT_RULES',
     'IMPORT_AGENCIES',
     'HOLDINGSCHEME',
@@ -80,7 +80,7 @@ export class LogbookDownloadService extends SearchService<IEvent> {
     'DELETE_GOT_VERSIONS',
     'ORIGINATING_AGENCY_REASSIGNMENT',
   ];
-  private evTypeProcAllowed = [
+  private readonly evTypeProcAllowed = [
     'AUDIT',
     'EXPORT_DIP',
     'ARCHIVE_TRANSFER',

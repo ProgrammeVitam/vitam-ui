@@ -78,9 +78,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
-  private archiveCollectService = inject(ArchiveCollectService);
-  private configurationsService = inject(ConfigurationsApiService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly archiveCollectService = inject(ArchiveCollectService);
+  private readonly configurationsService = inject(ConfigurationsApiService);
 
   @Input() loadingNodeUnit: boolean;
   @Input() transactionId: string;
@@ -105,8 +105,8 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     (node) => node.children,
   );
   private searchCriterias: SearchCriteriaDto;
-  private subscriptions: Subscription = new Subscription();
-  private leavesTreeService: LeavesTreeService;
+  private readonly subscriptions: Subscription = new Subscription();
+  private readonly leavesTreeService: LeavesTreeService;
 
   constructor() {
     this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService);

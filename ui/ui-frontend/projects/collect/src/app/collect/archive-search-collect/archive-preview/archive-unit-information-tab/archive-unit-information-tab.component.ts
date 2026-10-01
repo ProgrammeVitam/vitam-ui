@@ -59,8 +59,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DataComponent, InformationBlocComponent, InformationDetailComponent, AsyncPipe, UpperCasePipe, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
-  private archiveService = inject(ArchiveCollectService);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly archiveService = inject(ArchiveCollectService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   OBJECTS_TAB_INDEX = 3;
 

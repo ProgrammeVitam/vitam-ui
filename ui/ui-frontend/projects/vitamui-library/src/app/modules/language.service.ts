@@ -65,9 +65,9 @@ const LANGUAGE_TRANSLATION_PATH = 'LANGUAGE';
   providedIn: 'root',
 })
 export class LanguageService {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
-  private availableLanguages: VitamUILangague[] = [
+  private readonly availableLanguages: VitamUILangague[] = [
     { fullLangString: FullLangString.FRENCH, minLangString: MinLangString.FR },
     { fullLangString: FullLangString.ENGLISH, minLangString: MinLangString.EN },
     { fullLangString: FullLangString.GERMAN, minLangString: MinLangString.DE },

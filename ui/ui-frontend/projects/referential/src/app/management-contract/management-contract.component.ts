@@ -71,8 +71,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> {
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private applicationService = inject(ApplicationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly applicationService = inject(ApplicationService);
 
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
 
@@ -80,7 +80,7 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
   tenantId: number;
   isSlaveMode: boolean;
 
-  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
+  readonly #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
 
   constructor() {
     super();

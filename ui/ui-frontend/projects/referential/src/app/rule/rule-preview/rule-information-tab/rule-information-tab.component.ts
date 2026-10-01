@@ -54,10 +54,10 @@ const RULES_APP = 'RULES_APP';
   imports: [ReactiveFormsModule, SelectComponent, InputComponent, AsyncPipe, TranslatePipe],
 })
 export class RuleInformationTabComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private securityService = inject(SecurityService);
-  private ruleService = inject(RuleService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly securityService = inject(SecurityService);
+  private readonly ruleService = inject(RuleService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

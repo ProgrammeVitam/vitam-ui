@@ -44,7 +44,7 @@ import { ArchiveService } from '../../../archive.service';
   providedIn: 'root',
 })
 export class EntryOperationValidatorService {
-  private archiveService = inject(ArchiveService);
+  private readonly archiveService = inject(ArchiveService);
 
   debounceTime = 400;
 

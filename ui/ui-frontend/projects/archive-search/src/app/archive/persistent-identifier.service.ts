@@ -45,7 +45,7 @@ import { PersistentIdentifierResponseDto } from '../core/api/persistent-identifi
   providedIn: 'root',
 })
 export class PersistentIdentifierService {
-  private persistentIdentifierApiService = inject(PersistentIdentifierApiService);
+  private readonly persistentIdentifierApiService = inject(PersistentIdentifierApiService);
 
   findUnitsByPersistentIdentifier(id: string): Observable<PersistentIdentifierResponseDto<Unit>> {
     const headers = new HttpHeaders().append('Content-Type', 'application/json');

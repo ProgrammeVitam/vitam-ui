@@ -122,19 +122,19 @@ import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/cre
   ],
 })
 export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
-  private formBuilder = inject(FormBuilder);
-  private projectService = inject(ProjectsService);
-  private projectApiService = inject(ProjectsApiService);
-  private securityService = inject(SecurityService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private dialog = inject(MatDialog);
-  private translationService = inject(TranslateService);
-  private snackBarService = inject(SnackBarService);
-  private renderer = inject(Renderer2);
-  private schemaService = inject(SchemaService);
-  private externalReferentialService = inject(ExternalReferentialService);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly projectService = inject(ProjectsService);
+  private readonly projectApiService = inject(ProjectsApiService);
+  private readonly securityService = inject(SecurityService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  private readonly translationService = inject(TranslateService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly renderer = inject(Renderer2);
+  private readonly schemaService = inject(SchemaService);
+  private readonly externalReferentialService = inject(ExternalReferentialService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   @Output()
   backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
@@ -196,7 +196,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     if (this.tabGroup) this.tabGroup.selectedIndex = 0;
   }
 
-  private projectId$ = new BehaviorSubject<string>(null);
+  private readonly projectId$ = new BehaviorSubject<string>(null);
   private tenantIdentifier: string;
   private clickOutSideListener!: () => void;
   private readonly dialogConfig: MatDialogConfig = { panelClass: 'vitamui-dialog' };
@@ -610,7 +610,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     return ['description', 'context', 'attachment', 'configuration'][this.tabGroup.selectedIndex];
   }
 
-  private launchUpdate = (): Promise<boolean> => {
+  private readonly launchUpdate = (): Promise<boolean> => {
     const dialogToOpen = this.confirmEditProject;
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
     this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe((transactions) => {
@@ -620,7 +620,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     return lastValueFrom(this.dialogRefToClose.afterClosed());
   };
 
-  private launchAttachmentsUpdate = (): Promise<boolean> => {
+  private readonly launchAttachmentsUpdate = (): Promise<boolean> => {
     const dialogToOpen = this.confirmEditAttachments;
     this.dialogRefToClose = this.dialog.open(dialogToOpen);
     return lastValueFrom(this.dialogRefToClose.afterClosed());

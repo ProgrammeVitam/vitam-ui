@@ -45,9 +45,9 @@ import { HierarchyService } from './hierarchy.service';
   providedIn: 'root',
 })
 export class ProfileValidators {
-  private rngProfileService = inject(HierarchyService);
+  private readonly rngProfileService = inject(HierarchyService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   nameExists = (tenantIdentifier: number, level: string, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

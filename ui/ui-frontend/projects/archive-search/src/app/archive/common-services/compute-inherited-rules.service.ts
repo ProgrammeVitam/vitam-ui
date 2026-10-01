@@ -57,10 +57,10 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ComputeInheritedRulesService {
-  private archiveService = inject(ArchiveService);
-  private translateService = inject(TranslateService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
-  private snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   launchComputedInheritedRulesModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],

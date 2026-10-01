@@ -47,7 +47,7 @@ import { VitamuiHttpHeaders } from '../../app/modules/vitamui-http-headers.enum'
   providedIn: 'root',
 })
 export class MetadataService {
-  private metadataApi = inject(MetadataApiService);
+  private readonly metadataApi = inject(MetadataApiService);
 
   get(tenantIdentifier: number, unitId: string): Observable<Metadata> {
     const headers = new HttpHeaders()

@@ -67,7 +67,7 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
   ],
 })
 export class EditableEmailInputComponent extends EditableFieldComponent {
-  private document = inject<Document>(DOCUMENT);
+  private readonly document = inject<Document>(DOCUMENT);
 
   @ViewChild('select') select: MatSelect;
 

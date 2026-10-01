@@ -42,7 +42,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CustomFile } from '../custom-file';
 
 export class ZipFile {
-  private zipFile: JSZip;
+  private readonly zipFile: JSZip;
   zipFileStatus: ZipFileStatus = null;
   zipFileStatus$: BehaviorSubject<ZipFileStatus> = new BehaviorSubject<ZipFileStatus>(null);
 

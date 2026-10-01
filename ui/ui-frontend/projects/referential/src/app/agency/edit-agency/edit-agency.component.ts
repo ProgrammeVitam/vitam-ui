@@ -78,23 +78,23 @@ import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dial
   ],
 })
 export class EditAgencyComponent implements OnInit, OnDestroy {
-  private route = inject(ActivatedRoute);
-  private agencyService = inject(AgencyService);
-  private editObjectService = inject(EditObjectService);
-  private templateService = inject(TemplateService);
-  private typeService = inject(TypeService);
-  private spinnerService = inject(SpinnerOverlayService);
-  private router = inject(Router);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private dialog = inject(MatDialog);
-  private translateService = inject(TranslateService);
-  private snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly agencyService = inject(AgencyService);
+  private readonly editObjectService = inject(EditObjectService);
+  private readonly templateService = inject(TemplateService);
+  private readonly typeService = inject(TypeService);
+  private readonly spinnerService = inject(SpinnerOverlayService);
+  private readonly router = inject(Router);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly dialog = inject(MatDialog);
+  private readonly translateService = inject(TranslateService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @ViewChild('confirmCancelDialog', { static: true })
   confirmCancelDialog: TemplateRef<EditAgencyComponent>;
   dialogRefToClose: MatDialogRef<EditAgencyComponent>;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   protected readonly template = agencyTemplate;
 

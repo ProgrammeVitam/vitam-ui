@@ -88,7 +88,7 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
-  private matDialog = inject(MatDialog);
+  private readonly matDialog = inject(MatDialog);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() inputManagementContract: ManagementContract;
@@ -98,7 +98,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
   @ViewChild('identificationTab', { static: false }) identificationTab: ManagementContractIdentificationTabComponent;
 
   tabUpdated: boolean[] = [false, false, false, false];
-  private tabLinks: Array<
+  private readonly tabLinks: Array<
     ManagementContractInformationTabComponent | ManagementContractStorageTabComponent | ManagementContractIdentificationTabComponent
   > = [];
 

@@ -49,7 +49,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatProgressBar, DecimalPipe, KeyValuePipe, PipesModule, TranslatePipe],
 })
 export class UploadTrackingComponent {
-  private uploadSipService = inject(UploadService);
+  private readonly uploadSipService = inject(UploadService);
 
   ingestList: IngestList;
   displayTracking = false;

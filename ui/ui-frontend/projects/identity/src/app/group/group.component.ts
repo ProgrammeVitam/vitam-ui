@@ -105,10 +105,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class GroupComponent extends SidenavPage<Group> {
-  private dialog = inject(MatDialog);
-  private downloadSnackBarService = inject(DownloadSnackBarService);
-  private snackBarService = inject(SnackBarService);
-  private groupService = inject(GroupService);
+  private readonly dialog = inject(MatDialog);
+  private readonly downloadSnackBarService = inject(DownloadSnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly groupService = inject(GroupService);
 
   public groups: Group[];
   public search: string;

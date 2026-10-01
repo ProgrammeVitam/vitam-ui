@@ -43,7 +43,7 @@ import { IOntology } from '../models/ontology/ontology.interface';
   providedIn: 'root',
 })
 export class OntologyService {
-  private ontologyApiService = inject(OntologyApiService);
+  private readonly ontologyApiService = inject(OntologyApiService);
 
   getInternalOntologyFieldsList(): Observable<IOntology[]> {
     return this.ontologyApiService.getInternalOntologyFieldsList();

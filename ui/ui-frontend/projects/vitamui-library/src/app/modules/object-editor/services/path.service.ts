@@ -39,7 +39,7 @@ import { DataStructureService } from '../../object-viewer/services/data-structur
 
 @Injectable()
 export class PathService {
-  private dataStructureService = inject(DataStructureService);
+  private readonly dataStructureService = inject(DataStructureService);
 
   public dot(path: string): string {
     return path.replace(/\[/g, '.').replace(/\]/g, '');

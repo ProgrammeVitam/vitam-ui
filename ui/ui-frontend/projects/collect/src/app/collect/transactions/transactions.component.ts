@@ -51,7 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatSidenavContainer, MatSidenavContent, VitamuiTitleBreadcrumbComponent, TransactionListComponent, AsyncPipe, TranslatePipe],
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
-  private transactionsService = inject(TransactionsService);
+  private readonly transactionsService = inject(TransactionsService);
 
   tenantIdentifier: string;
   projectName$: Observable<string>;

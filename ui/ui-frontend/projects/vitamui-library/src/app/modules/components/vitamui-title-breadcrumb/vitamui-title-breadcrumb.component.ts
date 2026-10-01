@@ -53,10 +53,10 @@ import { VitamuiBreadcrumbComponent } from './vitamui-breadcrumb/vitamui-breadcr
 })
 export class VitamuiTitleBreadcrumbComponent {
   location = inject(Location);
-  private applicationService = inject(ApplicationService);
-  private router = inject(Router);
-  private startupService = inject(StartupService);
-  private logger = inject(Logger);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly router = inject(Router);
+  private readonly startupService = inject(StartupService);
+  private readonly logger = inject(Logger);
 
   @Input()
   public data?: BreadCrumbData[];

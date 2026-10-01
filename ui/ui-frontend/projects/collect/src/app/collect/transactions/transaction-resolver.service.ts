@@ -46,8 +46,8 @@ import { TransactionsService } from './transactions.service';
   providedIn: 'root',
 })
 export class TransactionResolver {
-  private transactionsService = inject(TransactionsService);
-  private projectService = inject(ProjectsService);
+  private readonly transactionsService = inject(TransactionsService);
+  private readonly projectService = inject(ProjectsService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<boolean> {
     const id = route.paramMap.get('projectId');

@@ -44,7 +44,7 @@ import { SearchUnitApiService, VitamuiHttpHeaders } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AdminDslService {
-  private unitApiService = inject(SearchUnitApiService);
+  private readonly unitApiService = inject(SearchUnitApiService);
 
   getById(unitId: string, accessContractId: string) {
     const headers = new HttpHeaders()

@@ -44,8 +44,8 @@ import { BASE_URL } from './injection-tokens';
   providedIn: 'root',
 })
 export class ExternalParametersService {
-  private http = inject(HttpClient);
-  private baseUrl = inject(BASE_URL);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = inject(BASE_URL);
 
   private readonly apiUrl: string;
 

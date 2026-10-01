@@ -90,14 +90,14 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private managementContractService = inject(ManagementContractService);
-  private managementContractCreateValidators = inject(ManagementContractCreateValidators);
-  private managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
-  private formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
-  private logger = inject(Logger);
-  private translateService = inject(TranslateService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly managementContractService = inject(ManagementContractService);
+  private readonly managementContractCreateValidators = inject(ManagementContractCreateValidators);
+  private readonly managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
+  private readonly formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
+  private readonly logger = inject(Logger);
+  private readonly translateService = inject(TranslateService);
 
   constructor() {
     const data = this.data;

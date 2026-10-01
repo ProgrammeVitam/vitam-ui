@@ -65,8 +65,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class FileFormatPreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private fileFormatService = inject(FileFormatService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly fileFormatService = inject(FileFormatService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() fileFormat: FileFormat;

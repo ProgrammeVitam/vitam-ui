@@ -63,7 +63,7 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
-  private ngZone = inject(NgZone);
+  private readonly ngZone = inject(NgZone);
 
   @Input()
   set filter(values: any[]) {

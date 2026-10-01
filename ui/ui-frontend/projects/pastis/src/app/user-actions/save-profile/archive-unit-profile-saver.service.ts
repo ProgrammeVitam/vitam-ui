@@ -49,8 +49,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ArchiveUnitProfileSaverService {
-  private profileService = inject(ProfileService);
-  private toggleService = inject(ToggleSidenavService);
+  private readonly profileService = inject(ProfileService);
+  private readonly toggleService = inject(ToggleSidenavService);
 
   create(profileDescription: ProfileDescription, data: FileNode[]): Observable<ArchivalProfileUnit> {
     this.toggleService.showPending();

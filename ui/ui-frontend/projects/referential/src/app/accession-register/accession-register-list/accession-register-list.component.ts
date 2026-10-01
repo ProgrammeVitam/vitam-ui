@@ -77,7 +77,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   accessionRegistersService: AccessionRegistersService;
-  private locale = inject(LOCALE_ID);
+  private readonly locale = inject(LOCALE_ID);
 
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
 
@@ -97,9 +97,9 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   filterMap: Record<string, string[]> = {};
   statusFilterOptions$: Observable<Array<{ value: string; label: string }>>;
 
-  private filterChange = new BehaviorSubject<Record<string, string[]>>(null);
-  private searchChange = new BehaviorSubject<string>(null);
-  private orderChange = new BehaviorSubject<string>(this.orderBy);
+  private readonly filterChange = new BehaviorSubject<Record<string, string[]>>(null);
+  private readonly searchChange = new BehaviorSubject<string>(null);
+  private readonly orderChange = new BehaviorSubject<string>(this.orderBy);
   private textToSearch: string;
 
   searchSub: Subscription;

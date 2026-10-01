@@ -66,8 +66,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class PrimitiveEditorComponent implements OnInit {
-  private logger = inject(Logger);
-  private dateDisplayService = inject(DateDisplayService);
+  private readonly logger = inject(Logger);
+  private readonly dateDisplayService = inject(DateDisplayService);
 
   @Input() editObject: EditObject;
 

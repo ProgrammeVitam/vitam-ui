@@ -72,7 +72,7 @@ export class StandaloneThemeService {
 
   constructor() {}
 
-  private baseColors: { [colorId in ThemeColorType]?: string } = {
+  private readonly baseColors: { [colorId in ThemeColorType]?: string } = {
     [ThemeColorType.VITAMUI_PRIMARY]: 'Couleur principale',
     [ThemeColorType.VITAMUI_SECONDARY]: 'Couleur secondaire',
     [ThemeColorType.VITAMUI_TERTIARY]: 'Couleur tertiaire',
@@ -103,7 +103,7 @@ export class StandaloneThemeService {
   // Theme for current app configuration
   applicationColorMap: { [colorId: string]: string };
 
-  private _backgroundChoice: Color[] = [
+  private readonly _backgroundChoice: Color[] = [
     { class: 'Foncé', value: '#0F0D2D' },
     { class: 'Blanc', value: '#FFFFFF' },
     { class: 'Clair', value: '#F5F5F5' },

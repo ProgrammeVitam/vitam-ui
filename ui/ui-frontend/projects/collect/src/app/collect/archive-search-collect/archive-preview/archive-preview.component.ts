@@ -92,8 +92,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
 })
 export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
-  private translateService = inject(TranslateService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly translateService = inject(TranslateService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;

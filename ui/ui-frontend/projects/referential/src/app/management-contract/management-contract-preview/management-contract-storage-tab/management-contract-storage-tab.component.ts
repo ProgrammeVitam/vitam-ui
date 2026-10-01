@@ -51,8 +51,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ManagementContractStorageTabComponent implements OnDestroy {
-  private formBuilder = inject(FormBuilder);
-  private managementContractService = inject(ManagementContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly managementContractService = inject(ManagementContractService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;

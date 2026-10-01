@@ -62,7 +62,7 @@ type ComponentName =
 
 @Injectable()
 export class SchemaElementToDisplayRuleService {
-  private schemaElementComponentTypeToDisplayRule: Record<ComponentName, DisplayRule> = {
+  private readonly schemaElementComponentTypeToDisplayRule: Record<ComponentName, DisplayRule> = {
     'attribut-mono': {
       Path: null,
       ui: {

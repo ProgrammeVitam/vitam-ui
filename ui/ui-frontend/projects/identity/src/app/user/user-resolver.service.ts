@@ -46,8 +46,8 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class UserResolver {
-  private userService = inject(UserService);
-  private router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const id = route.paramMap.get('id');

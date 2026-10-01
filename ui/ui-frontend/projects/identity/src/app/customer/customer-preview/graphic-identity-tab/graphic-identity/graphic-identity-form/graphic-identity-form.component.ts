@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, CustomerColorsInputComponent, VitamuiDragDropFileComponent, TranslatePipe],
 })
 export class GraphicIdentityFormComponent implements OnInit {
-  private themeService = inject(ThemeService);
+  private readonly themeService = inject(ThemeService);
 
   @Input()
   public graphicIdentityForm: FormGroup;

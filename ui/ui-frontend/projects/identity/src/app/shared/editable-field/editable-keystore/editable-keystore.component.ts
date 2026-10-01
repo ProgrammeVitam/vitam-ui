@@ -51,7 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CdkOverlayOrigin, ReactiveFormsModule, CdkConnectedOverlay, TranslatePipe],
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
-  private identityProviderService = inject(IdentityProviderService);
+  private readonly identityProviderService = inject(IdentityProviderService);
 
   @Input() identityProvider: IdentityProvider;
 

@@ -52,8 +52,8 @@ export function initializeApp() {
   ],
 })
 export class NoAuthenticationModule {
-  private authenticationService = inject(AuthService);
-  private authenticatorService = inject(AuthenticatorService);
+  private readonly authenticationService = inject(AuthService);
+  private readonly authenticatorService = inject(AuthenticatorService);
 
   constructor() {
     this.authenticationService.configure(this.authenticatorService);

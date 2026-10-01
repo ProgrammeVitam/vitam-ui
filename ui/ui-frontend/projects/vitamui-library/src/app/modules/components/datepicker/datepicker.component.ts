@@ -85,7 +85,7 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
   ],
 })
 export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {
-  private datePipe = inject(DatePipe);
+  private readonly datePipe = inject(DatePipe);
 
   @Input() pickerType: PickerType = 'day';
   // May be yyyy-MM-dd, dd/MM/yyyy, yyyy or any other date format
@@ -118,13 +118,13 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     }
   }
 
-  private startViewMapping: Map<PickerType, MatDatepicker<Date>['startView']> = new Map([
+  private readonly startViewMapping: Map<PickerType, MatDatepicker<Date>['startView']> = new Map([
     ['year', 'multi-year'],
     ['month', 'year'],
     ['day', 'month'],
   ]);
 
-  private defaultFormatMapping = new Map<PickerType, string>([
+  private readonly defaultFormatMapping = new Map<PickerType, string>([
     ['day', 'yyyy-MM-dd'],
     ['month', 'yyyy-MM'],
     ['year', 'yyyy'],

@@ -75,7 +75,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 })
 export class LogbookManagementOperationListComponent implements OnInit {
   logbookManagementOperationService = inject(LogbookManagementOperationService);
-  private translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
 
   elementInPage: number;
   filter = false;

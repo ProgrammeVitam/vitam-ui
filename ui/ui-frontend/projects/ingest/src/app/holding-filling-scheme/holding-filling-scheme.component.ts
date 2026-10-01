@@ -59,8 +59,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
 
   IngestType = IngestType;

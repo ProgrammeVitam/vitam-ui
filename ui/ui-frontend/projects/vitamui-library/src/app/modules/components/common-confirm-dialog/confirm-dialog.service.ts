@@ -47,7 +47,7 @@ import { ClosePopupDialogComponent } from './close-popup-dialog.component';
   providedIn: 'root',
 })
 export class ConfirmDialogService {
-  private matDialog = inject(MatDialog);
+  private readonly matDialog = inject(MatDialog);
 
   public confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
     return this.matDialog

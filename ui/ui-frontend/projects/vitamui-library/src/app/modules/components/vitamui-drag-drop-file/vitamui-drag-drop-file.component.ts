@@ -48,9 +48,9 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-dr
   imports: [MatIconModule, DragAndDropDirective],
 })
 export class VitamuiDragDropFileComponent {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
-  private IMAGE_TYPE_PREFIX = 'image';
+  private readonly IMAGE_TYPE_PREFIX = 'image';
   private imageToUpload: File = null;
   private lastImageUploaded: File = null;
   public hasError = true;

@@ -44,9 +44,9 @@ import { switchMap, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class GriffinsService {
-  private api: GriffinsApiService;
+  private readonly api: GriffinsApiService;
 
-  private refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
   selectedId$ = new Subject<string>();
 
   constructor() {

@@ -55,8 +55,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DataComponent, NgTemplateOutlet, AccordionComponent, ListComponent, PrimitiveComponent, EmptyPipe, TranslatePipe],
 })
 export class GroupComponent implements OnInit, OnChanges {
-  private layoutService = inject(LayoutService);
-  private favoriteEntryService = inject(FavoriteEntryService);
+  private readonly layoutService = inject(LayoutService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
 
   @Input() displayObject: DisplayObject;
 

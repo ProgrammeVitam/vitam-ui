@@ -98,10 +98,10 @@ import { ArchiveUnitHistoryTabComponent } from './archive-unit-history-tab/archi
   ],
 })
 export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit {
-  private route = inject(ActivatedRoute);
-  private translateService = inject(TranslateService);
-  private accessContractService = inject(AccessContractService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly translateService = inject(TranslateService);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;

@@ -46,13 +46,13 @@ import { ContextService } from '../context.service';
   providedIn: 'root',
 })
 export class ContextCreateValidators {
-  private contextService: ContextService;
+  private readonly contextService: ContextService;
 
   constructor(contextService: ContextService = inject(ContextService)) {
     this.contextService = contextService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

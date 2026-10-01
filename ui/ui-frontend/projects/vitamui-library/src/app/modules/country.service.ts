@@ -75,9 +75,9 @@ const COUNTRY_TRANSLATION_PATH = 'COUNTRY';
   providedIn: 'root',
 })
 export class CountryService {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
-  private availableCountries: CountryOption[] = [
+  private readonly availableCountries: CountryOption[] = [
     { code: CountryCode.FR, name: CountryName.FRANCE },
     { code: CountryCode.GB, name: CountryName.UNITED_KINGDOM },
     { code: CountryCode.DE, name: CountryName.GERMANY },

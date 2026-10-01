@@ -47,8 +47,8 @@ import { OwnerService } from './owner.service';
   providedIn: 'root',
 })
 export class OwnerResolver {
-  private ownerService = inject(OwnerService);
-  private router = inject(Router);
+  private readonly ownerService = inject(OwnerService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Owner> {
     const id = route.paramMap.get('id');

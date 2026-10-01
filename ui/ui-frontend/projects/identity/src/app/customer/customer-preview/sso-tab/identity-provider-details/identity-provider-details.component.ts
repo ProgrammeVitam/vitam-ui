@@ -101,9 +101,9 @@ const UPDATE_DEBOUNCE_TIME = 200;
   ],
 })
 export class IdentityProviderDetailsComponent {
-  private formBuilder = inject(FormBuilder);
-  private identityProviderService = inject(IdentityProviderService);
-  private snackBarService = inject(SnackBarService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly identityProviderService = inject(IdentityProviderService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input()
   set identityProvider(identityProvider: IdentityProvider) {

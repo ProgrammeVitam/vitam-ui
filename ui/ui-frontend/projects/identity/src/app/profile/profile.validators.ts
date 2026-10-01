@@ -45,9 +45,9 @@ import { ProfileService } from './profile.service';
   providedIn: 'root',
 })
 export class ProfileValidators {
-  private rngProfileService = inject(ProfileService);
+  private readonly rngProfileService = inject(ProfileService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   nameExists = (tenantIdentifier: number, level: string, applicationName: string, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

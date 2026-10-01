@@ -50,7 +50,7 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
   hostDirectives: [{ directive: TooltipDirective, inputs: ['vitamuiTooltipShowDelay'] }],
 })
 export class DataComponent {
-  private clipboard = inject(Clipboard);
+  private readonly clipboard = inject(Clipboard);
 
   @Input() label: string;
   @Input() value: string | string[];

@@ -53,10 +53,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class OntologyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<OntologyCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private ontologyService = inject(OntologyService);
-  private ontologyCreateValidator = inject(OntologyCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly ontologyService = inject(OntologyService);
+  private readonly ontologyCreateValidator = inject(OntologyCreateValidators);
 
   form: FormGroup;
   hasCustomGraphicIdentity = false;

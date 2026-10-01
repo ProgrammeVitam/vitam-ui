@@ -71,7 +71,7 @@ import { extend } from 'underscore';
   styleUrl: './design-system-old-inputs.component.scss',
 })
 export class DesignSystemOldInputsComponent implements OnInit {
-  private countryService = inject(CountryService);
+  private readonly countryService = inject(CountryService);
 
   patternOptions = [
     { value: 'pattern 1', disabled: false },

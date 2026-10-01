@@ -78,7 +78,7 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   get readOnly(): boolean {
     return this._readOnly;
   }
-  private _readOnly: boolean;
+  private readonly _readOnly: boolean;
 
   @Input()
   set userInfo(userInfo: AdminUserProfile) {
@@ -105,7 +105,7 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   showUpdateButton: boolean;
   public groupProfiles: Profile[] = [];
 
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
 
   ngOnDestroy(): void {
     this.destroy.next();

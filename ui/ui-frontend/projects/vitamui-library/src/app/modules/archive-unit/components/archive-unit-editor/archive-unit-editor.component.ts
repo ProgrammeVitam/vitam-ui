@@ -54,14 +54,14 @@ import { AsyncPipe } from '@angular/common';
   imports: [ObjectEditorComponent, AsyncPipe],
 })
 export class ArchiveUnitEditorComponent implements OnInit, OnChanges, OnDestroy {
-  private archiveUnitEditorService = inject(ArchiveUnitEditorService);
+  private readonly archiveUnitEditorService = inject(ArchiveUnitEditorService);
 
   @Input() data!: ArchiveUnit;
   @Input() template: DisplayRule[] = customTemplate;
 
   editObject$ = new BehaviorSubject<EditObject>(null);
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnInit(): void {
     this.archiveUnitEditorService.setTemplate(this.template);

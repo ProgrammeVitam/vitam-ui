@@ -49,7 +49,7 @@ import { Converter } from './converter';
   providedIn: 'root',
 })
 export class ManagementContractToFormGroupConverterService implements Converter<ManagementContract, FormGroup> {
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   convert(source: ManagementContract): FormGroup {
     return this.formBuilder.group({

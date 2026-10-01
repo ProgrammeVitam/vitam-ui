@@ -56,32 +56,32 @@ import { NodeData } from '../archive-search-collect/archive-search-criteria/mode
   providedIn: 'root',
 })
 export class ArchiveSharedDataService implements ManagementRuleSharedDataService {
-  private queryParamsService = inject(QueryParamsService);
+  private readonly queryParamsService = inject(QueryParamsService);
 
-  private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
-  private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
-  private selectedUnitSubject = new BehaviorSubject<Unit>(null);
-  private targetNode = new BehaviorSubject<string>('');
-  private facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
-  private totalResultsSubject = new BehaviorSubject<number>(null);
-  private toggleSubject = new BehaviorSubject<boolean>(true);
+  private readonly sourceNode = new BehaviorSubject<NodeData>(new NodeData());
+  private readonly filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
+  private readonly selectedUnitSubject = new BehaviorSubject<Unit>(null);
+  private readonly targetNode = new BehaviorSubject<string>('');
+  private readonly facetsSubject = new BehaviorSubject<ResultFacet[]>([]);
+  private readonly totalResultsSubject = new BehaviorSubject<number>(null);
+  private readonly toggleSubject = new BehaviorSubject<boolean>(true);
   public numberOfAUsWithoutAttachment = new BehaviorSubject<number>(0);
-  private lastSearchCriterias = new BehaviorSubject<SearchCriteriaDto>(null);
-  private storedSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory>(null);
-  private allSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory[]>([]);
+  private readonly lastSearchCriterias = new BehaviorSubject<SearchCriteriaDto>(null);
+  private readonly storedSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory>(null);
+  private readonly allSearchCriteriaHistorySubject = new BehaviorSubject<SearchCriteriaHistory[]>([]);
 
-  private simpleSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
+  private readonly simpleSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
 
-  private searchAppraisalCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
-  private searchStorageCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
-  private searchAccessCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
-  private searchReuseCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
-  private searchDisseminationCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private readonly searchAppraisalCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private readonly searchStorageCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private readonly searchAccessCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private readonly searchReuseCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private readonly searchDisseminationCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
 
-  private searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
-  private searchCriteriaSubject = new BehaviorSubject<Map<string, CriteriaSearchCriteria>>(null);
+  private readonly searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private readonly searchCriteriaSubject = new BehaviorSubject<Map<string, CriteriaSearchCriteria>>(null);
 
-  private ruleCategory = new BehaviorSubject<string>('');
+  private readonly ruleCategory = new BehaviorSubject<string>('');
   public selectedUnit$ = this.selectedUnitSubject.asObservable();
   public numberOfAUsWithoutAttachment$ = this.numberOfAUsWithoutAttachment.asObservable();
 

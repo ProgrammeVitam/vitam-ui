@@ -69,12 +69,12 @@ import { EntryOperationValidatorService } from './entry-operation-validator.serv
   ],
 })
 export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnDestroy {
-  private fb = inject(FormBuilder);
-  private dialogRef = inject<MatDialogRef<OriginatingAgencyReassignmentDialogComponent>>(MatDialogRef);
+  private readonly fb = inject(FormBuilder);
+  private readonly dialogRef = inject<MatDialogRef<OriginatingAgencyReassignmentDialogComponent>>(MatDialogRef);
   dialog = inject(MatDialog);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private agencyService = inject(AgencyService);
-  private entryOperationValidator = inject(EntryOperationValidatorService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly agencyService = inject(AgencyService);
+  private readonly entryOperationValidator = inject(EntryOperationValidatorService);
   data = inject<{
     itemSelected: number;
     reassignmentMode: ReassignmentMode;
@@ -86,7 +86,7 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   originatingAgenciesOptions: VitamuiSelectOptions = { options: [] };
   itemSelected: number;
   reassignmentMode: ReassignmentMode;
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;

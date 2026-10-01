@@ -56,8 +56,8 @@ interface SchemaError {
 
 @Injectable()
 export class SchemaService {
-  private pathService = inject(PathService);
-  private logger = inject(Logger);
+  private readonly pathService = inject(PathService);
+  private readonly logger = inject(Logger);
 
   public subschema(schema: Schema, options: SchemaOptions = { collection: null, versions: null, pathKey: 'ApiPath' }): Schema {
     let subschema = schema.slice();

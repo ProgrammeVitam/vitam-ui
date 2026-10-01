@@ -48,7 +48,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, TranslatePipe],
 })
 export class AccountInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   public form: FormGroup;
 

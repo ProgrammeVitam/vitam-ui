@@ -49,9 +49,9 @@ export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
   providedIn: 'root',
 })
 export class CustomerCreateValidators {
-  private customerService = inject(CustomerService);
+  private readonly customerService = inject(CustomerService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

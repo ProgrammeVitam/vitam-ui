@@ -92,8 +92,8 @@ const SEPARATOR = '|';
   providedIn: 'root',
 })
 export class SearchCriteriaService {
-  private splittableValues = ['guid', 'guidopi'];
-  private schemaPromise: Promise<Schema>;
+  private readonly splittableValues = ['guid', 'guidopi'];
+  private readonly schemaPromise: Promise<Schema>;
   private schema: Schema;
 
   constructor() {

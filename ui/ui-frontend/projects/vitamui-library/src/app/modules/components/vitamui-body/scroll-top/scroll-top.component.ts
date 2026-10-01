@@ -48,7 +48,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatButtonModule, MatIconModule],
 })
 export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   public windowScrolled = false;
   private contentRendered = false;

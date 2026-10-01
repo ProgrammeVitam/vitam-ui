@@ -63,8 +63,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
-  private rngProfileService = inject(ProfileService);
-  private authService = inject(AuthService);
+  private readonly rngProfileService = inject(ProfileService);
+  private readonly authService = inject(AuthService);
 
   @Input()
   set id(id: string) {

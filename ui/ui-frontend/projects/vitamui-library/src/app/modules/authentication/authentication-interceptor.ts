@@ -43,8 +43,8 @@ import { ConfigService } from '../config.service';
 
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
-  private authStorage = inject(OAuthStorage);
-  private configService = inject(ConfigService);
+  private readonly authStorage = inject(OAuthStorage);
+  private readonly configService = inject(ConfigService);
 
   private checkUrl(url: string): boolean {
     const found = this.configService.config.ALLOWED_URLS.find((u) => url.includes(u));

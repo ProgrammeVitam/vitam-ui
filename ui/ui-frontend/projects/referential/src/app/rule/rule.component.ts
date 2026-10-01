@@ -81,10 +81,10 @@ import { AsyncPipe } from '@angular/common';
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   ruleService = inject(RuleService);
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private translateService = inject(TranslateService);
-  private securityService = inject(SecurityService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly translateService = inject(TranslateService);
+  private readonly securityService = inject(SecurityService);
 
   @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
 

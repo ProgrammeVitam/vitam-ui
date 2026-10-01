@@ -76,10 +76,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy {
-  private layoutService = inject(LayoutService);
-  private favoriteEntryService = inject(FavoriteEntryService);
-  private typeService = inject(TypeService);
-  private matDialog = inject(MatDialog);
+  private readonly layoutService = inject(LayoutService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
+  private readonly typeService = inject(TypeService);
+  private readonly matDialog = inject(MatDialog);
 
   @Input() editObject: EditObject;
 

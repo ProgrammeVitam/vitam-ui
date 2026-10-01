@@ -49,9 +49,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe],
 })
 export class PastisBreadcrumbComponent {
-  private metadataLanguageService = inject(PastisPopupMetadataLanguageService);
-  private tenantService = inject(TenantSelectionService);
-  private pastisConfig = inject(PastisConfiguration);
+  private readonly metadataLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly tenantService = inject(TenantSelectionService);
+  private readonly pastisConfig = inject(PastisConfiguration);
 
   @Input()
   public data: Array<any>;

@@ -46,7 +46,7 @@ export class AutocompletePositionDirective implements OnDestroy {
     window.addEventListener('scroll', this.scrollEvent, true);
   }
 
-  private scrollEvent = (): void => {
+  private readonly scrollEvent = (): void => {
     if (this.matAutocompleteTrigger == null) {
       return;
     }

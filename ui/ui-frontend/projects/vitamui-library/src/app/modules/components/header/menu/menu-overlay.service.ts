@@ -42,8 +42,8 @@ import { MenuComponent } from './menu.component';
 
 @Injectable()
 export class MenuOverlayService {
-  private overlay = inject(Overlay);
-  private injector = inject(Injector);
+  private readonly overlay = inject(Overlay);
+  private readonly injector = inject(Injector);
 
   private overlayRef: OverlayRef;
 

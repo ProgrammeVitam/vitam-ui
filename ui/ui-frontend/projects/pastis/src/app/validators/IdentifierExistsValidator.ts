@@ -45,7 +45,7 @@ import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
   providedIn: 'root',
 })
 export class IdentifierExistsValidator {
-  private profileService = inject(ProfileService);
+  private readonly profileService = inject(ProfileService);
 
   checkIdentifierExists(modePua: boolean | (() => boolean)): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ identifierExist: boolean } | null> => {

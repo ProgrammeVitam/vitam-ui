@@ -64,8 +64,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class RulePreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private ruleService = inject(RuleService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly ruleService = inject(RuleService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() rule: Rule;

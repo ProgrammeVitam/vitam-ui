@@ -46,8 +46,8 @@ import { GroupService } from './group.service';
   providedIn: 'root',
 })
 export class GroupResolver {
-  private groupService = inject(GroupService);
-  private router = inject(Router);
+  private readonly groupService = inject(GroupService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Group> {
     const id = route.paramMap.get('id');

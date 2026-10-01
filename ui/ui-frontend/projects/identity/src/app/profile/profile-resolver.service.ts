@@ -46,8 +46,8 @@ import { ProfileService } from './profile.service';
   providedIn: 'root',
 })
 export class ProfileResolver {
-  private rngProfileService = inject(ProfileService);
-  private router = inject(Router);
+  private readonly rngProfileService = inject(ProfileService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Profile> {
     const id = route.paramMap.get('id');

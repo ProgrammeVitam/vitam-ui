@@ -48,7 +48,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './discussion.component.scss',
 })
 export class DiscussionComponent implements OnInit, AfterViewInit {
-  private discussionService = inject(DiscussionService);
+  private readonly discussionService = inject(DiscussionService);
 
   discussion = input.required<DiscussionDto>();
 

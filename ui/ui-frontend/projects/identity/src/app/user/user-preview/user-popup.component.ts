@@ -48,8 +48,8 @@ import { UserPreviewComponent } from './user-preview.component';
   imports: [UserPreviewComponent],
 })
 export class UserPopupComponent {
-  private route = inject(ActivatedRoute);
-  private customerService = inject(CustomerService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly customerService = inject(CustomerService);
 
   user: User;
   customer: Customer;

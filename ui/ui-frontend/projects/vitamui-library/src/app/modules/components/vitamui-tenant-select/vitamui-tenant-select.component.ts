@@ -52,8 +52,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterModule, TenantSelectContentComponent, TranslatePipe],
 })
 export class VitamUITenantSelectComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
 
   appId: ApplicationId;
   appTenants: Tenant[];

@@ -82,9 +82,9 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   userService = inject(UserService);
   customerService = inject(CustomerService);
   groupService = inject(GroupService);
-  private authService = inject(AuthService);
-  private downloadSnackBarService = inject(DownloadSnackBarService);
-  private snackBarService = inject(SnackBarService);
+  private readonly authService = inject(AuthService);
+  private readonly downloadSnackBarService = inject(DownloadSnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   public users: User[];
   public connectedUserInfo: AdminUserProfile;

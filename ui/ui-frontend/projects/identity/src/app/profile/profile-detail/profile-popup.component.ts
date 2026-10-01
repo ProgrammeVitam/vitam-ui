@@ -46,7 +46,7 @@ import { ProfileDetailComponent } from './profile-detail.component';
   imports: [ProfileDetailComponent],
 })
 export class ProfilePopupComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   profile: Profile;
 

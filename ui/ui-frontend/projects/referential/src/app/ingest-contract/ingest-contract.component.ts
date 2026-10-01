@@ -87,13 +87,13 @@ const IMPORT_FILE_MODEL_NAME = 'Import_ingest_contract_template.csv';
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private applicationService = inject(ApplicationService);
-  private securityService = inject(SecurityService);
-  private translateService = inject(TranslateService);
-  private downloadSnackBarService = inject(DownloadSnackBarService);
-  private ingestContractService = inject(IngestContractService);
-  private snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly securityService = inject(SecurityService);
+  private readonly translateService = inject(TranslateService);
+  private readonly downloadSnackBarService = inject(DownloadSnackBarService);
+  private readonly ingestContractService = inject(IngestContractService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @ViewChild(IngestContractListComponent, { static: true }) ingestContractListComponent: IngestContractListComponent;
 
@@ -104,7 +104,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
   appName = 'INGEST_APP';
   hasUpdateIngestRole$: Observable<boolean>;
 
-  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').pipe(shareReplay(1));
+  readonly #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('INGEST_CONTRACT').pipe(shareReplay(1));
 
   constructor() {
     super();

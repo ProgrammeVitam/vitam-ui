@@ -54,8 +54,8 @@ export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
   imports: [ReactiveFormsModule, TooltipDirective, SlideToggleComponent, TranslatePipe],
 })
 export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
-  private permissionUtils = inject(PermissionUtils);
-  private formBuilder = inject(FormBuilder);
+  private readonly permissionUtils = inject(PermissionUtils);
+  private readonly formBuilder = inject(FormBuilder);
 
   permissions: PermissionStructure;
   loaded = false;

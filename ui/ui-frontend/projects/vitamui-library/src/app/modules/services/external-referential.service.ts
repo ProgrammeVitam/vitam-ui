@@ -52,7 +52,7 @@ export const TENANT_SEPARATOR = ' - Tenant ';
   providedIn: 'root',
 })
 export class ExternalReferentialService extends PaginatedHttpClient<any> {
-  #electronicArchivingSystemList$ = this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`).pipe(shareReplay(1));
+  readonly #electronicArchivingSystemList$ = this.http.get<ElectronicArchivingSystem[]>(`${this.apiUrl}/config`).pipe(shareReplay(1));
 
   constructor() {
     const http = inject(HttpClient);

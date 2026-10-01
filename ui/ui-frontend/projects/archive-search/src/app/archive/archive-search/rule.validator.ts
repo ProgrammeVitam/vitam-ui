@@ -45,10 +45,10 @@ import { ArchiveSharedDataService } from '../../core/archive-shared-data.service
   providedIn: 'root',
 })
 export class RuleValidator {
-  private ruleService = inject(RuleService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly ruleService = inject(RuleService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
   ruleCategorySelected: string;
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {

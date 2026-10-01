@@ -64,8 +64,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ExternalParamProfileListComponent extends InfiniteScrollTable<ExternalParamProfile> implements OnDestroy, OnInit {
   externalParamProfileServiceService: ExternalParamProfileService;
-  private profileService = inject(ProfileService);
-  private sharedService = inject(SharedService);
+  private readonly profileService = inject(ProfileService);
+  private readonly sharedService = inject(SharedService);
 
   orderBy = 'name';
   direction = Direction.ASCENDANT;

@@ -49,7 +49,7 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class AccessContractApiService extends PaginatedHttpClient<AccessContract> {
-  private baseUrl: string;
+  private readonly baseUrl: string;
 
   constructor() {
     const http = inject(HttpClient);

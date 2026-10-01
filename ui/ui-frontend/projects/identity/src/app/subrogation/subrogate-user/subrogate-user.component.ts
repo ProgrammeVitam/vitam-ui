@@ -79,7 +79,7 @@ export class SubrogateUserComponent implements OnInit, OnDestroy {
   public customers: MenuOption[];
   public search: string;
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   ngOnInit() {
     this.customerSelectService

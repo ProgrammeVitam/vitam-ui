@@ -52,7 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DialogHeaderComponent, MatDialogActions, DatePipe, TranslatePipe],
 })
 export class PurgedPersistentIdentifierModalComponent implements OnInit {
-  private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
+  private readonly dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
   data = inject<{
     ark: string;
     purgedPersistentIdentifier: PurgedPersistentIdentifierDto;

@@ -46,7 +46,7 @@ import { GroupPreviewComponent } from './group-preview.component';
   imports: [GroupPreviewComponent],
 })
 export class GroupPopupComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   group: Group;
 

@@ -49,8 +49,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TooltipDirective, TranslatePipe],
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
-  private dialog = inject(MatDialog);
-  private groupService = inject(GroupService);
+  private readonly dialog = inject(MatDialog);
+  private readonly groupService = inject(GroupService);
 
   @Input() group: Group;
 

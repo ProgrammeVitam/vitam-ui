@@ -47,12 +47,12 @@ import { SnackBarService } from './components/snack-bar/snack-bar.service';
   providedIn: 'root',
 })
 export class TenantSelectionGuard {
-  private authService = inject(AuthService);
-  private appService = inject(ApplicationService);
-  private router = inject(Router);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private location = inject(WINDOW_LOCATION);
-  private snackBarService = inject(SnackBarService);
+  private readonly authService = inject(AuthService);
+  private readonly appService = inject(ApplicationService);
+  private readonly router = inject(Router);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly location = inject(WINDOW_LOCATION);
+  private readonly snackBarService = inject(SnackBarService);
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     if (route.params['tenantIdentifier']) {

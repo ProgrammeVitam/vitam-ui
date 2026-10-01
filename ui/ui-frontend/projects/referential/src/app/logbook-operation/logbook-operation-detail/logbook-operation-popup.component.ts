@@ -51,7 +51,7 @@ import { LogbookOperationDetailComponent } from './logbook-operation-detail.comp
   imports: [LogbookOperationDetailComponent],
 })
 export class LogbookOperationPopupComponent implements OnInit {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   eventId: string;
   tenantIdentifier: number;

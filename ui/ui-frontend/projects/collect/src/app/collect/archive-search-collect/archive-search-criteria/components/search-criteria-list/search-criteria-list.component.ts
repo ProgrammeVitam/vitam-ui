@@ -54,11 +54,11 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   imports: [MatMenuItem, TooltipDirective, MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class SearchCriteriaListComponent implements OnInit {
-  private searchCriteriaSaverService = inject(SearchCriteriaSaverService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly searchCriteriaSaverService = inject(SearchCriteriaSaverService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
   dialog = inject(MatDialog);
-  private translateService = inject(TranslateService);
-  private snackBarService = inject(SnackBarService);
+  private readonly translateService = inject(TranslateService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();

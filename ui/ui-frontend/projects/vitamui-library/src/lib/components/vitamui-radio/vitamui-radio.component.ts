@@ -47,7 +47,7 @@ import { NgClass } from '@angular/common';
   imports: [NgClass],
 })
 export class VitamUIRadioComponent implements OnInit {
-  private radioGroupService = inject(VitamUIRadioGroupService);
+  private readonly radioGroupService = inject(VitamUIRadioGroupService);
 
   @Input()
   value: string;

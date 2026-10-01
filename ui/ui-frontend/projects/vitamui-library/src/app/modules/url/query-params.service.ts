@@ -43,8 +43,8 @@ import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 class QueryParamBuilder {
   #queryParams: Params = {};
   constructor(
-    private router: Router,
-    private location: Location,
+    private readonly router: Router,
+    private readonly location: Location,
   ) {
     // Use location.path() to get current URL params instead of router.url
     // This ensures we get the most up-to-date params, even after Location.replaceState() calls
@@ -86,9 +86,9 @@ class QueryParamBuilder {
   providedIn: 'root',
 })
 export class QueryParamsService {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private location = inject(Location);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
 
   setQueryParams(
     queryParams: Params,

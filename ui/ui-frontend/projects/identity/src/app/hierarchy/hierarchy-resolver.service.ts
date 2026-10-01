@@ -46,8 +46,8 @@ import { HierarchyService } from './hierarchy.service';
   providedIn: 'root',
 })
 export class HierarchyResolver {
-  private hierarchyService = inject(HierarchyService);
-  private router = inject(Router);
+  private readonly hierarchyService = inject(HierarchyService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Profile> {
     const id = route.paramMap.get('id');

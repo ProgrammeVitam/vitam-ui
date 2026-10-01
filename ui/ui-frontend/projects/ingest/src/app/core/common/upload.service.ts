@@ -47,7 +47,7 @@ import { VitamuiHttpHeaders } from 'vitamui-library';
   providedIn: 'root',
 })
 export class UploadService {
-  private ingestApiService = inject(IngestApiService);
+  private readonly ingestApiService = inject(IngestApiService);
 
   uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
 

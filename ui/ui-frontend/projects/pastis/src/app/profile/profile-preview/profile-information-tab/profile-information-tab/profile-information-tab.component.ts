@@ -55,9 +55,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ProfileInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private profileService = inject(ProfileService);
-  private snackBarService = inject(SnackBarService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly profileService = inject(ProfileService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input()
   set inputProfile(profileDescription: ProfileDescription) {

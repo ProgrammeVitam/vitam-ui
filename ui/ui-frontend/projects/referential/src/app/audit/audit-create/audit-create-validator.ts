@@ -45,9 +45,9 @@ import { AuditService } from '../audit.service';
   providedIn: 'root',
 })
 export class AuditCreateValidators {
-  private auditService = inject(AuditService);
+  private readonly auditService = inject(AuditService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   checkEvidenceAuditId = (): AsyncValidatorFn => {
     return this.auditExists('invalidEvidenceAuditId');

@@ -70,7 +70,7 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
-  private customerService = inject(CustomerService);
+  private readonly customerService = inject(CustomerService);
 
   @Input() customer: Customer;
   @Input() isPopup: boolean;

@@ -51,8 +51,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class ManagementContractInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private managementContractService = inject(ManagementContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly managementContractService = inject(ManagementContractService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

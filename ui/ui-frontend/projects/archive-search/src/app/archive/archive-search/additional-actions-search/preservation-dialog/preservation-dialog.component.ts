@@ -63,12 +63,12 @@ import { PreservationUsageList, PreservationVersion } from '../../../models/pres
   imports: [TranslatePipe, MatDialogModule, DialogHeaderComponent, VitamUICommonModule, FormsModule, ReactiveFormsModule, SelectComponent],
 })
 export class PreservationDialogComponent {
-  private fb = inject(FormBuilder);
-  private dialogRef = inject<MatDialogRef<PreservationDialogComponent>>(MatDialogRef);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private preservationScenariosService = inject(PreservationScenariosService);
-  private archiveService = inject(ArchiveService);
-  private translateService = inject(TranslateService);
+  private readonly fb = inject(FormBuilder);
+  private readonly dialogRef = inject<MatDialogRef<PreservationDialogComponent>>(MatDialogRef);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly preservationScenariosService = inject(PreservationScenariosService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly translateService = inject(TranslateService);
   data = inject<{ itemSelected: number; criteriaList: SearchCriteriaEltDto[] }>(MAT_DIALOG_DATA);
 
   itemSelected = this.data.itemSelected;
@@ -94,7 +94,7 @@ export class PreservationDialogComponent {
     ] as Option[],
   };
 
-  private scenarios = toSignal(this.preservationScenariosService.list(), { initialValue: [] as PreservationScenario[] });
+  private readonly scenarios = toSignal(this.preservationScenariosService.list(), { initialValue: [] as PreservationScenario[] });
   scenarioOptions = computed<VitamuiSelectOptions>(() => ({
     options: this.scenarios().map((scenario) => ({ key: scenario.Identifier, label: `${scenario.Identifier} - ${scenario.Name}` })),
   }));

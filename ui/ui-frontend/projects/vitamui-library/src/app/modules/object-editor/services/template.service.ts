@@ -43,8 +43,8 @@ import { SchemaElementToDisplayRuleService } from '../../object-viewer/services/
 
 @Injectable()
 export class TemplateService {
-  private dataStructureService = inject(DataStructureService);
-  private schemaElementToDisplayRuleService = inject(SchemaElementToDisplayRuleService);
+  private readonly dataStructureService = inject(DataStructureService);
+  private readonly schemaElementToDisplayRuleService = inject(SchemaElementToDisplayRuleService);
 
   public toProjected(originalData: any, template: DisplayRule[]): any {
     if (!template) return originalData;

@@ -49,8 +49,8 @@ export interface ArchiveUnitProfile {
   providedIn: 'root',
 })
 export class ArchiveUnitProfilesService {
-  private http = inject(HttpClient);
-  private baseUrl = inject(BASE_URL);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = inject(BASE_URL);
 
   getAll(): Observable<ArchiveUnitProfile[]> {
     const options = {

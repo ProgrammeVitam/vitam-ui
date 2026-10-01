@@ -56,9 +56,9 @@ import { ProfileService } from '../profile/profile.service';
   providedIn: 'root',
 })
 export class UserService extends SearchService<User> {
-  private userApi: UserApiService;
-  private snackBarService = inject(SnackBarService);
-  private rngProfileService = inject(ProfileService);
+  private readonly userApi: UserApiService;
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly rngProfileService = inject(ProfileService);
 
   userUpdated = new Subject<User>();
 

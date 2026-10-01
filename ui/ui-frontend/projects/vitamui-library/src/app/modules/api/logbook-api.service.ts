@@ -58,7 +58,7 @@ export type LogbookDownloadType = 'report' | 'batchreport' | 'object' | 'dip' | 
   providedIn: 'root',
 })
 export class LogbookApiService implements PaginatedApi<IEvent> {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private readonly apiUrl: string;
   private readonly baseUrl: string;

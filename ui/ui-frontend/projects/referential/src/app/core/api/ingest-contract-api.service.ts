@@ -46,7 +46,7 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class IngestContractApiService extends PaginatedHttpClient<IngestContract> {
-  private baseUrl: string;
+  private readonly baseUrl: string;
 
   constructor() {
     const http = inject(HttpClient);

@@ -65,7 +65,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   dialog = inject(MatDialog);
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
   @ViewChild(VitamuiBannerComponent, { static: true }) bannerComponent: VitamuiBannerComponent;

@@ -72,8 +72,8 @@ interface ReassignmentDialogResult {
 })
 export class ReassignmentDialogService {
   dialog = inject(MatDialog);
-  private archiveService = inject(ArchiveService);
-  private snackBarService = inject(SnackBarService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly snackBarService = inject(SnackBarService);
 
   launchReassignmentModal(listOfUACriteriaSearch: SearchCriteriaEltDto[], itemSelected: number, tenantIdentifier: number) {
     this.openReassignmentDialog(

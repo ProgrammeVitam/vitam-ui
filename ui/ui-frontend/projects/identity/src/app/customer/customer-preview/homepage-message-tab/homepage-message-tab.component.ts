@@ -49,8 +49,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [KeyValuePipe, TranslatePipe],
 })
 export class HomepageMessageTabComponent implements OnDestroy {
-  private dialog = inject(MatDialog);
-  private startupService = inject(StartupService);
+  private readonly dialog = inject(MatDialog);
+  private readonly startupService = inject(StartupService);
 
   @Input()
   set customer(customer: Customer) {
@@ -71,7 +71,7 @@ export class HomepageMessageTabComponent implements OnDestroy {
   }
 
   private _readonly: boolean;
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
 
   public portalTitle: string;
   public portalMessage: string;
