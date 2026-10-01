@@ -53,10 +53,10 @@ const DOWNLOAD_STARTED_MESSAGE = 'DOWNLOAD.STARTED_MESSAGE';
   providedIn: 'root',
 })
 export class SnackBarService {
-  private matSnackBar = inject(MatSnackBar);
-  private applicationService = inject(ApplicationService);
-  private translateService = inject(TranslateService);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly matSnackBar = inject(MatSnackBar);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly translateService = inject(TranslateService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   public async open(data: SnackBarData<SnackBarUrlButton | SnackBarAppButton>): Promise<MatSnackBarRef<SnackBarComponent>> {
     data.message = this.getTranslateValue(data.translate, data.message, data.translateParams);

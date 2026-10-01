@@ -52,7 +52,7 @@ import { AsyncPipe } from '@angular/common';
   imports: [GroupComponent, ListComponent, PrimitiveComponent, AsyncPipe],
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
-  private logger = inject(Logger);
+  private readonly logger = inject(Logger);
   displayObjectService = inject(DisplayObjectService);
 
   @Input() data!: any;

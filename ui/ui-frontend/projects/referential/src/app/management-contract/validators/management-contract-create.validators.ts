@@ -45,13 +45,13 @@ import { ManagementContractService } from '../management-contract.service';
   providedIn: 'root',
 })
 export class ManagementContractCreateValidators {
-  private managementContractService: ManagementContractService;
+  private readonly managementContractService: ManagementContractService;
 
   constructor(managementContractService: ManagementContractService = inject(ManagementContractService)) {
     this.managementContractService = managementContractService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

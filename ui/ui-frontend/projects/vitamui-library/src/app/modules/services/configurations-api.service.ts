@@ -79,7 +79,7 @@ export interface TenantConfiguration {
   providedIn: 'root',
 })
 export class ConfigurationsApiService {
-  private http: HttpClient;
+  private readonly http: HttpClient;
   private readonly baseUrl: string;
 
   constructor() {

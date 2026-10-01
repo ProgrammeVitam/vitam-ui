@@ -45,13 +45,13 @@ import { FileFormatService } from '../file-format.service';
   providedIn: 'root',
 })
 export class FileFormatCreateValidators {
-  private fileFormatService: FileFormatService;
+  private readonly fileFormatService: FileFormatService;
 
   constructor(fileFormatService: FileFormatService = inject(FileFormatService)) {
     this.fileFormatService = fileFormatService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

@@ -82,11 +82,11 @@ const CURRENT_VERSION_KEY = 'CURRENT';
 })
 export class AuditChainCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<AuditChainCreateComponent>>(MatDialogRef);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private auditService = inject(AuditService);
-  private externalParameterService = inject(ExternalParametersService);
-  private snackBarService = inject(SnackBarService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly auditService = inject(AuditService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly snackBarService = inject(SnackBarService);
 
   public form: FormGroup;
   public versionControl = new FormControl({ value: CURRENT_VERSION_KEY, disabled: true });
@@ -96,7 +96,7 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
   public chainTypeOptions: Option[];
   public versionOptions: Option[];
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   constructor() {
     const translateService = inject(TranslateService);

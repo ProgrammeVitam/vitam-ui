@@ -60,7 +60,7 @@ import { CommonModule } from '@angular/common';
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   private readonly securingService = inject(SecurisationService);
   private readonly externalParameterService = inject(ExternalParametersService);
-  private snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input() id: string;
   @Input() securisation: Event;

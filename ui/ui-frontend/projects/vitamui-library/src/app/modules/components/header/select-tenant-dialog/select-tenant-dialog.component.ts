@@ -51,9 +51,9 @@ import { ItemSelectComponent } from '../item-select/item-select.component';
   imports: [MatButtonModule, TranslatePipe, ItemSelectComponent, MatDialogModule],
 })
 export class SelectTenantDialogComponent implements OnInit {
-  private dialogRef = inject<MatDialogRef<SelectTenantDialogComponent>>(MatDialogRef);
-  private data = inject(MAT_DIALOG_DATA);
-  private startupService = inject(StartupService);
+  private readonly dialogRef = inject<MatDialogRef<SelectTenantDialogComponent>>(MatDialogRef);
+  private readonly data = inject(MAT_DIALOG_DATA);
+  private readonly startupService = inject(StartupService);
 
   public static readonly SELECT_TENANT_DIALOG_CONFIG: MatDialogConfig = {
     disableClose: true,

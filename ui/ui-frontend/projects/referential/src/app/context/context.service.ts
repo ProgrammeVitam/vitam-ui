@@ -46,8 +46,8 @@ import { ContextApiService } from '../core/api/context-api.service';
   providedIn: 'root',
 })
 export class ContextService extends SearchService<Context> {
-  private contextApiService: ContextApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly contextApiService: ContextApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Context>();
 

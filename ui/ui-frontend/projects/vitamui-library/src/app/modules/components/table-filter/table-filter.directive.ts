@@ -43,9 +43,9 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Templ
   exportAs: 'vitamuiCommonTableFilter',
 })
 export class TableFilterDirective {
-  private overlay = inject(Overlay);
-  private elementRef = inject(ElementRef);
-  private viewContainerRef = inject(ViewContainerRef);
+  private readonly overlay = inject(Overlay);
+  private readonly elementRef = inject(ElementRef);
+  private readonly viewContainerRef = inject(ViewContainerRef);
 
   @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
 

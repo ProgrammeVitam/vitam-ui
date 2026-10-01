@@ -66,7 +66,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
 
   @Input()
   selectedItem: number;

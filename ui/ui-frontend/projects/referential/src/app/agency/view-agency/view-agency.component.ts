@@ -57,10 +57,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [RouterModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class ViewAgencyComponent implements OnInit {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private agencyService = inject(AgencyService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly agencyService = inject(AgencyService);
 
   readonly agencyTemplate = agencyTemplate;
   breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];

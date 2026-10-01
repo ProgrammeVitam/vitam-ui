@@ -67,9 +67,9 @@ export enum FilingPlanMode {
   providedIn: 'root',
 })
 export class FilingPlanService {
-  private searchUnitApi = inject(SearchUnitApiService);
-  private accessContractService = inject(AccessContractService);
-  private locale = inject(LOCALE_ID);
+  private readonly searchUnitApi = inject(SearchUnitApiService);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly locale = inject(LOCALE_ID);
 
   private _pending = 0;
 

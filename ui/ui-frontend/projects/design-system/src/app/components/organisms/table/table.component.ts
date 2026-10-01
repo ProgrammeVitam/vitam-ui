@@ -63,7 +63,7 @@ import { MatMenuModule } from '@angular/material/menu';
   ],
 })
 export class TableComponent {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   tableDataSource = [
     { zipName: 'Cabinet Douillet_Martin', size: '30 Go', compression: 100, loading: 20 },

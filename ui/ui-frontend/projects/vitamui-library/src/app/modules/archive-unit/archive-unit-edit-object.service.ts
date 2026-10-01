@@ -51,11 +51,11 @@ export type SchemaElementByApiPath = { [key: string]: SchemaElement };
 
 @Injectable({ providedIn: 'root' })
 export class ArchiveUnitEditObjectService {
-  private editObjectService = inject(EditObjectService);
-  private templateService = inject(TemplateService);
-  private logger = inject(Logger);
-  private displayRuleHelper = inject(DisplayRuleHelperService);
-  private typeService = inject(TypeService);
+  private readonly editObjectService = inject(EditObjectService);
+  private readonly templateService = inject(TemplateService);
+  private readonly logger = inject(Logger);
+  private readonly displayRuleHelper = inject(DisplayRuleHelperService);
+  private readonly typeService = inject(TypeService);
 
   public computeEditObject(data: any, template: DisplayRule[], schema: Schema): EditObject {
     const projectedData = this.templateService.toProjected(data, template);

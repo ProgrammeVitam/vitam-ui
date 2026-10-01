@@ -86,12 +86,12 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
   ],
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
-  private translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
   dialogRef = inject<MatDialogRef<TransferRequestModalComponent>>(MatDialogRef);
-  private fb = inject(FormBuilder);
-  private archiveService = inject(ArchiveService);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private logger = inject(Logger);
+  private readonly fb = inject(FormBuilder);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly logger = inject(Logger);
   data = inject<{
     itemSelected: number;
     searchCriteria: SearchCriteriaEltDto[];
@@ -99,7 +99,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     tenantIdentifier: string;
     selectedItemCountKnown?: boolean;
   }>(MAT_DIALOG_DATA);
-  private snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   formGroups: FormGroup[];
   itemSelected: number;

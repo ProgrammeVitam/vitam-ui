@@ -56,8 +56,8 @@ interface PreservationDialogResult {
 })
 export class PreservationDialogService {
   dialog = inject(MatDialog);
-  private archiveService = inject(ArchiveService);
-  private snackBarService = inject(SnackBarService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly snackBarService = inject(SnackBarService);
 
   launchPreservationModal(listOfUACriteriaSearch: SearchCriteriaEltDto[], itemSelected: number, tenantIdentifier: number): void {
     const dialogRef = this.dialog.open(PreservationDialogComponent, {

@@ -53,7 +53,7 @@ const TRANSLATION_PREFIX = 'COLLECT.UPDATE_UNITS_METADATA.ERRORS.';
 })
 export class ErrorsDetailsDialogComponent {
   data = inject<VitamError>(MAT_DIALOG_DATA);
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   translateErrorKeys(errorDetails: VitamErrorDetails) {
     return this.translateService.instant(TRANSLATION_PREFIX + errorDetails.key, errorDetails.args);

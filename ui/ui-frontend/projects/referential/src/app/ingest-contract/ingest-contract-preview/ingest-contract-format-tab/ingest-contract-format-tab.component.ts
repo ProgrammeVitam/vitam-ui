@@ -51,9 +51,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
 export class IngestContractFormatTabComponent implements OnInit {
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
-  private fileFormatService = inject(FileFormatService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
+  private readonly fileFormatService = inject(FileFormatService);
 
   @Input() tenantIdentifier: number;
 

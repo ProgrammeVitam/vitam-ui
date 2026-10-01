@@ -77,11 +77,11 @@ import { PreservationRequestDto } from './models/preservation-request.interface'
   providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  private archiveApiService: ArchiveApiService;
-  private locale = inject(LOCALE_ID);
-  private snackBarService = inject(SnackBarService);
-  private securityService = inject(SecurityService);
-  private accessContractService = inject(AccessContractService);
+  private readonly archiveApiService: ArchiveApiService;
+  private readonly locale = inject(LOCALE_ID);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly securityService = inject(SecurityService);
+  private readonly accessContractService = inject(AccessContractService);
 
   constructor() {
     const archiveApiService = inject(ArchiveApiService);

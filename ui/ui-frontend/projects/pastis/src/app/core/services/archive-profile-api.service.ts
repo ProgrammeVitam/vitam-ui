@@ -48,7 +48,7 @@ const HTTP_STATUS_OK = 200;
   providedIn: 'root',
 })
 export class ArchiveProfileApiService extends PaginatedHttpClient<Profile> {
-  private pastisConfig = inject(PastisConfiguration);
+  private readonly pastisConfig = inject(PastisConfiguration);
   baseUrl: string;
 
   // @ts-ignore

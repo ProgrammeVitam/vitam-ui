@@ -63,11 +63,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<FileFormatCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private startupService = inject(StartupService);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private fileFormatService = inject(FileFormatService);
-  private fileFormatCreateValidators = inject(FileFormatCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly startupService = inject(StartupService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly fileFormatService = inject(FileFormatService);
+  private readonly fileFormatCreateValidators = inject(FileFormatCreateValidators);
 
   form: FormGroup;
   tenantIdentifier: string;

@@ -48,8 +48,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DataComponent, TranslatePipe],
 })
 export class PrimitiveComponent implements OnInit {
-  private dateDisplayService = inject(DateDisplayService);
-  private datePipe = inject(DatePipe);
+  private readonly dateDisplayService = inject(DateDisplayService);
+  private readonly datePipe = inject(DatePipe);
 
   @Input() displayObject: DisplayObject;
 

@@ -51,7 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class SubrogationBannerComponent implements OnInit {
   authService = inject(AuthService);
-  private subrogationService = inject(SubrogationService);
+  private readonly subrogationService = inject(SubrogationService);
 
   show = false;
   hidden = false;

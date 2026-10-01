@@ -49,7 +49,7 @@ import { ObjectViewerComponent } from '../../../object-viewer/object-viewer.comp
   imports: [ObjectViewerComponent],
 })
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
-  private displayObjectService = inject(DisplayObjectService);
+  private readonly displayObjectService = inject(DisplayObjectService);
 
   @Input() data!: any;
   @Input() template: DisplayRule[] = customTemplate;

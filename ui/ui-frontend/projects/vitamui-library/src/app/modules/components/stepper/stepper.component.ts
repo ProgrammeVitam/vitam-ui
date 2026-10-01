@@ -48,7 +48,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, CdkStepperModule],
 })
 export class StepperComponent extends CdkStepper {
-  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
   @Input() disableScrollToTop = false;
 
   // Automatically scroll to the top of the stepper after changing step (inspired by https://github.com/angular/components/issues/8881)

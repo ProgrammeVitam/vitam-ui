@@ -50,8 +50,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, MatButtonToggleGroup, MatButtonToggle, MatCheckbox, TranslatePipe],
 })
 export class IngestContractSignatureTabComponent implements OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
 
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
 

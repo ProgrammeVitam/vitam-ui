@@ -71,7 +71,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   tenantIdentifier: string;
   projectId: string;

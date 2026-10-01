@@ -48,8 +48,8 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class SchemaService {
-  private api = inject(SchemaApiService);
-  private translateService = inject(TranslateService);
+  private readonly api = inject(SchemaApiService);
+  private readonly translateService = inject(TranslateService);
 
   selectedPath$ = new Subject<string>();
 
@@ -69,7 +69,7 @@ export class SchemaService {
     return this.api.getArchiveUnitProfileSchema(archiveUnitProfileId);
   }
 
-  private recursiveSort = (node: ItemNode<SchemaElement>) => {
+  private readonly recursiveSort = (node: ItemNode<SchemaElement>) => {
     node.children.sort((n1, n2) =>
       n1.children.length && !n2.children.length
         ? 1
@@ -80,7 +80,7 @@ export class SchemaService {
     node.children.forEach((n) => this.recursiveSort(n));
   };
 
-  private removeLeavesWithTypeObject = (node: ItemNode<SchemaElement>) => {
+  private readonly removeLeavesWithTypeObject = (node: ItemNode<SchemaElement>) => {
     node.children = node.children.filter((child) => !(child.item.Type === 'OBJECT' && !child.children.length));
     node.children.forEach((child) => this.removeLeavesWithTypeObject(child));
   };
@@ -105,7 +105,7 @@ export class SchemaService {
     return res;
   }
 
-  private buildTree: (schema: Schema) => ItemNode<SchemaElement>[] = (schema: Schema): ItemNode<SchemaElement>[] => {
+  private readonly buildTree: (schema: Schema) => ItemNode<SchemaElement>[] = (schema: Schema): ItemNode<SchemaElement>[] => {
     const rootNode = schema
       .filter((e) => (e.Category === 'DESCRIPTION' || e.Origin === 'EXTERNAL') && e.FieldName !== '_sp' && e.FieldName !== '_sps')
       .reduce(this.buildTreeReducer, { children: [] } as ItemNode<SchemaElement>);
@@ -114,7 +114,7 @@ export class SchemaService {
     return rootNode.children;
   };
 
-  private buildTreeReducer = (acc: ItemNode<SchemaElement>, element: SchemaElement) => {
+  private readonly buildTreeReducer = (acc: ItemNode<SchemaElement>, element: SchemaElement) => {
     const path = element.Path.split('.').slice(0, -1);
     const parentNode = path.reduce((currentItem, p) => currentItem.children.find((n) => n.item.FieldName === p), acc) || acc;
     parentNode.children.push({
@@ -137,7 +137,7 @@ export class SchemaService {
   }
 
   public readonly VIRTUAL_ROOT_NODES = 'VIRTUAL_ROOT_NODES';
-  private groupByCategory: (nodes: ItemNode<SchemaElement>[]) => ItemNode<SchemaElement>[] = (
+  private readonly groupByCategory: (nodes: ItemNode<SchemaElement>[]) => ItemNode<SchemaElement>[] = (
     nodes: ItemNode<SchemaElement>[],
   ): ItemNode<SchemaElement>[] => {
     const roots = {

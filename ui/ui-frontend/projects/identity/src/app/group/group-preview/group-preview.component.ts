@@ -66,8 +66,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
-  private groupService = inject(GroupService);
-  private authService = inject(AuthService);
+  private readonly groupService = inject(GroupService);
+  private readonly authService = inject(AuthService);
 
   @Input() isPopup: boolean;
 

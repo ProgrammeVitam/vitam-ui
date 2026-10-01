@@ -50,8 +50,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, InputComponent, SlideToggleComponent, TranslatePipe],
 })
 export class SecurityProfileInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private securityProfileService = inject(SecurityProfileService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly securityProfileService = inject(SecurityProfileService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() fullAccessUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -52,10 +52,10 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
   imports: [ItemSelectComponent, MatMiniFabButton, MatMenuTrigger, MatMenu, MatMenuItem, TranslatePipe],
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
-  private translateService = inject(TranslateService);
-  private languageService = inject(LanguageService);
-  private userInfoApiService = inject(BaseUserInfoApiService);
-  private authService = inject(AuthService);
+  private readonly translateService = inject(TranslateService);
+  private readonly languageService = inject(LanguageService);
+  private readonly userInfoApiService = inject(BaseUserInfoApiService);
+  private readonly authService = inject(AuthService);
 
   /**
    * This component have two display mode :
@@ -67,7 +67,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   public currentLang = '';
   public minLangString = MinLangString;
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   ngOnInit() {
     this.authService.getUserInfo$().subscribe((userInfo) => {

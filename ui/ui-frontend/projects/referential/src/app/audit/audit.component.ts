@@ -75,8 +75,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(FormBuilder);
 
   public dateRangeFilterForm: FormGroup;
   public filters: any = {};

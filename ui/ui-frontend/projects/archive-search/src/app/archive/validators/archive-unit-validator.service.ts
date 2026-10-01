@@ -46,8 +46,8 @@ import { ArchiveService } from '../archive.service';
   providedIn: 'root',
 })
 export class ArchiveUnitValidatorService {
-  private archiveService = inject(ArchiveService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   debounceTime = 400;
 

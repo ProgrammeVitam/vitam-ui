@@ -72,9 +72,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ProbativeValueComponent extends SidenavPage<Event> implements OnDestroy {
   dialog = inject(MatDialog);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(FormBuilder);
 
   search: string;
   dateRangeFilterForm: FormGroup;

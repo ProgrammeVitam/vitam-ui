@@ -52,9 +52,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
-  private customerService = inject(CustomerService);
-  private dialog = inject(MatDialog);
-  private themeService = inject(ThemeService);
+  private readonly customerService = inject(CustomerService);
+  private readonly dialog = inject(MatDialog);
+  private readonly themeService = inject(ThemeService);
 
   @Input()
   set customer(customer: Customer) {
@@ -75,7 +75,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   }
 
   private _readonly: boolean;
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
   public isLoading = false;
   public customerLogos: LogosSafeResourceUrl = {};
 

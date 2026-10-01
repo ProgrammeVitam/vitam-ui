@@ -58,9 +58,9 @@ import { NgClass } from '@angular/common';
   imports: [TooltipDirective, NgClass, PipesModule, TranslatePipe],
 })
 export class CriteriaSearchComponent {
-  private queryParamsService = inject(QueryParamsService);
-  private translateService = inject(TranslateService);
-  private translateWithOptionalTypeSuffixPipe = inject(TranslateWithOptionalTypeSuffixPipe);
+  private readonly queryParamsService = inject(QueryParamsService);
+  private readonly translateService = inject(TranslateService);
+  private readonly translateWithOptionalTypeSuffixPipe = inject(TranslateWithOptionalTypeSuffixPipe);
 
   @Input()
   criteriaKey: string;

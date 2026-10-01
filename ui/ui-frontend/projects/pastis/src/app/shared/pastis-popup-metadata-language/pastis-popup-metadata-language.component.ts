@@ -85,7 +85,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [NgClass, TranslatePipe],
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
-  private metadataLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly metadataLanguageService = inject(PastisPopupMetadataLanguageService);
 
   sedaLanguage: boolean;
 

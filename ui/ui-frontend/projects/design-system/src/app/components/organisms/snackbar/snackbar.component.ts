@@ -46,8 +46,8 @@ const INFINITE_DURATION = 0;
   imports: [VitamUICommonModule, VitamUILibraryModule, FormsModule, ReactiveFormsModule],
 })
 export class SnackbarComponent implements OnInit {
-  private snackBarService = inject(SnackBarService);
-  private fb = inject(FormBuilder);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly fb = inject(FormBuilder);
 
   form: FormGroup;
   iconOptions: string[] = ['vitamui-icon-user', 'vitamui-icon-agent', 'vitamui-icon-contrat', 'vitamui-icon-link'];

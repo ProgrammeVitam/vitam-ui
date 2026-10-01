@@ -45,17 +45,17 @@ import { ActionsRules, ManagementRules } from '../models/rule-action.interface';
   providedIn: 'root',
 })
 export class ManagementRulesSharedDataService {
-  private ruleApiService = inject(RuleApiService);
+  private readonly ruleApiService = inject(RuleApiService);
 
-  private accessContract = new BehaviorSubject<string>('');
-  private selectedItems = new BehaviorSubject<number>(0);
-  private criteriaSearchListToSave = new BehaviorSubject<SearchCriteriaEltDto[]>([]);
-  private criteriaSearchDSLQuery = new BehaviorSubject<SearchCriteriaDto>(null);
-  private ruleActions = new BehaviorSubject<ActionsRules[]>([]);
-  private ruleCategory = new BehaviorSubject<string>('');
+  private readonly accessContract = new BehaviorSubject<string>('');
+  private readonly selectedItems = new BehaviorSubject<number>(0);
+  private readonly criteriaSearchListToSave = new BehaviorSubject<SearchCriteriaEltDto[]>([]);
+  private readonly criteriaSearchDSLQuery = new BehaviorSubject<SearchCriteriaDto>(null);
+  private readonly ruleActions = new BehaviorSubject<ActionsRules[]>([]);
+  private readonly ruleCategory = new BehaviorSubject<string>('');
 
-  private managementRules = new BehaviorSubject<ManagementRules[]>([]);
-  private hasExactCount = new BehaviorSubject<boolean>(false);
+  private readonly managementRules = new BehaviorSubject<ManagementRules[]>([]);
+  private readonly hasExactCount = new BehaviorSubject<boolean>(false);
 
   selectedItem = this.selectedItems.asObservable();
   allCriteriaSearchListToSave = this.criteriaSearchListToSave.asObservable();

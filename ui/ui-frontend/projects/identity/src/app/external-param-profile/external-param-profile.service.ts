@@ -55,9 +55,9 @@ import {
   providedIn: 'root',
 })
 export class ExternalParamProfileService extends SearchService<ExternalParamProfile> {
-  private externalParamProfileApi: ExternalParamProfileApiService;
-  private accessContractApiService = inject(AccessContractApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly externalParamProfileApi: ExternalParamProfileApiService;
+  private readonly accessContractApiService = inject(AccessContractApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<ExternalParamProfile>();
 

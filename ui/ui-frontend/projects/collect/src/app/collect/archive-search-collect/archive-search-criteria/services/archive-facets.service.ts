@@ -51,7 +51,7 @@ import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 })
 // TODO: put in FacetsUtils
 export class ArchiveFacetsService {
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   RULES_COMPUTED_NUMBER_PREFIX = 'RULES_COMPUTED_NUMBER_';
   FINAL_ACTION_COMPUTED_PREFIX = 'FINAL_ACTION_COMPUTED_';

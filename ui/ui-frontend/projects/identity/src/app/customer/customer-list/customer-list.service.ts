@@ -45,7 +45,7 @@ import { CustomerApiService } from '../../core/api/customer-api.service';
   providedIn: 'root',
 })
 export class CustomerListService extends SearchService<Customer> {
-  private customerApi: CustomerApiService;
+  private readonly customerApi: CustomerApiService;
 
   constructor() {
     const customerApi = inject(CustomerApiService);

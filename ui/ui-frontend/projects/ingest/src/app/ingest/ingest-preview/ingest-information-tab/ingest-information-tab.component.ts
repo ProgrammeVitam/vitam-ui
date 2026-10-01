@@ -57,7 +57,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DataComponent, IngestEventDetailComponent, AsyncPipe, PipesModule, TranslatePipe],
 })
 export class IngestInformationTabComponent implements OnChanges {
-  private applicationService = inject(ApplicationService);
+  private readonly applicationService = inject(ApplicationService);
   private ingestReferentialService = inject(IngestReferentialService);
 
   @Input() ingest: LogbookOperation;

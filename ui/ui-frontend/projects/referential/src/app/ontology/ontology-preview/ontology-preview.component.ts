@@ -73,8 +73,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
-  private matDialog = inject(MatDialog);
-  private ontologyService = inject(OntologyService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly ontologyService = inject(OntologyService);
   schemaService = inject(SchemaService);
 
   @Output()

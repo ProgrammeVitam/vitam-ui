@@ -65,8 +65,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
 })
 export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
-  private sharedService = inject(SharedService);
-  private externalParamProfileServiceService = inject(ExternalParamProfileService);
+  private readonly sharedService = inject(SharedService);
+  private readonly externalParamProfileServiceService = inject(ExternalParamProfileService);
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() tenantIdentifier: string;

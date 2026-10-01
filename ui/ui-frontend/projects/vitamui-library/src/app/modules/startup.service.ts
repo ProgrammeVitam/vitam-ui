@@ -58,15 +58,15 @@ const WARNING_DURATION = 2000;
   providedIn: 'root',
 })
 export class StartupService {
-  private configService = inject(ConfigService);
-  private logger = inject(Logger);
-  private authService = inject(AuthService);
-  private securityApi = inject(SecurityApiService);
-  private applicationApi = inject(ApplicationApiService);
-  private themeService = inject(ThemeService);
-  private applicationService = inject(ApplicationService);
-  private userInfoApiService = inject(BaseUserInfoApiService);
-  private location = inject(WINDOW_LOCATION);
+  private readonly configService = inject(ConfigService);
+  private readonly logger = inject(Logger);
+  private readonly authService = inject(AuthService);
+  private readonly securityApi = inject(SecurityApiService);
+  private readonly applicationApi = inject(ApplicationApiService);
+  private readonly themeService = inject(ThemeService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly userInfoApiService = inject(BaseUserInfoApiService);
+  private readonly location = inject(WINDOW_LOCATION);
 
   public userRefresh = new Subject<any>();
   public CURRENT_APP_ID: ApplicationId = ApplicationId.PORTAL_APP;

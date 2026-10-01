@@ -65,8 +65,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private applicationService = inject(ApplicationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly applicationService = inject(ApplicationService);
 
   search = '';
   tenantIdentifier: string;

@@ -81,7 +81,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
   contextService: ContextService;
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
@@ -90,7 +90,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     this.searchChange.next(searchText);
   }
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private readonly destroy$: Subject<void> = new Subject<void>();
 
   private _searchText: string;
 
@@ -108,7 +108,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   orderBy = 'Name';
   direction = Direction.ASCENDANT;
 
-  private groups: Array<{ id: string; group: any }> = [];
+  private readonly groups: Array<{ id: string; group: any }> = [];
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();

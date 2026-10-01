@@ -47,8 +47,8 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class LogbookService {
-  private logbookApi = inject(LogbookApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly logbookApi = inject(LogbookApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   listOperationByIdAndCollectionName(id: string, collectionName: string, tenantIdentifier: number): Observable<HistoryEvent[]> {
     const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, tenantIdentifier.toString());

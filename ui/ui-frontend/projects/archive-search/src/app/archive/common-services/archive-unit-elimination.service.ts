@@ -48,11 +48,11 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ArchiveUnitEliminationService {
-  private vitamConfigurationService = inject(VitamTenantConfigService);
-  private archiveService = inject(ArchiveService);
-  private translateService = inject(TranslateService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
-  private snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   launchEliminationAnalysisModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],

@@ -54,7 +54,7 @@ import { UserGenericApiService } from './user-generic-api.service';
   providedIn: 'root',
 })
 export class SubrogationService extends SearchService<SubrogationUser> {
-  private subrogationApiService = inject(SubrogationApiService);
+  private readonly subrogationApiService = inject(SubrogationApiService);
 
   constructor() {
     const userGenericApi = inject(UserGenericApiService);

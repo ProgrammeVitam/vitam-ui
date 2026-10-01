@@ -48,8 +48,8 @@ import { NgClass } from '@angular/common';
   imports: [NgClass],
 })
 export class UserPhotoComponent implements OnInit {
-  private themeService = inject(ThemeService);
-  private authService = inject(AuthService);
+  private readonly themeService = inject(ThemeService);
+  private readonly authService = inject(AuthService);
 
   @Input() photo: string;
   @Input() size = 40;

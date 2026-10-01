@@ -52,7 +52,7 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
   imports: [CommonModule, FormsModule, MatButtonModule, MatCheckboxModule, TooltipDirective],
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
-  private cdr = inject(ChangeDetectorRef);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() node: FilingHoldingSchemeNode;
   @Input() icon: string;

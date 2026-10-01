@@ -48,10 +48,10 @@ import { AppConfiguration } from './models/app.configuration.interface';
   providedIn: 'root',
 })
 export class ConfigService implements OnDestroy {
-  private logger = inject(Logger);
-  private applicationApi = inject(ApplicationApiService);
+  private readonly logger = inject(Logger);
+  private readonly applicationApi = inject(ApplicationApiService);
 
-  private http: HttpClient;
+  private readonly http: HttpClient;
 
   public config: AppConfiguration = null;
   public config$ = new BehaviorSubject<AppConfiguration>(null);

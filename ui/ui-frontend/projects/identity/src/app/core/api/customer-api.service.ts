@@ -44,7 +44,7 @@ import { AttachmentType } from '../../customer/attachment.enum';
   providedIn: 'root',
 })
 export class CustomerApiService extends PaginatedHttpClient<Customer> {
-  private logger = inject(Logger);
+  private readonly logger = inject(Logger);
 
   constructor() {
     const http = inject(HttpClient);

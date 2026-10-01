@@ -71,17 +71,17 @@ type MeasurementDisplayMode = 'SYMBOL' | 'NAME';
   imports: [NgClass, UpperCasePipe, BytesPipe, TranslatePipe],
 })
 export class PhysicalArchiveViewerComponent implements OnInit {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() archive: VersionWithQualifierDto;
   @Input() errorMessages: Record<string, ValidationError[]>;
 
   // Component configuration
-  private measurementDisplayMode: MeasurementDisplayMode = 'NAME';
-  private displayAll = false;
-  private name = 'PhysicalDimensions';
-  private items = ['Width', 'Height', 'Depth', 'Shape', 'Diameter', 'Length', 'Thickness', 'Weight', 'NumberOfPage'];
-  private columns = 2;
+  private readonly measurementDisplayMode: MeasurementDisplayMode = 'NAME';
+  private readonly displayAll = false;
+  private readonly name = 'PhysicalDimensions';
+  private readonly items = ['Width', 'Height', 'Depth', 'Shape', 'Diameter', 'Length', 'Thickness', 'Weight', 'NumberOfPage'];
+  private readonly columns = 2;
 
   isPhysical = false;
 

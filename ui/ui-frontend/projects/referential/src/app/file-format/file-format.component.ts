@@ -76,9 +76,9 @@ import { AsyncPipe } from '@angular/common';
 })
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private translateService = inject(TranslateService);
-  private securityService = inject(SecurityService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly translateService = inject(TranslateService);
+  private readonly securityService = inject(SecurityService);
 
   search = '';
   tenantIdentifier: number;

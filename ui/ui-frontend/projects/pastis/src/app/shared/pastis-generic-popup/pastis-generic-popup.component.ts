@@ -46,8 +46,8 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./pastis-generic-popup.component.scss'],
 })
 export class PastisGenericPopupComponent implements OnInit {
-  private pastisPopupSelectionService = inject(PastisPopupSelectionService);
-  private dataGeneriquePopupService = inject(DataGeneriquePopupService);
+  private readonly pastisPopupSelectionService = inject(PastisPopupSelectionService);
+  private readonly dataGeneriquePopupService = inject(DataGeneriquePopupService);
 
   donnees: string[];
 

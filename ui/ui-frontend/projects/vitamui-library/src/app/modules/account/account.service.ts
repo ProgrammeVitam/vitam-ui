@@ -44,7 +44,7 @@ import { Account } from '../models/account/account.interface';
   providedIn: 'root',
 })
 export class AccountService {
-  private securityApi = inject(SecurityApiService);
+  private readonly securityApi = inject(SecurityApiService);
 
   public getMyAccount(): Observable<Account> {
     return this.securityApi.getAuthenticated();

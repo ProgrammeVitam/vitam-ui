@@ -51,9 +51,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, FormsModule, PipesModule, TranslatePipe],
 })
 export class AccessContractInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private accessContractService = inject(AccessContractService);
-  private accessContractCreateValidators = inject(AccessContractCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly accessContractCreateValidators = inject(AccessContractCreateValidators);
 
   @Input() set accessContract(accessContract: AccessContract) {
     this.setAccessContract(accessContract);

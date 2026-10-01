@@ -44,7 +44,7 @@ import { ProjectsApiService } from '../../../core/api/project-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaSaverService extends SearchService<any> {
-  private projectsApiService: ProjectsApiService;
+  private readonly projectsApiService: ProjectsApiService;
 
   constructor() {
     const projectsApiService = inject(ProjectsApiService);

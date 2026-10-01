@@ -51,13 +51,13 @@ import { pollUntil } from '../transactions/polling';
   providedIn: 'root',
 })
 export class SipImportTrackingService {
-  private transactionApiService = inject(TransactionApiService);
-  private logger = inject(Logger);
+  private readonly transactionApiService = inject(TransactionApiService);
+  private readonly logger = inject(Logger);
 
   private static readonly POLLING_PERIOD_MS = 5_000;
   private static readonly MAX_POLLING_RETRIES = 720; // stop polling after one hour
 
-  private pendingTransactionIds$ = new BehaviorSubject<Set<string>>(new Set());
+  private readonly pendingTransactionIds$ = new BehaviorSubject<Set<string>>(new Set());
 
   /** Starts polling the SIP import operation status until it is completed. */
   trackSipImport(transactionId: string, operationId: string): void {

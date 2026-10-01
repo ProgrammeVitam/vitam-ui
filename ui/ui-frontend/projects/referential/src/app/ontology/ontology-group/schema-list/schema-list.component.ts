@@ -77,9 +77,9 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
 })
 export class SchemaListComponent implements OnInit, OnDestroy {
   schemaService = inject(SchemaService);
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   private _searchText: string;
   private lastSelectedPath: string = '';
@@ -167,7 +167,7 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     this.displayAndOpenParent(this.treeControl.dataNodes?.filter((node) => node.display));
   }
 
-  private getParentNode = (node: ItemFlatNode<SchemaElement>): ItemFlatNode<SchemaElement> | null => {
+  private readonly getParentNode = (node: ItemFlatNode<SchemaElement>): ItemFlatNode<SchemaElement> | null => {
     const currentLevel = node.level;
 
     if (currentLevel < 1) {
@@ -203,11 +203,11 @@ export class SchemaListComponent implements OnInit, OnDestroy {
 
   treeControl: FlatTreeControl<ItemFlatNode<SchemaElement>>;
   dataSource: MatTreeFlatDataSource<ItemNode<SchemaElement>, ItemFlatNode<SchemaElement>>;
-  private treeFlattener: MatTreeFlattener<ItemNode<SchemaElement>, ItemFlatNode<SchemaElement>>;
+  private readonly treeFlattener: MatTreeFlattener<ItemNode<SchemaElement>, ItemFlatNode<SchemaElement>>;
   /** Map from nested node to flattened node. This helps us to keep the same object for selection */
-  private nestedNodeMap = new Map<SchemaElement, ItemFlatNode<SchemaElement>>();
+  private readonly nestedNodeMap = new Map<SchemaElement, ItemFlatNode<SchemaElement>>();
   private idIncrement = 0;
-  private transformer = (node: ItemNode<SchemaElement>, level: number) => {
+  private readonly transformer = (node: ItemNode<SchemaElement>, level: number) => {
     const existingNode = this.nestedNodeMap.get(node.item);
     const flatNode = existingNode && existingNode.item === node.item ? existingNode : new ItemFlatNode<SchemaElement>();
     flatNode.id = `node-${this.idIncrement++}`;

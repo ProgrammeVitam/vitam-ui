@@ -74,8 +74,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
-  private accessionRegistersService: AccessionRegistersService;
-  private externalParameterService = inject(ExternalParametersService);
+  private readonly accessionRegistersService: AccessionRegistersService;
+  private readonly externalParameterService = inject(ExternalParametersService);
 
   search: string;
   advancedSearchPanelOpenState$: Observable<boolean>;

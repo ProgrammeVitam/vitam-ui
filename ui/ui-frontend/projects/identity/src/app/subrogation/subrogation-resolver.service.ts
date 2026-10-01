@@ -47,8 +47,8 @@ import { CustomerSelectService } from './customer-select.service';
   providedIn: 'root',
 })
 export class SubrogationResolver {
-  private customerSearchService = inject(CustomerSelectService);
-  private router = inject(Router);
+  private readonly customerSearchService = inject(CustomerSelectService);
+  private readonly router = inject(Router);
 
   resolve(): Observable<MenuOption[]> {
     return this.customerSearchService.getAll(true).pipe(

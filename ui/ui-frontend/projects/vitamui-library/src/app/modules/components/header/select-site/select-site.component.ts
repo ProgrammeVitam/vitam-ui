@@ -52,9 +52,9 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 })
 export class SelectSiteComponent implements OnInit {
   protected http = inject(HttpClient);
-  private authService = inject(AuthService);
-  private authStorage = inject(OAuthStorage);
-  private siteApiService = inject(SiteApiService);
+  private readonly authService = inject(AuthService);
+  private readonly authStorage = inject(OAuthStorage);
+  private readonly siteApiService = inject(SiteApiService);
 
   public selectedSite: any;
   public sites: any[];

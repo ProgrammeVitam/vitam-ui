@@ -45,9 +45,9 @@ import { UserService } from '../user.service';
   providedIn: 'root',
 })
 export class UserCreateValidators {
-  private userService = inject(UserService);
+  private readonly userService = inject(UserService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueEmail = (emailToCheck?: string): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {

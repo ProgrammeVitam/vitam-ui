@@ -70,7 +70,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class SecurisationComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   search: string;
   dateRangeFilterForm: FormGroup;

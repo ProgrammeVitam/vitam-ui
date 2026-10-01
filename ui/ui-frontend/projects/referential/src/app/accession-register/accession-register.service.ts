@@ -58,25 +58,25 @@ import { AccessionRegisterDetailApiService } from '../core/api/accession-registe
   providedIn: 'root',
 })
 export class AccessionRegistersService extends SearchService<AccessionRegisterDetail> {
-  private accessionRegisterApiService: AccessionRegisterDetailApiService;
-  private translateService = inject(TranslateService);
-  private externalParameterService = inject(ExternalParametersService);
-  private bytesPipe = inject(BytesPipe);
-  private snackBarService = inject(SnackBarService);
+  private readonly accessionRegisterApiService: AccessionRegisterDetailApiService;
+  private readonly translateService = inject(TranslateService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly bytesPipe = inject(BytesPipe);
+  private readonly snackBarService = inject(SnackBarService);
 
   pageEvent = new Subject<string>();
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
   updated = new Subject<AccessionRegisterDetail>();
 
-  private searchTextChange$ = new BehaviorSubject<string>('');
-  private dateIntervalChange$ = new BehaviorSubject<{ endDateMin: string; endDateMax: string }>(null);
+  private readonly searchTextChange$ = new BehaviorSubject<string>('');
+  private readonly dateIntervalChange$ = new BehaviorSubject<{ endDateMin: string; endDateMax: string }>(null);
 
-  private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private advancedSearchData$ = new BehaviorSubject<any>(null);
-  private globalSearchButtonEvent$ = new BehaviorSubject<boolean>(true);
-  private advancedFormHaveChanged$ = new BehaviorSubject<boolean>(false);
-  private globalResetEvent$ = new BehaviorSubject<boolean>(false);
+  private readonly openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly advancedSearchData$ = new BehaviorSubject<any>(null);
+  private readonly globalSearchButtonEvent$ = new BehaviorSubject<boolean>(true);
+  private readonly advancedFormHaveChanged$ = new BehaviorSubject<boolean>(false);
+  private readonly globalResetEvent$ = new BehaviorSubject<boolean>(false);
 
   constructor() {
     const accessionRegisterApiService = inject(AccessionRegisterDetailApiService);

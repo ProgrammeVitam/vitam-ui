@@ -58,11 +58,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DialogHeaderComponent, MatDialogActions, TranslatePipe],
 })
 export class FoundObjectModalComponent {
-  private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
-  private router = inject(Router);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private archiveService = inject(ArchiveService);
-  private accessContractService = inject(AccessContractService);
+  private readonly dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
+  private readonly router = inject(Router);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly accessContractService = inject(AccessContractService);
 
   ark: string;
   usageVersion: string;

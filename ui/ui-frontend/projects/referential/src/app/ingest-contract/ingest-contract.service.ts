@@ -46,8 +46,8 @@ import { IngestContractApiService } from '../core/api/ingest-contract-api.servic
   providedIn: 'root',
 })
 export class IngestContractService extends SearchService<IngestContract> {
-  private ingestContractApi: IngestContractApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly ingestContractApi: IngestContractApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<IngestContract>();
 

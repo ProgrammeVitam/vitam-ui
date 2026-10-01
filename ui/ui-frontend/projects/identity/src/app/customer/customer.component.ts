@@ -63,7 +63,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
   customerService = inject(CustomerService);
 
   public customers: Customer[];

@@ -51,10 +51,10 @@ export const DEFAULT_PAGE_SIZE = 20;
   providedIn: 'root',
 })
 export class CustomerService {
-  private customerApi = inject(CustomerApiService);
-  private snackBarService = inject(SnackBarService);
-  private sanitizer = inject(DomSanitizer);
-  private themeService = inject(ThemeService);
+  private readonly customerApi = inject(CustomerApiService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly themeService = inject(ThemeService);
 
   updated = new Subject<Customer>();
 

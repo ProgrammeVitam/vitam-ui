@@ -66,8 +66,8 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   imports: [MatProgressSpinner, SelectComponent, ReactiveFormsModule, NgClass, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnChanges {
-  private rngProfileService = inject(ProfileService);
-  private appApiService = inject(ApplicationApiService);
+  private readonly rngProfileService = inject(ProfileService);
+  private readonly appApiService = inject(ApplicationApiService);
 
   profiles: Profile[] = [];
   profileIds: string[] = [];

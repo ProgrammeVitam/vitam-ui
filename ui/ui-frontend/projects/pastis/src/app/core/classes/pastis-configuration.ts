@@ -40,7 +40,7 @@ import { PastisApiService } from '../api/api.pastis.service';
 
 @Injectable()
 export class PastisConfiguration {
-  private pastisApi = inject(PastisApiService);
+  private readonly pastisApi = inject(PastisApiService);
 
   // routes pastis
   pastisEditPage: string;

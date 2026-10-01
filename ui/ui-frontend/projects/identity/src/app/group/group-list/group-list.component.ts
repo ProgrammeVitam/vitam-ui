@@ -81,7 +81,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class GroupListComponent extends InfiniteScrollTable<Group> implements OnDestroy, OnInit {
   groupService: GroupService;
-  private locale = inject(LOCALE_ID);
+  private readonly locale = inject(LOCALE_ID);
 
   @Output() groupClick = new EventEmitter<Group>();
 

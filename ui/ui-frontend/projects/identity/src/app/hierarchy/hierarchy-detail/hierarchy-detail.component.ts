@@ -64,8 +64,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
-  private hierarchyService = inject(HierarchyService);
-  private authService = inject(AuthService);
+  private readonly hierarchyService = inject(HierarchyService);
+  private readonly authService = inject(AuthService);
 
   @Input()
   set id(id: string) {
