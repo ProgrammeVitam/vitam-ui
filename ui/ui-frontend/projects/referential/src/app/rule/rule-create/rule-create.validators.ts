@@ -44,13 +44,13 @@ import { RuleService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class RuleCreateValidators {
-  private ruleService: RuleService;
+  private readonly ruleService: RuleService;
 
   constructor(ruleService: RuleService = inject(RuleService)) {
     this.ruleService = ruleService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);

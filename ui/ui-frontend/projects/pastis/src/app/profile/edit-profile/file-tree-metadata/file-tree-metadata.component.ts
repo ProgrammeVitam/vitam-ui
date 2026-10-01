@@ -108,17 +108,17 @@ function constantToTranslate() {
 })
 export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   profileService = inject(ProfileService);
-  private fileService = inject(FileService);
-  private fileMetadataService = inject(FileTreeMetadataService);
-  private sedaService = inject(SedaService);
-  private router = inject(Router);
-  private startupService = inject(StartupService);
-  private fileTreeService = inject(FileTreeService);
-  private metadataLanguageService = inject(PastisPopupMetadataLanguageService);
-  private translateService = inject(TranslateService);
-  private logger = inject(Logger);
-  private breadcrumbService = inject(BreadcrumbService);
-  private snackBarService = inject(SnackBarService);
+  private readonly fileService = inject(FileService);
+  private readonly fileMetadataService = inject(FileTreeMetadataService);
+  private readonly sedaService = inject(SedaService);
+  private readonly router = inject(Router);
+  private readonly startupService = inject(StartupService);
+  private readonly fileTreeService = inject(FileTreeService);
+  private readonly metadataLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly translateService = inject(TranslateService);
+  private readonly logger = inject(Logger);
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
@@ -148,7 +148,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   radioExpressionReguliere: 'select' | 'input';
   regex: string;
   customRegex: string;
-  private formatagePredefini: Option[] = [
+  private readonly formatagePredefini: Option[] = [
     { label: 'AAAA-MM-JJ', key: DatePatternConstants.YEAR_MONTH_DAY },
     { label: 'AAAA-MM-JJTHH:MM:SS', key: DatePatternConstants.FULL_DATE },
     { label: 'AAAA', key: DatePatternConstants.YEAR },

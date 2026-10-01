@@ -46,9 +46,9 @@ export const internationalizedKeys = ['Title_', 'Description_'];
 
 @Injectable()
 export class DisplayObjectHelperService {
-  private typeService = inject(TypeService);
-  private dataStructureService = inject(DataStructureService);
-  private displayRuleHelperService = inject(DisplayRuleHelperService);
+  private readonly typeService = inject(TypeService);
+  private readonly dataStructureService = inject(DataStructureService);
+  private readonly displayRuleHelperService = inject(DisplayRuleHelperService);
 
   public getComponentType(data: any, template: DisplayRule[] = [], path: string = ''): ComponentType {
     const type: DisplayObjectType = this.typeService.dataType(data);

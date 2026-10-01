@@ -44,7 +44,7 @@ import { JsonPatchDto, MultiJsonPatchDto, ArchiveUnit, OperationId } from 'vitam
   providedIn: 'root',
 })
 export class ArchiveUnitService {
-  private archiveUnitApiService = inject(ArchiveUnitApiService);
+  private readonly archiveUnitApiService = inject(ArchiveUnitApiService);
 
   /**
    * Updates many archive units asynchronously in one Vitam operation.

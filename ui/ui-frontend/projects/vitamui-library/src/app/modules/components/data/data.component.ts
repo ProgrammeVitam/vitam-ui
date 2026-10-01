@@ -48,7 +48,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CommonModule, PipesModule, CommonTooltipModule, TranslatePipe],
 })
 export class DataComponent {
-  private clipboard = inject(Clipboard);
+  private readonly clipboard = inject(Clipboard);
 
   @Input() label: string;
   @Input() value: string | string[];

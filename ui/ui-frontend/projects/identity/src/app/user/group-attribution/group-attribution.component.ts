@@ -57,7 +57,7 @@ export const GROUP_ATTRIBUTION_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class GroupAttributionComponent implements OnInit {
-  private userService = inject(UserService);
+  private readonly userService = inject(UserService);
   dialogRef = inject<MatDialogRef<GroupAttributionComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
 

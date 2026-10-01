@@ -70,7 +70,7 @@ const ARCHIVE_TRANSFER_LABEL = 'ARCHIVE_TRANSFER_LABEL';
 })
 export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> implements OnInit, OnChanges, OnDestroy {
   logbookSearchService: LogbookSearchService;
-  private logbookDownloadService = inject(LogbookDownloadService);
+  private readonly logbookDownloadService = inject(LogbookDownloadService);
 
   @Input() tenantIdentifier: number;
 

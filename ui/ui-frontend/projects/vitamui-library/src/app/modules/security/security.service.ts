@@ -46,8 +46,8 @@ import { TenantSelectionService } from '../tenant-selection.service';
   providedIn: 'root',
 })
 export class SecurityService {
-  private authService = inject(AuthService);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly authService = inject(AuthService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   /**
    * Returns true if the logged user has any of the specified roles and false otherwise.

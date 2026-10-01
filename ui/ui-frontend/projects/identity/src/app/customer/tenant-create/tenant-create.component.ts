@@ -55,10 +55,10 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     owner: Owner;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private tenantService = inject(TenantService);
-  private tenantFormValidators = inject(TenantFormValidators);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly tenantService = inject(TenantService);
+  private readonly tenantFormValidators = inject(TenantFormValidators);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   form: FormGroup;
 

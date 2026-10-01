@@ -41,8 +41,8 @@ import { BaseUserInfoApiService, SearchService, User, UserInfo, SnackBarService 
 
 @Injectable({ providedIn: 'root' })
 export class UserInfoService extends SearchService<UserInfo> {
-  private userInfoServiceApi = inject(BaseUserInfoApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly userInfoServiceApi = inject(BaseUserInfoApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   userInfoUpdated = new Subject<UserInfo>();
 

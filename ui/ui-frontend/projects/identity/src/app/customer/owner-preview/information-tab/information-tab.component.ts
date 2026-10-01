@@ -56,13 +56,13 @@ const UPDATE_DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class InformationTabComponent implements OnChanges, OnInit {
-  private formBuilder = inject(FormBuilder);
-  private ownerFormValidators = inject(OwnerFormValidators);
-  private ownerService = inject(OwnerService);
-  private tenantService = inject(TenantService);
-  private tenantFormValidators = inject(TenantFormValidators);
-  private countryService = inject(CountryService);
-  private startupService = inject(StartupService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ownerFormValidators = inject(OwnerFormValidators);
+  private readonly ownerService = inject(OwnerService);
+  private readonly tenantService = inject(TenantService);
+  private readonly tenantFormValidators = inject(TenantFormValidators);
+  private readonly countryService = inject(CountryService);
+  private readonly startupService = inject(StartupService);
 
   @Input() owner: Owner;
   @Input() tenant: Tenant;

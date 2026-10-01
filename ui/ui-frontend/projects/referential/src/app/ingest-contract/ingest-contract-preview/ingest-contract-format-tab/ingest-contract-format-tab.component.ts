@@ -51,9 +51,9 @@ import { IngestContractService } from '../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractFormatTabComponent implements OnInit {
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
-  private fileFormatService = inject(FileFormatService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
+  private readonly fileFormatService = inject(FileFormatService);
 
   @Input() tenantIdentifier: number;
 

@@ -45,8 +45,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ProbativeValueService extends SearchService<Event> {
-  private operationApiService: OperationApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly operationApiService: OperationApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   constructor() {
     const operationApiService = inject(OperationApiService);

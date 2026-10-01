@@ -47,8 +47,8 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class CustomerColorsInputComponent implements OnInit {
-  private themeService = inject(ThemeService);
-  private translateService = inject(TranslateService);
+  private readonly themeService = inject(ThemeService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() formGroup: FormGroup;
 

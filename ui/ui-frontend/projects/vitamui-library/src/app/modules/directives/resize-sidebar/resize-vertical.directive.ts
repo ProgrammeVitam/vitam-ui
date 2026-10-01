@@ -43,8 +43,8 @@ import { DOCUMENT } from '@angular/common';
   standalone: false,
 })
 export class ResizeVerticalDirective implements OnInit {
-  private elementRef = inject(ElementRef);
-  private document = inject(DOCUMENT);
+  private readonly elementRef = inject(ElementRef);
+  private readonly document = inject(DOCUMENT);
 
   @Input('vitamuiVerticalResizeSidebar') orientation: 'top' | 'bottom' = 'top';
   @Input() paddingSize = 75;

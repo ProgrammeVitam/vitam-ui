@@ -93,13 +93,13 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   dialog = inject(MatDialog);
-  private formBuilder = inject(FormBuilder);
-  private archiveExchangeDataService = inject(ArchiveSharedDataService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private translateService = inject(TranslateService);
-  private route = inject(ActivatedRoute);
-  private searchCriteriaService = inject(SearchCriteriaService);
-  private archiveHelperService = inject(ArchiveSearchHelperService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly translateService = inject(TranslateService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly searchCriteriaService = inject(SearchCriteriaService);
+  private readonly archiveHelperService = inject(ArchiveSearchHelperService);
 
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
@@ -118,7 +118,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     agency: { options: [] as Option[] },
     archiveUnitProfile: { options: [] as Option[] },
   } satisfies { [key: string]: VitamuiSelectOptions };
-  private offlineServices$: Observable<SearchProvider[]>;
+  private readonly offlineServices$: Observable<SearchProvider[]>;
 
   constructor() {
     const schemaService = inject(SchemaService);

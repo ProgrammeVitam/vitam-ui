@@ -54,7 +54,7 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
-  private radioGroupService = inject(VitamUIRadioGroupService, { self: true });
+  private readonly radioGroupService = inject(VitamUIRadioGroupService, { self: true });
 
   @ContentChildren(VitamUIRadioComponent) private radios: QueryList<VitamUIRadioComponent>;
 

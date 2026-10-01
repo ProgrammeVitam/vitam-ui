@@ -48,10 +48,10 @@ import { ProbativeValueService } from '../probative-value.service';
   standalone: false,
 })
 export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
-  private probativeValueService = inject(ProbativeValueService);
-  private externalParameterService = inject(ExternalParametersService);
-  private route = inject(ActivatedRoute);
-  private snackBarService = inject(SnackBarService);
+  private readonly probativeValueService = inject(ProbativeValueService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input() probativeValue: any;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
@@ -60,7 +60,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
 
   private accessContract: string;
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   isLoading = false;
 

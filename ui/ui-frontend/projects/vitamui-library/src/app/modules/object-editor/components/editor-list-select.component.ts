@@ -63,7 +63,7 @@ export class EditorListSelectComponent implements OnInit, OnDestroy {
     return this.control || (this.editObject.control as FormControl);
   }
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnInit() {
     const isMultiple = this.editObject.cardinality.includes('MANY');

@@ -52,9 +52,9 @@ import { ProviderApiService } from './provider-api.service';
 })
 export class SsoTabComponent implements OnDestroy, OnInit {
   dialog = inject(MatDialog);
-  private identityProviderService = inject(IdentityProviderService);
-  private providerApi = inject(ProviderApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly identityProviderService = inject(IdentityProviderService);
+  private readonly providerApi = inject(ProviderApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   providers: IdentityProvider[];
   panel1Position = 'current';

@@ -43,9 +43,9 @@ import { BehaviorSubject, Subject, switchMap, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class PreservationScenariosService {
-  private api: PreservationScenariosApiService;
+  private readonly api: PreservationScenariosApiService;
 
-  private refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
   selectedId$ = new Subject<string>();
 
   constructor() {

@@ -60,8 +60,8 @@ function constantToTranslate() {
 export class SelectNoticeComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SelectNoticeComponent>>(MatDialogRef);
   data = inject<PastisDialogDataCreate>(MAT_DIALOG_DATA);
-  private translateService = inject(TranslateService);
-  private profilService = inject(ProfileService);
+  private readonly translateService = inject(TranslateService);
+  private readonly profilService = inject(ProfileService);
 
   profileOptions: Option[];
   selectedProfile: ProfileDescription;

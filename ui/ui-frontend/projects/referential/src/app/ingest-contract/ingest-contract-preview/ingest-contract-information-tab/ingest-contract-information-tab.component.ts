@@ -55,11 +55,11 @@ import { IngestContractService } from '../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractInformationTabComponent implements OnInit {
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
-  private managementContractService = inject(ManagementContractApiService);
-  private archiveProfileService = inject(ArchiveProfileApiService);
-  private ingestContractCreateValidators = inject(IngestContractCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
+  private readonly managementContractService = inject(ManagementContractApiService);
+  private readonly archiveProfileService = inject(ArchiveProfileApiService);
+  private readonly ingestContractCreateValidators = inject(IngestContractCreateValidators);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() updatedIngestContract: EventEmitter<IngestContract> = new EventEmitter<IngestContract>();

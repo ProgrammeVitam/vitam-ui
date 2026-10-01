@@ -51,8 +51,8 @@ import { SecurityProfilePermissionsTabComponent } from './security-profile-permi
   standalone: false,
 })
 export class SecurityProfilePreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private securityProfileService = inject(SecurityProfileService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly securityProfileService = inject(SecurityProfileService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() securityProfile: SecurityProfile;

@@ -47,7 +47,7 @@ import { CustomerService } from '../../core/customer.service';
   standalone: false,
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
-  private customerService = inject(CustomerService);
+  private readonly customerService = inject(CustomerService);
 
   @Input() customer: Customer;
   @Input() isPopup: boolean;

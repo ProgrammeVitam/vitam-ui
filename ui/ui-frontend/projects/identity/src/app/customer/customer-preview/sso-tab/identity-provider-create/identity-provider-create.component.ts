@@ -57,9 +57,9 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       disabled: boolean;
     }>;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private identityProviderService = inject(IdentityProviderService);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly identityProviderService = inject(IdentityProviderService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   form: FormGroup;
   commonControls: FormGroup;

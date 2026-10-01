@@ -52,9 +52,9 @@ export class SubrogationModalComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SubrogationModalComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
   builder = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private snackBarService = inject(SnackBarService);
-  private subrogationService = inject(SubrogationService);
+  private readonly authService = inject(AuthService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly subrogationService = inject(SubrogationService);
 
   public stepIndex = 0;
   public domains: string[];

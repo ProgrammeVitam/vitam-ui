@@ -48,9 +48,9 @@ import { AccessionRegistersService } from '../accession-register.service';
   standalone: false,
 })
 export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
-  private formBuilder = inject(FormBuilder);
-  private accessionRegistersService = inject(AccessionRegistersService);
-  private cdr = inject(ChangeDetectorRef);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accessionRegistersService = inject(AccessionRegistersService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();
 

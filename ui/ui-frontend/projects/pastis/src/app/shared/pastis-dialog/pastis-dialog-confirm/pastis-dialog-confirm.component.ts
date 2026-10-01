@@ -92,8 +92,8 @@ export class PastisDialogConfirmComponent implements OnInit {
   dialogConfirmRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
   dialogReceivedData = inject<PastisDialogData>(MAT_DIALOG_DATA);
   sedaService = inject(SedaService);
-  private popUpService = inject(PopupService);
-  private translateService = inject(TranslateService);
+  private readonly popUpService = inject(PopupService);
+  private readonly translateService = inject(TranslateService);
 
   portal: ComponentPortal<any>;
 

@@ -48,7 +48,7 @@ import { EventDisplayHelperService } from '../event-display-helper.service';
   standalone: false,
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
-  private eventDisplayHelper = inject(EventDisplayHelperService);
+  private readonly eventDisplayHelper = inject(EventDisplayHelperService);
 
   @Input() ingest: LogbookOperation;
 

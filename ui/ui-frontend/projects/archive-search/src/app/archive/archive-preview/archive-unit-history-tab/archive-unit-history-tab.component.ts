@@ -51,12 +51,12 @@ import { LifecycleOrigin, OperationLifecycleGroup } from './archive-unit-lifecyc
   standalone: false,
 })
 export class ArchiveUnitHistoryTabComponent {
-  private route = inject(ActivatedRoute);
-  private accessContractService = inject(AccessContractService);
-  private applicationService = inject(ApplicationService);
-  private lifecycleHistoryService = inject(ArchiveUnitLifecycleHistoryService);
-  private clipboard = inject(Clipboard);
-  private snackBarService = inject(SnackBarService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly lifecycleHistoryService = inject(ArchiveUnitLifecycleHistoryService);
+  private readonly clipboard = inject(Clipboard);
+  private readonly snackBarService = inject(SnackBarService);
 
   archiveUnit = input<Unit>();
 

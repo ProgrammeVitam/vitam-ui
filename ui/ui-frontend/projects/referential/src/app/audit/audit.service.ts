@@ -60,11 +60,11 @@ import { TraceabilityChainAuditRequest } from '../models/audit.interface';
   providedIn: 'root',
 })
 export class AuditService extends SearchService<Event> {
-  private operationApiService: OperationApiService;
-  private logbookApiService = inject(LogbookApiService);
-  private accessionRegisterSummaryApiService = inject(AccessionRegisterSummaryApiService);
-  private snackBarService = inject(SnackBarService);
-  private translateService = inject(TranslateService);
+  private readonly operationApiService: OperationApiService;
+  private readonly logbookApiService = inject(LogbookApiService);
+  private readonly accessionRegisterSummaryApiService = inject(AccessionRegisterSummaryApiService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly translateService = inject(TranslateService);
 
   constructor() {
     const operationApiService = inject(OperationApiService);

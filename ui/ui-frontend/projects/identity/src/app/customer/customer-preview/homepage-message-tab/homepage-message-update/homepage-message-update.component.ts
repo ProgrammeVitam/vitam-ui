@@ -53,10 +53,10 @@ export class HomepageMessageUpdateComponent implements OnDestroy {
   data = inject<{
     customer: Customer;
   }>(MAT_DIALOG_DATA);
-  private customerService = inject(CustomerService);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly customerService = inject(CustomerService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
 
   private _customForm: FormGroup;
   public get customForm(): FormGroup {

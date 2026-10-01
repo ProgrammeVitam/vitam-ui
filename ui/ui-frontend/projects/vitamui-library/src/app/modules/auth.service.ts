@@ -73,9 +73,9 @@ export class AuthService implements OnDestroy {
 
   private _user: AuthUser;
   private _userInfo: UserInfo;
-  private userInfo$ = new BehaviorSubject<UserInfo>(null);
+  private readonly userInfo$ = new BehaviorSubject<UserInfo>(null);
 
-  private isAuthenticatorConfigReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly isAuthenticatorConfigReady$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {}
 

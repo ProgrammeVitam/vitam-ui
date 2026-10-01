@@ -55,11 +55,11 @@ import { AgencyCreateValidators } from '../../agency-create/agency-create.valida
   imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe],
 })
 export class AgencyInformationTabComponent {
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private agencyService = inject(AgencyService);
-  private securityService = inject(SecurityService);
-  private agencyCreateValidators = inject(AgencyCreateValidators);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly agencyService = inject(AgencyService);
+  private readonly securityService = inject(SecurityService);
+  private readonly agencyCreateValidators = inject(AgencyCreateValidators);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

@@ -83,7 +83,7 @@ import { ProfileVersion } from '../../models/profile-version.enum';
   providedIn: 'root',
 })
 export class NoticeService {
-  private fileService = inject(FileService);
+  private readonly fileService = inject(FileService);
 
   notice: Notice;
 

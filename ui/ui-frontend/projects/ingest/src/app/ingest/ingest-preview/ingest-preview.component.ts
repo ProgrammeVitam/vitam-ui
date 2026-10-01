@@ -48,8 +48,8 @@ import { IngestService } from '../ingest.service';
   standalone: false,
 })
 export class IngestPreviewComponent implements OnInit, OnChanges {
-  private logbookService = inject(LogbookService);
-  private ingestService = inject(IngestService);
+  private readonly logbookService = inject(LogbookService);
+  private readonly ingestService = inject(IngestService);
 
   IngestStatus = IngestStatus;
 

@@ -57,11 +57,11 @@ const DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private groupService = inject(GroupService);
-  private groupValidators = inject(GroupValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly groupService = inject(GroupService);
+  private readonly groupValidators = inject(GroupValidators);
   authService = inject(AuthService);
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   form: FormGroup;
   groupsCount: number;
@@ -73,7 +73,7 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
     description: string;
   };
 
-  private updateSub: Subscription;
+  private readonly updateSub: Subscription;
 
   @Input() group: Group;
 

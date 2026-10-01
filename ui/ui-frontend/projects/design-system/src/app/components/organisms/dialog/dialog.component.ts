@@ -45,7 +45,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe],
 })
 export class DialogComponent implements OnInit {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   ngOnInit() {
     this.openDialog();

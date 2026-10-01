@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './message-new.component.scss',
 })
 export class MessageNewComponent {
-  private discussionService = inject(DiscussionService);
+  private readonly discussionService = inject(DiscussionService);
 
   discussion = input.required<Discussion>();
   lastReadAt = model<Date>();

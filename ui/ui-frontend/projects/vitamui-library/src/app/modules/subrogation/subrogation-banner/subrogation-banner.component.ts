@@ -49,7 +49,7 @@ import { SubrogationService } from '../subrogation.service';
 })
 export class SubrogationBannerComponent implements OnInit {
   authService = inject(AuthService);
-  private subrogationService = inject(SubrogationService);
+  private readonly subrogationService = inject(SubrogationService);
 
   show = false;
   hidden = false;

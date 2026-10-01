@@ -50,8 +50,8 @@ import { RULE_TYPES } from '../../../rule/rules.constants';
   standalone: false,
 })
 export class AccessContractAuthorizationsTabComponent implements OnInit {
-  private agencyService = inject(AgencyService);
-  private dialog = inject(MatDialog);
+  private readonly agencyService = inject(AgencyService);
+  private readonly dialog = inject(MatDialog);
 
   AccessRightType = AccessRightType;
 

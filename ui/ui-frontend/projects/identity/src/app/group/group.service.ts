@@ -46,8 +46,8 @@ import { GroupApiService } from '../core/api/group-api.service';
   providedIn: 'root',
 })
 export class GroupService extends SearchService<Group> {
-  private groupApi: GroupApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly groupApi: GroupApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Group>();
 

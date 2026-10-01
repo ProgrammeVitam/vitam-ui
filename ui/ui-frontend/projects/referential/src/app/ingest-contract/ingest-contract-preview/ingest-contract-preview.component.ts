@@ -65,8 +65,8 @@ import { IngestContractSignatureTabComponent } from './ingest-contract-signature
   standalone: false,
 })
 export class IngestContractPreviewComponent implements OnChanges, AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private ingestContractService = inject(IngestContractService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly ingestContractService = inject(IngestContractService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() ingestContract: IngestContract;

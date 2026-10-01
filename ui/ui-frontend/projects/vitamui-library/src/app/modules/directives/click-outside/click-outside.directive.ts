@@ -41,7 +41,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } fro
   standalone: true,
 })
 export class ClickOutsideDirective {
-  private elementRef = inject(ElementRef);
+  private readonly elementRef = inject(ElementRef);
 
   @Output() vitamuiClickOutside = new EventEmitter<void>();
 

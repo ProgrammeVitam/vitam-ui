@@ -42,8 +42,8 @@ import { Profile } from 'vitamui-library';
   providedIn: 'root',
 })
 export class SharedService {
-  private sourceProfile = new BehaviorSubject<Profile>(null);
-  private readOnly = new BehaviorSubject<boolean>(false);
+  private readonly sourceProfile = new BehaviorSubject<Profile>(null);
+  private readonly readOnly = new BehaviorSubject<boolean>(false);
 
   targetExternalParamProfile = this.sourceProfile.asObservable();
 

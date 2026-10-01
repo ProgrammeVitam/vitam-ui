@@ -48,7 +48,7 @@ import { RouteData } from './app-routing.module';
   standalone: false,
 })
 export class AppComponent {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   title = 'Design system App';
 

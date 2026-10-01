@@ -60,9 +60,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class OntologyInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private ontologyService = inject(OntologyService);
-  private securityService = inject(SecurityService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ontologyService = inject(OntologyService);
+  private readonly securityService = inject(SecurityService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;

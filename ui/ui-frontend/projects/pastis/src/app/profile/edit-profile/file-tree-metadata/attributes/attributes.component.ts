@@ -96,11 +96,11 @@ import { FileTreeMetadataService } from '../file-tree-metadata.service';
 export class AttributesPopupComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<AttributesPopupComponent>>(MatDialogRef);
   dialogReceivedData = inject<PastisDialogData>(MAT_DIALOG_DATA);
-  private sedaService = inject(SedaService);
-  private fileService = inject(FileService);
-  private fileTreeMetadataService = inject(FileTreeMetadataService);
-  private popUpService = inject(PopupService);
-  private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly sedaService = inject(SedaService);
+  private readonly fileService = inject(FileService);
+  private readonly fileTreeMetadataService = inject(FileTreeMetadataService);
+  private readonly popUpService = inject(PopupService);
+  private readonly sedaLanguageService = inject(PastisPopupMetadataLanguageService);
 
   displayedColumns: string[] = ['selected', 'nomDuChamp', 'valeurFixe', 'commentaire'];
 

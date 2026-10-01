@@ -66,9 +66,9 @@ import { tap } from 'rxjs/operators';
   standalone: false,
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
-  private translateService = inject(TranslateService);
-  private archiveService = inject(ArchiveCollectService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly translateService = inject(TranslateService);
+  private readonly archiveService = inject(ArchiveCollectService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   @Input() transactionId: string;
   @Input() searchHasMatches = false;

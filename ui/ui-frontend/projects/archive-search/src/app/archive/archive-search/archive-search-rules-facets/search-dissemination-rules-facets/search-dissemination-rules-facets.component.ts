@@ -48,10 +48,10 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   standalone: false,
 })
 export class SearchDisseminationRulesFacetsComponent implements OnChanges {
-  private facetsService = inject(ArchiveFacetsService);
-  private translateService = inject(TranslateService);
-  private datePipe = inject(DatePipe);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly facetsService = inject(ArchiveFacetsService);
+  private readonly translateService = inject(TranslateService);
+  private readonly datePipe = inject(DatePipe);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Input()
   disseminationRuleFacets: RuleFacets;

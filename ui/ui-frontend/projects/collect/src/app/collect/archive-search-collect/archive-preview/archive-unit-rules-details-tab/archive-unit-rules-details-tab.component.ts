@@ -50,8 +50,8 @@ const CURRENT_PAGE = 0;
   standalone: false,
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy {
-  private collectService = inject(ArchiveCollectService);
-  private translateService = inject(TranslateService);
+  private readonly collectService = inject(ArchiveCollectService);
+  private readonly translateService = inject(TranslateService);
 
   @Input()
   archiveUnit: Unit;

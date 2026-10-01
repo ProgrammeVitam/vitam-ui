@@ -45,8 +45,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe, KeyValuePipe],
 })
 export class ColorsComponent {
-  private hueIds = [900, 800, 700, 600, 500, 400, 300, 200, 100, 50];
-  private informativeHueIds = [900, 500, 300, 50];
+  private readonly hueIds = [900, 800, 700, 600, 500, 400, 300, 200, 100, 50];
+  private readonly informativeHueIds = [900, 500, 300, 50];
   colors = [
     { key: 'PRIMARY', varName: '--vitamui-primary', hueIds: this.hueIds },
     { key: 'SECONDARY', varName: '--vitamui-secondary', hueIds: this.hueIds },

@@ -66,14 +66,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './save-profile-popup.component.html',
 })
 export class SaveProfilePopupComponent implements OnInit, OnDestroy {
-  private dialogRef = inject<MatDialogRef<SaveProfilePopupComponent>>(MatDialogRef);
-  private fb = inject(FormBuilder);
-  private translateService = inject(TranslateService);
-  private profileService = inject(ProfileService);
-  private applicationService = inject(ApplicationService);
-  private fileService = inject(FileService);
-  private router = inject(Router);
-  private identifierValidator = inject(IdentifierExistsValidator);
+  private readonly dialogRef = inject<MatDialogRef<SaveProfilePopupComponent>>(MatDialogRef);
+  private readonly fb = inject(FormBuilder);
+  private readonly translateService = inject(TranslateService);
+  private readonly profileService = inject(ProfileService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly fileService = inject(FileService);
+  private readonly router = inject(Router);
+  private readonly identifierValidator = inject(IdentifierExistsValidator);
 
   profileOptions: Option[];
   notice: Notice;

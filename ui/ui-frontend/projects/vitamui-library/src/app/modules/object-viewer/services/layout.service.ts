@@ -44,7 +44,7 @@ import { LayoutSize } from '../types';
   providedIn: 'root',
 })
 export class LayoutService {
-  private logger = inject(Logger);
+  private readonly logger = inject(Logger);
 
   MAX_COLUMNS = 2;
   DEFAULT_COLUMNS = this.MAX_COLUMNS;
@@ -65,9 +65,9 @@ export class LayoutService {
     return Boolean(displayObject?.displayRule?.ui?.display);
   }
 
-  private getLastRowIndex = (rows: any[]) => rows.length - 1;
+  private readonly getLastRowIndex = (rows: any[]) => rows.length - 1;
 
-  private getLastRow = (rows: any[]) => rows[this.getLastRowIndex(rows)];
+  private readonly getLastRow = (rows: any[]) => rows[this.getLastRowIndex(rows)];
 
   private getLayout(displayObject: DisplayObject): Layout {
     const { columns, size } = displayObject.displayRule?.ui?.layout;

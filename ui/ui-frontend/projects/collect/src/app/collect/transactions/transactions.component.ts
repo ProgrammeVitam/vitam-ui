@@ -48,7 +48,7 @@ import { TransactionsService } from './transactions.service';
   standalone: false,
 })
 export class TransactionsComponent extends SidenavPage<any> implements OnInit {
-  private transactionsService = inject(TransactionsService);
+  private readonly transactionsService = inject(TransactionsService);
 
   tenantIdentifier: string;
   projectName$: Observable<string>;

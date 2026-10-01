@@ -48,9 +48,9 @@ import { ThemeService } from '../../theme.service';
   imports: [],
 })
 export class FooterComponent implements OnInit {
-  private startupService = inject(StartupService);
-  private authService = inject(AuthService);
-  private themeService = inject(ThemeService);
+  private readonly startupService = inject(StartupService);
+  private readonly authService = inject(AuthService);
+  private readonly themeService = inject(ThemeService);
 
   public footerLogoUrl: SafeResourceUrl;
   public version: string;

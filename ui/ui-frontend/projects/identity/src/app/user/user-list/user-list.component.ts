@@ -77,11 +77,11 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   standalone: false,
 })
 export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
-  private customerService = inject(CustomerService);
+  private readonly customerService = inject(CustomerService);
   userService: UserService;
-  private locale = inject(LOCALE_ID);
-  private authService = inject(AuthService);
-  private snackBarService = inject(SnackBarService);
+  private readonly locale = inject(LOCALE_ID);
+  private readonly authService = inject(AuthService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input()
   set searchText(searchText: string) {
@@ -110,7 +110,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   totalMonth: number;
   isInactifUsers = false;
 
-  private userGroups: Array<{ id: string; group: any }> = [];
+  private readonly userGroups: Array<{ id: string; group: any }> = [];
   private updatedUserSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();

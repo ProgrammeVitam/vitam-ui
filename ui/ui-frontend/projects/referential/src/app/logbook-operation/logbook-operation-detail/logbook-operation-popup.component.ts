@@ -50,7 +50,7 @@ import { ActivatedRoute } from '@angular/router';
   standalone: false,
 })
 export class LogbookOperationPopupComponent implements OnInit {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   eventId: string;
   tenantIdentifier: number;

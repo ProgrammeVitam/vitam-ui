@@ -48,8 +48,8 @@ import { AccessionRegistersService } from './accession-register.service';
   standalone: false,
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
-  private accessionRegistersService: AccessionRegistersService;
-  private externalParameterService = inject(ExternalParametersService);
+  private readonly accessionRegistersService: AccessionRegistersService;
+  private readonly externalParameterService = inject(ExternalParametersService);
 
   search: string;
   advancedSearchPanelOpenState$: Observable<boolean>;

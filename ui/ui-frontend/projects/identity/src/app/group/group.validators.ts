@@ -45,9 +45,9 @@ import { GroupService } from './group.service';
   providedIn: 'root',
 })
 export class GroupValidators {
-  private groupService = inject(GroupService);
+  private readonly groupService = inject(GroupService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   nameExists = (customerId: string, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

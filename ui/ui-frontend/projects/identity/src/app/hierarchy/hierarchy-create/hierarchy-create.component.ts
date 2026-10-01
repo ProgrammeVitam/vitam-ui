@@ -51,9 +51,9 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<HierarchyCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
   authService = inject(AuthService);
-  private formBuilder = inject(FormBuilder);
-  private hierarchyService = inject(HierarchyService);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly hierarchyService = inject(HierarchyService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   form: FormGroup;
 

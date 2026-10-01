@@ -47,9 +47,9 @@ export class ApplicationSvgLoader implements SvgLoader {
   private unknownAppSvg: string;
 
   constructor(
-    private transferState: TransferState,
-    private http: HttpClient,
-    private conf: { prefix: string; suffix: string },
+    private readonly transferState: TransferState,
+    private readonly http: HttpClient,
+    private readonly conf: { prefix: string; suffix: string },
   ) {
     new SvgHttpLoader(this.http).getSvg(this.conf.prefix + UNKNOW_APP_FILE_NAME + this.conf.suffix).subscribe((svgData: string) => {
       this.unknownAppSvg = svgData;

@@ -48,8 +48,8 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
   standalone: false,
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
-  private dialog = inject(MatDialog);
-  private groupService = inject(GroupService);
+  private readonly dialog = inject(MatDialog);
+  private readonly groupService = inject(GroupService);
 
   @Input() group: Group;
 

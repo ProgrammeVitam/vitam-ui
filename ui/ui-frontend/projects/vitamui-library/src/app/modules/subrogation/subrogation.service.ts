@@ -53,12 +53,12 @@ import { SubrogationSnackBarComponent } from './subrogation-snack-bar/subrogatio
   providedIn: 'root',
 })
 export class SubrogationService {
-  private logger = inject(Logger);
-  private subrogationApi = inject(SubrogationApiService);
-  private snackBarService = inject(SnackBarService);
-  private authService = inject(AuthService);
-  private subrogationRefreshRateMs = inject(SUBROGRATION_REFRESH_RATE_MS);
-  private local = inject(LOCALE_ID);
+  private readonly logger = inject(Logger);
+  private readonly subrogationApi = inject(SubrogationApiService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly authService = inject(AuthService);
+  private readonly subrogationRefreshRateMs = inject(SUBROGRATION_REFRESH_RATE_MS);
+  private readonly local = inject(LOCALE_ID);
 
   subrogationCancel = new Subject<void>();
 

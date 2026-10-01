@@ -45,13 +45,13 @@ import { AgencyService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AgencyCreateValidators {
-  private agencyService: AgencyService;
+  private readonly agencyService: AgencyService;
 
   constructor(agencyService: AgencyService = inject(AgencyService)) {
     this.agencyService = agencyService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

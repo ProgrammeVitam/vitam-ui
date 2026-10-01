@@ -50,7 +50,7 @@ import { ProjectsService } from './projects.service';
   standalone: false,
 })
 export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   tenantIdentifier: string;
   projectId: string;

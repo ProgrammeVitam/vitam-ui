@@ -58,12 +58,12 @@ interface ThemeColorGroup {
 })
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<GraphicIdentityComponent>>(MatDialogRef);
-  private formBuilder = inject(FormBuilder);
-  private themeService = inject(ThemeService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly themeService = inject(ThemeService);
 
-  private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
+  private readonly hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
   public graphicIdentityForm: FormGroup;
 
   @Input()
@@ -85,7 +85,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     portalUrl: '',
   };
 
-  private defaultTheme: Theme = this.themeService.defaultTheme;
+  private readonly defaultTheme: Theme = this.themeService.defaultTheme;
 
   public displayCustomGraphicIdentity = new FormControl(false);
 

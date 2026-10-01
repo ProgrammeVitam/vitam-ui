@@ -54,10 +54,10 @@ import { RuleListComponent } from './rule-list/rule-list.component';
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   ruleService = inject(RuleService);
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
-  private router = inject(Router);
-  private translateService = inject(TranslateService);
-  private securityService = inject(SecurityService);
+  private readonly route: ActivatedRoute;
+  private readonly router = inject(Router);
+  private readonly translateService = inject(TranslateService);
+  private readonly securityService = inject(SecurityService);
 
   @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
 

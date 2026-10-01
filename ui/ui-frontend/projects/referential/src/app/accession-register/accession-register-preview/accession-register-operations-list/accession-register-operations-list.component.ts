@@ -45,7 +45,7 @@ import { Direction, RegisterValueEventModel, RegisterValueEventType } from 'vita
   standalone: false,
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() operationsIds: string[];
   @Input() operations: RegisterValueEventModel[];

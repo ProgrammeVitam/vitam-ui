@@ -53,11 +53,11 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class ManagementContractIdentificationTabComponent implements OnChanges, OnDestroy {
-  private managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
-  private formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
-  private managementContractService = inject(ManagementContractService);
-  private formBuilder = inject(FormBuilder);
-  private translateService = inject(TranslateService);
+  private readonly managementContractToFormGroupConverterService = inject(ManagementContractToFormGroupConverterService);
+  private readonly formGroupToManagementContractConverterService = inject(FormGroupToManagementContractConverterService);
+  private readonly managementContractService = inject(ManagementContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly translateService = inject(TranslateService);
 
   @Input() managementContract: ManagementContract;
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();

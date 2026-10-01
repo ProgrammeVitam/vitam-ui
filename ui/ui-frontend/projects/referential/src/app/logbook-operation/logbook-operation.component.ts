@@ -51,7 +51,7 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   route: ActivatedRoute;
   dialog = inject(MatDialog);
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
   @ViewChild(VitamuiBannerComponent, { static: true }) bannerComponent: VitamuiBannerComponent;

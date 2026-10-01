@@ -52,11 +52,11 @@ import { ManagementRulesValidatorService } from '../../../../../validators/manag
   standalone: false,
 })
 export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
-  private managementRulesValidatorService = inject(ManagementRulesValidatorService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private formBuilder = inject(FormBuilder);
-  private dialog = inject(MatDialog);
-  private ruleService = inject(RuleService);
+  private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly dialog = inject(MatDialog);
+  private readonly ruleService = inject(RuleService);
 
   @Input()
   ruleCategory: string;

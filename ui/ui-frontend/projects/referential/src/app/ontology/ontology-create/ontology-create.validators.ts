@@ -45,13 +45,13 @@ import { OntologyService } from '../ontology.service';
   providedIn: 'root',
 })
 export class OntologyCreateValidators {
-  private ontologyService: OntologyService;
+  private readonly ontologyService: OntologyService;
 
   constructor(ontologyService: OntologyService = inject(OntologyService)) {
     this.ontologyService = ontologyService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueID = (): AsyncValidatorFn => {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {

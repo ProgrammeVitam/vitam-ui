@@ -49,7 +49,7 @@ import type { OperationDetails } from '../../models/operation-response.interface
   standalone: false,
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
-  private matDialog = inject(MatDialog);
+  private readonly matDialog = inject(MatDialog);
   logbookManagementOperationService = inject(LogbookManagementOperationService);
 
   @Input() operation: OperationDetails;

@@ -112,7 +112,7 @@ const VITAMUI_SELECT_WITH_TREE_VALUE_ACCESSOR = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectWithTreeComponent<T> extends AbstractFormInputDirective implements ControlValueAccessor, AfterViewInit, OnDestroy {
-  private cd = inject(ChangeDetectorRef);
+  private readonly cd = inject(ChangeDetectorRef);
   readonly sd = inject(ScrollDispatcher);
 
   @Input() placeholder: string;
@@ -166,11 +166,11 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   /** The selection for checklist */
   checklistSelection = new SelectionModel<ItemFlatNode<T>>(true /* multiple */);
   /** Map from nested node to flattened node. This helps us to keep the same object for selection */
-  private nestedNodeMap = new Map<ItemNode<T>, ItemFlatNode<T>>();
+  private readonly nestedNodeMap = new Map<ItemNode<T>, ItemFlatNode<T>>();
 
   private idIncrement = 0;
 
-  private search$: Subject<string> = new Subject();
+  private readonly search$: Subject<string> = new Subject();
   private searchSubscription: Subscription;
 
   private _multiple = false;
@@ -281,7 +281,7 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   /**
    * Transformer to convert nested node to flat node. Record the nodes in maps for later use.
    */
-  private transformer = (node: ItemNode<T>, level: number) => {
+  private readonly transformer = (node: ItemNode<T>, level: number) => {
     const existingNode = this.nestedNodeMap.get(node);
     const flatNode = existingNode && existingNode.item === node.item ? existingNode : new ItemFlatNode<T>();
     flatNode.id = `node-${this.idIncrement++}`;
@@ -292,9 +292,9 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
   };
-  private getLevel = (node: ItemFlatNode<T>) => node.level;
-  private isExpandable = (node: ItemFlatNode<T>) => node.expandable;
-  private getChildren = (node: ItemNode<T>): ItemNode<T>[] => node.children;
+  private readonly getLevel = (node: ItemFlatNode<T>) => node.level;
+  private readonly isExpandable = (node: ItemFlatNode<T>) => node.expandable;
+  private readonly getChildren = (node: ItemNode<T>): ItemNode<T>[] => node.children;
   hasChild = (_: number, _nodeData: ItemFlatNode<T>) => _nodeData.expandable;
   trackBy = (_: number, _nodeData: ItemFlatNode<T>) => _nodeData.id;
 

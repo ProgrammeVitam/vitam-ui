@@ -50,9 +50,9 @@ import { ExternalParamProfileValidators } from '../../external-param-profile.val
   standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private externalParamProfileService = inject(ExternalParamProfileService);
-  private externalParamProfileValidators = inject(ExternalParamProfileValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly externalParamProfileService = inject(ExternalParamProfileService);
+  private readonly externalParamProfileValidators = inject(ExternalParamProfileValidators);
 
   form: FormGroup;
   groupsCount: boolean;

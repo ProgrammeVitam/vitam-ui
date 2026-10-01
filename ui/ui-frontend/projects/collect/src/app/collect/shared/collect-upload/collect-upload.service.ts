@@ -46,14 +46,14 @@ import { VitamuiHttpHeaders } from 'vitamui-library';
   providedIn: 'root',
 })
 export class CollectUploadService {
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
-  private static COLLECT_UPLOAD_URL = './collect-api/projects/upload';
+  private static readonly COLLECT_UPLOAD_URL = './collect-api/projects/upload';
   zipFile: JSZip;
-  private filesToUploadSubject$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
+  private readonly filesToUploadSubject$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
   private filesToUpload: CollectUploadFile[] = [];
   private zippedFile: CollectZippedUploadFile = null;
-  private watchZippedFile$: BehaviorSubject<CollectZippedUploadFile> = new BehaviorSubject<CollectZippedUploadFile>(null);
+  private readonly watchZippedFile$: BehaviorSubject<CollectZippedUploadFile> = new BehaviorSubject<CollectZippedUploadFile>(null);
 
   constructor() {
     this.zipFile = new JSZip();

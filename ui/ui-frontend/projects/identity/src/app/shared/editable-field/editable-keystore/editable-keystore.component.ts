@@ -48,7 +48,7 @@ import { IdentityProviderService } from '../../../customer/customer-preview/sso-
   standalone: false,
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
-  private identityProviderService = inject(IdentityProviderService);
+  private readonly identityProviderService = inject(IdentityProviderService);
 
   @Input() identityProvider: IdentityProvider;
 

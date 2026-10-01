@@ -50,8 +50,8 @@ import { SecurityProfileService } from '../../security-profile.service';
   standalone: false,
 })
 export class SecurityProfilePermissionsTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private SecurityProfileService = inject(SecurityProfileService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly SecurityProfileService = inject(SecurityProfileService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

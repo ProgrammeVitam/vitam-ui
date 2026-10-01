@@ -54,7 +54,7 @@ import { MiscValidators } from '../validators/misc.validators';
 
 @Directive()
 export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
-  private injector: Injector;
+  private readonly injector: Injector;
 
   constructor(injector: Injector = inject(Injector)) {
     this.injector = injector;

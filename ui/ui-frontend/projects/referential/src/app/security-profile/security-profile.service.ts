@@ -46,8 +46,8 @@ import { SecurityProfileApiService } from '../core/api/security-profile-api.serv
   providedIn: 'root',
 })
 export class SecurityProfileService extends SearchService<SecurityProfile> {
-  private securityProfileApiService: SecurityProfileApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly securityProfileApiService: SecurityProfileApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<SecurityProfile>();
 

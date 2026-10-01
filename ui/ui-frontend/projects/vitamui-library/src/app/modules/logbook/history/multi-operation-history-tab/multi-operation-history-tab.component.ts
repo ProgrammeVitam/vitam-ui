@@ -56,9 +56,9 @@ const EVENT_LIMIT = 100;
   imports: [MatProgressSpinner, TranslatePipe, CollapseModule, HistoryEventsComponent],
 })
 export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
-  private authService = inject(AuthService);
-  private logbookService = inject(LogbookService);
-  private route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly logbookService = inject(LogbookService);
+  private readonly route = inject(ActivatedRoute);
 
   @Input() collectionsMap: Map<string, string>;
   @Input() identifiers: string[];
@@ -67,7 +67,7 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   events: HistoryEvent[] = [];
   loading = false;
 
-  private isDestroyed$ = new Subject<void>();
+  private readonly isDestroyed$ = new Subject<void>();
 
   ngOnChanges(changes: SimpleChanges) {
     if (

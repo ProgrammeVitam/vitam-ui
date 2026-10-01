@@ -57,8 +57,8 @@ const OIDC_PARAMS = [
 
 export class OidcAuthenticatorService implements AuthenticatorService {
   constructor(
-    private oAuthService: OAuthService,
-    private location: any,
+    private readonly oAuthService: OAuthService,
+    private readonly location: any,
   ) {}
 
   public login(): Observable<boolean> {

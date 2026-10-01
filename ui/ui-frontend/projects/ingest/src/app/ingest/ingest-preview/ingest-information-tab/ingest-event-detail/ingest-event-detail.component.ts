@@ -46,7 +46,7 @@ import { EventDisplayHelperService } from '../../event-display-helper.service';
   standalone: false,
 })
 export class IngestEventDetailComponent implements OnInit, OnChanges {
-  private eventDisplayHelper = inject(EventDisplayHelperService);
+  private readonly eventDisplayHelper = inject(EventDisplayHelperService);
 
   @Input()
   ingest: LogbookOperation;

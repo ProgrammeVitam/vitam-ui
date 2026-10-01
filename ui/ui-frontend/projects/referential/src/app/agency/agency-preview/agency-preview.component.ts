@@ -73,8 +73,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class AgencyPreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private agencyService = inject(AgencyService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly agencyService = inject(AgencyService);
 
   @Input() agency: Agency;
   @Input() tenantIdentifier: number;

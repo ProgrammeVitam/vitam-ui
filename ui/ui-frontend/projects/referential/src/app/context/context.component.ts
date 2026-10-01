@@ -54,7 +54,7 @@ import { firstValueFrom } from 'rxjs';
 export class ContextComponent extends SidenavPage<Context> implements OnInit {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  private applicationService = inject(ApplicationService);
+  private readonly applicationService = inject(ApplicationService);
 
   search = '';
   tenantIdentifier: string;

@@ -48,7 +48,7 @@ import { AUMode } from '../archive-unit/components/archive-unit-viewer/archive-u
   standalone: false,
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
-  private logger = inject(Logger);
+  private readonly logger = inject(Logger);
   displayObjectService = inject(DisplayObjectService);
 
   @Input() data!: any;

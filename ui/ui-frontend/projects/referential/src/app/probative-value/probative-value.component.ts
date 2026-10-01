@@ -51,9 +51,9 @@ import { DateTime } from 'luxon';
 })
 export class ProbativeValueComponent extends SidenavPage<Event> implements OnDestroy {
   dialog = inject(MatDialog);
-  private router = inject(Router);
-  private route: ActivatedRoute;
-  private formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly route: ActivatedRoute;
+  private readonly formBuilder = inject(FormBuilder);
 
   search: string;
   dateRangeFilterForm: FormGroup;

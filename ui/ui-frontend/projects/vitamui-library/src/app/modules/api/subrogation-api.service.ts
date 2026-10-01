@@ -49,7 +49,7 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class SubrogationApiService extends BaseHttpClient<Subrogation> {
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
   constructor() {
     const http = inject(HttpClient);

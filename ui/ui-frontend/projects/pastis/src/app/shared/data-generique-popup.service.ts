@@ -41,8 +41,8 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class DataGeneriquePopupService {
-  private test = ['', '', ''];
-  private donneeSource = new BehaviorSubject(this.test);
+  private readonly test = ['', '', ''];
+  private readonly donneeSource = new BehaviorSubject(this.test);
 
   currentDonnee = this.donneeSource.asObservable();
 

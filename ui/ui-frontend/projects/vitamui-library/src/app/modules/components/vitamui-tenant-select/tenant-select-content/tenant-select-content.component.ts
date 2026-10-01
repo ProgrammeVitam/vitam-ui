@@ -45,8 +45,8 @@ import { MenuOption } from '../../../models/menu-option.interface';
   imports: [RouterModule],
 })
 export class TenantSelectContentComponent {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   @Input() tenants: MenuOption[];
 

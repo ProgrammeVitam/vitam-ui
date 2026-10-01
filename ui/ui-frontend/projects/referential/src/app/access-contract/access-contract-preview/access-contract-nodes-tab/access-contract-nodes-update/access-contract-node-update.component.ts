@@ -52,8 +52,8 @@ export class AccessContractNodeUpdateComponent implements OnInit {
     searchAccessContractId: string;
     tenantIdentifier: number;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private accessContractService = inject(AccessContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accessContractService = inject(AccessContractService);
 
   accessContract: AccessContract;
   tenantIdentifier: number;
