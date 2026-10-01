@@ -93,13 +93,13 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     tenantIdentifier: number;
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
-  private ingestContractCreateValidators = inject(IngestContractCreateValidators);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private fileFormatService = inject(FileFormatService);
-  private managementContractService = inject(ManagementContractApiService);
-  private archiveProfileService = inject(ArchiveProfileApiService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
+  private readonly ingestContractCreateValidators = inject(IngestContractCreateValidators);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly fileFormatService = inject(FileFormatService);
+  private readonly managementContractService = inject(ManagementContractApiService);
+  private readonly archiveProfileService = inject(ArchiveProfileApiService);
 
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
   readonly FilingPlanMode = FilingPlanMode;

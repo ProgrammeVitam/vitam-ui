@@ -45,7 +45,7 @@ import { AttachmentType, Logo, ThemeService } from 'vitamui-library';
   standalone: false,
 })
 export class GraphicIdentityFormComponent implements OnInit {
-  private themeService = inject(ThemeService);
+  private readonly themeService = inject(ThemeService);
 
   @Input()
   public graphicIdentityForm: FormGroup;

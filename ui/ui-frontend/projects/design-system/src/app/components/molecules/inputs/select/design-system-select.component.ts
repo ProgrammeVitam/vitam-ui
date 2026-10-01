@@ -66,7 +66,7 @@ import { delay, map } from 'rxjs/operators';
   styleUrl: './design-system-select.component.scss',
 })
 export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
-  private countryService = inject(CountryService);
+  private readonly countryService = inject(CountryService);
 
   configs: {
     name: string;
@@ -173,7 +173,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
     );
   }
 
-  private sortAlphabetically = (a: Option, b: Option): number => {
+  private readonly sortAlphabetically = (a: Option, b: Option): number => {
     return a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1;
   };
   protected readonly Object = Object;

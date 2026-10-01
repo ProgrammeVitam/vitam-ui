@@ -64,10 +64,10 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   ruleService: RuleService;
-  private authService = inject(AuthService);
-  private matDialog = inject(MatDialog);
-  private translateService = inject(TranslateService);
-  private snackBarService = inject(SnackBarService);
+  private readonly authService = inject(AuthService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly translateService = inject(TranslateService);
+  private readonly snackBarService = inject(SnackBarService);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')

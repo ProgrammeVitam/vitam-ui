@@ -66,15 +66,15 @@ import { TenantService } from '../tenant.service';
 export class CustomerCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<CustomerCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private customerService = inject(CustomerService);
-  private customerCreateValidators = inject(CustomerCreateValidators);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private tenantFormValidators = inject(TenantFormValidators);
-  private countryService = inject(CountryService);
-  private startupService = inject(StartupService);
-  private tenantService = inject(TenantService);
-  private matDialog = inject(MatDialog);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly customerService = inject(CustomerService);
+  private readonly customerCreateValidators = inject(CustomerCreateValidators);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly tenantFormValidators = inject(TenantFormValidators);
+  private readonly countryService = inject(CountryService);
+  private readonly startupService = inject(StartupService);
+  private readonly tenantService = inject(TenantService);
+  private readonly matDialog = inject(MatDialog);
 
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
   public maxStreetLength: number;

@@ -54,13 +54,13 @@ import { UserService } from '../user.service';
   standalone: false,
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
-  private matDialog = inject(MatDialog);
-  private userService = inject(UserService);
-  private authService = inject(AuthService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
   userApi = inject(UserApiService);
-  private startupService = inject(StartupService);
+  private readonly startupService = inject(StartupService);
   groupService = inject(GroupService);
-  private userInfoService = inject(UserInfoService);
+  private readonly userInfoService = inject(UserInfoService);
 
   @Input() isPopup: boolean;
 

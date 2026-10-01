@@ -48,8 +48,8 @@ import { UploadComponent } from '../core/common/upload.component';
   standalone: false,
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
-  private router = inject(Router);
-  private route: ActivatedRoute;
+  private readonly router = inject(Router);
+  private readonly route: ActivatedRoute;
   dialog = inject(MatDialog);
 
   IngestType = IngestType;

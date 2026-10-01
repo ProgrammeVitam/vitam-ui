@@ -102,6 +102,8 @@ public class IdentityProviderController implements CrudController<IdentityProvid
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IdentityProviderController.class);
 
+    private static final String IDENTIFIER_IS_MANDATORY = "Identifier is mandatory: ";
+
     @Autowired
     private IdentityProviderService identityProviderService;
 
@@ -131,7 +133,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
         final @RequestParam Optional<String> criteria,
         final @RequestParam Optional<String> embedded
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
@@ -147,7 +149,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(final @PathVariable("id") String id)
         throws PreconditionFailedException, IOException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         final Resource resource = identityProviderService.getMetadataProviderByProviderId(
             id,
@@ -171,7 +173,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public ResponseEntity<Resource> getSpMetadataProviderByProviderId(final @PathVariable("id") String id)
         throws PreconditionFailedException, IOException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         final Resource resource = identityProviderService.getMetadataProviderByProviderId(
             id,
@@ -237,7 +239,7 @@ public class IdentityProviderController implements CrudController<IdentityProvid
         final @PathVariable("id") String id,
         @RequestBody final Map<String, Object> partialDto
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(

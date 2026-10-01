@@ -56,9 +56,9 @@ import { RULE_TYPES } from '../../../../rule/rules.constants';
 })
 export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AccessContractAuthorizationsUpdateComponent>>(MatDialogRef);
-  private formBuilder = inject(FormBuilder);
-  private accessContractService = inject(AccessContractService);
-  private agencyService = inject(AgencyService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly agencyService = inject(AgencyService);
   data = inject<{
     accessContract: AccessContractDisplay;
   }>(MAT_DIALOG_DATA);

@@ -48,7 +48,7 @@ import { ProjectsService } from '../projects.service';
 })
 export class ProjectListComponent extends InfiniteScrollTable<Project> implements OnDestroy, OnInit {
   projectsService: ProjectsService;
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   @Input() tenantIdentifier: string;
   @Output() previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();

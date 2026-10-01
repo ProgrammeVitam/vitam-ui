@@ -58,16 +58,16 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   standalone: false,
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
-  private archiveCollectService = inject(ArchiveCollectService);
-  private clipboard = inject(Clipboard);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly archiveCollectService = inject(ArchiveCollectService);
+  private readonly clipboard = inject(Clipboard);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   archiveUnit: InputSignal<Unit> = input(null);
 
   unitObject: ApiUnitObject;
   versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
   hasDownloadDocumentRole = false;
-  private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
+  private readonly allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
   errorMessagesGot: Record<string, ValidationError[]>;
 
   technicalObjectsGroupErrors: Signal<ValidationError[]> = computed(() => {

@@ -48,8 +48,8 @@ import { DisplayObjectType } from '../../types';
   standalone: false,
 })
 export class GroupComponent implements OnInit, OnChanges {
-  private layoutService = inject(LayoutService);
-  private favoriteEntryService = inject(FavoriteEntryService);
+  private readonly layoutService = inject(LayoutService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
 
   @Input() displayObject: DisplayObject;
 

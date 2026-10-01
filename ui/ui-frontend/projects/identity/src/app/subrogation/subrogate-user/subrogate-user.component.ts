@@ -58,17 +58,17 @@ import { CustomerSelectService } from '../customer-select.service';
 export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   globalEventService = inject(GlobalEventService);
-  private router = inject(Router);
-  private route: ActivatedRoute;
-  private subrogationModalService = inject(SubrogationModalService);
-  private customerSelectService = inject(CustomerSelectService);
-  private customerSelectionService = inject(CustomerSelectionService);
+  private readonly router = inject(Router);
+  private readonly route: ActivatedRoute;
+  private readonly subrogationModalService = inject(SubrogationModalService);
+  private readonly customerSelectService = inject(CustomerSelectService);
+  private readonly customerSelectionService = inject(CustomerSelectionService);
 
   public customer: Customer;
   public customers: MenuOption[];
   public search: string;
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   constructor() {
     const route = inject(ActivatedRoute);

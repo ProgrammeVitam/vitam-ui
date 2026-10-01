@@ -53,10 +53,10 @@ export interface FileUploadPayload {
   providedIn: 'root',
 })
 export class ArchiveProfileSaverService {
-  private profileService = inject(ProfileService);
-  private toggleService = inject(ToggleSidenavService);
+  private readonly profileService = inject(ProfileService);
+  private readonly toggleService = inject(ToggleSidenavService);
 
-  private attachmentOperator: UnaryFunction<Observable<FileUploadPayload>, Observable<Profile>> = pipe(
+  private readonly attachmentOperator: UnaryFunction<Observable<FileUploadPayload>, Observable<Profile>> = pipe(
     mergeMap((payload: FileUploadPayload) =>
       payload.profile ? of(payload) : throwError(() => new Error('No profile after action attempt')),
     ),

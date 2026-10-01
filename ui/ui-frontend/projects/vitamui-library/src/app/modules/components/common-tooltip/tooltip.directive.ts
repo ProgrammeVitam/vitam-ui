@@ -86,9 +86,9 @@ const TOOLTIP_TRIGGER_CLASS = 'tooltip-trigger';
   standalone: false,
 })
 export class TooltipDirective implements OnInit, OnDestroy, OnChanges {
-  private overlay = inject(Overlay);
-  private overlayPositionBuilder = inject(OverlayPositionBuilder);
-  private elementRef = inject(ElementRef);
+  private readonly overlay = inject(Overlay);
+  private readonly overlayPositionBuilder = inject(OverlayPositionBuilder);
+  private readonly elementRef = inject(ElementRef);
 
   @Input('vitamuiTooltip') text?: string;
   @Input({ transform: coerceBooleanProperty }) outline = false;

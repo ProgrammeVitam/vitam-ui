@@ -129,24 +129,24 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   ],
 })
 export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy, AfterViewInit {
-  private route: ActivatedRoute;
-  private externalParameterService = inject(ExternalParametersService);
-  private translateService = inject(TranslateService);
-  private archiveUnitCollectService = inject(ArchiveCollectService);
-  private archiveHelperService = inject(ArchiveSearchHelperService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
-  private archiveFacetsService = inject(ArchiveFacetsService);
+  private readonly route: ActivatedRoute;
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly translateService = inject(TranslateService);
+  private readonly archiveUnitCollectService = inject(ArchiveCollectService);
+  private readonly archiveHelperService = inject(ArchiveSearchHelperService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly archiveFacetsService = inject(ArchiveFacetsService);
   dialog = inject(MatDialog);
-  private queryParamsService = inject(QueryParamsService);
-  private searchCriteriaService = inject(SearchCriteriaService);
-  private ruleService = inject(RuleService);
-  private snackBarService = inject(SnackBarService);
-  private transactionService = inject(TransactionsService);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
-  private sipImportTrackingService = inject(SipImportTrackingService);
-  private startupService = inject(StartupService);
+  private readonly queryParamsService = inject(QueryParamsService);
+  private readonly searchCriteriaService = inject(SearchCriteriaService);
+  private readonly ruleService = inject(RuleService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly transactionService = inject(TransactionsService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly sipImportTrackingService = inject(SipImportTrackingService);
+  private readonly startupService = inject(StartupService);
 
-  private nonSortableFields: string[] = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
+  private readonly nonSortableFields: string[] = (this.startupService.getConfigObjectValue('NON_SORTABLE_FIELDS') || {})['Unit'] || [];
 
   readonly UnitType = UnitType;
 

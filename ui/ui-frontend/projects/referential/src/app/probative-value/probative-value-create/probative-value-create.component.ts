@@ -63,12 +63,12 @@ import { sizes } from '../../ontology/ontology-form-options';
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProbativeValueCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private probativeValueService = inject(ProbativeValueService);
-  private externalParameterService = inject(ExternalParametersService);
-  private searchUnitApiService = inject(SearchUnitApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly probativeValueService = inject(ProbativeValueService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly searchUnitApiService = inject(SearchUnitApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   public form: FormGroup;
   public isDisabledButton = false;
@@ -84,7 +84,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   private accessContractId: string;
   showWarningMessage = false;
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {

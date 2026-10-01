@@ -58,7 +58,7 @@ type InternalValue = { id: number; value: string | number | boolean };
   imports: [FormsModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner, TranslatePipe],
 })
 export class InputComponent extends AbstractFormInputDirective {
-  private elRef = inject(ElementRef);
+  private readonly elRef = inject(ElementRef);
 
   @Input() placeholder: string;
   @Input() autofocus: boolean;

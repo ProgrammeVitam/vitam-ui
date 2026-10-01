@@ -49,7 +49,7 @@ import { IdentifierName } from '../models/application/identifier-name.interface'
   providedIn: 'root',
 })
 export class ApplicationApiService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private readonly apiUrl: string;
 

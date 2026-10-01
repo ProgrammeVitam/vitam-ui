@@ -64,13 +64,13 @@ import { SearchCriteriaSaverService } from '../../services/search-criteria-saver
 export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   data = inject(MAT_DIALOG_DATA);
   dialogRef = inject<MatDialogRef<SearchCriteriaSaverComponent>>(MatDialogRef);
-  private formBuilder = inject(FormBuilder);
-  private searchCriteriaSaverService = inject(SearchCriteriaSaverService);
-  private archiveExchangeDataService = inject(ArchiveSharedDataService);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private datePipe = inject(DatePipe);
-  private translatePipe = inject(TranslatePipe);
-  private snackBarService = inject(SnackBarService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly searchCriteriaSaverService = inject(SearchCriteriaSaverService);
+  private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly datePipe = inject(DatePipe);
+  private readonly translatePipe = inject(TranslatePipe);
+  private readonly snackBarService = inject(SnackBarService);
 
   searchCriteriaForm: FormGroup;
   criteria: string;

@@ -46,7 +46,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 })
 export class SnackBarComponent {
   data = inject<SnackBarData<SnackBarUrlButton>>(MAT_SNACK_BAR_DATA);
-  private matSnackBarRef = inject<MatSnackBarRef<SnackBarComponent>>(MatSnackBarRef);
+  private readonly matSnackBarRef = inject<MatSnackBarRef<SnackBarComponent>>(MatSnackBarRef);
 
   public close(): void {
     this.matSnackBarRef.dismiss();

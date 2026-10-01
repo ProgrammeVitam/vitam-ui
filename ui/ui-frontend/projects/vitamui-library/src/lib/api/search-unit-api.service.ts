@@ -44,8 +44,8 @@ import { SearchResponse } from '../../app/modules/models/criteria/search-respons
   providedIn: 'root',
 })
 export class SearchUnitApiService {
-  private http = inject(HttpClient);
-  private baseUrl = inject(BASE_URL);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = inject(BASE_URL);
 
   constructor() {
     this.apiUrl = this.baseUrl + '/search';

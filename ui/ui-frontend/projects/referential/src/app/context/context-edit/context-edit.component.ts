@@ -53,9 +53,9 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     permissions: ContextPermission[];
     enableControl: boolean;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private contextCreateValidators = inject(ContextCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly contextCreateValidators = inject(ContextCreateValidators);
 
   form: FormGroup;
   hasError = true;

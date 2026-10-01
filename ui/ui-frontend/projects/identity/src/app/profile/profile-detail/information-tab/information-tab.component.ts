@@ -53,10 +53,10 @@ import { ProfileValidators } from '../../profile.validators';
   standalone: false,
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private rngProfileService = inject(ProfileService);
-  private profileValidators = inject(ProfileValidators);
-  private authService = inject(AuthService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly rngProfileService = inject(ProfileService);
+  private readonly profileValidators = inject(ProfileValidators);
+  private readonly authService = inject(AuthService);
 
   form: FormGroup;
   permissionForm: FormGroup;

@@ -47,7 +47,7 @@ import type { EditObject } from '../../models/edit-object.model';
   standalone: false,
 })
 export class ListEditorComponent implements OnChanges {
-  private favoriteEntryService = inject(FavoriteEntryService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
 
   @Input() editObject: EditObject;
 

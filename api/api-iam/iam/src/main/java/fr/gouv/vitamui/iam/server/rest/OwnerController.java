@@ -91,6 +91,8 @@ public class OwnerController implements CrudController<OwnerDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OwnerController.class);
 
+    private static final String IDENTIFIER_IS_MANDATORY = "Identifier is mandatory: ";
+
     private final OwnerService ownerService;
 
     public OwnerController(final OwnerService ownerCrudService) {
@@ -114,7 +116,7 @@ public class OwnerController implements CrudController<OwnerDto> {
     @Secured(ServicesData.ROLE_GET_OWNERS)
     public OwnerDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
         return ownerService.getOne(id);
@@ -137,7 +139,7 @@ public class OwnerController implements CrudController<OwnerDto> {
     @Secured(ServicesData.ROLE_UPDATE_OWNERS)
     public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
@@ -154,7 +156,7 @@ public class OwnerController implements CrudController<OwnerDto> {
     @Secured(ServicesData.ROLE_UPDATE_OWNERS)
     public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
@@ -170,7 +172,7 @@ public class OwnerController implements CrudController<OwnerDto> {
     @Secured(ServicesData.ROLE_GET_OWNERS)
     public List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, VitamClientException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for owner with id :{}", id);
         return ownerService.findHistoryById(id);

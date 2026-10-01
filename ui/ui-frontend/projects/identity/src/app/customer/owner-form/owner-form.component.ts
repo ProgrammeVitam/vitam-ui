@@ -67,10 +67,10 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
-  private formBuilder = inject(FormBuilder);
-  private ownerFormValidators = inject(OwnerFormValidators);
-  private countryService = inject(CountryService);
-  private startupService = inject(StartupService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ownerFormValidators = inject(OwnerFormValidators);
+  private readonly countryService = inject(CountryService);
+  private readonly startupService = inject(StartupService);
 
   public form: FormGroup;
   public maxStreetLength: number;

@@ -100,6 +100,7 @@ public class ProfileController {
     private static final String SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT = "/signed-download/download";
     private static final String SIGNED_DOWNLOAD_PROFILE_PATH = RestApi.PROFILE + SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT;
     private static final String ID_PARAMETER = "id";
+    private static final String IDENTIFIER_IS_MANDATORY_PARAMETER = "The Identifier is a mandatory parameter: ";
 
     @Autowired
     private ProfileService profileService;
@@ -204,7 +205,7 @@ public class ProfileController {
         @RequestParam MultipartFile file
     ) throws IOException, InvalidParseOperationException, PreconditionFailedException, AccessExternalClientException {
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
         LOGGER.debug("Update {}  profile file with id :{}", id);
@@ -225,7 +226,7 @@ public class ProfileController {
         final @PathVariable("id") String id,
         final @Valid @RequestBody ProfileDto dto
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY_PARAMETER, id);
         SanityChecker.sanitizeCriteria(id);
         SanityChecker.checkSecureParameter(id);
         Assert.isTrue(
@@ -287,7 +288,7 @@ public class ProfileController {
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
     public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY_PARAMETER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         Assert.isTrue(

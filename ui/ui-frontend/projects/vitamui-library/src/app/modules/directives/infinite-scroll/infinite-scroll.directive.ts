@@ -84,7 +84,7 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
     return sideNavElement?.length > 0 ? sideNavElement[sideNavElement.length - 1] : windowElement?.length > 0 ? windowElement[0] : null;
   }
 
-  private scroll = (): void => {
+  private readonly scroll = (): void => {
     if (!this.vitamuiCommonInfiniteScrollDisable) {
       const height = this.scrollElement.scrollHeight - this.scrollElement.clientHeight;
       const scrollRatio = this.scrollElement.scrollTop / height;

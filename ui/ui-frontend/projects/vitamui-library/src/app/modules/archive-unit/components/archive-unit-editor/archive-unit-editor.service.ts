@@ -58,22 +58,22 @@ import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class ArchiveUnitEditorService {
-  private logger = inject(Logger);
-  private schemaService = inject(SchemaService);
-  private templateService = inject(TemplateService);
-  private schemaUtils = inject(SchemaUtils);
-  private archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
-  private archiveUnitEditObjectService = inject(ArchiveUnitEditObjectService);
-  private editObjectService = inject(EditObjectService);
+  private readonly logger = inject(Logger);
+  private readonly schemaService = inject(SchemaService);
+  private readonly templateService = inject(TemplateService);
+  private readonly schemaUtils = inject(SchemaUtils);
+  private readonly archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
+  private readonly archiveUnitEditObjectService = inject(ArchiveUnitEditObjectService);
+  private readonly editObjectService = inject(EditObjectService);
 
-  private collection = new BehaviorSubject<Collection>(Collection.ARCHIVE_UNIT);
-  private sedaVersions = new BehaviorSubject<SedaVersion[]>(['INTERNE', '2.3']);
-  private category = new BehaviorSubject<SchemaElement['Category']>('DESCRIPTION');
-  private data$ = new BehaviorSubject<ArchiveUnit>(null);
-  private editObject = new BehaviorSubject<EditObject>(null);
-  private customTemplate = new BehaviorSubject<DisplayRule[]>([]);
+  private readonly collection = new BehaviorSubject<Collection>(Collection.ARCHIVE_UNIT);
+  private readonly sedaVersions = new BehaviorSubject<SedaVersion[]>(['INTERNE', '2.3']);
+  private readonly category = new BehaviorSubject<SchemaElement['Category']>('DESCRIPTION');
+  private readonly data$ = new BehaviorSubject<ArchiveUnit>(null);
+  private readonly editObject = new BehaviorSubject<EditObject>(null);
+  private readonly customTemplate = new BehaviorSubject<DisplayRule[]>([]);
 
-  private template = new BehaviorSubject<DisplayRule[]>([]);
+  private readonly template = new BehaviorSubject<DisplayRule[]>([]);
 
   editObject$ = this.editObject.asObservable();
   schema$: Observable<Schema>;

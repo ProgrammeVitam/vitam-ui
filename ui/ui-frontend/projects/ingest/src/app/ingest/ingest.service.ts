@@ -45,8 +45,8 @@ import { LogbookOperation } from '../models/logbook-event.interface';
   providedIn: 'root',
 })
 export class IngestService extends SearchService<any> {
-  private ingestApiService: IngestApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly ingestApiService: IngestApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   constructor() {
     const ingestApiService = inject(IngestApiService);

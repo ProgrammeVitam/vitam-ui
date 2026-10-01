@@ -64,13 +64,13 @@ import { rxResource } from '@angular/core/rxjs-interop';
   standalone: false,
 })
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
-  private translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
   dialogRef = inject<MatDialogRef<DipRequestCreateComponent>>(MatDialogRef);
-  private fb = inject(FormBuilder);
-  private archiveService = inject(ArchiveService);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private logger = inject(Logger);
-  private agencyService = inject(AgencyService);
+  private readonly fb = inject(FormBuilder);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly logger = inject(Logger);
+  private readonly agencyService = inject(AgencyService);
   data = inject<{
     itemSelected: number;
     exportDIPSearchCriteria: SearchCriteriaEltDto[];
@@ -78,7 +78,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     tenantIdentifier: string;
     selectedItemCountKnown?: boolean;
   }>(MAT_DIALOG_DATA);
-  private snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   formGroups: FormGroup[];
   isLoading = false;

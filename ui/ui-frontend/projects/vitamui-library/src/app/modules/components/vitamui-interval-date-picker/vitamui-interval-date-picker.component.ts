@@ -45,7 +45,7 @@ import { debounceTime } from 'rxjs/operators';
   standalone: false,
 })
 export class VitamuiIntervalDatePickerComponent implements OnInit {
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   @Input() label: string;
   @Output() criteriaChange = new EventEmitter<{ dateMin: string; dateMax: string }>();

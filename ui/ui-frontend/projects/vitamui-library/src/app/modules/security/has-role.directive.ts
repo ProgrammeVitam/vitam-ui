@@ -43,9 +43,9 @@ import { SecurityService } from './security.service';
   standalone: false,
 })
 export class HasRoleDirective implements OnDestroy {
-  private templateRef = inject<TemplateRef<any>>(TemplateRef);
-  private viewContainer = inject(ViewContainerRef);
-  private securityService = inject(SecurityService);
+  private readonly templateRef = inject<TemplateRef<any>>(TemplateRef);
+  private readonly viewContainer = inject(ViewContainerRef);
+  private readonly securityService = inject(SecurityService);
 
   roleSubscription: Subscription;
 

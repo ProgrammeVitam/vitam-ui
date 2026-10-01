@@ -43,7 +43,7 @@ import { ArchiveApiService } from '../../../core/api/archive-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaListService extends SearchService<any> {
-  private archiveApiService: ArchiveApiService;
+  private readonly archiveApiService: ArchiveApiService;
 
   constructor() {
     const archiveApiService = inject(ArchiveApiService);

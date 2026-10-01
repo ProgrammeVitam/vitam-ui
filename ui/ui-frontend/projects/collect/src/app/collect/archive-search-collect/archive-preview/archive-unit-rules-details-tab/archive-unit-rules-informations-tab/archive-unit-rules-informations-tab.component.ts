@@ -46,8 +46,8 @@ import { Logger } from 'vitamui-library';
   standalone: false,
 })
 export class ArchiveUnitRulesInformationsTabComponent implements OnChanges {
-  private translateService = inject(TranslateService);
-  private logger = inject(Logger);
+  private readonly translateService = inject(TranslateService);
+  private readonly logger = inject(Logger);
 
   @Input()
   archiveUnitRules: Unit;

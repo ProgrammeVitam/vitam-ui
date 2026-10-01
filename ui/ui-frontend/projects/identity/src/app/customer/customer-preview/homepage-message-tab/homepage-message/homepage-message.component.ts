@@ -50,9 +50,9 @@ import { LanguageService, StartupService } from 'vitamui-library';
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
   dialogRef = inject<MatDialogRef<HomepageMessageComponent>>(MatDialogRef);
-  private formBuilder = inject(FormBuilder);
-  private startupService = inject(StartupService);
-  private languageService = inject(LanguageService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly startupService = inject(StartupService);
+  private readonly languageService = inject(LanguageService);
 
   @Input() homepageMessageForm: FormGroup;
   @Input() customer: Customer;
@@ -75,7 +75,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
   private language: string;
   private portalTitles: { [language: string]: string } = {};
   private portalMessages: { [language: string]: string } = {};
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
 
   ngOnInit() {
     this.homepageMessageForm = this.formBuilder.group({

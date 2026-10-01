@@ -43,9 +43,9 @@ import { DOCUMENT } from '@angular/common';
   standalone: false,
 })
 export class ResizeSidebarDirective implements OnInit {
-  private elementRef = inject(ElementRef);
-  private renderer = inject(Renderer2);
-  private document = inject<Document>(DOCUMENT);
+  private readonly elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly document = inject<Document>(DOCUMENT);
 
   /**
    * Orientation du block à redimensionner, permet de positionner à droite ou à gauche la barre permettant de

@@ -74,17 +74,17 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
   standalone: false,
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
-  private archiveService = inject(ArchiveService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private location = inject(Location);
-  private translate = inject(TranslateService);
-  private logger = inject(Logger);
-  private ruleService = inject(RuleService);
-  private snackBarService = inject(SnackBarService);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly translate = inject(TranslateService);
+  private readonly logger = inject(Logger);
+  private readonly ruleService = inject(RuleService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
@@ -161,7 +161,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     { label: this.translate.instant('ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE') },
   ];
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   actionOptions: Option[] = [
     { key: 'ADD_RULES', label: this.translate.instant('RULES.ACTIONS.ADD_RULE') },

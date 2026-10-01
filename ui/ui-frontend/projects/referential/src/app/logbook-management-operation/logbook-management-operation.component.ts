@@ -63,11 +63,11 @@ interface OperationSearch {
   standalone: false,
 })
 export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private queryParamsService = inject(QueryParamsService);
-  private dateService = inject(DateService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly queryParamsService = inject(QueryParamsService);
+  private readonly dateService = inject(DateService);
 
   tenantIdentifier: number;
   dateRangeFilterForm = this.formBuilder.group<FormData>({
@@ -85,7 +85,7 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   @ViewChild(LogbookManagementOperationListComponent, { static: true })
   logbookManagementOperationListComponent: LogbookManagementOperationListComponent;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   constructor() {
     if (this.route && this.route.paramMap) {

@@ -49,10 +49,10 @@ import { AccessContractNodeUpdateComponent } from './access-contract-nodes-updat
   standalone: false,
 })
 export class AccessContractNodesTabComponent {
-  private unitService = inject(SearchUnitApiService);
-  private externalParameterService = inject(ExternalParametersService);
-  private dialog = inject(MatDialog);
-  private snackBarService = inject(SnackBarService);
+  private readonly unitService = inject(SearchUnitApiService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly dialog = inject(MatDialog);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input() tenantIdentifier: number;
 

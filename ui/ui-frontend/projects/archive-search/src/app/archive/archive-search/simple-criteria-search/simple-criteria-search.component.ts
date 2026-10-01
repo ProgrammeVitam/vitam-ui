@@ -88,17 +88,17 @@ const COMPLEX_INPUTS = ['otherCriteriaList'];
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   dialog = inject(MatDialog);
-  private formBuilder = inject(FormBuilder);
-  private archiveExchangeDataService = inject(ArchiveSharedDataService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private translateService = inject(TranslateService);
-  private route = inject(ActivatedRoute);
-  private searchCriteriaService = inject(SearchCriteriaService);
-  private archiveHelperService = inject(ArchiveSearchHelperService);
-  private schemaService = inject(SchemaService);
-  private agencyService = inject(AgencyService);
-  private archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
-  private cdr = inject(ChangeDetectorRef);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly translateService = inject(TranslateService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly searchCriteriaService = inject(SearchCriteriaService);
+  private readonly archiveHelperService = inject(ArchiveSearchHelperService);
+  private readonly schemaService = inject(SchemaService);
+  private readonly agencyService = inject(AgencyService);
+  private readonly archiveUnitProfilesService = inject(ArchiveUnitProfilesService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];

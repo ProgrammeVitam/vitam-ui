@@ -46,8 +46,8 @@ import { TenantService } from './tenant.service';
   providedIn: 'root',
 })
 export class TenantResolver {
-  private tenantService = inject(TenantService);
-  private router = inject(Router);
+  private readonly tenantService = inject(TenantService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Tenant> {
     const id = route.paramMap.get('id');

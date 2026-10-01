@@ -85,7 +85,7 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
 })
 export class UserActionRemoveMetadataComponent implements OnInit {
   dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
-  private popUpService = inject(PopupService);
+  private readonly popUpService = inject(PopupService);
 
   dataToSend: string;
 

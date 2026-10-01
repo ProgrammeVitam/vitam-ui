@@ -106,15 +106,15 @@ const atLeastOneFilingPlan: ValidatorFn = (control) => {
   providers: [BaseReclassificationDialogService],
 })
 export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
-  private reclassificationDialogService = inject(BaseReclassificationDialogService);
-  private translateService = inject(TranslateService);
-  private formBuilder = inject(FormBuilder);
-  private reclassificationService = inject(ReclassificationService);
-  private reclassificationValidator = inject(ReclassificationValidatorService);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private startupService = inject(StartupService);
-  private logger = inject(Logger);
-  private snackBarService = inject(SnackBarService);
+  private readonly reclassificationDialogService = inject(BaseReclassificationDialogService);
+  private readonly translateService = inject(TranslateService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly reclassificationService = inject(ReclassificationService);
+  private readonly reclassificationValidator = inject(ReclassificationValidatorService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly startupService = inject(StartupService);
+  private readonly logger = inject(Logger);
+  private readonly snackBarService = inject(SnackBarService);
   dialogRef = inject<MatDialogRef<ReclassificationDialogComponent>>(MatDialogRef);
   data = inject<{
     appName: string;
@@ -132,7 +132,7 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly ReclassificationMode = ReclassificationMode;
 
-  private destroyRef = inject(DestroyRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly hasNoParent = computed(() => {
     return !this.reclassificationDialogService.hasParent();

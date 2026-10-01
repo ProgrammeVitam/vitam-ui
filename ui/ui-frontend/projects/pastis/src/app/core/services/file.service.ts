@@ -89,10 +89,10 @@ import { SpinnerOverlayService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class FileService implements OnDestroy {
-  private profileService = inject(ProfileService);
-  private dialog = inject(MatDialog);
-  private sedaService = inject(SedaService);
-  private spinnerOverlayService = inject(SpinnerOverlayService);
+  private readonly profileService = inject(ProfileService);
+  private readonly dialog = inject(MatDialog);
+  private readonly sedaService = inject(SedaService);
+  private readonly spinnerOverlayService = inject(SpinnerOverlayService);
 
   currentTree = new BehaviorSubject<FileNode[]>([]);
   tree$ = this.currentTree.asObservable();

@@ -48,7 +48,7 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
   constructor() {
     const http = inject(HttpClient);

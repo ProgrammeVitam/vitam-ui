@@ -53,10 +53,10 @@ const PERMANENT_IDENTIFIER = 'PersistentIdentifier.PersistentIdentifierContent';
   standalone: false,
 })
 export class PersistentIdentifierSearchComponent {
-  private dialog = inject(MatDialog);
-  private persistentIdentifierService = inject(PersistentIdentifierService);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  private readonly persistentIdentifierService = inject(PersistentIdentifierService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly router = inject(Router);
 
   appsHierarchy: BreadCrumbData[] = [
     { identifier: ApplicationId.PORTAL_APP },

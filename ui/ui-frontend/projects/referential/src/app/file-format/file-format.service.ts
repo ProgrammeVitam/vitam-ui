@@ -46,8 +46,8 @@ import { FileFormatApiService } from '../core/api/file-format-api.service';
   providedIn: 'root',
 })
 export class FileFormatService extends SearchService<FileFormat> {
-  private fileFormatApiService: FileFormatApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly fileFormatApiService: FileFormatApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<FileFormat>();
 

@@ -54,21 +54,21 @@ import { FileFormatService } from '../../file-format.service';
   standalone: false,
 })
 export class FileFormatInformationTabComponent {
-  private locale = inject(LOCALE_ID);
-  private formBuilder = inject(FormBuilder);
-  private fileFormatService = inject(FileFormatService);
-  private route = inject(ActivatedRoute);
-  private securityService = inject(SecurityService);
+  private readonly locale = inject(LOCALE_ID);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly fileFormatService = inject(FileFormatService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly securityService = inject(SecurityService);
 
-  private _dateFormat = 'dd/MM/yyyy';
+  private readonly _dateFormat = 'dd/MM/yyyy';
   private _fileFormat: FileFormat;
   private _subscriptions = new Subscription();
 
-  private isInternal = new BehaviorSubject(true);
-  private canUpdateFileFormat = new BehaviorSubject<boolean>(false);
-  private submitting = new BehaviorSubject<boolean>(false);
-  private fileFormats$ = new BehaviorSubject<FileFormat[]>([]);
-  private tenantId$ = new BehaviorSubject<string>(null);
+  private readonly isInternal = new BehaviorSubject(true);
+  private readonly canUpdateFileFormat = new BehaviorSubject<boolean>(false);
+  private readonly submitting = new BehaviorSubject<boolean>(false);
+  private readonly fileFormats$ = new BehaviorSubject<FileFormat[]>([]);
+  private readonly tenantId$ = new BehaviorSubject<string>(null);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

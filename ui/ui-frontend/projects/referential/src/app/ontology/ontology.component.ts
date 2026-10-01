@@ -67,11 +67,11 @@ import { OntologyService } from './ontology.service';
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  private translateService = inject(TranslateService);
-  private securityService = inject(SecurityService);
-  private ontologyService = inject(OntologyService);
-  private schemaService = inject(SchemaService);
-  private startupService = inject(StartupService);
+  private readonly translateService = inject(TranslateService);
+  private readonly securityService = inject(SecurityService);
+  private readonly ontologyService = inject(OntologyService);
+  private readonly schemaService = inject(SchemaService);
+  private readonly startupService = inject(StartupService);
 
   private previousTab: string | null = null;
   private subscription: Subscription;

@@ -126,6 +126,8 @@ public class LogbookController {
         DOWNLOAD_TYPE_OBJECT,
         DOWNLOAD_TYPE_REPORT
     );
+    private static final String TOKEN_QUERY_PARAM = "token";
+    private static final String NO_REFERRER_POLICY_VALUE = "no-referrer";
 
     public LogbookController(
         final LogbookService logbookService,
@@ -318,7 +320,7 @@ public class LogbookController {
 
         SignedDownloadTokenService.SignedDownloadToken signedToken = signedDownloadTokenService.generate(claims);
         String url = UriComponentsBuilder.fromPath(SIGNED_DOWNLOAD_REPORT_PATH)
-            .queryParam("token", signedToken.value())
+            .queryParam(TOKEN_QUERY_PARAM, signedToken.value())
             .buildAndExpand(id, downloadType)
             .toUriString();
 
@@ -341,7 +343,7 @@ public class LogbookController {
 
         SignedDownloadTokenService.SignedDownloadToken signedToken = signedDownloadTokenService.generate(claims);
         String url = UriComponentsBuilder.fromPath(SIGNED_DOWNLOAD_ATR_PATH)
-            .queryParam("token", signedToken.value())
+            .queryParam(TOKEN_QUERY_PARAM, signedToken.value())
             .buildAndExpand(id)
             .toUriString();
 
@@ -367,7 +369,7 @@ public class LogbookController {
 
         SignedDownloadTokenService.SignedDownloadToken signedToken = signedDownloadTokenService.generate(claims);
         String url = UriComponentsBuilder.fromPath(SIGNED_DOWNLOAD_MANIFEST_PATH)
-            .queryParam("token", signedToken.value())
+            .queryParam(TOKEN_QUERY_PARAM, signedToken.value())
             .buildAndExpand(id)
             .toUriString();
 
@@ -399,7 +401,7 @@ public class LogbookController {
         try (Response vitamResponse = logbookService.downloadReport(id, downloadType, vitamContext)) {
             String fileName = getDownloadReportFileName(id, downloadType);
             response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(fileName));
-            response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+            response.setHeader(RestUtils.REFERRER_POLICY, NO_REFERRER_POLICY_VALUE);
             VitamRestUtils.writeFileResponse(vitamResponse, response);
         }
     }
@@ -423,7 +425,7 @@ public class LogbookController {
         );
         try (Response vitamResponse = logbookService.downloadAtr(id, vitamContext)) {
             response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(id + "-atr.xml"));
-            response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+            response.setHeader(RestUtils.REFERRER_POLICY, NO_REFERRER_POLICY_VALUE);
             VitamRestUtils.writeFileResponse(vitamResponse, response);
         }
     }
@@ -450,7 +452,7 @@ public class LogbookController {
         );
         try (Response vitamResponse = logbookService.downloadManifest(id, vitamContext)) {
             response.setHeader(RestUtils.CONTENT_DISPOSITION, buildAttachmentContentDisposition(id + "-manifest.xml"));
-            response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+            response.setHeader(RestUtils.REFERRER_POLICY, NO_REFERRER_POLICY_VALUE);
             VitamRestUtils.writeFileResponse(vitamResponse, response);
         }
     }

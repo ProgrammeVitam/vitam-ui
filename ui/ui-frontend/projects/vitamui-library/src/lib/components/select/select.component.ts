@@ -126,7 +126,7 @@ export interface VitamuiSelectOptions {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent extends AbstractFormInputDirective implements AfterViewInit, AfterViewChecked {
-  private cd = inject(ChangeDetectorRef);
+  private readonly cd = inject(ChangeDetectorRef);
   readonly sd = inject(ScrollDispatcher);
 
   @Input() placeholder: string;

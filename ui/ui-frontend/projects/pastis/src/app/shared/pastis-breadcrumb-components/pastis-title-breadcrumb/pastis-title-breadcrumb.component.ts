@@ -46,7 +46,7 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
   standalone: false,
 })
 export class PastisTitleBreadcrumbComponent {
-  private location = inject(Location);
+  private readonly location = inject(Location);
 
   @Input()
   public data?: Array<any>;

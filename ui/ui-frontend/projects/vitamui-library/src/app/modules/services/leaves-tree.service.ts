@@ -50,13 +50,13 @@ import { EventEmitter } from '@angular/core';
 const PATH_SEPARATOR = '/';
 
 export class LeavesTreeService {
-  private leavesTreeApiService: LeavesTreeApiService;
+  private readonly leavesTreeApiService: LeavesTreeApiService;
   private virtualPathOriginField = 'FilePlanPosition'; //Default field
   virtualPathSearchLimitReached = new EventEmitter<boolean>();
 
   constructor(
-    private searchArchiveUnitsService: SearchArchiveUnitsInterface,
-    private configurationsService: ConfigurationsApiService,
+    private readonly searchArchiveUnitsService: SearchArchiveUnitsInterface,
+    private readonly configurationsService: ConfigurationsApiService,
   ) {
     this.leavesTreeApiService = new LeavesTreeApiService(this.searchArchiveUnitsService);
     this.configurationsService.getVirtualPathsFields().subscribe((fields) => {

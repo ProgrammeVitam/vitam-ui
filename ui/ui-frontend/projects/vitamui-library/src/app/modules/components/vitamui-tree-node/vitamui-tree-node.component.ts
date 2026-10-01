@@ -52,7 +52,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   standalone: true,
 })
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
-  private cdr = inject(ChangeDetectorRef);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() node: FilingHoldingSchemeNode;
   @Input() icon: string;

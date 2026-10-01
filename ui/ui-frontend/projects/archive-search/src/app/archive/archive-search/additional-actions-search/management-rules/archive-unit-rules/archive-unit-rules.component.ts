@@ -47,7 +47,7 @@ import { Rule } from 'vitamui-library';
   standalone: false,
 })
 export class ArchiveUnitRulesComponent implements OnDestroy {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
 
   @Input()
   selectedItem: number;

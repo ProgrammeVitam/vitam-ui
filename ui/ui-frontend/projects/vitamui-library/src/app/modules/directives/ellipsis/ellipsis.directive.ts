@@ -64,10 +64,10 @@ const ELLIPSIS_TOOLTIP_POSITION: ConnectedPosition = {
   standalone: false,
 })
 export class EllipsisDirective implements OnInit, AfterViewInit, OnDestroy {
-  private renderer = inject(Renderer2);
-  private elementRef = inject(ElementRef);
-  private overlay = inject(Overlay);
-  private overlayPositionBuilder = inject(OverlayPositionBuilder);
+  private readonly renderer = inject(Renderer2);
+  private readonly elementRef = inject(ElementRef);
+  private readonly overlay = inject(Overlay);
+  private readonly overlayPositionBuilder = inject(OverlayPositionBuilder);
 
   isToolTipOnMouseEnter = input(false, { transform: coerceBooleanProperty });
   vitamuiCommonEllipsisLines = input(1);

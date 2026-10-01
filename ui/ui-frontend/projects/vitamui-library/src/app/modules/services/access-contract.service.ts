@@ -50,9 +50,9 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class AccessContractService extends SearchService<AccessContract> {
-  private accessContractApi: AccessContractApiService;
-  private snackBarService = inject(SnackBarService);
-  private externalParameterService = inject(ExternalParametersService);
+  private readonly accessContractApi: AccessContractApiService;
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly externalParameterService = inject(ExternalParametersService);
 
   /** Observable of current access contract ID */
   currentAccessContractId$: Observable<string> = this.externalParameterService.getUserExternalParameters().pipe(

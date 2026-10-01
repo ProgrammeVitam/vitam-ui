@@ -52,11 +52,11 @@ import { DecimalPipe } from '@angular/common';
   standalone: false,
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
-  private formBuilder = inject(FormBuilder);
-  private dialogRef = inject<MatDialogRef<ExternalParamProfileCreateComponent>>(MatDialogRef);
-  private externalParamProfileService = inject(ExternalParamProfileService);
-  private externalParamProfileValidators = inject(ExternalParamProfileValidators);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly dialogRef = inject<MatDialogRef<ExternalParamProfileCreateComponent>>(MatDialogRef);
+  private readonly externalParamProfileService = inject(ExternalParamProfileService);
+  private readonly externalParamProfileValidators = inject(ExternalParamProfileValidators);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
   data = inject(MAT_DIALOG_DATA);
 
   form: FormGroup;

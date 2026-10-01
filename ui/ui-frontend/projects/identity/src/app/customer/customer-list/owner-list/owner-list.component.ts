@@ -53,10 +53,10 @@ import { TenantService } from '../../tenant.service';
   standalone: false,
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
-  private dialog = inject(MatDialog);
-  private ownerService = inject(OwnerService);
-  private tenantService = inject(TenantService);
-  private customerDataService = inject(CustomerDataService);
+  private readonly dialog = inject(MatDialog);
+  private readonly ownerService = inject(OwnerService);
+  private readonly tenantService = inject(TenantService);
+  private readonly customerDataService = inject(CustomerDataService);
 
   @Input()
   set customer(customer: Customer) {

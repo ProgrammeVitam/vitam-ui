@@ -49,7 +49,7 @@ type Row = { default: FormControl; active: FormControl; disabled: FormControl; e
   styleUrl: './design-system-datepicker.component.scss',
 })
 export class DesignSystemDatepickerComponent {
-  private datePipe = inject(DatePipe);
+  private readonly datePipe = inject(DatePipe);
 
   startDate = new FormControl();
   endDate = new FormControl();

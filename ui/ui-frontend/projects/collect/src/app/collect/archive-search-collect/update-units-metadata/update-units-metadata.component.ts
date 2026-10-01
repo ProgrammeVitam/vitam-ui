@@ -52,12 +52,12 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
     tenantIdentifier: string;
     selectedTransaction: Transaction;
   }>(MAT_DIALOG_DATA);
-  private logger = inject(Logger);
-  private dialog = inject(MatDialog);
-  private dialogRef = inject<MatDialogRef<UpdateUnitsMetadataComponent>>(MatDialogRef);
+  private readonly logger = inject(Logger);
+  private readonly dialog = inject(MatDialog);
+  private readonly dialogRef = inject<MatDialogRef<UpdateUnitsMetadataComponent>>(MatDialogRef);
   private dialogRefToClose = inject<MatDialogRef<UpdateUnitsMetadataComponent>>(MatDialogRef);
-  private archiveCollectService = inject(ArchiveCollectService);
-  private snackBarService = inject(SnackBarService);
+  private readonly archiveCollectService = inject(ArchiveCollectService);
+  private readonly snackBarService = inject(SnackBarService);
 
   isLoadingData = false;
 

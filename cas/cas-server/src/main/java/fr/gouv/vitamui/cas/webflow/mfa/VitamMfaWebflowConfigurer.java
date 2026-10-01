@@ -60,6 +60,7 @@ public class VitamMfaWebflowConfigurer extends AbstractCasMultifactorWebflowConf
      */
     public static final String MFA_SIMPLE_EVENT_ID = "mfa-simple";
     public static final String TEMPLATE_SIMPLE_MFA_LOGIN = "simple-mfa/casSimpleMfaLoginView";
+    private static final String STATE_ID_MISSING_PHONE = "missingPhone";
 
     public VitamMfaWebflowConfigurer(
         final FlowBuilderServices flowBuilderServices,
@@ -116,8 +117,8 @@ public class VitamMfaWebflowConfigurer extends AbstractCasMultifactorWebflowConf
                 CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM
             );
             // CUSTO:
-            createTransitionForState(sendSimpleToken, "missingPhone", "missingPhone");
-            createViewState(flow, "missingPhone", "casSmsMissingPhoneView");
+            createTransitionForState(sendSimpleToken, STATE_ID_MISSING_PHONE, STATE_ID_MISSING_PHONE);
+            createViewState(flow, STATE_ID_MISSING_PHONE, "casSmsMissingPhoneView");
             //
 
             var setPrincipalAction = createSetAction(

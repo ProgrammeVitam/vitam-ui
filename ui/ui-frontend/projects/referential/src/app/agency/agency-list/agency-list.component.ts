@@ -68,9 +68,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
   agencyService: AgencyService;
-  private route = inject(ActivatedRoute);
-  private matDialog = inject(MatDialog);
-  private securityService = inject(SecurityService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly matDialog = inject(MatDialog);
+  private readonly securityService = inject(SecurityService);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search') set searchText(searchText: string) {

@@ -45,7 +45,7 @@ import { Metadata } from '../models/metadata.interface';
   providedIn: 'root',
 })
 export class MetadataApiService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private readonly apiUrl: string;
 

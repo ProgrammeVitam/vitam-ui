@@ -51,10 +51,10 @@ interface StandaloneConfiguration {
   providedIn: 'root',
 })
 export class StandaloneStartupService {
-  private logger = inject(Logger);
-  private authService = inject(AuthService);
-  private themeService = inject(StandaloneThemeService);
-  private location = inject(WINDOW_LOCATION);
+  private readonly logger = inject(Logger);
+  private readonly authService = inject(AuthService);
+  private readonly themeService = inject(StandaloneThemeService);
+  private readonly location = inject(WINDOW_LOCATION);
 
   private CURRENT_TENANT_IDENTIFIER: string;
   private configurationData: StandaloneConfiguration;

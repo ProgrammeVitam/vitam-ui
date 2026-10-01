@@ -54,11 +54,11 @@ const UPDATE_DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class InformationTabComponent implements OnInit, OnDestroy {
-  private formBuilder = inject(FormBuilder);
-  private customerService = inject(CustomerService);
-  private customerCreateValidators = inject(CustomerCreateValidators);
-  private countryService = inject(CountryService);
-  private startupService = inject(StartupService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly customerService = inject(CustomerService);
+  private readonly customerCreateValidators = inject(CustomerCreateValidators);
+  private readonly countryService = inject(CountryService);
+  private readonly startupService = inject(StartupService);
 
   public readonly form: FormGroup;
   public maxStreetLength: number;

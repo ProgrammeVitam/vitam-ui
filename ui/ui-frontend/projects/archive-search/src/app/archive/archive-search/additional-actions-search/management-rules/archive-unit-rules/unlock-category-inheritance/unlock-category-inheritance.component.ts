@@ -55,12 +55,12 @@ const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
   standalone: false,
 })
 export class UnlockCategoryInheritanceComponent implements OnDestroy {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private archiveService = inject(ArchiveService);
-  private translateService = inject(TranslateService);
-  private dialog = inject(MatDialog);
-  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly translateService = inject(TranslateService);
+  private readonly dialog = inject(MatDialog);
+  private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Input()
   ruleCategory: string;

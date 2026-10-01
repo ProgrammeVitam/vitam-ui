@@ -54,7 +54,7 @@ import { IngestReferentialService } from '../../../core/service/ingest-referenti
   standalone: false,
 })
 export class IngestInformationTabComponent implements OnChanges {
-  private applicationService = inject(ApplicationService);
+  private readonly applicationService = inject(ApplicationService);
   private ingestReferentialService = inject(IngestReferentialService);
 
   @Input() ingest: LogbookOperation;

@@ -45,8 +45,8 @@ import { OwnerApiService } from './owner-api.service';
   providedIn: 'root',
 })
 export class OwnerService {
-  private ownerApi = inject(OwnerApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly ownerApi = inject(OwnerApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Owner>();
 

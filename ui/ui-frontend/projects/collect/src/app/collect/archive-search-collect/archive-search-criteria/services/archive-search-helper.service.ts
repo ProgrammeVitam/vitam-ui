@@ -61,7 +61,7 @@ const fieldKeys = [ALL_ARCHIVE_UNIT_TYPES, ERRORS, SearchCriteriaTypeEnum.FIELDS
   providedIn: 'root',
 })
 export class ArchiveSearchHelperService {
-  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
 
   addCriteria(
     searchCriterias: Map<string, CriteriaSearchCriteria>,

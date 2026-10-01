@@ -58,8 +58,8 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
   customerService = inject(CustomerService);
   profileValidators = inject(ProfileValidators);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   adminProfileForm: FormGroup;
   tenantWithProofId: string;

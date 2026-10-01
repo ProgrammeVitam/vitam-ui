@@ -46,7 +46,7 @@ import { filter } from 'rxjs/operators';
   standalone: false,
 })
 export class DownloadSnackBarComponent {
-  private matDialog = inject(MatDialog);
+  private readonly matDialog = inject(MatDialog);
 
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
 

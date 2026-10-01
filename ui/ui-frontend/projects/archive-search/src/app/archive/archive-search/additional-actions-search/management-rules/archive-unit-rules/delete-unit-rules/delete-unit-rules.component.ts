@@ -70,15 +70,15 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   standalone: false,
 })
 export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
-  private managementRulesValidatorService = inject(ManagementRulesValidatorService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private archiveService = inject(ArchiveService);
-  private formBuilder = inject(FormBuilder);
-  private dialog = inject(MatDialog);
-  private translateService = inject(TranslateService);
-  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
-  private ruleService = inject(RuleService);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly dialog = inject(MatDialog);
+  private readonly translateService = inject(TranslateService);
+  private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private readonly ruleService = inject(RuleService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();

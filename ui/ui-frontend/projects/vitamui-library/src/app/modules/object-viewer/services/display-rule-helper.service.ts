@@ -42,7 +42,7 @@ import { TypeService } from './type.service';
 
 @Injectable()
 export class DisplayRuleHelperService {
-  private typeService = inject(TypeService);
+  private readonly typeService = inject(TypeService);
 
   private isUndefinedOrNull(path: any): boolean {
     return path === undefined || path === null;

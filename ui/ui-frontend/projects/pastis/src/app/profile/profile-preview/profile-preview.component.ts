@@ -57,12 +57,12 @@ import { ProfileInformationTabComponent } from './profile-information-tab/profil
   standalone: false,
 })
 export class ProfilePreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private router = inject(Router);
-  private pastisConfig = inject(PastisConfiguration);
-  private profileService = inject(ProfileService);
-  private route = inject(ActivatedRoute);
-  private snackBarService = inject(SnackBarService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly router = inject(Router);
+  private readonly pastisConfig = inject(PastisConfiguration);
+  private readonly profileService = inject(ProfileService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Output()
   previewClose: EventEmitter<any> = new EventEmitter();

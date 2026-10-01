@@ -56,12 +56,12 @@ import { ContextService } from '../../context.service';
 })
 export class ContextPermissionTabComponent implements OnInit {
   dialog = inject(MatDialog);
-  private contextService = inject(ContextService);
-  private customerApiService = inject(CustomerApiService);
-  private tenantApiService = inject(TenantApiService);
-  private authService = inject(AuthService);
-  private accessService = inject(AccessContractService);
-  private ingestService = inject(IngestContractService);
+  private readonly contextService = inject(ContextService);
+  private readonly customerApiService = inject(CustomerApiService);
+  private readonly tenantApiService = inject(TenantApiService);
+  private readonly authService = inject(AuthService);
+  private readonly accessService = inject(AccessContractService);
+  private readonly ingestService = inject(IngestContractService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 

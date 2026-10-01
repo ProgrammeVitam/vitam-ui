@@ -57,19 +57,19 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
   standalone: false,
 })
 export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit, OnDestroy {
-  private archiveService = inject(ArchiveService);
-  private clipboard = inject(Clipboard);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private accessContractService = inject(AccessContractService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly clipboard = inject(Clipboard);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   @Input() archiveUnit: Unit;
 
   hasDownloadDocumentRole = false;
 
   private accessContract: AccessContract;
-  private subscription = new Subscription();
-  private allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
+  private readonly subscription = new Subscription();
+  private readonly allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
 
   ngOnInit() {
     this.checkDownloadPermissions();

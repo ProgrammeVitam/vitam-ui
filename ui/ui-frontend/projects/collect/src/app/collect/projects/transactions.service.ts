@@ -43,7 +43,7 @@ import { ProjectsApiService } from '../core/api/project-api.service';
   providedIn: 'root',
 })
 export class TransactionsService {
-  private projectsApiService = inject(ProjectsApiService);
+  private readonly projectsApiService = inject(ProjectsApiService);
 
   public create(transaction: Transaction): Observable<any> {
     return this.projectsApiService.createTransaction(transaction);

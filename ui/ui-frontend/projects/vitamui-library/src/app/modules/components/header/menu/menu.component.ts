@@ -77,13 +77,13 @@ interface NgxTranslateApp {
   standalone: false,
 })
 export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
-  private dialogRef = inject(MenuOverlayRef);
-  private applicationService = inject(ApplicationService);
-  private cdrRef = inject(ChangeDetectorRef);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private translateService = inject(TranslateService);
-  private router = inject(Router);
-  private startupService = inject(StartupService);
+  private readonly dialogRef = inject(MenuOverlayRef);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly cdrRef = inject(ChangeDetectorRef);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly translateService = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly startupService = inject(StartupService);
 
   public state = '';
   public appMap: Map<Category, Application[]>;
@@ -96,8 +96,8 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private firstResult: any;
   private firstResultFocused = false;
-  private destroyer$ = new Subject<void>();
-  private ngxAppArray: NgxTranslateApp[] = []; // Translated apps array from en / fr json files
+  private readonly destroyer$ = new Subject<void>();
+  private readonly ngxAppArray: NgxTranslateApp[] = []; // Translated apps array from en / fr json files
 
   @ViewChild('searchBar', { static: true }) searchBar: SearchBarComponent;
   @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;

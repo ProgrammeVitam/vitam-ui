@@ -64,7 +64,7 @@ export class EditorListDateComponent implements OnInit, OnDestroy {
 
   control: FormControl;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnInit() {
     const values: any[] = [...this.editObject.control.value] as any[];

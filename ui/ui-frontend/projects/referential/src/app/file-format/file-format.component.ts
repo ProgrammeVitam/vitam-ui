@@ -55,8 +55,8 @@ import { FileFormatListComponent } from './file-format-list/file-format-list.com
 export class FileFormatComponent extends SidenavPage<FileFormat> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
-  private translateService = inject(TranslateService);
-  private securityService = inject(SecurityService);
+  private readonly translateService = inject(TranslateService);
+  private readonly securityService = inject(SecurityService);
 
   search = '';
   tenantIdentifier: number;

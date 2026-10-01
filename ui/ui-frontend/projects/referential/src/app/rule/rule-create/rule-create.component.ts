@@ -52,10 +52,10 @@ import { sizes } from '../../ontology/ontology-form-options';
 export class RuleCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<RuleCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private ruleService = inject(RuleService);
-  private ruleCreateValidator = inject(RuleCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly ruleService = inject(RuleService);
+  private readonly ruleCreateValidator = inject(RuleCreateValidators);
 
   form: FormGroup;
   hasCustomGraphicIdentity = false;

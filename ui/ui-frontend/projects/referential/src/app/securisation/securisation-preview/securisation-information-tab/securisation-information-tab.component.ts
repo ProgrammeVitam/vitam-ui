@@ -45,7 +45,7 @@ import { SecurisationService } from '../../securisation.service';
   standalone: false,
 })
 export class SecurisationInformationTabComponent implements OnInit {
-  private securisationService = inject(SecurisationService);
+  private readonly securisationService = inject(SecurisationService);
 
   @Input()
   securisation: Event;

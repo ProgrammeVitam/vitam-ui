@@ -42,7 +42,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
   standalone: false,
 })
 export class SafeStylePipe implements PipeTransform {
-  private sanitizer = inject(DomSanitizer);
+  private readonly sanitizer = inject(DomSanitizer);
 
   transform(value: string): SafeStyle {
     return this.sanitizer.bypassSecurityTrustStyle(value);

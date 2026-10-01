@@ -44,8 +44,8 @@ import { ProjectsApiService } from '../core/api/project-api.service';
   providedIn: 'root',
 })
 export class ProjectsService extends SearchService<Project> {
-  private projectsApiService: ProjectsApiService;
-  private translationService = inject(TranslateService);
+  private readonly projectsApiService: ProjectsApiService;
+  private readonly translationService = inject(TranslateService);
 
   pageEvent = new Subject<string>();
   tenantEvent = new Subject<string>();

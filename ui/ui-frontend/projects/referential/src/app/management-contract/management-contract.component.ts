@@ -51,8 +51,8 @@ import { shareReplay } from 'rxjs/operators';
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
-  private applicationService = inject(ApplicationService);
+  private readonly route: ActivatedRoute;
+  private readonly applicationService = inject(ApplicationService);
 
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
 
@@ -60,7 +60,7 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
   tenantId: number;
   isSlaveMode: boolean;
 
-  #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
+  readonly #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
 
   constructor() {
     const route = inject(ActivatedRoute);

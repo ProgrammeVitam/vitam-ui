@@ -48,9 +48,9 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
   standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
-  private archiveService = inject(ArchiveService);
-  private accessContractService = inject(AccessContractService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   @Input() archiveUnit: Unit;
   @Input() tenantIdentifier: number;
@@ -63,7 +63,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   downloadableVersionWithQualifier: VersionWithQualifierDto = null;
 
   private accessContract: AccessContract;
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnInit() {
     this.getAccessContract();

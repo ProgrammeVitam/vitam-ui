@@ -91,7 +91,7 @@ interface ExtendedHierachyNode<T> extends d3.HierarchyNode<T> {
   standalone: false,
 })
 export class SedaVisualizerComponent implements OnInit {
-  private pastisService = inject(PastisApiService);
+  private readonly pastisService = inject(PastisApiService);
 
   @ViewChild('myDiv', { static: true }) myDiv: ElementRef;
 

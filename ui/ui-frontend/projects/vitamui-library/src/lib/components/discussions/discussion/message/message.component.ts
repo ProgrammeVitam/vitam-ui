@@ -56,8 +56,8 @@ import { firstValueFrom } from 'rxjs';
 })
 export class MessageComponent {
   me = inject(AuthService).user;
-  private discussionService = inject(DiscussionService);
-  private dialog = inject(MatDialog);
+  private readonly discussionService = inject(DiscussionService);
+  private readonly dialog = inject(MatDialog);
 
   discussion = input.required<Discussion>();
   message = input.required<Message>();

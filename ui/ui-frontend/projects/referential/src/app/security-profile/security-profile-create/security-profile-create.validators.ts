@@ -44,13 +44,13 @@ import { SecurityProfileService } from '../security-profile.service';
   providedIn: 'root',
 })
 export class SecurityProfileCreateValidators {
-  private contextService: SecurityProfileService;
+  private readonly contextService: SecurityProfileService;
 
   constructor(contextService: SecurityProfileService = inject(SecurityProfileService)) {
     this.contextService = contextService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

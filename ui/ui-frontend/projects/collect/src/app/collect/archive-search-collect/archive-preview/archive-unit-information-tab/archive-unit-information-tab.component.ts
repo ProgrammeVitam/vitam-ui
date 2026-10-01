@@ -53,8 +53,8 @@ import { ArchiveCollectService } from '../../archive-collect.service';
   standalone: false,
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
-  private archiveService = inject(ArchiveCollectService);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly archiveService = inject(ArchiveCollectService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   OBJECTS_TAB_INDEX = 3;
 

@@ -57,12 +57,12 @@ const REMOVE_ACTION_LABEL = 'ARCHIVE_UNIT.ACTIONS.REMOVE';
 
 @Injectable()
 export class EditObjectService {
-  private schemaService = inject(SchemaService);
-  private typeService = inject(TypeService);
-  private dataService = inject(DataStructureService);
-  private pathService = inject(PathService);
-  private formBuilder = inject(FormBuilder);
-  private logger = inject(Logger);
+  private readonly schemaService = inject(SchemaService);
+  private readonly typeService = inject(TypeService);
+  private readonly dataService = inject(DataStructureService);
+  private readonly pathService = inject(PathService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly logger = inject(Logger);
 
   public editObject(path: string, data: any, template: DisplayRule[], schema: Schema): EditObject {
     const schemaPath = this.schemaService.normalize(path);
@@ -312,7 +312,7 @@ export class EditObjectService {
     return kind;
   }
 
-  private computeChildrenRemoveActions = (editObject: EditObject): Action[] => {
+  private readonly computeChildrenRemoveActions = (editObject: EditObject): Action[] => {
     if (!this.canAddAndRemove(editObject)) return [];
 
     if (editObject.kind === 'object-array') {
@@ -355,7 +355,7 @@ export class EditObjectService {
     return [];
   };
 
-  private computeAddActions =
+  private readonly computeAddActions =
     (template: Template, schema: Schema) =>
     (editObject: EditObject): Action[] => {
       if (!this.canAddAndRemove(editObject)) return [];

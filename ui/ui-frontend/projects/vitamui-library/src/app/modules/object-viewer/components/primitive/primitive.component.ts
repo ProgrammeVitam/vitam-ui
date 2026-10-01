@@ -46,8 +46,8 @@ import { DateDisplayService } from '../../services/date-display.service';
   standalone: false,
 })
 export class PrimitiveComponent implements OnInit {
-  private dateDisplayService = inject(DateDisplayService);
-  private datePipe = inject(DatePipe);
+  private readonly dateDisplayService = inject(DateDisplayService);
+  private readonly datePipe = inject(DatePipe);
 
   @Input() displayObject: DisplayObject;
 

@@ -80,7 +80,7 @@ import { SedaData } from '../../models/seda-data';
   providedIn: 'root',
 })
 export class SedaService {
-  private sedaNode = new BehaviorSubject<SedaData>(null);
+  private readonly sedaNode = new BehaviorSubject<SedaData>(null);
   sedaRules$ = this.sedaNode.asObservable();
 
   selectedSedaNode = new BehaviorSubject<SedaData>(null);

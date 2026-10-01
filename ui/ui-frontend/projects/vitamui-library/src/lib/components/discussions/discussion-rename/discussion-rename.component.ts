@@ -49,8 +49,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './discussion-rename.component.scss',
 })
 export class DiscussionRenameComponent {
-  private discussionService = inject(DiscussionService);
-  private discussionPanelService = inject(DiscussionPanelService);
+  private readonly discussionService = inject(DiscussionService);
+  private readonly discussionPanelService = inject(DiscussionPanelService);
 
   discussion = input.required<Discussion>();
 

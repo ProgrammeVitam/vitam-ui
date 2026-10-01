@@ -45,8 +45,8 @@ const EVENT_LIMIT = 100;
   standalone: false,
 })
 export class OwnerOperationHistoryTabComponent implements OnChanges {
-  private authService = inject(AuthService);
-  private logbookService = inject(LogbookService);
+  private readonly authService = inject(AuthService);
+  private readonly logbookService = inject(LogbookService);
 
   @Input() id: string;
   @Input() identifier: string;

@@ -71,8 +71,8 @@ const MIN_HEIGHT = 500;
   styleUrl: './discussion-panel.component.scss',
 })
 export class DiscussionPanelComponent {
-  private discussionService = inject(DiscussionService);
-  private discussionPanelService = inject(DiscussionPanelService);
+  private readonly discussionService = inject(DiscussionService);
+  private readonly discussionPanelService = inject(DiscussionPanelService);
 
   width = 400;
   height = 600;
