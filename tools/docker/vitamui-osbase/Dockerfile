@@ -43,8 +43,8 @@ RUN echo "vitamuiadmin:vitamuiadmin" | chpasswd
 
 # Setup ssh
 RUN yum install -y openssh-server
-ADD ssh/sshd_config /etc/ssh/sshd_config
-ADD ssh/vitamuiadmin_rsa.pub  /vitamuiadmin/vitamuiadmin_rsa.pub
+COPY ssh/sshd_config /etc/ssh/sshd_config
+COPY ssh/vitamuiadmin_rsa.pub  /vitamuiadmin/vitamuiadmin_rsa.pub
 RUN chmod 644 /vitamuiadmin/vitamuiadmin_rsa.pub
 
 # To avoid "System is booting up. See pam_nologin(8)" error.
