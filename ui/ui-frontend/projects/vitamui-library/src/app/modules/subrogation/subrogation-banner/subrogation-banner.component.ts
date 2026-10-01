@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
-import { filter } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { filter, switchMap } from 'rxjs/operators';
 
 import { AuthService } from '../../auth.service';
 import { Subrogation } from '../../models/subrogation/subrogation.interface';
@@ -48,41 +49,48 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'vitamui-common-subrogation-banner',
   templateUrl: './subrogation-banner.component.html',
   imports: [DatePipe, TranslatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubrogationBannerComponent implements OnInit {
+export class SubrogationBannerComponent {
   authService = inject(AuthService);
   private subrogationService = inject(SubrogationService);
 
-  show = false;
-  hidden = false;
-  endDate: Date;
-  surrogateCustomerCode: String;
-  surrogateCustomerName: String;
-  subrogation: Subrogation;
-  subrogationTTL = 1800000;
+  hidden = signal(false);
+  stopped = signal(false);
 
-  ngOnInit() {
-    this.authService.user$.pipe(filter((user: AuthUser) => !!user?.superUser)).subscribe(() => {
-      this.subrogationService
-        .getCurrent()
-        .pipe(filter((data) => !!data))
-        .subscribe((data) => {
-          if (!this.subrogation) {
-            this.subrogation = data;
-            this.show = true;
-            this.endDate = new Date(this.subrogation.date);
-            this.subrogationTTL = this.endDate.getTime() - new Date().getTime();
-            this.surrogateCustomerCode = this.subrogation.surrogateCustomerCode;
-            this.surrogateCustomerName = this.subrogation.surrogateCustomerName;
-            setTimeout(() => this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser), this.subrogationTTL);
-          }
-        });
+  private user = toSignal(this.authService.user$.pipe(filter((user: AuthUser) => !!user?.superUser)));
+  private currentSubrogation = toSignal(
+    this.authService.user$.pipe(
+      filter((user: AuthUser) => !!user?.superUser),
+      switchMap(() => this.subrogationService.getCurrent().pipe(filter((data) => !!data))),
+    ),
+  );
+
+  subrogation = computed<Subrogation | undefined>(() => this.currentSubrogation());
+  show = computed(() => !!this.subrogation() && !this.stopped());
+  endDate = computed(() => (this.subrogation() ? new Date(this.subrogation().date) : undefined));
+  surrogateCustomerCode = computed(() => this.subrogation()?.surrogateCustomerCode);
+  surrogateCustomerName = computed(() => this.subrogation()?.surrogateCustomerName);
+  userEmail = computed(() => this.user()?.email ?? this.authService.user?.email);
+
+  private logoutTimer: ReturnType<typeof setTimeout>;
+
+  constructor() {
+    effect(() => {
+      const subrogation = this.subrogation();
+      if (subrogation && !this.logoutTimer) {
+        const ttl = new Date(subrogation.date).getTime() - Date.now();
+        this.logoutTimer = setTimeout(
+          () => this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser),
+          Math.max(ttl, 0),
+        );
+      }
     });
   }
 
   onStopSubrogation() {
-    this.subrogationService.decline(this.subrogation.id).subscribe(() => {
-      this.show = false;
+    this.subrogationService.decline(this.subrogation().id).subscribe(() => {
+      this.stopped.set(true);
       this.authService.logoutAndRedirectToUiForUser(this.authService.user.superUser);
     });
   }
