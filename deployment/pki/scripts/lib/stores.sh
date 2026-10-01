@@ -21,7 +21,7 @@ function generateTruststore {
     local TRUSTSTORE_PATH="${KEYSTORES_DIRECTORY}/${AUTHORITY_NAME}/truststore_${AUTHORITY_NAME}.p12"
     local TRUSTSTORE_PASSWORD=$(setPassphrase truststores "${AUTHORITY_NAME}")
 
-    if [ -f "${TRUSTSTORE_PATH}" ]; then
+    if [[ -f "${TRUSTSTORE_PATH}" ]]; then
         rm -vf "${TRUSTSTORE_PATH:?}"
     fi
 
@@ -57,7 +57,7 @@ function generateKeystore {
     local CRT_KEY_PASSWORD=$(getPassphrase certs "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
     local KEYSTORE_PASSWORD=$(setPassphrase keystores "${AUTHORITY_NAME}_${TYPE_NAME}_${COMPONENT}")
 
-    if [ -f ${TARGET_KEYSTORE} ]; then
+    if [[ -f ${TARGET_KEYSTORE} ]]; then
         rm -vf ${TARGET_KEYSTORE:?}
     fi
 
@@ -82,8 +82,8 @@ function main() {
     init
     ERASE="false"
 
-    if [ "$#" -gt 0 ]; then
-        if [ "${1,,}" == "true" ]; then
+    if [[ "$#" -gt 0 ]]; then
+        if [[ "${1,,}" == "true" ]]; then
             ERASE="true"
         fi
     fi
@@ -93,7 +93,7 @@ function main() {
 
     KEYSTORES_DIRECTORY="${REPERTOIRE_ROOT}/environments/keystores"
 
-    if [ ! -d ${KEYSTORES_DIRECTORY} ]; then
+    if [[ ! -d ${KEYSTORES_DIRECTORY} ]]; then
         pki_logger "Directory ${KEYSTORES_DIRECTORY} does not exist, creating it..."
         mkdir -p ${KEYSTORES_DIRECTORY};
     fi
@@ -109,7 +109,7 @@ function main() {
         AUTHORITY_PATH="${CERTIFICATE_DIR}/${AUTHORITY_NAME}"
 
         # Verify the directory exists before processing
-        if [ -d "$AUTHORITY_PATH" ]; then
+        if [[ -d "$AUTHORITY_PATH" ]]; then
             pki_logger "-------------------------------------------"
             pki_logger "Creating keystores or truststore for AUTHORITY: ${AUTHORITY_NAME}"
 
@@ -117,7 +117,7 @@ function main() {
             for TYPE_PATH in $( ls -d ${AUTHORITY_PATH}/{ca,clients,servers} 2>/dev/null || true ); do
                 local TYPE_NAME=$(basename ${TYPE_PATH})
 
-                if [ "${TYPE_NAME}" == "ca" ]; then
+                if [[ "${TYPE_NAME}" == "ca" ]]; then
                     # Generate truststore for CA certificates
                     generateTruststore "${AUTHORITY_NAME}"
                     continue

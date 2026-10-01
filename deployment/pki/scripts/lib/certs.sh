@@ -17,7 +17,7 @@ function getComponentCertificateSan {
     local SERVICE_DC_HOSTNAME="${2}"
     local REVERSE_SAN="${3}"
 
-    if [ -n "${REVERSE_SAN}" ]; then
+    if [[ -n "${REVERSE_SAN}" ]]; then
         echo "DNS:${SERVICE_HOSTNAME},DNS:${SERVICE_DC_HOSTNAME},DNS:${REVERSE_SAN}"
     else
         echo "DNS:${SERVICE_HOSTNAME},DNS:${SERVICE_DC_HOSTNAME}"
@@ -117,7 +117,7 @@ function generateClientCertificate {
 
     # Generating pem only for cas-server and ui-* components...
     # Mandatory for loading the certificates in database 'security -> certificates' for authentification purposes
-    if [ "${COMPONENT}" == "cas-server" ] || [[ "${COMPONENT}" == ui-* ]]; then
+    if [[ "${COMPONENT}" == "cas-server" ]] || [[ "${COMPONENT}" == ui-* ]]; then
         pki_logger "Generating ${TYPE_CERTIFICAT} pem for component ${COMPONENT}..."
         openssl x509 \
             -in "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" \
@@ -147,13 +147,13 @@ function generateServerCertAndStorePassphrase {
     pki_logger "Creating server certificate for COMPONENT: ${AUTHORITY}/${COMPONENT}"
     pki_logger "DEBUG" "DC_NAME=${DC_NAME}, CONSUL_DOMAIN=${CONSUL_DOMAIN}"
 
-    if [ "${COMPONENT}" == "reverse" ]; then
+    if [[ "${COMPONENT}" == "reverse" ]]; then
         REVERSE_SAN=$(read_ansible_var "vitamui_reverse_external_dns" hosts_vitamui_reverseproxy[0])
         pki_logger "DEBUG" "REVERSE_SAN=${REVERSE_SAN}"
     fi
 
     local CERTIFICATE_FILE="${CERTIFICATE_DIR}/${AUTHORITY}/${TYPE_CERTIFICAT}/${COMPONENT}/${COMPONENT}.crt"
-    if [ ! -f "${CERTIFICATE_FILE}" ]; then
+    if [[ ! -f "${CERTIFICATE_FILE}" ]]; then
          # Create the server certificate
          generateServerCertificate ${AUTHORITY} \
                                    ${TYPE_CERTIFICAT} \
@@ -176,7 +176,7 @@ function generateClientCertAndStorePassphrase {
     pki_logger "Creating client certificate for COMPONENT: ${AUTHORITY}/${COMPONENT}"
 
     local CERTIFICATE_FILE="${CERTIFICATE_DIR}/${AUTHORITY}/${TYPE_CERTIFICAT}/${COMPONENT}/${COMPONENT}.crt"
-    if [ ! -f "${CERTIFICATE_FILE}" ]; then
+    if [[ ! -f "${CERTIFICATE_FILE}" ]]; then
         # Create the client certificate
         generateClientCertificate ${AUTHORITY} \
                                   ${TYPE_CERTIFICAT} \
@@ -233,18 +233,18 @@ function main {
     ERASE="false"
 
     # Parameters check
-    if [ "${1}" == "" ]; then
+    if [[ "${1}" == "" ]]; then
         pki_logger "ERROR" "This script needs to know on which environment you want to apply to !"
         exit 1
     fi
-    if [ "$#" -gt 1 ]; then
-        if [ "${2,,}" == "true" ]; then
+    if [[ "$#" -gt 1 ]]; then
+        if [[ "${2,,}" == "true" ]]; then
             ERASE="true"
         fi
     fi
     ENVIRONMENT_FILE="${1}"
 
-    if [ ! -f "${ENVIRONMENT_FILE}" ]; then
+    if [[ ! -f "${ENVIRONMENT_FILE}" ]]; then
         pki_logger "ERROR" "Cannot find environment file: ${ENVIRONMENT_FILE}"
         exit 1
     fi
@@ -261,8 +261,8 @@ function main {
     # Cleaning or creating vault file for certs
     initVault   certs   ${ERASE}
 
-    if [ "${ERASE}" == "true" ]; then
-        if [ -d ${CERTIFICATE_DIR} ]; then
+    if [[ "${ERASE}" == "true" ]]; then
+        if [[ -d ${CERTIFICATE_DIR} ]]; then
             # We remove all generated certs
             find ${CERTIFICATE_DIR:?} -type f -name *.crt -exec rm -vf {} \;
             find ${CERTIFICATE_DIR:?} -type f -name *.key -exec rm -vf {} \;
@@ -270,18 +270,18 @@ function main {
             find ${CERTIFICATE_DIR:?} -type d -empty -delete
         fi
     fi
-    if [ ! -d ${CERTIFICATE_DIR} ]; then
+    if [[ ! -d ${CERTIFICATE_DIR} ]]; then
         pki_logger "Directory ${CERTIFICATE_DIR} does not exist, creating it..."
         mkdir -p ${CERTIFICATE_DIR}
     fi
-    if [ ! -d ${TEMP_CERTS} ]; then
+    if [[ ! -d ${TEMP_CERTS} ]]; then
         pki_logger "Directory ${TEMP_CERTS} does not exist, creating it..."
         mkdir -p ${TEMP_CERTS}
     fi
 
     generateCerts
 
-    if [ -d ${TEMP_CERTS} ]; then
+    if [[ -d ${TEMP_CERTS} ]]; then
         pki_logger "=============================================="
         pki_logger "Cleaning of temporary tempcerts directories"
         rm -vRf ${TEMP_CERTS:?}

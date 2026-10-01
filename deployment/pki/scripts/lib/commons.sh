@@ -13,12 +13,12 @@ function init () {
     CRYPTO_SPEC="rsa:4096"
     ENVIRONMENT_VARIABLES="${REPERTOIRE_ROOT}/environments/group_vars/all"
 
-    if [ -f "${REPERTOIRE_ROOT}/vault_pass.txt" ]; then
+    if [[ -f "${REPERTOIRE_ROOT}/vault_pass.txt" ]]; then
         ANSIBLE_VAULT_PASSWD="--vault-password-file ${REPERTOIRE_ROOT}/vault_pass.txt"
     else
         ANSIBLE_VAULT_PASSWD="--ask-vault-pass"
     fi
-    if [ -f "${REPERTOIRE_ROOT}/vault_pki.pass" ]; then
+    if [[ -f "${REPERTOIRE_ROOT}/vault_pki.pass" ]]; then
         ANSIBLE_VAULT_PKI_PASSWD="--vault-password-file ${REPERTOIRE_ROOT}/vault_pki.pass"
     else
         ANSIBLE_VAULT_PKI_PASSWD="--ask-vault-pass"
@@ -52,7 +52,7 @@ function read_ansible_var {
 function purge_directory {
     local DIR_TO_PURGE="${1}"
 
-    if [ ! -d "${DIR_TO_PURGE}" ]; then
+    if [[ ! -d "${DIR_TO_PURGE}" ]]; then
         pki_logger "ERROR" "Directory ${DIR_TO_PURGE} does not exists"
         return 1
     fi
@@ -65,7 +65,7 @@ function purge_directory {
 # Method allowing to generate a random passphrase.
 # @return The generated passphrase (changeme in dev mode).
 function generatePassphrase {
-    if [ "${DEV_MODE}" == "true" ]; then
+    if [[ "${DEV_MODE}" == "true" ]]; then
         echo "changeme"
     else
         cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 48
@@ -91,13 +91,13 @@ function initVault {
     local VAULT_FILE=$(getVaultFile "$TYPE")
     local VAULT_PASS=$(getVaultPass "$TYPE")
 
-    if [ ! -f "${VAULT_FILE}" ]; then
+    if [[ ! -f "${VAULT_FILE}" ]]; then
         pki_logger "Creating vault file ${VAULT_FILE}"
         mkdir -p "${VAULT_FILE%/*}"
         echo '---' > ${VAULT_FILE}
         ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
         echo '---' > "${VAULT_FILE}.example"
-    elif [ "$ERASE_VAULT" == "true" ]; then
+    elif [[ "$ERASE_VAULT" == "true" ]]; then
         pki_logger "Resetting vault file ${VAULT_FILE}"
         ansible-vault decrypt ${VAULT_FILE} ${VAULT_PASS}
         echo '---' > ${VAULT_FILE}
@@ -182,7 +182,7 @@ function getPassphrase {
     local VAULT_PASS=$(getVaultPass "$TYPE")
     local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
-    if [ ! -f "${VAULT_FILE}" ]; then
+    if [[ ! -f "${VAULT_FILE}" ]]; then
         pki_logger "ERROR" "The vault file is not found. Please, initialize it before calling me ! Vault file: ${VAULT_FILE}"
         return 1
     fi
@@ -190,7 +190,7 @@ function getPassphrase {
     local KEY_TO_SEARCH="${KEY_PREFIX}$(normalize_key ${KEY})"
 
     local VAULT_CONTENT=$(ansible-vault view ${VAULT_FILE} ${VAULT_PASS})
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
         pki_logger "ERROR" "Error while reading the vault file ${VAULT_FILE}"
         return 1
     fi
@@ -215,7 +215,7 @@ function hasPassphrase {
     local VAULT_PASS=$(getVaultPass "$TYPE")
     local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
-    if [ ! -f "${VAULT_FILE}" ]; then
+    if [[ ! -f "${VAULT_FILE}" ]]; then
         pki_logger "ERROR" "The vault file is not found. Please, initialize it before calling me ! Vault file: ${VAULT_FILE}"
         return 1
     fi
@@ -223,7 +223,7 @@ function hasPassphrase {
     local KEY_TO_SEARCH="${KEY_PREFIX}$(normalize_key ${KEY})"
 
     local VAULT_CONTENT=$(ansible-vault view ${VAULT_FILE} ${VAULT_PASS})
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
         pki_logger "ERROR" "Error while reading the vault file ${VAULT_FILE}"
         return 1
     fi
@@ -244,7 +244,7 @@ function setPassphrase {
     local KEY="${2}"
     local VALUE="${3}"
 
-    if [ -z "${VALUE}" ]; then
+    if [[ -z "${VALUE}" ]]; then
         # We generate a random key if no value is provided
         local PASSPHRASE=$(generatePassphrase)
     else
@@ -256,7 +256,7 @@ function setPassphrase {
     local VAULT_PASS=$(getVaultPass "$TYPE")
     local KEY_PREFIX=$(getKeyPrefix "$TYPE")
 
-    if [ ! -f "${VAULT_FILE}" ]; then
+    if [[ ! -f "${VAULT_FILE}" ]]; then
         pki_logger "ERROR" "The vault file is not found. Please, initialize it before call me ! Vault file: ${VAULT_FILE}"
         return 1
     fi
@@ -295,7 +295,7 @@ function getOrSetPassphrase {
     local KEY="${2}"
 
     local EXISTS=$(hasPassphrase "${TYPE}" "${KEY}")
-    if [ "${EXISTS}" == "false" ]; then
+    if [[ "${EXISTS}" == "false" ]]; then
         echo $(setPassphrase "${TYPE}" "${KEY}")
     else
         echo $(getPassphrase "${TYPE}" "${KEY}")
