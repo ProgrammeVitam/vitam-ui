@@ -3,15 +3,13 @@ on:
   pull_request_target:
     types: [closed, labeled]
 
-permissions:
-  pull-requests: write
-  contents: write
-
 jobs:
   # --- JOB 1: Dynamic Matrix Generation ---
   setup-matrix:
     name: Setup Backport Matrix
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     if: github.event.pull_request.merged == true
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -57,6 +55,9 @@ jobs:
     name: Backport to ${{ matrix.target.branch }}
     needs: setup-matrix
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
     if: ${{ needs.setup-matrix.outputs.matrix != '[]' && needs.setup-matrix.outputs.matrix != '' }}
     strategy:
       matrix:
