@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents when working with code in this repository.
 
 ## Project Overview
 
@@ -170,6 +170,12 @@ npm run test:identity -- --watch
 - **Java**: Spotless with Prettier Java plugin (120 char line length, 4-space indent). Run `mvn spotless:apply` to auto-format.
 - **TypeScript/HTML**: ESLint + Prettier. Run `npm run prettier` to format.
 - **License headers**: All Java and TS files require license headers (checked by `license-maven-plugin`).
+
+## Commit Message Convention
+
+- Messages must be in **English**.
+- Every commit message must include a **Tuleap ticket number** matching `#[0-9]{4,5}` (e.g. `#12345`). This is enforced on pull requests by `.github/workflows/commit-message-check.yml`.
+- Recommended format: `Story #XXXXX: <imperative description>` (e.g. `Story #12345: Clean code - foo bar`).
 
 ## Maven Profiles
 

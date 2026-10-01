@@ -4,7 +4,7 @@
   file:
     path: "{{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/"
     state: directory
-    mode: 0777
+    mode: 0770
   delegate_to: localhost
 
 # If sync_type == 'rsync'
