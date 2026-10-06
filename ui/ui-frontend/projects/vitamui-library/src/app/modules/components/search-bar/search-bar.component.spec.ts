@@ -69,4 +69,20 @@ describe('SearchBarComponent', () => {
   it('should create', () => {
     expect(testhost).toBeTruthy();
   });
+
+  it('should emit clear and search when reset is called', () => {
+    const searchBar = fixture.debugElement.children[0].componentInstance as SearchBarComponent;
+    searchBar.searchValue = 'some filter';
+
+    const clearSpy = vi.fn();
+    const searchSpy = vi.fn();
+    searchBar.clear.subscribe(clearSpy);
+    searchBar.search.subscribe(searchSpy);
+
+    searchBar.reset();
+
+    expect(searchBar.searchValue).toBeNull();
+    expect(clearSpy).toHaveBeenCalled();
+    expect(searchSpy).toHaveBeenCalledWith(null);
+  });
 });
