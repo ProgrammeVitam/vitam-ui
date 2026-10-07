@@ -1,7 +1,10 @@
-dbIam = db.getSiblingDB('{{ mongodb.iam.db | default('iam') }}')
-dbSecurity = db.getSiblingDB('{{ mongodb.security.db | default('security') }}')
-
-print("START v10.0.0-02_add_archive_search_preservation_roles.js");
+dbIam.applications.updateOne(
+    {"identifier": "PRESERVATION_APP"},
+    {
+        $set: {
+            "name": "Griffons et scénarios de préservation"}
+    }
+);
 
 // Add archive search preservation roles to archive admin profiles
 dbIam.profiles.updateMany({
@@ -33,5 +36,3 @@ dbSecurity.contexts.updateOne({
         }
     }
 });
-
-print("END v10.0.0-02_add_archive_search_preservation_roles.js");
