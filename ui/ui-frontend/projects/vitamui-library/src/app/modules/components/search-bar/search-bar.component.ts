@@ -77,6 +77,7 @@ export class SearchBarComponent implements OnChanges {
   reset() {
     this.searchValue = null;
     this.clear.emit();
+    this.search.emit(this.searchValue);
   }
 
   public onFocus() {
