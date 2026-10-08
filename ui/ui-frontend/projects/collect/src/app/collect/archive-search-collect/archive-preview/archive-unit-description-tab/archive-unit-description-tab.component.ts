@@ -50,11 +50,11 @@ import { ArchiveUnitService } from './archive-unit.service';
   standalone: false,
 })
 export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy {
-  private dialog = inject(MatDialog);
-  private archiveUnitService = inject(ArchiveUnitService);
-  private spinnerOverlayService = inject(SpinnerOverlayService);
-  private snackBarService = inject(SnackBarService);
-  private translateService = inject(TranslateService);
+  private readonly dialog = inject(MatDialog);
+  private readonly archiveUnitService = inject(ArchiveUnitService);
+  private readonly spinnerOverlayService = inject(SpinnerOverlayService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() archiveUnit: ArchiveUnit;
   @Input() editMode = false;

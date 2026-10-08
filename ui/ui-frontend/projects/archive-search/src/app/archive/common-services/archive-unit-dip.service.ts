@@ -49,8 +49,8 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ArchiveUnitDipService {
-  private vitamConfigurationService = inject(VitamTenantConfigService);
-  private translateService = inject(TranslateService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
   launchExportDipModal(

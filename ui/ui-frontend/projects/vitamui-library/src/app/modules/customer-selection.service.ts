@@ -42,8 +42,8 @@ import { MenuOption } from './models/menu-option.interface';
   providedIn: 'root',
 })
 export class CustomerSelectionService {
-  private selectedCustomer$ = new BehaviorSubject(undefined);
-  private customers$ = new BehaviorSubject(undefined);
+  private readonly selectedCustomer$ = new BehaviorSubject(undefined);
+  private readonly customers$ = new BehaviorSubject(undefined);
 
   constructor() {}
 

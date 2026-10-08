@@ -75,15 +75,15 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     customer: Customer;
     groups: Group[];
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private userService = inject(UserService);
-  private userInfoService = inject(UserInfoService);
-  private authService = inject(AuthService);
-  private userCreateValidators = inject(UserCreateValidators);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private countryService = inject(CountryService);
-  private startupService = inject(StartupService);
-  private loggerService = inject(Logger);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly userService = inject(UserService);
+  private readonly userInfoService = inject(UserInfoService);
+  private readonly authService = inject(AuthService);
+  private readonly userCreateValidators = inject(UserCreateValidators);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly countryService = inject(CountryService);
+  private readonly startupService = inject(StartupService);
+  private readonly loggerService = inject(Logger);
 
   public maxStreetLength: number;
   public form: FormGroup;

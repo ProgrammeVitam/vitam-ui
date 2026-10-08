@@ -93,11 +93,11 @@ import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-me
 })
 export class UserActionAddMetadataComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
-  private fileService = inject(FileService);
-  private sedaService = inject(SedaService);
-  private popUpService = inject(PopupService);
-  private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
-  private profileService = inject(ProfileService);
+  private readonly fileService = inject(FileService);
+  private readonly sedaService = inject(SedaService);
+  private readonly popUpService = inject(PopupService);
+  private readonly sedaLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly profileService = inject(ProfileService);
 
   btnIsDisabled: boolean;
 

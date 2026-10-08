@@ -65,9 +65,9 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnDestroy, OnInit {
   ontologyService: OntologyService;
-  private translateService = inject(TranslateService);
-  private matDialog = inject(MatDialog);
-  private tenantSelectionService = inject(TenantSelectionService);
+  private readonly translateService = inject(TranslateService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
 
   @Input()
   set searchText(searchText: string) {
@@ -82,7 +82,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
 
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   protected readonly shortName: keyof IOntology = 'ShortName';
   protected readonly identifier: keyof IOntology = 'Identifier';
@@ -90,7 +90,7 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   orderBy: keyof IOntology;
   direction = Direction.ASCENDANT;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   constructor() {
     const ontologyService = inject(OntologyService);

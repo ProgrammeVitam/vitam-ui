@@ -55,12 +55,12 @@ const UPDATE_DEBOUNCE_TIME = 200;
   standalone: false,
 })
 export class UserInfoTabComponent implements OnChanges, OnInit {
-  private userService = inject(UserService);
-  private userInfoService = inject(UserInfoService);
-  private formBuilder = inject(FormBuilder);
-  private userCreateValidators = inject(UserCreateValidators);
-  private countryService = inject(CountryService);
-  private startupService = inject(StartupService);
+  private readonly userService = inject(UserService);
+  private readonly userInfoService = inject(UserInfoService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly userCreateValidators = inject(UserCreateValidators);
+  private readonly countryService = inject(CountryService);
+  private readonly startupService = inject(StartupService);
 
   @Input() user: User;
   @Input() userInfo: UserInfo;

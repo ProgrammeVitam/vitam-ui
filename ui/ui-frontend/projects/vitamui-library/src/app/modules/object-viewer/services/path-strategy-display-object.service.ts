@@ -61,17 +61,17 @@ const MIXED_MODE_MESSAGE =
 
 @Injectable()
 export class PathStrategyDisplayObjectService implements DisplayObjectService<Mode> {
-  private logger = inject(Logger);
-  private displayObjectHelper = inject(DisplayObjectHelperService);
-  private typeService = inject(TypeService);
+  private readonly logger = inject(Logger);
+  private readonly displayObjectHelper = inject(DisplayObjectHelperService);
+  private readonly typeService = inject(TypeService);
 
   private readonly configuration = {
     displayEmptyValues: false,
   };
-  private displayObject = new BehaviorSubject<DisplayObject>(null);
-  private data = new BehaviorSubject<any>(null);
-  private template = new BehaviorSubject<DisplayRule[]>([]);
-  private mode = new BehaviorSubject<Mode>(Mode.DATA_DRIVEN);
+  private readonly displayObject = new BehaviorSubject<DisplayObject>(null);
+  private readonly data = new BehaviorSubject<any>(null);
+  private readonly template = new BehaviorSubject<DisplayRule[]>([]);
+  private readonly mode = new BehaviorSubject<Mode>(Mode.DATA_DRIVEN);
 
   displayObject$: Observable<DisplayObject> = this.displayObject.asObservable();
 

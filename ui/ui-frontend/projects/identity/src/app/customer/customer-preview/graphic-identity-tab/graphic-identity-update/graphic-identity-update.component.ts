@@ -55,9 +55,9 @@ export class GraphicIdentityUpdateComponent implements OnInit, OnDestroy {
     customer: Customer;
     logos: LogosSafeResourceUrl;
   }>(MAT_DIALOG_DATA);
-  private customerService = inject(CustomerService);
+  private readonly customerService = inject(CustomerService);
 
-  private destroy = new Subject<void>();
+  private readonly destroy = new Subject<void>();
   private _customForm: FormGroup;
   public get customForm(): FormGroup {
     return this._customForm;

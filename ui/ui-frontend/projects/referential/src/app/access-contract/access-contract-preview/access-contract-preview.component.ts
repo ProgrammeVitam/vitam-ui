@@ -51,8 +51,8 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
   standalone: false,
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private accessContractService = inject(AccessContractService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly accessContractService = inject(AccessContractService);
 
   @Input() accessContract: AccessContract;
   @Input() tenantIdentifier: number;

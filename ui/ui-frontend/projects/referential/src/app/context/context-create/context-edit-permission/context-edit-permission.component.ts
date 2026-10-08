@@ -57,11 +57,11 @@ export const CONTEXT_PERMISSION_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class ContextEditPermissionComponent implements ControlValueAccessor, OnInit {
-  private customerApiService = inject(CustomerApiService);
-  private tenantApiService = inject(TenantApiService);
-  private authService = inject(AuthService);
-  private accessService = inject(AccessContractService);
-  private ingestService = inject(IngestContractService);
+  private readonly customerApiService = inject(CustomerApiService);
+  private readonly tenantApiService = inject(TenantApiService);
+  private readonly authService = inject(AuthService);
+  private readonly accessService = inject(AccessContractService);
+  private readonly ingestService = inject(IngestContractService);
 
   permissions: ContextPermission[];
   selectedOrganisations: string[];

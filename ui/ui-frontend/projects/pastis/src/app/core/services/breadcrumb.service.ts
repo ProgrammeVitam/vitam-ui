@@ -43,7 +43,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class BreadcrumbService {
-  private root = new BehaviorSubject<FileNode>(null);
+  private readonly root = new BehaviorSubject<FileNode>(null);
 
   public root$ = this.root.asObservable();
 

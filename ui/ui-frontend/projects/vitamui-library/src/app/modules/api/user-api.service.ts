@@ -46,8 +46,8 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class UserApiService {
-  private http = inject(HttpClient);
-  private authService = inject(AuthService);
+  private readonly http = inject(HttpClient);
+  private readonly authService = inject(AuthService);
 
   private readonly apiUrl: string;
 

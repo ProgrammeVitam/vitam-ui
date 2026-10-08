@@ -53,8 +53,8 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     accessContractId: string;
     tenantIdentifier: number;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
 
   ingestContract: IngestContract;
   accessContractId: string;

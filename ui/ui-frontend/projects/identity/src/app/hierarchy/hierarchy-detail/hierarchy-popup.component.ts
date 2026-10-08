@@ -45,7 +45,7 @@ import { Profile } from 'vitamui-library';
   standalone: false,
 })
 export class HierarchyPopupComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   profile: Profile;
 

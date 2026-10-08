@@ -45,9 +45,9 @@ import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
 })
 export class SubrogationSnackBarComponent {
   data = inject(MAT_SNACK_BAR_DATA);
-  private matSnackBarRef = inject<MatSnackBarRef<SubrogationSnackBarComponent>>(MatSnackBarRef);
-  private subrogationApiService = inject(SubrogationApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly matSnackBarRef = inject<MatSnackBarRef<SubrogationSnackBarComponent>>(MatSnackBarRef);
+  private readonly subrogationApiService = inject(SubrogationApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   close() {
     this.matSnackBarRef.dismiss();

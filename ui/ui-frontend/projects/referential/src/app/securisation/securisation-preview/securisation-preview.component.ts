@@ -46,9 +46,9 @@ import { SecurisationService } from '../securisation.service';
   standalone: false,
 })
 export class SecurisationPreviewComponent implements OnInit {
-  private securisationService = inject(SecurisationService);
-  private externalParameterService = inject(ExternalParametersService);
-  private snackBarService = inject(SnackBarService);
+  private readonly securisationService = inject(SecurisationService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input() securisation: Event;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

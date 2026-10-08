@@ -48,11 +48,11 @@ registerLocaleData(localeFr, 'fr');
   standalone: false,
 })
 export class BytesPipe implements PipeTransform {
-  private numberPipe = inject(DecimalPipe);
-  private logger = inject(Logger, { optional: true });
+  private readonly numberPipe = inject(DecimalPipe);
+  private readonly logger = inject(Logger, { optional: true });
 
-  private static NUMBER_OF_BYTES_IN_ONE_KB = 1024;
-  private static DEFAULT_PRECISION = 2;
+  private static readonly NUMBER_OF_BYTES_IN_ONE_KB = 1024;
+  private static readonly DEFAULT_PRECISION = 2;
 
   transform(value: any, precision = BytesPipe.DEFAULT_PRECISION): any {
     if (value === undefined || value === '' || isNaN(parseFloat(value)) || !isFinite(value)) {

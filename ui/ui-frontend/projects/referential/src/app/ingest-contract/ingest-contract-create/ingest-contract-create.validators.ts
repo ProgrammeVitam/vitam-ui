@@ -45,13 +45,13 @@ import { IngestContractService } from '../ingest-contract.service';
   providedIn: 'root',
 })
 export class IngestContractCreateValidators {
-  private ingestContractService: IngestContractService;
+  private readonly ingestContractService: IngestContractService;
 
   constructor(ingestContractService: IngestContractService = inject(IngestContractService)) {
     this.ingestContractService = ingestContractService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

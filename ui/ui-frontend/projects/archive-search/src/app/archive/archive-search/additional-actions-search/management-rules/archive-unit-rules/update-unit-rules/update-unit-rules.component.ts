@@ -88,15 +88,15 @@ const LocalValidators = {
   standalone: false,
 })
 export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
-  private archiveService = inject(ArchiveService);
-  private ruleService = inject(RuleService);
-  private dialog = inject(MatDialog);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private formBuilder = inject(FormBuilder);
-  private managementRulesValidatorService = inject(ManagementRulesValidatorService);
-  private translateService = inject(TranslateService);
-  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly ruleService = inject(RuleService);
+  private readonly dialog = inject(MatDialog);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
+  private readonly translateService = inject(TranslateService);
+  private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
 
@@ -139,7 +139,7 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   disabledControl = true;
   resultNumberToShow: string;
 
-  private subscriptions: Subscription = new Subscription();
+  private readonly subscriptions: Subscription = new Subscription();
 
   constructor() {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');

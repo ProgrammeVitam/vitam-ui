@@ -67,7 +67,7 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   private innerControl: FormControl;
 
   #cancelTimeout: number;
-  #componentRef: Element;
+  readonly #componentRef: Element;
 
   get canConfirm(): boolean {
     return (

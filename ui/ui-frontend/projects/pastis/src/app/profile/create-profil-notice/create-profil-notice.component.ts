@@ -64,13 +64,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './create-profil-notice.component.html',
 })
 export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
-  private profileService = inject(ProfileService);
-  private applicationService = inject(ApplicationService);
-  private translateService = inject(TranslateService);
-  private fb = inject(FormBuilder);
-  private injector = inject(Injector);
-  private dialogRef = inject<MatDialogRef<CreateProfilNoticeComponent>>(MatDialogRef);
-  private identifierValidator = inject(IdentifierExistsValidator);
+  private readonly profileService = inject(ProfileService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly translateService = inject(TranslateService);
+  private readonly fb = inject(FormBuilder);
+  private readonly injector = inject(Injector);
+  private readonly dialogRef = inject<MatDialogRef<CreateProfilNoticeComponent>>(MatDialogRef);
+  private readonly identifierValidator = inject(IdentifierExistsValidator);
 
   notice: Notice;
   noticeForm: FormGroup;

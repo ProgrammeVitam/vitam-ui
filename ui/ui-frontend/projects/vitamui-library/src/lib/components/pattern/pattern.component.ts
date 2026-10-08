@@ -58,7 +58,7 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   providers: [PATTERN_VALUE_ACCESSOR],
 })
 export class PatternComponent implements ControlValueAccessor {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() set options(options: Array<{ value: string; disabled?: boolean }>) {
     this.availableOptions = (options || [])

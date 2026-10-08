@@ -44,8 +44,8 @@ import { OntologyApiService } from '../core/api/ontology-api.service';
   providedIn: 'root',
 })
 export class OntologyService extends SearchService<Ontology> {
-  private ontologyApiService: OntologyApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly ontologyApiService: OntologyApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Ontology>();
   selectedId$ = new Subject<string>();

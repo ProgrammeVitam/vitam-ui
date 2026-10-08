@@ -47,8 +47,8 @@ import { DisplayObjectType } from '../../types';
   standalone: false,
 })
 export class ListComponent implements OnChanges {
-  private typeService = inject(TypeService);
-  private favoriteEntryService = inject(FavoriteEntryService);
+  private readonly typeService = inject(TypeService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
 
   @Input() displayObject: DisplayObject;
 

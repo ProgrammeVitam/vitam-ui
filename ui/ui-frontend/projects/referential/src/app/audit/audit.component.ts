@@ -54,7 +54,7 @@ export class AuditComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
   override globalEventService: GlobalEventService;
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   public dateRangeFilterForm: FormGroup;
   public filters: any = {};

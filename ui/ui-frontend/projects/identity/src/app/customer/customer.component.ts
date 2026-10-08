@@ -50,7 +50,7 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
   standalone: false,
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
   route: ActivatedRoute;
   override globalEventService: GlobalEventService;
   customerService = inject(CustomerService);

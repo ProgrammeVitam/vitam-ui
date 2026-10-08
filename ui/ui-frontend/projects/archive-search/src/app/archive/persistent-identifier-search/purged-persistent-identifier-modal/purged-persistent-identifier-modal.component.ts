@@ -49,7 +49,7 @@ import {
   standalone: false,
 })
 export class PurgedPersistentIdentifierModalComponent implements OnInit {
-  private dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
+  private readonly dialogRef = inject<MatDialogRef<PurgedPersistentIdentifierDto>>(MatDialogRef);
   data = inject<{
     ark: string;
     purgedPersistentIdentifier: PurgedPersistentIdentifierDto;

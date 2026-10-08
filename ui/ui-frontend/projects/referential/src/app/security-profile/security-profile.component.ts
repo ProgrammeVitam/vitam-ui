@@ -51,7 +51,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
   dialog = inject(MatDialog);
-  private applicationService = inject(ApplicationService);
+  private readonly applicationService = inject(ApplicationService);
 
   search = '';
 

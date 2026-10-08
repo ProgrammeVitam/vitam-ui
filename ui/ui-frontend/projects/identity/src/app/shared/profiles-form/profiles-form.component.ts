@@ -55,8 +55,8 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnChanges {
-  private rngProfileService = inject(ProfileService);
-  private appApiService = inject(ApplicationApiService);
+  private readonly rngProfileService = inject(ProfileService);
+  private readonly appApiService = inject(ApplicationApiService);
 
   profiles: Profile[] = [];
   profileIds: string[] = [];

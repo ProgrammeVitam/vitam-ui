@@ -56,8 +56,8 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
   customerListService: CustomerListService;
   customerService = inject(CustomerService);
   tenantService = inject(TenantService);
-  private customerDataService = inject(CustomerDataService);
-  private dialog = inject(MatDialog);
+  private readonly customerDataService = inject(CustomerDataService);
+  private readonly dialog = inject(MatDialog);
 
   @Output() customerClick = new EventEmitter<Customer>();
   @Output() ownerClick = new EventEmitter<Owner>();

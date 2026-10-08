@@ -47,9 +47,9 @@ import { ManagementContractsApiService } from '../core/api/management-contracts-
   providedIn: 'root',
 })
 export class ManagementContractService extends SearchService<ManagementContract> {
-  private managementContractApi: ManagementContractsApiService;
-  private snackBarService = inject(SnackBarService);
-  private translateService = inject(TranslateService);
+  private readonly managementContractApi: ManagementContractsApiService;
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly translateService = inject(TranslateService);
 
   updated = new Subject<ManagementContract>();
 

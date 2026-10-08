@@ -52,7 +52,7 @@ export class SecurisationComponent extends SidenavPage<Event> {
   dialog = inject(MatDialog);
   route: ActivatedRoute;
   override globalEventService: GlobalEventService;
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   search: string;
   dateRangeFilterForm: FormGroup;

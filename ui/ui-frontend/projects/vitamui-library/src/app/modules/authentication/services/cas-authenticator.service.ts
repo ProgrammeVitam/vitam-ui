@@ -39,10 +39,10 @@ import { AuthenticatorService } from './authenticator.service';
 
 export class CasAuthenticatorService implements AuthenticatorService {
   constructor(
-    private location: any,
-    private loginUrl: string,
-    private logoutUrl: string,
-    private logoutRedirectUiUrl: string,
+    private readonly location: any,
+    private readonly loginUrl: string,
+    private readonly logoutUrl: string,
+    private readonly logoutRedirectUiUrl: string,
   ) {}
 
   public login(): Observable<boolean> {

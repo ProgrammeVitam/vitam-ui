@@ -49,7 +49,7 @@ import { LogbookManagementOperationService } from '../logbook-management-operati
 })
 export class LogbookManagementOperationListComponent implements OnInit {
   logbookManagementOperationService = inject(LogbookManagementOperationService);
-  private translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
 
   elementInPage: number;
   filter = false;

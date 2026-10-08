@@ -73,13 +73,13 @@ import { ArchiveUnitService } from './archive-unit.service';
   standalone: false,
 })
 export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy {
-  private logger = inject(Logger);
-  private dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private archiveUnitService = inject(ArchiveUnitService);
-  private spinnerOverlayService = inject(SpinnerOverlayService);
-  private snackBarService = inject(SnackBarService);
-  private translateService = inject(TranslateService);
+  private readonly logger = inject(Logger);
+  private readonly dialog = inject(MatDialog);
+  private readonly route = inject(ActivatedRoute);
+  private readonly archiveUnitService = inject(ArchiveUnitService);
+  private readonly spinnerOverlayService = inject(SpinnerOverlayService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly translateService = inject(TranslateService);
 
   archiveUnit = input<ArchiveUnit>();
   @Input() editMode = false;
@@ -103,7 +103,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   private readonly subscriptions = new Subscription();
   private readonly dialogConfig: MatDialogConfig = { autoFocus: false };
 
-  private notifyFormInvalidityOrContinue: UnaryFunction<Observable<unknown>, Observable<boolean>> = pipe(
+  private readonly notifyFormInvalidityOrContinue: UnaryFunction<Observable<unknown>, Observable<boolean>> = pipe(
     map(() => {
       // Skip validation check when haven't archive unit profile.
       if (!this.archiveUnit()?.ArchiveUnitProfile) return true;
@@ -134,7 +134,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
     filter((isValid) => isValid),
   );
 
-  private updateArchiveUnit: UnaryFunction<Observable<unknown>, Observable<OperationId>> = pipe(
+  private readonly updateArchiveUnit: UnaryFunction<Observable<unknown>, Observable<OperationId>> = pipe(
     map(() => this.archiveUnitEditor.getJsonPatch()),
     tap(() => this.spinnerOverlayService.open()),
     switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),

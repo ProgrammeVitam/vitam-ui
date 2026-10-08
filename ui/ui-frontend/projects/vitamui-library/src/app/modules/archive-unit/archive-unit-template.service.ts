@@ -46,10 +46,10 @@ import { SchemaElementToDisplayRuleService } from '../object-viewer/services/sch
 
 @Injectable({ providedIn: 'root' })
 export class ArchiveUnitTemplateService {
-  private componentMapperService = inject(SchemaElementToDisplayRuleService);
-  private displayRuleHelper = inject(DisplayRuleHelperService);
-  private displayObjectHelper = inject(DisplayObjectHelperService);
-  private logger = inject(Logger);
+  private readonly componentMapperService = inject(SchemaElementToDisplayRuleService);
+  private readonly displayRuleHelper = inject(DisplayRuleHelperService);
+  private readonly displayObjectHelper = inject(DisplayObjectHelperService);
+  private readonly logger = inject(Logger);
 
   public computeTemplate(_originalData: any, customTemplate: DisplayRule[], originalSchema: Schema): DisplayRule[] {
     const schemaByOrigin = this.groupSchemaByOrigin(originalSchema);

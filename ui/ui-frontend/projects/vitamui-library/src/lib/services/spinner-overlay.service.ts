@@ -49,7 +49,7 @@ class SpinnerComponent {}
   providedIn: 'root',
 })
 export class SpinnerOverlayService {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   private spinnerOverlayRef: MatDialogRef<any>;
 

@@ -53,10 +53,10 @@ export class GroupCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<GroupCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
   authService = inject(AuthService);
-  private formBuilder = inject(FormBuilder);
-  private groupService = inject(GroupService);
-  private groupValidators = inject(GroupValidators);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly groupService = inject(GroupService);
+  private readonly groupValidators = inject(GroupValidators);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   form: FormGroup;
 

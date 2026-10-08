@@ -45,7 +45,7 @@ import { GroupService } from '../../../group/group.service';
   standalone: false,
 })
 export class GroupDetailComponent implements OnInit {
-  private groupService = inject(GroupService);
+  private readonly groupService = inject(GroupService);
 
   @Input() group: Pick<Group, 'id' | 'description' | 'level'>;
 

@@ -72,9 +72,9 @@ const MAXIMUM_CRITICALITY = 2;
 export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
   subrogationService: SubrogationService;
   dialog = inject(MatDialog);
-  private activatedRoute = inject(ActivatedRoute);
-  private subrogationModalService = inject(SubrogationModalService);
-  private authService = inject(AuthService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly subrogationModalService = inject(SubrogationModalService);
+  private readonly authService = inject(AuthService);
 
   @Input() emailDomains: string[];
 
@@ -86,7 +86,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   }
   private _searchText: string;
 
-  private groups: Array<{ id: string; group: any }> = [];
+  private readonly groups: Array<{ id: string; group: any }> = [];
   override overridePendingChange: true;
   loaded = false;
   customerId: string;

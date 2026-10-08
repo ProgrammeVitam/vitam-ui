@@ -63,10 +63,10 @@ import { NodeData } from '../models/nodedata.interface';
   standalone: false,
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
-  private translateService = inject(TranslateService);
-  private archiveService = inject(ArchiveService);
-  private route = inject(ActivatedRoute);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly translateService = inject(TranslateService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
   @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
   @Output() switchView: EventEmitter<void> = new EventEmitter();

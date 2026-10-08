@@ -94,10 +94,10 @@ import { ArchiveProfileApiService } from './archive-profile-api.service';
   providedIn: 'root',
 })
 export class ProfileService implements OnDestroy {
-  private apiService = inject(PastisApiService);
-  private pastisConfig = inject(PastisConfiguration);
-  private puaService = inject(ArchivalProfileUnitApiService);
-  private paService = inject(ArchiveProfileApiService);
+  private readonly apiService = inject(PastisApiService);
+  private readonly pastisConfig = inject(PastisConfiguration);
+  private readonly puaService = inject(ArchivalProfileUnitApiService);
+  private readonly paService = inject(ArchiveProfileApiService);
 
   public profileType: ProfileType;
   public profileVersion: ProfileVersion;
@@ -107,8 +107,8 @@ export class ProfileService implements OnDestroy {
   public retrievedProfiles = new BehaviorSubject<ProfileDescription[]>(null);
   protected data: ProfileDescription[];
 
-  private subscriptions = new Subscription();
-  private setProfileTypeOperator = pipe(
+  private readonly subscriptions = new Subscription();
+  private readonly setProfileTypeOperator = pipe(
     filter((profiles: ProfileDescription[]) => Boolean(profiles)),
     mergeMap((profiles) => from(profiles)),
     map((profile) => ({ ...profile, type: profile.controlSchema ? ProfileType.PUA : ProfileType.PA })),

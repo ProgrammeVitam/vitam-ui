@@ -57,9 +57,9 @@ import { TransactionValidationMode } from '../models/transaction-validation-mode
   providedIn: 'root',
 })
 export class TransactionsService extends SearchService<Transaction> {
-  private transactionApiService: TransactionApiService;
-  private projectApiService = inject(ProjectsApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly transactionApiService: TransactionApiService;
+  private readonly projectApiService = inject(ProjectsApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   transactions$: BehaviorSubject<Transaction[]> = new BehaviorSubject<Transaction[]>([]);
   project$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);

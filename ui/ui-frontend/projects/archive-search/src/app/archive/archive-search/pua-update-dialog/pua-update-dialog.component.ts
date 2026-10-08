@@ -78,11 +78,11 @@ export interface PuaUpdateDialogComponentData {
 })
 export class PuaUpdateDialogComponent {
   data = inject<PuaUpdateDialogComponentData>(MAT_DIALOG_DATA);
-  private dialogRef = inject<MatDialogRef<PuaUpdateDialogComponent>>(MatDialogRef);
-  private archiveService = inject(ArchiveService);
-  private translate = inject(TranslateService);
-  private logger = inject(Logger);
-  private snackBarService = inject(SnackBarService);
+  private readonly dialogRef = inject<MatDialogRef<PuaUpdateDialogComponent>>(MatDialogRef);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly translate = inject(TranslateService);
+  private readonly logger = inject(Logger);
+  private readonly snackBarService = inject(SnackBarService);
 
   form: FormGroup;
   puas$: Observable<VitamuiSelectOptions>;

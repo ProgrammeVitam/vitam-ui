@@ -50,13 +50,13 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class AdminDslComponent extends AppRootComponent {
-  private route: ActivatedRoute;
-  private adminDslService = inject(AdminDslService);
-  private snackBarService = inject(SnackBarService);
-  private accessContractService = inject(AccessContractService);
-  private formBuilder = inject(FormBuilder);
-  private clipboard = inject(Clipboard);
-  private translateService = inject(TranslateService);
+  private readonly route: ActivatedRoute;
+  private readonly adminDslService = inject(AdminDslService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly clipboard = inject(Clipboard);
+  private readonly translateService = inject(TranslateService);
 
   tenantId: number;
   form: FormGroup;

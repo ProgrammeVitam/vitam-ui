@@ -47,8 +47,8 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private translateService = inject(TranslateService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly translateService = inject(TranslateService);
 
   @Input() form: FormGroup;
   @Output() objectUsagePolicyAdded: EventEmitter<void> = new EventEmitter<void>();

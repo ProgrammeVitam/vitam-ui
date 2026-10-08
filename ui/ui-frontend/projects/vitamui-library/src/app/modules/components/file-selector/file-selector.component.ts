@@ -361,7 +361,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
   /**
    * Rejects a file exceeding maxSizeInBytes before any other (potentially content-reading) validator runs on it,
    */
-  private fileSizeValidator = async (file: File): Promise<FileValidationErrors | undefined> => {
+  private readonly fileSizeValidator = async (file: File): Promise<FileValidationErrors | undefined> => {
     if (!this.maxSizeInBytes || (file.size || 0) <= this.maxSizeInBytes) return undefined;
     console.warn(`File "${file.name}" exceeds maximum size: ${file.size}/${this.maxSizeInBytes}`);
     const details = {

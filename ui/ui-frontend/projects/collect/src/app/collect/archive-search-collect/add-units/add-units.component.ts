@@ -76,12 +76,12 @@ export class AddUnitsComponent implements OnInit {
   data = inject<{
     transaction: Transaction;
   }>(MAT_DIALOG_DATA);
-  private startupService = inject(StartupService);
-  private snackBarService = inject(SnackBarService);
-  private dialog = inject(MatDialog);
-  private addUnitsDialogRef = inject<MatDialogRef<AddUnitsComponent>>(MatDialogRef);
-  private archiveCollectService = inject(ArchiveCollectService);
-  private sipImportTrackingService = inject(SipImportTrackingService);
+  private readonly startupService = inject(StartupService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly dialog = inject(MatDialog);
+  private readonly addUnitsDialogRef = inject<MatDialogRef<AddUnitsComponent>>(MatDialogRef);
+  private readonly archiveCollectService = inject(ArchiveCollectService);
+  private readonly sipImportTrackingService = inject(SipImportTrackingService);
 
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb

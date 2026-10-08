@@ -64,18 +64,18 @@ import { SelectTenantDialogComponent } from './select-tenant-dialog/select-tenan
   standalone: false,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private subrogationService = inject(SubrogationService);
-  private startupService = inject(StartupService);
-  private menuOverlayService = inject(MenuOverlayService);
-  private authService = inject(AuthService);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private customerSelectionService = inject(CustomerSelectionService);
-  private themeService = inject(ThemeService);
-  private matDialog = inject(MatDialog);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private applicationService = inject(ApplicationService);
-  private globalEventService = inject(GlobalEventService);
+  private readonly subrogationService = inject(SubrogationService);
+  private readonly startupService = inject(StartupService);
+  private readonly menuOverlayService = inject(MenuOverlayService);
+  private readonly authService = inject(AuthService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly customerSelectionService = inject(CustomerSelectionService);
+  private readonly themeService = inject(ThemeService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly globalEventService = inject(GlobalEventService);
 
   @Input() hasLangSelection = false;
 
@@ -95,7 +95,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public headerLogoUrl: SafeResourceUrl;
 
   private currentAppId: ApplicationId;
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   ngOnInit() {
     this.portalUrl = this.startupService.getPortalUrl();

@@ -83,12 +83,12 @@ const CONTEXT_COLLECT = 'Collect';
 
 @Injectable()
 export class VitamUIHttpInterceptor implements HttpInterceptor {
-  private logger = inject(Logger);
-  private matDialog = inject(MatDialog);
-  private startupService = inject(StartupService);
-  private authService = inject(AuthService);
-  private injector = inject(Injector);
-  private environment = inject(ENVIRONMENT);
+  private readonly logger = inject(Logger);
+  private readonly matDialog = inject(MatDialog);
+  private readonly startupService = inject(StartupService);
+  private readonly authService = inject(AuthService);
+  private readonly injector = inject(Injector);
+  private readonly environment = inject(ENVIRONMENT);
 
   private errorDialog: MatDialogRef<ErrorDialogComponent>;
   private errorsDetailsDialog: MatDialogRef<ErrorsDetailsDialogComponent>;

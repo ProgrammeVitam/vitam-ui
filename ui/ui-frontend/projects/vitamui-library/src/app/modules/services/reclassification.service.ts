@@ -51,7 +51,7 @@ import { getUnitI18nAttribute } from '../pipes/unitI18n.pipe';
   providedIn: 'root',
 })
 export class ReclassificationService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  private reclassificationApiService: ReclassificationApiService;
+  private readonly reclassificationApiService: ReclassificationApiService;
 
   constructor() {
     const reclassificationApiService = inject(ReclassificationApiService);

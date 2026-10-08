@@ -43,8 +43,8 @@ import { CustomFile } from '../../../../lib/models/custom-file';
   selector: '[vitamuiCommonDragAndDrop]',
 })
 export class DragAndDropDirective {
-  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-  private logger = inject(Logger);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly logger = inject(Logger);
 
   @Output() private fileToUploadEmitter: EventEmitter<File[]> = new EventEmitter();
   @Output() private fileDragHover: EventEmitter<boolean> = new EventEmitter();
@@ -116,7 +116,7 @@ export class DragAndDropDirective {
     }
   }
 
-  private getFile = async (fileEntry: FileSystemEntry): Promise<CustomFile> => {
+  private readonly getFile = async (fileEntry: FileSystemEntry): Promise<CustomFile> => {
     try {
       return new Promise((resolve, reject) => {
         if (fileEntry.isFile) {
@@ -137,7 +137,7 @@ export class DragAndDropDirective {
     }
   };
 
-  private getAllFileEntries = async (dataTransferItemList: DataTransferItemList): Promise<FileSystemEntry[]> => {
+  private readonly getAllFileEntries = async (dataTransferItemList: DataTransferItemList): Promise<FileSystemEntry[]> => {
     const fileSystemEntries: FileSystemEntry[] = [];
     // Use BFS to traverse entire directory/file structure
     const queue: FileSystemEntry[] = [];
@@ -160,7 +160,7 @@ export class DragAndDropDirective {
   };
 
   // Get all the entries (files or sub-directories) in a directory by calling readEntries until it returns empty array
-  private readAllDirectoryEntries = async (directoryReader: any): Promise<FileSystemEntry[]> => {
+  private readonly readAllDirectoryEntries = async (directoryReader: any): Promise<FileSystemEntry[]> => {
     const entries: FileSystemEntry[] = [];
     let readEntries: FileSystemEntry[] = await this.readEntriesPromise(directoryReader);
     while (readEntries.length > 0) {
@@ -171,7 +171,7 @@ export class DragAndDropDirective {
   };
 
   // Wrap readEntries in a promise to make working with readEntries easier
-  private readEntriesPromise = async (directoryReader: any): Promise<FileSystemEntry[]> => {
+  private readonly readEntriesPromise = async (directoryReader: any): Promise<FileSystemEntry[]> => {
     try {
       return await new Promise((resolve, reject) => {
         directoryReader.readEntries(resolve, reject);

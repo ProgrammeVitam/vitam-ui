@@ -48,7 +48,7 @@ import { ArchiveUnitViewerService, AUMode } from './archive-unit-viewer.service'
   standalone: false,
 })
 export class ArchiveUnitViewerComponent implements OnInit, OnChanges {
-  private displayObjectService = inject(DisplayObjectService);
+  private readonly displayObjectService = inject(DisplayObjectService);
 
   @Input() data!: any;
   @Input() template: DisplayRule[] = customTemplate;

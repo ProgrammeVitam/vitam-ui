@@ -7,7 +7,7 @@ ECLIPSE_URL="https://www.eclipse.org/downloads/download.php?file=/technology/epp
 
 #### ECLIPSE ####
 cd /usr/local
-wget --no-cookies --no-check-certificate $ECLIPSE_URL -O $ECLIPSE_ARCHIVE
+curl -fsSL --proto '=https' $ECLIPSE_URL -o $ECLIPSE_ARCHIVE
 tar -xzvf $ECLIPSE_ARCHIVE
 chown -R root:staff $ECLIPSE_DIR/
 

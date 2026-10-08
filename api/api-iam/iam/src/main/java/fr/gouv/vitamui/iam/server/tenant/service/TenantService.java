@@ -115,6 +115,14 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TenantService.class);
 
+    private static final String ALREADY_EXISTS_SUFFIX = " already exists.";
+    private static final String TENANT_WITH_NAME_MESSAGE = ": a tenant with the name: ";
+    private static final String CUSTOMER_ID = "customerId";
+    private static final String IDENTIFIER_KEY = "identifier";
+    private static final String PROOF_KEY = "proof";
+    private static final String READONLY_KEY = "readonly";
+    private static final String OWNER_ID_KEY = "ownerId";
+
     private final String TENANT_INSUFFICIENT_PERMISSION_MESSAGE =
         "Unable to access to the tenant %s: insufficient permissions.";
 
@@ -254,7 +262,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         );
         Assert.isTrue(
             tenants == null || tenants.isEmpty(),
-            message + ": a tenant with the name: " + name + " already exists."
+            message + TENANT_WITH_NAME_MESSAGE + name + ALREADY_EXISTS_SUFFIX
         );
     }
 
@@ -311,7 +319,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         if (tenants != null && !tenants.isEmpty()) {
             Assert.isTrue(
                 tenants.size() == 1 && tenants.contains(tenant),
-                message + ": a tenant with the name: " + name + " already exists."
+                message + TENANT_WITH_NAME_MESSAGE + name + ALREADY_EXISTS_SUFFIX
             );
         }
     }
@@ -328,29 +336,29 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         Assert.isTrue(
             !checkMapContainsOnlyFieldsUnmodifiable(
                 partialDto,
-                Arrays.asList("id", "customerId", "readonly", "identifier", "proof")
+                Arrays.asList("id", CUSTOMER_ID, READONLY_KEY, IDENTIFIER_KEY, PROOF_KEY)
             ),
             message
         );
 
-        final String customerId = CastUtils.toString(partialDto.get("customerId"));
+        final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_ID));
         if (customerId != null) {
             checkCustomer(customerId, message);
         }
 
         checkIsReadonly(tenant.isReadonly(), message);
 
-        final Integer identifier = CastUtils.toInteger(partialDto.get("identifier"));
+        final Integer identifier = CastUtils.toInteger(partialDto.get(IDENTIFIER_KEY));
         if (identifier != null) {
             checkIdentifier(tenant.getIdentifier(), identifier, message);
         }
 
-        final Boolean readonly = CastUtils.toBoolean(partialDto.get("readonly"));
+        final Boolean readonly = CastUtils.toBoolean(partialDto.get(READONLY_KEY));
         if (readonly != null) {
             checkSetReadonly(readonly, message);
         }
 
-        final String ownerId = CastUtils.toString(partialDto.get("ownerId"));
+        final String ownerId = CastUtils.toString(partialDto.get(OWNER_ID_KEY));
         if (ownerId != null) {
             checkOwner(tenant, ownerId, message);
         }
@@ -364,7 +372,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
             if (tenants != null && !tenants.isEmpty()) {
                 Assert.isTrue(
                     tenants.size() == 1 && tenants.contains(tenant),
-                    message + ": a tenant with the name: " + name + " already exists."
+                    message + TENANT_WITH_NAME_MESSAGE + name + ALREADY_EXISTS_SUFFIX
                 );
             }
         }
@@ -389,10 +397,10 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id":
-                case "readonly":
-                case "customerId":
-                case "identifier":
-                case "proof":
+                case READONLY_KEY:
+                case CUSTOMER_ID:
+                case IDENTIFIER_KEY:
+                case PROOF_KEY:
                     break;
                 case "name":
                     logbooks.add(new EventDiffDto(TenantConverter.NAME_KEY, tenant.getName(), entry.getValue()));
@@ -402,7 +410,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
                     logbooks.add(new EventDiffDto(TenantConverter.ENABLED_KEY, tenant.getEnabled(), entry.getValue()));
                     tenant.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "ownerId":
+                case OWNER_ID_KEY:
                     final OwnerDto oldOwner = ownerService.getOne(tenant.getOwnerId(), Optional.empty());
                     final OwnerDto newOwner = ownerService.getOne(
                         CastUtils.toString(entry.getValue()),
@@ -495,7 +503,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     private void checkIdentifier(final Integer identifier, final String message) {
         if (identifier != null) {
             final Tenant tenant = tenantRepository.findByIdentifier(identifier);
-            Assert.isNull(tenant, message + ": a tenant with the identifier: " + identifier + " already exists.");
+            Assert.isNull(tenant, message + ": a tenant with the identifier: " + identifier + ALREADY_EXISTS_SUFFIX);
         }
     }
 
@@ -717,7 +725,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
 
     @Override
     protected Collection<String> getAllowedKeys() {
-        return List.of("id", CUSTOMER_ID_KEY, "enabled", "proof", "name", "identifier", "ownerId");
+        return List.of("id", CUSTOMER_ID_KEY, "enabled", PROOF_KEY, "name", IDENTIFIER_KEY, OWNER_ID_KEY);
     }
 
     @Override
@@ -726,7 +734,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
         if (!securityService.hasRole(ServicesData.ROLE_GET_ALL_TENANTS)) {
             restrictedKeys.add(CUSTOMER_ID_KEY);
             if (!securityService.hasRole(ServicesData.ROLE_GET_TENANTS_MY_CUSTOMER)) {
-                restrictedKeys.add("identifier");
+                restrictedKeys.add(IDENTIFIER_KEY);
             }
         }
         return restrictedKeys;
@@ -743,8 +751,8 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     @Override
     protected void addRestriction(final String key, final QueryDto criteria) {
         switch (key) {
-            case "identifier":
-                final Optional<Criterion> criterionOpt = criteria.find("identifier");
+            case IDENTIFIER_KEY:
+                final Optional<Criterion> criterionOpt = criteria.find(IDENTIFIER_KEY);
                 if (criterionOpt.isPresent()) {
                     checkIdentifierCriteria(criterionOpt.get());
                 } else {
@@ -757,7 +765,7 @@ public class TenantService extends AbstractResourceClientService<TenantDto, Tena
     }
 
     private Criterion getIdentifierRestriction() {
-        return new Criterion("identifier", securityService.getTenantIdentifier(), CriterionOperator.EQUALS);
+        return new Criterion(IDENTIFIER_KEY, securityService.getTenantIdentifier(), CriterionOperator.EQUALS);
     }
 
     /**

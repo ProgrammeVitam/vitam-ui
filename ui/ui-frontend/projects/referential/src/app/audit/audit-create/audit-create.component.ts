@@ -91,15 +91,15 @@ import { CdkStepper } from '@angular/cdk/stepper';
 export class AuditCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<AuditCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private auditService = inject(AuditService);
-  private agencyService = inject(AgencyService);
-  private startupService = inject(StartupService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly auditService = inject(AuditService);
+  private readonly agencyService = inject(AgencyService);
+  private readonly startupService = inject(StartupService);
   protected accessContractService = inject(AccessContractService);
-  private auditCreateValidator = inject(AuditCreateValidators);
-  private externalParameterService = inject(ExternalParametersService);
-  private snackBarService = inject(SnackBarService);
+  private readonly auditCreateValidator = inject(AuditCreateValidators);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input() tenantIdentifier: number;
 
@@ -120,7 +120,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
   public auditPerimetersOptions: Option[];
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   @ViewChild('stepper')
   private stepper: CdkStepper;
@@ -227,7 +227,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  private sortAlphabetically = (a: Option, b: Option): number => {
+  private readonly sortAlphabetically = (a: Option, b: Option): number => {
     return a.label.toLocaleLowerCase() > b.label.toLocaleLowerCase() ? 1 : -1;
   };
 

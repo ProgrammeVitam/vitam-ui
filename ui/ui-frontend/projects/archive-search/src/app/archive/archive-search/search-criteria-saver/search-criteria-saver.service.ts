@@ -43,7 +43,7 @@ import { ArchiveApiService } from '../../../core/api/archive-api.service';
   providedIn: 'root',
 })
 export class SearchCriteriaSaverService {
-  private archiveApiService = inject(ArchiveApiService);
+  private readonly archiveApiService = inject(ArchiveApiService);
 
   saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.archiveApiService.saveSearchCriteriaHistory(searchCriteriaHistory);

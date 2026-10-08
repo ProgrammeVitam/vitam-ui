@@ -45,9 +45,9 @@ import { TenantService } from '../tenant.service';
   providedIn: 'root',
 })
 export class TenantFormValidators {
-  private tenantService = inject(TenantService);
+  private readonly tenantService = inject(TenantService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

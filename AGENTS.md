@@ -167,7 +167,7 @@ npm run test:identity -- --watch
 
 ## Code Style
 
-- **Java**: Spotless with Prettier Java plugin (120 char line length, 4-space indent). Run `mvn spotless:apply` to auto-format.
+- **Java**: Spotless with Prettier Java plugin (120 char line length, 4-space indent). Do NOT hand-format Java code or hand-prune imports: run `mvn spotless:apply` from the touched module's directory, then verify with `mvn spotless:check -Dspotless.check.skip=false`.
 - **TypeScript/HTML**: ESLint + Prettier. Run `npm run prettier` to format.
 - **License headers**: All Java and TS files require license headers (checked by `license-maven-plugin`).
 

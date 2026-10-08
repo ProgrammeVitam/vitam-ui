@@ -46,7 +46,7 @@ import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-g
   standalone: false,
 })
 export class VitamUIRadioComponent implements OnInit {
-  private radioGroupService = inject(VitamUIRadioGroupService);
+  private readonly radioGroupService = inject(VitamUIRadioGroupService);
 
   @Input()
   value: string;

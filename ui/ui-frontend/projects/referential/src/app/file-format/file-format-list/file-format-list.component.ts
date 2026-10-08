@@ -62,10 +62,10 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   fileFormatService: FileFormatService;
-  private matDialog = inject(MatDialog);
-  private snackBarService = inject(SnackBarService);
-  private translateService = inject(TranslateService);
-  private startupService = inject(StartupService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly translateService = inject(TranslateService);
+  private readonly startupService = inject(StartupService);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('search')
@@ -87,10 +87,10 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   direction = Direction.ASCENDANT;
   vitamAdminTenant: number;
 
-  private groups: Array<{ id: string; group: any }> = [];
+  private readonly groups: Array<{ id: string; group: any }> = [];
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   @Input()
   get connectedUserInfo(): AdminUserProfile {

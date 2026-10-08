@@ -47,8 +47,8 @@ import { ProviderApiService } from './provider-api.service';
   providedIn: 'root',
 })
 export class IdentityProviderService {
-  private providerApi = inject(ProviderApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly providerApi = inject(ProviderApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<IdentityProvider>();
 

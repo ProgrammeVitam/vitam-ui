@@ -45,8 +45,8 @@ import { OperationDetails, OperationResponse, OperationsResults } from '../model
   providedIn: 'root',
 })
 export class LogbookManagementOperationService extends SearchService<any> {
-  private logbookManagementOperationApiService: LogbookManagementOperationApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly logbookManagementOperationApiService: LogbookManagementOperationApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   operationUpdated = new Subject<OperationDetails>();
 

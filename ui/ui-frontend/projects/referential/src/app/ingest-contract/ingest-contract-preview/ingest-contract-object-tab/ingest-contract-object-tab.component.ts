@@ -51,8 +51,8 @@ import { IngestContractService } from '../../ingest-contract.service';
   standalone: false,
 })
 export class IngestContractObjectTabComponent {
-  private formBuilder = inject(FormBuilder);
-  private ingestContractService = inject(IngestContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly ingestContractService = inject(IngestContractService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -45,7 +45,7 @@ import { UploadService } from '../../core/common/upload.service';
   standalone: false,
 })
 export class UploadTrackingComponent {
-  private uploadSipService = inject(UploadService);
+  private readonly uploadSipService = inject(UploadService);
 
   ingestList: IngestList;
   displayTracking = false;

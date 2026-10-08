@@ -64,7 +64,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 })
 export class HierarchyListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
   hierarchyService: HierarchyService;
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   @Input()
   set searchText(searchText: string) {
@@ -76,7 +76,7 @@ export class HierarchyListComponent extends InfiniteScrollTable<Profile> impleme
   @Output() profileClick = new EventEmitter<Profile>();
 
   private tenantIdentifier: number;
-  private updatedProfileSub: Subscription;
+  private readonly updatedProfileSub: Subscription;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();

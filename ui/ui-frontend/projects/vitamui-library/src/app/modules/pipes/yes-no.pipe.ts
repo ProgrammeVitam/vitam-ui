@@ -42,7 +42,7 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class YesNoPipe implements PipeTransform {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   transform(propertyValue: any): any {
     return String(propertyValue) === 'true'

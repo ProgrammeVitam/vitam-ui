@@ -99,8 +99,8 @@ function constantToTranslate() {
 })
 export class UserActionAddPuaControlComponent implements OnInit {
   dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);
-  private popUpService = inject(PopupService);
-  private translateService = inject(TranslateService);
+  private readonly popUpService = inject(PopupService);
+  private readonly translateService = inject(TranslateService);
 
   btnIsDisabled: boolean;
   enumerationsLabel = 'Enumération';

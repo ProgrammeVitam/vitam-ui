@@ -45,7 +45,7 @@ import { Customer } from 'vitamui-library';
   standalone: false,
 })
 export class CustomerPopupComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   customer: Customer;
 

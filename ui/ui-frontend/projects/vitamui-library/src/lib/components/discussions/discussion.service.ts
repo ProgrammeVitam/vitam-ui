@@ -98,7 +98,7 @@ export class DiscussionService {
   private readonly me = inject(AuthService).user;
   private readonly apiUrl = `${inject(BASE_URL)}/discussions`;
 
-  #updateDiscussion = new Subject<DiscussionUpdate>();
+  readonly #updateDiscussion = new Subject<DiscussionUpdate>();
 
   findDiscussions(entity: DiscussionEntity): Observable<DiscussionDto[]> {
     const initialData$ = this.httpClient.get<DiscussionDto[]>(`${this.apiUrl}?entityType=${entity.type}&entityId=${entity.id}`);

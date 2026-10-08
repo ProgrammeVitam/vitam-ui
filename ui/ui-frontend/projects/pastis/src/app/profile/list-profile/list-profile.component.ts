@@ -106,17 +106,17 @@ const POPUP_UPLOAD_PATH = 'PROFILE.POP_UP_UPLOAD_FILE';
   standalone: false,
 })
 export class ListProfileComponent extends SidenavPage<ProfileDescription> implements OnInit, OnDestroy {
-  private profileService = inject(ProfileService);
-  private noticeService = inject(NoticeService);
-  private router = inject(Router);
-  private dialog = inject(MatDialog);
-  private startupService = inject(StartupService);
-  private pastisConfig = inject(PastisConfiguration);
+  private readonly profileService = inject(ProfileService);
+  private readonly noticeService = inject(NoticeService);
+  private readonly router = inject(Router);
+  private readonly dialog = inject(MatDialog);
+  private readonly startupService = inject(StartupService);
+  private readonly pastisConfig = inject(PastisConfiguration);
   route: ActivatedRoute;
-  private dataGeneriquePopupService = inject(DataGeneriquePopupService);
-  private translateService = inject(TranslateService);
-  private toggleService = inject(ToggleSidenavService);
-  private snackBarService = inject(SnackBarService);
+  private readonly dataGeneriquePopupService = inject(DataGeneriquePopupService);
+  private readonly translateService = inject(TranslateService);
+  private readonly toggleService = inject(ToggleSidenavService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @ViewChild(ProfileInformationTabComponent, { static: true }) profileInformationTabComponent: ProfileInformationTabComponent;
 

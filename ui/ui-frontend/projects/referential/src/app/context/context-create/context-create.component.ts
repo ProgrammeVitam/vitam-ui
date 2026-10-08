@@ -74,11 +74,11 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private contextService = inject(ContextService);
-  private contextCreateValidators = inject(ContextCreateValidators);
-  private securityProfileService = inject(SecurityProfileService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly contextService = inject(ContextService);
+  private readonly contextCreateValidators = inject(ContextCreateValidators);
+  private readonly securityProfileService = inject(SecurityProfileService);
 
   protected readonly isSlaveMode: boolean;
 

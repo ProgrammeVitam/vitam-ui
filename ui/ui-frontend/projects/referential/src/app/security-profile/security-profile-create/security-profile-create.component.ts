@@ -73,10 +73,10 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private securityProfileService = inject(SecurityProfileService);
-  private securityProfileCreateValidators = inject(SecurityProfileCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly securityProfileService = inject(SecurityProfileService);
+  private readonly securityProfileCreateValidators = inject(SecurityProfileCreateValidators);
 
   isSlaveMode: boolean;
 

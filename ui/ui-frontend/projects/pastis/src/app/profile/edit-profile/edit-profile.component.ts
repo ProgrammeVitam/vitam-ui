@@ -96,10 +96,10 @@ import { BreadcrumbService } from '../../core/services/breadcrumb.service';
 export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   profileService = inject(ProfileService);
   fileService = inject(FileService);
-  private sideNavService = inject(ToggleSidenavService);
-  private fileTreeService = inject(FileTreeService);
-  private breadcrumbService = inject(BreadcrumbService);
-  private logger = inject(Logger);
+  private readonly sideNavService = inject(ToggleSidenavService);
+  private readonly fileTreeService = inject(FileTreeService);
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly logger = inject(Logger);
 
   sedaVersionLabel = this.profileService.getSedaVersionLabel();
   isAUP = this.profileService.isMode(ProfileType.PUA);

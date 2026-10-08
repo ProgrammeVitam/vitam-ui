@@ -46,10 +46,10 @@ import { CustomerMenuService } from '../customer-menu.service';
   imports: [RouterModule],
 })
 export class CustomerSelectContentComponent implements OnInit {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private customerMenuService = inject(CustomerMenuService);
-  private customerSelectionService = inject(CustomerSelectionService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly customerMenuService = inject(CustomerMenuService);
+  private readonly customerSelectionService = inject(CustomerSelectionService);
 
   @Input() customers: MenuOption[];
   @Input() isModalMenu: boolean;

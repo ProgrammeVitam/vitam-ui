@@ -95,12 +95,12 @@ import { ProfileVersion } from '../models/profile-version.enum';
 })
 export class MainComponent implements OnInit, OnDestroy {
   fileService = inject(FileService);
-  private route = inject(ActivatedRoute);
-  private sideNavService = inject(ToggleSidenavService);
-  private profileService = inject(ProfileService);
-  private sedaService = inject(SedaService);
-  private spinnerOverlayService = inject(SpinnerOverlayService);
-  private router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly sideNavService = inject(ToggleSidenavService);
+  private readonly profileService = inject(ProfileService);
+  private readonly sedaService = inject(SedaService);
+  private readonly spinnerOverlayService = inject(SpinnerOverlayService);
+  private readonly router = inject(Router);
 
   @ViewChild('treeSelector', { static: true }) tree: any;
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;

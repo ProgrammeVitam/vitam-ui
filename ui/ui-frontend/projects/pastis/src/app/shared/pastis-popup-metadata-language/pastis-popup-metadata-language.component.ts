@@ -83,7 +83,7 @@ import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-lang
   standalone: false,
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
-  private metadataLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly metadataLanguageService = inject(PastisPopupMetadataLanguageService);
 
   sedaLanguage: boolean;
 

@@ -59,16 +59,16 @@ import { ArchiveService } from './archive.service';
   standalone: false,
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {
-  private route: ActivatedRoute;
-  private router = inject(Router);
+  private readonly route: ActivatedRoute;
+  private readonly router = inject(Router);
   dialog = inject(MatDialog);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
-  private externalParameterService = inject(ExternalParametersService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private archiveService = inject(ArchiveService);
-  private schemaService = inject(SchemaService);
-  private accessContractService = inject(AccessContractService);
-  private snackBarService = inject(SnackBarService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly schemaService = inject(SchemaService);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly snackBarService = inject(SnackBarService);
 
   show = true;
   tenantIdentifier: string;

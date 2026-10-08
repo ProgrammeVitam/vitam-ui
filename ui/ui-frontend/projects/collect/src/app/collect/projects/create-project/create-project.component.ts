@@ -94,22 +94,22 @@ export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
   standalone: false,
 })
 export class CreateProjectComponent implements OnInit, AfterViewChecked {
-  private formBuilder = inject(FormBuilder);
-  private dialogRef = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly dialogRef = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
   private dialogRefToClose = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private projectsService = inject(ProjectsService);
-  private externalReferentialService = inject(ExternalReferentialService);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private transactionsService = inject(TransactionsService);
-  private archiveCollectService = inject(ArchiveCollectService);
-  private sipImportTrackingService = inject(SipImportTrackingService);
-  private logger = inject(Logger);
-  private cdr = inject(ChangeDetectorRef);
-  private translationService = inject(TranslateService);
+  private readonly projectsService = inject(ProjectsService);
+  private readonly externalReferentialService = inject(ExternalReferentialService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly transactionsService = inject(TransactionsService);
+  private readonly archiveCollectService = inject(ArchiveCollectService);
+  private readonly sipImportTrackingService = inject(SipImportTrackingService);
+  private readonly logger = inject(Logger);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translationService = inject(TranslateService);
   dialog = inject(MatDialog);
-  private schemaService = inject(SchemaService);
-  private snackBarService = inject(SnackBarService);
+  private readonly schemaService = inject(SchemaService);
+  private readonly snackBarService = inject(SnackBarService);
 
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
   // enums for html

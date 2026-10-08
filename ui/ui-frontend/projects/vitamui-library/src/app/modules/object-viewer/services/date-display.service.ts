@@ -41,7 +41,7 @@ import { ComponentType } from '../types';
   providedIn: 'root',
 })
 export class DateDisplayService {
-  private dateFormat = {
+  private readonly dateFormat = {
     wanted: { datepicker: 'dd/MM/yyyy', datetime: 'dd/MM/yyyy HH:mm:ss' },
     default: { datepicker: 'medium', datetime: 'medium' },
   };

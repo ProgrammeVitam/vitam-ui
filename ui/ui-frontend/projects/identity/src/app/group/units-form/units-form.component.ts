@@ -55,7 +55,7 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   standalone: false,
 })
 export class UnitsFormComponent implements ControlValueAccessor, OnInit {
-  private groupValidators = inject(GroupValidators);
+  private readonly groupValidators = inject(GroupValidators);
 
   units: string[] = [];
 

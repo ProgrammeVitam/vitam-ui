@@ -68,13 +68,13 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
   override globalEventService: GlobalEventService;
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
   route: ActivatedRoute;
   private readonly accessContractService = inject(AccessContractService);
-  private applicationService = inject(ApplicationService);
-  private translateService = inject(TranslateService);
-  private downloadSnackBarService = inject(DownloadSnackBarService);
-  private snackBarService = inject(SnackBarService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly translateService = inject(TranslateService);
+  private readonly downloadSnackBarService = inject(DownloadSnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   public search = '';
   public tenantIdentifier: number;

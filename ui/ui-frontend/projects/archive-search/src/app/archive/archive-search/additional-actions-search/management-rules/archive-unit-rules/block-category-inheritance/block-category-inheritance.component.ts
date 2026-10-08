@@ -48,8 +48,8 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   standalone: false,
 })
 export class BlockCategoryInheritanceComponent implements OnDestroy {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private dialog = inject(MatDialog);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly dialog = inject(MatDialog);
 
   @Input()
   ruleCategory: string;

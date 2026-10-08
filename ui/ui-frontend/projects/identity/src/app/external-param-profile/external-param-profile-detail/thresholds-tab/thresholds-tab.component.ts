@@ -51,10 +51,10 @@ import { DecimalPipe } from '@angular/common';
   standalone: false,
 })
 export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private externalParamProfileService = inject(ExternalParamProfileService);
-  private translateService = inject(TranslateService);
-  private decimalPipe = inject(DecimalPipe);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly externalParamProfileService = inject(ExternalParamProfileService);
+  private readonly translateService = inject(TranslateService);
+  private readonly decimalPipe = inject(DecimalPipe);
 
   form: FormGroup;
   previousValue: ExternalParamProfile;

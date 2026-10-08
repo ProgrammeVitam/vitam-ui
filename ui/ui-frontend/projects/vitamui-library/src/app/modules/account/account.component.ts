@@ -51,8 +51,8 @@ import { AccountService } from './account.service';
   standalone: false,
 })
 export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
-  private accountService = inject(AccountService);
-  private userInfoApiService = inject(BaseUserInfoApiService);
+  private readonly accountService = inject(AccountService);
+  private readonly userInfoApiService = inject(BaseUserInfoApiService);
   route: ActivatedRoute;
 
   public displayAppTab = false;

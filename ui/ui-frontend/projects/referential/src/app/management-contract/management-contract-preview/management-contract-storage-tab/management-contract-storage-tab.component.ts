@@ -50,8 +50,8 @@ import { ManagementContractService } from '../../management-contract.service';
   standalone: false,
 })
 export class ManagementContractStorageTabComponent implements OnDestroy {
-  private formBuilder = inject(FormBuilder);
-  private managementContractService = inject(ManagementContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly managementContractService = inject(ManagementContractService);
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;

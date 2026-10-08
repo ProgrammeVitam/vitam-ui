@@ -136,19 +136,19 @@ function constantToTranslate() {
 export class FileTreeComponent implements OnInit, OnDestroy {
   fileTreeService = inject(FileTreeService);
   profileService = inject(ProfileService);
-  private fileService = inject(FileService);
-  private fileMetadataService = inject(FileTreeMetadataService);
-  private sedaService = inject(SedaService);
-  private sedaLanguageService = inject(PastisPopupMetadataLanguageService);
-  private translateService = inject(TranslateService);
-  private logger = inject(Logger);
-  private cdr = inject(ChangeDetectorRef);
-  private snackBarService = inject(SnackBarService);
+  private readonly fileService = inject(FileService);
+  private readonly fileMetadataService = inject(FileTreeMetadataService);
+  private readonly sedaService = inject(SedaService);
+  private readonly sedaLanguageService = inject(PastisPopupMetadataLanguageService);
+  private readonly translateService = inject(TranslateService);
+  private readonly logger = inject(Logger);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly snackBarService = inject(SnackBarService);
 
   static archiveUnits: FileNode;
   static uaIdAndPosition = new Map<any, number>();
-  private static ROOT_LEVEL = 1;
-  private static ROOT_LEFT_PADDING = 28;
+  private static readonly ROOT_LEVEL = 1;
+  private static readonly ROOT_LEFT_PADDING = 28;
 
   @Input() rootElementName: string;
   @Input() rootElementShowName: string;
@@ -201,7 +201,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   popupDuplicateDeleteTypeTextF: string;
   text: string;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnInit(): void {
     if (!this.isStandalone) {

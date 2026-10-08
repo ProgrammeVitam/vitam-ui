@@ -45,7 +45,7 @@ import { AuthUser } from '../models/user/auth-user.interface';
   providedIn: 'root',
 })
 export class SecurityApiService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   private readonly apiUrl: string;
 

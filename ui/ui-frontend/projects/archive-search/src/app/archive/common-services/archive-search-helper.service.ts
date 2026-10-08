@@ -58,8 +58,8 @@ const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
   providedIn: 'root',
 })
 export class ArchiveSearchHelperService {
-  private archiveExchangeDataService = inject(ArchiveSharedDataService);
-  private archiveService = inject(ArchiveService);
+  private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
 
   addCriteria(
     searchCriterias: Map<string, CriteriaSearchCriteria>,

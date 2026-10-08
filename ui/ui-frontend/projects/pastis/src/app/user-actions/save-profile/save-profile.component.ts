@@ -133,18 +133,18 @@ function constantToTranslate(edit: boolean) {
   standalone: false,
 })
 export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
-  private profileService = inject(ProfileService);
-  private popupService = inject(PopupService);
-  private fileService = inject(FileService);
-  private startupService = inject(StartupService);
-  private dataGeneriquePopupService = inject(DataGeneriquePopupService);
-  private noticeService = inject(NoticeService);
-  private translateService = inject(TranslateService);
+  private readonly profileService = inject(ProfileService);
+  private readonly popupService = inject(PopupService);
+  private readonly fileService = inject(FileService);
+  private readonly startupService = inject(StartupService);
+  private readonly dataGeneriquePopupService = inject(DataGeneriquePopupService);
+  private readonly noticeService = inject(NoticeService);
+  private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
-  private router = inject(Router);
-  private archiveProfileSaverService = inject(ArchiveProfileSaverService);
-  private archiveUnitProfileSaverService = inject(ArchiveUnitProfileSaverService);
-  private snackBarService = inject(SnackBarService);
+  private readonly router = inject(Router);
+  private readonly archiveProfileSaverService = inject(ArchiveProfileSaverService);
+  private readonly archiveUnitProfileSaverService = inject(ArchiveUnitProfileSaverService);
+  private readonly snackBarService = inject(SnackBarService);
 
   popupSaveCancelLabel: string;
   popupSaveTitleDialog: string;

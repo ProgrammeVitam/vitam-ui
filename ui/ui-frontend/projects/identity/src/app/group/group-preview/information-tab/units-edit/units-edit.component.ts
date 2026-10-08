@@ -56,8 +56,8 @@ export class UnitsEditComponent implements OnInit, OnDestroy {
   data = inject<{
     group: Group;
   }>(MAT_DIALOG_DATA);
-  private groupService = inject(GroupService);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly groupService = inject(GroupService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   form: FormGroup;
 

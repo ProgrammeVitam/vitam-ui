@@ -57,9 +57,9 @@ import { OidcAuthenticatorService } from './services/oidc-authenticator.service'
   ],
 })
 export class AuthenticationModule {
-  private configService = inject(ConfigService);
-  private oAuthService = inject(OAuthService);
-  private location = inject(WINDOW_LOCATION);
+  private readonly configService = inject(ConfigService);
+  private readonly oAuthService = inject(OAuthService);
+  private readonly location = inject(WINDOW_LOCATION);
 
   private static loading: Promise<any> = null;
 

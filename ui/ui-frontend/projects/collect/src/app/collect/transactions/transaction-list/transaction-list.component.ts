@@ -62,15 +62,15 @@ import { TransactionValidationMode } from '../../models/transaction-validation-m
   standalone: false,
 })
 export class TransactionListComponent extends InfiniteScrollTable<Transaction> implements OnInit {
-  private transactionService: TransactionsService;
-  private archiveCollectService = inject(ArchiveCollectService);
-  private projectService = inject(ProjectsService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private startupService = inject(StartupService);
-  private snackBarService = inject(SnackBarService);
-  private dialog = inject(MatDialog);
-  private sipImportTrackingService = inject(SipImportTrackingService);
+  private readonly transactionService: TransactionsService;
+  private readonly archiveCollectService = inject(ArchiveCollectService);
+  private readonly projectService = inject(ProjectsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly startupService = inject(StartupService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly dialog = inject(MatDialog);
+  private readonly sipImportTrackingService = inject(SipImportTrackingService);
 
   direction = Direction.DESCENDANT;
   orderBy = 'archivalAgreement';

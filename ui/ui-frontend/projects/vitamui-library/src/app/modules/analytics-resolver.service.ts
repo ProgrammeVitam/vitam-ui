@@ -46,9 +46,9 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class AnalyticsResolver {
-  private userApiService = inject(UserApiService);
-  private applicationService = inject(ApplicationService);
-  private tenantService = inject(TenantSelectionService);
+  private readonly userApiService = inject(UserApiService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly tenantService = inject(TenantSelectionService);
 
   private currentApplicationId: string;
 

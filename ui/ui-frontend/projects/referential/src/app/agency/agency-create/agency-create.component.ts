@@ -49,10 +49,10 @@ import { AgencyCreateValidators } from './agency-create.validators';
 export class AgencyCreateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AgencyCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private confirmDialogService = inject(ConfirmDialogService);
-  private agencyService = inject(AgencyService);
-  private agencyCreateValidators = inject(AgencyCreateValidators);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
+  private readonly agencyService = inject(AgencyService);
+  private readonly agencyCreateValidators = inject(AgencyCreateValidators);
 
   form: FormGroup;
   isLoading = false;

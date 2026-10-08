@@ -2,7 +2,7 @@
 
 if [ -z $1 ] || [ -z $2 ]; then
     echo "Usage: $0 <certificat> <url_security_internal>"
-    echo "Ex: $0 mycert.crt http://10.0.0.30:28005"
+    echo "Ex: $0 mycert.crt https://10.0.0.30:28005"
     exit 1
 fi
 CERT_FILE=$1
