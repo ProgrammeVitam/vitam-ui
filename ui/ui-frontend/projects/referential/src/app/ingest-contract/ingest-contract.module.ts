@@ -45,16 +45,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { IngestContractListComponent } from './ingest-contract-list/ingest-contract-list.component';
-import { IngestContractPreviewModule } from './ingest-contract-preview/ingest-contract-preview.module';
+
 import { IngestContractRoutingModule } from './ingest-contract-routing.module';
 import { IngestContractComponent } from './ingest-contract.component';
 import { IngestContractCreateComponent } from './ingest-contract-create/ingest-contract-create.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [IngestContractComponent, IngestContractListComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -67,10 +65,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     MatTabsModule,
     IngestContractRoutingModule,
-    IngestContractPreviewModule,
     IngestContractCreateComponent,
-    ImportDialogModule,
     TranslatePipe,
+    IngestContractComponent,
+    IngestContractListComponent,
   ],
 })
 export class IngestContractModule {}

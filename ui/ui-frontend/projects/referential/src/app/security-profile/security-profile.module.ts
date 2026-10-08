@@ -43,7 +43,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'vitamui-library';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
-import { SecurityProfilePreviewModule } from './security-profile-preview/security-profile-preview.module';
+
 import { SecurityProfileRoutingModule } from './security-profile-routing.module';
 import { SecurityProfileComponent } from './security-profile.component';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
@@ -56,13 +56,13 @@ import { TranslatePipe } from '@ngx-translate/core';
     VitamUICommonModule,
     SecurityProfileRoutingModule,
     SecurityProfileCreateComponent,
-    SecurityProfilePreviewModule,
     MatMenuModule,
     MatDialogModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
     TranslatePipe,
+    SecurityProfileComponent,
+    SecurityProfileListComponent,
   ],
-  declarations: [SecurityProfileComponent, SecurityProfileListComponent],
 })
 export class SecurityProfileModule {}

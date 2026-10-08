@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, inject } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import type { SearchCriteriaEltDto, Unit } from 'vitamui-library';
-import { CriteriaDataType, CriteriaOperator, SearchCriteriaTypeEnum } from 'vitamui-library';
+import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 
 const PAGE_SIZE = 10;
 const CURRENT_PAGE = 0;
@@ -47,7 +47,7 @@ const CURRENT_PAGE = 0;
 @Component({
   selector: 'app-archive-unit-rules-details-tab',
   templateUrl: './archive-unit-rules-details-tab.component.html',
-  standalone: false,
+  imports: [ArchiveUnitRulesInformationsTabComponent],
 })
 export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy {
   private collectService = inject(ArchiveCollectService);

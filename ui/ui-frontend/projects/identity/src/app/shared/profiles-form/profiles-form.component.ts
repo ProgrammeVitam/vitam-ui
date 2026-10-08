@@ -34,12 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, OnInit, SimpleChanges, ViewChild, OnChanges, inject } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { shareReplay } from 'rxjs/operators';
-import { ApplicationApiService, IdentifierName, Option, Profile, ProfileService, SelectComponent } from 'vitamui-library';
+import {
+  ApplicationApiService,
+  EllipsisDirective,
+  IdentifierName,
+  Option,
+  Profile,
+  ProfileService,
+  SelectComponent,
+} from 'vitamui-library';
 import { OptionTree } from './option-tree.interface';
 import { zip } from 'rxjs';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -52,7 +63,7 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './profiles-form.component.html',
   styleUrls: ['./profiles-form.component.scss'],
   providers: [PROFILES_FORM_VALUE_ACCESSOR],
-  standalone: false,
+  imports: [MatProgressSpinner, SelectComponent, ReactiveFormsModule, NgClass, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnChanges {
   private rngProfileService = inject(ProfileService);

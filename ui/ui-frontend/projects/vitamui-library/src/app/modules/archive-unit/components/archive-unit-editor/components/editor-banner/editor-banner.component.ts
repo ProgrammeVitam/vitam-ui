@@ -35,12 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, Input } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-editor-banner',
   templateUrl: './editor-banner.component.html',
   styleUrls: ['./editor-banner.component.scss'],
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class EditorBannerComponent {
   @Input() title: string;

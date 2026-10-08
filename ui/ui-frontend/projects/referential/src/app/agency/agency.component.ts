@@ -43,7 +43,6 @@ import {
   AgencyService,
   ApplicationId,
   FileTypes,
-  GlobalEventService,
   QueryParamsService,
   Role,
   SecurityService,
@@ -55,10 +54,9 @@ import { ImportDialogParam, ReferentialTypes } from '../shared/import-dialog/imp
 import { ImportDialogComponent } from '../shared/import-dialog/import-dialog.component';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
-import { AgencyCreateModule } from './agency-create/agency-create.module';
+
 import { AgencyPreviewComponent } from './agency-preview/agency-preview.component';
 
-import { ImportDialogModule } from '../shared/import-dialog/import-dialog.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuItem } from '@angular/material/menu';
@@ -69,10 +67,8 @@ import { map } from 'rxjs/operators';
   templateUrl: './agency.component.html',
   styleUrls: ['./agency.component.scss'],
   imports: [
-    AgencyCreateModule,
     AgencyListComponent,
     AgencyPreviewComponent,
-    ImportDialogModule,
     MatMenuItem,
     MatProgressSpinnerModule,
     MatSidenavModule,
@@ -82,8 +78,7 @@ import { map } from 'rxjs/operators';
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
-  override globalEventService: GlobalEventService;
-  route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private securityService = inject(SecurityService);
   private agencyService = inject(AgencyService);
   private translateService = inject(TranslateService);
@@ -98,16 +93,6 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   hasImportRole = false;
   hasExportRole = false;
   hasUpdateRole = false;
-
-  constructor() {
-    const globalEventService = inject(GlobalEventService);
-    const route = inject(ActivatedRoute);
-
-    super(route, globalEventService);
-
-    this.globalEventService = globalEventService;
-    this.route = route;
-  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

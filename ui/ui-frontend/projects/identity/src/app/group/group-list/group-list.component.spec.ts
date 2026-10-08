@@ -39,7 +39,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { of, Subject } from 'rxjs';
 
@@ -96,7 +95,7 @@ class Page {
   get loadMoreButton() {
     return (
       fixture.nativeElement.querySelector('.vitamui-table-message > .clickable') ||
-      (component.infiniteScrollDisabled ? { click: () => component.groupService.loadMore() } : null)
+      (component.infiniteScrollDisabled() ? { click: () => component.groupService.loadMore() } : null)
     );
   }
   get infiniteScroll() {
@@ -154,8 +153,7 @@ describe('GroupListComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, NoopAnimationsModule, VitamUICommonTestModule, OrderByButtonComponent],
-      declarations: [GroupListComponent],
+      imports: [MatProgressSpinnerModule, VitamUICommonTestModule, OrderByButtonComponent, GroupListComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: GroupService, useValue: groupListServiceSpy },
@@ -169,7 +167,7 @@ describe('GroupListComponent', () => {
             <div
               class="vitamui-table"
               vitamuiCommonInfiniteScroll
-              [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+              [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled()"
               (vitamuiScroll)="onScroll()"
             >
               <div class="vitamui-table-head">
@@ -180,7 +178,7 @@ describe('GroupListComponent', () => {
                 <div class="align-items-center">GROUP.HOME.RESULTS_TABLE.LEVEL</div>
               </div>
               <div class="vitamui-table-rows">
-                @for (group of dataSource; track group) {
+                @for (group of dataSource(); track group) {
                   <div class="vitamui-row">
                     <div></div>
                     <div>{{ group.name }}</div>
@@ -190,7 +188,7 @@ describe('GroupListComponent', () => {
                   </div>
                 }
               </div>
-              @if (infiniteScrollDisabled) {
+              @if (infiniteScrollDisabled()) {
                 <div class="vitamui-table-message">
                   <button class="clickable" type="button" (click)="groupService.loadMore()">GROUP.HOME.LOAD_MORE</button>
                 </div>
@@ -245,8 +243,8 @@ describe('GroupListComponent', () => {
   });
 
   it('should have a button to load more profileGroups', () => {
-    component.infiniteScrollDisabled = true;
-    component.pending = false;
+    component.infiniteScrollDisabled.set(true);
+    component.pending.set(false);
     fixture.detectChanges(false);
     expect(page.loadMoreButton).toBeTruthy();
   });
@@ -259,8 +257,8 @@ describe('GroupListComponent', () => {
 
   it('should call loadMore()', () => {
     const groupService = TestBed.inject(GroupService);
-    component.infiniteScrollDisabled = true;
-    component.pending = false;
+    component.infiniteScrollDisabled.set(true);
+    component.pending.set(false);
     fixture.detectChanges(false);
     page.loadMoreButton.click();
     expect(groupService.loadMore).toHaveBeenCalled();
@@ -286,7 +284,7 @@ describe('GroupListComponent', () => {
       usersCount: 0,
       units: [],
     });
-    expect(component.dataSource[1].name).toBe('Updated profileGroup');
+    expect(component.dataSource()[1].name).toBe('Updated profileGroup');
   });
 
   function testRow(index: number) {

@@ -41,39 +41,30 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { first, switchMap } from 'rxjs/operators';
-import { AccountModule } from './account/account.module';
+
 import { ArchiveUnitModule } from './archive-unit/archive-unit.module';
 import { AuthService } from './auth.service';
 import { ChipComponent } from './components/chip/chip.component';
-import { CollapseModule } from './components/collapse/collapse.module';
-import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
-import { ConfirmDialogModule } from './components/common-confirm-dialog/confirm-dialog.module';
-import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
-import { EditableFieldModule } from './components/editable-field/editable-field.module';
+
 import { FileSelectorComponent } from './components/file-selector/file-selector.component';
 import { HeaderModule } from './components/header/header.module';
-import { SelectLanguageModule } from './components/header/select-language/select-language.module';
-import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
+
 import { LogbookOperationFacetComponent } from './components/logbook-operation-facet/logbook-operation-facet.component';
 import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
 import { VitamuiMultiInputsModule } from './components/vitamui-multi-inputs/vitamui-multi-inputs.module';
-import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
+
 import { ConfigService } from './config.service';
-import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
-import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
+
 import { DragAndDropDirective } from './directives/drag-and-drop/drag-and-drop.directive';
 import { ClickOutsideDirective } from './directives/click-outside/click-outside.directive';
-import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directive.module';
-import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
-import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
-import { RowCollapseModule } from './directives/row-collapse/row-collapse.module';
+
 import { ENVIRONMENT, SUBROGRATION_REFRESH_RATE_MS, WINDOW_LOCATION } from './injection-tokens';
 import { LogbookModule } from './logbook/logbook.module';
 import { LoggerModule } from './logger/logger.module';
 import { ObjectEditorModule } from './object-editor/object-editor.module';
 import { ObjectViewerModule } from './object-viewer/object-viewer.module';
 import { PipesModule } from './pipes/pipes.module';
-import { SecurityModule } from './security/security.module';
+
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
@@ -111,6 +102,41 @@ import { EventTypeLabelComponent } from './logbook/event-type-label/event-type-l
 import { HistoryEventsComponent } from './logbook/history/history-events/history-events.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { AutocompletePositionDirective } from './directives/autocomplete-position/autocomplete-position.directive';
+import { ClosePopupDialogComponent } from './components/common-confirm-dialog/close-popup-dialog.component';
+import { CollapseComponent } from './components/collapse/collapse.component';
+import { CollapseContainerDirective } from './directives/collapse/collapse-container.directive';
+import { CollapseDirective } from './directives/collapse/collapse.directive';
+import { CollapseTriggerForDirective } from './directives/collapse/collapse-trigger-for.directive';
+import { CommonConfirmDialogComponent } from './components/common-confirm-dialog/common-confirm-dialog.component';
+import { CommonTooltipComponent } from './components/common-tooltip/common-tooltip.component';
+import { DialogHeaderComponent } from '../../lib/components/dialog/dialog-header/dialog-header.component';
+import { DownloadSnackBarComponent } from './components/download-snack-bar/download-snack-bar.component';
+import { EditableButtonToggleComponent } from './components/editable-field/editable-toggle-group/editable-button-toggle.component';
+import { EditableEmailInputComponent } from './components/editable-field/editable-email-input/editable-email-input.component';
+import { EditableFieldComponent } from './components/editable-field/editable-field.component';
+import { EditableFileComponent } from './components/editable-field/editable-file/editable-file.component';
+import { EditableInputComponent } from './components/editable-field/editable-input/editable-input.component';
+import { EditableLevelInputComponent } from './components/editable-field/editable-level-input/editable-level-input.component';
+import { EditableTextareaComponent } from './components/editable-field/editable-textarea/editable-textarea.component';
+import { EditableToggleGroupComponent } from './components/editable-field/editable-toggle-group/editable-toggle-group.component';
+import { EllipsisDirective } from './directives/ellipsis/ellipsis.directive';
+import { FilingPlanComponent } from '../../lib/components/filing-plan/filing-plan.component';
+import { InfiniteScrollDirective } from './directives/infinite-scroll/infinite-scroll.directive';
+import { LevelInputComponent } from './components/editable-field/level-input/level-input.component';
+import { RoleComponent } from './components/role-toggle/role.component';
+import { RoleToggleComponent } from './components/role-toggle/role-toggle.component';
+import { RowCollapseContainerDirective } from './directives/row-collapse/row-collapse-container.directive';
+import { RowCollapseDirective } from './directives/row-collapse/row-collapse.directive';
+import { RowCollapseTriggerForDirective } from './directives/row-collapse/row-collapse-trigger-for.directive';
+import { SelectLanguageComponent } from './components/header/select-language/select-language.component';
+import { SubLevelPipe } from './components/editable-field/editable-level-input/sub-level.pipe';
+import { TooltipDirective } from './components/common-tooltip/tooltip.directive';
+import { UserPhotoComponent } from './components/header/user-photo/user-photo.component';
+import { VitamuiSidenavHeaderComponent } from './components/vitamui-sidenav-header/vitamui-sidenav-header.component';
+import { VitamUIRadioComponent } from '../../lib/components/vitamui-radio/vitamui-radio.component';
+import { VitamUIRadioGroupComponent } from '../../lib/components/vitamui-radio-group/vitamui-radio-group.component';
+
 export function loadConfigFactory(configService: ConfigService, environment: any) {
   const p = () => configService.load(environment.configUrls).toPromise();
 
@@ -135,13 +161,10 @@ export function startupServiceFactory(startupService: StartupService, authServic
 }
 
 @NgModule({
-  declarations: [VitamuiIntervalDatePickerComponent],
   exports: [
     AccordionComponent,
-    AccountModule,
     ApplicationCardComponent,
     ArchiveUnitModule,
-    AutocompletePositionDirectiveModule,
     BadgeComponent,
     InformationBlocComponent,
     InformationDetailComponent,
@@ -149,22 +172,15 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ChipComponent,
     ElementsComponent,
     ClickOutsideDirective,
-    CollapseDirectiveModule,
-    CollapseModule,
     CommonProgressBarComponent,
-    CommonTooltipModule,
-    ConfirmDialogModule,
     DataComponent,
     DatepickerComponent,
     DragAndDropDirective,
-    EditableFieldModule,
-    EllipsisDirectiveModule,
     EventTypeLabelComponent,
     FileSelectorComponent,
     FooterComponent,
     HeaderModule,
     HistoryEventsComponent,
-    InfiniteScrollModule,
     InputComponent,
     LogbookModule,
     LogbookOperationFacetComponent,
@@ -173,11 +189,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     ObjectViewerModule,
     OrderByButtonComponent,
     PipesModule,
-    ResizeSidebarModule,
-    RowCollapseModule,
     SearchBarComponent,
-    SecurityModule,
-    SelectLanguageModule,
     SlideToggleComponent,
     StepperComponent,
     SubrogationModule,
@@ -185,7 +197,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TableFilterDirective,
     TableFilterOptionComponent,
     TableFilterSearchComponent,
-    UserPhotoModule,
     VitamUIFieldErrorComponent,
     SnackBarComponent,
     VitamuiBannerComponent,
@@ -195,39 +206,65 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiIntervalDatePickerComponent,
     VitamuiMenuButtonComponent,
     VitamuiMultiInputsModule,
-    VitamuiSidenavHeaderModule,
     VitamuiSupHeaderComponent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiTreeNodeComponent,
+
+    AutocompletePositionDirective,
+    ClosePopupDialogComponent,
+    CollapseComponent,
+    CollapseContainerDirective,
+    CollapseDirective,
+    CollapseTriggerForDirective,
+    CommonConfirmDialogComponent,
+    CommonTooltipComponent,
+    DialogHeaderComponent,
+    DownloadSnackBarComponent,
+    EditableButtonToggleComponent,
+    EditableEmailInputComponent,
+    EditableFieldComponent,
+    EditableFileComponent,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    EditableToggleGroupComponent,
+    EllipsisDirective,
+    FilingPlanComponent,
+    InfiniteScrollDirective,
+    LevelInputComponent,
+    RoleComponent,
+    RoleToggleComponent,
+    RowCollapseContainerDirective,
+    RowCollapseDirective,
+    RowCollapseTriggerForDirective,
+    SelectLanguageComponent,
+    SubLevelPipe,
+    TooltipDirective,
+    UserPhotoComponent,
+    VitamuiSidenavHeaderComponent,
+    VitamUIRadioComponent,
+    VitamUIRadioGroupComponent,
   ],
   imports: [
     AccordionComponent,
-    AccountModule,
     ApplicationCardComponent,
     ArchiveUnitModule,
-    AutocompletePositionDirectiveModule,
     BadgeComponent,
     InformationBlocComponent,
     InformationDetailComponent,
     ChipComponent,
     ElementsComponent,
     ClickOutsideDirective,
-    CollapseDirectiveModule,
     CommonModule,
     CommonProgressBarComponent,
-    ConfirmDialogModule,
     DataComponent,
     DatepickerComponent,
-    DownloadSnackBarModule,
     DragAndDropDirective,
-    EditableFieldModule,
-    EllipsisDirectiveModule,
     EventTypeLabelComponent,
     FileSelectorComponent,
     FooterComponent,
     HeaderModule,
     HistoryEventsComponent,
-    InfiniteScrollModule,
     InputComponent,
     LogbookModule,
     LogbookOperationFacetComponent,
@@ -239,10 +276,7 @@ export function startupServiceFactory(startupService: StartupService, authServic
     OrderByButtonComponent,
     PipesModule,
     ReactiveFormsModule,
-    ResizeSidebarModule,
-    RowCollapseModule,
     SearchBarComponent,
-    SecurityModule,
     SlideToggleComponent,
     StepperComponent,
     SubrogationModule,
@@ -250,7 +284,6 @@ export function startupServiceFactory(startupService: StartupService, authServic
     TableFilterDirective,
     TableFilterOptionComponent,
     TableFilterSearchComponent,
-    UserPhotoModule,
     VitamUIFieldErrorComponent,
     SnackBarComponent,
     VitamuiBannerComponent,
@@ -259,11 +292,46 @@ export function startupServiceFactory(startupService: StartupService, authServic
     VitamuiFacetComponent,
     VitamuiMenuButtonComponent,
     VitamuiMultiInputsModule,
-    VitamuiSidenavHeaderModule,
     VitamuiSupHeaderComponent,
     VitamuiTitleBreadcrumbComponent,
     VitamuiTreeNodeComponent,
     TranslatePipe,
+    VitamuiIntervalDatePickerComponent,
+
+    AutocompletePositionDirective,
+    ClosePopupDialogComponent,
+    CollapseComponent,
+    CollapseContainerDirective,
+    CollapseDirective,
+    CollapseTriggerForDirective,
+    CommonConfirmDialogComponent,
+    CommonTooltipComponent,
+    DialogHeaderComponent,
+    DownloadSnackBarComponent,
+    EditableButtonToggleComponent,
+    EditableEmailInputComponent,
+    EditableFieldComponent,
+    EditableFileComponent,
+    EditableInputComponent,
+    EditableLevelInputComponent,
+    EditableTextareaComponent,
+    EditableToggleGroupComponent,
+    EllipsisDirective,
+    FilingPlanComponent,
+    InfiniteScrollDirective,
+    LevelInputComponent,
+    RoleComponent,
+    RoleToggleComponent,
+    RowCollapseContainerDirective,
+    RowCollapseDirective,
+    RowCollapseTriggerForDirective,
+    SelectLanguageComponent,
+    SubLevelPipe,
+    TooltipDirective,
+    UserPhotoComponent,
+    VitamuiSidenavHeaderComponent,
+    VitamUIRadioComponent,
+    VitamUIRadioGroupComponent,
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
 })

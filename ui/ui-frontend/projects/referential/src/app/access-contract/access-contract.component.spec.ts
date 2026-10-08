@@ -38,19 +38,17 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AccessContractService, ApplicationService, BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { AccessContractService, ApplicationService, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AccessContractComponent } from './access-contract.component';
 
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 
 @Component({
   selector: 'app-access-contract-preview',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AccessContractPreviewStub {
   @Input()
@@ -60,7 +58,7 @@ class AccessContractPreviewStub {
 @Component({
   selector: 'app-access-contract-list',
   template: '',
-  standalone: false,
+  imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AccessContractListStub {}
 
@@ -69,6 +67,8 @@ describe('AccessContractComponent', () => {
   let fixture: ComponentFixture<AccessContractComponent>;
   const accessContractServiceMock = {
     getAll: () => of([]),
+    search: () => of([]),
+    updated: EMPTY,
   };
 
   const applicationServiceMock = {
@@ -78,24 +78,24 @@ describe('AccessContractComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccessContractComponent, AccessContractListStub, AccessContractPreviewStub],
       imports: [
         VitamUICommonTestModule,
-        RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
+        AccessContractComponent,
+        AccessContractListStub,
+        AccessContractPreviewStub,
       ],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: ApplicationService, useValue: applicationServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(AccessContractService, { useValue: accessContractServiceMock })
+      .compileComponents();
   });
 
   beforeEach(() => {

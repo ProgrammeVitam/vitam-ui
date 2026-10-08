@@ -34,21 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction, SearchCriteriaHistory, SnackBarService } from 'vitamui-library';
+import { Direction, PipesModule, SearchCriteriaHistory, SnackBarService, TooltipDirective } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-search-criteria-list',
   templateUrl: './search-criteria-list.component.html',
   styleUrls: ['./search-criteria-list.component.css'],
-  standalone: false,
+  imports: [MatMenuItem, TooltipDirective, MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   private searchCriteriaListService = inject(SearchCriteriaListService);
@@ -60,7 +62,7 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   @Output()
   storedSearchCriteriaHistory = new EventEmitter<any>();
 
-  searchCriteriaHistory: SearchCriteriaHistory[];
+  searchCriteriaHistory = signal<SearchCriteriaHistory[]>([]);
   private readonly orderChange = new Subject<void>();
   direction: Direction = Direction.ASCENDANT;
 
@@ -68,15 +70,16 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   subscriptionSearchCriteriaHistory: Subscription;
   keyPressSubscription: Subscription;
 
-  pending = false;
+  pending = signal(false);
 
   ngOnInit() {
     this.subscriptionSearchCriteriaHistoryShared = this.archiveSharedDataService
       .getSearchCriteriaHistoryShared()
       .subscribe((searchCriteriaHistoryResults) => {
         if (searchCriteriaHistoryResults) {
-          this.searchCriteriaHistory.push(searchCriteriaHistoryResults);
-          this.archiveSharedDataService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
+          const next = [...this.searchCriteriaHistory(), searchCriteriaHistoryResults];
+          this.archiveSharedDataService.sort(Direction.ASCENDANT, next);
+          this.searchCriteriaHistory.set(next);
         }
       });
     this.getSearchCriteriaHistory();
@@ -93,12 +96,12 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   }
 
   getSearchCriteriaHistory() {
-    this.pending = true;
+    this.pending.set(true);
     this.subscriptionSearchCriteriaHistory = this.searchCriteriaListService.getSearchCriteriaHistory().subscribe((data) => {
-      this.searchCriteriaHistory = data;
-      this.archiveSharedDataService.sort(Direction.ASCENDANT, this.searchCriteriaHistory);
+      this.archiveSharedDataService.sort(Direction.ASCENDANT, data);
+      this.searchCriteriaHistory.set(data);
       this.archiveSharedDataService.emitAllSearchCriteriaHistory(data);
-      this.pending = false;
+      this.pending.set(false);
     });
   }
 
@@ -124,10 +127,6 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   }
 
   clearElement(id: string) {
-    for (let i = 0; i < this.searchCriteriaHistory.length; i++) {
-      if (this.searchCriteriaHistory[i].id === id) {
-        this.searchCriteriaHistory.splice(i, 1);
-      }
-    }
+    this.searchCriteriaHistory.set(this.searchCriteriaHistory().filter((criteria) => criteria.id !== id));
   }
 }

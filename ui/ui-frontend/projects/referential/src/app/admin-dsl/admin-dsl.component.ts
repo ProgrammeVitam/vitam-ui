@@ -36,21 +36,39 @@
  */
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRootComponent, DslQueryType, Option, SnackBarService, AccessContractService } from 'vitamui-library';
+import {
+  AccessContractService,
+  DslQueryType,
+  InputComponent,
+  Option,
+  SelectComponent,
+  SnackBarService,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { AdminDslService } from './admin-dsl.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-admin-dsl',
   templateUrl: './admin-dsl.component.html',
   styleUrls: ['./admin-dsl.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    ReactiveFormsModule,
+    SelectComponent,
+    InputComponent,
+    TranslatePipe,
+  ],
 })
-export class AdminDslComponent extends AppRootComponent {
-  private route: ActivatedRoute;
+export class AdminDslComponent {
+  private route = inject(ActivatedRoute);
   private adminDslService = inject(AdminDslService);
   private snackBarService = inject(SnackBarService);
   private accessContractService = inject(AccessContractService);
@@ -67,11 +85,6 @@ export class AdminDslComponent extends AppRootComponent {
   }));
 
   constructor() {
-    const route = inject(ActivatedRoute);
-
-    super(route);
-    this.route = route;
-
     this.route.params.subscribe((params) => {
       if (params['tenantIdentifier']) {
         this.tenantId = params['tenantIdentifier'];

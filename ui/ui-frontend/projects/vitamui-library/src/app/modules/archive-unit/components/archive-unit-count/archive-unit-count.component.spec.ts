@@ -74,9 +74,8 @@ describe('ArchiveUnitCountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ArchiveUnitCountComponent, PluralPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      imports: [LoggerModule.forRoot(), MatProgressSpinnerModule, LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), MatProgressSpinnerModule, LoggerModule.forRoot(), ArchiveUnitCountComponent, PluralPipe],
       providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });

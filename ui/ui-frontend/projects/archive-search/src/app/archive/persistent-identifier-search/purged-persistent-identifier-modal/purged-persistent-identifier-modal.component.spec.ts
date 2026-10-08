@@ -34,13 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpBackend, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MissingTranslationHandler, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { VitamuiMissingTranslationHandler } from 'vitamui-library';
 import {
   ObjectPurgedPersistentOperationType,
   UnitPurgedPersistentOperationType,
@@ -71,8 +68,7 @@ describe('ErrorResponseModalComponent', () => {
 
   async function init(type: any, operationType: any) {
     await TestBed.configureTestingModule({
-      declarations: [PurgedPersistentIdentifierModalComponent],
-      imports: [],
+      imports: [PurgedPersistentIdentifierModalComponent],
       providers: [
         {
           provide: MatDialogRef,
@@ -95,8 +91,6 @@ describe('ErrorResponseModalComponent', () => {
             },
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(PurgedPersistentIdentifierModalComponent);

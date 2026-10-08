@@ -50,8 +50,7 @@ describe('SipImportTrackingService', () => {
     transactionApiService = { getOperationStatus: vi.fn() };
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [{ provide: TransactionApiService, useValue: transactionApiService }],
-    });
+    }).overrideProvider(TransactionApiService, { useValue: transactionApiService });
     service = TestBed.inject(SipImportTrackingService);
   });
 

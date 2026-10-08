@@ -36,9 +36,6 @@
  */
 import { NgModule } from '@angular/core';
 
-import { FilingPlanModule } from './components/filing-plan/filing-plan.module';
-import { VitamUIRadioGroupModule } from './components/vitamui-radio-group/vitamui-radio-group.module';
-import { VitamUIRadioModule } from './components/vitamui-radio/vitamui-radio.module';
 import { MAT_TABS_CONFIG } from '@angular/material/tabs';
 import { SelectComponent } from './components/select/select.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
@@ -72,7 +69,6 @@ const components = [
   DialogContentWithStateComponent,
   ErrorDialogComponent,
   ErrorsDetailsDialogComponent,
-  FilingPlanModule,
   FormFieldValueWrapperComponent,
   ManagementRuleSearchComponent,
   NextStepComponent,
@@ -84,8 +80,6 @@ const components = [
   SelectComponent,
   SelectWithTreeComponent,
   TranslateWithOptionalTypeSuffixPipe,
-  VitamUIRadioGroupModule,
-  VitamUIRadioModule,
 ];
 
 @NgModule({

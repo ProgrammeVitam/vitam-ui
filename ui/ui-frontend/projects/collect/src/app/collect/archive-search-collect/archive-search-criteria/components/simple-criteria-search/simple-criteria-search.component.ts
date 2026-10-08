@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { debounceTime, filter, map, share } from 'rxjs/operators';
 import {
@@ -49,6 +49,8 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   CriteriaValue,
+  DatepickerComponent,
+  EditableInputComponent,
   ItemNode,
   Option,
   SchemaElement,
@@ -58,6 +60,9 @@ import {
   SearchCriteriaService,
   SearchCriteriaTypeEnum,
   SearchProvider,
+  SelectComponent,
+  SelectWithTreeComponent,
+  TooltipDirective,
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
@@ -65,7 +70,14 @@ import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.s
 import { ManagementRulesSharedDataService } from '../../services/management-rules-shared-data.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ArchiveSearchHelperService } from '../../services/archive-search-helper.service';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
+import { AsyncPipe, CommonModule, NgTemplateOutlet } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
@@ -89,7 +101,27 @@ const keysList = [ALL_ARCHIVE_UNIT_TYPES, ERRORS];
   selector: 'app-simple-criteria-search',
   templateUrl: './simple-criteria-search.component.html',
   styleUrls: ['./simple-criteria-search.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    TooltipDirective,
+    SelectComponent,
+    DatepickerComponent,
+    NgTemplateOutlet,
+    MatCheckbox,
+    SelectWithTreeComponent,
+    AsyncPipe,
+    TranslatePipe,
+    CommonModule,
+    EditableInputComponent,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+  ],
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   dialog = inject(MatDialog);
@@ -110,14 +142,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     [ARCHIVE_UNIT_WITH_ERRORS, false],
   ]);
 
-  otherCriteriaOptions: ItemNode<SchemaElement>[];
+  otherCriteriaOptions = signal<ItemNode<SchemaElement>[]>(undefined);
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
-  selectOptions = {
+  selectOptions = signal({
     agency: { options: [] as Option[] },
     archiveUnitProfile: { options: [] as Option[] },
-  } satisfies { [key: string]: VitamuiSelectOptions };
+  } satisfies { [key: string]: VitamuiSelectOptions });
   private offlineServices$: Observable<SearchProvider[]>;
 
   constructor() {
@@ -143,7 +175,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           }),
         ),
       )
-      .subscribe((options) => (this.selectOptions.agency = options));
+      .subscribe((options) => {
+        this.selectOptions.update((selectOptions) => ({ ...selectOptions, agency: options }));
+      });
 
     archiveUnitProfilesService
       .getAll()
@@ -157,10 +191,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           }),
         ),
       )
-      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
+      .subscribe((options) => {
+        this.selectOptions.update((selectOptions) => ({ ...selectOptions, archiveUnitProfile: options }));
+      });
 
     const descriptiveSchemaTree$ = schemaService.getDescriptiveSchemaTree().pipe(share());
-    descriptiveSchemaTree$.subscribe((schema) => (this.otherCriteriaOptions = schema));
+    descriptiveSchemaTree$.subscribe((schema) => {
+      this.otherCriteriaOptions.set(schema);
+    });
 
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
     const otherCriteriaControl = this.formBuilder.group({});
@@ -279,7 +317,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   getCriteriaName(criteria: SchemaElement) {
     const path = criteria.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
-      children: this.otherCriteriaOptions,
+      children: this.otherCriteriaOptions(),
     } as ItemNode<SchemaElement>);
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }

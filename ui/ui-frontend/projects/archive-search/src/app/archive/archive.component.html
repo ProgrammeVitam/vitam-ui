@@ -1,5 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  @if (foundAccessContract) {
+  @if (foundAccessContract()) {
     <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" vitamuiCommonResizeSidebar="left">
       <app-filing-holding-scheme (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"></app-filing-holding-scheme>
     </mat-sidenav>
@@ -29,7 +29,7 @@
         <h5>{{ 'APPLICATION.ARCHIVE_SEARCH_MANAGEMENT_APP.NAME' | translate }}</h5>
       </vitamui-title-breadcrumb>
     </div>
-    @if (foundAccessContract) {
+    @if (foundAccessContract()) {
       <div class="vitamui-content">
         <div class="row">
           @if (!show) {

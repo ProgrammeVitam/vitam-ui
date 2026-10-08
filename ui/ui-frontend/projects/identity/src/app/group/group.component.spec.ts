@@ -37,18 +37,26 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
-import { DownloadSnackBarService, ENVIRONMENT, InjectorModule, LoggerModule, SearchBarComponent, SnackBarService } from 'vitamui-library';
-import type { Group } from 'vitamui-library';
+import { EMPTY, of, Subject } from 'rxjs';
+import {
+  DownloadSnackBarService,
+  ENVIRONMENT,
+  Group,
+  InjectorModule,
+  LoggerModule,
+  SearchBarComponent,
+  SnackBarService,
+} from 'vitamui-library';
 import { environment } from './../../environments/environment';
 
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupCreateComponent } from './group-create/group-create.component';
 import { GroupComponent } from './group.component';
+import { GroupListComponent } from './group-list/group-list.component';
+import { GroupPreviewComponent } from './group-preview/group-preview.component';
 import { GroupService } from './group.service';
 
 let component: GroupComponent;
@@ -59,7 +67,7 @@ class Page {
     return fixture.nativeElement.querySelector('app-group-list');
   }
   get createGroup() {
-    return fixture.nativeElement.querySelector('button');
+    return fixture.nativeElement.querySelector('.vitamui-heading vitamui-banner button.btn.primary');
   }
 }
 
@@ -68,11 +76,10 @@ let page: Page;
 @Component({
   selector: 'app-group-list',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class GroupListStubComponent {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
+  @Input()
   searchText: string;
 
   search() {}
@@ -81,7 +88,7 @@ class GroupListStubComponent {
 @Component({
   selector: 'app-group-preview',
   template: '',
-  standalone: false,
+  imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class GroupPreviewStubComponent {
   @Input()
@@ -99,27 +106,43 @@ describe('GroupComponent', () => {
     const snackBarSpy = {
       open: vi.fn().mockName('SnackBarService.open'),
     };
+    const groupServiceSpy = {
+      search: () => of([]),
+      loadMore: () => of([]),
+      updated: new Subject(),
+      getNonEmptyLevels: () => of([]),
+    };
 
     await TestBed.configureTestingModule({
       imports: [
         MatMenuModule,
         MatSidenavModule,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
         InjectorModule,
         SearchBarComponent,
         LoggerModule.forRoot(),
+        GroupComponent,
+        GroupListStubComponent,
+        GroupPreviewStubComponent,
       ],
-      declarations: [GroupComponent, GroupListStubComponent, GroupPreviewStubComponent],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { data: EMPTY } },
+        { provide: ActivatedRoute, useValue: { data: EMPTY, snapshot: { data: { appId: 'GROUPS_APP' } } } },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SnackBarService, useValue: snackBarSpy },
         { provide: DownloadSnackBarService, useValue: {} },
-        { provide: GroupService, useValue: {} },
+        { provide: GroupService, useValue: groupServiceSpy },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(GroupComponent, {
+        remove: {
+          imports: [GroupListComponent, GroupPreviewComponent],
+        },
+        add: {
+          imports: [GroupListStubComponent, GroupPreviewStubComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

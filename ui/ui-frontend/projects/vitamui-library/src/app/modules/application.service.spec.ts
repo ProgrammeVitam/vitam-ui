@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController } from '@angular/common/http/testing';
 import { LOCALE_ID, Type } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -42,10 +42,8 @@ import { ApplicationId } from './application-id.enum';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { ConfigService } from './config.service';
-import { BASE_URL } from './injection-tokens';
 import { Application } from './models/application/application.interface';
 import { StartupService } from './startup.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Category } from './models/application/category.interface';
 
 describe('ApplicationService', () => {
@@ -75,10 +73,7 @@ describe('ApplicationService', () => {
         { provide: AuthService, useValue: authStubService },
         { provide: LOCALE_ID, useValue: 'fr' },
         { provide: StartupService, useValue: startupServiceStub },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfigService, useValue: configServiceStub },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
 

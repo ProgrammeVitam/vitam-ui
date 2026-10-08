@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription } from 'rxjs';
@@ -46,6 +46,7 @@ import {
   FilingHoldingSchemeHandler,
   FilingHoldingSchemeNode,
   PagedResult,
+  ResizeVerticalDirective,
   ResultFacet,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
@@ -58,12 +59,15 @@ import { NodeData } from '../../models/nodedata.interface';
 import { Pair } from '../../models/utils';
 import { ArchiveSharedDataService } from '../../../../core/archive-shared-data.service';
 import { tap } from 'rxjs/operators';
+import { ClassificationTreeComponent } from './classification-tree/classification-tree.component';
+import { LeavesTreeComponent } from './leaves-tree/leaves-tree.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
   styleUrls: ['./filing-holding-scheme.component.scss'],
-  standalone: false,
+  imports: [ClassificationTreeComponent, LeavesTreeComponent, CommonModule, ResizeVerticalDirective],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private translateService = inject(TranslateService);
@@ -86,7 +90,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   attachmentUnits: Unit[];
   attachmentNodes: FilingHoldingSchemeNode[] = [];
   disabled: boolean;
-  loadingHolding = true;
+  loadingHolding = signal(true);
   node: string;
   nodeData: NodeData;
   fullNodes: FilingHoldingSchemeNode[] = [];
@@ -238,7 +242,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   }
 
   loadFilingHoldingSchemeTree() {
-    this.loadingHolding = true;
+    this.loadingHolding.set(true);
     this.archiveService.loadFilingHoldingSchemeTree().subscribe((nodes) => {
       // Disable checkbox use to prevent add unit to search criteria
       this.disableNodesRecursive(nodes);
@@ -249,7 +253,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
       this.switchViewAllNodes();
       this.setAttachmentNodes();
-      this.loadingHolding = false;
+      this.loadingHolding.set(false);
     });
   }
 

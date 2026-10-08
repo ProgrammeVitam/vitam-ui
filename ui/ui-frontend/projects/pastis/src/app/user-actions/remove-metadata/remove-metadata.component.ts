@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PopupService } from '../../core/services/popup.service';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
@@ -81,7 +81,6 @@ import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-
   selector: 'pastis-user-action-remove-metadata',
   templateUrl: './remove-metadata.component.html',
   styleUrls: ['./remove-metadata.component.scss'],
-  standalone: false,
 })
 export class UserActionRemoveMetadataComponent implements OnInit {
   dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);

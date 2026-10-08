@@ -25,7 +25,7 @@
       <div class="col-2">{{ 'INGEST_LIST.STATUS' | translate }}</div>
     </div>
     <div class="vitamui-table-body">
-      @for (ingest of dataSource; track ingest; let index = $index) {
+      @for (ingest of dataSource(); track ingest; let index = $index) {
         <div class="vitamui-table-rows" (click)="ingestClick.emit(ingest)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="row col-1">
@@ -93,7 +93,7 @@
       }
     </div>
   </div>
-  @if (!pending && !ingestService.canLoadMore) {
+  @if (!pending() && !ingestService.canLoadMore) {
     <div class="text-center">{{ 'INGEST_LIST.NORESULTS' | translate }}</div>
   } @else {
     <div class="vitamui-min-content">

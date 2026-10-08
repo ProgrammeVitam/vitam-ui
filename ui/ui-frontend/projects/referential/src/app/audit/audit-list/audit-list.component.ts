@@ -37,9 +37,28 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Subject, Subscription, timer } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  EllipsisDirective,
+  Event,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
+} from 'vitamui-library';
 import { AUDIT_CATEGORY_FILTER_EV_TYPE, AuditCategoryFilter, AuditChainType, AuditOperation } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
+import { CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeClassPipe } from '../../shared/pipes/event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from '../../shared/pipes/event-type-color-class.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const POLLING_INTERVAL_MS = 5000;
@@ -71,7 +90,22 @@ export class AuditFilters {
   selector: 'app-audit-list',
   templateUrl: './audit-list.component.html',
   styleUrls: ['./audit-list.component.scss'],
-  standalone: false,
+  imports: [
+    TableFilterDirective,
+    OrderByButtonComponent,
+    NgClass,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    PipesModule,
+    LastEventPipe,
+    EventTypeBadgeClassPipe,
+    EventTypeColorClassPipe,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
   auditService: AuditService;
@@ -115,7 +149,7 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     this.auditService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(this.buildCriteriaFromSearch())))
       .subscribe((data: any[]) => {
-        this.dataSource = data;
+        this.dataSource.set(data);
         this.startPolling();
       });
 
@@ -171,11 +205,12 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   public get filteredDataSource(): any[] {
     const selectedCategories = this._filters?.types || [];
 
-    if (!this.dataSource || selectedCategories.length === 0) {
-      return this.dataSource;
+    const dataSource = this.dataSource();
+    if (!dataSource || selectedCategories.length === 0) {
+      return dataSource;
     }
 
-    return this.dataSource.filter((item) => {
+    return dataSource.filter((item) => {
       const category = AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE[item.parsedData?.['type']] ?? AUDIT_CATEGORY_BY_EV_DET_DATA_TYPE[item.type];
 
       if (category) {
@@ -250,24 +285,29 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
   }
 
   private updateDataSource(newData: any[]): void {
-    if (!this.dataSource || this.dataSource.length === 0) {
-      this.dataSource = newData;
+    const current = this.dataSource() ?? [];
+    if (current.length === 0) {
+      this.dataSource.set(newData);
       return;
     }
+    const list = [...current];
+    const changedItems: Event[] = [];
     newData.forEach((newItem: Event) => {
-      const existingItemIndex = this.dataSource.findIndex((item) => item.id === newItem.id);
+      const existingItemIndex = list.findIndex((item) => item.id === newItem.id);
       if (existingItemIndex !== -1) {
-        const existingItem = this.dataSource[existingItemIndex];
+        const existingItem = list[existingItemIndex];
         const newStatus = this.auditMessage(newItem);
         const oldStatus = this.auditMessage(existingItem);
 
         if (newStatus !== oldStatus) {
-          this.dataSource[existingItemIndex] = { ...existingItem, ...newItem };
-          this.auditClick.next(newItem);
+          list[existingItemIndex] = { ...existingItem, ...newItem };
+          changedItems.push(newItem);
         }
       } else {
-        this.dataSource.unshift(newItem);
+        list.unshift(newItem);
       }
     });
+    this.dataSource.set(list);
+    changedItems.forEach((item) => this.auditClick.next(item));
   }
 }

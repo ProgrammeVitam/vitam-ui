@@ -35,27 +35,43 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, computed, input, InputSignal, OnChanges, Signal, SimpleChanges, inject } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
+  ArchiveUnitModule,
   DescriptionLevel,
   FileInfoDto,
   FormatIdentificationDto,
+  getErrorOnObjectsGroup,
+  getErrorOnTechnicalObjectsGroup,
+  InformationBlocComponent,
+  InformationDetailComponent,
+  PipesModule,
   qualifiersToVersionsWithQualifier,
   TenantSelectionService,
+  TooltipDirective,
   Unit,
-  VersionWithQualifierDto,
   ValidationError,
-  getErrorOnTechnicalObjectsGroup,
-  getErrorOnObjectsGroup,
+  VersionWithQualifierDto,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { NgClass, UpperCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-collect-object-group-details-tab',
   templateUrl: './collect-object-group-details-tab.component.html',
   styleUrls: ['./collect-object-group-details-tab.component.scss'],
-  standalone: false,
+  imports: [
+    InformationBlocComponent,
+    InformationDetailComponent,
+    ArchiveUnitModule,
+    NgClass,
+    TooltipDirective,
+    UpperCasePipe,
+    PipesModule,
+    TranslatePipe,
+  ],
 })
 export class CollectObjectGroupDetailsTabComponent implements OnChanges {
   private archiveCollectService = inject(ArchiveCollectService);

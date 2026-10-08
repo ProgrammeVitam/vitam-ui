@@ -34,28 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { of } from 'rxjs';
+import { InjectorModule, LoggerModule, SearchCriteriaDto, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../models/ruleAction.interface';
 import { ManagementRulesComponent } from './management-rules.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleActions: ActionsRules[] = [
   {
@@ -130,6 +118,7 @@ describe('ManagementRulesComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+      snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
     };
 
     const archiveServiceMock = {
@@ -149,11 +138,9 @@ describe('ManagementRulesComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ManagementRulesComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), ManagementRulesComponent],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
@@ -161,8 +148,6 @@ describe('ManagementRulesComponent', () => {
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -318,7 +303,7 @@ describe('ManagementRulesComponent', () => {
 
   describe('DOM', () => {
     it('should have 2 text titles', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('div.align-items-stretch > label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(2);

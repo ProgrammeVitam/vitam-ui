@@ -34,16 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { isEmpty } from 'underscore';
-import type { Agency } from 'vitamui-library';
-import { ApplicationId, Role } from 'vitamui-library';
-import { SecurityService } from 'vitamui-library';
-import { diff, VitamUICommonModule, AgencyService } from 'vitamui-library';
+import { Agency, AgencyService, ApplicationId, diff, Role, SecurityService, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AsyncPipe } from '@angular/common';
 import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';

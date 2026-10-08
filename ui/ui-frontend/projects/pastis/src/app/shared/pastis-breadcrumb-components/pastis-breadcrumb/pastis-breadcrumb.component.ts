@@ -34,18 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { TenantSelectionService } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
 import { PastisPopupMetadataLanguageService } from '../../pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-breadcrumb',
   templateUrl: './pastis-breadcrumb.component.html',
   styleUrls: ['./pastis-breadcrumb.component.scss'],
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class PastisBreadcrumbComponent {
   private metadataLanguageService = inject(PastisPopupMetadataLanguageService);

@@ -1,10 +1,10 @@
-@if (pending) {
+@if (pending()) {
   <div class="steackhouse">
     <mat-spinner color="primary" class="vitamui-spinner x-large my-3"></mat-spinner>
   </div>
 }
 
-@if (!opened) {
+@if (!opened()) {
   <button (click)="openSideNav()" class="pastis-btn-show-profile" disableRipple="true" mat-button>
     <mat-icon class="pastis-icon-show-profile">keyboard_arrow_right</mat-icon>
   </button>
@@ -15,11 +15,12 @@
     #sidenav
     (closed)="events.push('close!')"
     (opened)="events.push('open!')"
-    [(opened)]="opened"
+    [opened]="opened()"
+    (openedChange)="openedChanged($event)"
     class="pastis-side-nav"
     mode="side"
   >
-    @if (fileService.currentTreeLoaded) {
+    @if (fileService.currentTreeLoaded()) {
       <pastis-edit-profile></pastis-edit-profile>
     }
   </mat-sidenav>

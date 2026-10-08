@@ -39,13 +39,11 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
+import { BytesPipe, ConfirmDialogService, LoggerModule, StartupService } from 'vitamui-library';
 
 import { UploadComponent } from './upload.component';
 import { UploadService } from './upload.service';
 import { DecimalPipe } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('UploadComponent', () => {
   let component: UploadComponent;
@@ -62,8 +60,7 @@ describe('UploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UploadComponent],
-      imports: [MatProgressBarModule, LoggerModule.forRoot()],
+      imports: [MatProgressBarModule, LoggerModule.forRoot(), UploadComponent],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -73,9 +70,6 @@ describe('UploadComponent', () => {
         { provide: StartupService, useValue: { getReferentialUrl: () => '' } },
         DecimalPipe,
         BytesPipe,
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideTemplate(UploadComponent, '<div></div>')

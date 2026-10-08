@@ -35,13 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Directive, ElementRef, HostListener, Input, OnInit, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, Input, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-@Directive({
-  selector: '[vitamuiVerticalResizeSidebar]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiVerticalResizeSidebar]' })
 export class ResizeVerticalDirective implements OnInit {
   private elementRef = inject(ElementRef);
   private document = inject(DOCUMENT);

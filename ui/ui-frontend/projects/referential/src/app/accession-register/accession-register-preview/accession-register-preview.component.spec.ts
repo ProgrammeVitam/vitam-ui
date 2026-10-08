@@ -43,17 +43,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import {
-  AccessionRegisterDetail,
-  BASE_URL,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  StartupService,
-  WINDOW_LOCATION,
-} from 'vitamui-library';
+import { AccessionRegisterDetail, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../environments/environment.prod';
 import { AccessionRegistersService } from '../accession-register.service';
 import { AccessionRegisterPreviewComponent } from './accession-register-preview.component';
@@ -62,10 +53,7 @@ describe('AccessionRegisterPreviewComponent', () => {
   let component: AccessionRegisterPreviewComponent;
   let fixture: ComponentFixture<AccessionRegisterPreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -76,6 +64,7 @@ describe('AccessionRegisterPreviewComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+      snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
     };
 
     const AccessionRegistersServiceMock = {
@@ -92,14 +81,13 @@ describe('AccessionRegisterPreviewComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
         BrowserAnimationsModule,
+        AccessionRegisterPreviewComponent,
+        MockTruncatePipe,
       ],
-      declarations: [AccessionRegisterPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: AccessionRegistersService, useValue: AccessionRegistersServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },

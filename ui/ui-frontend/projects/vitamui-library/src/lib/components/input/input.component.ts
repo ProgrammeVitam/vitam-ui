@@ -37,10 +37,11 @@
 import { Component, ElementRef, forwardRef, HostBinding, HostListener, inject, Injector, Input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
-import { CommonTooltipModule } from '../../../app/modules/components/common-tooltip/common-tooltip.module';
+
 import { FormErrorsComponent } from '../form-errors/form-errors.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TooltipDirective } from '../../../app/modules/components/common-tooltip/tooltip.directive';
 
 export const INPUT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -55,7 +56,7 @@ type InternalValue = { id: number; value: string | number | boolean };
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
   providers: [INPUT_VALUE_ACCESSOR],
-  imports: [FormsModule, CommonTooltipModule, FormErrorsComponent, MatProgressSpinner, TranslatePipe],
+  imports: [FormsModule, TooltipDirective, FormErrorsComponent, MatProgressSpinner, TranslatePipe],
 })
 export class InputComponent extends AbstractFormInputDirective {
   private elRef = inject(ElementRef);

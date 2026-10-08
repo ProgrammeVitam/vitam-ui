@@ -38,10 +38,7 @@ import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angula
 
 import { RowCollapseDirective } from './row-collapse.directive';
 
-@Directive({
-  selector: '[vitamuiCommonRowCollapseContainer]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonRowCollapseContainer]' })
 export class RowCollapseContainerDirective implements AfterContentInit {
   @ContentChildren(RowCollapseDirective) collapseDirectives: QueryList<RowCollapseDirective>;
 
