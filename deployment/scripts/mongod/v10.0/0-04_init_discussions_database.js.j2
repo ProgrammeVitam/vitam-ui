@@ -11,7 +11,7 @@ dbDiscussions.discussions_read.createIndex(
     { name: 'idx_discussions_read_user_discussion', unique: true }
 );
 
-if (! dbDiscussions.getUser("{{ mongodb.discussions.user }}")) {
+if (!dbDiscussions.getUser("{{ mongodb.discussions.user }}")) {
     dbDiscussions.createUser(
         {
             user: "{{ mongodb.discussions.user }}",

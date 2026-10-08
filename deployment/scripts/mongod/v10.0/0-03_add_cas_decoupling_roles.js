@@ -6,15 +6,30 @@ var casDecouplingRoles = [
     "ROLE_CAS_HRD",
     "ROLE_CAS_SUBROGATION_VALIDATE",
     "ROLE_CAS_PRINCIPAL_ATTRIBUTES",
-    "ROLE_CAS_PASSWORD_POLICY"
+    "ROLE_CAS_PASSWORD_POLICY",
+    "ROLE_CAS_CUSTOMERS"
 ];
 
 dbSecurity.contexts.updateOne(
     { "_id": "cas_context" },
-    { $addToSet: { "roleNames": { $each: casDecouplingRoles } } }
+    {
+        $addToSet: {
+            "roleNames": {
+                $each: casDecouplingRoles
+            }
+        }
+    }
 );
 
 dbIam.profiles.updateOne(
     { "_id": "cas_profile" },
-    { $addToSet: { "roles": { $each: casDecouplingRoles.map(function (name) { return { "name": name }; }) } } }
+    {
+        $addToSet: {
+            "roles": {
+                $each: casDecouplingRoles.map(function (name) {
+                    return { "name": name };
+                })
+            }
+        }
+    }
 );
