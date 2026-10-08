@@ -1,4 +1,4 @@
 ---
 
-- include: copy_ontologies.yml
+- import_tasks: copy_ontologies.yml
   tags: update_vitamui_configuration
