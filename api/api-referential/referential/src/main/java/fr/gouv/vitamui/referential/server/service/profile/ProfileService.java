@@ -400,7 +400,7 @@ public class ProfileService extends AbstractService {
             Resource resource = new InputStreamResource(stream);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
-        return null;
+        throw new InternalServerException("Unable to download Profile file: no stream returned by Vitam");
     }
 
     public ResponseEntity<JsonNode> updateProfileFile(String id, MultipartFile profileFile)
