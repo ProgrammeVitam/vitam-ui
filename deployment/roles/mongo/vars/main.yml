@@ -3,4 +3,8 @@
 mongo_tmp_path: "{{ vitamui_defaults.folder.root_path }}/tmp/mongod"
 mongo_config_path: "{{ vitamui_defaults.folder.root_path }}/conf/mongod"
 mongo_db_path: "{{ vitamui_defaults.folder.root_path }}/data/mongod/db"
+
+# Where the data actually sits, which is not always storage.dbPath: the container
+# unit passes --dbpath on its command line, and that overrides mongod.conf.
+mongod_effective_db_path: "{{ '/vitamui/data/mongod' if install_mode == 'container' else mongo_db_path }}"
 mongo_folder_log: '{{ vitamui_defaults.folder.root_path }}/log/mongod'
