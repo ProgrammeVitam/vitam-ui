@@ -21,7 +21,11 @@
         <button mat-menu-item (click)="goToPersistentIdentifierSearchPage()">
           {{ 'ARCHIVE_SEARCH.PERSISTENT_IDENTIFIER_SEARCH.GO_TO_PAGE' | translate }}
         </button>
-        <button mat-menu-item (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_OPI)" [disabled]="!hasReassignmentRole">
+        <button
+          mat-menu-item
+          (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_OPI)"
+          [disabled]="!hasReassignmentRole || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc"
+        >
           {{ 'ARCHIVE_SEARCH.ENTRY_OPERATION_REASSIGNMENT.TITLE' | translate }}
         </button>
       </vitamui-menu-button>
@@ -314,7 +318,11 @@
               }"
               mat-menu-item
               (click)="launchOriginatingAgencyReassignmentModal(ReassignmentMode.BY_ID)"
-              [disabled]="selectedItemCount === 0"
+              [vitamuiTooltip]="
+                !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc ? hasAccessContractManagementPermissionsMessage : ''
+              "
+              [vitamuiTooltipShowDelay]="300"
+              [disabled]="selectedItemCount === 0 || !accessContractAllowUpdating || accessContractUpdatingRestrictedDesc"
             >
               {{ 'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ACTION' | translate }}
             </button>
