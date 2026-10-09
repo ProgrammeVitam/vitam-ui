@@ -58,6 +58,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.server.service.profile.ProfileService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
@@ -66,10 +67,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +89,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -100,6 +106,7 @@ public class ProfileController {
     private static final String SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT = "/signed-download/download";
     private static final String SIGNED_DOWNLOAD_PROFILE_PATH = RestApi.PROFILE + SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT;
     private static final String ID_PARAMETER = "id";
+    private static final String FILENAME_PARAMETER = "filename";
 
     @Autowired
     private ProfileService profileService;
@@ -165,29 +172,42 @@ public class ProfileController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Prepare signed download profile with id :{}", id);
 
+        ProfileDto profileDto = profileService.getOne(id);
+        String filename = profileDto != null && StringUtils.isNotBlank(profileDto.getPath())
+            ? profileDto.getPath()
+            : id;
+
         DownloadClaims claims = new DownloadClaims();
         claims.setResource(PROFILE_DOWNLOAD_RESOURCE);
-        claims.setParameters(Map.of(ID_PARAMETER, id));
+        claims.setParameters(Map.of(ID_PARAMETER, id, FILENAME_PARAMETER, filename));
 
         return signedDownloadTokenService.generateSignedUrl(claims, SIGNED_DOWNLOAD_PROFILE_PATH);
     }
 
-    @GetMapping(SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT)
-    public ResponseEntity<Resource> signedDownload(@RequestParam final String token)
-        throws InvalidParseOperationException, PreconditionFailedException, AccessExternalNotFoundException, AccessExternalClientException {
+    @GetMapping(value = SIGNED_DOWNLOAD_DOWNLOAD_ENDPOINT, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void signedDownload(@RequestParam final String token, final HttpServletResponse response)
+        throws InvalidParseOperationException, PreconditionFailedException, AccessExternalNotFoundException, AccessExternalClientException, IOException {
         ParameterChecker.checkParameter("The token is a mandatory parameter: ", token);
         DownloadClaims claims = signedDownloadTokenService.validate(token, PROFILE_DOWNLOAD_RESOURCE);
         String id = claims.getParameters().get(ID_PARAMETER);
         if (Objects.isNull(id)) {
             throw new BadRequestException("Invalid signed download URL");
         }
+        String filename = claims.getParameters().getOrDefault(FILENAME_PARAMETER, id);
 
         SanityChecker.checkSecureParameter(id);
         VitamContext vitamContext = new VitamContext(claims.getTenantId())
             .setAccessContract(claims.getAccessContractId())
             .setApplicationSessionId(claims.getApplicationSessionId());
         LOGGER.debug("Signed download profile with id :{}", id);
-        return profileService.download(id, vitamContext);
+
+        ResponseEntity<Resource> downloadResponse = profileService.download(id, vitamContext);
+        response.setHeader(
+            HttpHeaders.CONTENT_DISPOSITION,
+            ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build().toString()
+        );
+        response.setHeader(RestUtils.REFERRER_POLICY, "no-referrer");
+        StreamUtils.copy(downloadResponse.getBody().getInputStream(), response.getOutputStream());
     }
 
     /**
