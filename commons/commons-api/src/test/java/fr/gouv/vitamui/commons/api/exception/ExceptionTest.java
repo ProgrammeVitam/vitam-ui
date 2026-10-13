@@ -39,6 +39,26 @@ class ExceptionTest {
     }
 
     @Test
+    void testInsufficientStorageException() {
+        restClient
+            .get()
+            .uri(TestController.INSUFFICIENT_STORAGE_EXCEPTION)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INSUFFICIENT_STORAGE);
+    }
+
+    @Test
+    void testInsufficientStorageExceptionWithThrowable() {
+        restClient
+            .get()
+            .uri(TestController.INSUFFICIENT_STORAGE_EXCEPTION_WITH_THROWABLE)
+            .exchange()
+            .expectStatus()
+            .isEqualTo(HttpStatus.INSUFFICIENT_STORAGE);
+    }
+
+    @Test
     void testNotFoundException() {
         restClient.get().uri(TestController.NOT_FOUND_EXCEPTION).exchange().expectStatus().isNotFound();
     }

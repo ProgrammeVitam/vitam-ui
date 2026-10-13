@@ -3,6 +3,7 @@ package fr.gouv.vitamui.commons.api.controller;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.InsufficientStorageException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
@@ -34,6 +35,11 @@ public class TestController {
     public static final String BAD_REQUEST_EXCEPTION_WITH_THROWABLE = "/test/badRequestExceptionWithThrowable";
 
     public static final String FORBIDDEN_EXCEPTION = "/test/forbiddenException";
+
+    public static final String INSUFFICIENT_STORAGE_EXCEPTION = "/test/insufficientStorageException";
+
+    public static final String INSUFFICIENT_STORAGE_EXCEPTION_WITH_THROWABLE =
+        "/test/insufficientStorageExceptionWithThrowable";
 
     public static final String INTERNAL_SERVER_EXCEPTION = "/test/internalServerException";
 
@@ -85,6 +91,16 @@ public class TestController {
     @RequestMapping(value = FORBIDDEN_EXCEPTION)
     public String getForbiddenException() {
         throw new ForbiddenException("ForbiddenException");
+    }
+
+    @RequestMapping(value = INSUFFICIENT_STORAGE_EXCEPTION)
+    public String getInsufficientStorageException() {
+        throw new InsufficientStorageException("InsufficientStorageException");
+    }
+
+    @RequestMapping(value = INSUFFICIENT_STORAGE_EXCEPTION_WITH_THROWABLE)
+    public String getInsufficientStorageExceptionWithThrowable() {
+        throw new InsufficientStorageException("InsufficientStorageException", new IOException());
     }
 
     @RequestMapping(value = INTERNAL_SERVER_EXCEPTION)
