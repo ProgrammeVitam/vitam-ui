@@ -882,7 +882,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   exportArchiveUnitsToCsvFile() {
+<<<<<<< HEAD
     if (this.hasSearchCriterias()) {
+=======
+    if (this.selectedItemCount > 0 && this.hasSearchCriteria()) {
+>>>>>>> a41719e02 (Bug #16922: [Search] CSV export button triggers an error when no search results are selected.)
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {

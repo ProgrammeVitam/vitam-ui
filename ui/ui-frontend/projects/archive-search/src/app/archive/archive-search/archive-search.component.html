@@ -277,6 +277,7 @@
   </div>
 </div>
 
+<<<<<<< HEAD
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
   <div class="vitamui-table">
     <div class="vitamui-table-head">
@@ -296,6 +297,34 @@
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
           <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole">
+=======
+@if (submitted()) {
+  <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()">
+    <vitamui-sup-header>
+      <ng-container title>
+        <vitamui-common-archive-unit-count
+          [search]="search$"
+          [archiveUnitCount]="totalResults()"
+          (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
+          [(selectedArchiveUnitCount)]="selectedItemCount"
+          [threshold]="10000"
+          [pending]="pending()"
+          (pendingChange)="pending.set($event)"
+          [allChecked]="isAllChecked"
+          class="col-8"
+        />
+      </ng-container>
+      <ng-container buttons>
+        <button
+          class="btn btn-circle large tertiary"
+          [disabled]="!(totalResults() > 0 && selectedItemCount > 0)"
+          (click)="exportArchiveUnitsToCsvFile()"
+        >
+          <i class="vitamui-icon vitamui-icon-import-csv"></i>
+        </button>
+        <vitamui-menu-button menuButtonSize="medium" class="ml-2" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="selectedItemCount === 0 || !hasDipExportRole()">
+>>>>>>> a41719e02 (Bug #16922: [Search] CSV export button triggers an error when no search results are selected.)
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
           <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="selectedItemCount === 0 || !hasTransferRequestRole">
