@@ -57,6 +57,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InsufficientStorageException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
@@ -238,6 +239,10 @@ public class ProjectService {
                 !e.getVitamError().getErrorsDetails().isEmpty()
             ) {
                 return e.getVitamError().toJsonNode();
+            } else if (
+                e.getVitamError() != null && e.getVitamError().getHttpCode() == HttpStatus.INSUFFICIENT_STORAGE.value()
+            ) {
+                throw new InsufficientStorageException(e.getMessage(), e);
             } else {
                 throw new InternalServerException(e.getMessage(), e);
             }
@@ -255,6 +260,11 @@ public class ProjectService {
             return collectService.uploadSipToTransaction(vitamContext, transactionId, attachmentId, inputStream);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
+            if (
+                e.getVitamError() != null && e.getVitamError().getHttpCode() == HttpStatus.INSUFFICIENT_STORAGE.value()
+            ) {
+                throw new InsufficientStorageException(e.getMessage(), e);
+            }
             throw new BadRequestException(UNABLE_TO_UPLOAD_SIP_TO_TRANSACTION, e);
         }
     }

@@ -51,6 +51,7 @@ import fr.gouv.vitamui.collect.common.dto.CollectTransactionDto;
 import fr.gouv.vitamui.collect.server.service.converters.ProjectConverter;
 import fr.gouv.vitamui.collect.server.service.converters.TransactionConverter;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.InsufficientStorageException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import jakarta.ws.rs.core.Response;
@@ -357,6 +358,53 @@ class ProjectServiceTest {
 
         assertNotNull(response);
         assertEquals(response, expectedResponse);
+    }
+
+    @Test
+    void shouldThrowInsufficientStorageExceptionWhenStreamUploadZipQuotaExceeded() throws VitamClientException {
+        // GIVEN
+        final String quotaMessage =
+            "The storage quota allocated to your tenant has been reached. Please contact the administrator.";
+        VitamClientException exception = new VitamClientException(quotaMessage);
+        exception.setVitamError(new VitamError<>("INSUFFICIENT_STORAGE").setHttpCode(507).setMessage(quotaMessage));
+        Mockito.when(collectService.uploadProjectZip(any(), any(), any(), any())).thenThrow(exception);
+        InputStream csvFileInputStream =
+            ProjectService.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
+
+        // THEN
+        InsufficientStorageException thrown = assertThrows(
+            InsufficientStorageException.class,
+            () ->
+                projectService.streamingUpload(
+                    csvFileInputStream,
+                    "FAKE_TRANSACTION_ID",
+                    null,
+                    "FAKE_VALUE",
+                    vitamContext
+                )
+        );
+        assertEquals(quotaMessage, thrown.getMessage());
+    }
+
+    @Test
+    void shouldThrowInsufficientStorageExceptionWhenStreamUploadSipQuotaExceeded() throws VitamClientException {
+        // GIVEN
+        final String quotaMessage =
+            "The storage quota allocated to your tenant has been reached. Please contact the administrator.";
+        VitamClientException exception = new VitamClientException(quotaMessage);
+        exception.setVitamError(new VitamError<>("INSUFFICIENT_STORAGE").setHttpCode(507).setMessage(quotaMessage));
+        Mockito.when(collectService.uploadSipToTransaction(any(), any(), any(), any())).thenThrow(exception);
+        InputStream csvFileInputStream =
+            ProjectService.class.getClassLoader()
+                .getResourceAsStream("data/updateCollectArchiveUnits/collect_metadata.csv");
+
+        // THEN
+        InsufficientStorageException thrown = assertThrows(
+            InsufficientStorageException.class,
+            () -> projectService.streamingUploadSip(csvFileInputStream, "FAKE_TRANSACTION_ID", null, vitamContext)
+        );
+        assertEquals(quotaMessage, thrown.getMessage());
     }
 
     @Test
