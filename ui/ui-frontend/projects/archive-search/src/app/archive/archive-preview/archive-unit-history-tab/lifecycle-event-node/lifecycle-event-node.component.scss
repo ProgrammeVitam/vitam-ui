@@ -1,7 +1,7 @@
 .lifecycle-event-item {
   overflow: hidden;
   position: relative;
-  padding: 0 0 16px 35px;
+  padding: 0 0 30px 35px;
   left: 8px;
   font-size: 12px;
   border-color: var(--vitamui-primary);
@@ -53,11 +53,6 @@
 
   &.no-incoming-line::before {
     top: 22px;
-  }
-
-  // cancels the item's own indent so nested dots stay on the shared timeline column
-  .lifecycle-event-children & {
-    left: 0;
   }
 }
 
@@ -183,6 +178,43 @@
 }
 
 .lifecycle-event-children {
-  margin-top: 8px;
+  margin-top: 10px;
   margin-left: -35px;
+}
+
+.lifecycle-event-children .lifecycle-event-item {
+  font-size: 11px;
+  // cancels the item's own indent so nested dots stay on the shared timeline column
+  left: 0;
+
+  &:not(:last-child):not(.has-visible-children) {
+    padding-bottom: 10px;
+  }
+}
+
+.lifecycle-event-children .lifecycle-event-main {
+  padding-left: 20px;
+}
+
+.lifecycle-event-children .lifecycle-event-date::after {
+  left: -48px;
+}
+
+.lifecycle-event-children .lifecycle-event-title {
+  font-size: 12px;
+
+  &::before {
+    width: 10px;
+    height: 10px;
+    left: -52px;
+    border-width: 1.5px;
+  }
+
+  &::after {
+    left: -48px;
+  }
+}
+
+.lifecycle-event-children .lifecycle-event-detail-toggle {
+  font-size: 11px;
 }
