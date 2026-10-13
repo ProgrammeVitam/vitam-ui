@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   AuthService,
-  IEvent,
   ExternalParameters,
   ExternalParametersService,
+  IEvent,
   IngestStatus,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
@@ -64,7 +64,7 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   styleUrls: ['./logbook-operation-detail.component.scss'],
   standalone: false,
 })
-export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
+export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   private logbookService = inject(LogbookService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
@@ -97,10 +97,6 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-  }
-
-  ngOnChanges() {
-    this.refreshLogbookOperation();
   }
 
   private setAccessContractId(userExternalParameters: Map<string, string>) {
