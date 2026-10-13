@@ -882,7 +882,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   exportArchiveUnitsToCsvFile() {
-    if (this.hasSearchCriterias()) {
+    if (this.selectedItemCount > 0 && this.hasSearchCriterias()) {
       this.listOfUACriteriaSearch = this.prepareListOfUACriteriaSearch();
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
