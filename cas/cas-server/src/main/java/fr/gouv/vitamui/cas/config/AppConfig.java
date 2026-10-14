@@ -45,6 +45,7 @@ import fr.gouv.vitamui.cas.password.IamPasswordManagementService;
 import fr.gouv.vitamui.cas.surrogation.IamSurrogateAuthenticationService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
+import fr.gouv.vitamui.cas.ticket.HostAgnosticTransientSessionTicketFactory;
 import fr.gouv.vitamui.cas.util.IamApiDecorator;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
@@ -61,9 +62,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
 import org.apereo.cas.authentication.AuthenticationHandler;
-import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
-import org.apereo.cas.authentication.AuthenticationSystemSupport;
-import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.authentication.principal.DefaultDelegatedAuthenticationCredentialExtractor;
 import org.apereo.cas.authentication.principal.DelegatedAuthenticationCredentialExtractor;
 import org.apereo.cas.authentication.principal.DelegatedAuthenticationPreProcessor;
@@ -83,6 +81,7 @@ import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TicketCatalog;
 import org.apereo.cas.ticket.TicketDefinition;
 import org.apereo.cas.ticket.TicketGrantingTicketFactory;
+import org.apereo.cas.ticket.TransientSessionTicketFactory;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessToken;
 import org.apereo.cas.ticket.accesstoken.OAuth20AccessTokenFactory;
@@ -117,15 +116,12 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_EXTERNAL;
 import static fr.gouv.vitamui.commons.api.CommonConstants.X_ORIGIN_HEADER_NAME;
@@ -423,6 +419,20 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
             servicesManager,
             utils
         );
+    }
+
+    /**
+     * Replaces the CAS factory so that the ids of the transient session tickets (the {@code pswdrst} token of the
+     * password reset URLs, among others) do not expose the host name of the CAS server.
+     */
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public TransientSessionTicketFactory defaultTransientSessionTicketFactory(
+        @Qualifier(
+            ExpirationPolicyBuilder.BEAN_NAME_TRANSIENT_SESSION_TICKET_EXPIRATION_POLICY
+        ) final ExpirationPolicyBuilder transientSessionTicketExpirationPolicy
+    ) {
+        return new HostAgnosticTransientSessionTicketFactory(transientSessionTicketExpirationPolicy);
     }
 
     @Bean
