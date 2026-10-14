@@ -4,15 +4,15 @@
       <div class="vitamui-input" [class.first]="first">
         @if (first) {
           <label>
-            {{ placeholder }}
+            {{ placeholder() }}
             @if (isRequired()) {
               <span class="required-marker">*</span>
             }
           </label>
         }
-        @if (!textarea) {
+        @if (!textarea()) {
           <input
-            [type]="type"
+            [type]="type()"
             (blur)="onBlur(i)"
             (focus)="onFocus(i)"
             [ngModel]="item.value"
@@ -20,7 +20,7 @@
             [disabled]="control.disabled"
           />
         }
-        @if (textarea) {
+        @if (textarea()) {
           <div class="grow-wrap" [attr.data-replicated-value]="item.value">
             <textarea
               rows="3"
@@ -33,14 +33,14 @@
             ></textarea>
           </div>
         }
-        @if (!control.disabled && multiple) {
-          <div [class.hgap-1]="!textarea" [class.gap-1]="textarea">
+        @if (!control.disabled && multiple()) {
+          <div [class.hgap-1]="!textarea()" [class.gap-1]="textarea()">
             @if (items.length > 1) {
               <button
                 type="button"
                 class="btn btn-circle link primary xsmall remove"
                 (click)="removeInput(i)"
-                [vitamuiTooltip]="removeTooltipKey | translate"
+                [vitamuiTooltip]="removeTooltipKey() | translate"
                 vitamuiTooltipPosition="LEFT"
                 [outline]="true"
               >
@@ -53,7 +53,7 @@
                 class="btn btn-circle link primary xsmall"
                 (click)="addInput()"
                 [disabled]="isEmpty(item.value)"
-                [vitamuiTooltip]="addTooltipKey | translate"
+                [vitamuiTooltip]="addTooltipKey() | translate"
                 vitamuiTooltipPosition="LEFT"
                 [outline]="true"
               >
@@ -68,4 +68,4 @@
   <mat-spinner diameter="25"></mat-spinner>
 </div>
 
-<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap()"></vitamui-form-errors>

@@ -108,7 +108,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchiveUnitObjectsDetailsTabComponent);
     component = fixture.componentInstance;
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': '',
@@ -117,7 +117,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
     fixture.detectChanges();
   });
 
@@ -154,18 +154,18 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     } as Unit;
     archiveServiceSpy.getObjectById.mockReturnValue(of(newApiUnitObject()));
-    component.archiveUnit = unit;
+    fixture.componentRef.setInput('archiveUnit', unit);
     component.ngOnChanges({
       archiveUnit: new SimpleChange(null, unit, true),
     });
     component.getObjectVersionsWithQualifiers();
     expect(archiveServiceSpy.getObjectById).toHaveBeenCalled();
-    expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(component.archiveUnit['#id'], anything());
+    expect(archiveServiceSpy.getObjectById).toHaveBeenCalledWith(component.archiveUnit()['#id'], anything());
   });
 
   it('unitHasObject should return true', () => {
     // Given
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#object': 'objectId',
@@ -176,7 +176,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       DescriptionLevel: DescriptionLevel.ITEM as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
 
     // When
     const response = component.unitHasObject();
@@ -187,7 +187,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
 
   it('unitHasObject should return false', () => {
     // Given
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'archiveUnitTestID',
       '#unitType': null,
@@ -197,7 +197,7 @@ describe('ArchiveUnitObjectsDetailsTabComponent', () => {
       DescriptionLevel: DescriptionLevel.RECORD_GRP as any,
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
 
     // When
     const response = component.unitHasObject();

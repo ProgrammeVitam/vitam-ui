@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, OnChanges, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
@@ -53,14 +53,11 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
   private readonly datePipe = inject(DatePipe);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @Input()
-  disseminationRuleFacets: RuleFacets;
+  readonly disseminationRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  totalResults: number;
+  readonly totalResults = input<number>(undefined);
 
-  @Input()
-  exactCount: boolean;
+  readonly exactCount = input<boolean>(undefined);
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -76,7 +73,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
     let archiveUnitWithRules = 0;
-    if (this.disseminationRuleFacets) {
+    if (this.disseminationRuleFacets()) {
       archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleRulesDisctinctsFacets();
       this.handleRulesExpirationFacets(archiveUnitWithRules);
@@ -85,7 +82,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
 
   getFacetTextByExactCountFlag(count: number, exactCount: boolean): string {
     let facetContentValue = count.toString();
-    if (!exactCount && this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
+    if (!exactCount && this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
     }
     return facetContentValue;
@@ -95,8 +92,9 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
-    if (this.disseminationRuleFacets.expiredRulesListFacets && this.disseminationRuleFacets.expiredRulesListFacets.length > 0) {
-      this.disseminationRuleFacets.expiredRulesListFacets.forEach((elt) => {
+    const disseminationRuleFacets = this.disseminationRuleFacets();
+    if (disseminationRuleFacets.expiredRulesListFacets && disseminationRuleFacets.expiredRulesListFacets.length > 0) {
+      disseminationRuleFacets.expiredRulesListFacets.forEach((elt) => {
         if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
           expiredRulesNb = elt.count ? elt.count : 0;
@@ -104,9 +102,11 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
       });
     }
 
+    const totalResults = this.totalResults();
+    const exactCount = this.exactCount();
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '>' + this.dateFilterValue,
@@ -115,11 +115,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
 
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.NOT_EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(
-        archiveUnitWithRules - expiredRulesNb,
-        this.exactCount,
-        this.totalResults,
-      ),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(archiveUnitWithRules - expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '<' + this.dateFilterValue,
@@ -128,13 +124,14 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
   }
 
   private handleRulesDisctinctsFacets() {
-    if (this.disseminationRuleFacets.rulesListFacets && this.disseminationRuleFacets.rulesListFacets.length > 0) {
+    const disseminationRuleFacets = this.disseminationRuleFacets();
+    if (disseminationRuleFacets.rulesListFacets && disseminationRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.DISTINCT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
-          this.disseminationRuleFacets.rulesListFacets.length,
-          this.exactCount,
-          this.totalResults,
+          disseminationRuleFacets.rulesListFacets.length,
+          this.exactCount(),
+          this.totalResults(),
         ),
         clickable: false,
         color: Colors.GRAY,
@@ -143,7 +140,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
     } else {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.DISTINCT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount(), this.totalResults()),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -153,11 +150,14 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
 
   private handleWaitingToRecalculateRulesFacets(): number {
     let archiveUnitWithRules = 0;
+    const disseminationRuleFacets = this.disseminationRuleFacets();
+    const totalResults = this.totalResults();
+    const exactCountValue = this.exactCount();
     if (
-      this.disseminationRuleFacets.waitingToRecalculateRulesListFacets &&
-      this.disseminationRuleFacets.waitingToRecalculateRulesListFacets.length > 0
+      disseminationRuleFacets.waitingToRecalculateRulesListFacets &&
+      disseminationRuleFacets.waitingToRecalculateRulesListFacets.length > 0
     ) {
-      const facetComputedUnits = this.disseminationRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+      const facetComputedUnits = disseminationRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {
@@ -166,14 +166,15 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
         computedCount = 0;
       }
       let notComputedCount = '';
+      const exactCount = this.exactCount();
       if (
-        !this.exactCount &&
-        (this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+        !exactCount &&
+        (this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
           computedCount >= this.vitamConfigurationService.tenantConfig()?.resultThreshold)
       ) {
         notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
       } else {
-        notComputedCount = (this.totalResults - computedCount).toString();
+        notComputedCount = (this.totalResults() - computedCount).toString();
       }
 
       this.archiveUnitsCountFacetDetails.push({
@@ -185,7 +186,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -194,25 +195,25 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(totalResults, exactCountValue, totalResults),
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
+        color: totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     }
 
-    if (this.disseminationRuleFacets.noRulesFacets && this.disseminationRuleFacets.noRulesFacets.length > 0) {
-      this.disseminationRuleFacets.noRulesFacets.forEach((elt) => {
+    if (disseminationRuleFacets.noRulesFacets && disseminationRuleFacets.noRulesFacets.length > 0) {
+      disseminationRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WITHOUT_RULES'),
-          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
+          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount(), this.totalResults()),
           clickable: false,
           color: Colors.GRAY,
           backgroundColor: Colors.DISABLED,
@@ -222,7 +223,7 @@ export class SearchDisseminationRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.DISSEMINATION_RULE.WITHOUT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,

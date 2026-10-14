@@ -7,7 +7,7 @@
     {{ 'ACCESS_CONTRACT.TAB.USAGE.AUTHORIZATION_PERIMETER' | translate }}
   </div>
   <div>
-    @switch (accessContract.accessRightType) {
+    @switch (_accessContract.accessRightType) {
       @case (AccessRightType.ACCESS_FULL) {
         {{ 'ACCESS_CONTRACT.CREATE_DIALOG.AUTHORISATION_PERIMETER.ACCESS_FULL' | translate }}
       }
@@ -17,8 +17,8 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
           </div>
-          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.originatingAgenciesLabels.length < 2 }">
-            @for (originatingAgencyLabel of accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': _accessContract.originatingAgenciesLabels.length < 2 }">
+            @for (originatingAgencyLabel of _accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
               <li>
                 {{ originatingAgencyLabel }}
               </li>
@@ -32,8 +32,8 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED' | translate }}
           </div>
-          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.ruleCategoryToFilterLabels.length < 2 }">
-            @for (managementRuleLabel of accessContract.ruleCategoryToFilterLabels; track managementRuleLabel) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': _accessContract.ruleCategoryToFilterLabels.length < 2 }">
+            @for (managementRuleLabel of _accessContract.ruleCategoryToFilterLabels; track managementRuleLabel) {
               <li>
                 {{ managementRuleLabel }}
               </li>
@@ -47,8 +47,8 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
           </div>
-          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.originatingAgenciesLabels.length < 2 }">
-            @for (originatingAgencyLabel of accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': _accessContract.originatingAgenciesLabels.length < 2 }">
+            @for (originatingAgencyLabel of _accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
               <li>
                 {{ originatingAgencyLabel }}
               </li>
@@ -57,9 +57,9 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED_FOR_OTHER_PRODUCERS' | translate }}
           </div>
-          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels.length < 2 }">
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': _accessContract.ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels.length < 2 }">
             @for (
-              managementRuleLabel of accessContract.ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels;
+              managementRuleLabel of _accessContract.ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels;
               track managementRuleLabel
             ) {
               <li>
@@ -75,8 +75,8 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.PRODUCERS_SELECTED' | translate }}
           </div>
-          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.originatingAgenciesLabels.length < 2 }">
-            @for (originatingAgencyLabel of accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': _accessContract.originatingAgenciesLabels.length < 2 }">
+            @for (originatingAgencyLabel of _accessContract.originatingAgenciesLabels; track originatingAgencyLabel) {
               <li>
                 {{ originatingAgencyLabel }}
               </li>
@@ -85,8 +85,8 @@
           <div class="text medium bold primary mt-4">
             {{ 'ACCESS_CONTRACT.TAB.USAGE.MANAGEMENT_RULES_SELECTED_FOR_PRODUCERS' | translate }}
           </div>
-          <ul class="mt-1" [ngClass]="{ 'no-bullet': accessContract.ruleCategoryToFilterLabels.length < 2 }">
-            @for (managementRuleLabel of accessContract.ruleCategoryToFilterLabels; track managementRuleLabel) {
+          <ul class="mt-1" [ngClass]="{ 'no-bullet': _accessContract.ruleCategoryToFilterLabels.length < 2 }">
+            @for (managementRuleLabel of _accessContract.ruleCategoryToFilterLabels; track managementRuleLabel) {
               <li>
                 {{ managementRuleLabel }}
               </li>
@@ -98,11 +98,11 @@
         <div>UNKNOW ACCESS RIGHT</div>
       }
     }
-    @if (accessContract.accessRightType !== AccessRightType.ACCESS_FULL) {
+    @if (_accessContract.accessRightType !== AccessRightType.ACCESS_FULL) {
       <div class="text medium bold primary mt-4">
         {{ 'ACCESS_CONTRACT.TAB.USAGE.FILING_SCHEME_ACCESS' | translate }}
       </div>
-      {{ (accessContract.doNotFilterFilingSchemes ? 'COMMON.YES' : 'COMMON.NO') | translate }}
+      {{ (_accessContract.doNotFilterFilingSchemes ? 'COMMON.YES' : 'COMMON.NO') | translate }}
     }
   </div>
 </div>

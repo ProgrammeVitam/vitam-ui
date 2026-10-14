@@ -1,7 +1,7 @@
 <vitamui-common-sidenav-header
-  [title]="group?.name"
+  [title]="group()?.name"
   [icon]="'vitamui-icon-keys'"
-  [badge]="group?.enabled ? 'green' : 'grey'"
+  [badge]="group()?.enabled ? 'green' : 'grey'"
   (onclose)="emitClose()"
 >
 </vitamui-common-sidenav-header>
@@ -9,15 +9,15 @@
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'GROUP.TAB.INFORMATIONS' | translate">
-      <app-information-tab [group]="group" [readOnly]="isPopup || group?.readonly || levelNotAllowed()"></app-information-tab>
+      <app-information-tab [group]="group()" [readOnly]="isPopup() || group()?.readonly || levelNotAllowed()"></app-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'GROUP.TAB.PROFILE' | translate">
-      <app-profiles-tab [group]="group" [readOnly]="isPopup || group?.readonly || levelNotAllowed()"></app-profiles-tab>
+      <app-profiles-tab [group]="group()" [readOnly]="isPopup() || group()?.readonly || levelNotAllowed()"></app-profiles-tab>
     </mat-tab>
 
     <mat-tab [label]="'GROUP.TAB.HISTORY' | translate">
-      <vitamui-common-operation-history-tab [id]="group?.id" [identifier]="group?.identifier" collectionName="groups" />
+      <vitamui-common-operation-history-tab [id]="group()?.id" [identifier]="group()?.identifier" collectionName="groups" />
     </mat-tab>
   </mat-tab-group>
 </div>

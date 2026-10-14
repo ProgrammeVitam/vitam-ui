@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectorRef, input, output, model } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import type { Customer } from 'vitamui-library';
@@ -73,17 +73,17 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly customerService = inject(CustomerService);
 
-  @Input() customer: Customer;
-  @Input() isPopup: boolean;
-  @Output() previewClose = new EventEmitter();
+  readonly customer = model<Customer>(undefined);
+  readonly isPopup = input<boolean>(undefined);
+  readonly previewClose = output();
 
-  @Input() gdprReadOnlyStatus: boolean;
+  readonly gdprReadOnlyStatus = input<boolean>(undefined);
 
   customerUpdatedSub: Subscription;
 
   ngOnInit() {
     this.customerUpdatedSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {
-      this.customer = updatedCustomer;
+      this.customer.set(updatedCustomer);
       this.cdr.markForCheck();
     });
   }

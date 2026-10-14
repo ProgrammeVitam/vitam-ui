@@ -34,17 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-dialog-content-with-state',
   templateUrl: './dialog-content-with-state.component.html',
   styleUrls: ['./dialog-content-with-state.component.scss'],
   imports: [],
+  host: {
+    '[class]': 'state()',
+  },
 })
 export class DialogContentWithStateComponent {
-  @HostBinding('class')
-  @Input({ required: true })
-  state: 'valid' | 'invalid';
-  @Input({ required: true }) title: string;
+  readonly state = input.required<'valid' | 'invalid'>();
+  readonly title = input.required<string>();
 }

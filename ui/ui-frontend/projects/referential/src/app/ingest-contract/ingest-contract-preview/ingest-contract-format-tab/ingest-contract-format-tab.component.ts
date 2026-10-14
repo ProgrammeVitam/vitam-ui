@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, input, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,52 +50,31 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./ingest-contract-format-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
-export class IngestContractFormatTabComponent implements OnInit {
+export class IngestContractFormatTabComponent implements OnChanges, OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
   private readonly fileFormatService = inject(FileFormatService);
 
-  @Input() tenantIdentifier: number;
+  readonly tenantIdentifier = input<number>(undefined);
 
-  @Input() set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-    this.resetForm(this.ingestContract);
-    this.updated.emit(false);
-  }
+  readonly ingestContract = model<IngestContract>(undefined);
 
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
-  }
+  readonly isTabActive = input<boolean>(undefined);
 
-  @Input() set isTabActive(isActive: boolean) {
-    if (isActive) {
-      this.resetForm(this.ingestContract);
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
-  @Input() set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
-
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
+  readonly isFormValid = output<boolean>();
 
   form: FormGroup;
   submitted = signal(false);
   formatOptions: VitamuiSelectOptions;
 
-  private _ingestContract: IngestContract;
-
   previousValue = (): any => {
     return {
-      everyFormatType: this._ingestContract.everyFormatType,
-      formatType: this._ingestContract.formatType ? this._ingestContract.formatType.sort() : null,
-      formatUnidentifiedAuthorized: this._ingestContract.formatUnidentifiedAuthorized,
+      everyFormatType: this.ingestContract().everyFormatType,
+      formatType: this.ingestContract().formatType ? this.ingestContract().formatType.sort() : null,
+      formatUnidentifiedAuthorized: this.ingestContract().formatUnidentifiedAuthorized,
     };
   };
 
@@ -107,9 +86,28 @@ export class IngestContractFormatTabComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ingestContract']) {
+      this.setIngestContract(this.ingestContract());
+    }
+    if (changes['isTabActive']) {
+      if (this.isTabActive()) {
+        this.resetForm(this.ingestContract());
+      }
+    }
+    if (changes['readOnly']) {
+      if (this.readOnly() && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
+  }
+
   ngOnInit() {
     this.fileFormatService
-      .getAllForTenant('' + this.tenantIdentifier)
+      .getAllForTenant('' + this.tenantIdentifier())
       .pipe(
         map((files: FileFormat[]) =>
           files.map((file: FileFormat) => {
@@ -123,7 +121,7 @@ export class IngestContractFormatTabComponent implements OnInit {
       )
       .subscribe((options) => (this.formatOptions = { options }));
 
-    if (!this.ingestContract.everyFormatType) {
+    if (!this.ingestContract().everyFormatType) {
       this.form.controls['formatType'].setValidators(Validators.required);
     }
 
@@ -162,7 +160,7 @@ export class IngestContractFormatTabComponent implements OnInit {
         }
         return formData;
       }),
-      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
+      map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
@@ -173,15 +171,21 @@ export class IngestContractFormatTabComponent implements OnInit {
     this.submitted.set(true);
     this.prepareSubmit().subscribe(
       () => {
-        this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
+        this.ingestContractService.get(this.ingestContract().identifier).subscribe((response) => {
           this.submitted.set(false);
-          this.ingestContract = response;
+          this.setIngestContract(response);
         });
       },
       () => {
         this.submitted.set(false);
       },
     );
+  }
+
+  private setIngestContract(ingestContract: IngestContract) {
+    this.ingestContract.set(ingestContract);
+    this.resetForm(this.ingestContract());
+    this.updated.emit(false);
   }
 
   resetForm(ingestContract: IngestContract) {

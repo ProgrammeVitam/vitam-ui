@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, SimpleChanges, inject, input, output, viewChild } from '@angular/core';
 import type { SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -47,7 +47,7 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-dr
   styleUrls: ['./vitamui-drag-drop-file.component.scss'],
   imports: [MatIconModule, DragAndDropDirective],
 })
-export class VitamuiDragDropFileComponent {
+export class VitamuiDragDropFileComponent implements OnChanges {
   private readonly translateService = inject(TranslateService);
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -64,39 +64,39 @@ export class VitamuiDragDropFileComponent {
   public set imageUrl(val: string | SafeResourceUrl) {
     this._imageUrl = val;
     if (this.imageToUpload) {
-      this.file.next(this.imageToUpload);
+      this.file.emit(this.imageToUpload);
     }
   }
 
-  @Input()
-  public canDelete = true;
+  public readonly canDelete = input(true);
 
-  @Input()
-  public messContent = 'Drag & drop';
+  public readonly messContent = input('Drag & drop');
 
-  @Input()
-  public disabled = false;
+  public readonly disabled = input(false);
 
-  @Input()
-  public messPj = 'Attach';
+  public readonly messPj = input('Attach');
 
-  @Input()
-  public set fileUrl(url: SafeResourceUrl) {
-    if (url) {
-      this.imageUrl = url;
+  public readonly fileUrl = input<SafeResourceUrl>(undefined);
+
+  public readonly logoSize = input<{
+    width: number;
+    height: number;
+  }>({ width: 1000, height: 1000 });
+
+  public readonly file = output<File>();
+
+  public readonly delete = output<void>();
+
+  readonly fileSearch = viewChild<any>('fileSearch');
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['fileUrl']) {
+      const url = this.fileUrl();
+      if (url) {
+        this.imageUrl = url;
+      }
     }
   }
-
-  @Input()
-  public logoSize: { width: number; height: number } = { width: 1000, height: 1000 };
-
-  @Output()
-  public file = new EventEmitter<File>();
-
-  @Output()
-  public delete = new EventEmitter<void>();
-
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   private isFileList(files: FileList | File[]): files is FileList {
     return files instanceof FileList;
@@ -118,12 +118,12 @@ export class VitamuiDragDropFileComponent {
       const logoUrl = reader.result;
       logoImage.src = logoUrl as string;
       logoImage.onload = () => {
-        if (logoImage.width > this.logoSize.width || logoImage.height > this.logoSize.height) {
+        if (logoImage.width > this.logoSize().width || logoImage.height > this.logoSize().height) {
           this.imageToUpload = this.lastImageUploaded;
 
           this.message = this.translateService.instant('DRAG_AND_DROP_FILE.WRONG_FILE_SIZE', {
-            width: this.logoSize.width,
-            height: this.logoSize.height,
+            width: this.logoSize().width,
+            height: this.logoSize().height,
           });
           this.hasError = true;
         } else {
@@ -137,12 +137,12 @@ export class VitamuiDragDropFileComponent {
   }
 
   public addLogo(): void {
-    this.fileSearch.nativeElement.click();
+    this.fileSearch().nativeElement.click();
   }
 
   public onDelete(): void {
     this.imageToUpload = null;
     this.imageUrl = null;
-    this.delete.next();
+    this.delete.emit();
   }
 }

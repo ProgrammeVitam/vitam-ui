@@ -8,12 +8,12 @@
       (change)="onChangeValue($event)"
       [(ngModel)]="rulePropertyName"
       [options]="
-        ruleCategory === 'AppraisalRule'
+        ruleCategory() === 'AppraisalRule'
           ? [
               { key: 'Keep', label: 'RULES.FINAL_ACTION.KEEP' | translate },
               { key: 'Destroy', label: 'RULES.FINAL_ACTION.ELIMINATION' | translate },
             ]
-          : ruleCategory === 'StorageRule'
+          : ruleCategory() === 'StorageRule'
             ? [
                 { key: 'RestrictAccess', label: 'RULES.FINAL_ACTION.RESTRICT_ACCESS' | translate },
                 { key: 'Transfer', label: 'RULES.FINAL_ACTION.TRANSFER' | translate },

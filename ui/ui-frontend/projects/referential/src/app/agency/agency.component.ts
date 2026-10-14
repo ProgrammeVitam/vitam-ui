@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -86,7 +86,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   private readonly router = inject(Router);
   private readonly queryParamsService = inject(QueryParamsService);
 
-  @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
+  readonly agencyListComponent = viewChild(AgencyListComponent);
 
   search = '';
   tenantIdentifier: number;
@@ -174,9 +174,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   }
 
   private refreshList() {
-    if (!this.agencyListComponent) {
+    const agencyListComponent = this.agencyListComponent();
+    if (!agencyListComponent) {
       return;
     }
-    this.agencyListComponent.searchAgencyOrdered();
+    agencyListComponent.searchAgencyOrdered();
   }
 }

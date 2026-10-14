@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import type { AccessionRegisterDetail } from 'vitamui-library';
 import { DataComponent } from 'vitamui-library';
 import { DatePipe } from '@angular/common';
@@ -47,8 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DataComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterDetailComponent implements OnInit {
-  @Input()
-  accessionRegisterDetail: AccessionRegisterDetail;
+  readonly accessionRegisterDetail = input<AccessionRegisterDetail>(undefined);
 
   longCommentSize = 200;
   hasLongComment = false;
@@ -57,7 +56,7 @@ export class AccessionRegisterDetailComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    const comment = this.accessionRegisterDetail.comment;
+    const comment = this.accessionRegisterDetail().comment;
     this.hasLongComment = !(!comment || comment.length < 1 || comment.join('').length < this.longCommentSize);
   }
 
@@ -71,13 +70,14 @@ export class AccessionRegisterDetailComponent implements OnInit {
   }
 
   formatedComment(): string {
-    if (!this.accessionRegisterDetail.comment || this.accessionRegisterDetail.comment.length < 1) {
+    const accessionRegisterDetail = this.accessionRegisterDetail();
+    if (!accessionRegisterDetail.comment || accessionRegisterDetail.comment.length < 1) {
       return '';
     }
     if (this.showFullComment) {
-      return this.accessionRegisterDetail.comment.join('\n\n');
+      return accessionRegisterDetail.comment.join('\n\n');
     }
-    const premierParagraph = this.accessionRegisterDetail.comment[0];
+    const premierParagraph = accessionRegisterDetail.comment[0];
     if (premierParagraph) {
       return premierParagraph.substring(0, 200);
     }

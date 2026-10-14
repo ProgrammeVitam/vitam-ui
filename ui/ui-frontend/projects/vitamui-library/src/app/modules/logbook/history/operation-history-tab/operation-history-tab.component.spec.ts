@@ -96,7 +96,7 @@ describe('OperationHistoryTabComponent', () => {
     const event = logbookEvent;
 
     // When
-    component.identifier = 'eventId';
+    fixture.componentRef.setInput('identifier', 'eventId');
 
     // Then
     expect(component.filterByIdentifier(event)).toBeDefined();
@@ -108,7 +108,7 @@ describe('OperationHistoryTabComponent', () => {
     const event = logbookEvent;
 
     // When
-    component.identifier = 'identifier';
+    fixture.componentRef.setInput('identifier', 'identifier');
 
     // Then
     expect(component.filterByIdentifier(event)).toBeDefined();
@@ -140,7 +140,7 @@ describe('OperationHistoryTabComponent', () => {
     };
 
     // When
-    component.identifier = 'identifier';
+    fixture.componentRef.setInput('identifier', 'identifier');
 
     // Then
     expect(component.filterByIdentifier(event)).toBeDefined();

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize, merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
@@ -63,22 +63,18 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './ontology-list.component.html',
   styleUrls: ['./ontology-list.component.scss'],
 })
-export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnDestroy, OnInit {
+export class OntologyListComponent extends InfiniteScrollTable<Ontology> implements OnChanges, OnDestroy, OnInit {
   ontologyService: OntologyService;
   private readonly translateService = inject(TranslateService);
   private readonly matDialog = inject(MatDialog);
   private readonly tenantSelectionService = inject(TenantSelectionService);
 
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined);
 
   private _searchText: string;
   private lastSelectedId: string;
 
-  @Output() ontologyClick = new EventEmitter<Ontology>();
+  readonly ontologyClick = output<Ontology>();
 
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
@@ -99,6 +95,14 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
     this.ontologyService = ontologyService;
 
     this.orderBy = this.shortName;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {
@@ -154,8 +158,8 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   deleteOntologyDialog(ontology: Ontology) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
-    dialog.componentInstance.objectType = this.translateService.instant('ONTOLOGY.HOME.TITLE');
-    dialog.componentInstance.objectName = ontology.identifier;
+    dialog.componentRef.setInput('objectType', this.translateService.instant('ONTOLOGY.HOME.TITLE'));
+    dialog.componentRef.setInput('objectName', ontology.identifier);
 
     dialog
       .afterClosed()

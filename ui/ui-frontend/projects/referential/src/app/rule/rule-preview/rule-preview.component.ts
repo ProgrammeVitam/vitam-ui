@@ -38,13 +38,13 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
   Component,
-  EventEmitter,
   forwardRef,
   HostListener,
   inject,
-  Input,
-  Output,
-  ViewChild,
+  input,
+  output,
+  viewChild,
+  model,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
@@ -79,19 +79,19 @@ export class RulePreviewComponent implements AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ruleService = inject(RuleService);
 
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
-  @Input() rule: Rule;
-  @Input() readOnly: boolean;
+  readonly previewClose = output<any>();
+  readonly rule = model<Rule>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 
   tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
 
   tabLinks: Array<RuleInformationTabComponent> = [];
-  @ViewChild('infoTab', { static: false }) infoTab: RuleInformationTabComponent;
+  readonly infoTab = viewChild<RuleInformationTabComponent>('infoTab');
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any): string | void {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();
       return '';
@@ -99,8 +99,8 @@ export class RulePreviewComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
+    this.tabLinks[0] = this.infoTab();
   }
 
   updatedChange(updated: boolean, index: number) {
@@ -109,37 +109,37 @@ export class RulePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      this.infoTab
+      this.infoTab()
         .prepareSubmit()
-        .pipe(switchMap(() => this.ruleService.get(this.rule.ruleId)))
+        .pipe(switchMap(() => this.ruleService.get(this.rule().ruleId)))
         .subscribe((response) => {
-          this.rule = response;
+          this.rule.set(response);
           this.cdr.markForCheck();
         });
     } else {
-      this.infoTab.resetForm(this.rule);
+      this.infoTab().resetForm(this.rule());
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
 
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
   async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 }

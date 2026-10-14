@@ -34,28 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angular/core';
+import { AfterContentInit, Directive, contentChildren } from '@angular/core';
 
 import { RowCollapseDirective } from './row-collapse.directive';
+import { queryChanges } from '../../utils/query-changes.util';
 
 @Directive({ selector: '[vitamuiCommonRowCollapseContainer]' })
 export class RowCollapseContainerDirective implements AfterContentInit {
-  @ContentChildren(RowCollapseDirective) collapseDirectives: QueryList<RowCollapseDirective>;
+  readonly collapseDirectives = contentChildren(RowCollapseDirective);
+  private readonly collapseDirectivesChanges = queryChanges(this.collapseDirectives);
 
   constructor() {}
 
   ngAfterContentInit() {
     this.subscribeToExpandEvents();
-    this.collapseDirectives.changes.subscribe(() => this.subscribeToExpandEvents());
+    this.collapseDirectivesChanges.subscribe(() => this.subscribeToExpandEvents());
   }
 
   private subscribeToExpandEvents() {
-    this.collapseDirectives.forEach((collapseDirective) => {
+    this.collapseDirectives().forEach((collapseDirective) => {
       collapseDirective.expanded.subscribe(() => this.collapseAllExcept(collapseDirective));
     });
   }
 
   private collapseAllExcept(collapseDirective: RowCollapseDirective) {
-    this.collapseDirectives.filter((e) => e !== collapseDirective).forEach((e) => e.collapse());
+    this.collapseDirectives()
+      .filter((e) => e !== collapseDirective)
+      .forEach((e) => e.collapse());
   }
 }

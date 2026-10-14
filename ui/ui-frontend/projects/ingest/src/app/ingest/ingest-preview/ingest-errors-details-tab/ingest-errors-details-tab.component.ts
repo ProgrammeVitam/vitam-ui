@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import {
   MatNestedTreeNode,
   MatTree,
@@ -60,7 +60,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   private readonly eventDisplayHelper = inject(EventDisplayHelperService);
 
-  @Input() ingest: LogbookOperation;
+  readonly ingest = input<LogbookOperation>(undefined);
 
   ingestErrorsTreeControl: NestedTreeControl<Event>;
   ingestErrorsTreeDataSource: MatTreeNestedDataSource<Event>;
@@ -85,7 +85,7 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.getAllEvents(this.ingest);
+    this.getAllEvents(this.ingest());
   }
 
   getEventStatus(event: Event) {

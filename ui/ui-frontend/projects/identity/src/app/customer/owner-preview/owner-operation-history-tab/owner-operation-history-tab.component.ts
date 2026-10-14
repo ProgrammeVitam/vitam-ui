@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges, inject, signal } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, inject, signal, input } from '@angular/core';
 import type { HistoryEvent } from 'vitamui-library';
 import { AuthService, LogbookService, HistoryEventsComponent, CollapseComponent } from 'vitamui-library';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -52,16 +52,16 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
   private readonly authService = inject(AuthService);
   private readonly logbookService = inject(LogbookService);
 
-  @Input() id: string;
-  @Input() identifier: string;
-  @Input() externalParamId: string;
+  readonly id = input<string>(undefined);
+  readonly identifier = input<string>(undefined);
+  readonly externalParamId = input<string>(undefined);
 
   readonly events = signal<HistoryEvent[]>([]);
   readonly loading = signal(false);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('id') || changes.hasOwnProperty('externalParamId')) {
-      if (this.id && this.externalParamId) {
+      if (this.id() && this.externalParamId()) {
         this.initEvent();
       }
     }
@@ -73,7 +73,7 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
 
     const tenantIdentifier = Number(this.authService.user.proofTenantIdentifier);
 
-    this.logbookService.listHistoryForOwner(this.id, this.identifier, this.externalParamId, tenantIdentifier).subscribe(
+    this.logbookService.listHistoryForOwner(this.id(), this.identifier(), this.externalParamId(), tenantIdentifier).subscribe(
       (results) => {
         this.loading.set(false);
         this.events.set(results.slice(0, EVENT_LIMIT));

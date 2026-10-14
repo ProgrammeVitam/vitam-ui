@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -102,9 +102,9 @@ export class InformationTabComponent implements OnChanges, OnInit {
   private readonly countryService = inject(CountryService);
   private readonly startupService = inject(StartupService);
 
-  @Input() owner: Owner;
-  @Input() tenant: Tenant;
-  @Input() readOnly: boolean;
+  readonly owner = input<Owner>(undefined);
+  readonly tenant = input<Tenant>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 
   public ownerCodeMaxLength = OWNER_CODE_MAX_LENGTH;
   public maxStreetLength: number;
@@ -182,7 +182,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ownerForm.value, this.previousOwner)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.owner.id }, formData)),
+        map((formData) => extend({ id: this.owner().id }, formData)),
         switchMap((formData) => this.ownerService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((owner: Owner) => this.resetOwnerForm(owner));
@@ -192,7 +192,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.tenantForm.value, this.previousTenant)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.tenant.id }, formData)),
+        map((formData) => extend({ id: this.tenant().id }, formData)),
         switchMap((formData) => this.tenantService.patch(formData, this.ownerForm.value.name).pipe(catchError(() => of(null)))),
       )
       .subscribe((tenant: Tenant) => {
@@ -205,23 +205,26 @@ export class InformationTabComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges() {
-    if (this.readOnly) {
+    const readOnly = this.readOnly();
+    if (readOnly) {
       this.ownerForm.disable({ emitEvent: false });
     } else if (this.ownerForm.disabled) {
       this.ownerForm.enable({ emitEvent: false });
     }
-    if (this.readOnly) {
+    if (readOnly) {
       this.tenantForm.disable({ emitEvent: false });
     } else if (this.tenantForm.disabled) {
       this.tenantForm.enable({ emitEvent: false });
     }
-    if (this.tenant) {
-      this.tenantForm.reset(this.tenant, { emitEvent: false });
-      this.tenantForm.get('name').setAsyncValidators(this.tenantFormValidators.uniqueName(this.tenant.name));
+    const tenant = this.tenant();
+    if (tenant) {
+      this.tenantForm.reset(tenant, { emitEvent: false });
+      this.tenantForm.get('name').setAsyncValidators(this.tenantFormValidators.uniqueName(tenant.name));
       this.previousTenant = this.tenantForm.value;
     }
-    if (this.owner) {
-      this.resetOwnerForm(this.owner);
+    const owner = this.owner();
+    if (owner) {
+      this.resetOwnerForm(owner);
     }
   }
 
@@ -234,7 +237,7 @@ export class InformationTabComponent implements OnChanges, OnInit {
   }
 
   private resetTenantForm(tenant: Tenant) {
-    this.tenant.name = tenant.name;
+    this.tenant().name = tenant.name;
     this.tenantForm.reset(tenant, { emitEvent: false });
     this.tenantForm.get('name').setAsyncValidators(this.tenantFormValidators.uniqueName(tenant.name));
 

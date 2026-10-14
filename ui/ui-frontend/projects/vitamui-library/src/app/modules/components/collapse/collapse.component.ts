@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, HostBinding, Input } from '@angular/core';
+import { Component, forwardRef, HostBinding, input, model } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-collapse',
@@ -46,13 +46,13 @@ import { Component, forwardRef, HostBinding, Input } from '@angular/core';
 export class CollapseComponent {
   @HostBinding('class.collapse-container') classCollapseContainer = true;
 
-  @Input() collapseTitle: string;
+  readonly collapseTitle = input<string>(undefined);
 
-  @Input() collapseState = 'expanded';
+  readonly collapseState = model('expanded');
 
   constructor() {}
 
   toggle() {
-    this.collapseState = this.collapseState === 'expanded' ? 'collapsed' : 'expanded';
+    this.collapseState.set(this.collapseState() === 'expanded' ? 'collapsed' : 'expanded');
   }
 }

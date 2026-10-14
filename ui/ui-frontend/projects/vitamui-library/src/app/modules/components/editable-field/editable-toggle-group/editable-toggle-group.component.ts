@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ContentChildren, ElementRef, forwardRef, inject, QueryList } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, contentChildren } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from '../editable-field.component';
@@ -65,7 +65,7 @@ export const EDITABLE_TOGGLE_GROUP_VALUE_ACCESSOR: any = {
   ],
 })
 export class EditableToggleGroupComponent extends EditableFieldComponent {
-  @ContentChildren(EditableButtonToggleComponent) buttons: QueryList<EditableButtonToggleComponent>;
+  readonly buttons = contentChildren(EditableButtonToggleComponent);
 
   constructor() {
     const elementRef = inject(ElementRef);
@@ -74,8 +74,8 @@ export class EditableToggleGroupComponent extends EditableFieldComponent {
   }
 
   content(value: string) {
-    const found = this.buttons.find((button) => button.value === value);
+    const found = this.buttons().find((button) => button.value() === value);
 
-    return found ? found.content : null;
+    return found ? found.content() : null;
   }
 }

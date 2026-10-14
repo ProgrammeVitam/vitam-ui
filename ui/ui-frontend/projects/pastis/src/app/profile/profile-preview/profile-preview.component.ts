@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, HostListener, inject, output, viewChild, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -84,10 +84,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
   private readonly route = inject(ActivatedRoute);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
-  @Input()
-  inputProfile: ProfileDescription;
+  readonly previewClose = output<void>();
+  readonly inputProfile = input<ProfileDescription>(undefined);
 
   tabUpdated: boolean[] = [false, false];
   isClicked = false;
@@ -96,14 +94,14 @@ export class ProfilePreviewComponent implements AfterViewInit {
   fileNode: FileNode[] = [];
 
   isPopup: boolean;
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
 
   tabLinks: Array<ProfileInformationTabComponent> = [];
-  @ViewChild('infoTab', { static: false }) infoTab: ProfileInformationTabComponent;
+  readonly infoTab = viewChild<ProfileInformationTabComponent>('infoTab');
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();
       return '';
@@ -112,8 +110,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
+    this.tabLinks[0] = this.infoTab();
   }
 
   updatedChange(updated: boolean, index: number) {
@@ -128,40 +126,41 @@ export class ProfilePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs.selectedIndex].updateProfile(
-        this.inputProfile,
+      const submitProfileUpdate: Observable<ProfileDescription> = this.tabLinks[this.tabs().selectedIndex].updateProfile(
+        this.inputProfile(),
       ) as Observable<ProfileDescription>;
 
       submitProfileUpdate.subscribe(() => {});
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.inputProfile);
+      this.tabLinks[this.tabs().selectedIndex].resetForm(this.inputProfile());
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
 
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
   async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
     this.previewClose.emit();
   }
 
   isProfilAttached(): boolean {
-    if ((this.inputProfile.controlSchema && this.inputProfile.controlSchema.length !== 2) || this.inputProfile.path) {
+    const inputProfile = this.inputProfile();
+    if ((inputProfile.controlSchema && inputProfile.controlSchema.length !== 2) || inputProfile.path) {
       // console.log(this.inputProfile)
       return true;
     }

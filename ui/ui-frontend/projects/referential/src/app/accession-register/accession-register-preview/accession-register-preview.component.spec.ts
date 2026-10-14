@@ -136,7 +136,7 @@ describe('AccessionRegisterPreviewComponent', () => {
       totalUnits: undefined,
       version: 0,
     };
-    component.accessionRegisterDetail = accessionRegisterDetail;
+    fixture.componentRef.setInput('accessionRegisterDetail', accessionRegisterDetail);
     fixture.detectChanges();
   });
 

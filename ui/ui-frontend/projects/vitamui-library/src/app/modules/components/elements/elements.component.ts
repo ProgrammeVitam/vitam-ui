@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { PipesModule } from '../../pipes/pipes.module';
@@ -47,21 +47,21 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
   imports: [TooltipDirective, MatMenuModule, PipesModule],
 })
 export class ElementsComponent {
-  @Input() icon = '';
+  readonly icon = input('');
 
-  @Input() title = '';
+  readonly title = input('');
 
-  @Input() unit = '';
+  readonly unit = input('');
 
-  @Input() number: number;
+  readonly number = input<number>(undefined);
 
-  @Input() hasToolTipOnTitle: boolean;
+  readonly hasToolTipOnTitle = input<boolean>(undefined);
 
-  @Input() toolTipTitleText: string;
+  readonly toolTipTitleText = input<string>(undefined);
 
-  @Input() toolTipTitleDuration: number;
+  readonly toolTipTitleDuration = input<number>(undefined);
 
-  @Output() elementClick = new EventEmitter<any>();
+  readonly elementClick = output<any>();
 
   onClick(event: any) {
     this.elementClick.emit(event);

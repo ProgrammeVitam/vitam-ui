@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, SimpleChanges, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   Direction,
@@ -56,8 +56,8 @@ import { DatePipe } from '@angular/common';
 export class AccessionRegisterOperationsListComponent implements OnChanges {
   private readonly translateService = inject(TranslateService);
 
-  @Input() operationsIds: string[];
-  @Input() operations: RegisterValueEventModel[];
+  readonly operationsIds = input<string[]>(undefined);
+  readonly operations = input<RegisterValueEventModel[]>(undefined);
 
   orderColumn: keyof RegisterValueEventModel = 'OpType';
   orderDirection = Direction.ASCENDANT;
@@ -79,7 +79,7 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   }
 
   private reloadOperations() {
-    this.availableOperationsType = this.operations
+    this.availableOperationsType = this.operations()
       .map((o) => o.OpType)
       .filter((value, index, array) => index === array.indexOf(value))
       .map((operationType) => {
@@ -89,7 +89,7 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
         };
       });
     this.selectedFilters = this.availableOperationsType.map((operationType) => operationType.name);
-    this.operationsProcessed = [...this.operations];
+    this.operationsProcessed = [...this.operations()];
   }
 
   changeOrderDirection(direction: Direction) {
@@ -108,7 +108,7 @@ export class AccessionRegisterOperationsListComponent implements OnChanges {
   }
 
   changeFilter(selectedFilters: string[]) {
-    this.operationsProcessed = this.operations.filter((a) => selectedFilters.includes(a.OpType));
+    this.operationsProcessed = this.operations().filter((a) => selectedFilters.includes(a.OpType));
     this.sortTable();
   }
 

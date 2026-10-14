@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
 import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -46,10 +46,10 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DialogHeaderComponent, MatDialogContent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class CommonConfirmDialogComponent {
-  @Input() dialogTitle: string;
-  @Input() dialogSubTitle: string;
-  @Input() cancelLabel: string;
-  @Input() confirmLabel: string;
+  readonly dialogTitle = input<string>(undefined);
+  readonly dialogSubTitle = input<string>(undefined);
+  readonly cancelLabel = input<string>(undefined);
+  readonly confirmLabel = input<string>(undefined);
 
   constructor() {}
 }

@@ -97,7 +97,7 @@ describe('AccessContractNodesTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractNodesTabComponent);
     component = fixture.componentInstance;
-    component.accessContract = accessContractValue;
+    fixture.componentRef.setInput('accessContract', accessContractValue);
     fixture.detectChanges();
   });
 

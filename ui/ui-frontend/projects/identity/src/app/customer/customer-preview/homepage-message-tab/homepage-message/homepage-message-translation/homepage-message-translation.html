@@ -1,10 +1,10 @@
-<form [formGroup]="form" id="translationForm">
+<form [formGroup]="form()" id="translationForm">
   <div class="d-flex align-items-center">
     <vitamui-select
       class="mt-4 mb-4"
       formControlName="language"
-      [placeholder]="('COMMON.LANGUAGE.TITLE' | translate) + ' ' + index"
-      [options]="languages"
+      [placeholder]="('COMMON.LANGUAGE.TITLE' | translate) + ' ' + index()"
+      [options]="languages()"
       [enableSearch]="false"
       [multiple]="false"
     ></vitamui-select>
@@ -18,7 +18,7 @@
     <vitamui-input
       class="pb-2"
       formControlName="portalTitle"
-      [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate) + ' ' + index"
+      [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate) + ' ' + index()"
     >
     </vitamui-input>
 
@@ -26,11 +26,11 @@
       [textarea]="true"
       class="pb-2"
       formControlName="portalMessage"
-      [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate) + ' ' + index"
+      [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate) + ' ' + index()"
     >
     </vitamui-input>
     <small class="d-flex justify-content-end"
-      >{{ form.get("portalMessage")?.value?.length }} {{ "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate }}</small
+      >{{ form().get("portalMessage")?.value?.length }} {{ "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate }}</small
     >
   </div>
 </form>

@@ -66,7 +66,7 @@ describe('VitamuiTreeNodeComponent', () => {
     vi.spyOn(component.nodeToggle, 'emit');
     vi.spyOn(component.checkboxClick, 'emit');
     vi.spyOn(component.labelClick, 'emit');
-    component.node = node;
+    fixture.componentRef.setInput('node', node);
 
     fixture.detectChanges();
   });
@@ -101,8 +101,8 @@ describe('VitamuiTreeNodeComponent', () => {
 
   it('should emit labelClick event and node should be checked when property labelIsLinkedToCheckbox is set to true and label is clicked', () => {
     // Link label and checkbox
-    component.labelIsLinkedToCheckbox = true;
-    component.node.checked = false;
+    fixture.componentRef.setInput('labelIsLinkedToCheckbox', true);
+    component.node().checked = false;
 
     // When click on the checkbox
     const nativeElement = fixture.nativeElement;
@@ -111,7 +111,7 @@ describe('VitamuiTreeNodeComponent', () => {
     fixture.detectChanges();
 
     // labelClick event is emit
-    expect(component.node.checked).toBeTruthy();
+    expect(component.node().checked).toBeTruthy();
     expect(component.labelClick.emit).toHaveBeenCalled();
   });
 });

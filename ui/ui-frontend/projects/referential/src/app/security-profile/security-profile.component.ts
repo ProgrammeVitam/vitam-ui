@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationService, SecurityProfile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
@@ -66,7 +66,7 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
 
   search = '';
 
-  @ViewChild(SecurityProfileListComponent, { static: true }) contextListComponent: SecurityProfileListComponent;
+  readonly contextListComponent = viewChild(SecurityProfileListComponent);
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('SECURITY_PROFILE').pipe(shareReplay(1));
 
@@ -91,10 +91,11 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
   }
 
   private refreshList() {
-    if (!this.contextListComponent) {
+    const contextListComponent = this.contextListComponent();
+    if (!contextListComponent) {
       return;
     }
-    this.contextListComponent.searchSecurityProfileOrdered();
+    contextListComponent.searchSecurityProfileOrdered();
   }
 
   onSearchSubmit(search: string) {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, viewChild, input } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatOption, MatSelect } from '@angular/material/select';
@@ -69,7 +69,7 @@ export const EDITABLE_EMAIL_INPUT_VALUE_ACCESSOR: any = {
 export class EditableEmailInputComponent extends EditableFieldComponent {
   private readonly document = inject<Document>(DOCUMENT);
 
-  @ViewChild('select') select: MatSelect;
+  readonly select = viewChild<MatSelect>('select');
 
   constructor() {
     const formBuilder = inject(FormBuilder);
@@ -90,7 +90,7 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
 
   formEmail: FormGroup;
 
-  @Input() domains: string[];
+  readonly domains = input<string[]>(undefined);
 
   override writeValue(value: any) {
     this.control.reset(value, { emitEvent: false });
@@ -106,10 +106,10 @@ export class EditableEmailInputComponent extends EditableFieldComponent {
     if (!this.editMode) {
       return;
     }
-    const overlayRef = this.cdkConnectedOverlay.overlayRef;
+    const overlayRef = this.cdkConnectedOverlay().overlayRef;
 
     // Overlay has same id as the "select" element, suffixed by "-panel"
-    const selectOverlay = this.document.querySelector(`#${this.select.id}-panel`) as HTMLElement;
+    const selectOverlay = this.document.querySelector(`#${this.select().id}-panel`) as HTMLElement;
     if (
       this.isInside(target, this.elementRef.nativeElement) ||
       this.isInside(target, overlayRef.hostElement) ||

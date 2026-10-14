@@ -114,7 +114,8 @@ describe('ContextListComponent', () => {
 
     // When
     component.filterMap = filterMap;
-    component.searchText = searchText;
+    fixture.componentRef.setInput('search', searchText);
+    fixture.detectChanges();
     let criteria = component.buildContextCriteriaFromSearch();
     await vi.advanceTimersByTimeAsync(400);
 

@@ -1,5 +1,5 @@
 @if (!isPrimitiveList) {
-  @for (child of displayObject.children; track child) {
+  @for (child of displayObject().children; track child) {
     @if (child.type === DisplayObjectType.GROUP) {
       @defer (on immediate) {
         <vitamui-common-group [displayObject]="child"></vitamui-common-group>
@@ -16,8 +16,8 @@
 
 @if (isPrimitiveList) {
   <vitamui-common-data
-    [label]="displayObject.displayRule.ui.label | translate"
-    [value]="displayObject.value.length === 1 ? displayObject.value[0] : displayObject.value"
+    [label]="displayObject().displayRule.ui.label | translate"
+    [value]="displayObject().value.length === 1 ? displayObject().value[0] : displayObject().value"
   >
   </vitamui-common-data>
 }

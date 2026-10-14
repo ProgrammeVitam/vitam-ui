@@ -39,7 +39,7 @@ import { SearchType, SearchWithTypeSelectorComponent } from './search-with-type-
 import { By } from '@angular/platform-browser';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { input } from '../../../../testing/src/helpers';
 
@@ -56,8 +56,7 @@ const placeholder = 'test';
   imports: [SearchWithTypeSelectorComponent, ReactiveFormsModule],
 })
 class TestHostComponent {
-  @ViewChild(SearchWithTypeSelectorComponent)
-  searchWithTypeSelectorComponent: SearchWithTypeSelectorComponent;
+  readonly searchWithTypeSelectorComponent = viewChild(SearchWithTypeSelectorComponent);
 
   types = types;
   placeholder = placeholder;

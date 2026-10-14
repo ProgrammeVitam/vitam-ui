@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -108,10 +108,8 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   data: FileNode[] = [];
   profile: Profile;
 
-  @Input()
-  sedaUrl: string;
-  @Input()
-  newProfileUrl: string;
+  readonly sedaUrl = input<string>(undefined);
+  readonly newProfileUrl = input<string>(undefined);
 
   expanded = false;
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, linkedSignal, model, output, input } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { TableFilterComponent } from './table-filter.component';
@@ -47,35 +47,30 @@ import { TableFilterOptionComponent } from './table-filter-option/table-filter-o
   imports: [FormsModule, TableFilterComponent, TableFilterOptionComponent],
 })
 export class TableFilterSearchComponent {
-  @Input() filter: any[];
-  @Input()
-  set options(options: Array<{ label: string; value: any }>) {
-    this._options = options;
-    this.optionDisplayMap = this._options.map(() => true);
-  }
-  _options: Array<{ label: string; value: any }>;
-  @Input() emptyValueOption: string;
+  readonly filter = model<any[]>(undefined);
+  readonly options = input<Array<{ label: string; value: any }>>(undefined);
+  readonly emptyValueOption = input<string>(undefined);
 
-  @Output() readonly filterChange = new EventEmitter<any[]>();
-  @Output() readonly filterClose = new EventEmitter();
+  readonly filterClose = output();
 
-  optionDisplayMap: Array<boolean>;
+  readonly optionDisplayMap = linkedSignal<Array<boolean>>(() => this.options().map(() => true));
   hideEmptyValueOption = false;
 
   searchOptions(search: string) {
     if (!search) {
-      this.optionDisplayMap = this._options.map(() => true);
+      this.optionDisplayMap.set(this.options().map(() => true));
       this.hideEmptyValueOption = false;
 
       return;
     }
 
-    this.optionDisplayMap = this._options.map((option) => option.label.toLowerCase().includes(search.toLowerCase()));
+    this.optionDisplayMap.set(this.options().map((option) => option.label.toLowerCase().includes(search.toLowerCase())));
 
-    this.hideEmptyValueOption = !this.emptyValueOption || !this.emptyValueOption.toLowerCase().includes(search.toLowerCase());
+    const emptyValueOption = this.emptyValueOption();
+    this.hideEmptyValueOption = !emptyValueOption?.toLowerCase().includes(search.toLowerCase());
   }
 
   resetOptionList() {
-    this.optionDisplayMap = this._options.map(() => true);
+    this.optionDisplayMap.set(this.options().map(() => true));
   }
 }

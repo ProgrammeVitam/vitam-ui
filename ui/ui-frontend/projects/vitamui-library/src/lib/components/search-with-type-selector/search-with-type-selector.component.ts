@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, forwardRef, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, forwardRef, HostBinding, HostListener, OnInit, SimpleChanges, input, output } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { LowerCasePipe } from '@angular/common';
@@ -72,16 +72,16 @@ export interface SearchWithTypeSelectorValue {
   ],
 })
 export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective implements OnInit {
-  @Input({ required: true }) placeholder: string;
-  @Input({ required: true }) types: SearchType[];
-  @Input() override errorMessageMap: { [p: string]: string };
+  readonly placeholder = input.required<string>();
+  readonly types = input.required<SearchType[]>();
+  override readonly errorMessageMap = input<{
+    [p: string]: string;
+  }>(undefined);
 
   _selectedType: SearchType;
-  @Input() set selectedType(type: SearchType) {
-    this.selectType(type);
-  }
+  readonly selectedType = input<SearchType>(undefined);
 
-  @Output() selectedTypeChange = new EventEmitter<SearchType>();
+  readonly selectedTypeChange = output<SearchType>();
 
   @HostBinding('class.vitamui-float')
   get labelFloat() {
@@ -93,6 +93,13 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
     if ((event.target as HTMLElement).tagName !== 'INPUT') {
       event.stopPropagation();
     }
+  }
+
+  override ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedType']) {
+      this.selectType(this.selectedType());
+    }
+    super.ngOnChanges(changes);
   }
 
   override ngOnInit() {
@@ -131,7 +138,7 @@ export class SearchWithTypeSelectorComponent extends AbstractFormInputDirective 
   }
 
   inputValueChange(value: string) {
-    this.control.setValue({ type: this.types[0], ...this.control.value, value: value });
+    this.control.setValue({ type: this.types()[0], ...this.control.value, value: value });
     this.control.markAsDirty();
     this.onChange(this.control.value);
   }

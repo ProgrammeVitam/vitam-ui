@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { finalize, merge, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
@@ -76,16 +76,13 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     InfiniteScrollDirective,
   ],
 })
-export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnDestroy, OnInit {
+export class AccessContractListComponent extends InfiniteScrollTable<AccessContract> implements OnChanges, OnDestroy, OnInit {
   accessContractService: AccessContractService;
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search') set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
-  @Output() accessContractClick = new EventEmitter<AccessContract>();
+  readonly accessContractClick = output<AccessContract>();
 
   public orderBy = 'Name';
   public direction = Direction.ASCENDANT;
@@ -105,6 +102,14 @@ export class AccessContractListComponent extends InfiniteScrollTable<AccessContr
     super(accessContractService);
 
     this.accessContractService = accessContractService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {

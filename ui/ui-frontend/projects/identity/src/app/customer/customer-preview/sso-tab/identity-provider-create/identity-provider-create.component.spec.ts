@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, input, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -60,16 +60,15 @@ import { IdentityProviderCreateComponent } from './identity-provider-create.comp
   imports: [MatProgressBarModule, ReactiveFormsModule, MatButtonToggleModule, MatSelectModule, VitamUICommonTestModule],
 })
 class PatternStubComponent implements ControlValueAccessor {
-  @Input()
-  options: Array<{
-    value: string;
-    disabled?: boolean;
-  }>;
-  @Input()
-  vitamuiMiniMode = false;
+  readonly options = input<
+    Array<{
+      value: string;
+      disabled?: boolean;
+    }>
+  >(undefined);
+  readonly vitamuiMiniMode = input(false);
 
-  @ViewChild('select', { static: true })
-  select: MatSelect;
+  readonly select = viewChild<MatSelect>('select');
 
   writeValue() {}
   registerOnChange() {}

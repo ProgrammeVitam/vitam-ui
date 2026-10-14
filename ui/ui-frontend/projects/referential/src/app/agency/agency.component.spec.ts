@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -51,8 +51,7 @@ import { AgencyComponent } from './agency.component';
   template: '',
 })
 class AgencyPreviewStub {
-  @Input()
-  accessContract: any;
+  readonly accessContract = input<any>(undefined);
 }
 
 @Component({

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, output, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   CriteriaSearchCriteria,
@@ -63,13 +63,11 @@ export class CriteriaSearchComponent {
   private readonly translateService = inject(TranslateService);
   private readonly translateWithOptionalTypeSuffixPipe = inject(TranslateWithOptionalTypeSuffixPipe);
 
-  @Input()
-  criteriaKey: string;
+  readonly criteriaKey = input<string>(undefined);
 
-  @Input()
-  criteriaVal: CriteriaSearchCriteria;
+  readonly criteriaVal = input<CriteriaSearchCriteria>(undefined);
 
-  @Output() criteriaRemoveEvent: EventEmitter<any> = new EventEmitter();
+  readonly criteriaRemoveEvent = output<any>();
 
   removeCriteria(valueElt?: CriteriaValue) {
     this.removeCriteriaList([valueElt]);
@@ -86,7 +84,7 @@ export class CriteriaSearchComponent {
             ? criteriaValue.value + '/' + criteriaValue.virtualNodeRealParentId + '/' + criteriaValue.virtualNodeRealParentTitle
             : criteriaValue.value;
       builder.removeQueryParam(queryParamKey, value);
-      this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey, valueElt: criteriaValue });
+      this.criteriaRemoveEvent.emit({ keyElt: this.criteriaKey(), valueElt: criteriaValue });
     });
     builder.navigate();
   }
@@ -96,21 +94,21 @@ export class CriteriaSearchComponent {
   }
 
   removeCriteriaAllValues() {
-    this.removeCriteriaList(this.criteriaVal.values.map((value) => value.value));
+    this.removeCriteriaList(this.criteriaVal().values.map((value) => value.value));
   }
 
   getCriteriaKeyLabel(criteriaValue: SearchCriteriaValue): string {
     if (criteriaValue.keyTranslated) {
-      const translationKey = `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${this.criteriaVal.key}`;
+      const translationKey = `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal().category)}.${this.criteriaVal().key}`;
       return this.translateWithOptionalTypeSuffixPipe.transform(translationKey);
     }
-    return this.criteriaVal.key;
+    return this.criteriaVal().key;
   }
 
   getCriteriaLabel(key: string, criteriaValue: SearchCriteriaValue): string {
     if (criteriaValue.valueTranslated) {
       return this.translateService.instant(
-        `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal.category)}.${criteriaValue.label}`,
+        `COLLECT.SEARCH_CRITERIA_FILTER.${this.getCategoryName(this.criteriaVal().category)}.${criteriaValue.label}`,
       );
     }
     if (key === 'ALL_ARCHIVE_UNIT_TYPES') {

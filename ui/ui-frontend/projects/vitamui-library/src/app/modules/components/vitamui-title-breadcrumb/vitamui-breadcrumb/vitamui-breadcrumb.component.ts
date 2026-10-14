@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, inject, input, Output, Signal } from '@angular/core';
+import { Component, computed, inject, input, Signal, output } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationId } from '../../../application-id.enum';
@@ -56,8 +56,7 @@ export class VitamuiBreadcrumbComponent {
 
   public data = input<BreadCrumbData[]>();
 
-  @Output()
-  public selected = new EventEmitter<BreadCrumbData>();
+  public readonly selected = output<BreadCrumbData>();
 
   private readonly appId: string = this.route.snapshot.data['appId'];
 

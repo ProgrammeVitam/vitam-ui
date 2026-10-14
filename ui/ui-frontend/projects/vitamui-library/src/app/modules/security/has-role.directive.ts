@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, inject, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, inject, input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SecurityService } from './security.service';
 
 @Directive({ selector: '[vitamuiCommonHasRole]' })
-export class HasRoleDirective implements OnDestroy {
+export class HasRoleDirective implements OnChanges, OnDestroy {
   private readonly templateRef = inject<TemplateRef<any>>(TemplateRef);
   private readonly viewContainer = inject(ViewContainerRef);
   private readonly securityService = inject(SecurityService);
+
+  readonly vitamuiCommonHasRole = input<{ appId: string; tenantIdentifier: number; role: string }>(undefined);
 
   roleSubscription: Subscription;
 
@@ -54,20 +56,22 @@ export class HasRoleDirective implements OnDestroy {
     }
   }
 
-  @Input()
-  set vitamuiCommonHasRole(data: { appId: string; tenantIdentifier: number; role: string }) {
-    if (this.roleSubscription) {
-      this.roleSubscription.unsubscribe();
-    }
-
-    this.roleSubscription = this.securityService.hasRole$(data.appId, data.role, data.tenantIdentifier).subscribe((allowed) => {
-      if (allowed && !this.viewEmbedded) {
-        this.viewEmbedded = true;
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else if (!allowed && this.viewEmbedded) {
-        this.viewEmbedded = false;
-        this.viewContainer.clear();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['vitamuiCommonHasRole']) {
+      const data = this.vitamuiCommonHasRole();
+      if (this.roleSubscription) {
+        this.roleSubscription.unsubscribe();
       }
-    });
+
+      this.roleSubscription = this.securityService.hasRole$(data.appId, data.role, data.tenantIdentifier).subscribe((allowed) => {
+        if (allowed && !this.viewEmbedded) {
+          this.viewEmbedded = true;
+          this.viewContainer.createEmbeddedView(this.templateRef);
+        } else if (!allowed && this.viewEmbedded) {
+          this.viewEmbedded = false;
+          this.viewContainer.clear();
+        }
+      });
+    }
   }
 }

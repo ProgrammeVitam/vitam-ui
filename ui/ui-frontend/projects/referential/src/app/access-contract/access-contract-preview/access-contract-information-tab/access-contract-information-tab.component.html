@@ -27,7 +27,7 @@
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate"
-      [ngModel]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'"
+      [ngModel]="accessContract()?.creationDate | dateTime: 'dd/MM/yyyy'"
       [ngModelOptions]="{ standalone: true }"
       disabled
     >
@@ -36,7 +36,7 @@
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate"
-      [ngModel]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
+      [ngModel]="accessContract()?.lastUpdate | dateTime: 'dd/MM/yyyy'"
       [ngModelOptions]="{ standalone: true }"
       disabled
     >
@@ -46,8 +46,8 @@
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate"
       [ngModel]="
-        accessContract?.status === 'ACTIVE' && accessContract?.activationDate
-          ? (accessContract.activationDate | dateTime: 'dd/MM/yyyy')
+        accessContract()?.status === 'ACTIVE' && accessContract()?.activationDate
+          ? (accessContract().activationDate | dateTime: 'dd/MM/yyyy')
           : '-'
       "
       [ngModelOptions]="{ standalone: true }"
@@ -58,7 +58,7 @@
     <vitamui-input
       class="w-100"
       [placeholder]="'ACCESS_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
-      [ngModel]="accessContract?.deactivationDate ? (accessContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [ngModel]="accessContract()?.deactivationDate ? (accessContract().deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
       [ngModelOptions]="{ standalone: true }"
       disabled
     >

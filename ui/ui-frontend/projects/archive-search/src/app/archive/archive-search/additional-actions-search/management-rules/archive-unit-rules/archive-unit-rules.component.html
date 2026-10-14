@@ -15,10 +15,10 @@
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [selectedItem]="selectedItem"
-                [ruleCategory]="ruleCategory"
-                [hasExactCount]="hasExactCount"
-                [rulesList]="rules$"
+                [selectedItem]="selectedItem()"
+                [ruleCategory]="ruleCategory()"
+                [hasExactCount]="hasExactCount()"
+                [rulesList]="rules$()"
               ></app-add-management-rules>
             }
           </div>
@@ -37,13 +37,13 @@
           <div class="collapsible" [class.collapsed]="deleteRuleCollapsed">
             @if (actionName.actionType === action && action === 'DELETE_RULES') {
               <app-delete-unit-rules
-                [selectedItem]="selectedItem"
-                [ruleCategory]="ruleCategory"
+                [selectedItem]="selectedItem()"
+                [ruleCategory]="ruleCategory()"
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [hasExactCount]="hasExactCount"
-                [rulesList]="rules$"
+                [hasExactCount]="hasExactCount()"
+                [rulesList]="rules$()"
               ></app-delete-unit-rules>
             }
           </div>
@@ -59,7 +59,7 @@
           </i>
         </div>
         <div class="collapsible" [class.collapsed]="updatePropertyCollapsed">
-          <app-add-update-property [ruleCategory]="ruleCategory"></app-add-update-property>
+          <app-add-update-property [ruleCategory]="ruleCategory()"></app-add-update-property>
         </div>
       </div>
     }
@@ -78,10 +78,10 @@
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [selectedItem]="selectedItem"
-                [ruleCategory]="ruleCategory"
-                [hasExactCount]="hasExactCount"
-                [rulesList]="rules$"
+                [selectedItem]="selectedItem()"
+                [ruleCategory]="ruleCategory()"
+                [hasExactCount]="hasExactCount()"
+                [rulesList]="rules$()"
               ></app-update-unit-rules>
             }
           </div>
@@ -97,7 +97,7 @@
           </i>
         </div>
         <div class="collapsible" [class.collapsed]="blockCategoryInheritanceCollapsed">
-          <app-block-category-inheritance [ruleCategory]="ruleCategory"></app-block-category-inheritance>
+          <app-block-category-inheritance [ruleCategory]="ruleCategory()"></app-block-category-inheritance>
         </div>
       </div>
     }
@@ -111,9 +111,9 @@
         </div>
         <div class="collapsible" [class.collapsed]="unlockCategoryInheritanceCollapsed">
           <app-unlock-category-inheritance
-            [ruleCategory]="ruleCategory"
-            [hasExactCount]="hasExactCount"
-            [selectedItem]="selectedItem"
+            [ruleCategory]="ruleCategory()"
+            [hasExactCount]="hasExactCount()"
+            [selectedItem]="selectedItem()"
           ></app-unlock-category-inheritance>
         </div>
       </div>
@@ -131,11 +131,11 @@
           <div class="collapsible" [class.collapsed]="blockRuleInheritanceCollapsed">
             @if (actionName.actionType === action && action === 'BLOCK_RULE_INHERITANCE') {
               <app-block-rules-inheritance
-                [ruleCategory]="ruleCategory"
+                [ruleCategory]="ruleCategory()"
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [rulesList]="rules$"
+                [rulesList]="rules$()"
               ></app-block-rules-inheritance>
             }
           </div>
@@ -157,10 +157,10 @@
                 (delete)="deleteForm(actionName.id, $event, action)"
                 (confirmStep)="confirmStep(actionName.id)"
                 (cancelStep)="cancelStep(actionName.id)"
-                [selectedItem]="selectedItem"
-                [ruleCategory]="ruleCategory"
-                [hasExactCount]="hasExactCount"
-                [rulesList]="rules$"
+                [selectedItem]="selectedItem()"
+                [ruleCategory]="ruleCategory()"
+                [hasExactCount]="hasExactCount()"
+                [rulesList]="rules$()"
               ></app-unlock-rules-inheritance>
             }
           </div>

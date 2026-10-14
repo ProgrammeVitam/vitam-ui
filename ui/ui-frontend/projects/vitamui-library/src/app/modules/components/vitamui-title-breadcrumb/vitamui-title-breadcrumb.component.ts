@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationId } from '../../application-id.enum';
 import { ApplicationService } from '../../application.service';
@@ -58,8 +58,7 @@ export class VitamuiTitleBreadcrumbComponent {
   private readonly startupService = inject(StartupService);
   private readonly logger = inject(Logger);
 
-  @Input()
-  public data?: BreadCrumbData[];
+  public readonly data = input<BreadCrumbData[]>(undefined);
 
   public navigateTo(data: BreadCrumbData): void {
     if (data.redirectUrl) {

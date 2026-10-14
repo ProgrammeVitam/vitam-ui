@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, signal, SimpleChanges, output, model } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
@@ -67,8 +67,8 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
   private readonly formBuilder = inject(FormBuilder);
   private readonly translateService = inject(TranslateService);
 
-  @Input() managementContract: ManagementContract;
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly managementContract = model<ManagementContract>(undefined);
+  readonly updated = output<boolean>();
 
   contractForm: FormGroup;
   sending = signal(false);
@@ -95,7 +95,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
 
   submit(): void {
     const subscription: Subscription = this.prepareSubmit()
-      .pipe(tap((managementContract) => (this.managementContract = managementContract)))
+      .pipe(tap((managementContract) => this.managementContract.set(managementContract)))
       .subscribe(() => subscription.unsubscribe());
   }
 
@@ -159,7 +159,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
     const updates = this.formGroupToManagementContractConverterService.convert(this.contractForm);
 
     return {
-      ...this.managementContract,
+      ...this.managementContract(),
       persistentIdentifierPolicyList: updates.persistentIdentifierPolicyList,
     };
   }
@@ -169,7 +169,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
   }
 
   isSubmitButtonDisabled(): boolean {
-    const hasNoChanges = this.deepEqual(this.managementContract, this.getUpdatedManagementContract());
+    const hasNoChanges = this.deepEqual(this.managementContract(), this.getUpdatedManagementContract());
 
     if (hasNoChanges) {
       this.updated.emit(false);

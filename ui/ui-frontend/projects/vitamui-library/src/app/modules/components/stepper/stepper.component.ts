@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkStepper, CdkStepperModule } from '@angular/cdk/stepper';
-import { Component, ElementRef, HostListener, inject, Input } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -49,12 +49,12 @@ import { CommonModule } from '@angular/common';
 })
 export class StepperComponent extends CdkStepper {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
-  @Input() disableScrollToTop = false;
+  readonly disableScrollToTop = input(false);
 
   // Automatically scroll to the top of the stepper after changing step (inspired by https://github.com/angular/components/issues/8881)
   @HostListener('selectionChange')
   selectionChanged() {
-    if (!this.disableScrollToTop) {
+    if (!this.disableScrollToTop()) {
       this.elementRef.nativeElement.scrollIntoView({
         block: 'start',
         inline: 'nearest',

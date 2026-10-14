@@ -12,7 +12,7 @@
 
     <div class="col-6 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.TYPE' | translate }}</label>
-      @if (inputProfile.type === 'PA') {
+      @if (inputProfile().type === 'PA') {
         <div>
           {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE_ARCHIVAGE' | translate }}
         </div>
@@ -38,7 +38,7 @@
   <div class="row">
     <div class="col-12 mb-3 read-only-field">
       <label>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFIL_ATTACHE' | translate }}</label>
-      @if (isProfilAttached(inputProfile)) {
+      @if (isProfilAttached(inputProfile())) {
         <div>
           {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PRESENCE_PROFIL_ATTACHE' | translate }}
         </div>

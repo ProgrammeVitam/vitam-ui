@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
@@ -107,10 +107,9 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   search$ = this.searchCriteria.asObservable();
   tenant: Tenant;
   openedItem: OperationDetails;
-  @ViewChild('panel') panel: MatSidenav;
+  readonly panel = viewChild<MatSidenav>('panel');
 
-  @ViewChild(LogbookManagementOperationListComponent, { static: true })
-  logbookManagementOperationListComponent: LogbookManagementOperationListComponent;
+  readonly logbookManagementOperationListComponent = viewChild(LogbookManagementOperationListComponent);
 
   private readonly subscriptions = new Subscription();
 
@@ -184,7 +183,7 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
     const s = Object.entries(this.toFrenchDate(this.searchCriteria.value))
       .filter(([_key, value]) => Boolean(value) && !(typeof value === 'boolean'))
       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-    this.logbookManagementOperationListComponent.searchOperationsList(s);
+    this.logbookManagementOperationListComponent().searchOperationsList(s);
   }
 
   showOperation(item: OperationDetails) {
@@ -193,14 +192,16 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
 
   openPanel(item: OperationDetails) {
     this.openedItem = item;
-    if (this.panel && !this.panel.opened) {
-      this.panel.open().then();
+    const panel = this.panel();
+    if (panel && !panel.opened) {
+      panel.open().then();
     }
   }
 
   closePanel() {
-    if (this.panel && this.panel.opened) {
-      this.panel.close().then();
+    const panel = this.panel();
+    if (panel?.opened) {
+      panel.close().then();
     }
   }
 

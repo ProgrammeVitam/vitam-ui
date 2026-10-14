@@ -1,6 +1,6 @@
 <mat-form-field class="w-100 p-0" [hideRequiredMarker]="true" appearance="outline" subscriptSizing="dynamic">
   <mat-label
-    >{{ placeholder }}
+    >{{ placeholder() }}
     @if (isRequired()) {
       <span class="required-marker"> *</span>
     }
@@ -8,7 +8,7 @@
   <mat-select
     (closed)="onSelectClosed()"
     (openedChange)="openedChange($event)"
-    [multiple]="multiple"
+    [multiple]="multiple()"
     [compareWith]="compareOptions"
     [formControl]="control"
     panelClass="vitamui-select-panel"
@@ -16,9 +16,9 @@
   >
     <mat-select-trigger>
       @if (getSelectedOptionsCount() > 0) {
-        @if (multiple) {
-          @if (allSelectedLabel && getSelectedOptionsCount() === allOptions.length) {
-            {{ allSelectedLabel }}
+        @if (multiple()) {
+          @if (allSelectedLabel() && getSelectedOptionsCount() === allOptions.length) {
+            {{ allSelectedLabel() }}
           } @else {
             {{ getSelectedOptionsCount() }} {{ getSelectedOptionsCount() | i18nPlural: nbSelectedItemsMap | translate }}
           }
@@ -69,7 +69,7 @@
         </cdk-virtual-scroll-viewport>
       </div>
     } @else {
-      @if (enableDisplaySelected && multiple) {
+      @if (enableDisplaySelected() && multiple()) {
         <button
           (click)="toggleShowOnlySelectedOption()"
           [disabled]="getSelectedOptionsCount() === 0"
@@ -80,14 +80,14 @@
         </button>
       }
 
-      @if (enableSearch) {
+      @if (enableSearch()) {
         <div class="m-2">
           <vitamui-common-search-bar
             #searchBar
             (clear)="resetSearchBar()"
             (searchChanged)="onSearch($event)"
             name="element-search"
-            [placeholder]="searchBarPlaceHolder || placeholder"
+            [placeholder]="searchBarPlaceHolder() || placeholder()"
             searchButtonColor="primary"
           ></vitamui-common-search-bar>
         </div>
@@ -101,14 +101,14 @@
         <div [style.height]="containerHeightInSearchView">
           <cdk-virtual-scroll-viewport itemSize="48" #scrollViewport class="h-100" minBufferPx="240" maxBufferPx="480">
             <div class="vitamui-mat-select-options">
-              @if (enableSelectAll && multiple) {
+              @if (enableSelectAll() && multiple()) {
                 <div class="mat-mdc-option" (click)="toggleSelectAll($event)">
                   <mat-pseudo-checkbox
                     [state]="isAllSelected() ? 'checked' : 'unchecked'"
                     class="mat-mdc-option-pseudo-checkbox"
                   ></mat-pseudo-checkbox>
                   <span class="mat-mdc-option-text text normal secondary bold">
-                    {{ selectAllLabel | translate }}
+                    {{ selectAllLabel() | translate }}
                   </span>
                 </div>
                 <mat-divider></mat-divider>
@@ -144,4 +144,4 @@
   </div>
 </mat-form-field>
 
-<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap()"></vitamui-form-errors>

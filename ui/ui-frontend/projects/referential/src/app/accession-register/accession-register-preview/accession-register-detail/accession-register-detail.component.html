@@ -3,30 +3,30 @@
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.DATE' | translate"
-      [value]="accessionRegisterDetail.endDate | date: 'dd/MM/yyyy'"
+      [value]="accessionRegisterDetail().endDate | date: 'dd/MM/yyyy'"
     />
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ORIGINATING_AGENCY' | translate"
-      [value]="formatReferentialValue(accessionRegisterDetail.originatingAgency, accessionRegisterDetail.originatingAgencyLabel)"
+      [value]="formatReferentialValue(accessionRegisterDetail().originatingAgency, accessionRegisterDetail().originatingAgencyLabel)"
       [valueCss]="'text-ellipsis'"
-      [valueTooltip]="accessionRegisterDetail.originatingAgencyLabel"
+      [valueTooltip]="accessionRegisterDetail().originatingAgencyLabel"
     />
   </div>
   <div class="row p-0">
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_AGREEMENT' | translate"
-      [value]="formatReferentialValue(accessionRegisterDetail.archivalAgreement, accessionRegisterDetail.archivalAgreementLabel)"
+      [value]="formatReferentialValue(accessionRegisterDetail().archivalAgreement, accessionRegisterDetail().archivalAgreementLabel)"
       [valueCss]="'text-ellipsis'"
-      [valueTooltip]="accessionRegisterDetail.archivalAgreementLabel"
+      [valueTooltip]="accessionRegisterDetail().archivalAgreementLabel"
     />
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ARCHIVAL_PROFILE' | translate"
-      [value]="formatReferentialValue(accessionRegisterDetail.archivalProfile, accessionRegisterDetail.archivalProfileLabel)"
+      [value]="formatReferentialValue(accessionRegisterDetail().archivalProfile, accessionRegisterDetail().archivalProfileLabel)"
       [valueCss]="'text-ellipsis'"
-      [valueTooltip]="accessionRegisterDetail.archivalProfileLabel"
+      [valueTooltip]="accessionRegisterDetail().archivalProfileLabel"
     />
   </div>
 
@@ -34,35 +34,35 @@
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.ACQUISITION_INFORMATION' | translate"
-      [value]="accessionRegisterDetail.acquisitionInformation"
+      [value]="accessionRegisterDetail().acquisitionInformation"
     />
     <vitamui-common-data
       [vitamuiTooltipShowDelay]="300"
-      [valueTooltip]="accessionRegisterDetail.originatingAgencyLabel"
+      [valueTooltip]="accessionRegisterDetail().originatingAgencyLabel"
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.STATUS' | translate"
-      [value]="'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail.status | translate"
+      [value]="'ACCESSION_REGISTER.STATUS.' + accessionRegisterDetail().status | translate"
     />
   </div>
   <div class="row p-0">
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.LEGAL_STATUS' | translate"
-      [value]="accessionRegisterDetail.legalStatus"
+      [value]="accessionRegisterDetail().legalStatus"
     />
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.SUBMISSION_AGENCY' | translate"
-      [value]="formatReferentialValue(accessionRegisterDetail.submissionAgency, accessionRegisterDetail.submissionAgencyLabel)"
+      [value]="formatReferentialValue(accessionRegisterDetail().submissionAgency, accessionRegisterDetail().submissionAgencyLabel)"
       [valueCss]="'text-ellipsis'"
-      [valueTooltip]="accessionRegisterDetail.submissionAgencyLabel"
+      [valueTooltip]="accessionRegisterDetail().submissionAgencyLabel"
     />
   </div>
   <div class="row p-0">
     <vitamui-common-data
       class="w-50"
       [label]="'ACCESSION_REGISTER.PREVIEW.OPERATION_TECHNICAL_IDENTIFIER' | translate"
-      [value]="accessionRegisterDetail.opi"
+      [value]="accessionRegisterDetail().opi"
     />
   </div>
   <div class="d-flex p-0 col-12 read-only-field comment gap-1">

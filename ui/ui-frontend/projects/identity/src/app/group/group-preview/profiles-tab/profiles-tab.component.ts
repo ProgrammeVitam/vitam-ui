@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input, model } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Group, Profile, TooltipDirective } from 'vitamui-library';
@@ -52,19 +52,19 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog);
   private readonly groupService = inject(GroupService);
 
-  @Input() group: Group;
+  readonly group = model<Group>(undefined);
 
-  @Input() readOnly: boolean;
+  readonly readOnly = input<boolean>(undefined);
 
   readonly profilesDisplay = signal<any[]>([]);
   updatedGroup: Subscription;
   public groupProfiles: Profile[];
 
   ngOnInit() {
-    this.initializeProfilesList(this.group?.profiles);
+    this.initializeProfilesList(this.group()?.profiles);
     this.updatedGroup = this.groupService.updated.subscribe((updatedGroup: Group) => {
-      this.group = updatedGroup;
-      this.initializeProfilesList(this.group?.profiles);
+      this.group.set(updatedGroup);
+      this.initializeProfilesList(this.group()?.profiles);
     });
   }
 
@@ -98,7 +98,7 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
   openEditProfilesDialog() {
     this.dialog.open(ProfilesEditComponent, {
       data: {
-        group: this.group,
+        group: this.group(),
       },
       autoFocus: false,
       disableClose: true,

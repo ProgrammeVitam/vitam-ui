@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,44 +50,42 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./ingest-contract-heritage-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, TranslatePipe],
 })
-export class IngestContractHeritageTabComponent {
+export class IngestContractHeritageTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   form: FormGroup;
   submited = signal(false);
-  private _ingestContract: IngestContract;
 
-  @Input() set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   previousValue = (): any => {
-    return { computeInheritedRulesAtIngest: this._ingestContract.computeInheritedRulesAtIngest };
+    return { computeInheritedRulesAtIngest: this.ingestContract().computeInheritedRulesAtIngest };
   };
 
-  @Input()
-  set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-    this.resetForm(this.ingestContract);
-    this.updated.emit(false);
-  }
-
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
-  }
+  readonly ingestContract = model<IngestContract>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
       computeInheritedRulesAtIngest: [false, Validators.required],
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
+    if (changes['ingestContract']) {
+      this.setIngestContract(this.ingestContract());
+    }
   }
 
   unchanged(): boolean {
@@ -100,9 +98,9 @@ export class IngestContractHeritageTabComponent {
     this.submited.set(true);
     this.prepareSubmit().subscribe(
       () => {
-        this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
+        this.ingestContractService.get(this.ingestContract().identifier).subscribe((response) => {
           this.submited.set(false);
-          this.ingestContract = response;
+          this.setIngestContract(response);
         });
       },
       () => {
@@ -114,11 +112,17 @@ export class IngestContractHeritageTabComponent {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
+      map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
     );
+  }
+
+  private setIngestContract(ingestContract: IngestContract) {
+    this.ingestContract.set(ingestContract);
+    this.resetForm(this.ingestContract());
+    this.updated.emit(false);
   }
 
   resetForm(ingestContract: IngestContract) {

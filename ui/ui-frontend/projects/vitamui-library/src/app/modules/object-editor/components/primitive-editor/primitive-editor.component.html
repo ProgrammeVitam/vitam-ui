@@ -1,51 +1,51 @@
-@if (editObject?.control && editObject.cardinality !== 'ZERO') {
+@if (editObject()?.control && editObject().cardinality !== 'ZERO') {
   @switch (uiComponent) {
     @case ('textfield') {
       <vitamui-editor-input
         [control]="control"
-        [label]="editObject.displayRule?.ui?.label"
-        [hint]="editObject.hint"
-        [required]="editObject.required"
+        [label]="editObject().displayRule?.ui?.label"
+        [hint]="editObject().hint"
+        [required]="editObject().required"
       ></vitamui-editor-input>
     }
     @case ('textarea') {
       <vitamui-editor-textarea
         [control]="control"
-        [label]="editObject.displayRule?.ui?.label"
-        [hint]="editObject.hint"
-        [required]="editObject.required"
+        [label]="editObject().displayRule?.ui?.label"
+        [hint]="editObject().hint"
+        [required]="editObject().required"
       ></vitamui-editor-textarea>
     }
     @case ('select') {
       <vitamui-editor-select
         [control]="control"
-        [label]="editObject.displayRule?.ui?.label"
-        [options]="editObject.options"
-        [hint]="editObject.hint"
-        [multiple]="editObject.cardinality.includes('MANY')"
-        [required]="editObject.required"
+        [label]="editObject().displayRule?.ui?.label"
+        [options]="editObject().options"
+        [hint]="editObject().hint"
+        [multiple]="editObject().cardinality.includes('MANY')"
+        [required]="editObject().required"
       ></vitamui-editor-select>
     }
     @case ('datepicker') {
       <vitamui-datepicker
         [formControl]="control"
-        [label]="editObject.displayRule.ui.label | translate | empty"
-        [required]="editObject.required"
-        [pickerType]="getPickerType(editObject)"
+        [label]="editObject().displayRule.ui.label | translate | empty"
+        [required]="editObject().required"
+        [pickerType]="getPickerType(editObject())"
         outputType="String"
       >
-        <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
+        <vitamui-hint [control]="editObject().control" [hint]="editObject().hint"></vitamui-hint>
       </vitamui-datepicker>
     }
     @case ('datetime') {
       <vitamui-datepicker
         [formControl]="control"
-        [label]="editObject.displayRule.ui.label | translate | empty"
-        [required]="editObject.required"
-        [pickerType]="getPickerType(editObject)"
+        [label]="editObject().displayRule.ui.label | translate | empty"
+        [required]="editObject().required"
+        [pickerType]="getPickerType(editObject())"
         outputType="String"
       >
-        <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
+        <vitamui-hint [control]="editObject().control" [hint]="editObject().hint"></vitamui-hint>
       </vitamui-datepicker>
     }
   }

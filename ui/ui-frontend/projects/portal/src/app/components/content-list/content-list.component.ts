@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, input, linkedSignal, viewChild } from '@angular/core';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { Category, VitamUICommonModule } from 'vitamui-library';
 import { ContentTypeEnum } from './content.enum';
@@ -50,20 +50,15 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CommonModule, MatTabsModule, VitamUICommonModule, AngularSvgIconModule, TranslatePipe],
 })
 export class ContentListComponent {
-  @Input() set content(content: Map<Category, Content>) {
-    if (content?.size) {
-      this._content = content;
-    }
-  }
+  readonly content = input<Map<Category, Content>>();
 
-  get content() {
-    return this._content;
-  }
+  protected readonly displayedContent = linkedSignal<Map<Category, Content> | undefined, Map<Category, Content>>({
+    source: this.content,
+    computation: (content, previous) => (content?.size ? content : previous?.value),
+  });
 
-  @ViewChild('matTabGroup') matTabGroup: MatTabGroup;
+  readonly matTabGroup = viewChild<MatTabGroup>('matTabGroup');
 
   public CONTENT_TYPE = ContentTypeEnum;
   public tabIndex = 0;
-
-  private _content: Map<Category, Content>;
 }

@@ -55,7 +55,7 @@ import {
   SubrogationUser,
 } from 'vitamui-library';
 
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -74,22 +74,17 @@ const MAXIMUM_CRITICALITY = 2;
   styleUrls: ['./subrogate-user-list.component.scss'],
   imports: [NgClass, MatProgressSpinner, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
-export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnDestroy, OnInit {
+export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationUser> implements OnChanges, OnDestroy, OnInit {
   subrogationService: SubrogationService;
   dialog = inject(MatDialog);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly subrogationModalService = inject(SubrogationModalService);
   private readonly authService = inject(AuthService);
 
-  @Input() emailDomains: string[];
+  readonly emailDomains = input<string[]>(undefined);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
-  private _searchText: string;
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private readonly groups: Array<{ id: string; group: any }> = [];
   override overridePendingChange: true;
@@ -106,6 +101,12 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
     super(subrogationService);
 
     this.subrogationService = subrogationService;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
   }
 
   ngOnInit() {
@@ -158,7 +159,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   }
 
   openUserSubrogationDialog(subrogateUser: SubrogationUser): void {
-    this.subrogationModalService.open(this.emailDomains, subrogateUser.customerId, subrogateUser);
+    this.subrogationModalService.open(this.emailDomains(), subrogateUser.customerId, subrogateUser);
   }
 
   getGroup(subrogateUser: SubrogationUser): any {
@@ -192,7 +193,7 @@ export class SubrogateUserListComponent extends InfiniteScrollTable<SubrogationU
   private _onSearchChange(): void {
     this.searchChange.subscribe(() => {
       const query: CriteriaSearchQuery = {
-        criteria: [...this._getCriterionArrayToCustomer(), ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
+        criteria: [...this._getCriterionArrayToCustomer(), ...buildCriteriaFromSearch(this.searchText(), this.searchKeys)],
       };
 
       this._search(query);

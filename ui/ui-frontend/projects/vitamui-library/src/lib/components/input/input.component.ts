@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, inject, Injector, Input } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, inject, Injector, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
@@ -57,20 +57,20 @@ type InternalValue = { id: number; value: string | number | boolean };
   styleUrls: ['./input.component.scss'],
   providers: [INPUT_VALUE_ACCESSOR],
   imports: [FormsModule, TooltipDirective, FormErrorsComponent, MatProgressSpinner, TranslatePipe],
+  host: {
+    '[class.textarea]': 'textarea()',
+  },
 })
 export class InputComponent extends AbstractFormInputDirective {
   private readonly elRef = inject(ElementRef);
 
-  @Input() placeholder: string;
-  @Input() autofocus: boolean;
-  @Input()
-  multiple = false;
-  @HostBinding('class.textarea')
-  @Input()
-  textarea = false;
-  @Input() addTooltipKey = 'INPUT.ADD_TOOLTIP';
-  @Input() removeTooltipKey = 'INPUT.REMOVE_TOOLTIP';
-  @Input() type: 'text' | 'number' | 'password' = 'text';
+  readonly placeholder = input<string>(undefined);
+  readonly autofocus = input<boolean>(undefined);
+  readonly multiple = input(false);
+  readonly textarea = input(false);
+  readonly addTooltipKey = input('INPUT.ADD_TOOLTIP');
+  readonly removeTooltipKey = input('INPUT.REMOVE_TOOLTIP');
+  readonly type = input<'text' | 'number' | 'password'>('text');
 
   items: InternalValue[] = [{ id: 0, value: '' }];
   focused: number;
@@ -122,7 +122,7 @@ export class InputComponent extends AbstractFormInputDirective {
 
   onValueChange(value: string, i: number) {
     this.items[i].value = value;
-    this.onChange(this.multiple ? this.items.map((v) => v.value).filter((v) => !!v) : this.items[0].value);
+    this.onChange(this.multiple() ? this.items.map((v) => v.value).filter((v) => !!v) : this.items[0].value);
   }
 
   onFocus(i: number) {

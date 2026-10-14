@@ -36,7 +36,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, OnChanges, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
@@ -54,14 +54,11 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
   private readonly datePipe = inject(DatePipe);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @Input()
-  reuseRuleFacets: RuleFacets;
+  readonly reuseRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  totalResults: number;
+  readonly totalResults = input<number>(undefined);
 
-  @Input()
-  exactCount: boolean;
+  readonly exactCount = input<boolean>(undefined);
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -77,7 +74,7 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
     let archiveUnitWithRules = 0;
-    if (this.reuseRuleFacets) {
+    if (this.reuseRuleFacets()) {
       archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleRulesDisctinctsFacets();
       this.handleRulesExpirationFacets(archiveUnitWithRules);
@@ -86,7 +83,7 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
 
   getFacetTextByExactCountFlag(count: number, exactCount: boolean): string {
     let facetContentValue = count.toString();
-    if (!exactCount && this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
+    if (!exactCount && this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold) {
       facetContentValue = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
     }
     return facetContentValue;
@@ -96,8 +93,9 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
-    if (this.reuseRuleFacets.expiredRulesListFacets && this.reuseRuleFacets.expiredRulesListFacets.length > 0) {
-      this.reuseRuleFacets.expiredRulesListFacets.forEach((elt) => {
+    const reuseRuleFacets = this.reuseRuleFacets();
+    if (reuseRuleFacets.expiredRulesListFacets && reuseRuleFacets.expiredRulesListFacets.length > 0) {
+      reuseRuleFacets.expiredRulesListFacets.forEach((elt) => {
         if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
           expiredRulesNb = elt.count ? elt.count : 0;
@@ -105,9 +103,11 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
       });
     }
 
+    const totalResults = this.totalResults();
+    const exactCount = this.exactCount();
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '>' + this.dateFilterValue,
@@ -116,11 +116,7 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
 
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.NOT_EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(
-        archiveUnitWithRules - expiredRulesNb,
-        this.exactCount,
-        this.totalResults,
-      ),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(archiveUnitWithRules - expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '<' + this.dateFilterValue,
@@ -129,13 +125,14 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
   }
 
   private handleRulesDisctinctsFacets() {
-    if (this.reuseRuleFacets.rulesListFacets && this.reuseRuleFacets.rulesListFacets.length > 0) {
+    const reuseRuleFacets = this.reuseRuleFacets();
+    if (reuseRuleFacets.rulesListFacets && reuseRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.DISTINCT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
-          this.reuseRuleFacets.rulesListFacets.length,
-          this.exactCount,
-          this.totalResults,
+          reuseRuleFacets.rulesListFacets.length,
+          this.exactCount(),
+          this.totalResults(),
         ),
         clickable: false,
         color: Colors.GRAY,
@@ -144,7 +141,7 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
     } else {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.DISTINCT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount(), this.totalResults()),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -154,8 +151,11 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
 
   private handleWaitingToRecalculateRulesFacets(): number {
     let archiveUnitWithRules = 0;
-    if (this.reuseRuleFacets.waitingToRecalculateRulesListFacets && this.reuseRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
-      const facetComputedUnits = this.reuseRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+    const reuseRuleFacets = this.reuseRuleFacets();
+    const totalResults = this.totalResults();
+    const exactCountValue = this.exactCount();
+    if (reuseRuleFacets.waitingToRecalculateRulesListFacets && reuseRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
+      const facetComputedUnits = reuseRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {
@@ -164,14 +164,15 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
         computedCount = 0;
       }
       let notComputedCount = '';
+      const exactCount = this.exactCount();
       if (
-        !this.exactCount &&
-        (this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+        !exactCount &&
+        (this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
           computedCount >= this.vitamConfigurationService.tenantConfig()?.resultThreshold)
       ) {
         notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
       } else {
-        notComputedCount = (this.totalResults - computedCount).toString();
+        notComputedCount = (this.totalResults() - computedCount).toString();
       }
 
       this.archiveUnitsCountFacetDetails.push({
@@ -183,7 +184,7 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -192,25 +193,25 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(totalResults, exactCountValue, totalResults),
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
+        color: totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     }
 
-    if (this.reuseRuleFacets.noRulesFacets && this.reuseRuleFacets.noRulesFacets.length > 0) {
-      this.reuseRuleFacets.noRulesFacets.forEach((elt) => {
+    if (reuseRuleFacets.noRulesFacets && reuseRuleFacets.noRulesFacets.length > 0) {
+      reuseRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WITHOUT_RULES'),
-          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
+          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount(), this.totalResults()),
           clickable: false,
           color: Colors.GRAY,
           backgroundColor: Colors.DISABLED,
@@ -220,7 +221,7 @@ export class SearchReuseRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('COLLECT.FACETS.REUSE_RULE.WITHOUT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,

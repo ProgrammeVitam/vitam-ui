@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, TemplateRef, viewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -51,7 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class DownloadSnackBarComponent {
   private readonly matDialog = inject(MatDialog);
 
-  @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
+  readonly confirmDialog = viewChild<TemplateRef<DownloadSnackBarComponent>>('confirmDialog');
 
   progressionValue: number;
   isCompressed = false;
@@ -79,7 +79,7 @@ export class DownloadSnackBarComponent {
   }
 
   confirmClose() {
-    const dialogRef = this.matDialog.open(this.confirmDialog);
+    const dialogRef = this.matDialog.open(this.confirmDialog());
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))

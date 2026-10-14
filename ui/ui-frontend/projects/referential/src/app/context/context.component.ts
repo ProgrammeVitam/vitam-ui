@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -71,7 +71,7 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
   search = '';
   tenantIdentifier: string;
 
-  @ViewChild(ContextListComponent, { static: true }) contextListComponent: ContextListComponent;
+  readonly contextListComponent = viewChild(ContextListComponent);
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('CONTEXT').pipe(shareReplay(1));
 
@@ -93,10 +93,11 @@ export class ContextComponent extends SidenavPage<Context> implements OnInit {
   }
 
   private refreshList() {
-    if (!this.contextListComponent) {
+    const contextListComponent = this.contextListComponent();
+    if (!contextListComponent) {
       return;
     }
-    this.contextListComponent.searchContextOrdered();
+    contextListComponent.searchContextOrdered();
   }
 
   onSearchSubmit(search: string) {

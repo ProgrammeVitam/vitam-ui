@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { InputComponent, Option, SelectComponent } from 'vitamui-library';
@@ -47,28 +47,27 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [ReactiveFormsModule, SelectComponent, InputComponent, TranslatePipe],
 })
 export class HomepageMessageTranslationComponent implements OnInit, OnDestroy {
-  @Input()
-  public form: FormGroup;
+  public readonly form = input<FormGroup>(undefined);
 
-  @Input()
-  public index: number;
+  public readonly index = input<number>(undefined);
 
-  @Input()
-  public languages: Option[];
+  public readonly languages = input<Option[]>(undefined);
 
-  @Output()
-  public formChange = new EventEmitter<{ form: FormGroup }>();
+  public readonly formChange = output<{
+    form: FormGroup;
+  }>();
 
-  @Output()
-  public formRemove = new EventEmitter<{ form: FormGroup }>();
+  public readonly formRemove = output<{
+    form: FormGroup;
+  }>();
 
   private subscription: Subscription;
 
   constructor() {}
 
   ngOnInit() {
-    this.subscription = this.form.valueChanges.subscribe(() => {
-      this.formChange.emit({ form: this.form });
+    this.subscription = this.form().valueChanges.subscribe(() => {
+      this.formChange.emit({ form: this.form() });
     });
   }
 
@@ -79,6 +78,6 @@ export class HomepageMessageTranslationComponent implements OnInit, OnDestroy {
   }
 
   public onRemove(): void {
-    this.formRemove.emit({ form: this.form });
+    this.formRemove.emit({ form: this.form() });
   }
 }

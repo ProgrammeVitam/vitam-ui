@@ -1,12 +1,12 @@
-@if (!disabled) {
+@if (!disabled()) {
   <div class="editable-field-wrapper" (click)="enterEditMode()">
     <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
       <div class="vitamui-input editable-field" [class.edit-mode]="editMode">
         <div class="editable-field-content">
-          <label>{{ label }}</label>
+          <label>{{ label() }}</label>
           <span class="editable-field-text-content">{{ control?.value }}</span>
           <div class="editable-field-control">
-            <input [type]="type" [formControl]="control" [maxlength]="maxlength" #input />
+            <input [type]="type()" [formControl]="control" [maxlength]="maxlength()" #input />
           </div>
         </div>
         @if (!showSpinner && !editMode) {
@@ -40,10 +40,10 @@
 
 <div class="vitamui-chip-list">
   @for (val of values; track val) {
-    <div [ngClass]="{ 'vitamui-chip': true, activated: searchActivated }">
-      <div class="vitamui-chip-content" [title]="val">{{ val | truncate: truncateLimit }}</div>
+    <div [ngClass]="{ 'vitamui-chip': true, activated: searchActivated() }">
+      <div class="vitamui-chip-content" [title]="val">{{ val | truncate: truncateLimit() }}</div>
       <div class="vitamui-remove-chip" (click)="remove(val)">
-        <i class="material-icons" [ngClass]="{ white: searchActivated }">clear</i>
+        <i class="material-icons" [ngClass]="{ white: searchActivated() }">clear</i>
       </div>
     </div>
   }

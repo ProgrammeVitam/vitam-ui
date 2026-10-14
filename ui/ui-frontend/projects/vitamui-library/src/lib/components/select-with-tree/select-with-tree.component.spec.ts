@@ -55,6 +55,7 @@ describe('SelectWithTreeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SelectWithTreeComponent<Item>);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('getDisplayValue', (item: Item) => item.value);
     fixture.detectChanges();
   });
 

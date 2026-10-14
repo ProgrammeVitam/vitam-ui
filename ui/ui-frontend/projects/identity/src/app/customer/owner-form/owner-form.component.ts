@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, forwardRef, inject, OnDestroy, OnInit, input, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
@@ -66,7 +66,7 @@ export const OWNER_FORM_VALUE_ACCESSOR: any = {
   providers: [OWNER_FORM_VALUE_ACCESSOR],
   imports: [ReactiveFormsModule, InputComponent, SelectComponent, TranslatePipe],
 })
-export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnInit {
+export class OwnerFormComponent implements OnChanges, ControlValueAccessor, OnDestroy, OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly ownerFormValidators = inject(OwnerFormValidators);
   private readonly countryService = inject(CountryService);
@@ -78,42 +78,9 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   private sub: any;
 
-  @Input()
-  set customerId(customerId: string) {
-    this._customerId = customerId;
-    if (!this.form) {
-      return;
-    }
-    this.form.get('customerId').setValue(customerId);
-  }
+  readonly customerId = input<string>();
 
-  get customerId() {
-    return this._customerId;
-  }
-
-  private _customerId: string;
-
-  @Input()
-  set customerInfo(customerInfo: Customer) {
-    this._customerInfo = customerInfo;
-    if (customerInfo && this.form) {
-      this.form.patchValue({
-        code: customerInfo.code,
-        name: customerInfo.name,
-        companyName: customerInfo.companyName,
-      });
-      const codeControl = this.form.get('code');
-      if (codeControl?.invalid) {
-        codeControl.markAsTouched();
-      }
-    }
-  }
-
-  get customerInfo() {
-    return this._customerInfo;
-  }
-
-  private _customerInfo: any;
+  readonly customerInfo = input<Customer>();
 
   constructor() {
     this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
@@ -148,6 +115,28 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   onTouched = () => {};
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['customerId']) {
+      if (this.form) {
+        this.form.get('customerId').setValue(this.customerId());
+      }
+    }
+    if (changes['customerInfo']) {
+      const customerInfo = this.customerInfo();
+      if (customerInfo && this.form) {
+        this.form.patchValue({
+          code: customerInfo.code,
+          name: customerInfo.name,
+          companyName: customerInfo.companyName,
+        });
+        const codeControl = this.form.get('code');
+        if (codeControl?.invalid) {
+          codeControl.markAsTouched();
+        }
+      }
+    }
+  }
+
   ngOnInit() {
     this.subscribeToValueChanges();
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
@@ -164,7 +153,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
     this.form.reset(
       owner || {
-        customerId: this.customerId,
+        customerId: this.customerId(),
         code: null,
         name: null,
         companyName: null,

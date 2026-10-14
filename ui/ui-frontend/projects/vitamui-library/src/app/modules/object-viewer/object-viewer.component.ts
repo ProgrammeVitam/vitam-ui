@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import { Logger } from '../logger/logger';
 import { DisplayObjectService } from './models/display-object-service';
 import { DisplayRule } from './models/display-rule.model';
@@ -55,16 +55,16 @@ export class ObjectViewerComponent implements OnInit, OnChanges {
   private readonly logger = inject(Logger);
   displayObjectService = inject(DisplayObjectService);
 
-  @Input() data!: any;
-  @Input() template!: DisplayRule[];
-  @Input() mode: Mode | AUMode = Mode.TEMPLATE_DRIVEN;
+  readonly data = input<any>(undefined);
+  readonly template = input<DisplayRule[]>(undefined);
+  readonly mode = input<Mode | AUMode>(Mode.TEMPLATE_DRIVEN);
 
   ngOnInit(): void {
-    this.displayObjectService.setMode(this.mode);
-    if (!this.data) {
+    this.displayObjectService.setMode(this.mode());
+    if (!this.data()) {
       this.logger.warn(this, 'No data provided at init');
     }
-    if (!this.template) {
+    if (!this.template()) {
       this.logger.warn(this, 'No template provided at init');
     }
   }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, OnInit, inject, input, model, output } from '@angular/core';
 import { DataGeneriquePopupService } from '../data-generique-popup.service';
 import { PastisPopupSelectionService } from './pastis-popup-selection.service';
 import { CommonModule } from '@angular/common';
@@ -51,40 +51,39 @@ export class PastisGenericPopupComponent implements OnInit {
 
   donnees: string[];
 
-  @Input()
-  firstChoice: string;
-  @Input()
-  secondChoice: string;
-  @Input()
-  title: string;
+  readonly firstChoice = model<string>(undefined);
+  readonly secondChoice = model<string>(undefined);
+  readonly title = model<string>(undefined);
 
-  @Input()
-  secondPopup: boolean;
+  readonly secondPopup = input<boolean>(undefined);
 
-  @Output() changeStatusEvent: EventEmitter<string> = new EventEmitter<string>();
+  readonly changeStatusEvent = output<string>();
 
   status: boolean;
 
   ngOnInit(): void {
     this.dataGeneriquePopupService.currentDonnee.subscribe((donnees) => (this.donnees = donnees));
-    if (this.firstChoice == null && this.firstChoice === '') {
-      this.firstChoice = this.donnees[0];
+    const firstChoice = this.firstChoice();
+    if (firstChoice == null && firstChoice === '') {
+      this.firstChoice.set(this.donnees[0]);
     }
-    if (typeof this.firstChoice === 'undefined' && this.firstChoice == null) {
-      this.firstChoice = this.donnees[0];
+    if (firstChoice === undefined) {
+      this.firstChoice.set(this.donnees[0]);
     }
-    if (typeof this.secondChoice === 'undefined' && this.secondChoice == null) {
-      this.secondChoice = this.donnees[1];
+    const secondChoice = this.secondChoice();
+    if (secondChoice === undefined) {
+      this.secondChoice.set(this.donnees[1]);
     }
-    if (typeof this.title === 'undefined' && this.title == null) {
-      this.title = this.donnees[2];
+    const title = this.title();
+    if (title === undefined) {
+      this.title.set(this.donnees[2]);
     }
     this.status = true;
-    this.pastisPopupSelectionService.value = this.firstChoice;
+    this.pastisPopupSelectionService.value = this.firstChoice();
   }
 
   changeStatus(value: string): void {
-    if ((this.status && value !== this.firstChoice) || (!this.status && value !== this.secondChoice)) {
+    if ((this.status && value !== this.firstChoice()) || (!this.status && value !== this.secondChoice())) {
       this.status = !this.status;
       this.pastisPopupSelectionService.value = value;
     }

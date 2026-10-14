@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY, of, Subject } from 'rxjs';
@@ -79,8 +79,7 @@ let page: Page;
   imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class GroupListStubComponent {
-  @Input()
-  searchText: string;
+  readonly searchText = input<string>(undefined);
 
   search() {}
 }
@@ -91,10 +90,8 @@ class GroupListStubComponent {
   imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class GroupPreviewStubComponent {
-  @Input()
-  isPopup: boolean;
-  @Input()
-  group: Group;
+  readonly isPopup = input<boolean>(undefined);
+  readonly group = input<Group>(undefined);
 }
 
 describe('GroupComponent', () => {

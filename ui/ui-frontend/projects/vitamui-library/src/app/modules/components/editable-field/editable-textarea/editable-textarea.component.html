@@ -1,12 +1,12 @@
-@if (!disabled) {
+@if (!disabled()) {
   <div class="editable-field-wrapper">
     <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
       <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
         <div class="editable-field-content">
-          <label>{{ label }}</label>
+          <label>{{ label() }}</label>
           <span class="editable-field-text-content display-all">{{ control?.value }}</span>
           <div class="editable-field-control">
-            <textarea [formControl]="control" [maxlength]="maxlength" [required]="required" rows="3" #input></textarea>
+            <textarea [formControl]="control" [maxlength]="maxlength()" [required]="required()" rows="3" #input></textarea>
           </div>
         </div>
         @if (!showSpinner && !editMode) {
@@ -38,9 +38,9 @@
   </div>
 }
 
-@if (disabled) {
+@if (disabled()) {
   <div class="read-only-field">
-    <label>{{ label }}</label>
+    <label>{{ label() }}</label>
     <div>{{ control?.value }}</div>
   </div>
 }

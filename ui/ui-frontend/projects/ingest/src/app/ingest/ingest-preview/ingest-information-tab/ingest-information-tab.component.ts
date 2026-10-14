@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { Component, OnChanges, inject, input } from '@angular/core';
 import { ApplicationId, ApplicationService, DataComponent, IngestStatus, PipesModule } from 'vitamui-library';
 import type {
   AgIdExtDeflateJson,
@@ -60,7 +60,7 @@ export class IngestInformationTabComponent implements OnChanges {
   private readonly applicationService = inject(ApplicationService);
   private ingestReferentialService = inject(IngestReferentialService);
 
-  @Input() ingest: LogbookOperation;
+  readonly ingest = input<LogbookOperation>(undefined);
   evDetDataDeflated: EvDetDataDeflateJson;
   agIdExtDeflated: AgIdExtDeflateJson;
 
@@ -73,8 +73,8 @@ export class IngestInformationTabComponent implements OnChanges {
   constructor() {}
 
   ngOnChanges() {
-    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest);
-    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest);
+    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest());
+    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest());
     const params = {
       originatingAgency: this.agIdExtDeflated?.originatingAgency,
       submissionAgency: this.agIdExtDeflated?.submissionAgency,
@@ -90,11 +90,12 @@ export class IngestInformationTabComponent implements OnChanges {
   }
 
   hasEvent(): boolean {
-    return ingestHasEvents(this.ingest);
+    return ingestHasEvents(this.ingest());
   }
 
   ingestMessage(): string {
-    return ingestHasEvents(this.ingest) ? ingestLastEvent(this.ingest).outMessg : this.ingest.outMessg;
+    const ingest = this.ingest();
+    return ingestHasEvents(ingest) ? ingestLastEvent(ingest).outMessg : ingest.outMessg;
   }
 
   ingestEndDate(ingest: LogbookOperation): string {
@@ -102,7 +103,7 @@ export class IngestInformationTabComponent implements OnChanges {
   }
 
   getIngestStatusClass(): string {
-    switch (ingestStatus(this.ingest)) {
+    switch (ingestStatus(this.ingest())) {
       case IngestStatus.OK:
         return 'success';
       case IngestStatus.WARNING:
@@ -143,7 +144,7 @@ export class IngestInformationTabComponent implements OnChanges {
 
   getOpiUrl$(): Observable<string> {
     return this.applicationService.getUrl$({ appId: ApplicationId.ARCHIVE_SEARCH_APP }).pipe(
-      map((appUrl) => `${appUrl}?guidopi=${this.ingest.id}`),
+      map((appUrl) => `${appUrl}?guidopi=${this.ingest().id}`),
       catchError(() => of('/')),
     );
   }

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import type { Node } from '../../models/node.interface';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -50,11 +50,11 @@ import { FormsModule } from '@angular/forms';
   imports: [MatIconButton, MatCheckbox, FormsModule],
 })
 export class NodeComponent {
-  @Input() tenantIdentifier: number;
-  @Input() node: Node;
-  @Input() expanded: boolean;
-  @Input({ transform: coerceBooleanProperty }) disabled: boolean;
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly node = input<Node>(undefined);
+  readonly expanded = input<boolean>(undefined);
+  readonly disabled = input<boolean, any>(undefined, { transform: coerceBooleanProperty });
 
-  @Output() nodeToggle = new EventEmitter<void>();
-  @Output() labelClick = new EventEmitter<void>();
+  readonly nodeToggle = output<void>();
+  readonly labelClick = output<void>();
 }

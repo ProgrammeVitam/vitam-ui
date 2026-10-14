@@ -39,12 +39,12 @@ import {
   ElementRef,
   forwardRef,
   inject,
-  Input,
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewChild,
   ChangeDetectorRef,
+  input,
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { shareReplay } from 'rxjs/operators';
@@ -87,10 +87,10 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
 
   public loading = true;
 
-  @Input() showLevel = false;
-  @Input() tenantIdentifier: number;
-  @Input() applicationNameExclude: string[];
-  @Input() level: string;
+  readonly showLevel = input(false);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly applicationNameExclude = input<string[]>(undefined);
+  readonly level = input<string>(undefined);
 
   appSelect = new FormControl(null, [Validators.required]);
   tenantSelect = new FormControl(null, [Validators.required]);
@@ -100,9 +100,9 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   filteredTenants: OptionTree[] = [];
   filteredProfiles: Option[] = [];
 
-  @ViewChild('tenantInput', { static: false }) tenantInput: SelectComponent;
-  @ViewChild('profileInput', { static: false }) profileInput: SelectComponent;
-  @ViewChild('addButton', { static: false }) addButton: ElementRef;
+  readonly tenantInput = viewChild<SelectComponent>('tenantInput');
+  readonly profileInput = viewChild<SelectComponent>('profileInput');
+  readonly addButton = viewChild<ElementRef>('addButton');
 
   private applicationsDetails$ = this.appApiService.listNames().pipe(shareReplay(1));
 
@@ -118,8 +118,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
         this.tenantSelect.setValue(this.filteredTenants[0].key);
       } else {
         this.tenantSelect.setValue(null);
-        if (!this.tenantIdentifier) {
-          setTimeout(() => this.tenantInput?.focus(), 0);
+        if (!this.tenantIdentifier()) {
+          setTimeout(() => this.tenantInput()?.focus(), 0);
         }
       }
       this.toggleSelects();
@@ -133,9 +133,9 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
       }
       this.toggleSelects();
       if (this.filteredProfiles.length === 1) {
-        setTimeout(() => this.addButton.nativeElement.focus(), 0);
+        setTimeout(() => this.addButton().nativeElement.focus(), 0);
       } else {
-        setTimeout(() => this.profileInput?.focus(), 0);
+        setTimeout(() => this.profileInput()?.focus(), 0);
       }
     });
   }
@@ -145,7 +145,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   private getProfiles() {
-    const rngProfiles$ = this.rngProfileService.list(this.level, this.tenantIdentifier, this.applicationNameExclude);
+    const rngProfiles$ = this.rngProfileService.list(this.level(), this.tenantIdentifier(), this.applicationNameExclude());
 
     zip(this.applicationsDetails$, rngProfiles$).subscribe(([applicationsDetails, profiles]) => {
       this.profiles = profiles;
@@ -284,7 +284,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
 
   private getProfileLabel(profile: Profile): string {
     let label = profile.name;
-    if (this.showLevel && profile.level) {
+    if (this.showLevel() && profile.level) {
       label = label.concat(' Niveau '.concat(profile.level));
     }
 

@@ -72,7 +72,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, map, Subscription, switchMap } from 'rxjs';
@@ -117,10 +117,9 @@ export class MainComponent implements OnInit, OnDestroy {
   private readonly spinnerOverlayService = inject(SpinnerOverlayService);
   private readonly router = inject(Router);
 
-  @ViewChild('treeSelector', { static: true }) tree: any;
-  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @ViewChild(EditProfileComponent)
-  editProfileComponent: EditProfileComponent;
+  readonly tree = viewChild<any>('treeSelector');
+  readonly autosize = viewChild<CdkTextareaAutosize>('autosize');
+  readonly editProfileComponent = viewChild(EditProfileComponent);
 
   opened = toSignal(this.sideNavService.isOpened, { initialValue: true });
   pending = toSignal(this.sideNavService.isPending, { initialValue: false });
@@ -178,25 +177,25 @@ export class MainComponent implements OnInit, OnDestroy {
 
   insertionItem($event: FileNodeInsertParams) {
     const names: string[] = $event.elementsToAdd.map((e) => e.name);
-    this.editProfileComponent.fileTreeComponent.insertItem($event.node, names);
+    this.editProfileComponent().fileTreeComponent().insertItem($event.node, names);
     console.log('Params : ', $event);
   }
 
   addNode($event: FileNode) {
-    this.editProfileComponent.fileTreeComponent.add($event);
+    this.editProfileComponent().fileTreeComponent().add($event);
   }
 
   insertAttribute($event: FileNodeInsertAttributeParams) {
     console.log('Params in attributes : ', $event);
-    this.editProfileComponent.fileTreeComponent.insertAttributes($event.node, $event.elementsToAdd);
+    this.editProfileComponent().fileTreeComponent().insertAttributes($event.node, $event.elementsToAdd);
   }
 
   removeNode($event: FileNode) {
-    this.editProfileComponent.fileTreeComponent.remove($event);
+    this.editProfileComponent().fileTreeComponent().remove($event);
   }
 
   duplicateNode($event: FileNode) {
-    this.editProfileComponent.fileTreeComponent.duplicate($event);
+    this.editProfileComponent().fileTreeComponent().duplicate($event);
   }
 
   ngOnDestroy(): void {

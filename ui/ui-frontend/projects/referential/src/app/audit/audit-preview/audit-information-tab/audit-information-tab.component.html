@@ -1,29 +1,29 @@
 <div class="gap-2 align-items-stretch">
   <vitamui-common-data
     [label]="'AUDIT.TAB.INFORMATIONS.AUDIT_TYPE' | translate"
-    [value]="'AUDIT.AUDIT_TYPES.' + (audit?.parsedData?.['type'] || audit?.type) | translate"
+    [value]="'AUDIT.AUDIT_TYPES.' + (audit()?.parsedData?.['type'] || audit()?.type) | translate"
   />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate" [value]="audit?.agIdExt" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate" [value]="audit()?.agIdExt" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate" [value]="associatedContract(audit)" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate" [value]="associatedContract(audit())" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate" [value]="audit?.agIdApp" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate" [value]="audit()?.agIdApp" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate" [value]="audit?.idRequest" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate" [value]="audit()?.idRequest" />
 
   <vitamui-common-data
     [label]="'AUDIT.TAB.INFORMATIONS.ASSIGMENT_DATE' | translate"
-    [value]="audit?.dateTime | dateTime: 'dd/MM/yyyy HH:mm:ss'"
+    [value]="audit()?.dateTime | dateTime: 'dd/MM/yyyy HH:mm:ss'"
   />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.OPERATION_IDENTIFIER' | translate" [value]="audit?.idRequest" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.OPERATION_IDENTIFIER' | translate" [value]="audit()?.idRequest" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.OBJECT_IDENTIFIER' | translate" [value]="audit?.objectId" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.OBJECT_IDENTIFIER' | translate" [value]="audit()?.objectId" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.REPORT' | translate" [value]="auditReport(audit)" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.REPORT' | translate" [value]="auditReport(audit())" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.ADDITIONAL_OPERATION_INFORMATIONS' | translate" [value]="audit?.data" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.ADDITIONAL_OPERATION_INFORMATIONS' | translate" [value]="audit()?.data" />
 
-  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.MESSAGE' | translate" [value]="auditMessage(audit)" />
+  <vitamui-common-data [label]="'AUDIT.TAB.INFORMATIONS.MESSAGE' | translate" [value]="auditMessage(audit())" />
 </div>

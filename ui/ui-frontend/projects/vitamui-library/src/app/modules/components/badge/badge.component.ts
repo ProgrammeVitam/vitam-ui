@@ -34,20 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-badge',
   templateUrl: './badge.component.html',
   styleUrl: './badge.component.scss',
   imports: [],
+  host: {
+    '[class]': 'color()',
+  },
 })
 export class BadgeComponent {
-  @Input() text = '';
+  readonly text = input('');
 
-  @HostBinding('class')
-  @Input()
-  color: 'secondary' | 'orange' | 'red' = 'secondary';
-  @Input() decoration: 'default' | 'bordered' | 'filled' = 'default';
-  @Input() letter = '';
+  readonly color = input<'secondary' | 'orange' | 'red'>('secondary');
+  readonly decoration = input<'default' | 'bordered' | 'filled'>('default');
+  readonly letter = input('');
 }

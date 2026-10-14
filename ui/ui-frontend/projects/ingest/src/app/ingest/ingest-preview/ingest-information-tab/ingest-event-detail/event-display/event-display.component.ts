@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, input } from '@angular/core';
 import { Event } from '../../../event';
 import { EventTypeLabelComponent } from 'vitamui-library';
 import { NgClass } from '@angular/common';
@@ -46,7 +46,7 @@ import { NgClass } from '@angular/common';
   imports: [EventTypeLabelComponent, NgClass, forwardRef(() => EventDisplayComponent)],
 })
 export class EventDisplayComponent implements OnInit {
-  @Input() event: Event;
+  readonly event = input<Event>(undefined);
 
   public ingestEventRowStyle = '';
   public showEvDetData = false;
@@ -58,8 +58,9 @@ export class EventDisplayComponent implements OnInit {
   }
 
   init() {
-    if (this.event.eventData && this.event.eventData.evType.toUpperCase().indexOf('.STARTED') === -1) {
-      this.setStepColorClass(this.event.eventData.outcome);
+    const event = this.event();
+    if (event.eventData?.evType.toUpperCase().includes('.STARTED') === false) {
+      this.setStepColorClass(event.eventData.outcome);
     }
   }
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -96,11 +96,11 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() eventId: string;
-  @Input() tenantIdentifier: number;
-  @Input() isPopup: boolean;
+  readonly eventId = input<string>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly isPopup = input<boolean>(undefined);
 
-  @Output() closePanel = new EventEmitter();
+  readonly closePanel = output();
 
   public event = signal<IEvent>(null);
   private accessContractId: string;
@@ -142,7 +142,8 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   }
 
   private doesNotHaveTenant(): boolean {
-    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId;
+    const tenantIdentifier = this.tenantIdentifier();
+    return tenantIdentifier === null || tenantIdentifier === undefined || !this.eventId();
   }
 
   public downloadReports() {
@@ -184,7 +185,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
     if (this.accessContractLogbookIdentifier || this.doesNotHaveTenant()) {
       return;
     }
-    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
+    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier());
     if (!tenant) {
       return;
     }
@@ -196,11 +197,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
       return;
     }
     this.setAccessContractLogbookIdentifier();
-    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
-      // Assign directly instead of emitting through the Subject
-      // This prevents the detail panel from receiving truncated operations from the list
-      this.setEvent(event);
-    });
+    this.logbookService
+      .getOperationById(this.eventId(), this.tenantIdentifier(), this.accessContractLogbookIdentifier)
+      .subscribe((event) => {
+        // Assign directly instead of emitting through the Subject
+        // This prevents the detail panel from receiving truncated operations from the list
+        this.setEvent(event);
+      });
   }
 
   public hasATRDownloadable(): boolean {

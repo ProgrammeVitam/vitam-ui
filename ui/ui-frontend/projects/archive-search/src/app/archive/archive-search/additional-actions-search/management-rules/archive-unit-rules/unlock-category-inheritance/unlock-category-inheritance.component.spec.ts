@@ -263,7 +263,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
 
   it('should call getManagementRules of ManagementRulesSharedDataService', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleTypeDUA = ruleCategoryAction;
     vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 
@@ -276,7 +276,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
 
   it('should the stepValid parameter be true after an unlock of category inheritance', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
     component.criteriaSearchDSLQuery = searchCriteriaDto;
 
@@ -297,7 +297,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
 
   it('should the criteria Search DSL Query have 3 elements for the update operation', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
     component.criteriaSearchDSLQuery = searchCriteriaDto;
 
@@ -311,13 +311,13 @@ describe('UnlockCategoryInheritanceComponent', () => {
 
   it('should not call the standard search service when the exactAccount parameter is true', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
     component.criteriaSearchDSLQuery = searchCriteriaDto;
     vi.spyOn(archiveServiceMock, 'searchArchiveUnitsByCriteria');
 
     // When
-    component.hasExactCount = true;
+    fixture.componentRef.setInput('hasExactCount', true);
     component.addControlQuery();
 
     // Then
@@ -328,7 +328,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
 
   it('should call getManagementRules of ManagementRulesSharedDataService', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleTypeDUA = ruleCategoryAction;
     vi.spyOn(managementRulesSharedDataServiceMock, 'getManagementRules');
 

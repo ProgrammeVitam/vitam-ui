@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input, output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -67,17 +67,17 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   private readonly destroy = new Subject<void>();
   public graphicIdentityForm: FormGroup;
 
-  @Input()
-  public customer?: Customer;
+  public readonly customer = input<Customer>(undefined);
 
-  @Input()
-  public customerLogosUrl?: LogosSafeResourceUrl;
+  public readonly customerLogosUrl = input<LogosSafeResourceUrl>(undefined);
 
   public defaultForm: FormGroup;
   public customerForm: FormGroup;
 
-  @Output()
-  public formToSend = new EventEmitter<{ form: FormGroup; logos: Logo[] }>();
+  public readonly formToSend = output<{
+    form: FormGroup;
+    logos: Logo[];
+  }>();
 
   private customerTheme: Theme = {
     colors: null,
@@ -110,20 +110,24 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
       portalUrl: '',
     });
 
+    const customer = this.customer();
+    const customerLogosUrl = this.customerLogosUrl();
+    const customerLogosUrlValue = this.customerLogosUrl();
+    const customerLogosUrlVal = this.customerLogosUrl();
     this.customerTheme = {
-      colors:
-        this.customer && this.customer.themeColors ? this.themeService.getThemeColors(this.customer.themeColors) : this.defaultTheme.colors,
-      headerUrl: this.customerLogosUrl ? this.customerLogosUrl.headerUrl : this.defaultTheme.headerUrl,
-      footerUrl: this.customerLogosUrl ? this.customerLogosUrl.footerUrl : this.defaultTheme.footerUrl,
-      portalUrl: this.customerLogosUrl ? this.customerLogosUrl.portalUrl : this.defaultTheme.portalUrl,
+      colors: customer?.themeColors ? this.themeService.getThemeColors(customer.themeColors) : this.defaultTheme.colors,
+      headerUrl: customerLogosUrl ? customerLogosUrl.headerUrl : this.defaultTheme.headerUrl,
+      footerUrl: customerLogosUrlValue ? customerLogosUrlValue.footerUrl : this.defaultTheme.footerUrl,
+      portalUrl: customerLogosUrlVal ? customerLogosUrlVal.portalUrl : this.defaultTheme.portalUrl,
     };
 
-    if (this.customer) {
-      if (this.customer.id) {
-        this.graphicIdentityForm.get('id').setValue(this.customer.id);
+    const customerValue = this.customer();
+    if (customerValue) {
+      if (customerValue.id) {
+        this.graphicIdentityForm.get('id').setValue(customerValue.id);
       }
 
-      if (this.customer.hasCustomGraphicIdentity) {
+      if (customerValue.hasCustomGraphicIdentity) {
         this.displayCustomGraphicIdentity.patchValue(true);
       }
     }

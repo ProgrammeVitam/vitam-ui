@@ -220,7 +220,7 @@ describe('UpdateUnitRulesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UpdateUnitRulesComponent);
     component = fixture.componentInstance;
-    component.rulesList = new Observable<Rule[]>();
+    fixture.componentRef.setInput('rulesList', new Observable<Rule[]>());
     fixture.detectChanges();
   });
 

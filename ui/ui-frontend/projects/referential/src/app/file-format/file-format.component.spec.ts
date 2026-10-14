@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -50,8 +50,7 @@ import { of } from 'rxjs';
   imports: [VitamUICommonTestModule, InjectorModule, MatSidenavModule, MatDialogModule],
 })
 class AgencyPreviewStub {
-  @Input()
-  accessContract: any;
+  readonly accessContract = input<any>(undefined);
 }
 
 @Component({

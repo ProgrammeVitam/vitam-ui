@@ -1,9 +1,9 @@
 <vitamui-common-sidenav-header
-  [title]="probativeValue?.id | truncate: 30"
+  [title]="probativeValue()?.id | truncate: 30"
   (onclose)="closePanel()"
-  [badge]="probativeValue | eventTypeBadgeColor"
+  [badge]="probativeValue() | eventTypeBadgeColor"
   [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="probativeValue?.id"
+  [toolTipTitleText]="probativeValue()?.id"
   [toolTipTitleDuration]="300"
   [actionsBelowTitle]="true"
 >

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
@@ -51,51 +51,30 @@ import { AgencyCreateValidators } from '../../agency-create/agency-create.valida
   styleUrls: ['./agency-information-tab.component.scss'],
   imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe],
 })
-export class AgencyInformationTabComponent {
+export class AgencyInformationTabComponent implements OnChanges {
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
   private readonly agencyService = inject(AgencyService);
   private readonly securityService = inject(SecurityService);
   private readonly agencyCreateValidators = inject(AgencyCreateValidators);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   tenantIdentifier: number;
   isLoading = signal(false);
   checkUpdateRole = new Observable<boolean>();
 
-  private _agency: Agency;
-
   form: FormGroup;
   previousValue = (): any => {
     return (Object.keys(this.form.controls || {}) as (keyof Agency)[]).reduce((acc: any, key) => {
-      acc[key] = this._agency[key];
+      acc[key] = this.agency()[key];
       return acc;
     }, {} as Partial<Agency>);
   };
 
-  @Input()
-  set agency(agency: Agency) {
-    if (!agency.description) {
-      agency.description = '';
-    }
-    this._agency = agency;
-    this.resetForm(this.agency);
-    this.updated.emit(false);
-  }
+  readonly agency = model<Agency>(undefined);
 
-  get agency(): Agency {
-    return this._agency;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     const agencyCreateValidators = this.agencyCreateValidators;
@@ -110,6 +89,20 @@ export class AgencyInformationTabComponent {
     });
 
     this.checkUpdateRole = this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, this.tenantIdentifier);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['agency']) {
+      this.setAgency(this.agency());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+      }
+    }
   }
 
   unchanged(): boolean {
@@ -132,7 +125,7 @@ export class AgencyInformationTabComponent {
 
   copyProperties(formData: { [key: string]: any }): Agency {
     return {
-      ...this.agency,
+      ...this.agency(),
       ...formData,
     };
   }
@@ -144,15 +137,24 @@ export class AgencyInformationTabComponent {
     }
     this.prepareSubmit()
       .pipe(
-        switchMap(() => this.agencyService.get(this._agency.identifier)),
+        switchMap(() => this.agencyService.get(this.agency().identifier)),
         finalize(() => this.isLoading.set(false)),
       )
       .subscribe({
         next: (agency) => {
-          this.agency = agency;
+          this.setAgency(agency);
         },
         error: (e) => console.error(e),
       });
+  }
+
+  private setAgency(agency: Agency) {
+    if (!agency.description) {
+      agency.description = '';
+    }
+    this.agency.set(agency);
+    this.resetForm(this.agency());
+    this.updated.emit(false);
   }
 
   resetForm(agency: Agency) {

@@ -85,7 +85,7 @@ describe('LogbookManagementOperationComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookManagementOperationComponent);
     component = fixture.componentInstance;
-    component.logbookManagementOperationListComponent = { searchOperationsList: vi.fn() } as any;
+    vi.spyOn(component, 'logbookManagementOperationListComponent').mockReturnValue({ searchOperationsList: vi.fn() } as any);
     fixture.detectChanges();
   });
 

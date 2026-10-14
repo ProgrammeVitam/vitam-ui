@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -109,11 +109,11 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   protected sharedDataService = inject<ManagementRuleSharedDataService>(MANAGEMENT_RULE_SHARED_DATA_SERVICE);
   protected managementRuleCriteriaService = inject(ManagementRuleCriteriaService);
 
-  @Input() type: ManagementRuleType;
-  @Input() updateOn: Observable<SearchCriteriaRemoveAction>;
-  @Input() hasWaitingToRecalculateCriteria: boolean;
-  @Input() tenantIdentifier: number;
-  @Input() rules: Observable<Rule[]>;
+  readonly type = input<ManagementRuleType>(undefined);
+  readonly updateOn = input<Observable<SearchCriteriaRemoveAction>>(undefined);
+  readonly hasWaitingToRecalculateCriteria = input<boolean>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly rules = input<Observable<Rule[]>>(undefined);
 
   MANAGEMENT_RULE_SEARCH_CONFIG: Record<ManagementRuleType, ManagementRuleSearchConfig>;
   config: ManagementRuleSearchConfig;
@@ -139,9 +139,9 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.config = this.MANAGEMENT_RULE_SEARCH_CONFIG[this.type];
+    this.config = this.MANAGEMENT_RULE_SEARCH_CONFIG[this.type()];
     if (!this.config) {
-      throw new Error(`Configuration not found for ManagementRuleType: ${this.type}`);
+      throw new Error(`Configuration not found for ManagementRuleType: ${this.type()}`);
     }
     this.ruleType = this.config.ruleType;
     this.searchCriteriaType = this.config.searchCriteriaType;
@@ -156,7 +156,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
     this.initAdditionalCriteria();
     this.previousCriteriaValue = ManagementRuleFormUtils.initializePreviousCriteriaValue(
       this.checkboxConfig,
-      this.hasWaitingToRecalculateCriteria,
+      this.hasWaitingToRecalculateCriteria(),
     );
     this.criteriaForm = this.initForm();
     this.initSubscriptions();
@@ -167,7 +167,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
       this.additionalCriteria,
       this.destroyed$,
       () => {
-        if (this.hasWaitingToRecalculateCriteria) {
+        if (this.hasWaitingToRecalculateCriteria()) {
           this.additionalCriteria.set(ORIGIN_WAITING_RECALCULATE, true);
         }
         this.setDefaultCriteria();
@@ -182,7 +182,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
       ruleEndDate: this.formBuilder.control<string | null>(null),
     };
 
-    if (this.type === ManagementRuleType.APPRAISAL) {
+    if (this.type() === ManagementRuleType.APPRAISAL) {
       controls.ruleEliminationIdentifier = this.formBuilder.control<string | null>(null);
     }
 
@@ -204,7 +204,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   protected getFromMainObservable(): Observable<SearchCriteriaRemoveAction> {
-    return this.updateOn;
+    return this.updateOn();
   }
 
   protected getRuleTypeForFilter(): string {
@@ -221,7 +221,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
     );
 
     if (Object.keys(consistentData).length > 0) {
-      if (this.type === ManagementRuleType.APPRAISAL && consistentData['ruleEliminationIdentifier']) {
+      if (this.type() === ManagementRuleType.APPRAISAL && consistentData['ruleEliminationIdentifier']) {
         this.managementRuleCriteriaService.addFromParams({
           [ELIMINATION_TECHNICAL_ID + this.config.ruleTypeSuffix]:
             formData.ruleEliminationIdentifier && formData.ruleEliminationIdentifier !== '' ? formData.ruleEliminationIdentifier : null,
@@ -325,7 +325,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   protected loadRules() {
-    this.rules
+    this.rules()
       .pipe(
         takeUntil(this.destroyed$),
         map((rules) => rules.filter((rule) => rule.ruleType === this.getRuleTypeForFilter())),

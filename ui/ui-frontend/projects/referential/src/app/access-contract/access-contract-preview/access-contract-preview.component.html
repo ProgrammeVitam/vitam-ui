@@ -1,6 +1,6 @@
 <vitamui-common-sidenav-header
-  [title]="accessContract.name"
-  [subtitle]="'(' + accessContract.identifier + ')'"
+  [title]="accessContract().name"
+  [subtitle]="'(' + accessContract().identifier + ')'"
   (onclose)="emitClose()"
 ></vitamui-common-sidenav-header>
 
@@ -9,29 +9,29 @@
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.INFORMATION.TITLE' | translate">
       <app-access-contract-information-tab
         #infoTab
-        [accessContract]="accessContract"
+        [accessContract]="accessContract()"
         (updatedAccessContract)="updatedAccessContract($event)"
       ></app-access-contract-information-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.USAGE.TITLE' | translate" #matTabUsage>
-      <app-access-contract-authorizations-tab #authorizationsTab [accessContract]="accessContract">
+      <app-access-contract-authorizations-tab #authorizationsTab [accessContract]="accessContract()">
       </app-access-contract-authorizations-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.WRITE_RIGHTS.TITLE' | translate">
-      <app-access-contract-write-access-tab #writeTab [accessContract]="accessContract"> </app-access-contract-write-access-tab>
+      <app-access-contract-write-access-tab #writeTab [accessContract]="accessContract()"> </app-access-contract-write-access-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.POSITIONS.TITLE' | translate">
-      <app-access-contract-nodes-tab [accessContract]="accessContract" [tenantIdentifier]="tenantIdentifier">
+      <app-access-contract-nodes-tab [accessContract]="accessContract()" [tenantIdentifier]="tenantIdentifier()">
       </app-access-contract-nodes-tab>
     </mat-tab>
 
     <mat-tab [label]="'ACCESS_CONTRACT.TAB.HISTORY.TITLE' | translate">
       <vitamui-common-operation-history-tab
-        [id]="accessContract?.id"
-        [identifier]="accessContract?.identifier"
+        [id]="accessContract()?.id"
+        [identifier]="accessContract()?.identifier"
         collectionName="accesscontracts"
         [filteringByIdentifier]="false"
       />

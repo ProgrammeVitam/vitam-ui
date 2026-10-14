@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input, model, output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Subscription } from 'rxjs';
@@ -74,12 +74,12 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private readonly archiveService = inject(ArchiveCollectService);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
-  @Input() transactionId: string;
-  @Input() searchHasMatches = false;
-  @Input() searchRequestTotalResults: number;
+  readonly transactionId = input<string>(undefined);
+  readonly searchHasMatches = input(false);
+  readonly searchRequestTotalResults = model<number>(undefined);
 
-  @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
-  @Output() switchView: EventEmitter<void> = new EventEmitter();
+  readonly showArchiveUnitDetails = output<Unit>();
+  readonly switchView = output<void>();
 
   private subscriptions = new Subscription();
   nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode> = new NestedTreeControl<FilingHoldingSchemeNode>(
@@ -197,7 +197,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
       trackTotalHits: false,
       computeMgtRulesFacets: false,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId).subscribe((pagedResult: PagedResult) => {
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.transactionId()).subscribe((pagedResult: PagedResult) => {
       this.attachmentUnits = pagedResult.results;
       this.attachmentUnitsLoaded = true;
       this.setAttachmentNodes();
@@ -297,7 +297,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private subscribeOnTotalResultsChange(): void {
     this.subscriptions.add(
       this.archiveSharedDataService.getTotalResults().subscribe((resultCount) => {
-        this.searchRequestTotalResults = resultCount;
+        this.searchRequestTotalResults.set(resultCount);
       }),
     );
   }

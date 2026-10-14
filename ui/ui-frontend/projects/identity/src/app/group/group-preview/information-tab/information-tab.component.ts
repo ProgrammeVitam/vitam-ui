@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, SimpleChanges, input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { merge, of, Subscription } from 'rxjs';
@@ -111,9 +111,9 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
 
   private readonly updateSub: Subscription;
 
-  @Input() group: Group;
+  readonly group = input<Group>(undefined);
 
-  @Input() readOnly: boolean;
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -130,7 +130,7 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
         debounceTime(DEBOUNCE_TIME),
         map(() => diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.group.id }, formData)),
+        map((formData) => extend({ id: this.group().id }, formData)),
         switchMap((formData) => this.groupService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe(() => (this.previousValue = this.form.value));
@@ -138,8 +138,9 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('group') || changes.hasOwnProperty('readOnly')) {
-      if (this.group) {
-        this.resetForm(this.form, this.group, this.readOnly);
+      const group = this.group();
+      if (group) {
+        this.resetForm(this.form, group, this.readOnly());
         this.previousValue = this.form.value;
       }
     }
@@ -181,7 +182,7 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
   openEditUnitsDialog() {
     this.dialog.open(UnitsEditComponent, {
       data: {
-        group: this.group,
+        group: this.group(),
       },
       autoFocus: false,
       disableClose: true,

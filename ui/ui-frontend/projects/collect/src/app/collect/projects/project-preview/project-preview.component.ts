@@ -38,18 +38,18 @@ import {
   AfterViewInit,
   Component,
   computed,
-  EventEmitter,
   inject,
-  Input,
+  input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Output,
-  QueryList,
   Renderer2,
   signal,
+  SimpleChanges,
   TemplateRef,
-  ViewChild,
-  ViewChildren,
+  output,
+  viewChild,
+  viewChildren,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -121,7 +121,7 @@ import { AttachmentMode, LOCAL_ARCHIVING_SYSTEM_ID } from '../create-project/cre
     TranslatePipe,
   ],
 })
-export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProjectPreviewComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
   private readonly projectService = inject(ProjectsService);
   private readonly projectApiService = inject(ProjectsApiService);
@@ -136,12 +136,9 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   private readonly externalReferentialService = inject(ExternalReferentialService);
   private readonly tenantSelectionService = inject(TenantSelectionService);
 
-  @Output()
-  backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
-  @Output()
-  showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
+  readonly backToNormalLateralPanel = output<void>();
+  readonly previewClose = output<void>();
+  readonly showExtendedLateralPanel = output<void>();
 
   tenantId: number;
   checkEditDescriptionRole = new Observable<boolean>();
@@ -180,21 +177,13 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   getProjectIcon = getProjectIcon;
   getProjectWorkflow = getProjectWorkflow;
 
-  @ViewChild('tabs', { static: false }) tabGroup: MatTabGroup;
-  @ViewChildren(MatTab) tabs: QueryList<MatTab>;
-  @ViewChild('confirmEditProject', { static: true }) confirmEditProject: TemplateRef<ProjectPreviewComponent>;
-  @ViewChild('confirmEditAttachments', { static: true }) confirmEditAttachments: TemplateRef<ProjectPreviewComponent>;
-  @ViewChild('cancelDialog') cancelDialog: TemplateRef<ProjectPreviewComponent>;
+  readonly tabGroup = viewChild<MatTabGroup>('tabs');
+  readonly tabs = viewChildren(MatTab);
+  readonly confirmEditProject = viewChild<TemplateRef<ProjectPreviewComponent>>('confirmEditProject');
+  readonly confirmEditAttachments = viewChild<TemplateRef<ProjectPreviewComponent>>('confirmEditAttachments');
+  readonly cancelDialog = viewChild<TemplateRef<ProjectPreviewComponent>>('cancelDialog');
 
-  @Input()
-  get projectId(): string {
-    return this.projectId$.getValue();
-  }
-
-  set projectId(value: string) {
-    this.projectId$.next(value);
-    if (this.tabGroup) this.tabGroup.selectedIndex = 0;
-  }
+  readonly projectId = input<string>();
 
   private readonly projectId$ = new BehaviorSubject<string>(null);
   private tenantIdentifier: string;
@@ -218,6 +207,14 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
         this.tenantId = parseInt(params['tenantIdentifier']);
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['projectId']) {
+      this.projectId$.next(this.projectId());
+      const tabGroup = this.tabGroup();
+      if (tabGroup) tabGroup.selectedIndex = 0;
+    }
   }
 
   ngOnInit(): void {
@@ -249,7 +246,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit() {
-    this.tabGroup._handleClick = this.interceptTabChange.bind(this);
+    this.tabGroup()._handleClick = this.interceptTabChange.bind(this);
 
     // Listen for clicks on the #projectList div (outside the panel)
     const projectList = document.getElementById('projectList');
@@ -269,7 +266,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   private async interceptTabChange(_tab: MatTab, _tabHeader: MatTabHeader, idx: number) {
     if (!(this.isModified() && (await this.shouldCancelNavigation()))) {
       this.#editMode = false;
-      this.tabGroup.selectedIndex = idx;
+      this.tabGroup().selectedIndex = idx;
     }
   }
 
@@ -434,7 +431,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     } else {
       this.showNormalPanel();
       this.previewClose.emit();
-      this.tabGroup.selectedIndex = 0;
+      this.tabGroup().selectedIndex = 0;
       this.projectService.selectedProjectId$.next(null);
     }
   }
@@ -556,11 +553,11 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   showEdit(tab: MatTab) {
-    const tabIndex = this.tabs.toArray().indexOf(tab);
+    const tabIndex = this.tabs().indexOf(tab);
     if (tabIndex !== -1) {
       this.form.markAsPristine();
       this.#editMode = true;
-      this.tabGroup.selectedIndex = tabIndex;
+      this.tabGroup().selectedIndex = tabIndex;
       this.showExtendedPanel();
       this.initForm();
     }
@@ -608,11 +605,11 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   private getCurrentTab() {
-    return ['description', 'context', 'attachment', 'configuration'][this.tabGroup.selectedIndex];
+    return ['description', 'context', 'attachment', 'configuration'][this.tabGroup().selectedIndex];
   }
 
   private readonly launchUpdate = (): Promise<boolean> => {
-    const dialogToOpen = this.confirmEditProject;
+    const dialogToOpen = this.confirmEditProject();
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'id', Direction.ASCENDANT);
     this.projectApiService.getTransactionsByProjectId(pageRequest, this.projectId$.getValue()).subscribe((transactions) => {
       this.transactions$.next(transactions);
@@ -622,7 +619,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   };
 
   private readonly launchAttachmentsUpdate = (): Promise<boolean> => {
-    const dialogToOpen = this.confirmEditAttachments;
+    const dialogToOpen = this.confirmEditAttachments();
     this.dialogRefToClose = this.dialog.open(dialogToOpen);
     return lastValueFrom(this.dialogRefToClose.afterClosed());
   };
@@ -693,10 +690,10 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       const project = await lastValueFrom(updateProjectOperation$);
       this.dialogRefToClose.close(true);
       this.showNormalPanel();
-      if (this.projectId === project.id) {
+      if (this.projectId() === project.id) {
         this.project.set(project);
       } else {
-        this.projectId$.next(this.projectId);
+        this.projectId$.next(this.projectId());
       }
       this.projectService.nextUpdatedProject(project);
 
@@ -725,10 +722,10 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       }
     } catch (e) {
       console.error(e);
-      if (this.projectId === previousProject.id) {
+      if (this.projectId() === previousProject.id) {
         this.project.set(previousProject);
       } else {
-        this.projectId$.next(this.projectId);
+        this.projectId$.next(this.projectId());
       }
     } finally {
       this.showNormalPanel();
@@ -737,8 +734,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   private async onCancel() {
     this.showNormalPanel();
-    if (this.projectId !== this.project().id) {
-      this.projectId$.next(this.projectId);
+    if (this.projectId() !== this.project().id) {
+      this.projectId$.next(this.projectId());
     }
     this.dialogRefToClose?.close(true);
   }
@@ -749,7 +746,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
       return;
     }
 
-    const result = await firstValueFrom(this.dialog.open(this.cancelDialog, this.dialogConfig).afterClosed());
+    const result = await firstValueFrom(this.dialog.open(this.cancelDialog(), this.dialogConfig).afterClosed());
     if (result === true) {
       await this.update();
     } else if (result === false) {
@@ -801,7 +798,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   editMode(tab?: MatTab): boolean {
-    return this.#editMode && (!tab || this.tabs.toArray()[this.tabGroup.selectedIndex] === tab);
+    return this.#editMode && (!tab || this.tabs()[this.tabGroup().selectedIndex] === tab);
   }
 
   protected readonly LOCAL_ARCHIVING_SYSTEM_ID = LOCAL_ARCHIVING_SYSTEM_ID;

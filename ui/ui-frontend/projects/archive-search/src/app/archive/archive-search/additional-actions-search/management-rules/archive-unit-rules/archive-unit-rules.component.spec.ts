@@ -212,7 +212,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   it('should the step be valid after update confirmation', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -226,7 +226,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   it('should return only the defined actions on AccessRule category', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.ACCESSRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.ACCESSRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -242,7 +242,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   it('should return all the defined rule actions on AppraisalRule category', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -257,7 +257,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   it('the step should not be valid after cancelation of the update', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -271,7 +271,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   it('should return all the defined rule actions on AccessRule category', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.ACCESSRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.ACCESSRULE);
     component.ruleActions = ruleActions;
 
     // When
@@ -286,7 +286,7 @@ describe('ArchiveUnitRulesComponent', () => {
 
   it('should return only the defined actions on AppraisalRule category', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleActions = ruleActions;
 
     // When

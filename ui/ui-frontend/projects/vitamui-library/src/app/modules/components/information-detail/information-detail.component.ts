@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, OnChanges, input, model } from '@angular/core';
 import type { ValidationError } from '../../models/units/unit.interface';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -45,19 +45,19 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TranslatePipe],
 })
 export class InformationDetailComponent implements OnChanges {
-  @Input() error: ValidationError;
-  @Input() color: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'neutral' = 'danger';
-  @Input() hideEvDetData: boolean;
+  readonly error = input<ValidationError>(undefined);
+  readonly color = input<'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'neutral'>('danger');
+  readonly hideEvDetData = model<boolean>(undefined);
 
   ngOnChanges() {
-    this.hideEvDetData = true;
+    this.hideEvDetData.set(true);
   }
 
   toggleEvDetDataDisplay() {
-    this.hideEvDetData = !this.hideEvDetData;
+    this.hideEvDetData.set(!this.hideEvDetData());
   }
 
   getProperChevron() {
-    return this.hideEvDetData ? 'right' : 'down';
+    return this.hideEvDetData() ? 'right' : 'down';
   }
 }

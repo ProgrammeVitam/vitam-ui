@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, EventEmitter, Input } from '@angular/core';
+import { Directive, EventEmitter, input } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
 })
 export class CollapseDirective {
-  @Input() vitamuiCommonCollapse: any;
+  readonly vitamuiCommonCollapse = input<any>(undefined);
 
   expanded = new EventEmitter<any>();
   state: 'expanded' | 'collapsed' = 'collapsed';

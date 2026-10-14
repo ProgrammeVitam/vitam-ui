@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { Component, Input } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -55,9 +55,9 @@ import { ExternalParamProfileListComponent } from './external-param-profile-list
   template: '',
 })
 class ExternalParamProfileDetailStubComponent {
-  @Input() externalParamProfile: any;
-  @Input() readOnly: boolean;
-  @Input() tenantIdentifier: string;
+  readonly externalParamProfile = input<any>(undefined);
+  readonly readOnly = input<boolean>(undefined);
+  readonly tenantIdentifier = input<string>(undefined);
 }
 
 @Component({
@@ -65,7 +65,7 @@ class ExternalParamProfileDetailStubComponent {
   template: '',
 })
 class ExternalParamProfileListStubComponent {
-  @Input() searchText: string;
+  readonly searchText = input<string>(undefined);
 }
 
 describe('ExternalParamProfileComponent', () => {
