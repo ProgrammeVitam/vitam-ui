@@ -40,6 +40,7 @@ public class CasBeanOverridesTest {
             "defaultAccessTokenFactory",
             "defaultPrincipalResolver",
             "defaultTicketGrantingTicketFactory",
+            "defaultTransientSessionTicketFactory",
             "defaultWebflowConfigurer",
             "delegatedAuthenticationAction",
             "delegatedAuthenticationClientLogoutAction",
