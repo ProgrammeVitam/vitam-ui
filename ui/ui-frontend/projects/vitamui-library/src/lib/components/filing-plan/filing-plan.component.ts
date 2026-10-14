@@ -101,12 +101,16 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     this.nestedDataSource.data = nodes;
     this.nestedTreeControl.dataNodes = nodes;
     // Ensure that the selectedNodes are included in the nodes (needed when a value is not in the datasource anymore)
-    const nodeIds = nodes.map((node) => node.vitamId);
+    const nodeIds = this.getAllNodeIds(nodes);
     this.selectedNodes = {
       included: this.selectedNodes.included.filter((id) => nodeIds.includes(id)),
       excluded: this.selectedNodes.excluded.filter((id) => nodeIds.includes(id)),
     };
     this.initCheckedNodes(this.selectedNodes, nodes);
+  }
+
+  private getAllNodeIds(nodes: Node[]): string[] {
+    return nodes.flatMap((node) => [node.vitamId, ...this.getAllNodeIds(node.children)]);
   }
 
   hasNestedChild = (_: number, node: any) => node.children && node.children.length;
