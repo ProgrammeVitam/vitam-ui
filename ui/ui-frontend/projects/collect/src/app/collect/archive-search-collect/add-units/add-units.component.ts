@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, Observable, of, switchMap } from 'rxjs';
 import {
@@ -136,7 +136,7 @@ export class AddUnitsComponent implements OnInit {
   linkParentIdControl = new FormControl({ included: [], excluded: [] });
   projectUnits = signal<Unit[]>(undefined);
 
-  @ViewChild('confirmCancelDialog', { static: true }) confirmCancelDialogTemplate: TemplateRef<AddUnitsComponent>;
+  readonly confirmCancelDialogTemplate = viewChild<TemplateRef<AddUnitsComponent>>('confirmCancelDialog');
   private confirmCancelDialog: MatDialogRef<AddUnitsComponent>;
 
   ngOnInit() {
@@ -181,7 +181,7 @@ export class AddUnitsComponent implements OnInit {
 
   cancel() {
     if (this.filesToUploadControl.value.length > 0) {
-      this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate);
+      this.confirmCancelDialog = this.dialog.open(this.confirmCancelDialogTemplate());
     } else {
       this.addUnitsDialogRef.close(false);
     }

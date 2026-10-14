@@ -1,8 +1,8 @@
 <vitamui-common-sidenav-header
-  [title]="profile?.name"
-  [subtitle]="'(' + profile?.identifier + ')'"
+  [title]="profile()?.name"
+  [subtitle]="'(' + profile()?.identifier + ')'"
   [icon]="'vitamui-icon-admin-key'"
-  [badge]="profile?.enabled ? 'green' : 'grey'"
+  [badge]="profile()?.enabled ? 'green' : 'grey'"
   (onclose)="emitClose()"
 >
 </vitamui-common-sidenav-header>
@@ -10,12 +10,12 @@
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'HIERARCHY.TAB.INFORMATIONS' | translate">
-      <app-information-tab [profile]="profile" [readOnly]="isPopup || profile?.readonly || levelNotAllowed()"></app-information-tab>
+      <app-information-tab [profile]="profile()" [readOnly]="isPopup() || profile()?.readonly || levelNotAllowed()"></app-information-tab>
     </mat-tab>
     <mat-tab [label]="'HIERARCHY.TAB.HISTORY' | translate">
       <vitamui-common-operation-history-tab
-        [id]="profile?.id"
-        [identifier]="profile?.identifier"
+        [id]="profile()?.id"
+        [identifier]="profile()?.identifier"
         collectionName="profiles"
       ></vitamui-common-operation-history-tab>
     </mat-tab>

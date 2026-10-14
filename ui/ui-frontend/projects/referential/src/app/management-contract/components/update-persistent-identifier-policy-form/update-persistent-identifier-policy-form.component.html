@@ -1,4 +1,4 @@
-<div [formGroup]="form">
+<div [formGroup]="form()">
   @if (isExistingTypeOption()) {
     <vitamui-input
       formControlName="authority"
@@ -118,7 +118,7 @@
         </div>
       </div>
     </div>
-    @if (form.hasError('invalidPersistentIdentifierPolicyTarget')) {
+    @if (form().hasError('invalidPersistentIdentifierPolicyTarget')) {
       <div class="vitamui-input-errors">
         {{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.ERROR_MESSAGES.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET' | translate }}
       </div>

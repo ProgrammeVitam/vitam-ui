@@ -1,20 +1,21 @@
-@if (criteriaKey && criteriaVal) {
+@if (criteriaKey() && criteriaVal()) {
   <div id="chip">
     <ul class="vitamui-search-criteria-list">
       <li class="vitamui-search-criteria">
-        @if (criteriaVal.dataType === 'DATE') {
-          @for (criteriaValue of criteriaVal.values; track criteriaValue; let isFirst = $first; let isLast = $last) {
+        @if (criteriaVal().dataType === 'DATE') {
+          @for (criteriaValue of criteriaVal().values; track criteriaValue; let isFirst = $first; let isLast = $last) {
             <div
               class="button-content right-button"
               [vitamuiTooltip]="
                 criteriaValue.keyTranslated
-                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                  : criteriaVal.key +
+                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal().category) + '.' + criteriaVal().key
+                    | translate)
+                  : criteriaVal().key +
                     ' : ' +
-                    (criteriaVal.dataType === 'DATE'
+                    (criteriaVal().dataType === 'DATE'
                       ? (criteriaValue.value.value | dateTime: 'dd/MM/yyyy')
                       : criteriaValue.valueTranslated
-                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
+                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal().category) + '.' + criteriaValue.label
                           | translate)
                         : criteriaValue.label)
               "
@@ -26,8 +27,9 @@
               @if (isFirst) {
                 {{
                   (criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key) + ' : '
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal().category) + '.' + criteriaVal().key
+                      | translate)
+                    : criteriaVal().key) + ' : '
                 }}
               }
               {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' }}
@@ -62,14 +64,15 @@
             }
           }
         }
-        @if (criteriaVal.dataType === 'INTERVAL') {
-          @for (criteriaValue of criteriaVal.values; track criteriaValue; let isFirst = $first; let isLast = $last) {
+        @if (criteriaVal().dataType === 'INTERVAL') {
+          @for (criteriaValue of criteriaVal().values; track criteriaValue; let isFirst = $first; let isLast = $last) {
             <div
               class="button-content right-button"
               [vitamuiTooltip]="
                 criteriaValue.keyTranslated
-                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                  : criteriaVal.key
+                  ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal().category) + '.' + criteriaVal().key
+                    | translate)
+                  : criteriaVal().key
               "
               [vitamuiTooltipShowDelay]="300"
               [ngClass]="[
@@ -80,8 +83,9 @@
               @if (isFirst) {
                 {{
                   (criteriaValue.keyTranslated
-                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaVal.key | translate)
-                    : criteriaVal.key) + ' : '
+                    ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal().category) + '.' + criteriaVal().key
+                      | translate)
+                    : criteriaVal().key) + ' : '
                 }}
               }
               @if (criteriaValue.value.beginInterval && criteriaValue.value.endInterval) {
@@ -125,69 +129,69 @@
             }
           }
         }
-        @if (criteriaVal.dataType === 'STRING') {
-          @if (criteriaVal.key === 'GUID') {
-            @if (criteriaVal.values.length === 1) {
+        @if (criteriaVal().dataType === 'STRING') {
+          @if (criteriaVal().key === 'GUID') {
+            @if (criteriaVal().values.length === 1) {
               <div
                 class="button-content right-button"
                 [vitamuiTooltip]="
-                  (criteriaVal.operator === 'EQ'
+                  (criteriaVal().operator === 'EQ'
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
                   ' : ' +
-                  criteriaVal.values[0].value.value
+                  criteriaVal().values[0].value.value
                 "
                 [vitamuiTooltipShowDelay]="300"
                 [ngClass]="[
                   'left-not-arround',
-                  criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                  criteriaVal().values[criteriaVal().values.length - 1].status === 'INCLUDED'
                     ? 'after-search-launched-button'
                     : 'before-search-launched-button',
                 ]"
               >
                 {{
-                  (criteriaVal.operator === 'EQ'
+                  (criteriaVal().operator === 'EQ'
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_TO_EXCLUDE' | translate)) +
                     ' : ' +
-                    criteriaVal.values[criteriaVal.values.length - 1].value.value
+                    criteriaVal().values[criteriaVal().values.length - 1].value.value
                 }}
               </div>
             }
-            @if (criteriaVal.values.length > 1) {
+            @if (criteriaVal().values.length > 1) {
               <div
                 class="button-content right-button"
                 [vitamuiTooltip]="
-                  (criteriaVal.operator === 'EQ'
+                  (criteriaVal().operator === 'EQ'
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_EXCLUDE' | translate)) +
                   ' : ' +
-                  criteriaVal.values.length
+                  criteriaVal().values.length
                 "
                 [vitamuiTooltipShowDelay]="300"
                 [ngClass]="[
                   'left-not-arround',
-                  criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                  criteriaVal().values[criteriaVal().values.length - 1].status === 'INCLUDED'
                     ? 'after-search-launched-button'
                     : 'before-search-launched-button',
                 ]"
               >
                 {{
-                  (criteriaVal.operator === 'EQ'
+                  (criteriaVal().operator === 'EQ'
                     ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_INCLUDE' | translate)
                     : ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_TO_EXCLUDE' | translate)) +
                     ' : ' +
-                    criteriaVal.values.length
+                    criteriaVal().values.length
                 }}
               </div>
             }
-            @if (criteriaVal.values[criteriaVal.values.length - 1].status !== 'IN_PROGRESS') {
+            @if (criteriaVal().values[criteriaVal().values.length - 1].status !== 'IN_PROGRESS') {
               <div
                 class="vitamui-remove-search-criteria"
                 (click)="removeCriteriaAllValues()"
                 [ngClass]="[
                   'right-button',
-                  criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                  criteriaVal().values[criteriaVal().values.length - 1].status === 'INCLUDED'
                     ? 'after-search-launched-button'
                     : 'before-search-launched-button',
                 ]"
@@ -195,12 +199,12 @@
                 <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
               </div>
             }
-            @if (criteriaVal.values[criteriaVal.values.length - 1].status === 'IN_PROGRESS') {
+            @if (criteriaVal().values[criteriaVal().values.length - 1].status === 'IN_PROGRESS') {
               <div
                 class="vitamui-remove-search-criteria"
                 [ngClass]="[
                   'right-button',
-                  criteriaVal.values[criteriaVal.values.length - 1].status === 'INCLUDED'
+                  criteriaVal().values[criteriaVal().values.length - 1].status === 'INCLUDED'
                     ? 'after-search-launched-button'
                     : 'before-search-launched-button',
                 ]"
@@ -209,11 +213,11 @@
               </div>
             }
           }
-          @if (criteriaVal.key !== 'GUID') {
-            @for (criteriaValue of criteriaVal.values; track criteriaValue; let isFirst = $first; let isLast = $last) {
+          @if (criteriaVal().key !== 'GUID') {
+            @for (criteriaValue of criteriaVal().values; track criteriaValue; let isFirst = $first; let isLast = $last) {
               <div
                 class="button-content right-button"
-                [vitamuiTooltip]="getCriteriaKeyLabel(criteriaValue) + ' : ' + getCriteriaLabel(criteriaVal.key, criteriaValue)"
+                [vitamuiTooltip]="getCriteriaKeyLabel(criteriaValue) + ' : ' + getCriteriaLabel(criteriaVal().key, criteriaValue)"
                 [vitamuiTooltipShowDelay]="300"
                 [ngClass]="[
                   isFirst ? 'left-arround' : 'left-not-arround',
@@ -221,12 +225,12 @@
                 ]"
               >
                 @if (isFirst) {
-                  @if (criteriaKey === 'NODE') {
+                  @if (criteriaKey() === 'NODE') {
                     <i class="vitamui-icon vitamui-icon-radio-checked vitamui-row-icon"></i>
                   }
                   {{ getCriteriaKeyLabel(criteriaValue) + ' : ' }}
                 }
-                {{ getCriteriaLabel(criteriaVal.key, criteriaValue) | truncate: 50 }}
+                {{ getCriteriaLabel(criteriaVal().key, criteriaValue) | truncate: 50 }}
               </div>
               @if (criteriaValue.status !== 'IN_PROGRESS') {
                 <div

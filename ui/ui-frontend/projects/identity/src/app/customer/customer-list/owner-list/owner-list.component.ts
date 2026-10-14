@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, output, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -60,17 +60,10 @@ export class OwnerListComponent implements OnDestroy, OnInit {
   private readonly tenantService = inject(TenantService);
   private readonly customerDataService = inject(CustomerDataService);
 
-  @Input()
-  set customer(customer: Customer) {
-    this._customer = customer;
-  }
-  get customer(): Customer {
-    return this._customer;
-  }
-  private _customer: Customer = null;
+  readonly customer = input<Customer>(null);
 
-  @Output() ownerClick = new EventEmitter<Owner>();
-  @Output() tenantClick = new EventEmitter<any>();
+  readonly ownerClick = output<Owner>();
+  readonly tenantClick = output<any>();
 
   private updatedOwnerSub: Subscription;
   private updatedTenantSub: Subscription;
@@ -86,9 +79,9 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     });
 
     this.updatedOwnerSub = this.ownerService.updated.subscribe((updatedOwner: Owner) => {
-      const ownerIndex = (this.customer.owners || []).findIndex((owner: Owner) => updatedOwner.id === owner.id);
+      const ownerIndex = (this.customer().owners || []).findIndex((owner: Owner) => updatedOwner.id === owner.id);
       if (ownerIndex > -1) {
-        this.customer.owners[ownerIndex] = updatedOwner;
+        this.customer().owners[ownerIndex] = updatedOwner;
       }
       this.filteredData(this.myTenants());
     });
@@ -106,7 +99,7 @@ export class OwnerListComponent implements OnDestroy, OnInit {
   openCreateOwnerDialog() {
     const dialogRef = this.dialog.open(OwnerCreateComponent, {
       data: {
-        customer: this.customer,
+        customer: this.customer(),
       },
       disableClose: true,
     });
@@ -115,7 +108,7 @@ export class OwnerListComponent implements OnDestroy, OnInit {
       .pipe(filter((result) => !!result))
       .subscribe((result: { owner?: Owner; tenant?: Tenant }) => {
         if (result.owner) {
-          this.customer.owners = this.customer.owners.concat([result.owner]);
+          this.customer().owners = this.customer().owners.concat([result.owner]);
           this.filteredData(this.myTenants());
         }
         if (result.tenant) {
@@ -128,12 +121,12 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     if (tenants) {
       const myTenants = tenants
         .sort((a, b) => a.identifier - b.identifier)
-        .filter((tenant: Tenant) => tenant.customerId === this.customer.id);
+        .filter((tenant: Tenant) => tenant.customerId === this.customer().id);
       this.myTenants.set(myTenants);
 
       const ownersIds: string[] = myTenants.map((tenant: Tenant) => tenant.ownerId);
 
-      this.ownersWithoutTenant.set(this.customer.owners.filter((owner) => !ownersIds.includes(owner.id)));
+      this.ownersWithoutTenant.set(this.customer().owners.filter((owner) => !ownersIds.includes(owner.id)));
     }
   }
 
@@ -147,7 +140,7 @@ export class OwnerListComponent implements OnDestroy, OnInit {
     if (!ownerId) {
       return null;
     }
-    return this.customer.owners.filter((owner) => owner.id === ownerId)[0];
+    return this.customer().owners.find((owner) => owner.id === ownerId);
   }
 
   openCreateTenantDialog(owner: Owner) {

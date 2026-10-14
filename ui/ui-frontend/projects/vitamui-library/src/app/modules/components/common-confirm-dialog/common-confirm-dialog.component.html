@@ -1,4 +1,4 @@
-<vitamui-dialog-header [subhead]="dialogSubTitle" [title]="dialogTitle"></vitamui-dialog-header>
+<vitamui-dialog-header [subhead]="dialogSubTitle()" [title]="dialogTitle()"></vitamui-dialog-header>
 
 <mat-dialog-content>
   <ng-content></ng-content>
@@ -6,9 +6,9 @@
 
 <mat-dialog-actions>
   <button class="btn primary" [matDialogClose]="true" cdkFocusInitial>
-    <ng-container>{{ confirmLabel ? confirmLabel : ('COMMON.CONFIRM' | translate) }}</ng-container>
+    <ng-container>{{ confirmLabel() ? confirmLabel() : ('COMMON.CONFIRM' | translate) }}</ng-container>
   </button>
   <button class="btn link cancel" [matDialogClose]="false">
-    <ng-container>{{ cancelLabel ? cancelLabel : ('COMMON.BACK' | translate) }}</ng-container>
+    <ng-container>{{ cancelLabel() ? cancelLabel() : ('COMMON.BACK' | translate) }}</ng-container>
   </button>
 </mat-dialog-actions>

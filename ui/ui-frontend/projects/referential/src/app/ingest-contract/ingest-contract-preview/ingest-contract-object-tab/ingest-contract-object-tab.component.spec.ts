@@ -88,7 +88,7 @@ describe('IngestContractObjectTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestContractObjectTabComponent);
     component = fixture.componentInstance;
-    component.ingestContract = ingestContractValue;
+    fixture.componentRef.setInput('ingestContract', ingestContractValue);
     fixture.detectChanges();
   });
 

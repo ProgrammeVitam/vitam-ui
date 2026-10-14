@@ -166,7 +166,7 @@ describe('ContextPermissionTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPermissionTabComponent);
     component = fixture.componentInstance;
-    component.context = context;
+    fixture.componentRef.setInput('context', context);
     component.previousValue = (): Context => context;
     fixture.detectChanges();
   });
@@ -195,7 +195,8 @@ describe('ContextPermissionTabComponent', () => {
 
   it('Should get details about all given ingestContracts', () => {
     // Given
-    component.context = context;
+    fixture.componentRef.setInput('context', context);
+    fixture.detectChanges();
 
     // When
     const ingestContractsNames = [
@@ -216,7 +217,8 @@ describe('ContextPermissionTabComponent', () => {
 
   it('Should get details about all given accessContracts', () => {
     // Given
-    component.context = context;
+    fixture.componentRef.setInput('context', context);
+    fixture.detectChanges();
 
     // When
     const accessContracts = [

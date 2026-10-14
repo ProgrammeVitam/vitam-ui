@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -60,12 +60,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./ontology-information-tab.component.scss'],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
-export class OntologyInformationTabComponent {
+export class OntologyInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly ontologyService = inject(OntologyService);
   private readonly securityService = inject(SecurityService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
   form: FormGroup;
   disabled = true;
   submitted = signal(false);
@@ -74,44 +74,11 @@ export class OntologyInformationTabComponent {
   sizes = sizes;
   collections: Option[] = [];
 
-  @Input()
-  set inputOntology(ontology: Ontology) {
-    this._inputOntology = ontology;
-
-    const canUpdateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_UPDATE_ONTOLOGIES);
-    this.disabled = !canUpdateVocabulary || ontology.origin === 'INTERNAL';
-
-    Object.entries(this.form.controls)
-      .filter(([key]) => !['identifier', 'creationDate'].includes(key))
-      .forEach(([_key, control]) => (this.disabled ? control.disable() : control.enable()));
-
-    if (!ontology.description) {
-      this._inputOntology.description = '';
-    }
-
-    if (!ontology.collections) {
-      this._inputOntology.collections = [];
-    }
-
-    this.collections = this.disabled
-      ? // When ontology is disabled we cannot modify it, so we can let the values as they are
-        this._inputOntology.collections.map((collection) => ({ key: collection, label: collection }))
-      : collections;
-    this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this._inputOntology.type);
-
-    this.resetForm(this.inputOntology);
-    this.updated.emit(false);
-  }
-
-  get inputOntology(): Ontology {
-    return { ...this._inputOntology, collections: this._inputOntology.collections.sort() };
-  }
-
-  private _inputOntology: Ontology;
+  readonly inputOntology = model<Ontology>(undefined);
 
   previousValue = (): any => {
     return (Object.keys(this.form.controls) as (keyof Ontology)[]).reduce((acc: any, key) => {
-      acc[key] = this._inputOntology[key] || null;
+      acc[key] = this.inputOntology()[key] || null;
       return acc;
     }, {} as Partial<Ontology>);
   };
@@ -134,6 +101,12 @@ export class OntologyInformationTabComponent {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['inputOntology']) {
+      this.setInputOntology(this.inputOntology());
+    }
+  }
+
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
@@ -142,7 +115,7 @@ export class OntologyInformationTabComponent {
 
   prepareSubmit(): Observable<Ontology> {
     const payload = {
-      id: this._inputOntology.id,
+      id: this.inputOntology().id,
       identifier: this.previousValue().identifier,
       ...this.form.value,
     };
@@ -154,16 +127,48 @@ export class OntologyInformationTabComponent {
     this.submitted.set(true);
     this.prepareSubmit().subscribe(
       () => {
-        this.ontologyService.get(this._inputOntology.identifier).subscribe((response) => {
+        this.ontologyService.get(this.inputOntology().identifier).subscribe((response) => {
           this.submitted.set(false);
-          this.inputOntology = response;
-          this.ontologyService.updated.next(this.inputOntology);
+          this.setInputOntology(response);
+          this.ontologyService.updated.next(this.sortedInputOntology());
         });
       },
       () => {
         this.submitted.set(false);
       },
     );
+  }
+
+  private setInputOntology(ontology: Ontology) {
+    this.inputOntology.set(ontology);
+
+    const canUpdateVocabulary = this.securityService.hasRole(ApplicationId.ONTOLOGY_APP, Role.ROLE_UPDATE_ONTOLOGIES);
+    this.disabled = !canUpdateVocabulary || ontology.origin === 'INTERNAL';
+
+    Object.entries(this.form.controls)
+      .filter(([key]) => !['identifier', 'creationDate'].includes(key))
+      .forEach(([_key, control]) => (this.disabled ? control.disable() : control.enable()));
+
+    if (!ontology.description) {
+      this.inputOntology().description = '';
+    }
+
+    if (!ontology.collections) {
+      this.inputOntology().collections = [];
+    }
+
+    this.collections = this.disabled
+      ? // When ontology is disabled we cannot modify it, so we can let the values as they are
+        this.inputOntology().collections.map((collection) => ({ key: collection, label: collection }))
+      : collections;
+    this.sizeFieldVisible = ['TEXT', 'GEO_POINT', 'KEYWORD'].includes(this.inputOntology().type);
+
+    this.resetForm(this.sortedInputOntology());
+    this.updated.emit(false);
+  }
+
+  private sortedInputOntology(): Ontology {
+    return { ...this.inputOntology(), collections: this.inputOntology().collections.sort() };
   }
 
   resetForm(ontology: Ontology) {

@@ -81,7 +81,7 @@ describe('IngestPreviewComponent test:', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestPreviewComponent);
     component = fixture.componentInstance;
-    component.ingestFromParent = logbookOperation;
+    fixture.componentRef.setInput('ingestFromParent', logbookOperation);
     fixture.detectChanges();
   });
 
@@ -90,6 +90,6 @@ describe('IngestPreviewComponent test:', () => {
   });
 
   it('should have ingestFromParent defined', () => {
-    expect(component.ingestFromParent).toEqual(logbookOperation);
+    expect(component.ingestFromParent()).toEqual(logbookOperation);
   });
 });

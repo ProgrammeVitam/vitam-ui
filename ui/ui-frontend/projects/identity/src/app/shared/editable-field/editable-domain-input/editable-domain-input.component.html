@@ -1,19 +1,19 @@
-@if (!disabled) {
+@if (!disabled()) {
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{ label }}</label>
+        <label>{{ label() }}</label>
         <span class="editable-field-text-content">
           @for (domain of control.value; track domain) {
             <div>
               {{ domain }}
-              @if (domain === defaultDomain) {
+              @if (domain === defaultDomainState()) {
                 {{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}
               }
             </div>
           }
         </span>
-        <div class="editable-field-control" [ngStyle]="{ 'margin-top': label ? '15px' : '0' }">
+        <div class="editable-field-control" [ngStyle]="{ 'margin-top': label() ? '15px' : '0' }">
           <app-domains-input
             [style.width.%]="100"
             [formControl]="control"
@@ -50,13 +50,13 @@
   </ng-template>
 }
 
-@if (disabled) {
+@if (disabled()) {
   <div class="read-only-field disabled-input">
-    <label>{{ label }}</label>
+    <label>{{ label() }}</label>
     @for (domain of control?.value; track domain) {
       <div>
         {{ domain }}
-        @if (domain === defaultDomain) {
+        @if (domain === defaultDomainState()) {
           {{ 'SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN' | translate }}
         }
       </div>

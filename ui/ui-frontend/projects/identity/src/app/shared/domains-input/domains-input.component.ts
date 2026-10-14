@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ENTER } from '@angular/cdk/keycodes';
-import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { Component, forwardRef, input, output, linkedSignal } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -55,11 +55,12 @@ export const DOMAINS_INPUT_ACCESSOR: any = {
   imports: [ReactiveFormsModule, MatProgressSpinner, TranslatePipe],
 })
 export class DomainsInputComponent implements ControlValueAccessor {
-  @Input() placeholder: string;
-  @Input() selected: string;
-  @Input() spinnerDiameter = 25;
+  readonly placeholder = input<string>(undefined);
+  readonly selected = input<string>(undefined);
+  protected readonly selectedState = linkedSignal(() => this.selected());
+  readonly spinnerDiameter = input(25);
 
-  @Output() selectedChange = new EventEmitter<string>();
+  readonly selectedChange = output<string>();
 
   domains: string[] = [];
   control: FormControl;
@@ -95,7 +96,7 @@ export class DomainsInputComponent implements ControlValueAccessor {
     this.domains.push(domain);
     this.onChange(this.domains);
     this.control.reset();
-    if (!this.selected) {
+    if (!this.selectedState()) {
       this.setSelected(domain);
     }
   }
@@ -104,7 +105,7 @@ export class DomainsInputComponent implements ControlValueAccessor {
     const index = this.domains.indexOf(domain);
 
     if (index >= 0) {
-      if (domain === this.selected) {
+      if (domain === this.selectedState()) {
         this.setSelected(null);
       }
       this.domains.splice(index, 1);
@@ -113,8 +114,8 @@ export class DomainsInputComponent implements ControlValueAccessor {
   }
 
   setSelected(value: string) {
-    this.selected = value;
-    this.selectedChange.emit(this.selected);
+    this.selectedState.set(value);
+    this.selectedChange.emit(this.selectedState());
   }
 
   buttonAddDisabled(): boolean {

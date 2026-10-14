@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, HostListener, Input } from '@angular/core';
+import { Directive, HostListener, input } from '@angular/core';
 
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[routerLink]',
 })
 export class RouterLinkStubDirective {
-  @Input() routerLink: any;
+  readonly routerLink = input<any>(undefined);
   navigatedTo: any = null;
 
   @HostListener('click')
   onClick() {
-    this.navigatedTo = this.routerLink;
+    this.navigatedTo = this.routerLink();
   }
 }

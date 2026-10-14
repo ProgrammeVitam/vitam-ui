@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentChecked, ChangeDetectorRef, Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, inject, input, output } from '@angular/core';
 import type { FilingHoldingSchemeNode } from '../../models/nodes/node.interface';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -54,16 +54,16 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
 export class VitamuiTreeNodeComponent implements AfterContentChecked {
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() node: FilingHoldingSchemeNode;
-  @Input() icon: string;
-  @Input({ transform: coerceBooleanProperty }) expanded: boolean;
-  @Input({ transform: coerceBooleanProperty }) disabled: boolean;
-  @Input() hasCheckBox = true;
-  @Input() labelIsLinkedToCheckbox = false;
+  readonly node = input<FilingHoldingSchemeNode>(undefined);
+  readonly icon = input<string>(undefined);
+  readonly expanded = input<boolean, any>(undefined, { transform: coerceBooleanProperty });
+  readonly disabled = input<boolean, any>(undefined, { transform: coerceBooleanProperty });
+  readonly hasCheckBox = input(true);
+  readonly labelIsLinkedToCheckbox = input(false);
 
-  @Output() nodeToggle = new EventEmitter<void>();
-  @Output() checkboxClick = new EventEmitter<void>();
-  @Output() labelClick = new EventEmitter<void>();
+  readonly nodeToggle = output<void>();
+  readonly checkboxClick = output<void>();
+  readonly labelClick = output<void>();
 
   ngAfterContentChecked(): void {
     this.cdr.detectChanges();
@@ -74,17 +74,18 @@ export class VitamuiTreeNodeComponent implements AfterContentChecked {
   }
 
   onLabelClick(event: MouseEvent) {
-    if (this.isVirtualNode() || this.node.disableLabelClickCallback) return;
+    const node = this.node();
+    if (this.isVirtualNode() || node.disableLabelClickCallback) return;
     this.labelClick.emit();
-    if (!this.labelIsLinkedToCheckbox) {
+    if (!this.labelIsLinkedToCheckbox()) {
       event.stopPropagation();
       event.preventDefault();
     } else {
-      this.node.checked = !this.node.checked;
+      node.checked = !node.checked;
     }
   }
 
   isVirtualNode() {
-    return this.node.unitType === UnitType.VIRTUAL;
+    return this.node().unitType === UnitType.VIRTUAL;
   }
 }

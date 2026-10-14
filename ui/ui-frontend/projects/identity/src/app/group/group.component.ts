@@ -71,7 +71,7 @@ import { GroupService } from './group.service';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, ViewChild, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
@@ -114,7 +114,7 @@ export class GroupComponent extends SidenavPage<Group> {
   public search: string;
   public readonly exportButtonDisabled = signal(false);
 
-  @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
+  readonly groupListComponent = viewChild(GroupListComponent);
 
   openCreateGroupDialog(): void {
     const dialogRef = this.dialog.open(GroupCreateComponent, { disableClose: true });
@@ -130,10 +130,11 @@ export class GroupComponent extends SidenavPage<Group> {
   }
 
   private refreshList(): void {
-    if (!this.groupListComponent) {
+    const groupListComponent = this.groupListComponent();
+    if (!groupListComponent) {
       return;
     }
-    this.groupListComponent.search();
+    groupListComponent.search();
   }
 
   public exportProfilesAsExcel() {

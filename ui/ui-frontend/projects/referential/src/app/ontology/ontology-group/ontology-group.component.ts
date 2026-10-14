@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Ontology, SchemaElement, SchemaService } from 'vitamui-library';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -59,8 +59,8 @@ export class OntologyGroupComponent {
   private readonly schemaService = inject(SchemaService);
   private readonly ontologyService = inject(OntologyService);
 
-  @Input() searchText: string;
-  @Output() selectElement = new EventEmitter<Ontology | SchemaElement>();
+  readonly searchText = input<string>(undefined);
+  readonly selectElement = output<Ontology | SchemaElement>();
 
   tabIndex = 0;
 

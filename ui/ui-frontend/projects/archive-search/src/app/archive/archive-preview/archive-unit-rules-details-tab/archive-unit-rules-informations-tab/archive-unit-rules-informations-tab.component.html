@@ -3,7 +3,7 @@
     <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showlistOfRulesBloc()">
       {{ listOfRulesCollapsed ? 'expand_less' : 'expand_more' }}
     </i>
-    {{ getRuleCategoryName(ruleCategory) }}
+    {{ getRuleCategoryName(ruleCategory()) }}
   </div>
   @if (!isPreventInheritance) {
     <div class="col">{{ getMaxEndDate(unitRuleDTO) | dateTime: 'dd/MM/yyyy' }}</div>
@@ -31,7 +31,7 @@
             <div class="vitamui-table-rows">
               <div
                 class="vitamui-row d-flex align-items-center"
-                [ngClass]="ruleCategory === 'HoldRule' ? 'enabled-div clickable' : 'disabled-div'"
+                [ngClass]="ruleCategory() === 'HoldRule' ? 'enabled-div clickable' : 'disabled-div'"
                 (click)="getHoldRuleInformations(rule)"
               >
                 <div class="col-4 text">{{ rule.Rule }}</div>
@@ -46,7 +46,7 @@
     }
   </div>
 </div>
-@if (isToShowPropertiesList && ruleCategory !== 'ClassificationRule' && ruleCategory !== 'HoldRule') {
+@if (isToShowPropertiesList && ruleCategory() !== 'ClassificationRule' && ruleCategory() !== 'HoldRule') {
   <div class="vitamui-table-head">
     <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
       {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
@@ -54,7 +54,7 @@
     {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.PROPERTIES' | translate }}
   </div>
 }
-@if (isToShowPropertiesList && ruleCategory !== 'ClassificationRule' && ruleCategory !== 'HoldRule') {
+@if (isToShowPropertiesList && ruleCategory() !== 'ClassificationRule' && ruleCategory() !== 'HoldRule') {
   <div class="vitamui-table collapsible" [class.collapsed]="true && listOfPropertiesCollapsed">
     <div>
       @if (categoryHasPropertiesList) {
@@ -81,7 +81,7 @@
   </div>
 }
 
-@if (isToShowPropertiesList && ruleCategory === 'HoldRule') {
+@if (isToShowPropertiesList && ruleCategory() === 'HoldRule') {
   <div class="vitamui-table-head">
     <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
       {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
@@ -89,7 +89,7 @@
     {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.PROPERTIES' | translate }}
   </div>
 }
-@if (isToShowPropertiesList && ruleCategory === 'HoldRule') {
+@if (isToShowPropertiesList && ruleCategory() === 'HoldRule') {
   <div class="vitamui-table collapsible" [class.collapsed]="listOfPropertiesCollapsed">
     <div>
       @if (categoryHasPropertiesList) {
@@ -136,7 +136,7 @@
   </div>
 }
 
-@if (isToShowPropertiesList && ruleCategory === 'ClassificationRule') {
+@if (isToShowPropertiesList && ruleCategory() === 'ClassificationRule') {
   <div class="vitamui-table-head">
     <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
       {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
@@ -144,7 +144,7 @@
     {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.PROPERTIES' | translate }}
   </div>
 }
-@if (isToShowPropertiesList && ruleCategory === 'ClassificationRule') {
+@if (isToShowPropertiesList && ruleCategory() === 'ClassificationRule') {
   <div class="vitamui-table collapsible" [class.collapsed]="listOfPropertiesCollapsed">
     <div>
       @if (categoryHasPropertiesList) {

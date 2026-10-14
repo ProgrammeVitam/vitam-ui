@@ -53,16 +53,15 @@ import {
 import {
   Component,
   ElementRef,
-  EventEmitter,
   inject,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
+  input,
+  output,
+  viewChild,
 } from '@angular/core';
 
 import { merge, Subject, Subscription } from 'rxjs';
@@ -108,23 +107,17 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   logbookSearchService: LogbookSearchService;
   private readonly logbookDownloadService = inject(LogbookDownloadService);
 
-  @Input() tenantIdentifier: number;
+  readonly tenantIdentifier = input<number>(undefined);
 
-  @Input() set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined);
 
-  @Input() set filters(searchFilters: Readonly<EventFilter>) {
-    this._searchFilters = searchFilters;
-    this.searchFiltersChange.next(searchFilters);
-  }
+  readonly filters = input<Readonly<EventFilter>>(undefined);
 
-  @Output() eventClick = new EventEmitter<IEvent>();
-  @Output() finishedLoading = new EventEmitter<void>();
+  readonly eventClick = output<IEvent>();
+  readonly finishedLoading = output<void>();
 
-  @ViewChild('filterTemplate') filterTemplate: TemplateRef<LogbookOperationListComponent>;
-  @ViewChild('filterButton') filterButton: ElementRef;
+  readonly filterTemplate = viewChild<TemplateRef<LogbookOperationListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
 
   public orderByDate = false;
   public filterMap: { [key: string]: any[] } = { operationCategories: null };
@@ -161,6 +154,16 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
+    if (changes['filters']) {
+      const searchFilters = this.filters();
+      this._searchFilters = searchFilters;
+      this.searchFiltersChange.next(searchFilters);
+    }
     if (changes['tenantIdentifier'] || changes['filters']) {
       this.refreshList();
     }
@@ -211,7 +214,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<IEvent> i
     }
 
     this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource());
-    this.finishedLoading.next();
+    this.finishedLoading.emit();
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: IEvent[]) {

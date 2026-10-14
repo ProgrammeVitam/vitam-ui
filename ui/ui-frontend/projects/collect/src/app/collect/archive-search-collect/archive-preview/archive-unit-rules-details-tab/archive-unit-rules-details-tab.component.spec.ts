@@ -59,7 +59,7 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
     fixture = TestBed.createComponent(ArchiveUnitRulesDetailsTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.archiveUnit = {
+    fixture.componentRef.setInput('archiveUnit', {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
@@ -68,7 +68,7 @@ describe('Collect ArchiveUnitRulesDetailsTabComponent', () => {
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
-    };
+    });
   });
 
   it('should create', () => {

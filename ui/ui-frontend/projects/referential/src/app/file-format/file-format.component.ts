@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -86,7 +86,7 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   hasCreateRole = new Observable<boolean>();
   hasImportRole = new Observable<boolean>();
 
-  @ViewChild(FileFormatListComponent, { static: true }) fileFormatListComponentListComponent: FileFormatListComponent;
+  readonly fileFormatListComponentListComponent = viewChild(FileFormatListComponent);
 
   openCreateFileFormatDialog() {
     const dialogRef = this.dialog.open(FileFormatCreateComponent, { disableClose: true });
@@ -98,10 +98,11 @@ export class FileFormatComponent extends SidenavPage<FileFormat> implements OnIn
   }
 
   private refreshList() {
-    if (!this.fileFormatListComponentListComponent) {
+    const fileFormatListComponentListComponent = this.fileFormatListComponentListComponent();
+    if (!fileFormatListComponentListComponent) {
       return;
     }
-    this.fileFormatListComponentListComponent.searchFileFormatOrdered();
+    fileFormatListComponentListComponent.searchFileFormatOrdered();
   }
 
   onSearchSubmit(search: string) {

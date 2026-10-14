@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, signal, input, output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -96,11 +96,11 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() eventId: string;
-  @Input() tenantIdentifier: number;
-  @Input() isPopup: boolean;
+  readonly eventId = input<string>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly isPopup = input<boolean>(undefined);
 
-  @Output() closePanel = new EventEmitter();
+  readonly closePanel = output();
 
   public event = signal<IEvent>(null);
   private accessContractId: string;
@@ -149,7 +149,8 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
   }
 
   private doesNotHaveTenant(): boolean {
-    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId;
+    const tenantIdentifier = this.tenantIdentifier();
+    return tenantIdentifier === null || tenantIdentifier === undefined || !this.eventId();
   }
 
   public downloadReports() {
@@ -192,7 +193,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       return;
     }
     // Recomputed on every refresh (cheap in-memory lookup) so a tenant switch never keeps a stale access contract
-    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
+    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier());
     this.accessContractLogbookIdentifier = tenant?.accessContractLogbookIdentifier || '';
   }
 
@@ -201,11 +202,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDes
       return;
     }
     this.setAccessContractLogbookIdentifier();
-    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier).subscribe((event) => {
-      // Assign directly instead of emitting through the Subject
-      // This prevents the detail panel from receiving truncated operations from the list
-      this.setEvent(event);
-    });
+    this.logbookService
+      .getOperationById(this.eventId(), this.tenantIdentifier(), this.accessContractLogbookIdentifier)
+      .subscribe((event) => {
+        // Assign directly instead of emitting through the Subject
+        // This prevents the detail panel from receiving truncated operations from the list
+        this.setEvent(event);
+      });
   }
 
   public hasATRDownloadable(): boolean {

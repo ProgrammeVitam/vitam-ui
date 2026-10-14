@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatError } from '@angular/material/input';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -45,16 +45,21 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './form-error.component.scss',
 })
 export class FormErrorComponent {
-  @Input() errorKey: string;
-  @Input() translateParams: { [p: string]: any };
+  readonly errorKey = input<string>(undefined);
+  readonly translateParams = input<{
+    [p: string]: any;
+  }>(undefined);
 
   /**
    * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
    * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
    */
-  @Input() errorMessageMap: { [key: string]: string } = {};
+  readonly errorMessageMap = input<{
+    [key: string]: string;
+  }>({});
 
   getErrorMessageKey(errorKey: string): string {
-    return (this.errorMessageMap && this.errorMessageMap[errorKey]) || 'ERRORS.' + errorKey;
+    const errorMessageMap = this.errorMessageMap();
+    return errorMessageMap?.[errorKey] || 'ERRORS.' + errorKey;
   }
 }

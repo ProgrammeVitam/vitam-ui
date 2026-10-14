@@ -34,18 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, TemplateRef, output, viewChild, input, model } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -97,14 +86,14 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   private readonly cdr = inject(ChangeDetectorRef);
   logbookManagementOperationService = inject(LogbookManagementOperationService);
 
-  @Input() operation: OperationDetails;
-  @Input() tenantIdentifier: number;
-  @Input() tenant: any;
-  @Output() previewClose = new EventEmitter();
-  @ViewChild('confirmUpdateOperationDialog', { static: true })
-  confirmUpdateOperationDialog: TemplateRef<LogbookManagementOperationPreviewComponent>;
-  @ViewChild('confirmCancelOperationDialog', { static: true })
-  confirmCancelOperationDialog: TemplateRef<LogbookManagementOperationPreviewComponent>;
+  readonly operation = model<OperationDetails>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly tenant = input<any>(undefined);
+  readonly previewClose = output();
+  readonly confirmUpdateOperationDialog =
+    viewChild<TemplateRef<LogbookManagementOperationPreviewComponent>>('confirmUpdateOperationDialog');
+  readonly confirmCancelOperationDialog =
+    viewChild<TemplateRef<LogbookManagementOperationPreviewComponent>>('confirmCancelOperationDialog');
 
   actionId: string;
   reason: FormControl;
@@ -118,7 +107,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     this.reason = new FormControl('', [Validators.required, Validators.maxLength(500), Validators.minLength(3)]);
     if (this.logbookManagementOperationService.operationUpdated) {
       this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated.subscribe((updatedOperation: OperationDetails) => {
-        this.operation = updatedOperation;
+        this.operation.set(updatedOperation);
         this.cdr.markForCheck();
       });
     }
@@ -131,7 +120,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   updateOperationStatus(operation: OperationDetails, actionId: string) {
     let dialogToOpen;
     this.actionId = actionId;
-    dialogToOpen = this.confirmUpdateOperationDialog;
+    dialogToOpen = this.confirmUpdateOperationDialog();
     const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
@@ -139,7 +128,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
       .subscribe(() => {
         this.logbookManagementOperationService.updateOperationProcessExecution(operation.operationId, actionId).subscribe((operations) => {
           if (operations) {
-            this.operation = operations.results[operations.hits.total - 1];
+            this.operation.set(operations.results[operations.hits.total - 1]);
             this.cdr.markForCheck();
           }
         });
@@ -149,7 +138,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
   cancelOperation(operation: OperationDetails) {
     let dialogToOpen;
     this.actionId = 'CANCEL';
-    dialogToOpen = this.confirmCancelOperationDialog;
+    dialogToOpen = this.confirmCancelOperationDialog();
 
     const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
@@ -157,10 +146,10 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
       .pipe(filter((result) => !!result))
       .subscribe(() => {
         this.logbookManagementOperationService
-          .cancelOperationProcessExecution(operation.operationId, this.operation?.stepCancellable, this.reason?.value)
+          .cancelOperationProcessExecution(operation.operationId, this.operation()?.stepCancellable, this.reason?.value)
           .subscribe((operations) => {
             if (operations.results) {
-              this.operation = operations.results[operations.hits.total - 1];
+              this.operation.set(operations.results[operations.hits.total - 1]);
               this.cdr.markForCheck();
             }
           });

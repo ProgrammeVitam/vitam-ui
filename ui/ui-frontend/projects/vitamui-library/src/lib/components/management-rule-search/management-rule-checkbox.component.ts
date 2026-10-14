@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import {
   SearchCriteriaAddAction,
@@ -47,24 +47,32 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'vitamui-management-rule-checkbox',
   template: `
-    <mat-checkbox [checked]="checked" (change)="checkBoxChange($event)">
-      {{ label | translate }}
+    <mat-checkbox [checked]="checked()" (change)="checkBoxChange($event)">
+      {{ label() | translate }}
     </mat-checkbox>
   `,
   imports: [MatCheckboxModule, TranslatePipe],
 })
 export class ManagementRuleCheckboxComponent {
-  @Input() label: string;
-  @Input() checked = false;
-  @Input() ruleType: string;
-  @Input() searchCriteriaType: SearchCriteriaTypeEnum;
-  @Input() field: string;
-  @Input() config: { key: string; id?: string };
+  readonly label = input<string>(undefined);
+  readonly checked = input(false);
+  readonly ruleType = input<string>(undefined);
+  readonly searchCriteriaType = input<SearchCriteriaTypeEnum>(undefined);
+  readonly field = input<string>(undefined);
+  readonly config = input<{
+    key: string;
+    id?: string;
+  }>(undefined);
 
-  @Output() changed = new EventEmitter<SearchCriteriaAddAction | SearchCriteriaRemoveAction>();
+  readonly changed = output<SearchCriteriaAddAction | SearchCriteriaRemoveAction>();
 
   checkBoxChange(event: MatCheckboxChange): void {
-    const criteria = ManagementRuleSearchHelper.buildCheckboxCriteria(this.field, this.config, this.ruleType, this.searchCriteriaType);
+    const criteria = ManagementRuleSearchHelper.buildCheckboxCriteria(
+      this.field(),
+      this.config(),
+      this.ruleType(),
+      this.searchCriteriaType(),
+    );
 
     if (event.checked) {
       this.changed.emit(criteria);

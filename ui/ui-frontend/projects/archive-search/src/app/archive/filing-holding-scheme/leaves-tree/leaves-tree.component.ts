@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, signal, SimpleChanges, output, input } from '@angular/core';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNodeDef, MatTreeNodeOutlet } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
@@ -82,13 +82,13 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private readonly archiveService = inject(ArchiveService);
   private readonly configurationsService = inject(ConfigurationsApiService);
 
-  @Input() loadingNodeUnit: boolean;
+  readonly loadingNodeUnit = input<boolean>(undefined);
   // Already a graph
-  @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
-  @Input() searchRequestResultFacets: ResultFacet[];
+  readonly nestedDataSourceLeaves = input<MatTreeNestedDataSource<FilingHoldingSchemeNode>>(undefined);
+  readonly searchRequestResultFacets = input<ResultFacet[]>(undefined);
 
-  @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
-  @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
+  readonly addToSearchCriteria = output<FilingHoldingSchemeNode>();
+  readonly showNodeDetail = output<string>();
 
   virtualPathLimitReached = signal(false);
   unitId: string = '';
@@ -114,17 +114,17 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.allNonOrphanNodes = this.nestedDataSourceLeaves.data.filter((node) => node.id !== 'ORPHANS_NODE');
+    this.allNonOrphanNodes = this.nestedDataSourceLeaves().data.filter((node) => node.id !== 'ORPHANS_NODE');
     this.subscribeOnSearchCriteriasUpdate();
     this.subscribeOnSelectedNode();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['searchRequestResultFacets']) {
-      this.leavesTreeService.setSearchRequestResultFacets(this['searchRequestResultFacets']);
-      this.virtualPathLimitReached.set(this['searchRequestResultFacets']?.length >= FACETS_DEFAULT_SIZE);
+      this.leavesTreeService.setSearchRequestResultFacets(this.searchRequestResultFacets());
+      this.virtualPathLimitReached.set(this.searchRequestResultFacets()?.length >= FACETS_DEFAULT_SIZE);
     } else if (changes['nestedDataSourceLeaves']) {
-      this.nestedTreeControlLeaves.dataNodes = this['nestedDataSourceLeaves'].data;
+      this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves().data;
     }
   }
 
@@ -137,9 +137,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private refreshTreeNodes() {
-    const data = this.nestedDataSourceLeaves.data;
-    this.nestedDataSourceLeaves.data = [];
-    this.nestedDataSourceLeaves.data = data;
+    const nestedDataSourceLeaves = this.nestedDataSourceLeaves();
+    const data = nestedDataSourceLeaves.data;
+    nestedDataSourceLeaves.data = [];
+    nestedDataSourceLeaves.data = data;
   }
 
   private firstToggle(node: FilingHoldingSchemeNode): boolean {

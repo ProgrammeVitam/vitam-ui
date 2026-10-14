@@ -38,14 +38,14 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   HostListener,
   inject,
-  Input,
   OnChanges,
-  Output,
   SimpleChanges,
-  ViewChild,
+  input,
+  model,
+  output,
+  viewChild,
 } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -97,30 +97,30 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() archiveUnit: Unit;
-  @Input() isPopup: boolean;
-  @Input() hasUnitaryUpdateUnitRole: boolean;
-  @Input() transactionId: string;
-  @Input() transactionIsNotOpen: boolean;
+  readonly archiveUnit = model<Unit>(undefined);
+  readonly isPopup = input<boolean>(undefined);
+  readonly hasUnitaryUpdateUnitRole = input<boolean>(undefined);
+  readonly transactionId = input<string>(undefined);
+  readonly transactionIsNotOpen = input<boolean>(undefined);
 
-  @Output() backToNormalLateralPanel: EventEmitter<any> = new EventEmitter();
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
-  @Output() showExtendedLateralPanel: EventEmitter<any> = new EventEmitter();
+  readonly backToNormalLateralPanel = output<void>();
+  readonly previewClose = output<void>();
+  readonly showExtendedLateralPanel = output<void>();
 
   isPanelextended = false;
   selectedIndex = 0;
   updateStarted = false;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
 
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
-  @ViewChild('descriptionTab', { static: false }) descriptionTab: ArchiveUnitDescriptionTabComponent;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
+  readonly descriptionTab = viewChild<ArchiveUnitDescriptionTabComponent>('descriptionTab');
 
   ngAfterViewInit(): void {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
   }
 
   async emitClose() {
-    if (this.descriptionTab.isModified()) {
+    if (this.descriptionTab().isModified()) {
       await this.checkBeforeExit();
     }
     this.updateStarted = false;
@@ -133,7 +133,7 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
   }
 
   async checkBeforeExit() {
-    await this.descriptionTab.onCancel();
+    await this.descriptionTab().onCancel();
   }
 
   selectedTabChangeEvent($event: MatTabChangeEvent) {
@@ -154,19 +154,19 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
 
   @HostListener('window:beforeunload', ['$event'])
   async beforeunloadHandler(event: any) {
-    if (this.descriptionTab.isModified()) {
+    if (this.descriptionTab().isModified()) {
       event.preventDefault();
       await this.checkBeforeExit();
     }
   }
 
   private async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.descriptionTab.isModified()) {
+    if (this.descriptionTab().isModified()) {
       await this.checkBeforeExit();
     }
     this.updateStarted = false;
     this.cdr.markForCheck();
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, [tab, tabHeader, idx]);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), [tab, tabHeader, idx]);
   }
 
   showNormalPanel() {
@@ -183,10 +183,10 @@ export class ArchivePreviewComponent implements OnChanges, AfterViewInit {
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if (changes['archiveUnit']) {
-      if (this.descriptionTab?.isModified()) {
-        this.archiveUnit = changes['archiveUnit']['previousValue'];
+      if (this.descriptionTab()?.isModified()) {
+        this.archiveUnit.set(changes['archiveUnit']['previousValue']);
         await this.checkBeforeExit().then(() => {
-          this.archiveUnit = changes['archiveUnit']['currentValue'];
+          this.archiveUnit.set(changes['archiveUnit']['currentValue']);
         });
       }
       this.showNormalPanel();

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -50,8 +50,7 @@ import { DomainsInputComponent } from './domains-input.component';
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {
-  @ViewChild(DomainsInputComponent, { static: false })
-  component: DomainsInputComponent;
+  readonly component = viewChild(DomainsInputComponent);
   domains: string[];
   selected: string;
 }
@@ -87,12 +86,12 @@ describe('DomainsInputComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(testhost.component.domains).toEqual(testhost.domains);
+    expect(testhost.component().domains).toEqual(testhost.domains);
   });
 
   it('should add one domain', () => {
-    testhost.component.control.setValue('test.com');
-    testhost.component.add();
+    testhost.component().control.setValue('test.com');
+    testhost.component().add();
     fixture.detectChanges();
     expect(testhost.domains).toEqual(['test.com']);
   });
@@ -100,11 +99,11 @@ describe('DomainsInputComponent', () => {
   it('should not add a domain already in the list', () => {
     const elInput = fixture.nativeElement.querySelector('input');
     input(elInput, 'test.com');
-    testhost.component.add();
+    testhost.component().add();
     input(elInput, 'toto.co.uk');
-    testhost.component.add();
+    testhost.component().add();
     input(elInput, 'test.com');
-    testhost.component.add();
+    testhost.component().add();
     fixture.detectChanges();
     expect(testhost.domains).toEqual(['test.com', 'toto.co.uk']);
   });
@@ -114,7 +113,7 @@ describe('DomainsInputComponent', () => {
   it('should trim the value', () => {
     const elInput = fixture.nativeElement.querySelector('input');
     input(elInput, '        test.com          ');
-    testhost.component.add();
+    testhost.component().add();
     fixture.detectChanges();
     expect(testhost.domains).toEqual(['test.com']);
   });
@@ -122,7 +121,7 @@ describe('DomainsInputComponent', () => {
   it('should not add an invalid domain', () => {
     const elInput = fixture.nativeElement.querySelector('input');
     input(elInput, 'this is invalid');
-    testhost.component.add();
+    testhost.component().add();
     fixture.detectChanges();
     expect(testhost.domains).toBeUndefined();
   });
@@ -131,7 +130,7 @@ describe('DomainsInputComponent', () => {
     const elInput = fixture.nativeElement.querySelector('input');
     input(elInput, 'test.com');
     expect(testhost.selected).toBeUndefined();
-    testhost.component.add();
+    testhost.component().add();
     expect(testhost.selected).toBe('test.com');
   });
 
@@ -152,7 +151,7 @@ describe('DomainsInputComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(testhost.component.selected).toBe('tata.fr');
+    expect(testhost.component().selected()).toBe('tata.fr');
   });
 
   it('should disable the add button', () => {
@@ -172,9 +171,9 @@ describe('DomainsInputComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(testhost.component.domains).toEqual(testhost.domains);
-    testhost.component.remove('tata.fr');
-    expect(testhost.component.domains).toEqual(['test.com', 'toto.co.uk']);
+    expect(testhost.component().domains).toEqual(testhost.domains);
+    testhost.component().remove('tata.fr');
+    expect(testhost.component().domains).toEqual(['test.com', 'toto.co.uk']);
   });
 
   it('should unset the selected item', async () => {
@@ -184,9 +183,9 @@ describe('DomainsInputComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(testhost.selected).toBe('tata.fr');
-    expect(testhost.component.domains).toEqual(testhost.domains);
-    testhost.component.remove('tata.fr');
-    expect(testhost.component.domains).toEqual(['test.com', 'toto.co.uk']);
+    expect(testhost.component().domains).toEqual(testhost.domains);
+    testhost.component().remove('tata.fr');
+    expect(testhost.component().domains).toEqual(['test.com', 'toto.co.uk']);
     expect(testhost.selected).toBeFalsy();
   });
 });

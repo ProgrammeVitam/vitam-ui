@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -221,9 +221,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     { key: 'Public and Private Archive', label: this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE') },
   ];
 
-  @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
-  @ViewChild('displayCsvErrorsDialog', { static: true })
-  displayCsvErrorsDialog: TemplateRef<CreateProjectComponent>;
+  readonly confirmDeleteAddRuleDialog = viewChild<TemplateRef<CreateProjectComponent>>('confirmDeleteAddRuleDialog');
+  readonly displayCsvErrorsDialog = viewChild<TemplateRef<CreateProjectComponent>>('displayCsvErrorsDialog');
 
   constructor() {
     const filingPlanService = inject(FilingPlanService);
@@ -656,7 +655,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
             });
           } else {
             this.errorsDetails = vitamError.errorsDetails;
-            const dialogToOpen = this.displayCsvErrorsDialog;
+            const dialogToOpen = this.displayCsvErrorsDialog();
             this.dialogRefToClose = this.dialog.open(dialogToOpen);
           }
         },

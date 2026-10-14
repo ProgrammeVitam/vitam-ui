@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, input, viewChild } from '@angular/core';
 import { AbstractControl, FormControl, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
 import { FormControlWarn, hexToRgb, InputComponent, PipesModule, rgbToHsl } from 'vitamui-library';
@@ -47,27 +47,26 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [InputComponent, ColorPickerDirective, ReactiveFormsModule, PipesModule, TranslatePipe],
 })
 export class InputColorComponent implements OnInit {
-  @Input() placeholder: string;
-  @Input() disabled: boolean;
-  @Input() colorInput: FormControl;
-  @Input() checkWarning: boolean;
+  readonly placeholder = input<string>(undefined);
+  readonly disabled = input<boolean>(undefined);
+  readonly colorInput = input<FormControl>(undefined);
+  readonly checkWarning = input<boolean>(undefined);
 
   public color: string;
 
-  @ViewChild('colorPickerInput', { read: ColorPickerDirective, static: false })
-  private colorPicker: ColorPickerDirective;
+  private readonly colorPicker = viewChild('colorPickerInput', { read: ColorPickerDirective });
 
   constructor() {}
 
   public ngOnInit(): void {
-    this.color = this.colorInput.value;
+    this.color = this.colorInput().value;
 
-    if (this.checkWarning) {
-      this.colorInput.addValidators(this.checkColor500());
+    if (this.checkWarning()) {
+      this.colorInput().addValidators(this.checkColor500());
     }
 
-    this.colorInput.valueChanges.subscribe((color: string) => {
-      this.colorInput.markAsTouched();
+    this.colorInput().valueChanges.subscribe((color: string) => {
+      this.colorInput().markAsTouched();
       this.color = color;
     });
   }
@@ -96,25 +95,26 @@ export class InputColorComponent implements OnInit {
   }
 
   public onPickerOpen(): void {
-    if (this.disabled) {
-      this.colorPicker.closeDialog();
+    if (this.disabled()) {
+      this.colorPicker().closeDialog();
     }
   }
 
   public openPicker(): void {
-    if (!this.disabled) {
-      this.colorPicker.openDialog();
+    if (!this.disabled()) {
+      this.colorPicker().openDialog();
     }
   }
 
   public forceHex(): void {
-    if (!this.colorInput.value.startsWith('#')) {
-      this.colorInput.setValue('#' + this.colorInput.value);
+    const colorInput = this.colorInput();
+    if (!colorInput.value.startsWith('#')) {
+      colorInput.setValue('#' + colorInput.value);
     }
   }
 
   public handlePicker(pickerValue: string): void {
-    let inputValue: string = this.colorInput.value.toUpperCase();
+    let inputValue: string = this.colorInput().value.toUpperCase();
     pickerValue = pickerValue.toUpperCase();
 
     if (inputValue.startsWith('#')) {
@@ -132,6 +132,6 @@ export class InputColorComponent implements OnInit {
         return;
       }
     }
-    this.colorInput.setValue('#' + pickerValue);
+    this.colorInput().setValue('#' + pickerValue);
   }
 }

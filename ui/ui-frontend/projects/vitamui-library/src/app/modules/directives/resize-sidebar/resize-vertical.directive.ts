@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Directive, ElementRef, HostListener, inject, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, OnInit, input } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Directive({ selector: '[vitamuiVerticalResizeSidebar]' })
@@ -43,9 +43,9 @@ export class ResizeVerticalDirective implements OnInit {
   private readonly elementRef = inject(ElementRef);
   private readonly document = inject(DOCUMENT);
 
-  @Input('vitamuiVerticalResizeSidebar') orientation: 'top' | 'bottom' = 'top';
-  @Input() paddingSize = 75;
-  @Input() minSize = 150;
+  readonly orientation = input<'top' | 'bottom'>('top', { alias: 'vitamuiVerticalResizeSidebar' });
+  readonly paddingSize = input(75);
+  readonly minSize = input(150);
 
   isDragging = false;
   siblingElement: Element;
@@ -65,12 +65,12 @@ export class ResizeVerticalDirective implements OnInit {
   onMouseMove(event: MouseEvent) {
     if (this.isDragging) {
       let height;
-      if (this.orientation === 'top') {
-        height = `height:${Math.max(event.clientY - this.paddingSize, this.minSize)}px`;
+      if (this.orientation() === 'top') {
+        height = `height:${Math.max(event.clientY - this.paddingSize(), this.minSize())}px`;
       } else {
         const { top } = this.elementRef.nativeElement.getBoundingClientRect();
         const clientHeight = this.siblingElement.clientHeight;
-        height = `height:${Math.max(top - event.clientY + clientHeight, this.minSize)}px`;
+        height = `height:${Math.max(top - event.clientY + clientHeight, this.minSize())}px`;
       }
       this.siblingElement.setAttribute('style', `flex:0 0 auto;max-height:75%;${height}`);
     }
@@ -81,7 +81,7 @@ export class ResizeVerticalDirective implements OnInit {
     const nativeElt = this.elementRef.nativeElement;
     nativeElt.id = id;
     nativeElt.className = 'vitamui-sidepanel-resize-sidebar';
-    if (this.orientation === 'top') {
+    if (this.orientation() === 'top') {
       this.siblingElement = this.document.querySelector('#' + id).previousElementSibling;
     } else {
       this.siblingElement = this.document.querySelector('#' + id).nextElementSibling;

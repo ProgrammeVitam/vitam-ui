@@ -55,7 +55,7 @@ describe('EventDisplayComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EventDisplayComponent);
     component = fixture.componentInstance;
-    component.event = {
+    fixture.componentRef.setInput('event', {
       eventData: {
         evId: 'aeeaaaaaaoem5l4iaa3lialtbt4j6yaaaaaq',
         evType: 'STEP_FAKE_INGEST.STARTED',
@@ -63,7 +63,7 @@ describe('EventDisplayComponent', () => {
         outMessg: 'Success ingest',
       },
       subEvents: [],
-    };
+    });
 
     fixture.detectChanges();
   });

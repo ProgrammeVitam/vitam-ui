@@ -1,11 +1,11 @@
-<div mat-dialog-title [class.with-progress-bar]="stepper && stepper.steps.length">
-  @if (stepper?.steps?.length) {
-    <vitamui-common-progress-bar [index]="stepper.selectedIndex" [count]="stepper.steps.length"></vitamui-common-progress-bar>
+<div mat-dialog-title [class.with-progress-bar]="stepper() && stepper().steps.length">
+  @if (stepper()?.steps?.length) {
+    <vitamui-common-progress-bar [index]="stepper().selectedIndex" [count]="stepper().steps.length"></vitamui-common-progress-bar>
   }
-  @if (subhead) {
-    <div class="text medium light">{{ subhead }}</div>
+  @if (subhead()) {
+    <div class="text medium light">{{ subhead() }}</div>
   }
-  @if (title) {
+  @if (title()) {
     <div class="text large bold" [innerHTML]="getTitle()"></div>
   }
 </div>

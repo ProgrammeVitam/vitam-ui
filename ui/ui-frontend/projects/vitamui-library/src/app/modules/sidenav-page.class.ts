@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Directive, inject, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Directive, inject, OnDestroy, viewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -49,7 +49,7 @@ export class SidenavPage<T> implements AfterViewInit, OnDestroy {
 
   openedItem: T;
 
-  @ViewChild('panel') panel: MatSidenav;
+  readonly panel = viewChild<MatSidenav>('panel');
 
   private destroy = new Subject<void>();
   protected logger = inject(Logger);
@@ -65,7 +65,7 @@ export class SidenavPage<T> implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    if (!this.panel) {
+    if (!this.panel()) {
       this.logger.error(this, "Missing <mat-sidenav> element in component's template. Please a <mat-sidenav> with a #panel attribute");
     }
   }
@@ -76,14 +76,16 @@ export class SidenavPage<T> implements AfterViewInit, OnDestroy {
 
   async openPanel(item: T) {
     this.openedItem = item;
-    if (this.panel && !this.panel.opened) {
-      await this.panel.open();
+    const panel = this.panel();
+    if (panel && !panel.opened) {
+      await panel.open();
     }
   }
 
   async closePanel() {
-    if (this.panel && this.panel.opened) {
-      await this.panel.close();
+    const panel = this.panel();
+    if (panel?.opened) {
+      await panel.close();
     }
   }
 }

@@ -38,17 +38,17 @@ import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 import {
   AfterContentInit,
   ChangeDetectorRef,
-  ContentChildren,
   Directive,
   ElementRef,
-  EventEmitter,
-  HostBinding,
   HostListener,
   inject,
-  Input,
-  Output,
-  QueryList,
-  ViewChild,
+  output,
+  viewChild,
+  contentChildren,
+  input,
+  linkedSignal,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
@@ -59,8 +59,11 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 @Directive({
   // eslint-disable-next-line @angular-eslint/directive-selector
   selector: 'editable-field-component',
+  host: {
+    '[class.readonly]': 'disabled()',
+  },
 })
-export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
+export class EditableFieldComponent implements OnChanges, AfterContentInit, ControlValueAccessor {
   protected elementRef: ElementRef;
   readonly #changeDetectorRef = inject(ChangeDetectorRef, { optional: true });
 
@@ -68,29 +71,21 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
     this.elementRef = elementRef;
   }
 
-  @Input() label: string;
+  readonly label = input<string>(undefined);
 
-  @Input({ transform: coerceBooleanProperty })
-  @HostBinding('class.readonly')
-  disabled = false;
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  readonly disabledInput = input(false, { alias: 'disabled', transform: coerceBooleanProperty });
+  readonly disabled = linkedSignal(() => this.disabledInput());
 
-  @Input()
-  set validator(validator: ValidatorFn) {
-    this.control.setValidators(validator);
-    this.control.setErrors(null);
-  }
+  readonly validator = input<ValidatorFn>(undefined);
 
-  @Input()
-  set asyncValidator(asyncValidator: AsyncValidatorFn) {
-    this.control.setAsyncValidators(asyncValidator);
-    this.control.setErrors(null);
-  }
+  readonly asyncValidator = input<AsyncValidatorFn>(undefined);
 
-  @Output() editOpen = new EventEmitter<void>();
-  @Output() editClose = new EventEmitter<boolean>();
+  readonly editOpen = output<void>();
+  readonly editClose = output<boolean>();
 
-  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ContentChildren(VitamUIFieldErrorComponent) errors: QueryList<VitamUIFieldErrorComponent>;
+  readonly cdkConnectedOverlay = viewChild(CdkConnectedOverlay);
+  readonly errors = contentChildren(VitamUIFieldErrorComponent);
 
   control = new FormControl();
   originValue: any;
@@ -123,10 +118,21 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
     return this.editMode && !this.control.pending && this.control.valid && this.control.dirty;
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['validator']) {
+      this.control.setValidators(this.validator());
+      this.control.setErrors(null);
+    }
+    if (changes['asyncValidator']) {
+      this.control.setAsyncValidators(this.asyncValidator());
+      this.control.setErrors(null);
+    }
+  }
+
   ngAfterContentInit() {
     this.control.statusChanges.subscribe(() => {
-      this.errors.forEach((error: VitamUIFieldErrorComponent) => {
-        error.show = this.control.errors ? !!this.control.errors[error.errorKey] : false;
+      this.errors().forEach((error: VitamUIFieldErrorComponent) => {
+        error.show = this.control.errors ? !!this.control.errors[error.errorKey()] : false;
       });
       // Status may change asynchronously (async validators): refresh spinner/confirm state (zoneless)
       this.#changeDetectorRef?.markForCheck();
@@ -150,7 +156,7 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
   }
 
   setDisabledState(disabled: boolean) {
-    this.disabled = disabled;
+    this.disabled.set(disabled);
   }
 
   enterEditMode() {
@@ -176,7 +182,7 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
     if (!this.editMode) {
       return;
     }
-    const overlayRef = this.cdkConnectedOverlay.overlayRef;
+    const overlayRef = this.cdkConnectedOverlay().overlayRef;
     if (this.isInside(htmlTarget, this.elementRef.nativeElement) || this.isInside(htmlTarget, overlayRef.hostElement)) {
       return;
     }

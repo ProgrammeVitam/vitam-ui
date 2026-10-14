@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import type { EditObject } from '../models/edit-object.model';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -48,30 +48,31 @@ import { DatepickerComponent } from '../../components/datepicker/datepicker.comp
   template: `
     <vitamui-datepicker
       [formControl]="control"
-      [label]="editObject.displayRule.ui.label | translate | empty"
-      [required]="editObject.required"
+      [label]="editObject().displayRule.ui.label | translate | empty"
+      [required]="editObject().required"
       pickerType="day"
       outputType="String"
       format="yyyy-MM-dd"
     >
-      <vitamui-hint [control]="editObject.control" [hint]="editObject.hint"></vitamui-hint>
+      <vitamui-hint [control]="editObject().control" [hint]="editObject().hint"></vitamui-hint>
     </vitamui-datepicker>
   `,
   imports: [HintComponent, DatepickerComponent, PipesModule, TranslatePipe, ReactiveFormsModule],
 })
 export class EditorListDateComponent implements OnInit, OnDestroy {
-  @Input({ required: true }) editObject!: EditObject;
+  readonly editObject = input.required<EditObject>();
 
   control: FormControl;
 
   private readonly subscriptions = new Subscription();
 
   ngOnInit() {
-    const values: any[] = [...this.editObject.control.value] as any[];
+    const values: any[] = [...this.editObject().control.value] as any[];
     const firstValue = values.shift();
-    const validators = Object.keys(this.editObject).reduce((acc, key) => {
-      if (key === 'required' && this.editObject[key]) acc.push(Validators.required);
-      if (key === 'pattern' && this.editObject[key]) acc.push(Validators.pattern(this.editObject[key]));
+    const validators = Object.keys(this.editObject()).reduce((acc, key) => {
+      const editObject = this.editObject();
+      if (key === 'required' && editObject[key]) acc.push(Validators.required);
+      if (key === 'pattern' && editObject[key]) acc.push(Validators.pattern(editObject[key]));
 
       return acc;
     }, []);
@@ -79,8 +80,8 @@ export class EditorListDateComponent implements OnInit, OnDestroy {
     this.control = new FormControl(firstValue, validators);
     this.subscriptions.add(
       this.control.valueChanges.subscribe((value) => {
-        this.editObject.control.setValue(value ? [value] : []);
-        this.editObject.control.markAsDirty();
+        this.editObject().control.setValue(value ? [value] : []);
+        this.editObject().control.markAsDirty();
       }),
     );
   }

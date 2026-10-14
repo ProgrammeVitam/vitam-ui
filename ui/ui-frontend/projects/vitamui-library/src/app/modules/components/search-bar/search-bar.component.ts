@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnChanges, SimpleChanges, input, model, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -45,44 +45,44 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
 })
 export class SearchBarComponent implements OnChanges {
-  @Input() placeholder: string;
+  readonly placeholder = input<string>(undefined);
 
-  @Input() name: string;
+  readonly name = input<string>(undefined);
 
-  @Input() disabled = false;
+  readonly disabled = input(false);
 
-  @Input() searchButtonColor: 'primary' | 'secondary' = 'secondary';
+  readonly searchButtonColor = input<'primary' | 'secondary'>('secondary');
 
   // eslint-disable-next-line @angular-eslint/no-output-native
-  @Output() search = new EventEmitter<string>();
+  readonly search = output<string>();
 
-  @Output() searchChanged = new EventEmitter<string>();
+  readonly searchChanged = output<string>();
 
-  @Output() clear = new EventEmitter<string>();
+  readonly clear = output<string>();
 
-  @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+  readonly searchInput = viewChild<ElementRef>('searchInput');
 
-  @Input() searchValue: string;
+  readonly searchValue = model<string>(undefined);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['searchValue']) {
-      this.searchChanged.emit(this.searchValue);
+      this.searchChanged.emit(this.searchValue());
     }
   }
 
   onSearch() {
-    this.search.emit(this.searchValue);
+    this.search.emit(this.searchValue());
   }
 
   reset() {
-    this.searchValue = null;
-    this.clear.emit();
-    this.search.emit(this.searchValue);
+    this.searchValue.set(null);
+    this.clear.emit(undefined);
+    this.search.emit(this.searchValue());
   }
 
   public onFocus() {
-    if (this.searchInput) {
-      setTimeout(() => this.searchInput.nativeElement.focus(), 0);
+    if (this.searchInput()) {
+      setTimeout(() => this.searchInput().nativeElement.focus(), 0);
     }
   }
 }

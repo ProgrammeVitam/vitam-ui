@@ -1,5 +1,5 @@
 <mat-tab-group #matTabGroup [(selectedIndex)]="tabIndex">
-  @for (category of content | keyvalue; track category) {
+  @for (category of displayedContent() | keyvalue; track category) {
     <div>
       <mat-tab label="{{ 'MENU.' + category.key.identifier | translate }}">
         <ng-template matTabContent>

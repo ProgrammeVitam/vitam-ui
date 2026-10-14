@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -317,16 +317,19 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
   criteriaCategoriesList = [STORAGE_RULE, APPRAISAL_RULE, ACCESS_RULE, DISSEMINATION_RULE, REUSE_RULE];
 
-  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
-  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchCollectComponent>;
-  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
-  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
-  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
-  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchCollectComponent>;
-  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
-  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
-  @ViewChild('deletionAlerteMessageDialog', { static: true })
-  deletionAlerteMessageDialog: TemplateRef<ArchiveSearchCollectComponent>;
+  readonly confirmImportantAllowedBulkOperationsDialog = viewChild<TemplateRef<ArchiveSearchCollectComponent>>(
+    'confirmImportantAllowedBulkOperationsDialog',
+  );
+  readonly actionsWithThresholdReachedAlerteMessageDialog = viewChild<TemplateRef<ArchiveSearchCollectComponent>>(
+    'actionsWithThresholdReachedAlerteMessageDialog',
+  );
+  readonly confirmSecondActionBigNumberOfResultsActionDialog = viewChild<TemplateRef<ArchiveSearchCollectComponent>>(
+    'confirmSecondActionBigNumberOfResultsActionDialog',
+  );
+  readonly reclassificationAlerteMessageDialog = viewChild<TemplateRef<ArchiveSearchCollectComponent>>(
+    'reclassificationAlerteMessageDialog',
+  );
+  readonly deletionAlerteMessageDialog = viewChild<TemplateRef<ArchiveSearchCollectComponent>>('deletionAlerteMessageDialog');
 
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
   discussionEntities: DiscussionEntity[];
@@ -605,7 +608,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         (this.isAllChecked && totalHits - this.itemNotSelected > reclassificationThreshold) ||
         this.itemSelected > reclassificationThreshold
       ) {
-        const dialogToOpen = this.reclassificationAlerteMessageDialog;
+        const dialogToOpen = this.reclassificationAlerteMessageDialog();
         const dialogRef = this.dialog.open(dialogToOpen);
         this.subscriptions.add(
           dialogRef
@@ -1168,7 +1171,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   private bulkOperationWarningWorkflow(operation: () => void): void {
-    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog();
     const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount);
 
     dialogConfirmActionWithImportantAllowedCountRef
@@ -1178,7 +1181,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
   }
 
   private bulkOperationErrorWorkflow(): void {
-    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog);
+    const dialogRef = this.dialog.open(this.actionsWithThresholdReachedAlerteMessageDialog());
 
     this.actionsWithThresholdReachedAlerteMessageDialogSubscription = dialogRef
       .afterClosed()
@@ -1218,7 +1221,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       const { deletionThreshold } = this.vitamConfigurationService.tenantConfig();
 
       if ((this.isAllChecked && totalHits - this.itemNotSelected > deletionThreshold) || this.itemSelected > deletionThreshold) {
-        const dialogToOpen = this.deletionAlerteMessageDialog;
+        const dialogToOpen = this.deletionAlerteMessageDialog();
         const dialogRef = this.dialog.open(dialogToOpen);
         this.subscriptions.add(
           dialogRef
@@ -1234,7 +1237,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
               this.listOfUACriteriaSearch,
               this.tenantIdentifier,
               this.currentPage,
-              this.confirmSecondActionBigNumberOfResultsActionDialog,
+              this.confirmSecondActionBigNumberOfResultsActionDialog(),
             ),
           this.vitamConfigurationService.tenantConfig()?.deletionThreshold,
         );

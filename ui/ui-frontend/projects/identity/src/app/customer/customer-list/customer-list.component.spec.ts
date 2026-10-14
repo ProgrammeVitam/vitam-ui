@@ -35,7 +35,7 @@ import type { MockedObject } from 'vitest';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Directive, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -59,8 +59,7 @@ import { OwnerListComponent } from './owner-list/owner-list.component';
   selector: '[vitamuiCommonCollapseTriggerFor]',
 })
 class CollapseTriggerForStubDirective {
-  @Input()
-  vitamuiCommonCollapseTriggerFor: any;
+  readonly vitamuiCommonCollapseTriggerFor = input<any>(undefined);
 }
 
 @Directive({
@@ -69,8 +68,7 @@ class CollapseTriggerForStubDirective {
   exportAs: 'vitamuiCommonCollapse',
 })
 class CollapseStubDirective {
-  @Input()
-  vitamuiCommonCollapse: any;
+  readonly vitamuiCommonCollapse = input<any>(undefined);
 }
 
 @Component({
@@ -79,8 +77,7 @@ class CollapseStubDirective {
   imports: [MatProgressSpinnerModule, VitamUICommonTestModule],
 })
 class OwnerListStubComponent {
-  @Input()
-  customer: any;
+  readonly customer = input<any>(undefined);
 }
 
 let component: CustomerListComponent;

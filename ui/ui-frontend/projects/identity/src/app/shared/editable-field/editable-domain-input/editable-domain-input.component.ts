@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, forwardRef, inject, Input, Output } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, output, input, linkedSignal } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 import { EditableFieldComponent } from 'vitamui-library';
@@ -58,24 +58,19 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
   imports: [CdkOverlayOrigin, NgStyle, DomainsInputComponent, ReactiveFormsModule, MatProgressSpinner, CdkConnectedOverlay, TranslatePipe],
 })
 export class EditableDomainInputComponent extends EditableFieldComponent {
-  @Input()
-  set defaultDomain(defaultDomain: string) {
-    this._defaultDomain = defaultDomain;
-    this.selected = defaultDomain;
-  }
-  get defaultDomain(): string {
-    return this._defaultDomain;
-  }
-  private _defaultDomain: string;
+  readonly defaultDomain = input<string>();
+  protected readonly defaultDomainState = linkedSignal(() => this.defaultDomain());
 
-  @Output() defaultDomainChange = new EventEmitter<string>();
+  readonly defaultDomainChange = output<string>();
 
-  selected: string;
+  readonly selected = linkedSignal(() => this.defaultDomain());
 
   private domainInputClicked = false;
 
   override get canConfirm(): boolean {
-    return this.editMode && !this.control.pending && this.control.valid && (this.control.dirty || this.selected !== this.defaultDomain);
+    return (
+      this.editMode && !this.control.pending && this.control.valid && (this.control.dirty || this.selected() !== this.defaultDomainState())
+    );
   }
 
   constructor() {
@@ -89,13 +84,13 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
       return;
     }
     super.confirm();
-    this.defaultDomain = this.selected;
-    this.defaultDomainChange.emit(this.defaultDomain);
+    this.defaultDomainState.set(this.selected());
+    this.defaultDomainChange.emit(this.defaultDomainState());
   }
 
   override cancel() {
     super.cancel();
-    this.selected = this.defaultDomain;
+    this.selected.set(this.defaultDomainState());
   }
 
   override onClick(target: HTMLElement) {
@@ -107,7 +102,7 @@ export class EditableDomainInputComponent extends EditableFieldComponent {
 
       return;
     }
-    const overlayRef = this.cdkConnectedOverlay.overlayRef;
+    const overlayRef = this.cdkConnectedOverlay().overlayRef;
     if (this.isInside(target, this.elementRef.nativeElement) || this.isInside(target, overlayRef.hostElement)) {
       return;
     }

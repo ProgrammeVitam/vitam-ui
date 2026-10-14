@@ -86,7 +86,7 @@ describe('SchemaInformationTabComponent', () => {
 
     fixture = TestBed.createComponent(SchemaInformationTabComponent);
     component = fixture.componentInstance;
-    component.inputSchema = schemaValue;
+    fixture.componentRef.setInput('inputSchema', schemaValue);
     fixture.detectChanges();
   });
 

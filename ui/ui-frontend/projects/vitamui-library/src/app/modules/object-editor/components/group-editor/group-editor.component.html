@@ -1,7 +1,7 @@
-@if (editObject?.key) {
-  <vitamui-common-accordion [opened]="editObject.open">
-    <span class="title" [ngClass]="{ empty: isEmptyObject(editObject?.value) }">{{
-      editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required
+@if (editObject()?.key) {
+  <vitamui-common-accordion [opened]="editObject().open">
+    <span class="title" [ngClass]="{ empty: isEmptyObject(editObject()?.value) }">{{
+      editObject().displayRule.ui.label | translate | empty | appendStar: editObject().required
     }}</span>
     <div class="title-extra v-col align-items-center justify-content-end favorite-entry">
       @if (favoriteEntry) {
@@ -50,8 +50,8 @@
       }
     </div>
   }
-  @if (editObject && (editObject.value === null || editObject.value === undefined)) {
-    <div>{{ editObject.value | empty }}</div>
+  @if (editObject() && (editObject().value === null || editObject().value === undefined)) {
+    <div>{{ editObject().value | empty }}</div>
   }
 }
 
@@ -80,8 +80,8 @@
       }
     </div>
   }
-  @if (editObject && (editObject.value === null || editObject.value === undefined)) {
-    <div>{{ editObject.value | empty }}</div>
+  @if (editObject() && (editObject().value === null || editObject().value === undefined)) {
+    <div>{{ editObject().value | empty }}</div>
   }
 </ng-template>
 

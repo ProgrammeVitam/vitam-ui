@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, signal } from '@angular/core';
+import { Component, signal, input } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-field-error',
@@ -45,7 +45,7 @@ import { Component, Input, signal } from '@angular/core';
   imports: [],
 })
 export class VitamUIFieldErrorComponent {
-  @Input() errorKey: string;
+  readonly errorKey = input<string>(undefined);
 
   // Backed by a signal: it is set from statusChanges subscriptions of parent components (zoneless)
   readonly #show = signal(false);

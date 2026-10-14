@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, viewChild, input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, forkJoin, of, Subject } from 'rxjs';
@@ -101,7 +101,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() tenantIdentifier: number;
+  readonly tenantIdentifier = input<number>(undefined);
 
   public form: FormGroup;
   public allProducerServices = new FormControl(false);
@@ -122,8 +122,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
   private readonly destroyer$ = new Subject<void>();
 
-  @ViewChild('stepper')
-  private stepper: CdkStepper;
+  private readonly stepper = viewChild<CdkStepper>('stepper');
 
   constructor() {
     const translateService = inject(TranslateService);
@@ -418,7 +417,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
   public initPeriodScreen() {
     this.refiningStep = true;
-    setTimeout(() => this.stepper.next()); // Go to next step after it's been created (thanks to refiningStep=true)
+    setTimeout(() => this.stepper().next()); // Go to next step after it's been created (thanks to refiningStep=true)
     this.form.get('startDate').setValidators([Validators.required]);
   }
 
@@ -438,7 +437,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   canSubmit(): boolean {
-    if (this.stepper.selectedIndex === 0) return this.isStepOneValid();
+    if (this.stepper().selectedIndex === 0) return this.isStepOneValid();
 
     const isOriginatingAgencyValid =
       this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY &&

@@ -12,17 +12,17 @@
   ></app-classification-tree>
 </div>
 
-@if (searchHasMatches) {
+@if (searchHasMatches()) {
   <div vitamuiVerticalResizeSidebar="top"></div>
 }
 
-@if (searchHasMatches) {
+@if (searchHasMatches()) {
   <div class="vitamui-sidepanel-header flex-column">
     <app-leaves-tree
-      [transactionId]="transactionId"
+      [transactionId]="transactionId()"
       [nestedDataSourceLeaves]="nestedDataSourceLeaves"
       [searchRequestResultFacets]="requestResultFacets"
-      [searchRequestTotalResults]="searchRequestTotalResults"
+      [searchRequestTotalResults]="searchRequestTotalResults()"
       (addToSearchCriteria)="addToSearchCriteria($event)"
       (showNodeDetail)="fetchUaFromNodeAndShowDetails($event, 'LEAVE')"
     >

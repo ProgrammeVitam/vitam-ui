@@ -42,9 +42,8 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren,
+  viewChild,
+  viewChildren,
 } from '@angular/core';
 import { MatListOption, MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
@@ -116,12 +115,12 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly destroyer$ = new Subject<void>();
   private readonly ngxAppArray: NgxTranslateApp[] = []; // Translated apps array from en / fr json files
 
-  @ViewChild('searchBar', { static: true }) searchBar: SearchBarComponent;
-  @ViewChildren(MatSelectionList) selectedList: QueryList<MatSelectionList>;
+  readonly searchBar = viewChild<SearchBarComponent>('searchBar');
+  readonly selectedList = viewChildren(MatSelectionList);
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowRight') {
-      if (this.tabSelectedIndex < this.selectedList.length - 1) {
+      if (this.tabSelectedIndex < this.selectedList().length - 1) {
         this.tabSelectedIndex++;
       }
     } else if (event.key === 'ArrowLeft') {
@@ -177,7 +176,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.searchBar.onFocus();
+    this.searchBar().onFocus();
   }
 
   ngOnDestroy() {
@@ -215,7 +214,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public resetSearch(): void {
     this.filteredApplications = null;
     this.criteria = '';
-    this.searchBar.onFocus();
+    this.searchBar().onFocus();
   }
 
   public close(): void {
@@ -243,7 +242,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tabSelectedIndex = value.index; // when clicking
     }
     setTimeout(() => {
-      const firstElem = this.selectedList.find((_select, index) => index === this.tabSelectedIndex);
+      const firstElem = this.selectedList().find((_select, index) => index === this.tabSelectedIndex);
       if (firstElem && firstElem.options && firstElem.options.first) {
         firstElem.options.first.focus();
       }

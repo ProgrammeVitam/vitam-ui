@@ -7,12 +7,12 @@
       type="text"
       size="10"
       [formControl]="control"
-      [attr.placeholder]="placeholder"
+      [attr.placeholder]="placeholder()"
       (blur)="onTouched()"
       (keydown.enter)="add()"
     />
     @if (control.pending) {
-      <mat-spinner class="ml-2" [diameter]="spinnerDiameter"></mat-spinner>
+      <mat-spinner class="ml-2" [diameter]="spinnerDiameter()"></mat-spinner>
     }
   </div>
 
@@ -35,7 +35,7 @@
 
 <div class="vitamui-chip-list ml-4">
   @for (domain of domains; track domain) {
-    <div class="vitamui-chip" (click)="setSelected(domain)" [class.active]="domain === selected">
+    <div class="vitamui-chip" (click)="setSelected(domain)" [class.active]="domain === selectedState()">
       <div class="vitamui-chip-content">{{ domain }}</div>
       <div class="vitamui-remove-chip" (click)="remove(domain)">
         <i class="material-icons">clear</i>

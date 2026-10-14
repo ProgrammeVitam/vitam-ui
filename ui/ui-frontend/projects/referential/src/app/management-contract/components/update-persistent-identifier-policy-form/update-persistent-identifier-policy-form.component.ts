@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, signal } from '@angular/core';
+import { Component, inject, OnChanges, SimpleChanges, signal, input, output } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   ManagementContractValidationErrors,
@@ -67,9 +67,9 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
   private readonly formBuilder = inject(FormBuilder);
   private readonly translateService = inject(TranslateService);
 
-  @Input() form: FormGroup;
-  @Output() objectUsagePolicyAdded: EventEmitter<void> = new EventEmitter<void>();
-  @Output() objectUsagePolicyRemoved: EventEmitter<void> = new EventEmitter<void>();
+  readonly form = input<FormGroup>(undefined);
+  readonly objectUsagePolicyAdded = output<void>();
+  readonly objectUsagePolicyRemoved = output<void>();
 
   authorityErrorMap = {
     [ManagementContractValidationErrors.INVALID_AUTHORITY]: this.translateService.instant(
@@ -112,13 +112,14 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['form']) {
       this.updateAddButtonState();
-      this.isExistingTypeOption.set(this.form.get('policyTypeOption').value !== '');
-      this.objectUsagePoliciesToggle.set(this.form.get('shouldConcernObjects').value);
+      const form = this.form();
+      this.isExistingTypeOption.set(form.get('policyTypeOption').value !== '');
+      this.objectUsagePoliciesToggle.set(form.get('shouldConcernObjects').value);
 
-      this.form.get('shouldConcernObjects').valueChanges.subscribe((shouldConcernObjects) => {
+      form.get('shouldConcernObjects').valueChanges.subscribe((shouldConcernObjects) => {
         this.objectUsagePoliciesToggle.set(shouldConcernObjects);
 
-        const formArray = this.form.get('objectUsagePolicies') as FormArray;
+        const formArray = this.form().get('objectUsagePolicies') as FormArray;
         if (!shouldConcernObjects) {
           while (formArray.length !== 0) {
             formArray.removeAt(0);
@@ -130,15 +131,17 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
         }
       });
 
-      this.form.get('objectUsagePolicies').valueChanges.subscribe((objectUsagePolicies) => {
+      form.get('objectUsagePolicies').valueChanges.subscribe((objectUsagePolicies) => {
         this.objectUsageOptions.forEach(
           (objectUsageOption) => (objectUsageOption.disabled = this.isObjectUsageOptionDisabled(objectUsageOption.key)),
         );
 
-        this.form.get('shouldConcernObjects').setValue(objectUsagePolicies.length > 0);
+        this.form()
+          .get('shouldConcernObjects')
+          .setValue(objectUsagePolicies.length > 0);
       });
 
-      this.form.get('policyTypeOption').valueChanges.subscribe((policyTypeOption: string) => {
+      form.get('policyTypeOption').valueChanges.subscribe((policyTypeOption: string) => {
         this.isExistingTypeOption.set(policyTypeOption !== '');
       });
     }
@@ -194,7 +197,7 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
   }
 
   protected get objectUsagePolicies(): FormArray {
-    return this.form.get('objectUsagePolicies') as FormArray;
+    return this.form().get('objectUsagePolicies') as FormArray;
   }
 
   private updateAddButtonState(): void {

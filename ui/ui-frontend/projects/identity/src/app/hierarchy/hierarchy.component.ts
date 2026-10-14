@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Profile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
@@ -67,7 +67,7 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   public search: string;
   private tenantIdentifier: number;
 
-  @ViewChild(HierarchyListComponent, { static: true }) hierarchyListComponent: HierarchyListComponent;
+  readonly hierarchyListComponent = viewChild(HierarchyListComponent);
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
@@ -94,8 +94,9 @@ export class HierarchyComponent extends SidenavPage<Profile> implements OnInit {
   }
 
   private refreshList(): void {
-    if (this.hierarchyListComponent) {
-      this.hierarchyListComponent.search();
+    const hierarchyListComponent = this.hierarchyListComponent();
+    if (hierarchyListComponent) {
+      hierarchyListComponent.search();
     }
   }
 }

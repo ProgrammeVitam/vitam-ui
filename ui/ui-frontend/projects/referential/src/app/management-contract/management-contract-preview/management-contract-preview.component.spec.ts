@@ -77,7 +77,7 @@ describe('ManagementContractPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ManagementContractPreviewComponent);
     component = fixture.componentInstance;
-    component.inputManagementContract = {
+    fixture.componentRef.setInput('inputManagementContract', {
       id: 'contractId',
       name: 'Contrat de gestion avec stockage',
       identifier: 'MCDefaultStorageAll',
@@ -99,7 +99,7 @@ describe('ManagementContractPreviewComponent', () => {
         initialVersion: true,
         intermediaryVersionEnum: IntermediaryVersionEnum.ALL,
       },
-    };
+    });
     fixture.detectChanges();
   });
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, signal, SimpleChanges, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -61,9 +61,9 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   private readonly logbookService = inject(LogbookService);
   private readonly route = inject(ActivatedRoute);
 
-  @Input() collectionsMap: Map<string, string>;
-  @Input() identifiers: string[];
-  @Input() filteringByIdentifier = true;
+  readonly collectionsMap = input<Map<string, string>>(undefined);
+  readonly identifiers = input<string[]>(undefined);
+  readonly filteringByIdentifier = input(true);
 
   events = signal<HistoryEvent[]>([]);
   loading = signal(false);
@@ -71,11 +71,12 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   private readonly isDestroyed$ = new Subject<void>();
 
   ngOnChanges(changes: SimpleChanges) {
+    const collectionsMap = this.collectionsMap();
     if (
       (changes.hasOwnProperty('identifiers') || changes.hasOwnProperty('collectionsMap')) &&
-      this.identifiers &&
-      this.collectionsMap &&
-      this.collectionsMap.size > 0
+      this.identifiers() &&
+      collectionsMap &&
+      collectionsMap.size > 0
     ) {
       this.initEvent();
     }
@@ -93,7 +94,7 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
         map((paramMap) =>
           paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier),
         ),
-        switchMap((tenantIdentifier) => this.logbookService.listHistoryOperations(this.collectionsMap, tenantIdentifier)),
+        switchMap((tenantIdentifier) => this.logbookService.listHistoryOperations(this.collectionsMap(), tenantIdentifier)),
         takeUntil(this.isDestroyed$),
       )
       .subscribe(
@@ -101,7 +102,7 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
           this.events.set(
             results
               // FIXME: shouldn't we filter on API side?
-              .filter((event) => (this.filteringByIdentifier ? this.filterByIdentifier(event) : true))
+              .filter((event) => (this.filteringByIdentifier() ? this.filterByIdentifier(event) : true))
               .slice(0, EVENT_LIMIT),
           );
           this.loading.set(false);
@@ -111,6 +112,6 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   }
 
   private filterByIdentifier(event: HistoryEvent): boolean {
-    return event.obId && this.identifiers.includes(event.obId);
+    return event.obId && this.identifiers().includes(event.obId);
   }
 }

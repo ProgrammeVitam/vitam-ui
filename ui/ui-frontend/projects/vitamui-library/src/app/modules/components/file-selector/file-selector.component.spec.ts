@@ -35,21 +35,34 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileSelectorComponent } from './file-selector.component';
+import { FileSelectorComponent, FileValidatorFunction } from './file-selector.component';
 import { PipesModule } from '../../pipes/pipes.module';
 import { LoggerModule } from '../../logger/logger.module';
 import { CustomFile } from '../../../../lib/models/custom-file';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 
 @Component({
-  template: ` <vitamui-file-selector [formControl]="control" /> `,
+  template: `
+    <vitamui-file-selector
+      [formControl]="control"
+      [multiple]="multiple"
+      [directoryMode]="directoryMode"
+      [maxSizeInBytes]="maxSizeInBytes"
+      [extensions]="extensions"
+      [fileValidators]="fileValidators"
+    />
+  `,
   imports: [FileSelectorComponent, ReactiveFormsModule],
 })
 class TestHostComponent {
   control: FormControl = new FormControl();
-  @ViewChild(FileSelectorComponent, { static: false })
-  component: FileSelectorComponent;
+  multiple = false;
+  directoryMode = false;
+  maxSizeInBytes: number;
+  extensions: string[];
+  fileValidators: FileValidatorFunction | FileValidatorFunction[];
+  readonly component = viewChild(FileSelectorComponent);
 }
 
 describe('FileSelectorComponent', () => {
@@ -65,7 +78,7 @@ describe('FileSelectorComponent', () => {
     fixture = TestBed.createComponent(TestHostComponent);
     control = fixture.componentInstance.control;
     fixture.detectChanges();
-    component = fixture.componentInstance.component;
+    component = fixture.componentInstance.component();
   });
 
   async function waitForValidation() {
@@ -77,17 +90,19 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should reset the input after file selection', async () => {
-    component['fileSelector'] = { nativeElement: { value: 'test' } };
+    const fileSelector = { nativeElement: { value: 'test' } };
+    (component as any).fileSelector = () => fileSelector;
     const mockFiles = [file('test.json', 'content')];
     await component.handleFilesSelection(mockFiles);
-    expect(component['fileSelector'].nativeElement.value).toBe('');
+    expect(fileSelector.nativeElement.value).toBe('');
   });
 
   it('should reset the input after directory selection', async () => {
-    component['directorySelector'] = { nativeElement: { value: 'test' } };
+    const directorySelector = { nativeElement: { value: 'test' } };
+    (component as any).directorySelector = () => directorySelector;
     const mockFiles = [file('test', 'content')];
     await component.handleFilesSelection(mockFiles);
-    expect(component['directorySelector'].nativeElement.value).toBe('');
+    expect(directorySelector.nativeElement.value).toBe('');
   });
 
   it('should emit filesChanged event with updated files', async () => {
@@ -100,7 +115,8 @@ describe('FileSelectorComponent', () => {
   it('should emit filesChanged event with updated files when adding to an existing list', async () => {
     const file1 = file('file1.json');
     const file2 = file('file2.json');
-    component.multiple = true;
+    fixture.componentInstance.multiple = true;
+    fixture.detectChanges();
     control.setValue([file1]);
 
     vi.spyOn(component.filesChanged, 'emit');
@@ -122,7 +138,8 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should remove all files within a directory', async () => {
-    component.directoryMode = true;
+    fixture.componentInstance.directoryMode = true;
+    fixture.detectChanges();
 
     await component.handleFilesSelection([file('dir1/file1.json'), file('dir1/file2.json')]);
     expect(control.value.length).toBe(2);
@@ -134,7 +151,8 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should remove only the specified directory and keep others', async () => {
-    component.directoryMode = true;
+    fixture.componentInstance.directoryMode = true;
+    fixture.detectChanges();
 
     await component.handleFilesSelection([file('dir1/file1.json'), file('dir2/file2.json')]);
 
@@ -148,7 +166,8 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should allow multiple files when multiple=true', async () => {
-    component.multiple = true;
+    fixture.componentInstance.multiple = true;
+    fixture.detectChanges();
 
     await component.handleFilesSelection([file('file1.json'), file('file2.json')]);
     await waitForValidation();
@@ -159,7 +178,8 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should have an error if multiples files are added when multiple=false', async () => {
-    component.multiple = false;
+    fixture.componentInstance.multiple = false;
+    fixture.detectChanges();
 
     await component.handleFilesSelection([file('file1.json'), file('file2.json')]);
 
@@ -170,8 +190,9 @@ describe('FileSelectorComponent', () => {
   });
 
   it('should sort correctly', async () => {
-    component.multiple = true;
-    component.directoryMode = true;
+    fixture.componentInstance.multiple = true;
+    fixture.componentInstance.directoryMode = true;
+    fixture.detectChanges();
 
     await component.handleFilesSelection([
       file('yyyy.json'),
@@ -212,42 +233,45 @@ describe('FileSelectorComponent', () => {
 
   describe('Global validations', () => {
     it('should have an error if file size is greater than max allowed size', async () => {
-      component.multiple = false;
-      component.maxSizeInBytes = 10;
+      fixture.componentInstance.multiple = false;
+      fixture.componentInstance.maxSizeInBytes = 10;
+      fixture.detectChanges();
 
-      await component.handleFilesSelection([file('file1.json', 'X'.repeat(component.maxSizeInBytes + 1))]);
+      await component.handleFilesSelection([file('file1.json', 'X'.repeat(component.maxSizeInBytes() + 1))]);
 
       expect(control.valid).toBe(false);
       expect(control.hasError('maxSizeInBytes')).toBe(true);
       expect(control.getError('maxSizeInBytes')).toEqual({
-        size: `${component.maxSizeInBytes + 1} octets`,
-        maxSize: `${component.maxSizeInBytes} octets`,
+        size: `${component.maxSizeInBytes() + 1} octets`,
+        maxSize: `${component.maxSizeInBytes()} octets`,
       });
     });
 
     it('should have an error if cumulative file size is greater than max allowed size', async () => {
-      component.multiple = true;
-      component.maxSizeInBytes = 20;
+      fixture.componentInstance.multiple = true;
+      fixture.componentInstance.maxSizeInBytes = 20;
+      fixture.detectChanges();
 
       await component.handleFilesSelection([
-        file('dir1/file1.json', 'X'.repeat(component.maxSizeInBytes / 4)),
-        file('dir1/file2.json', 'X'.repeat(component.maxSizeInBytes / 4)),
-        file('dir2/file.json', 'X'.repeat(component.maxSizeInBytes / 4)),
-        file('file.json', 'X'.repeat(component.maxSizeInBytes / 4 + 1)),
+        file('dir1/file1.json', 'X'.repeat(component.maxSizeInBytes() / 4)),
+        file('dir1/file2.json', 'X'.repeat(component.maxSizeInBytes() / 4)),
+        file('dir2/file.json', 'X'.repeat(component.maxSizeInBytes() / 4)),
+        file('file.json', 'X'.repeat(component.maxSizeInBytes() / 4 + 1)),
       ]);
 
       expect(control.valid).toBe(false);
       expect(control.hasError('maxSizeInBytes')).toBe(true);
       expect(control.getError('maxSizeInBytes')).toEqual({
-        size: `${component.maxSizeInBytes + 1} octets`,
-        maxSize: `${component.maxSizeInBytes} octets`,
+        size: `${component.maxSizeInBytes() + 1} octets`,
+        maxSize: `${component.maxSizeInBytes()} octets`,
       });
     });
   });
 
   describe('Individual file validation', () => {
     it('should show an error for invalid extension', async () => {
-      component.extensions = ['.json'];
+      fixture.componentInstance.extensions = ['.json'];
+      fixture.detectChanges();
 
       await component.handleFilesSelection([file('file1.txt')]);
       await waitForValidation();
@@ -259,7 +283,8 @@ describe('FileSelectorComponent', () => {
 
     describe('Duplication', () => {
       beforeEach(() => {
-        component.multiple = true;
+        fixture.componentInstance.multiple = true;
+        fixture.detectChanges();
       });
 
       it('should show an error for duplicated file', async () => {
@@ -297,7 +322,8 @@ describe('FileSelectorComponent', () => {
     });
 
     it('should show an error for a directory when only files are allowed', async () => {
-      component.directoryMode = false;
+      fixture.componentInstance.directoryMode = false;
+      fixture.detectChanges();
 
       await component.handleFilesSelection([file('dir/file.txt')]);
       await waitForValidation();
@@ -308,10 +334,11 @@ describe('FileSelectorComponent', () => {
     });
 
     it('should show custom validation error', async () => {
-      component.fileValidators = (file: File) =>
+      fixture.componentInstance.fileValidators = (file: File) =>
         Promise.resolve(
           file.name === 'file1.json' ? { fileErrors: { 'CUSTOM.ERROR': true }, controlErrors: { invalidFiles: true } } : null,
         );
+      fixture.detectChanges();
 
       await component.handleFilesSelection([file('file1.json')]);
       await waitForValidation();
@@ -322,10 +349,11 @@ describe('FileSelectorComponent', () => {
     });
 
     it('should accumulate errors', async () => {
-      component.multiple = true;
-      component.extensions = ['.png'];
-      component.fileValidators = (file: File) =>
+      fixture.componentInstance.multiple = true;
+      fixture.componentInstance.extensions = ['.png'];
+      fixture.componentInstance.fileValidators = (file: File) =>
         Promise.resolve(file.name === 'file2.json' ? { fileErrors: { 'CUSTOM.ERROR': true }, controlErrors: { toto: true } } : null);
+      fixture.detectChanges();
 
       await component.handleFilesSelection([file('file1.txt'), file('file2.json')]);
       await waitForValidation();

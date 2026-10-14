@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { TooltipDirective } from '../common-tooltip/tooltip.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -46,28 +46,27 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   imports: [NgClass, TooltipDirective, NgTemplateOutlet, MatProgressSpinner],
 })
 export class VitamuiSidenavHeaderComponent {
-  @Input() icon: string;
+  readonly icon = input<string>(undefined);
 
-  @Input() loading: boolean;
+  readonly loading = input<boolean>(undefined);
 
-  @Input() badge: 'green' | 'grey' | 'orange' | 'red' | 'black';
+  readonly badge = input<'green' | 'grey' | 'orange' | 'red' | 'black'>(undefined);
 
-  @Input() title: string;
+  readonly title = input<string>(undefined);
 
-  @Input() subtitle: string;
+  readonly subtitle = input<string>(undefined);
 
-  @Output() onclose = new EventEmitter<undefined>();
+  readonly onclose = output<undefined>();
 
-  @Input() hasToolTipOnTitle: boolean;
+  readonly hasToolTipOnTitle = input<boolean>(undefined);
 
-  @Input() toolTipTitleText: string;
+  readonly toolTipTitleText = input<string>(undefined);
 
-  @Input() toolTipTitleDuration: number;
+  readonly toolTipTitleDuration = input<number>(undefined);
 
-  @Input()
-  extended: boolean;
+  readonly extended = input<boolean>(undefined);
 
-  @Input() actionsBelowTitle = false;
+  readonly actionsBelowTitle = input(false);
 
   constructor() {}
 }

@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TestBed } from '@angular/core/testing';
 import { AutocompletePositionDirective } from './autocomplete-position.directive';
 
 describe('AutocompletePositionDirective', () => {
   it('should create an instance', () => {
-    const directive = new AutocompletePositionDirective();
+    const directive = TestBed.runInInjectionContext(() => new AutocompletePositionDirective());
     expect(directive).toBeTruthy();
   });
 });

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -48,29 +48,15 @@ const PROGRESS_BAR_MULTIPLIER = 100;
   imports: [CommonModule, MatProgressBarModule, TranslatePipe],
 })
 export class CommonProgressBarComponent {
-  @Input() hideCounter = false;
+  readonly hideCounter = input(false);
 
-  @Input() set index(val: number) {
-    this._index = val;
-    this.percent = this.getProgressValue(this._index, this._count);
-  }
-  get index(): number {
-    return this._index;
-  }
+  readonly index = input<number>();
+  readonly count = input<number>();
+  readonly percent = input<number>(undefined);
 
-  @Input() set count(val: number) {
-    this._count = val;
-    this.percent = this.getProgressValue(this._index, this._count);
-  }
-
-  get count(): number {
-    return this._count;
-  }
-
-  @Input() percent: number;
-
-  private _count: number;
-  private _index: number;
+  protected readonly progressValue = computed(() =>
+    this.index() !== undefined || this.count() !== undefined ? this.getProgressValue(this.index(), this.count()) : this.percent(),
+  );
 
   getProgressValue(index: number, count: number): number {
     return ((index + 1) / count) * PROGRESS_BAR_MULTIPLIER;

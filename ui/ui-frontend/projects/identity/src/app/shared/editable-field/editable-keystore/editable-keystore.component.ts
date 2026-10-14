@@ -36,7 +36,7 @@
  */
 import { EditableFieldComponent, IdentityProvider, newFile } from 'vitamui-library';
 
-import { Component, ElementRef, inject, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ElementRef, inject, ChangeDetectorRef, input, viewChild } from '@angular/core';
 
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
@@ -54,12 +54,12 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
   private readonly identityProviderService = inject(IdentityProviderService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() identityProvider: IdentityProvider;
+  readonly identityProvider = input<IdentityProvider>(undefined);
 
   file: File;
   override originValue = newFile([''], 'keystore.jks');
 
-  @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
+  readonly fileInput = viewChild<ElementRef>('fileInput');
 
   override get canConfirm() {
     return this.editMode && !!this.file && this.control.valid;
@@ -79,7 +79,7 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
     if (!this.canConfirm) {
       return;
     }
-    this.identityProviderService.updateKeystore(this.identityProvider.id, this.file, this.control.value).subscribe(
+    this.identityProviderService.updateKeystore(this.identityProvider().id, this.file, this.control.value).subscribe(
       () => {
         this.originValue = this.file;
         this.cancel();
@@ -98,7 +98,7 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
     }
     this.editMode = false;
     this.file = null;
-    this.fileInput.nativeElement.value = null;
+    this.fileInput().nativeElement.value = null;
     this.control.reset();
   }
 }

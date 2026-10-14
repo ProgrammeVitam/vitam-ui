@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -75,8 +75,7 @@ import { RuleComponent } from './rule.component';
   ],
 })
 class RulePreviewStubComponent {
-  @Input()
-  rule: Rule;
+  readonly rule = input<Rule>(undefined);
 }
 
 @Component({
@@ -95,11 +94,9 @@ class RulePreviewStubComponent {
   ],
 })
 class RuleListStubComponent {
-  @Input()
-  search: string;
+  readonly search = input<string>(undefined);
 
-  @Input()
-  filters: string;
+  readonly filters = input<string>(undefined);
 }
 
 describe('RuleComponent', () => {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,11 +50,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./management-contract-storage-tab.component.scss'],
   imports: [ReactiveFormsModule, InputComponent, MatProgressSpinner, TranslatePipe],
 })
-export class ManagementContractStorageTabComponent implements OnDestroy {
+export class ManagementContractStorageTabComponent implements OnChanges, OnDestroy {
   private readonly formBuilder = inject(FormBuilder);
   private readonly managementContractService = inject(ManagementContractService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
   form: FormGroup;
   submited = signal(false);
   showSpinner = signal(false);
@@ -66,8 +66,63 @@ export class ManagementContractStorageTabComponent implements OnDestroy {
 
   statusControlValueChangesSubscribe: Subscription;
 
-  @Input()
-  set inputManagementContract(managementContract: ManagementContract) {
+  readonly inputManagementContract = model<ManagementContract>(undefined);
+
+  previousValue = (): StorageStrategy => {
+    return this.inputManagementContract()?.storage;
+  };
+
+  constructor() {
+    this.form = this.formBuilder.group({
+      unitStrategy: [null, Validators.required],
+      objectGroupStrategy: [null, Validators.required],
+      objectStrategy: [null, Validators.required],
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['inputManagementContract']) {
+      this.setInputManagementContract(this.inputManagementContract());
+    }
+  }
+
+  unchanged(): boolean {
+    // if (this.previousValue() !== undefined) {
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    this.updated.emit(!unchanged);
+    return unchanged;
+    // }
+  }
+
+  prepareSubmit(): Observable<ManagementContract> {
+    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+      filter((formData) => !isEmpty(formData)),
+      map((formData) => extend({ id: this.inputManagementContract().id, identifier: this.inputManagementContract().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) => {
+        return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
+      }),
+    );
+  }
+
+  onSubmit() {
+    this.submited.set(true);
+    this.showSpinner.set(true);
+    this.prepareSubmit().subscribe(
+      () => {
+        this.managementContractService.get(this.inputManagementContract().identifier).subscribe((response) => {
+          this.submited.set(false);
+          this.showSpinner.set(false);
+          this.setInputManagementContract(response);
+        });
+      },
+      () => {
+        this.submited.set(false);
+        this.showSpinner.set(false);
+      },
+    );
+  }
+
+  private setInputManagementContract(managementContract: ManagementContract) {
     if (managementContract.storage && !managementContract.storage.unitStrategy) {
       managementContract.storage.unitStrategy = '';
     }
@@ -82,64 +137,10 @@ export class ManagementContractStorageTabComponent implements OnDestroy {
       managementContract.storage = this.storageStrategy;
     }
 
-    this._inputManagementContract = managementContract;
+    this.inputManagementContract.set(managementContract);
 
-    this.resetForm(this.inputManagementContract);
+    this.resetForm(this.inputManagementContract());
     this.updated.emit(false);
-  }
-
-  get inputManagementContract(): ManagementContract {
-    return this._inputManagementContract;
-  }
-
-  _inputManagementContract: ManagementContract;
-
-  previousValue = (): StorageStrategy => {
-    return this._inputManagementContract?.storage;
-  };
-
-  constructor() {
-    this.form = this.formBuilder.group({
-      unitStrategy: [null, Validators.required],
-      objectGroupStrategy: [null, Validators.required],
-      objectStrategy: [null, Validators.required],
-    });
-  }
-
-  unchanged(): boolean {
-    // if (this.previousValue() !== undefined) {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
-    this.updated.emit(!unchanged);
-    return unchanged;
-    // }
-  }
-
-  prepareSubmit(): Observable<ManagementContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
-      filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this._inputManagementContract.id, identifier: this._inputManagementContract.identifier }, formData)),
-      switchMap((formData: { id: string; [key: string]: any }) => {
-        return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
-      }),
-    );
-  }
-
-  onSubmit() {
-    this.submited.set(true);
-    this.showSpinner.set(true);
-    this.prepareSubmit().subscribe(
-      () => {
-        this.managementContractService.get(this._inputManagementContract.identifier).subscribe((response) => {
-          this.submited.set(false);
-          this.showSpinner.set(false);
-          this.inputManagementContract = response;
-        });
-      },
-      () => {
-        this.submited.set(false);
-        this.showSpinner.set(false);
-      },
-    );
   }
 
   resetForm(managementContract: ManagementContract) {

@@ -92,17 +92,17 @@
   </div>
 </form>
 
-@if (tenant) {
+@if (tenant()) {
   <mat-divider></mat-divider>
 }
 
-@if (tenant) {
+@if (tenant()) {
   <form [formGroup]="tenantForm">
     <div class="row">
       <div class="col-6">
         <div class="read-only-field disabled-input">
           <label>{{ 'CUSTOMER.OWNER.SAFE_CODE' | translate }}</label>
-          <div>{{ tenant?.identifier }}</div>
+          <div>{{ tenant()?.identifier }}</div>
         </div>
       </div>
       <div class="col-6">

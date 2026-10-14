@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, LOCALE_ID, OnDestroy, OnInit, input, output, OnChanges, SimpleChanges } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import {
@@ -75,22 +75,15 @@ import { TranslatePipe } from '@ngx-translate/core';
     InfiniteScrollDirective,
   ],
 })
-export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
+export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnChanges, OnDestroy, OnInit {
   accessionRegistersService: AccessionRegistersService;
   private readonly locale = inject(LOCALE_ID);
 
-  @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
+  readonly accessionRegisterClick = output<AccessionRegisterDetail>();
 
-  @Input()
-  set searchText(searchText: string) {
-    this.textToSearch = searchText;
-    this.searchChange.next(searchText);
-    this.accessionRegistersService.notifySearchChange(searchText);
-  }
+  readonly searchText = input<string>(undefined);
 
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('accessContract')
-  accessContract: string;
+  readonly accessContract = input<string>(undefined);
   direction = Direction.DESCENDANT;
   orderBy = 'EndDate';
 
@@ -113,6 +106,15 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     super(accessionRegistersService);
 
     this.accessionRegistersService = accessionRegistersService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this.textToSearch = searchText;
+      this.searchChange.next(searchText);
+      this.accessionRegistersService.notifySearchChange(searchText);
+    }
   }
 
   ngOnInit() {
@@ -155,7 +157,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     const query: AccessionRegisterSearchDto = this.constructQuery();
     query.orderBy = this.orderBy;
     query.direction = this.direction;
-    this.accessionRegistersService.exportAccessionRegisterCsv(query, this.accessContract);
+    this.accessionRegistersService.exportAccessionRegisterCsv(query, this.accessContract());
   }
 
   private constructQuery(): AccessionRegisterSearchDto {

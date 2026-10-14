@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Location } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { PastisBreadcrumbComponent } from '../pastis-breadcrumb/pastis-breadcrumb.component';
 
 //TODO: delete ?
@@ -49,11 +49,9 @@ import { PastisBreadcrumbComponent } from '../pastis-breadcrumb/pastis-breadcrum
 export class PastisTitleBreadcrumbComponent {
   private readonly location = inject(Location);
 
-  @Input()
-  public data?: Array<any>;
+  public readonly data = input<Array<any>>(undefined);
 
-  @Output()
-  public selected = new EventEmitter<any>();
+  public readonly selected = output<any>();
 
   public bubbleEvent(d: any): void {
     this.selected.emit(d);

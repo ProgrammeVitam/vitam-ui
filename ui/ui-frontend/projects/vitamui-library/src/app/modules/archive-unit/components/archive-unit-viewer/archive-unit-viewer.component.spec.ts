@@ -113,7 +113,7 @@ describe('ArchiveUnitViewerComponent', () => {
   });
 
   it('should create with archive unit', () => {
-    component.data = archiveUnit;
+    fixture.componentRef.setInput('data', archiveUnit);
 
     component.ngOnChanges({
       data: new SimpleChange(null, archiveUnit, true),
@@ -121,7 +121,7 @@ describe('ArchiveUnitViewerComponent', () => {
 
     fixture.changeDetectorRef.detectChanges();
 
-    expect(component.data).toBeTruthy();
-    expect(component.template).toBeTruthy();
+    expect(component.data()).toBeTruthy();
+    expect(component.template()).toBeTruthy();
   });
 });

@@ -1,6 +1,6 @@
 <mat-form-field class="w-100 p-0" [hideRequiredMarker]="true" appearance="outline" subscriptSizing="dynamic">
   <mat-label
-    >{{ placeholder }}
+    >{{ placeholder() }}
     @if (isRequired()) {
       <span class="required-marker"> *</span>
     }
@@ -8,17 +8,17 @@
   <mat-select
     (closed)="onSelectClosed()"
     (openedChange)="openedChange($event)"
-    [multiple]="multiple"
+    [multiple]="multiple()"
     [formControl]="control"
     panelClass="vitamui-select-with-tree-panel"
     #matSelect
   >
     <mat-select-trigger>
       @if (getSelectedOptionsCount() > 0) {
-        @if (multiple) {
+        @if (multiple()) {
           {{ getSelectedOptionsCount() }} {{ getSelectedOptionsCount() | i18nPlural: nbSelectedItemsMap | translate }}
         } @else {
-          {{ getDisplayValue(checklistSelection.selected[0].item) }}
+          {{ getDisplayValue()(checklistSelection.selected[0].item) }}
         }
       }
     </mat-select-trigger>
@@ -38,7 +38,7 @@
         </span>
       </button>
     } @else {
-      @if (enableDisplaySelected && multiple) {
+      @if (enableDisplaySelected() && multiple()) {
         <button
           (click)="toggleShowOnlySelectedOption()"
           [disabled]="getSelectedOptionsCount() === 0"
@@ -49,15 +49,15 @@
         </button>
       }
 
-      @if (enableSearch) {
+      @if (enableSearch()) {
         <div class="m-2">
           <vitamui-common-search-bar
             #searchBar
             (search)="onSearch($event, true)"
             (searchChanged)="onSearch($event)"
             name="element-search"
-            [placeholder]="searchBarPlaceHolder"
-            [title]="searchBarPlaceHolder"
+            [placeholder]="searchBarPlaceHolder()"
+            [title]="searchBarPlaceHolder()"
             searchButtonColor="primary"
           ></vitamui-common-search-bar>
         </div>
@@ -66,8 +66,8 @@
 
     <div
       class="vitamui-mat-select-options"
-      [class.with-search]="enableSearch"
-      [class.with-display-selected]="enableDisplaySelected && multiple"
+      [class.with-search]="enableSearch()"
+      [class.with-display-selected]="enableDisplaySelected() && multiple()"
       cdkScrollable
     >
       @if (showOnlySelectedOption) {
@@ -83,7 +83,7 @@
               (onSelectionChange)="leafItemSelectionToggle($event, node)"
             >
               <span
-                [innerHTML]="getDisplayValue(node.item) | highlight: searchText"
+                [innerHTML]="getDisplayValue()(node.item) | highlight: searchText"
                 vitamuiCommonEllipsis
                 [isToolTipOnMouseEnter]="true"
               ></span>
@@ -96,7 +96,7 @@
           *matTreeNodeDef="let node; when: hasChild"
           [style.display]="node.display ? 'block' : 'none'"
           matTreeNodeToggle
-          [attr.aria-label]="'Toggle ' + getDisplayValue(node.item)"
+          [attr.aria-label]="'Toggle ' + getDisplayValue()(node.item)"
         >
           @if (node.display) {
             <mat-option
@@ -112,7 +112,7 @@
                 [ngClass]="treeControl.isExpanded(node) ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right'"
               ></i>
               <span
-                [innerHTML]="getDisplayValue(node.item) | highlight: searchText"
+                [innerHTML]="getDisplayValue()(node.item) | highlight: searchText"
                 vitamuiCommonEllipsis
                 [isToolTipOnMouseEnter]="true"
               ></span>
@@ -129,4 +129,4 @@
   </div>
 </mat-form-field>
 
-<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap()"></vitamui-form-errors>

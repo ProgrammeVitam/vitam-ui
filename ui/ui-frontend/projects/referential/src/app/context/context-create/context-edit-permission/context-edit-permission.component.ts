@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, EventEmitter, forwardRef, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, inject, OnInit, input, output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { AccessContractService, AuthService, ContextPermission, Option, SelectComponent, Tenant, TooltipDirective } from 'vitamui-library';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
@@ -68,8 +68,8 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   permissions: ContextPermission[];
   selectedOrganisations: string[];
 
-  @Input() editMode = false;
-  @Output() changeOrganisations: EventEmitter<string[]> = new EventEmitter<string[]>();
+  readonly editMode = input(false);
+  readonly changeOrganisations = output<string[]>();
 
   private tenants: Tenant[] = [];
   disabled: boolean;

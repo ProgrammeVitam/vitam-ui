@@ -1,8 +1,8 @@
-@if (!editMode) {
-  <vitamui-common-archive-unit-viewer [data]="archiveUnit"></vitamui-common-archive-unit-viewer>
+@if (!editMode()) {
+  <vitamui-common-archive-unit-viewer [data]="archiveUnit()"></vitamui-common-archive-unit-viewer>
 }
 
-@if (editMode) {
+@if (editMode()) {
   <div>
     <vitamui-common-editor-banner [title]="'ARCHIVE_UNIT.EDITOR_BANNER.TITLE' | translate: { sedaVersion: '2.3' }" class="editor-banner">
       <button (click)="onSave()" [disabled]="!canSave" class="btn" [ngClass]="isModified() ? 'save' : 'primary'">
@@ -12,7 +12,7 @@
         {{ 'COMMON.UNDO' | translate }}
       </button>
     </vitamui-common-editor-banner>
-    <vitamui-common-archive-unit-editor [data]="archiveUnit"></vitamui-common-archive-unit-editor>
+    <vitamui-common-archive-unit-editor [data]="archiveUnit()"></vitamui-common-archive-unit-editor>
   </div>
 }
 

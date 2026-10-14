@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   AccessContract,
@@ -57,38 +57,27 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./access-contract-authorizations-tab.component.scss'],
   imports: [NgClass, TranslatePipe],
 })
-export class AccessContractAuthorizationsTabComponent implements OnInit {
+export class AccessContractAuthorizationsTabComponent implements OnChanges, OnInit {
   private readonly agencyService = inject(AgencyService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialog = inject(MatDialog);
 
   AccessRightType = AccessRightType;
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
+  readonly isFormValid = output<boolean>();
 
   public form: FormGroup;
   public isLoading = false;
   public originatingAgenciesOptions: VitamuiSelectOptions;
   public _accessContract: AccessContractDisplay;
 
-  get accessContract(): AccessContractDisplay {
-    return this._accessContract;
-  }
+  readonly accessContract = input<AccessContract>(undefined);
 
-  @Input() set accessContract(accessContract: AccessContract) {
-    if (!accessContract.originatingAgencies) {
-      accessContract.originatingAgencies = [];
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['accessContract']) {
+      this.setAccessContract(this.accessContract());
     }
-    this._accessContract = {
-      ...accessContract,
-      accessRightType: accessRightTypeOf(accessContract),
-      originatingAgenciesLabels: accessContract.originatingAgencies?.map((agency) => this.originatingAgencyName(agency)).sort(),
-      ruleCategoryToFilterLabels: accessContract.ruleCategoryToFilter?.map((rule) => this.managementRuleName(rule)),
-      ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels: accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies?.map(
-        (rule) => this.managementRuleName(rule),
-      ),
-    };
   }
 
   ngOnInit(): void {
@@ -110,10 +99,25 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((accessContract: any) => {
       if (accessContract) {
-        this.accessContract = accessContract;
+        this.setAccessContract(accessContract);
         this.cdr.markForCheck();
       }
     });
+  }
+
+  private setAccessContract(accessContract: AccessContract) {
+    if (!accessContract.originatingAgencies) {
+      accessContract.originatingAgencies = [];
+    }
+    this._accessContract = {
+      ...accessContract,
+      accessRightType: accessRightTypeOf(accessContract),
+      originatingAgenciesLabels: accessContract.originatingAgencies?.map((agency) => this.originatingAgencyName(agency)).sort(),
+      ruleCategoryToFilterLabels: accessContract.ruleCategoryToFilter?.map((rule) => this.managementRuleName(rule)),
+      ruleCategoryToFilterForTheOtherOriginatingAgenciesLabels: accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies?.map(
+        (rule) => this.managementRuleName(rule),
+      ),
+    };
   }
 
   private originatingAgencyName(originatingAgency: string): string {

@@ -8,7 +8,7 @@
   </button>
   <div class="input-box focus-within-zone">
     <label>
-      <span class="ellipsis">{{ placeholder }} ({{ (_selectedType || types[0]).label | lowercase }})</span>
+      <span class="ellipsis">{{ placeholder() }} ({{ (_selectedType || types()[0]).label | lowercase }})</span>
       @if (isRequired()) {
         <span class="required-marker">*</span>
       }
@@ -16,9 +16,9 @@
     <input type="text" [ngModel]="control.value?.value" (ngModelChange)="inputValueChange($event)" [disabled]="control.disabled" />
   </div>
 </div>
-<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap()"></vitamui-form-errors>
 <mat-menu #menu="matMenu" class="my-1">
-  @for (type of types; track type.value; let first = $first) {
+  @for (type of types(); track type.value; let first = $first) {
     <button
       mat-menu-item
       (click)="selectType(type)"

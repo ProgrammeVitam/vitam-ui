@@ -1,20 +1,20 @@
 <button
   mat-icon-button
-  [disabled]="disabled"
+  [disabled]="disabled()"
   disableRipple
-  [attr.aria-label]="'toggle ' + node?.label"
+  [attr.aria-label]="'toggle ' + node()?.label"
   (click)="nodeToggle.emit()"
   type="button"
 >
-  <i class="vitamui-icon icon {{ expanded ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+  <i class="vitamui-icon icon {{ expanded() ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
 </button>
 
 <mat-checkbox
-  id="enable{{ node?.id }}"
-  [(ngModel)]="node.checked"
-  [(indeterminate)]="node.disabledChild"
-  [disabled]="node.disabled"
+  id="enable{{ node()?.id }}"
+  [(ngModel)]="node().checked"
+  [(indeterminate)]="node().disabledChild"
+  [disabled]="node().disabled"
   (ngModelChange)="labelClick.emit()"
-  >{{ node?.label }}</mat-checkbox
+  >{{ node()?.label }}</mat-checkbox
 >
-<label for="enable{{ node?.id }}" class="node-label" (click)="labelClick.emit()"></label>
+<label for="enable{{ node()?.id }}" class="node-label" (click)="labelClick.emit()"></label>

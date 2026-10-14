@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Color, Option, SelectComponent, ThemeColorType, ThemeService } from 'vitamui-library';
 import { Subscription } from 'rxjs';
@@ -51,13 +51,13 @@ export class CustomerColorsInputComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
   private readonly translateService = inject(TranslateService);
 
-  @Input() formGroup: FormGroup;
+  readonly formGroup = input<FormGroup>(undefined);
 
-  @Input() themeOverloadSelector: string;
+  readonly themeOverloadSelector = input<string>(undefined);
 
-  @Input() disabled: boolean;
+  readonly disabled = input<boolean>(undefined);
 
-  @Input() isUpdating = false;
+  readonly isUpdating = input(false);
 
   public colors: { [colorId: string]: string };
 
@@ -88,7 +88,7 @@ export class CustomerColorsInputComponent implements OnInit {
     }));
 
     // We set original bg color value. If the value doesn't match available bg colors, it's probably because there's a custom primary color and the primary-light variant has been selected as bg color.
-    const bgControl = this.formGroup.get(this.THEME_COLORS.VITAMUI_BACKGROUND);
+    const bgControl = this.formGroup().get(this.THEME_COLORS.VITAMUI_BACKGROUND);
     if (this.backgroundColors.map((c) => c.id).includes(bgControl.value)) {
       this.selectedBgColor = bgControl.value;
     } else {
@@ -102,10 +102,10 @@ export class CustomerColorsInputComponent implements OnInit {
   updateBackgroundColor($event: any) {
     const find = this.backgroundColors.find((c) => c.id === $event);
     const isPrimaryLight = !find || find.isPrimaryLight;
-    const bgControl = this.formGroup.get(this.THEME_COLORS.VITAMUI_BACKGROUND);
+    const bgControl = this.formGroup().get(this.THEME_COLORS.VITAMUI_BACKGROUND);
     if (isPrimaryLight) {
       // If primary-light has been selected, we must automatically upgrade bg color when primary color changes
-      const primaryControl = this.formGroup.get(this.THEME_COLORS.VITAMUI_PRIMARY);
+      const primaryControl = this.formGroup().get(this.THEME_COLORS.VITAMUI_PRIMARY);
       bgControl.setValue(ThemeService.getPrimaryLight(primaryControl.value));
       this.primaryLightSubscription = primaryControl.valueChanges.subscribe((primaryColor) =>
         bgControl.setValue(ThemeService.getPrimaryLight(primaryColor)),

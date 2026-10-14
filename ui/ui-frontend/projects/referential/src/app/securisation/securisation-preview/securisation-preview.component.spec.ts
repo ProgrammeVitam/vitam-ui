@@ -127,7 +127,7 @@ describe('SecurisationPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationPreviewComponent);
     component = fixture.componentInstance;
-    component.securisation = securisationValue;
+    fixture.componentRef.setInput('securisation', securisationValue);
     fixture.detectChanges();
   });
 

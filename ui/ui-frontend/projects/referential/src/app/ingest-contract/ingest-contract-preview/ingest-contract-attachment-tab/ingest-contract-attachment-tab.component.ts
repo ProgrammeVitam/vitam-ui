@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   ExternalParameters,
@@ -54,33 +54,27 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./ingest-contract-attachment-tab.component.scss'],
   imports: [TranslatePipe],
 })
-export class IngestContractAttachmentTabComponent {
+export class IngestContractAttachmentTabComponent implements OnChanges {
   private readonly unitService = inject(SearchUnitApiService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() tenantIdentifier: number;
-  @Input() readOnly: boolean;
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 
-  @Input() set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-    this.accessContractId = '';
-    this.linkParentIdTitle = '';
-    this.checkParentIdTitles = [];
-    this.initSearchAccessContractIdAndTitles();
-  }
-
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
-  }
+  readonly ingestContract = model<IngestContract>(undefined);
 
   accessContractId: string;
   linkParentIdTitle: string;
   checkParentIdTitles: string[] = [];
 
-  private _ingestContract: IngestContract;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ingestContract']) {
+      this.setIngestContract(this.ingestContract());
+    }
+  }
 
   private initSearchAccessContractIdAndTitles(): void {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
@@ -103,10 +97,10 @@ export class IngestContractAttachmentTabComponent {
       if (response.httpCode === 200) {
         this.checkParentIdTitles = [];
         response.$results.forEach((result: any) => {
-          if (this.ingestContract.checkParentId?.includes(result['#id'])) {
+          if (this.ingestContract().checkParentId?.includes(result['#id'])) {
             this.checkParentIdTitles.push(result.Title);
           }
-          if (this.ingestContract.linkParentId === result['#id']) {
+          if (this.ingestContract().linkParentId === result['#id']) {
             this.linkParentIdTitle = result.Title;
           }
         });
@@ -117,8 +111,8 @@ export class IngestContractAttachmentTabComponent {
   }
 
   getDslForRootNodes(): any {
-    const linkParentIdAsLinst: string[] = this.ingestContract.linkParentId ? [this.ingestContract.linkParentId] : [];
-    const checkParentId: string[] = this.ingestContract.checkParentId ? this.ingestContract.checkParentId : [];
+    const linkParentIdAsLinst: string[] = this.ingestContract().linkParentId ? [this.ingestContract().linkParentId] : [];
+    const checkParentId: string[] = this.ingestContract().checkParentId ? this.ingestContract().checkParentId : [];
 
     return {
       $roots: [],
@@ -151,17 +145,25 @@ export class IngestContractAttachmentTabComponent {
       .open(IngestContractNodeUpdateComponent, {
         disableClose: true,
         data: {
-          ingestContract: this.ingestContract,
+          ingestContract: this.ingestContract(),
           accessContractId: this.accessContractId,
-          tenantIdentifier: this.tenantIdentifier,
+          tenantIdentifier: this.tenantIdentifier(),
         },
       })
       .afterClosed()
       .subscribe((updatedIngestContract: IngestContract) => {
         if (updatedIngestContract) {
-          this.ingestContract = updatedIngestContract;
+          this.setIngestContract(updatedIngestContract);
           this.cdr.markForCheck();
         }
       });
+  }
+
+  private setIngestContract(ingestContract: IngestContract) {
+    this.ingestContract.set(ingestContract);
+    this.accessContractId = '';
+    this.linkParentIdTitle = '';
+    this.checkParentIdTitles = [];
+    this.initSearchAccessContractIdAndTitles();
   }
 }

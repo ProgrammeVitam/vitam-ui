@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -81,23 +81,15 @@ export class ProbativeValueFilters {
     InfiniteScrollDirective,
   ],
 })
-export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+export class ProbativeValueListComponent extends InfiniteScrollTable<any> implements OnChanges, OnDestroy, OnInit {
   probativeValueService: ProbativeValueService;
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private _searchText: string;
 
-  @Input()
-  set filters(filters: ProbativeValueFilters) {
-    this._filters = filters;
-    this.filterChange.next(filters);
-  }
+  readonly filters = input<ProbativeValueFilters>(undefined);
 
   private _filters: ProbativeValueFilters;
 
@@ -110,7 +102,7 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
   private readonly orderChange = new Subject<void>();
   private readonly filterChange = new Subject<any>();
 
-  @Output() probativeValueClick = new EventEmitter<any>();
+  readonly probativeValueClick = output<any>();
 
   constructor() {
     const probativeValueService = inject(ProbativeValueService);
@@ -118,6 +110,19 @@ export class ProbativeValueListComponent extends InfiniteScrollTable<any> implem
     super(probativeValueService);
 
     this.probativeValueService = probativeValueService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
+    if (changes['filters']) {
+      const filters = this.filters();
+      this._filters = filters;
+      this.filterChange.next(filters);
+    }
   }
 
   ngOnInit() {

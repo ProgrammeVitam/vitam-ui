@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, Component, ContentChildren, forwardRef, inject, Input, OnInit, QueryList } from '@angular/core';
+import { AfterContentInit, Component, forwardRef, inject, OnInit, input, model, contentChildren } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { VitamUIRadioComponent } from '../vitamui-radio/vitamui-radio.component';
@@ -55,13 +55,11 @@ export const RADIO_GROUP_VALUE_ACCESSOR: any = {
 export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   private readonly radioGroupService = inject(VitamUIRadioGroupService, { self: true });
 
-  @ContentChildren(VitamUIRadioComponent) private radios: QueryList<VitamUIRadioComponent>;
+  private readonly radios = contentChildren(VitamUIRadioComponent);
 
-  @Input()
-  label: string;
+  readonly label = input<string>(undefined);
 
-  @Input()
-  required: boolean;
+  readonly required = model<boolean>(undefined);
 
   value: any;
 
@@ -71,13 +69,13 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   onTouched = () => {};
 
   ngOnInit(): void {
-    this.required = this.required === undefined ? false : true;
+    this.required.set(this.required() !== undefined);
     const subscription = this.radioGroupService.resetAll.subscribe((elem: VitamUIRadioComponent) => {
-      this.radios.forEach((radioButton: VitamUIRadioComponent) => {
-        radioButton.checked = false;
+      this.radios().forEach((radioButton: VitamUIRadioComponent) => {
+        radioButton.checked.set(false);
       });
-      elem.checked = true;
-      this.value = elem.value;
+      elem.checked.set(true);
+      this.value = elem.value();
       this.onChange(this.value);
     });
 
@@ -87,14 +85,16 @@ export class VitamUIRadioGroupComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.radios
-      .filter((radio) => radio.checked)
+    this.radios()
+      .filter((radio) => radio.checked())
       .forEach((radio) => {
-        this.value = radio.value;
+        this.value = radio.value();
         this.onChange(this.value);
       });
 
-    this.radios.filter((radio) => radio.value === this.value).forEach((radio) => (radio.checked = true));
+    this.radios()
+      .filter((radio) => radio.value() === this.value)
+      .forEach((radio) => radio.checked.set(true));
   }
 
   writeValue(value: any) {

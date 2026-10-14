@@ -1,17 +1,17 @@
 <label>
   <div
     class="slide-toggle"
-    [ngClass]="{ 'slide-toggle-on': checked, 'slide-toggle-off': !checked }"
-    [class.slide-toggle-on]="checked"
-    [class.slide-toggle-disabled]="disabled"
+    [ngClass]="{ 'slide-toggle-on': checked(), 'slide-toggle-off': !checked() }"
+    [class.slide-toggle-on]="checked()"
+    [class.slide-toggle-disabled]="disabled()"
   >
     <input
       class="cdk-visually-hidden"
-      [required]="required"
-      [tabIndex]="tabIndex"
-      [checked]="checked"
-      [disabled]="disabled"
-      [attr.name]="name"
+      [required]="required()"
+      [tabIndex]="tabIndex()"
+      [checked]="checked()"
+      [disabled]="disabled()"
+      [attr.name]="name()"
       type="checkbox"
       (click)="toggle()"
       (blur)="onTouched()"

@@ -1,4 +1,4 @@
-<div class="d-flex mt-2" [class.pattern-mini]="vitamuiMiniMode">
+<div class="d-flex mt-2" [class.pattern-mini]="vitamuiMiniMode()">
   <vitamui-select
     #select
     class="w-50 mr-2"
@@ -9,7 +9,7 @@
     [enableSearch]="false"
   ></vitamui-select>
 
-  <button class="btn primary btn-circle mt-2" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
+  <button class="btn primary btn-circle mt-2" [class.btn-small]="vitamuiMiniMode()" (click)="add()" [disabled]="!controlValueValid()">
     <i class="vitamui-icon vitamui-icon-add"></i>
   </button>
 </div>

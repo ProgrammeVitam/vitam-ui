@@ -6,7 +6,7 @@
     <div class="col-6">
       <div class="read-only-field">
         <label>Identifiant SSO</label>
-        <div>{{ identityProvider.technicalName }}</div>
+        <div>{{ identityProvider().technicalName }}</div>
       </div>
     </div>
   </div>
@@ -86,7 +86,7 @@
       <vitamui-editable-patterns
         formControlName="patterns"
         [label]="'CUSTOMER.SSO.PATTERNS' | translate"
-        [options]="domains"
+        [options]="domainsState"
         [validator]="form?.get('patterns')?.validator"
         [asyncValidator]="form?.get('patterns')?.asyncValidator"
       >
@@ -116,7 +116,7 @@
         </vitamui-common-editable-toggle-group>
       </div>
     </div>
-    @if (!identityProvider.internal) {
+    @if (!identityProvider().internal) {
       <div class="row">
         <div class="col-12">
           <vitamui-common-editable-input
@@ -133,7 +133,7 @@
     }
     <div class="row">
       <div class="col-6">
-        <app-editable-keystore [identityProvider]="identityProvider" [disabled]="readOnly"></app-editable-keystore>
+        <app-editable-keystore [identityProvider]="identityProvider()" [disabled]="readOnlyState"></app-editable-keystore>
       </div>
       <div class="col-6">
         <vitamui-common-editable-file
@@ -147,7 +147,7 @@
         </vitamui-common-editable-file>
       </div>
     </div>
-    @if (!identityProvider.internal) {
+    @if (!identityProvider().internal) {
       <div class="row">
         <div class="col-5">
           <vitamui-slide-toggle formControlName="wantsAssertionsSigned">

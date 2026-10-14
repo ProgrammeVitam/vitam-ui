@@ -1,22 +1,22 @@
-@if (user?.status !== 'REMOVED') {
+@if (user()?.status !== 'REMOVED') {
   <form [formGroup]="form" class="gap-3 align-items-stretch">
     <div class="row">
       <div class="col-10">
-        @if (user?.status === 'ENABLED') {
+        @if (user()?.status === 'ENABLED') {
           <p>{{ 'USER.INFORMATIONS.ACTIVE_SWITCH' | translate }}</p>
         }
-        @if (user?.status === 'DISABLED') {
+        @if (user()?.status === 'DISABLED') {
           <p>{{ 'USER.INFORMATIONS.INACTIVE_SWITCH' | translate }}</p>
         }
-        @if (user?.status === 'BLOCKED') {
+        @if (user()?.status === 'BLOCKED') {
           <p class="status-warning">
             {{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT' | translate }}
-            @if (user?.lastConnection) {
-              ({{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate }} {{ user?.lastConnection | dateTime: 'medium' }})
+            @if (user()?.lastConnection) {
+              ({{ 'USER.INFORMATIONS.BLOCKED_ACCOUNT_SINCE' | translate }} {{ user()?.lastConnection | dateTime: 'medium' }})
             }
           </p>
         }
-        @if (user?.status === 'ANONYM') {
+        @if (user()?.status === 'ANONYM') {
           <p class="status-warning">
             {{ 'USER.INFORMATIONS.ERASED_ACCOUNT' | translate }}
           </p>
@@ -232,7 +232,7 @@
   </form>
 }
 
-@if (user?.status === 'REMOVED') {
+@if (user()?.status === 'REMOVED') {
   <div>
     <h2>ATTENTION</h2>
     L'utilisateur que vous cherchez est déja supprimé

@@ -136,7 +136,7 @@ export class CreateProfilNoticeComponent implements OnInit, OnDestroy {
   }
 
   validate() {
-    if (!this.externalIdentifierEnabledSignal) {
+    if (!this.externalIdentifierEnabledSignal()) {
       this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
     }
     if (this.noticeForm.invalid) {

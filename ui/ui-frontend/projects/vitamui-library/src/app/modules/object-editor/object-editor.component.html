@@ -1,13 +1,13 @@
-@if (editObject) {
+@if (editObject()) {
   <form [formGroup]="formGroup">
-    @if (editObject.type === DisplayObjectType.GROUP) {
-      <vitamui-common-group-editor [editObject]="editObject"></vitamui-common-group-editor>
+    @if (editObject().type === DisplayObjectType.GROUP) {
+      <vitamui-common-group-editor [editObject]="editObject()"></vitamui-common-group-editor>
     }
-    @if (editObject.type === DisplayObjectType.LIST) {
-      <vitamui-common-list-editor [editObject]="editObject"></vitamui-common-list-editor>
+    @if (editObject().type === DisplayObjectType.LIST) {
+      <vitamui-common-list-editor [editObject]="editObject()"></vitamui-common-list-editor>
     }
-    @if (editObject.type === DisplayObjectType.PRIMITIVE) {
-      <vitamui-common-primitive-editor [editObject]="editObject"></vitamui-common-primitive-editor>
+    @if (editObject().type === DisplayObjectType.PRIMITIVE) {
+      <vitamui-common-primitive-editor [editObject]="editObject()"></vitamui-common-primitive-editor>
     }
   </form>
 }

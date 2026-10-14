@@ -39,13 +39,12 @@ import {
   Component,
   ElementRef,
   OnInit,
-  QueryList,
   resource,
-  ViewChildren,
   inject,
   signal,
   afterNextRender,
   Injector,
+  viewChildren,
 } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
@@ -108,7 +107,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
       }),
   });
 
-  @ViewChildren(SelectComponent, { read: ElementRef }) components: QueryList<ElementRef>;
+  readonly components = viewChildren(SelectComponent, { read: ElementRef });
 
   ngOnInit() {
     this.initMultiselectOptions();
@@ -132,7 +131,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
       // Focus the "Active" selects once they are rendered
       afterNextRender(
         () => {
-          this.components.forEach((component) => {
+          this.components().forEach((component) => {
             const nativeElement = component.nativeElement as HTMLElement;
             const isActive = nativeElement.getAttribute('data-active') === 'true';
             if (isActive) nativeElement.querySelector('mat-select').dispatchEvent(new Event('focus'));

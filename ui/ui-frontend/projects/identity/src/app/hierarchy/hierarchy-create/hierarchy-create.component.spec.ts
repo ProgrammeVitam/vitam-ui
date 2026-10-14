@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -59,10 +59,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
-  @Input()
-  applicationNameExclude: string[];
-  @Input()
-  tenantIdentifier: number;
+  readonly applicationNameExclude = input<string[]>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
   writeValue() {}
   registerOnChange() {}
   registerOnTouched() {}

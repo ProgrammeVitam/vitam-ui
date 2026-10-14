@@ -1,9 +1,9 @@
 <vitamui-common-sidenav-header
   [extended]="isPanelextended"
-  [title]="archiveUnit | unitI18n: 'Title' | truncate: 29"
-  [icon]="getArchiveUnitIcon(archiveUnit)"
+  [title]="archiveUnit() | unitI18n: 'Title' | truncate: 29"
+  [icon]="getArchiveUnitIcon(archiveUnit())"
   [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="archiveUnit | unitI18n: 'Title'"
+  [toolTipTitleText]="archiveUnit() | unitI18n: 'Title'"
   [toolTipTitleDuration]="300"
   (onclose)="emitClose()"
 >
@@ -13,7 +13,7 @@
       [vitamuiTooltip]="!accessContractAllowUpdating ? hasAccessContractManagementPermissionsMessage : ''"
       [vitamuiTooltipShowDelay]="300"
       (click)="updateMetadataDesc()"
-      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole"
+      [disabled]="updateStarted || !accessContractAllowUpdating || !hasUpdateDescriptiveUnitMetadataRole()"
     >
       {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
     </button>
@@ -29,7 +29,7 @@
   >
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <app-archive-unit-information-tab
-        [archiveUnit]="archiveUnit"
+        [archiveUnit]="archiveUnit()"
         [tenantIdentifier]="tenantIdentifier"
         (showNormalPanel)="showNormalPanel()"
       ></app-archive-unit-information-tab>
@@ -37,7 +37,7 @@
 
     <mat-tab label="{{ 'TAB.DESCRIPTION' | translate }}">
       <app-archive-unit-description-tab
-        [archiveUnit]="archiveUnit"
+        [archiveUnit]="archiveUnit()"
         [(editMode)]="updateStarted"
         (vitamuiClickOutside)="checkBeforeExit()"
         #descriptionTab
@@ -45,15 +45,15 @@
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}">
-      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit"> </app-archive-unit-rules-details-tab>
+      <app-archive-unit-rules-details-tab [archiveUnit]="archiveUnit()"> </app-archive-unit-rules-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}">
-      <app-archive-unit-objects-details-tab [archiveUnit]="archiveUnit"> </app-archive-unit-objects-details-tab>
+      <app-archive-unit-objects-details-tab [archiveUnit]="archiveUnit()"> </app-archive-unit-objects-details-tab>
     </mat-tab>
 
     <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.HISTORY' | translate }}">
-      <app-archive-unit-history-tab [archiveUnit]="archiveUnit"> </app-archive-unit-history-tab>
+      <app-archive-unit-history-tab [archiveUnit]="archiveUnit()"> </app-archive-unit-history-tab>
     </mat-tab>
   </mat-tab-group>
 </div>

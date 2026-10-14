@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, viewChildren } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent, TooltipDirective } from 'vitamui-library';
@@ -53,17 +53,17 @@ export class TooltipComponent implements AfterViewInit {
   disabled = false;
   tooltipText = '';
 
-  @ViewChildren(TooltipDirective) tooltips: QueryList<TooltipDirective>;
+  readonly tooltips = viewChildren(TooltipDirective);
 
   ngAfterViewInit(): void {
     this.showTooltips();
   }
 
   showTooltips() {
-    this.tooltips.forEach((tooltip) => tooltip.show());
+    this.tooltips().forEach((tooltip) => tooltip.show());
   }
 
   hideTooltips() {
-    this.tooltips.forEach((tooltip) => tooltip.hide());
+    this.tooltips().forEach((tooltip) => tooltip.hide());
   }
 }

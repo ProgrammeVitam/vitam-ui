@@ -67,7 +67,7 @@ describe('VitamuiInputComponent', () => {
 
   describe('multiple', () => {
     beforeEach(() => {
-      component.multiple = true;
+      fixture.componentRef.setInput('multiple', true);
     });
 
     it('should update component items and input values on writeValue', () => {

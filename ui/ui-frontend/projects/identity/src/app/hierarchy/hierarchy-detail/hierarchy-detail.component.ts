@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectorRef, input, output, model, OnChanges, SimpleChanges } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import type { Profile } from 'vitamui-library';
@@ -63,29 +63,32 @@ import { CommonModule } from '@angular/common';
     VitamuiSidenavHeaderComponent,
   ],
 })
-export class HierarchyDetailComponent implements OnInit, OnDestroy {
+export class HierarchyDetailComponent implements OnChanges, OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly hierarchyService = inject(HierarchyService);
   private readonly authService = inject(AuthService);
 
-  @Input()
-  set id(id: string) {
-    this.hierarchyService.get(id).subscribe((profile) => {
-      this.profile = profile;
-      this.cdr.markForCheck();
-    });
-  }
-  @Input() profile: Profile;
-  @Input() isPopup: boolean;
+  readonly id = input<string>();
+  readonly profile = model<Profile>(undefined);
+  readonly isPopup = input<boolean>(undefined);
 
-  @Output() previewClose = new EventEmitter();
+  readonly previewClose = output();
 
   profileUpdateSub: Subscription;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id']) {
+      this.hierarchyService.get(this.id()).subscribe((profile) => {
+        this.profile.set(profile);
+        this.cdr.markForCheck();
+      });
+    }
+  }
 
   ngOnInit() {
     this.profileUpdateSub = this.hierarchyService.updated.subscribe((updatedProfile) => {
       if (updatedProfile) {
-        this.profile = updatedProfile;
+        this.profile.set(updatedProfile);
         this.cdr.markForCheck();
       }
     });
@@ -100,8 +103,9 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
   }
 
   levelNotAllowed(): boolean {
-    if (this.profile) {
-      return !isLevelAllowed(this.authService.user, this.profile.level);
+    const profile = this.profile();
+    if (profile) {
+      return !isLevelAllowed(this.authService.user, profile.level);
     }
     return false;
   }

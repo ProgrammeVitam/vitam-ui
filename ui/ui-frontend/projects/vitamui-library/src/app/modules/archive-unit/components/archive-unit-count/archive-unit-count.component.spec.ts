@@ -91,8 +91,8 @@ describe('ArchiveUnitCountComponent', () => {
   });
 
   it('should not allow exact count loading when archive count is under the threshold', () => {
-    component.archiveUnitCount = 5000;
-    component.threshold = 10000;
+    fixture.componentRef.setInput('archiveUnitCount', 5000);
+    fixture.componentRef.setInput('threshold', 10000);
     component.ngOnChanges({
       archiveUnitCount: new SimpleChange(null, 5000, true),
       threshold: new SimpleChange(null, 10000, true),
@@ -104,8 +104,8 @@ describe('ArchiveUnitCountComponent', () => {
   });
 
   it('should allow exact count loading when archive count is equal to the threshold', () => {
-    component.archiveUnitCount = 10000;
-    component.threshold = 10000;
+    fixture.componentRef.setInput('archiveUnitCount', 10000);
+    fixture.componentRef.setInput('threshold', 10000);
     component.ngOnChanges({
       archiveUnitCount: new SimpleChange(null, 10000, true),
       threshold: new SimpleChange(null, 10000, true),
@@ -121,9 +121,9 @@ describe('ArchiveUnitCountComponent', () => {
       getTotalTrackHitsByCriteria: (): Observable<number> => of(1000001),
     };
 
-    component.search = fakeSearchService.getTotalTrackHitsByCriteria();
-    component.archiveUnitCount = 10000;
-    component.threshold = 10000;
+    fixture.componentRef.setInput('search', fakeSearchService.getTotalTrackHitsByCriteria());
+    fixture.componentRef.setInput('archiveUnitCount', 10000);
+    fixture.componentRef.setInput('threshold', 10000);
     component.ngOnChanges({
       archiveUnitCount: new SimpleChange(null, 10000, true),
       threshold: new SimpleChange(null, 10000, true),
@@ -132,7 +132,7 @@ describe('ArchiveUnitCountComponent', () => {
     fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
-    expect(component.search).toBeTruthy();
+    expect(component.search()).toBeTruthy();
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
@@ -144,7 +144,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(component.canLoadExactCount).toEqual(false);
-    expect(component.archiveUnitCount).toEqual(1000001);
+    expect(component.archiveUnitCount()).toEqual(1000001);
 
     fixture.changeDetectorRef.detectChanges();
 
@@ -158,9 +158,9 @@ describe('ArchiveUnitCountComponent', () => {
       getTotalTrackHitsByCriteria: (): Observable<number> => throwError(new Error('Track Total Hits loading failure')),
     };
 
-    component.search = fakeSearchService.getTotalTrackHitsByCriteria();
-    component.archiveUnitCount = 10000;
-    component.threshold = 10000;
+    fixture.componentRef.setInput('search', fakeSearchService.getTotalTrackHitsByCriteria());
+    fixture.componentRef.setInput('archiveUnitCount', 10000);
+    fixture.componentRef.setInput('threshold', 10000);
     component.ngOnChanges({
       archiveUnitCount: new SimpleChange(null, 10000, true),
       threshold: new SimpleChange(null, 10000, true),
@@ -169,7 +169,7 @@ describe('ArchiveUnitCountComponent', () => {
     fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
-    expect(component.search).toBeTruthy();
+    expect(component.search()).toBeTruthy();
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
@@ -181,7 +181,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(component.canLoadExactCount, 'canLoadExactCount must be true').toEqual(true);
-    expect(component.archiveUnitCount).toEqual(10000);
+    expect(component.archiveUnitCount()).toEqual(10000);
 
     fixture.changeDetectorRef.detectChanges();
 
@@ -196,9 +196,9 @@ describe('ArchiveUnitCountComponent', () => {
     };
     const firstSearch = fakeSearchService.getTotalTrackHitsByCriteria();
 
-    component.search = firstSearch;
-    component.archiveUnitCount = 10000;
-    component.threshold = 10000;
+    fixture.componentRef.setInput('search', firstSearch);
+    fixture.componentRef.setInput('archiveUnitCount', 10000);
+    fixture.componentRef.setInput('threshold', 10000);
     component.ngOnChanges({
       archiveUnitCount: new SimpleChange(null, 10000, true),
       threshold: new SimpleChange(null, 10000, true),
@@ -207,7 +207,7 @@ describe('ArchiveUnitCountComponent', () => {
     fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
-    expect(component.search).toBeTruthy();
+    expect(component.search()).toBeTruthy();
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
@@ -219,7 +219,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(component.canLoadExactCount).toEqual(false);
-    expect(component.archiveUnitCount).toEqual(1000001);
+    expect(component.archiveUnitCount()).toEqual(1000001);
 
     fixture.changeDetectorRef.detectChanges();
 
@@ -234,7 +234,7 @@ describe('ArchiveUnitCountComponent', () => {
     };
     const secondSearch = otherFakeSearchService.getTotalTrackHitsByCriteria();
 
-    component.search = secondSearch;
+    fixture.componentRef.setInput('search', secondSearch);
     component.ngOnChanges({
       search: new SimpleChange(firstSearch, secondSearch, false),
     });
@@ -252,9 +252,9 @@ describe('ArchiveUnitCountComponent', () => {
     };
     const firstSearch = fakeSearchService.getTotalTrackHitsByCriteria();
 
-    component.search = firstSearch;
-    component.archiveUnitCount = 10000;
-    component.threshold = 10000;
+    fixture.componentRef.setInput('search', firstSearch);
+    fixture.componentRef.setInput('archiveUnitCount', 10000);
+    fixture.componentRef.setInput('threshold', 10000);
     component.ngOnChanges({
       archiveUnitCount: new SimpleChange(null, 10000, true),
       threshold: new SimpleChange(null, 10000, true),
@@ -263,7 +263,7 @@ describe('ArchiveUnitCountComponent', () => {
     fixture.changeDetectorRef.detectChanges();
 
     expect(component.canLoadExactCount).toEqual(true);
-    expect(component.search).toBeTruthy();
+    expect(component.search()).toBeTruthy();
 
     const linkDebugElement = fixture.debugElement.query(By.css('a'));
     const linkNativeElement = linkDebugElement.nativeElement;
@@ -275,7 +275,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(component.canLoadExactCount).toEqual(false);
-    expect(component.archiveUnitCount).toEqual(1000001);
+    expect(component.archiveUnitCount()).toEqual(1000001);
 
     fixture.changeDetectorRef.detectChanges();
 
@@ -290,7 +290,7 @@ describe('ArchiveUnitCountComponent', () => {
     };
     const secondSearch = otherFakeSearchService.getTotalTrackHitsByCriteria();
 
-    component.search = secondSearch;
+    fixture.componentRef.setInput('search', secondSearch);
     component.ngOnChanges({
       search: new SimpleChange(firstSearch, secondSearch, false),
     });
@@ -312,7 +312,7 @@ describe('ArchiveUnitCountComponent', () => {
 
     expect(spy).toHaveBeenCalled();
     expect(component.canLoadExactCount).toEqual(false);
-    expect(component.archiveUnitCount).toEqual(25000);
+    expect(component.archiveUnitCount()).toEqual(25000);
 
     fixture.changeDetectorRef.detectChanges();
 

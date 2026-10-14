@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
 import { FormsModule } from '@angular/forms';
@@ -46,9 +46,9 @@ import { FormsModule } from '@angular/forms';
   imports: [SlideToggleComponent, FormsModule],
 })
 export class RoleComponent {
-  @Input() checked: boolean;
-  @Input() name: string;
-  @Input() disabled: boolean;
+  readonly checked = model<boolean>(undefined);
+  readonly name = input<string>(undefined);
+  readonly disabled = input<boolean>(undefined);
 
   forceDisabled: boolean;
 

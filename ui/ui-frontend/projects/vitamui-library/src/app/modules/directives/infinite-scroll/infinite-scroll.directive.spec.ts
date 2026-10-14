@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { TestBed } from '@angular/core/testing';
 import { InfiniteScrollDirective } from './infinite-scroll.directive';
 
 describe('InfiniteScrollDirective', () => {
   it('should create an instance', () => {
-    const directive = new InfiniteScrollDirective();
+    const directive = TestBed.runInInjectionContext(() => new InfiniteScrollDirective());
     expect(directive).toBeTruthy();
   });
 });

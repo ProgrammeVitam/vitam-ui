@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { TenantSelectionService } from 'vitamui-library';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { BreadcrumbDataMetadata } from '../../../models/breadcrumb';
@@ -53,11 +53,9 @@ export class PastisBreadcrumbComponent {
   private readonly tenantService = inject(TenantSelectionService);
   private readonly pastisConfig = inject(PastisConfiguration);
 
-  @Input()
-  public data: Array<any>;
+  public readonly data = input<Array<any>>(undefined);
 
-  @Output()
-  public selected = new EventEmitter<any>();
+  public readonly selected = output<any>();
 
   public onClick(d: any, emit: boolean): void {
     if (emit) {

@@ -94,7 +94,7 @@ describe('AccessContractUsageAndServicesTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractAuthorizationsTabComponent);
     component = fixture.componentInstance;
-    component.accessContract = accessContract;
+    fixture.componentRef.setInput('accessContract', accessContract);
     fixture.detectChanges();
   });
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -87,21 +87,15 @@ export class TraceabilityFilter {
     InfiniteScrollDirective,
   ],
 })
-export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+export class SecurisationListComponent extends InfiniteScrollTable<any> implements OnChanges, OnDestroy, OnInit {
   securisationService: SecurisationService;
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search') set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
-  @Input() set filters(filters: TraceabilityFilter) {
-    this.currentFilters = filters;
-    this.filterChange.next(filters);
-  }
+  readonly filters = input<TraceabilityFilter>(undefined);
 
-  @Output() securisationClick = new EventEmitter<any>();
+  readonly securisationClick = output<any>();
 
   public orderBy = 'evDateTime';
   public direction = Direction.DESCENDANT;
@@ -124,6 +118,22 @@ export class SecurisationListComponent extends InfiniteScrollTable<any> implemen
     super(securisationService);
 
     this.securisationService = securisationService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
+    if (changes['filters']) {
+      this.setFilters(this.filters());
+    }
+  }
+
+  setFilters(filters: TraceabilityFilter) {
+    this.currentFilters = filters;
+    this.filterChange.next(filters);
   }
 
   ngOnInit() {

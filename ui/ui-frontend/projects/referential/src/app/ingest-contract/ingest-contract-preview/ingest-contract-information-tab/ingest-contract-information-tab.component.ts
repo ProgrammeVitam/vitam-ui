@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, input, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -63,17 +63,17 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./ingest-contract-information-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, FormsModule, PipesModule, TranslatePipe],
 })
-export class IngestContractInformationTabComponent implements OnInit {
+export class IngestContractInformationTabComponent implements OnChanges, OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
   private readonly managementContractService = inject(ManagementContractApiService);
   private readonly archiveProfileService = inject(ArchiveProfileApiService);
   private readonly ingestContractCreateValidators = inject(IngestContractCreateValidators);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() updatedIngestContract: EventEmitter<IngestContract> = new EventEmitter<IngestContract>();
-  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() tenantIdentifier: number;
+  readonly updated = output<boolean>();
+  readonly updatedIngestContract = output<IngestContract>();
+  readonly isFormValid = output<boolean>();
+  readonly tenantIdentifier = input<number>(undefined);
 
   form: FormGroup;
 
@@ -85,50 +85,20 @@ export class IngestContractInformationTabComponent implements OnInit {
   managementContracts: Option[];
   archiveProfiles: Option[];
 
-  private _ingestContract: IngestContract;
-
   previousValue = (): any => {
     return {
-      identifier: this._ingestContract.identifier,
-      status: this._ingestContract.status,
-      name: this._ingestContract.name,
-      description: this._ingestContract.description,
-      archiveProfiles: this._ingestContract.archiveProfiles,
-      managementContractId: this._ingestContract.managementContractId,
+      identifier: this.ingestContract().identifier,
+      status: this.ingestContract().status,
+      name: this.ingestContract().name,
+      description: this.ingestContract().description,
+      archiveProfiles: this.ingestContract().archiveProfiles,
+      managementContractId: this.ingestContract().managementContractId,
     };
   };
 
-  @Input()
-  set ingestContract(ingestContract: IngestContract) {
-    if (!ingestContract.managementContractId) {
-      ingestContract.managementContractId = '';
-    }
-    if (!ingestContract.name) {
-      ingestContract.name = '';
-    }
-    if (!ingestContract.description) {
-      ingestContract.description = '';
-    }
-    this._ingestContract = ingestContract;
-    this.resetForm(this.ingestContract);
-    this.updated.emit(false);
-  }
+  readonly ingestContract = model<IngestContract>(undefined);
 
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-      this.statusControl.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.statusControl.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -151,9 +121,26 @@ export class IngestContractInformationTabComponent implements OnInit {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['ingestContract']) {
+      this.setIngestContract(this.ingestContract());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+        this.statusControl.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.statusControl.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
+  }
+
   ngOnInit(): void {
     const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + this.tenantIdentifier);
+    const headers = new HttpHeaders().set(VitamuiHttpHeaders.X_TENANT_ID, '' + this.tenantIdentifier());
 
     this.managementContractService.getAllByParams(params, headers).subscribe((managmentContracts) => {
       this.managementContracts = managmentContracts.map((managementContract) => ({
@@ -197,7 +184,7 @@ export class IngestContractInformationTabComponent implements OnInit {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
+      map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         // Update the activation and deactivation dates if the contract status has changed before sending the data
         if (formData['status']) {
@@ -226,9 +213,9 @@ export class IngestContractInformationTabComponent implements OnInit {
     }
     this.prepareSubmit().subscribe(
       () => {
-        this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
+        this.ingestContractService.get(this.ingestContract().identifier).subscribe((response) => {
           this.submitted = false;
-          this.ingestContract = response;
+          this.setIngestContract(response);
           this.updatedIngestContract.emit(response);
         });
       },
@@ -236,6 +223,21 @@ export class IngestContractInformationTabComponent implements OnInit {
         this.submitted = false;
       },
     );
+  }
+
+  private setIngestContract(ingestContract: IngestContract) {
+    if (!ingestContract.managementContractId) {
+      ingestContract.managementContractId = '';
+    }
+    if (!ingestContract.name) {
+      ingestContract.name = '';
+    }
+    if (!ingestContract.description) {
+      ingestContract.description = '';
+    }
+    this.ingestContract.set(ingestContract);
+    this.resetForm(this.ingestContract());
+    this.updated.emit(false);
   }
 
   resetForm(ingestContract: IngestContract) {

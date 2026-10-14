@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, output, input } from '@angular/core';
 import {
   Event,
   ExternalParameters,
@@ -78,8 +78,8 @@ export class SecurisationPreviewComponent implements OnInit {
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() securisation: Event;
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  readonly securisation = input<Event>(undefined);
+  readonly previewClose = output<any>();
 
   accessContractId = signal<string>(undefined);
 
@@ -95,10 +95,10 @@ export class SecurisationPreviewComponent implements OnInit {
   }
 
   emitClose() {
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 
   downloadReport() {
-    this.securisationService.download(this.securisation.id, this.accessContractId());
+    this.securisationService.download(this.securisation().id, this.accessContractId());
   }
 }

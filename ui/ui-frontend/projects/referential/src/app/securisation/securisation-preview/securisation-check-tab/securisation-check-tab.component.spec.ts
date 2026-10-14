@@ -123,7 +123,7 @@ describe('SecurisationCheckTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationCheckTabComponent);
     component = fixture.componentInstance;
-    component.securisation = securisationValue;
+    fixture.componentRef.setInput('securisation', securisationValue);
     fixture.detectChanges();
   });
 

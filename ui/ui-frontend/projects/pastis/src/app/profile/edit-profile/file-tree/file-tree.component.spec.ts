@@ -112,9 +112,9 @@ describe('FileTreeComponent tree refresh after mutation', () => {
 
     fixture = TestBed.createComponent(FileTreeComponent);
     component = fixture.componentInstance;
-    component.rootTabMetadataName = 'DescriptiveMetadata';
-    component.rootElementName = 'DescriptiveMetadata';
-    component.collectionName = 'DescriptiveMetadata';
+    fixture.componentRef.setInput('rootTabMetadataName', 'DescriptiveMetadata');
+    fixture.componentRef.setInput('rootElementName', 'DescriptiveMetadata');
+    fixture.componentRef.setInput('collectionName', 'DescriptiveMetadata');
     fixture.detectChanges();
     fileTreeService = TestBed.inject(FileTreeService);
   });
@@ -156,12 +156,12 @@ describe('FileTreeComponent tree refresh after mutation', () => {
     profile.children = [tabBRoot];
     currentTree.next([profile]);
 
-    component.rootTabMetadataName = 'TabB';
+    fixture.componentRef.setInput('rootTabMetadataName', 'TabB');
     const fixtureB = TestBed.createComponent(FileTreeComponent);
     const otherInstance = fixtureB.componentInstance;
-    otherInstance.rootTabMetadataName = 'TabB';
-    otherInstance.rootElementName = 'TabB';
-    otherInstance.collectionName = 'TabB';
+    fixtureB.componentRef.setInput('rootTabMetadataName', 'TabB');
+    fixtureB.componentRef.setInput('rootElementName', 'TabB');
+    fixtureB.componentRef.setInput('collectionName', 'TabB');
     fixtureB.detectChanges();
     fileServiceMock.getFileNodeByName = (_root: FileNode, _name: string) => tabBRoot;
 

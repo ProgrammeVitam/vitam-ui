@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Customer, Owner, SidenavPage, Tenant, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
@@ -72,7 +72,7 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
   public owner: Owner;
   gdprReadOnlySettingStatus = true;
 
-  @ViewChild(CustomerListComponent, { static: true }) customerListComponent: CustomerListComponent;
+  readonly customerListComponent = viewChild(CustomerListComponent);
 
   ngOnInit() {
     this.customerService.getGdprReadOnlySettingStatus().subscribe((settingStatus) => {
@@ -112,9 +112,10 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
   }
 
   private refreshList() {
-    if (!this.customerListComponent) {
+    const customerListComponent = this.customerListComponent();
+    if (!customerListComponent) {
       return;
     }
-    this.customerListComponent.searchCustomersOrderedByCode();
+    customerListComponent.searchCustomersOrderedByCode();
   }
 }

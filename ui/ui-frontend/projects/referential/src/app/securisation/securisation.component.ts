@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -76,8 +76,8 @@ export class SecurisationComponent extends SidenavPage<Event> {
   dateRangeFilterForm: FormGroup;
   filters: any = {};
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(SecurisationListComponent, { static: true }) securisationListComponent: SecurisationListComponent;
+  readonly searchBar = viewChild(SearchBarComponent);
+  readonly securisationListComponent = viewChild(SecurisationListComponent);
 
   constructor() {
     super();
@@ -98,7 +98,7 @@ export class SecurisationComponent extends SidenavPage<Event> {
 
     this.dateRangeFilterForm.controls['types'].valueChanges.subscribe((value) => {
       this.filters.types = value;
-      this.securisationListComponent.filters = this.filters;
+      this.securisationListComponent().setFilters(this.filters);
     });
   }
 

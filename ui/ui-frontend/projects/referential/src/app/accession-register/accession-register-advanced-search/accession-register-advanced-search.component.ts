@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnDestroy, OnInit, output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -55,7 +55,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
   private readonly accessionRegistersService = inject(AccessionRegistersService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();
+  readonly showAdvancedSearchPanel = output<boolean>();
 
   advancedSearchForm: FormGroup;
   acquisitionInformationsControl: FormControl;

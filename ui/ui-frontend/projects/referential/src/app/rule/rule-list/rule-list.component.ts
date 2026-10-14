@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  output,
+  viewChild,
+  input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { merge, Subject } from 'rxjs';
@@ -83,7 +95,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     InfiniteScrollDirective,
   ],
 })
-export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
+export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnChanges, OnDestroy, OnInit {
   ruleService: RuleService;
   private readonly authService = inject(AuthService);
   private readonly matDialog = inject(MatDialog);
@@ -91,11 +103,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   private readonly snackBarService = inject(SnackBarService);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private _searchText: string;
 
@@ -107,10 +115,10 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   ruleMeasurements = RULE_MEASUREMENTS;
 
-  @Output() ruleClick = new EventEmitter<Rule>();
+  readonly ruleClick = output<Rule>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<RuleListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  readonly filterTemplate = viewChild<TemplateRef<RuleListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
 
   loaded = false;
   orderBy = 'RuleId';
@@ -121,16 +129,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
 
-  @Input()
-  get connectedUserInfo(): AdminUserProfile {
-    return this._connectedUserInfo;
-  }
-
-  set connectedUserInfo(userInfo: AdminUserProfile) {
-    this._connectedUserInfo = userInfo;
-  }
-
-  private _connectedUserInfo: AdminUserProfile;
+  readonly connectedUserInfo = input<AdminUserProfile>(undefined);
 
   constructor() {
     const ruleService = inject(RuleService);
@@ -143,6 +142,14 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
       roles: [Role.ROLE_GENERIC_USERS],
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {
@@ -206,8 +213,8 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   deleteRuleDialog(rule: Rule) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
-    dialog.componentInstance.objectType = this.translateService.instant('RULES_APP.HOME.RULE_MANAGEMENT');
-    dialog.componentInstance.objectName = rule.ruleId;
+    dialog.componentRef.setInput('objectType', this.translateService.instant('RULES_APP.HOME.RULE_MANAGEMENT'));
+    dialog.componentRef.setInput('objectName', rule.ruleId);
 
     dialog
       .afterClosed()

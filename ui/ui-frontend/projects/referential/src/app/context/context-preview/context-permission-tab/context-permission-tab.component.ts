@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -64,7 +64,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./context-permission-tab.component.scss'],
   imports: [MatDivider, TranslatePipe],
 })
-export class ContextPermissionTabComponent implements OnInit {
+export class ContextPermissionTabComponent implements OnChanges, OnInit {
   dialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly contextService = inject(ContextService);
@@ -74,13 +74,12 @@ export class ContextPermissionTabComponent implements OnInit {
   private readonly accessService = inject(AccessContractService);
   private readonly ingestService = inject(IngestContractService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   submited = false;
   unchanged = true;
   dataLoaded = false;
 
-  private _context: Context;
   protected updatedPermissions: ContextPermission[] = [];
 
   tenants: Map<string, Tenant> = new Map();
@@ -88,33 +87,17 @@ export class ContextPermissionTabComponent implements OnInit {
   accessContracts: Map<string, AccessContract> = new Map();
   ingestContracts: Map<string, IngestContract> = new Map();
 
-  @Input()
-  set context(context: Context) {
-    if (!context.permissions) {
-      context.permissions = [];
-    }
-
-    for (const permission of context.permissions) {
-      if (!permission.accessContracts) {
-        permission.accessContracts = [];
-      }
-      if (!permission.ingestContracts) {
-        permission.ingestContracts = [];
-      }
-    }
-
-    this._context = context;
-    this.resetForm(this.context);
-    this.updated.emit(false);
-  }
-
-  get context(): Context {
-    return this._context;
-  }
+  readonly context = model<Context>(undefined);
 
   previousValue = (): Context => {
-    return this._context;
+    return this.context();
   };
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['context']) {
+      this.setContext(this.context());
+    }
+  }
 
   ngOnInit(): void {
     let accessContractObservable: Observable<any> = of();
@@ -178,7 +161,7 @@ export class ContextPermissionTabComponent implements OnInit {
     });
 
     this.contextService.updated.subscribe((updatedContext: Context) => {
-      this.context = updatedContext;
+      this.setContext(updatedContext);
       this.cdr.markForCheck();
     });
   }
@@ -246,12 +229,12 @@ export class ContextPermissionTabComponent implements OnInit {
     this.prepareSubmit().subscribe(
       () => {
         this.contextService
-          .get(this._context.identifier)
+          .get(this.context().identifier)
           .pipe(tap((response) => this.contextService.updated.next(response)))
           .subscribe((response) => {
             this.submited = false;
             this.cdr.markForCheck();
-            this.context = response;
+            this.setContext(response);
             this.hasChanged();
           });
       },
@@ -260,6 +243,25 @@ export class ContextPermissionTabComponent implements OnInit {
         this.cdr.markForCheck();
       },
     );
+  }
+
+  private setContext(context: Context) {
+    if (!context.permissions) {
+      context.permissions = [];
+    }
+
+    for (const permission of context.permissions) {
+      if (!permission.accessContracts) {
+        permission.accessContracts = [];
+      }
+      if (!permission.ingestContracts) {
+        permission.ingestContracts = [];
+      }
+    }
+
+    this.context.set(context);
+    this.resetForm(this.context());
+    this.updated.emit(false);
   }
 
   resetForm(context: Context) {
@@ -272,7 +274,7 @@ export class ContextPermissionTabComponent implements OnInit {
   openEditContextDialog() {
     const dialogRef = this.dialog.open(ContextEditComponent, {
       disableClose: true,
-      data: { permissions: this.updatedPermissions, enableControl: this._context.enableControl },
+      data: { permissions: this.updatedPermissions, enableControl: this.context().enableControl },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.permissions) {

@@ -38,16 +38,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
   inject,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   signal,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
+  output,
+  viewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig, MatDialogContent } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -255,7 +254,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   accessContractId: string;
   accessContractAllowUpdating = signal(false);
   accessContractUpdatingRestrictedDesc = signal(false);
-  @Output() archiveUnitClick = new EventEmitter<any>();
+  readonly archiveUnitClick = output<any>();
 
   tenantIdentifier: number;
   searchCriterias: Map<string, CriteriaSearchCriteria>;
@@ -334,19 +333,23 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   displayedColumns = ['checkbox', 'type', 'name_description', 'start_date', 'end_date', 'originating_agency'];
   criteriaCategoriesList = [STORAGE_RULE, APPRAISAL_RULE, ACCESS_RULE, DISSEMINATION_RULE, REUSE_RULE];
 
-  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
-  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
-  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
-  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
-  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
-  launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
-  @ViewChild('launchSelectionContainsHoldingUnitAlertMessageDialog', { static: true })
-  launchSelectionContainsHoldingUnitAlertMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  readonly confirmSecondActionBigNumberOfResultsActionDialog = viewChild<TemplateRef<ArchiveSearchComponent>>(
+    'confirmSecondActionBigNumberOfResultsActionDialog',
+  );
+  readonly reclassificationAlerteMessageDialog = viewChild<TemplateRef<ArchiveSearchComponent>>('reclassificationAlerteMessageDialog');
+  readonly launchComputeInheritedRuleAlerteMessageDialog = viewChild<TemplateRef<ArchiveSearchComponent>>(
+    'launchComputeInheritedRuleAlerteMessageDialog',
+  );
+  readonly launchSelectionContainsHoldingUnitAlertMessageDialog = viewChild<TemplateRef<ArchiveSearchComponent>>(
+    'launchSelectionContainsHoldingUnitAlertMessageDialog',
+  );
   archiveSearchResultFacets = signal<ArchiveSearchResultFacets>(new ArchiveSearchResultFacets());
-  @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
-  confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>;
-  @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
-  actionsWithThresholdReachedAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  readonly confirmImportantAllowedBulkOperationsDialog = viewChild<TemplateRef<ArchiveSearchComponent>>(
+    'confirmImportantAllowedBulkOperationsDialog',
+  );
+  readonly actionsWithThresholdReachedAlerteMessageDialog = viewChild<TemplateRef<ArchiveSearchComponent>>(
+    'actionsWithThresholdReachedAlerteMessageDialog',
+  );
 
   constructor() {
     const archiveSharedDataService = this.archiveSharedDataService;
@@ -1236,7 +1239,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         (this.isAllChecked && totalHits - this.itemNotSelected > reclassificationThreshold) ||
         this.selectedItemCount > reclassificationThreshold
       ) {
-        const dialogToOpen = this.reclassificationAlerteMessageDialog;
+        const dialogToOpen = this.reclassificationAlerteMessageDialog();
         const dialogRef = this.dialog.open(dialogToOpen);
         this.subscriptions.add(
           dialogRef
@@ -1345,8 +1348,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.numberOfHoldingUnitTypeOnComputedRules,
       this.tenantIdentifier,
       this.currentPage,
-      this.launchComputeInheritedRuleAlerteMessageDialog,
-      this.confirmSecondActionBigNumberOfResultsActionDialog,
+      this.launchComputeInheritedRuleAlerteMessageDialog(),
+      this.confirmSecondActionBigNumberOfResultsActionDialog(),
     );
   }
 
@@ -1358,7 +1361,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   private bulkOperationWarningWorkflow(operation: () => void): void {
-    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog;
+    const dialogConfirmActionWithImportantAllowedCount = this.confirmImportantAllowedBulkOperationsDialog();
     const dialogConfirmActionWithImportantAllowedCountRef = this.dialog.open(dialogConfirmActionWithImportantAllowedCount);
 
     dialogConfirmActionWithImportantAllowedCountRef
@@ -1416,7 +1419,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.selectedItemCount,
           this.tenantIdentifier,
           this.currentPage,
-          this.confirmSecondActionBigNumberOfResultsActionDialog,
+          this.confirmSecondActionBigNumberOfResultsActionDialog(),
         ),
       this.vitamConfigurationService.tenantConfig()?.eliminationAnalysisThreshold,
     );
@@ -1452,7 +1455,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
                 this.listOfUACriteriaSearch,
                 this.tenantIdentifier,
                 this.currentPage,
-                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                this.confirmSecondActionBigNumberOfResultsActionDialog(),
                 true,
               ),
             this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
@@ -1493,7 +1496,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
                 this.listOfUACriteriaSearch,
                 this.tenantIdentifier,
                 this.currentPage,
-                this.confirmSecondActionBigNumberOfResultsActionDialog,
+                this.confirmSecondActionBigNumberOfResultsActionDialog(),
                 false,
               ),
             this.vitamConfigurationService.tenantConfig()?.eliminationActionThreshold,
@@ -1515,7 +1518,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.selectedItemCount,
           this.currentPage,
           this.isAllChecked,
-          this.confirmSecondActionBigNumberOfResultsActionDialog,
+          this.confirmSecondActionBigNumberOfResultsActionDialog(),
         ),
       this.vitamConfigurationService.tenantConfig()?.dipExportThreshold,
     );
@@ -1532,7 +1535,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.selectedItemCount,
           this.currentPage,
           this.isAllChecked,
-          this.confirmSecondActionBigNumberOfResultsActionDialog,
+          this.confirmSecondActionBigNumberOfResultsActionDialog(),
         ),
       this.vitamConfigurationService.tenantConfig()?.transferThreshold,
     );
@@ -1550,8 +1553,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.router,
           this.selectedItemCount,
           this.actionsWithThresholdReachedAlerteMessageDialogSubscription,
-          this.launchSelectionContainsHoldingUnitAlertMessageDialog,
-          this.confirmSecondActionBigNumberOfResultsActionDialog,
+          this.launchSelectionContainsHoldingUnitAlertMessageDialog(),
+          this.confirmSecondActionBigNumberOfResultsActionDialog(),
         ),
       this.vitamConfigurationService.tenantConfig()?.updateMgtRulesThreshold,
     );

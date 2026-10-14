@@ -37,15 +37,15 @@
 import {
   ChangeDetectorRef,
   Directive,
-  EventEmitter,
   Injector,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
   inject,
+  input,
+  linkedSignal,
+  output,
 } from '@angular/core';
 import {
   AsyncValidatorFn,
@@ -73,12 +73,16 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
     this.injector = injector;
   }
 
-  @Input() errorMessageMap: { [p: string]: string };
-  @Input({ transform: coerceBooleanProperty }) required: boolean;
-  @Input({ transform: coerceBooleanProperty }) disabled: boolean;
+  readonly errorMessageMap = input<{
+    [p: string]: string;
+  }>(undefined);
+  readonly required = input<boolean, any>(undefined, { transform: coerceBooleanProperty });
+  readonly disabled = input<boolean, any>(undefined, { transform: coerceBooleanProperty });
+  // Disabled state, initialized from the `disabled` input, that subclasses can override (e.g. in setDisabledState)
+  protected readonly disabledState = linkedSignal(() => this.disabled());
 
   // eslint-disable-next-line @angular-eslint/no-output-native
-  @Output() change = new EventEmitter(); // To be able to use (change)="..." on components
+  readonly change = output<any>(); // To be able to use (change)="..." on components
 
   protected control: FormControl;
 
@@ -163,15 +167,17 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
   }
 
   private updateValidators() {
-    if (this.required) this.control.addValidators(Validators.required);
-    else if (this.required === false) this.control.removeValidators(Validators.required);
+    const required = this.required();
+    if (required) this.control.addValidators(Validators.required);
+    else if (required === false) this.control.removeValidators(Validators.required);
   }
 
   private updateDisabled() {
     // We use setTimeout to prevent ExpressionChangedAfterItHasBeenCheckedError
     setTimeout(() => {
-      if (this.disabled) this.control.disable();
-      else if (this.disabled === false) this.control.enable();
+      const disabled = this.disabledState();
+      if (disabled) this.control.disable();
+      else if (disabled === false) this.control.enable();
       // Runs outside change detection: refresh the view (zoneless)
       this.#changeDetectorRef.markForCheck();
     });

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import type { FileNode } from '../../models/file-node';
 import { FormsModule } from '@angular/forms';
 
@@ -46,11 +46,9 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class ModifyTextButtonComponent {
-  @Input()
-  node: FileNode;
+  readonly node = input<FileNode>(undefined);
 
-  @Output()
-  textEdit: EventEmitter<string> = new EventEmitter();
+  readonly textEdit = output<string>();
 
   editmode = false;
   editText = '';
@@ -58,12 +56,13 @@ export class ModifyTextButtonComponent {
 
   edit() {
     this.editmode = true;
-    this.editText = this.node.editName ? this.node.editName : this.node.name;
+    const node = this.node();
+    this.editText = node.editName ? node.editName : node.name;
   }
 
   save() {
     this.editmode = false;
-    this.node.editName = this.editText;
+    this.node().editName = this.editText;
     this.textEdit.emit(this.editText);
   }
 

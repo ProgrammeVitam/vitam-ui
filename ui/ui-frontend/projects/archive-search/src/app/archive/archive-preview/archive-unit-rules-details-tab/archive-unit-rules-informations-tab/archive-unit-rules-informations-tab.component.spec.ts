@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input, Pipe, PipeTransform } from '@angular/core';
+import { Directive, Pipe, PipeTransform, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -60,7 +60,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     selector: '[app-VitamuiCommonCollapseTriggerFor]',
   })
   class CollapseTriggerForStubDirective {
-    @Input() vitamuiCommonCollapseTriggerFor: any;
+    readonly vitamuiCommonCollapseTriggerFor = input<any>(undefined);
   }
 
   @Directive({
@@ -69,7 +69,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     exportAs: 'vitamuiCommonCollapse',
   })
   class CollapseStubDirective {
-    @Input() vitamuiCommonCollapse: any;
+    readonly vitamuiCommonCollapse = input<any>(undefined);
   }
 
   @Pipe({ name: 'dateTime' })
@@ -191,9 +191,9 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
 
   it('the parameter of showing properties list should be true', () => {
     // Given
-    component.ruleCategory = 'AppraisalRule';
+    fixture.componentRef.setInput('ruleCategory', 'AppraisalRule');
     // When
-    component.archiveUnitRules = archiveUnit;
+    fixture.componentRef.setInput('archiveUnitRules', archiveUnit);
 
     // Then
     expect(component.isToShowPropertiesList).not.toBeDefined();
@@ -212,7 +212,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     // Given
     const property = 'UnknownProperty';
     // When
-    component.archiveUnitRules = archiveUnit;
+    fixture.componentRef.setInput('archiveUnitRules', archiveUnit);
     // Then
     expect(component.getClassificationRulePropertyStatus(property)).not.toBeDefined();
     expect(component.getClassificationRulePropertyStatus(property)).not.toBeNull();
@@ -289,7 +289,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     // When
-    component.archiveUnitRules = archiveUnitDetails;
+    fixture.componentRef.setInput('archiveUnitRules', archiveUnitDetails);
 
     // Then
     expect(component.getClassificationRulePropertyStatus(property)).toBeDefined();

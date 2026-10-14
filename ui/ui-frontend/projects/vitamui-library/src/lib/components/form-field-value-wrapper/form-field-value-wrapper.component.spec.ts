@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormFieldValueWrapperComponent } from './form-field-value-wrapper.component';
 import { SearchWithTypeSelectorComponent } from '../search-with-type-selector/search-with-type-selector.component';
@@ -56,8 +56,7 @@ const placeholder = 'test';
   imports: [FormFieldValueWrapperComponent, ReactiveFormsModule, SearchWithTypeSelectorComponent],
 })
 class TestHostWithSearchWithTypeSelectorComponent {
-  @ViewChild(FormFieldValueWrapperComponent)
-  searchWithTypeSelectorComponent: FormFieldValueWrapperComponent;
+  readonly searchWithTypeSelectorComponent = viewChild(FormFieldValueWrapperComponent);
 
   types = types;
   placeholder = placeholder;
@@ -86,7 +85,7 @@ describe('FormFieldValueWrapperComponent', () => {
     it('should change model value only when confirming', async () => {
       const value = 'My test';
       const inputEl = hostFixture.debugElement.query(By.css('input')).nativeElement;
-      testHostComponent.searchWithTypeSelectorComponent.editMode = true;
+      testHostComponent.searchWithTypeSelectorComponent().editMode = true;
 
       input(inputEl, value);
 
@@ -94,7 +93,7 @@ describe('FormFieldValueWrapperComponent', () => {
       expect(testHostComponent.control.value).toBeFalsy();
 
       // When confirming...
-      testHostComponent.searchWithTypeSelectorComponent.confirm();
+      testHostComponent.searchWithTypeSelectorComponent().confirm();
       // ... control value is updated
       expect(testHostComponent.control.value).toEqual({ type: types[0], value: value });
     });

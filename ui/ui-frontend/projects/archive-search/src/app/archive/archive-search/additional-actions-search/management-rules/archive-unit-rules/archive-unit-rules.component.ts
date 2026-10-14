@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../../../core/management-rules-shared-data.service';
 import { ActionsRules, ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../models/ruleAction.interface';
@@ -68,14 +68,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class ArchiveUnitRulesComponent implements OnDestroy {
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
 
-  @Input()
-  selectedItem: number;
-  @Input()
-  ruleCategory: string;
-  @Input()
-  hasExactCount: boolean;
-  @Input()
-  rules$: Observable<Rule[]>;
+  readonly selectedItem = input<number>(undefined);
+  readonly ruleCategory = input<string>(undefined);
+  readonly hasExactCount = input<boolean>(undefined);
+  readonly rules$ = input<Observable<Rule[]>>(undefined);
 
   ruleCategoryDuaActions: RuleCategoryAction;
 
@@ -117,7 +113,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
       this.ruleActions = data;
     });
     const rules: string[] = this.ruleActions
-      .filter((actionRules) => actionRules.ruleType === this.ruleCategory)
+      .filter((actionRules) => actionRules.ruleType === this.ruleCategory())
       .map((action) => action.actionType);
     return rules.filter((ruleName, index) => rules.indexOf(ruleName) === index);
   }
@@ -125,7 +121,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    return this.ruleActions.filter((ruleAction) => ruleAction.ruleType === this.ruleCategory);
+    return this.ruleActions.filter((ruleAction) => ruleAction.ruleType === this.ruleCategory());
   }
 
   showAddRuleBloc() {
@@ -167,10 +163,10 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
       this.isRuleDuplicated = isDuplicated;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategory) !== -1) {
+    if (this.managementRules.some((managementRule) => managementRule.category === this.ruleCategory())) {
       if (actionType === RuleActionsEnum.BLOCK_RULE_INHERITANCE) {
         this.ruleCategoryDuaActions = this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         )?.ruleCategoryAction;
 
         this.ruleCategoryDuaActions.preventRulesIdToAdd = this.ruleCategoryDuaActions.preventRulesIdToAdd.filter((rule) => rule !== ruleId);
@@ -179,7 +175,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
         }
       } else if (actionType === RuleActionsEnum.UNLOCK_RULE_INHERITANCE) {
         this.ruleCategoryDuaActions = this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
         ).ruleCategoryAction;
 
         this.ruleCategoryDuaActions.preventRulesIdToRemove = this.ruleCategoryDuaActions.preventRulesIdToRemove.filter(
@@ -190,7 +186,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
         }
       } else {
         this.ruleCategoryDuaActions = this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === actionType,
         )?.ruleCategoryAction;
         if (
           actionType === RuleActionsEnum.ADD_RULES &&
@@ -228,7 +224,7 @@ export class ArchiveUnitRulesComponent implements OnDestroy {
       }
       if (this.checkExistenceOfManagementOperation(actionType, this.managementRules)) {
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === actionType,
         ).ruleCategoryAction = this.ruleCategoryDuaActions;
         if (this.checkExistenceOfUpdateOperation(this.managementRules)) {
           this.managementRules = this.managementRules.filter(

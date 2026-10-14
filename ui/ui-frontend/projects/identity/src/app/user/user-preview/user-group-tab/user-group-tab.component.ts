@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnChanges, OnDestroy, input, model, computed } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -59,51 +59,18 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input()
-  set user(user: User) {
-    this._user = user;
-  }
-  get user(): User {
-    return this._user;
-  }
-  private _user: User;
+  readonly user = model<User>();
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly) {
-      this.showUpdateButton = false;
-    } else {
-      this.showUpdateButton = true;
-    }
-  }
-  get readOnly(): boolean {
-    return this._readOnly;
-  }
-  private readonly _readOnly: boolean;
+  readonly readOnly = input<boolean>();
 
-  @Input()
-  set userInfo(userInfo: AdminUserProfile) {
-    this._userInfo = userInfo;
-  }
-  get userInfo() {
-    return this._userInfo;
-  }
-  private _userInfo: AdminUserProfile;
+  readonly userInfo = input<AdminUserProfile>();
 
-  @Input()
-  get groups(): Group[] {
-    return this._groups;
-  }
-  set groups(groupList: Group[]) {
-    this._groups = groupList;
-  }
-
-  private _groups: Group[];
+  readonly groups = input<Group[]>();
 
   form: FormGroup;
   activeGroups: GroupSelection[];
   userGroup: Group;
-  showUpdateButton: boolean;
+  readonly showUpdateButton = computed(() => !this.readOnly());
   public groupProfiles: Profile[] = [];
 
   private readonly destroy = new Subject<void>();
@@ -127,7 +94,7 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   }
 
   getUserProfileDetail() {
-    this.activeGroups = this.groups.map((group) =>
+    this.activeGroups = this.groups().map((group) =>
       Object({
         id: group.id,
         name: group.name,
@@ -140,16 +107,16 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
     if (!isRootLevel(this.authService.user)) {
       this.activeGroups = this.activeGroups.filter((g) => g.id !== this.authService.user.groupId);
     }
-    if (this.user.groupId) {
-      this.userGroup = this.groups.find((group) => group.id === this.user.groupId);
+    if (this.user().groupId) {
+      this.userGroup = this.groups().find((group) => group.id === this.user().groupId);
     }
   }
 
   getAttributableGroups(): GroupSelection[] {
-    if (this.userInfo.type === 'LIST') {
+    if (this.userInfo().type === 'LIST') {
       this.activeGroups = [];
-      this.userInfo.profilGroup.forEach((displayGroup) => {
-        const profilGroup = this.groups.find((group) => group.id === displayGroup.id);
+      this.userInfo().profilGroup.forEach((displayGroup) => {
+        const profilGroup = this.groups().find((group) => group.id === displayGroup.id);
         const simplifiedGroup = Object({
           id: displayGroup.id,
           name: displayGroup.name,
@@ -168,7 +135,7 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
     this.activeGroups = this.getAttributableGroups();
     const dialogRef = this.groupAttrDialog.open(GroupAttributionComponent, {
       disableClose: true,
-      data: [this.user, this.userGroup, this.activeGroups],
+      data: [this.user(), this.userGroup, this.activeGroups],
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -178,9 +145,9 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   }
 
   refreshTab() {
-    this.userService.get(this.user.id).subscribe(
+    this.userService.get(this.user().id).subscribe(
       (response) => {
-        this.user = response;
+        this.user.set(response);
         this.cdr.markForCheck();
       },
       (error) => {

@@ -41,7 +41,7 @@ import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { ProfilesEditComponent } from './profiles-edit.component';
@@ -59,8 +59,7 @@ import { ProfilesEditComponent } from './profiles-edit.component';
   imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
-  @Input()
-  level: any;
+  readonly level = input<any>(undefined);
 
   writeValue() {}
 

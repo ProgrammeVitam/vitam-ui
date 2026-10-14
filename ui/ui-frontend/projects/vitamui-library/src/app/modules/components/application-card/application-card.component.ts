@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApplicationService } from '../../application.service';
 import type { Application } from '../../models/application/application.interface';
@@ -54,19 +54,19 @@ export class ApplicationCardComponent implements OnInit {
   private readonly startupService = inject(StartupService);
   private readonly router = inject(Router);
 
-  @Input() application: Application;
+  readonly application = input<Application>(undefined);
   protected link: string;
   protected title: string;
   protected subtitle: string;
 
   ngOnInit(): void {
-    this.link = this.applicationService.getApplicationUrl(this.application);
-    this.title = `APPLICATION.${this.application.identifier}.NAME`;
-    this.subtitle = `APPLICATION.${this.application.identifier}.TOOLTIP`;
+    this.link = this.applicationService.getApplicationUrl(this.application());
+    this.title = `APPLICATION.${this.application().identifier}.NAME`;
+    this.subtitle = `APPLICATION.${this.application().identifier}.TOOLTIP`;
   }
 
   public openApplication(event: MouseEvent): void {
     event.preventDefault();
-    this.applicationService.openApplication(this.application, this.router, this.startupService.getConfigStringValue('UI_URL'));
+    this.applicationService.openApplication(this.application(), this.router, this.startupService.getConfigStringValue('UI_URL'));
   }
 }

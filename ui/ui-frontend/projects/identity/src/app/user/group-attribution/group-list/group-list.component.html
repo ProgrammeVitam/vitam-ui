@@ -4,13 +4,13 @@
   class="my-3"
   [placeholder]="'USER.GROUP.MODAL.AUTORISATION_STEP.INPUT_PLACEHOLDER' | translate"
   (search)="onSearch($event)"
-  [disabled]="searchActiv"
+  [disabled]="searchActiv()"
 ></vitamui-common-search-bar>
 
-@if (groupName) {
+@if (groupName()) {
   <div class="d-flex mt-4 mb-3">
     <div class="text medium bold">{{ 'USER.GROUP.MODAL.AUTORISATION_STEP.ATTRIBUATE_GROUP' | translate }} :</div>
-    &nbsp;<span class="text medium">{{ groupName }}</span>
+    &nbsp;<span class="text medium">{{ groupName() }}</span>
   </div>
 }
 
@@ -21,7 +21,7 @@
 
   <div class="vitamui-table-body">
     <div class="vitamui-table-rows">
-      @for (group of groups; track group) {
+      @for (group of groups(); track group) {
         @if (!group?.selected) {
           <div
             class="vitamui-row p-0 px-4"

@@ -1,7 +1,7 @@
-@if (editObject?.key && editObject?.kind === 'object-array') {
+@if (editObject()?.key && editObject()?.kind === 'object-array') {
   <div
     class="header mat-elevation-z1"
-    [ngClass]="{ 'display-none': editObject.children.length > 0, disabled: editObject.children.length === 0 }"
+    [ngClass]="{ 'display-none': editObject().children.length > 0, disabled: editObject().children.length === 0 }"
     (click)="addFirst()"
   >
     <div class="v-row">
@@ -9,7 +9,7 @@
         <div class="v-row">
           <div class="v-col align-items-center">
             <i class="vitamui-icon icon vitamui-icon-chevron-right"></i>
-            <span class="object-name">{{ editObject.displayRule.ui.label | translate | empty | appendStar: editObject.required }}</span>
+            <span class="object-name">{{ editObject().displayRule.ui.label | translate | empty | appendStar: editObject().required }}</span>
           </div>
           @if (favoriteEntry) {
             <div class="v-col align-items-center favorite-entry">{{ favoritePath | translate }}: {{ favoriteEntry[1] | empty }}</div>
@@ -22,8 +22,8 @@
     <div *ngTemplateOutlet="content"></div>
   </div>
 } @else {
-  @if (editObject?.kind === 'object-array') {
-    @for (child of editObject.children; track child; let i = $index) {
+  @if (editObject()?.kind === 'object-array') {
+    @for (child of editObject().children; track child; let i = $index) {
       <div class="row">
         <div class="col">
           @if (child.type === DisplayObjectType.GROUP) {
@@ -42,44 +42,44 @@
     }
   }
   @if (
-    editObject?.kind === 'primitive-array' &&
-    editObject?.cardinality.includes('MANY') &&
-    ['textfield', 'textarea'].includes(editObject?.displayRule?.ui?.component)
+    editObject()?.kind === 'primitive-array' &&
+    editObject()?.cardinality.includes('MANY') &&
+    ['textfield', 'textarea'].includes(editObject()?.displayRule?.ui?.component)
   ) {
     <vitamui-input
       [multiple]="true"
-      [placeholder]="editObject.displayRule.ui.label | translate | empty"
-      [required]="editObject.required"
-      [textarea]="editObject.displayRule.ui.layout.size === 'large'"
+      [placeholder]="editObject().displayRule.ui.label | translate | empty"
+      [required]="editObject().required"
+      [textarea]="editObject().displayRule.ui.layout.size === 'large'"
       [formControl]="formControl"
     >
     </vitamui-input>
   }
   @if (
-    editObject?.kind === 'primitive-array' &&
-    editObject?.cardinality.includes('ONE') &&
-    ['textfield'].includes(editObject?.displayRule?.ui?.component)
+    editObject()?.kind === 'primitive-array' &&
+    editObject()?.cardinality.includes('ONE') &&
+    ['textfield'].includes(editObject()?.displayRule?.ui?.component)
   ) {
-    <vitamui-editor-list-input [editObject]="editObject"></vitamui-editor-list-input>
+    <vitamui-editor-list-input [editObject]="editObject()"></vitamui-editor-list-input>
   }
   @if (
-    editObject?.kind === 'primitive-array' &&
-    editObject?.cardinality.includes('ONE') &&
-    ['textarea'].includes(editObject?.displayRule?.ui?.component)
+    editObject()?.kind === 'primitive-array' &&
+    editObject()?.cardinality.includes('ONE') &&
+    ['textarea'].includes(editObject()?.displayRule?.ui?.component)
   ) {
-    <vitamui-editor-list-textarea [editObject]="editObject"></vitamui-editor-list-textarea>
+    <vitamui-editor-list-textarea [editObject]="editObject()"></vitamui-editor-list-textarea>
   }
-  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'select') {
-    <vitamui-editor-list-select [editObject]="editObject"></vitamui-editor-list-select>
+  @if (editObject()?.kind === 'primitive-array' && editObject()?.displayRule?.ui?.component === 'select') {
+    <vitamui-editor-list-select [editObject]="editObject()"></vitamui-editor-list-select>
   }
-  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'datetime') {
-    <vitamui-editor-list-date [editObject]="editObject"></vitamui-editor-list-date>
+  @if (editObject()?.kind === 'primitive-array' && editObject()?.displayRule?.ui?.component === 'datetime') {
+    <vitamui-editor-list-date [editObject]="editObject()"></vitamui-editor-list-date>
   }
 }
 
 <ng-template #content>
-  @if (editObject?.kind === 'object-array') {
-    @for (child of editObject.children; track child; let i = $index) {
+  @if (editObject()?.kind === 'object-array') {
+    @for (child of editObject().children; track child; let i = $index) {
       <div class="row">
         <div class="col">
           @if (child.type === DisplayObjectType.GROUP) {
@@ -99,41 +99,41 @@
   }
 
   @if (
-    editObject?.kind === 'primitive-array' &&
-    editObject?.cardinality.includes('MANY') &&
-    ['textfield', 'textarea'].includes(editObject?.displayRule?.ui?.component)
+    editObject()?.kind === 'primitive-array' &&
+    editObject()?.cardinality.includes('MANY') &&
+    ['textfield', 'textarea'].includes(editObject()?.displayRule?.ui?.component)
   ) {
     <vitamui-input
       [multiple]="true"
-      [placeholder]="editObject.displayRule.ui.label | translate | empty"
-      [required]="editObject.required"
-      [textarea]="editObject.displayRule.ui.layout.size === 'large'"
+      [placeholder]="editObject().displayRule.ui.label | translate | empty"
+      [required]="editObject().required"
+      [textarea]="editObject().displayRule.ui.layout.size === 'large'"
       [formControl]="formControl"
     >
     </vitamui-input>
   }
 
   @if (
-    editObject?.kind === 'primitive-array' &&
-    editObject?.cardinality.includes('ONE') &&
-    ['textfield'].includes(editObject?.displayRule?.ui?.component)
+    editObject()?.kind === 'primitive-array' &&
+    editObject()?.cardinality.includes('ONE') &&
+    ['textfield'].includes(editObject()?.displayRule?.ui?.component)
   ) {
-    <vitamui-editor-list-input [editObject]="editObject"></vitamui-editor-list-input>
+    <vitamui-editor-list-input [editObject]="editObject()"></vitamui-editor-list-input>
   }
 
   @if (
-    editObject?.kind === 'primitive-array' &&
-    editObject?.cardinality.includes('ONE') &&
-    ['textarea'].includes(editObject?.displayRule?.ui?.component)
+    editObject()?.kind === 'primitive-array' &&
+    editObject()?.cardinality.includes('ONE') &&
+    ['textarea'].includes(editObject()?.displayRule?.ui?.component)
   ) {
-    <vitamui-editor-list-textarea [editObject]="editObject"></vitamui-editor-list-textarea>
+    <vitamui-editor-list-textarea [editObject]="editObject()"></vitamui-editor-list-textarea>
   }
 
-  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'select') {
-    <vitamui-editor-list-select [editObject]="editObject"></vitamui-editor-list-select>
+  @if (editObject()?.kind === 'primitive-array' && editObject()?.displayRule?.ui?.component === 'select') {
+    <vitamui-editor-list-select [editObject]="editObject()"></vitamui-editor-list-select>
   }
 
-  @if (editObject?.kind === 'primitive-array' && editObject?.displayRule?.ui?.component === 'datetime') {
-    <vitamui-editor-list-date [editObject]="editObject"></vitamui-editor-list-date>
+  @if (editObject()?.kind === 'primitive-array' && editObject()?.displayRule?.ui?.component === 'datetime') {
+    <vitamui-editor-list-date [editObject]="editObject()"></vitamui-editor-list-date>
   }
 </ng-template>

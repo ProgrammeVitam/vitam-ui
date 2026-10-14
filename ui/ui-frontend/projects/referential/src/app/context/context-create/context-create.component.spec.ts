@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -72,8 +72,7 @@ import { ContextCreateValidators } from './context-create.validators';
   ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
-  @Input()
-  contextInfo: any;
+  readonly contextInfo = input<any>(undefined);
 
   writeValue() {}
 

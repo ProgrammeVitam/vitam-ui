@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Directive, OnDestroy, OnInit, output, input } from '@angular/core';
 
 const DEFAULT_SCROLL_THRESHOLD = 0.8;
 
 @Directive({ selector: '[vitamuiCommonInfiniteScroll]' })
 export class InfiniteScrollDirective implements OnInit, OnDestroy {
-  @Input() vitamuiCommonInfiniteScrollThreshold = DEFAULT_SCROLL_THRESHOLD;
-  @Input() vitamuiCommonInfiniteScrollDisable = false;
+  readonly vitamuiCommonInfiniteScrollThreshold = input(DEFAULT_SCROLL_THRESHOLD);
+  readonly vitamuiCommonInfiniteScrollDisable = input(false);
 
-  @Output() vitamuiScroll = new EventEmitter<void>();
+  readonly vitamuiScroll = output<void>();
 
   private scrollElement: Element;
 
@@ -57,11 +57,11 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
     this.scrollElement = this.getScrollElement();
     if (this.scrollElement) {
       scrollElement.addEventListener('scroll', () => {
-        if (!this.vitamuiCommonInfiniteScrollDisable) {
+        if (!this.vitamuiCommonInfiniteScrollDisable()) {
           const height = scrollElement.scrollHeight - scrollElement.clientHeight;
           const scrollRatio = scrollElement.scrollTop / height;
 
-          if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold) {
+          if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold()) {
             this.vitamuiScroll.emit();
           }
         }
@@ -82,10 +82,10 @@ export class InfiniteScrollDirective implements OnInit, OnDestroy {
   }
 
   private readonly scroll = (): void => {
-    if (!this.vitamuiCommonInfiniteScrollDisable) {
+    if (!this.vitamuiCommonInfiniteScrollDisable()) {
       const height = this.scrollElement.scrollHeight - this.scrollElement.clientHeight;
       const scrollRatio = this.scrollElement.scrollTop / height;
-      if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold) {
+      if (scrollRatio >= this.vitamuiCommonInfiniteScrollThreshold()) {
         this.vitamuiScroll.emit();
       }
     }

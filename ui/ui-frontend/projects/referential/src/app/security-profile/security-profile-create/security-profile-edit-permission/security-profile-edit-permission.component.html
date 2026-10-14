@@ -20,7 +20,7 @@
                   <vitamui-slide-toggle
                     [formControlName]="getPermissionString(permission.service, permission.readPermission, 'read')"
                     [checked]="permission.readPermission.activated"
-                    [disabled]="forceDisabled || !permission.readPermission"
+                    [disabled]="forceDisabled() || !permission.readPermission"
                     (change)="onSubmit()"
                   >
                   </vitamui-slide-toggle>
@@ -34,7 +34,7 @@
                   <vitamui-slide-toggle
                     [formControlName]="getPermissionString(permission.service, permission.writePermission, 'update')"
                     [checked]="permission.writePermission.activated"
-                    [disabled]="forceDisabled || !permission.writePermission"
+                    [disabled]="forceDisabled() || !permission.writePermission"
                     (change)="onSubmit()"
                   >
                   </vitamui-slide-toggle>
@@ -48,7 +48,7 @@
                   <vitamui-slide-toggle
                     [formControlName]="getPermissionString(permission.service, permission.deletePermission, 'delete')"
                     [checked]="permission.deletePermission.activated"
-                    [disabled]="forceDisabled || !permission.deletePermission"
+                    [disabled]="forceDisabled() || !permission.deletePermission"
                     (change)="onSubmit()"
                   >
                   </vitamui-slide-toggle>

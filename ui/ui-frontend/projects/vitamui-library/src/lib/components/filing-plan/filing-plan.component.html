@@ -5,7 +5,7 @@
         <li class="mat-tree-node filing-tree-node">
           <vitamui-library-node
             disabled
-            [tenantIdentifier]="tenantIdentifier"
+            [tenantIdentifier]="tenantIdentifier()"
             [node]="node"
             (nodeToggle)="nestedTreeControl.toggle(node)"
             (labelClick)="emitVitamId(node)"
@@ -17,7 +17,7 @@
         <li>
           <div class="mat-tree-node filing-tree-node">
             <vitamui-library-node
-              [tenantIdentifier]="tenantIdentifier"
+              [tenantIdentifier]="tenantIdentifier()"
               [node]="node"
               [expanded]="nestedTreeControl.isExpanded(node)"
               (nodeToggle)="nestedTreeControl.toggle(node)"
@@ -38,4 +38,4 @@
   </div>
 </div>
 
-<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap"></vitamui-form-errors>
+<vitamui-form-errors [control]="control" [errorMessageMap]="errorMessageMap()"></vitamui-form-errors>

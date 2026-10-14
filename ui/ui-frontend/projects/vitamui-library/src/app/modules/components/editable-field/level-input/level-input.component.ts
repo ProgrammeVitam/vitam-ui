@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component, ElementRef, forwardRef, HostBinding, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, HostBinding, HostListener, OnInit, input, linkedSignal, viewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { extractSubLevel } from '../../../utils/level.util';
 
@@ -55,36 +55,17 @@ export const LEVEL_INPUT_VALUE_ACCESSOR: any = {
   imports: [FormsModule, forwardRef(() => LevelInputComponent), TranslatePipe],
 })
 export class LevelInputComponent implements OnInit, ControlValueAccessor {
-  @Input() prefix: string;
+  readonly prefix = input<string>(undefined);
 
-  @Input()
-  get isEditableComponent(): boolean {
-    return this._isEditableComponent;
-  }
-  set isEditableComponent(value: boolean) {
-    this._isEditableComponent = coerceBooleanProperty(value);
-  }
-  private _isEditableComponent = false;
+  readonly isEditableComponent = input(false, { transform: coerceBooleanProperty });
 
-  @Input()
-  get required(): boolean {
-    return this._required;
-  }
-  set required(value: boolean) {
-    this._required = coerceBooleanProperty(value);
-  }
-  private _required = false;
+  readonly required = input(false, { transform: coerceBooleanProperty });
 
-  @Input()
-  get disabled(): boolean {
-    return this._disabled;
-  }
-  set disabled(value: boolean) {
-    this._disabled = coerceBooleanProperty(value);
-  }
-  private _disabled = false;
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  readonly disabledInput = input(false, { alias: 'disabled', transform: coerceBooleanProperty });
+  readonly disabled = linkedSignal(() => this.disabledInput());
 
-  @ViewChild('vitamUILevelInput') private input: ElementRef;
+  private readonly input = viewChild<ElementRef>('vitamUILevelInput');
 
   subLevel: string;
 
@@ -96,7 +77,7 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
 
   @HostListener('click')
   onClick() {
-    this.input.nativeElement.focus();
+    this.input().nativeElement.focus();
   }
 
   ngOnInit() {
@@ -104,7 +85,7 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(level: string): void {
-    this.subLevel = extractSubLevel(this.prefix, level);
+    this.subLevel = extractSubLevel(this.prefix(), level);
   }
 
   registerOnChange(fn: any): void {
@@ -116,7 +97,7 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.disabled.set(coerceBooleanProperty(isDisabled));
   }
 
   onFocus() {
@@ -131,7 +112,8 @@ export class LevelInputComponent implements OnInit, ControlValueAccessor {
 
   onValueChange(_: string) {
     this.labelFloat = !!this.subLevel;
-    const level = this.prefix ? this.prefix + '.' + this.subLevel : this.subLevel;
+    const prefix = this.prefix();
+    const level = prefix ? prefix + '.' + this.subLevel : this.subLevel;
     this.onChange(level.toLocaleUpperCase());
   }
 }

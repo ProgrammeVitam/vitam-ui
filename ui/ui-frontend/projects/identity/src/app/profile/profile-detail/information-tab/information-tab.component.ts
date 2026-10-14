@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -112,9 +112,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   roleEnum = Role;
 
-  @Input() profile: Profile;
+  readonly profile = input<Profile>(undefined);
 
-  @Input() readOnly: boolean;
+  readonly readOnly = input<boolean>(undefined);
 
   private updateFormSub: Subscription;
 
@@ -134,12 +134,15 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         filter((formData) => !isEmpty(formData)),
         map((formData) => this.completeRoles(formData)),
         map((formData) =>
-          extend({ id: this.profile.id, customerId: this.profile.customerId, tenantIdentifier: this.profile.tenantIdentifier }, formData),
+          extend(
+            { id: this.profile().id, customerId: this.profile().customerId, tenantIdentifier: this.profile().tenantIdentifier },
+            formData,
+          ),
         ),
         switchMap((formData) => this.rngProfileService.patch(formData).pipe(catchError(() => of(null)))),
       )
       .subscribe((profile) => {
-        this.resetForm(this.form, profile, this.readOnly);
+        this.resetForm(this.form, profile, this.readOnly());
       });
   }
 
@@ -208,8 +211,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('profile') || changes.hasOwnProperty('readOnly')) {
-      if (this.profile) {
-        this.resetForm(this.form, this.profile, this.readOnly);
+      const profile = this.profile();
+      if (profile) {
+        this.resetForm(this.form, profile, this.readOnly());
         this.previousValue = this.form.value;
       }
     }

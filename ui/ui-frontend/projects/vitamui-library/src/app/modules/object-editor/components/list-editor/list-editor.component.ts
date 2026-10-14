@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, SimpleChanges, input } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FavoriteEntryService } from '../../../object-viewer/services/favorite-entry.service';
 import { DisplayObjectType } from '../../../object-viewer/types';
@@ -75,7 +75,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class ListEditorComponent implements OnChanges {
   private readonly favoriteEntryService = inject(FavoriteEntryService);
 
-  @Input() editObject: EditObject;
+  readonly editObject = input<EditObject>(undefined);
 
   favoriteEntry: [key: string, value: any];
   favoritePath: string;
@@ -83,26 +83,27 @@ export class ListEditorComponent implements OnChanges {
   readonly DisplayObjectType = DisplayObjectType;
 
   get formControl(): FormControl {
-    return this.editObject.control as FormControl;
+    return this.editObject().control as FormControl;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { editObject } = changes;
 
-    if (editObject) this.favoriteEntryService.favoriteEntry(this.editObject);
+    if (editObject) this.favoriteEntryService.favoriteEntry(this.editObject());
   }
 
   addFirst(): void {
-    if (this.editObject.children.length === 0) this.editObject.actions['add'].handler();
+    const editObject = this.editObject();
+    if (editObject.children.length === 0) editObject.actions['add'].handler();
   }
 
   add(event: Event): void {
-    this.editObject.actions['add'].handler();
+    this.editObject().actions['add'].handler();
     event.stopPropagation();
   }
 
   removeAt(event: Event, i: number): void {
-    this.editObject.actions['removeAt'].handler(i);
+    this.editObject().actions['removeAt'].handler(i);
     event.stopPropagation();
   }
 }

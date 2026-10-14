@@ -36,7 +36,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, OnChanges, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
@@ -54,14 +54,11 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
   private readonly datePipe = inject(DatePipe);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @Input()
-  accessRuleFacets: RuleFacets;
+  readonly accessRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  totalResults: number;
+  readonly totalResults = input<number>(undefined);
 
-  @Input()
-  exactCount: boolean;
+  readonly exactCount = input<boolean>(undefined);
 
   dateFilterValue: string;
   rulesFacetDetails: FacetDetails[] = [];
@@ -77,7 +74,7 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
     let archiveUnitWithRules = 0;
-    if (this.accessRuleFacets) {
+    if (this.accessRuleFacets()) {
       archiveUnitWithRules = this.handleWaitingToRecalculateRulesFacets();
       this.handleRulesDisctinctsFacets();
       this.handleRulesExpirationFacets(archiveUnitWithRules);
@@ -88,8 +85,9 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
-    if (this.accessRuleFacets.expiredRulesListFacets && this.accessRuleFacets.expiredRulesListFacets.length > 0) {
-      this.accessRuleFacets.expiredRulesListFacets.forEach((elt) => {
+    const accessRuleFacets = this.accessRuleFacets();
+    if (accessRuleFacets.expiredRulesListFacets && accessRuleFacets.expiredRulesListFacets.length > 0) {
+      accessRuleFacets.expiredRulesListFacets.forEach((elt) => {
         if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
           expiredRulesNb = elt.count ? elt.count : 0;
@@ -97,9 +95,11 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
       });
     }
 
+    const exactCount = this.exactCount();
+    const totalResults = this.totalResults();
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, this.exactCount, this.totalResults),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '>' + this.dateFilterValue,
@@ -108,11 +108,7 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
 
     this.expiredRulesFacetDetails.push({
       title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.NOT_EXPIRED'),
-      totalResults: this.facetsService.getFacetTextByExactCountFlag(
-        archiveUnitWithRules - expiredRulesNb,
-        this.exactCount,
-        this.totalResults,
-      ),
+      totalResults: this.facetsService.getFacetTextByExactCountFlag(archiveUnitWithRules - expiredRulesNb, exactCount, totalResults),
       clickable: false,
       color: Colors.GRAY,
       filter: '<' + this.dateFilterValue,
@@ -121,13 +117,14 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
   }
 
   private handleRulesDisctinctsFacets() {
-    if (this.accessRuleFacets.rulesListFacets && this.accessRuleFacets.rulesListFacets.length > 0) {
+    const accessRuleFacets = this.accessRuleFacets();
+    if (accessRuleFacets.rulesListFacets && accessRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.DISTINCT_RULES'),
         totalResults: this.facetsService.getFacetTextByExactCountFlag(
-          this.accessRuleFacets.rulesListFacets.length,
-          this.exactCount,
-          this.totalResults,
+          accessRuleFacets.rulesListFacets.length,
+          this.exactCount(),
+          this.totalResults(),
         ),
         clickable: false,
         color: Colors.GRAY,
@@ -136,7 +133,7 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
     } else {
       this.rulesFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.DISTINCT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount(), this.totalResults()),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -146,8 +143,11 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
 
   private handleWaitingToRecalculateRulesFacets(): number {
     let archiveUnitWithRules = 0;
-    if (this.accessRuleFacets.waitingToRecalculateRulesListFacets && this.accessRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
-      const facetComputedUnits = this.accessRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
+    const accessRuleFacets = this.accessRuleFacets();
+    const exactCountValue = this.exactCount();
+    const totalResults = this.totalResults();
+    if (accessRuleFacets.waitingToRecalculateRulesListFacets && accessRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
+      const facetComputedUnits = accessRuleFacets.waitingToRecalculateRulesListFacets.filter((elt) => elt.node === 'true');
       let computedCount = 0;
 
       if (facetComputedUnits.length > 0) {
@@ -156,14 +156,15 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
         computedCount = 0;
       }
       let notComputedCount = '';
+      const exactCount = this.exactCount();
       if (
-        !this.exactCount &&
-        (this.totalResults >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+        !exactCount &&
+        (this.totalResults() >= this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
           computedCount >= this.vitamConfigurationService.tenantConfig()?.resultThreshold)
       ) {
         notComputedCount = ArchiveSearchConstsEnum.BIG_RESULTS_FACETS_DEFAULT_TEXT;
       } else {
-        notComputedCount = (this.totalResults - computedCount).toString();
+        notComputedCount = (this.totalResults() - computedCount).toString();
       }
 
       this.archiveUnitsCountFacetDetails.push({
@@ -175,7 +176,7 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(computedCount, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
@@ -184,25 +185,25 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WAITING_TO_RECALCULATE'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(this.totalResults, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(totalResults, exactCountValue, totalResults),
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
+        color: totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.CALCULATED'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     }
 
-    if (this.accessRuleFacets.noRulesFacets && this.accessRuleFacets.noRulesFacets.length > 0) {
-      this.accessRuleFacets.noRulesFacets.forEach((elt) => {
+    if (accessRuleFacets.noRulesFacets && accessRuleFacets.noRulesFacets.length > 0) {
+      accessRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WITHOUT_RULES'),
-          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount, this.totalResults),
+          totalResults: this.facetsService.getFacetTextByExactCountFlag(elt.count, this.exactCount(), this.totalResults()),
           clickable: false,
           color: Colors.GRAY,
           backgroundColor: Colors.DISABLED,
@@ -212,7 +213,7 @@ export class SearchAccessRulesFacetsComponent implements OnChanges {
     } else {
       this.archiveUnitsCountFacetDetails.push({
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WITHOUT_RULES'),
-        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, this.exactCount, this.totalResults),
+        totalResults: this.facetsService.getFacetTextByExactCountFlag(0, exactCountValue, totalResults),
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,

@@ -1,29 +1,29 @@
 <button
   mat-icon-button
-  [disabled]="disabled"
+  [disabled]="disabled()"
   disableRipple
-  [attr.aria-label]="'toggle ' + node?.label"
+  [attr.aria-label]="'toggle ' + node()?.label"
   (click)="nodeToggle.emit()"
   class="arrow mr-1"
   type="button"
 >
-  <i class="vitamui-icon icon {{ expanded ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+  <i class="vitamui-icon icon {{ expanded() ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
 </button>
 
 <mat-checkbox
-  id="enable{{ node?.id }}"
-  [(ngModel)]="node.checked"
-  [(indeterminate)]="node.disabledChild"
-  [disabled]="node.disabled"
+  id="enable{{ node()?.id }}"
+  [(ngModel)]="node().checked"
+  [(indeterminate)]="node().disabledChild"
+  [disabled]="node().disabled"
   (ngModelChange)="onCheckboxClick()"
   (click)="onCheckboxClick()"
-  [vitamuiTooltip]="node?.title"
+  [vitamuiTooltip]="node()?.title"
   [vitamuiTooltipShowDelay]="300"
 >
   <span class="node-label hgap-1" [ngClass]="isVirtualNode() ? 'virtual' : ''" (click)="onLabelClick($event)">
-    @if (isVirtualNode() || icon) {
-      <i class="vitamui-icon" [ngClass]="isVirtualNode() ? 'vitamui-icon-folder-full' : icon"></i>
+    @if (isVirtualNode() || icon()) {
+      <i class="vitamui-icon" [ngClass]="isVirtualNode() ? 'vitamui-icon-folder-full' : icon()"></i>
     }
-    {{ node?.title }}
+    {{ node()?.title }}
   </span>
 </mat-checkbox>

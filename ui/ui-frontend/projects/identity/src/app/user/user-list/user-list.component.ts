@@ -65,17 +65,17 @@ import {
   Component,
   effect,
   ElementRef,
-  EventEmitter,
   inject,
-  Input,
   input,
   LOCALE_ID,
   OnDestroy,
   OnInit,
-  Output,
   signal,
   TemplateRef,
-  ViewChild,
+  output,
+  viewChild,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 
 import { CustomerService } from '../../core/customer.service';
@@ -108,24 +108,19 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     InfiniteScrollDirective,
   ],
 })
-export class UserListComponent extends InfiniteScrollTable<User> implements OnDestroy, OnInit {
+export class UserListComponent extends InfiniteScrollTable<User> implements OnChanges, OnDestroy, OnInit {
   private readonly customerService = inject(CustomerService);
   userService: UserService;
   private readonly locale = inject(LOCALE_ID);
   private readonly authService = inject(AuthService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
-  private _searchText: string;
+  readonly searchText = input<string>();
 
-  @Output() userClick = new EventEmitter<User>();
+  readonly userClick = output<User>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<UserListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  readonly filterTemplate = viewChild<TemplateRef<UserListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
 
   override overridePendingChange: true;
   statusFilter: string[] = [];
@@ -149,14 +144,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
   private readonly orderChange = new Subject<void>();
   private readonly searchKeys = ['firstname', 'lastname', 'email', 'mobile', 'phone', 'identifier'];
 
-  @Input()
-  get connectedUserInfo(): AdminUserProfile {
-    return this._connectedUserInfo;
-  }
-  set connectedUserInfo(userInfo: AdminUserProfile) {
-    this._connectedUserInfo = userInfo;
-  }
-  private _connectedUserInfo: AdminUserProfile;
+  readonly connectedUserInfo = input<AdminUserProfile>();
 
   readonly groups = input<Group[]>(null);
 
@@ -178,6 +166,12 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
         this.updateData(groupList);
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
   }
 
   ngOnInit() {
@@ -210,7 +204,7 @@ export class UserListComponent extends InfiniteScrollTable<User> implements OnDe
 
     searchCriteriaChange.subscribe(() => {
       const query: CriteriaSearchQuery = {
-        criteria: [...buildCriteriaFromUserFilters(this.filterMap), ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
+        criteria: [...buildCriteriaFromUserFilters(this.filterMap), ...buildCriteriaFromSearch(this.searchText(), this.searchKeys)],
       };
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 

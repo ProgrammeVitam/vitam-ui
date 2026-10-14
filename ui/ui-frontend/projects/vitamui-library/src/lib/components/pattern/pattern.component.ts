@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, forwardRef, inject, input, OnChanges, SimpleChanges, viewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
@@ -57,29 +57,33 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   imports: [ReactiveFormsModule, MatSelectModule, TranslatePipe, SelectComponent],
   providers: [PATTERN_VALUE_ACCESSOR],
 })
-export class PatternComponent implements ControlValueAccessor {
+export class PatternComponent implements ControlValueAccessor, OnChanges {
   private readonly translateService = inject(TranslateService);
 
-  @Input() set options(options: Array<{ value: string; disabled?: boolean }>) {
-    this.availableOptions = (options || [])
-      .filter((option) => this.isAvailable(option.value))
-      .map((o) => ({
-        key: o.value,
-        label: `${o.value} ${o.disabled ? this.translateService.instant('SHARED.PATTERN_ALREADY_USED') : ''}`,
-        disabled: o.disabled,
-      }));
-  }
+  readonly options = input<Array<{ value: string; disabled?: boolean }>>(undefined);
   availableOptions: Option[];
 
-  @Input() vitamuiMiniMode = false;
+  readonly vitamuiMiniMode = input(false);
 
-  @ViewChild('select', { static: true }) select: SelectComponent;
+  readonly select = viewChild<SelectComponent>('select');
 
   patterns: string[];
   control = new FormControl();
 
   onChange: (_: any) => void;
   onTouched: () => void;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['options']) {
+      this.availableOptions = (this.options() || [])
+        .filter((option) => this.isAvailable(option.value))
+        .map((o) => ({
+          key: o.value,
+          label: `${o.value} ${o.disabled ? this.translateService.instant('SHARED.PATTERN_ALREADY_USED') : ''}`,
+          disabled: o.disabled,
+        }));
+    }
+  }
 
   writeValue(patterns: string[]) {
     this.patterns = (patterns || []).slice();

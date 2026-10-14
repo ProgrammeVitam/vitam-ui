@@ -117,7 +117,7 @@ describe.skip('SecurisationInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurisationInformationTabComponent);
     component = fixture.componentInstance;
-    component.securisation = securisationValue;
+    fixture.componentRef.setInput('securisation', securisationValue);
     fixture.detectChanges();
   });
 

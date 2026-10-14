@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, input, model } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -52,11 +52,11 @@ export const SLIDE_TOGGLE_VALUE_ACCESSOR: any = {
   imports: [CommonModule],
 })
 export class SlideToggleComponent implements ControlValueAccessor {
-  @Input() required: boolean;
-  @Input() tabIndex: number;
-  @Input() checked: boolean;
-  @Input() disabled: boolean;
-  @Input() name: string | null = null;
+  readonly required = input<boolean>(undefined);
+  readonly tabIndex = input<number>(undefined);
+  readonly checked = model<boolean>(undefined);
+  readonly disabled = model<boolean>(undefined);
+  readonly name = input<string | null>(null);
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -64,15 +64,15 @@ export class SlideToggleComponent implements ControlValueAccessor {
   constructor() {}
 
   toggle() {
-    if (this.disabled) {
+    if (this.disabled()) {
       return;
     }
-    this.checked = !this.checked;
-    this.onChange(this.checked);
+    this.checked.set(!this.checked());
+    this.onChange(this.checked());
   }
 
   writeValue(value: boolean) {
-    this.checked = !!value;
+    this.checked.set(!!value);
   }
 
   registerOnChange(fn: any): void {
@@ -84,6 +84,6 @@ export class SlideToggleComponent implements ControlValueAccessor {
   }
 
   setDisabledState(isDisabled: boolean) {
-    this.disabled = isDisabled;
+    this.disabled.set(isDisabled);
   }
 }

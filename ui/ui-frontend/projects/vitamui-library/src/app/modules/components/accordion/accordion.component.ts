@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 
@@ -45,9 +45,9 @@ import { PipesModule } from '../../pipes/pipes.module';
   imports: [CommonModule, PipesModule],
 })
 export class AccordionComponent {
-  @Input() opened = false;
+  readonly opened = model(false);
 
   toggle(): void {
-    this.opened = !this.opened;
+    this.opened.set(!this.opened());
   }
 }

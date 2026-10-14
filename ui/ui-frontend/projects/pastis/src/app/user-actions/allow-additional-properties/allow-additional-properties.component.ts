@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit, output, model } from '@angular/core';
 import { SlideToggleComponent } from 'vitamui-library';
 import { FormsModule } from '@angular/forms';
 
@@ -46,10 +46,9 @@ import { FormsModule } from '@angular/forms';
   imports: [SlideToggleComponent, FormsModule],
 })
 export class AllowAdditionalPropertiesComponent implements OnInit {
-  @Output() stateToggleButton = new EventEmitter<boolean>();
+  readonly stateToggleButton = output<boolean>();
 
-  @Input()
-  checked: boolean;
+  readonly checked = model<boolean>(undefined);
   text: string;
   text1: string;
 
@@ -61,13 +60,14 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
   }
 
   changed() {
-    if (this.checked) {
+    const checked = this.checked();
+    if (checked) {
       this.text1 = 'Métadonnées supplémentaires';
       this.text = 'autorisées';
     } else {
       this.text1 = 'Métadonnées supplémentaires';
       this.text = 'non autorisées';
     }
-    this.stateToggleButton.emit(this.checked);
+    this.stateToggleButton.emit(checked);
   }
 }

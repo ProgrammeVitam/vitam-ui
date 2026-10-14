@@ -80,7 +80,7 @@
           } @else if (chooseAttachmentPosition()) {
             <vitamui-library-filing-plan
               [formControl]="selectedNodes"
-              [tenantIdentifier]="tenantIdentifier"
+              [tenantIdentifier]="tenantIdentifier()"
               [mode]="FILLING_PLAN_MODE_INCLUDE"
             >
             </vitamui-library-filing-plan>

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, inject, OnInit, input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -73,7 +73,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit {
 
   unitControl: FormControl;
 
-  @Input() customer: string;
+  readonly customer = input<string>(undefined);
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -94,7 +94,7 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit {
     this.unitControl = new FormControl(
       '',
       [this.unitAlreadyAdd.bind(this)],
-      this.groupValidators.unitExists(this.customer, this.removedUnits),
+      this.groupValidators.unitExists(this.customer(), this.removedUnits),
     );
   }
 

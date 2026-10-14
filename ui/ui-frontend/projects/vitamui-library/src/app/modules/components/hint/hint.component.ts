@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AbstractControl } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -42,15 +42,15 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'vitamui-hint',
   template: `
-    @if (hint && control.valid) {
+    @if (hint() && control().valid) {
       <i class="vitamui-icon vitamui-icon-info mr-1"></i>
-      <span>{{ hint | translate }}</span>
+      <span>{{ hint() | translate }}</span>
     }
   `,
   styleUrls: ['./hint.component.scss'],
   imports: [MatFormFieldModule, TranslatePipe],
 })
 export class HintComponent {
-  @Input({ required: true }) control!: AbstractControl;
-  @Input() hint?: string;
+  readonly control = input.required<AbstractControl>();
+  readonly hint = input<string>(undefined);
 }

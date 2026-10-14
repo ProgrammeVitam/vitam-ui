@@ -1,8 +1,8 @@
-@if (!archive) {
+@if (!archive()) {
   <div class="object-menu">
     <div class="line split">
       <div class="line open-close-icon">
-        <i class="vitamui-icon {{ archive.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+        <i class="vitamui-icon {{ archive().opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
       </div>
       <div class="line shrink object-name">No archive to render</div>
     </div>
@@ -13,7 +13,7 @@
   <div class="object-menu">
     <div class="line split">
       <div class="line open-close-icon">
-        <i class="vitamui-icon {{ archive.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+        <i class="vitamui-icon {{ archive().opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
       </div>
       <div class="line shrink object-name">{{ 'ARCHIVE_SEARCH.NO_PHYSICAL_ARCHIVE_MSG' | translate }}</div>
     </div>
@@ -21,27 +21,27 @@
 }
 
 @if (isPhysical) {
-  <div class="object-menu" [ngClass]="{ opened: archive.opened }" (click)="toggleArchiveMetadataDisplay()">
+  <div class="object-menu" [ngClass]="{ opened: archive().opened }" (click)="toggleArchiveMetadataDisplay()">
     <div class="line split">
       <div class="line open-close-icon">
-        <i class="vitamui-icon {{ archive.opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
+        <i class="vitamui-icon {{ archive().opened ? 'vitamui-icon-chevron-down' : 'vitamui-icon-chevron-right' }}"></i>
       </div>
       <div class="line shrink object-name">
-        {{ ('ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive.qualifier | translate) + ' (' + archive.version + ')' }}
+        {{ ('ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive().qualifier | translate) + ' (' + archive().version + ')' }}
         @if (hasErrors()) {
           <div class="status-badge-red status-badge-mini ml-2 mt-1"></div>
         }
       </div>
-      @if (archive.qualifier !== 'PhysicalMaster') {
+      @if (archive().qualifier !== 'PhysicalMaster') {
         <div class="line object-size">
-          {{ archive.Size | bytes }}
+          {{ archive().Size | bytes }}
         </div>
       }
     </div>
   </div>
 }
 
-@if (isPhysical && archive.opened) {
+@if (isPhysical && archive().opened) {
   <div class="object-details">
     <div class="object-details-group IDS">
       <div class="row no-title"></div>
@@ -49,13 +49,13 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_ID' | translate }}</label>
-            <div>{{ archive['#id'] }}</div>
+            <div>{{ archive()['#id'] }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OPERATION_ID' | translate }}</label>
-            <div>{{ archive['#opi'] }}</div>
+            <div>{{ archive()['#opi'] }}</div>
           </div>
         </div>
       </div>
@@ -63,13 +63,13 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.USAGE' | translate }}</label>
-            <div>{{ 'ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive.qualifier | translate }}</div>
+            <div>{{ 'ARCHIVE_SEARCH.UNIT_OBJECT_QUALIFIER_TYPE.' + archive().qualifier | translate }}</div>
           </div>
         </div>
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.USAGE_VERSION' | translate }}</label>
-            <div>{{ archive.version }}</div>
+            <div>{{ archive().version }}</div>
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PHYSICAL_ID' | translate }}</label>
-            <div>{{ archive.PhysicalId }}</div>
+            <div>{{ archive().PhysicalId }}</div>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
         </div>
       }
     </div>
-    @for (persistentIdentifierInfo of archive.PersistentIdentifier; track persistentIdentifierInfo) {
+    @for (persistentIdentifierInfo of archive().PersistentIdentifier; track persistentIdentifierInfo) {
       <div class="object-details-group">
         <div class="row title">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PERSISTENT_IDENTIFIER' | translate | uppercase }}</div>
         <div class="read-only-field">

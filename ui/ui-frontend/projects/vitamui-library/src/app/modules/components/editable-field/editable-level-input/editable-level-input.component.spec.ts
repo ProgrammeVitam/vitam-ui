@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
@@ -55,8 +55,8 @@ import { SubLevelPipe } from './sub-level.pipe';
   imports: [ReactiveFormsModule, OverlayModule],
 })
 class LevelInputStubComponent implements ControlValueAccessor {
-  @Input() prefix: string;
-  @Input() isEditableComponent: boolean;
+  readonly prefix = input<string>(undefined);
+  readonly isEditableComponent = input<boolean>(undefined);
 
   writeValue(_: string): void {}
   registerOnChange(_: any): void {}

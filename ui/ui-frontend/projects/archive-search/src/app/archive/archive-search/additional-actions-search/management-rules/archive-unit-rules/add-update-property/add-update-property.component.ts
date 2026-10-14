@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, viewChild, input } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -55,8 +55,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly dialog = inject(MatDialog);
 
-  @Input()
-  ruleCategory: string;
+  readonly ruleCategory = input<string>(undefined);
   rulePropertyName: string;
   ruleTypeDUA: RuleCategoryAction;
   ruleActions: ActionsRules[];
@@ -68,8 +67,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   showText = false;
   isCancelAddRulePropertyButtonDisabled = false;
 
-  @ViewChild('confirmDeleteAddRulePropertyDialog', { static: true })
-  confirmDeleteAddRulePropertyDialog: TemplateRef<AddUpdatePropertyComponent>;
+  readonly confirmDeleteAddRulePropertyDialog = viewChild<TemplateRef<AddUpdatePropertyComponent>>('confirmDeleteAddRulePropertyDialog');
 
   ngOnInit() {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
@@ -100,16 +98,16 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ) !== -1
     ) {
       this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ).ruleCategoryAction.finalAction = this.rulePropertyName;
     } else {
       this.ruleTypeDUA = { finalAction: this.rulePropertyName, rules: [] };
       const managementRule: ManagementRules = {
-        category: this.ruleCategory,
+        category: this.ruleCategory(),
         ruleCategoryAction: this.ruleTypeDUA,
         actionType: RuleActionsEnum.ADD_RULES,
       };
@@ -121,7 +119,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
     });
 
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory,
+      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory(),
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
@@ -134,14 +132,14 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       this.ruleActions = data;
     });
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory,
+      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory(),
     ).stepValid = false;
     this.isConfirmButtonDisabled = !value;
     this.showText = false;
   }
 
   onCancelAddRuleProperty() {
-    const dialogToOpen = this.confirmDeleteAddRulePropertyDialog;
+    const dialogToOpen = this.confirmDeleteAddRulePropertyDialog();
     const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteAddRulePropertySuscription = dialogRef
@@ -150,14 +148,14 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
           this.ruleActions = data.filter(
-            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UPDATE_PROPERTY),
+            (action) => !(action.ruleType === this.ruleCategory() && action.actionType === RuleActionsEnum.UPDATE_PROPERTY),
           );
         });
 
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES),
+            (rule) => !(rule.category === this.ruleCategory() && rule.actionType === RuleActionsEnum.ADD_RULES),
           );
           this.managementRules.forEach((managementRule) => delete managementRule.ruleCategoryAction.finalAction);
         });

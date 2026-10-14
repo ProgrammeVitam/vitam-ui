@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, AfterViewInit, Component, EventEmitter, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, AfterViewInit, Component, HostListener, inject, input, output, viewChild, model } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -76,28 +76,28 @@ export class AgencyPreviewComponent implements AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly agencyService = inject(AgencyService);
 
-  @Input() agency: Agency;
-  @Input() tenantIdentifier: number;
-  @Input() readOnly: boolean;
+  readonly agency = model<Agency>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 
-  @Output() previewClose = new EventEmitter<void>();
+  readonly previewClose = output<void>();
 
   public selectedIndex = 0;
 
   // tab indexes: info = 0; history = 1;
   tabUpdated: boolean[] = [false, false];
   tabLinks: Array<AgencyInformationTabComponent> = [];
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
-  @ViewChild('infoTab', { static: false }) infoTab: AgencyInformationTabComponent;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
+  readonly infoTab = viewChild<AgencyInformationTabComponent>('infoTab');
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
+    this.tabLinks[0] = this.infoTab();
   }
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any): string | void {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();
       return '';
@@ -110,36 +110,36 @@ export class AgencyPreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitAgencyUpdate: Observable<Agency> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
+      const submitAgencyUpdate: Observable<Agency> = this.tabLinks[this.tabs().selectedIndex].prepareSubmit();
 
       submitAgencyUpdate.subscribe(() => {
-        this.agencyService.get(this.agency['identifier']).subscribe((response) => {
-          this.agency = response;
+        this.agencyService.get(this.agency()['identifier']).subscribe((response) => {
+          this.agency.set(response);
           this.cdr.markForCheck();
         });
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.agency);
+      this.tabLinks[this.tabs().selectedIndex].resetForm(this.agency());
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
 
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
   public async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
     this.previewClose.emit();

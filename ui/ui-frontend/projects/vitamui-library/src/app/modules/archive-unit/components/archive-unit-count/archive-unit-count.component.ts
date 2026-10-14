@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnChanges, SimpleChanges, input, model } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../../../logger/logger';
@@ -54,15 +54,12 @@ export class ArchiveUnitCountComponent implements OnChanges {
   private readonly logger = inject(Logger);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() search: Observable<number>;
-  @Input() archiveUnitCount = 0;
-  @Input() selectedArchiveUnitCount = 0;
-  @Input() pending!: boolean;
-  @Input() threshold!: number;
-  @Input() allChecked = false;
-  @Output() archiveUnitCountChange = new EventEmitter<number>();
-  @Output() selectedArchiveUnitCountChange = new EventEmitter<number>();
-  @Output() pendingChange = new EventEmitter<boolean>();
+  readonly search = input<Observable<number>>(undefined);
+  readonly archiveUnitCount = model(0);
+  readonly selectedArchiveUnitCount = model(0);
+  readonly pending = model<boolean>(undefined);
+  readonly threshold = input<number>(undefined);
+  readonly allChecked = input(false);
 
   canLoadExactCount = false;
   exactCountLoaded = false;
@@ -86,19 +83,17 @@ export class ArchiveUnitCountComponent implements OnChanges {
   }
 
   private shouldChangeArchiveUnitCount(exactCount: number): boolean {
-    return this.archiveUnitCount !== exactCount && this.isValidExactCount(exactCount);
+    return this.archiveUnitCount() !== exactCount && this.isValidExactCount(exactCount);
   }
 
   private handleExactCount(exactCount: number) {
     this.exactCountLoaded = this.isValidExactCount(exactCount);
     this.update();
     if (this.shouldChangeArchiveUnitCount(exactCount)) {
-      this.archiveUnitCount = exactCount;
-      this.archiveUnitCountChange.emit(exactCount);
+      this.archiveUnitCount.set(exactCount);
 
-      if (this.allChecked) {
-        this.selectedArchiveUnitCount = exactCount;
-        this.selectedArchiveUnitCountChange.emit(exactCount);
+      if (this.allChecked()) {
+        this.selectedArchiveUnitCount.set(exactCount);
       }
     }
     // Called from the search subscription: refresh the view (zoneless)
@@ -106,28 +101,28 @@ export class ArchiveUnitCountComponent implements OnChanges {
   }
 
   private update(): void {
-    this.canLoadExactCount = !this.exactCountLoaded && this.archiveUnitCount >= this.threshold;
+    this.canLoadExactCount = !this.exactCountLoaded && this.archiveUnitCount() >= this.threshold();
     this.displaySelectedArchiveUnitCount = this.shouldDisplaySelectedArchiveUnitCount();
   }
 
   loadExactCount() {
     const updatePending = (value: boolean) => {
-      this.pending = value;
-      this.pendingChange.emit(this.pending);
+      this.pending.set(value);
       this.cdr.markForCheck();
     };
     const notPending = () => {
       updatePending(false);
     };
 
-    if (!this.search) {
+    const search = this.search();
+    if (!search) {
       this.logger.error(this, 'Cannot load exact count. No search observable provided');
       return;
     }
 
     updatePending(true);
     this.subscriptions.add(
-      this.search.pipe(tap(notPending, notPending)).subscribe(
+      search.pipe(tap(notPending, notPending)).subscribe(
         (exactCount: number) => {
           this.handleExactCount(exactCount);
         },
@@ -140,9 +135,9 @@ export class ArchiveUnitCountComponent implements OnChanges {
   }
 
   private shouldDisplaySelectedArchiveUnitCount(): boolean {
-    const isInclusiveMode = !this.allChecked;
+    const isInclusiveMode = !this.allChecked();
     const extactCountIsKnown = this.exactCountLoaded;
-    const knownCountUnderThreshold = this.archiveUnitCount < this.threshold;
+    const knownCountUnderThreshold = this.archiveUnitCount() < this.threshold();
     return isInclusiveMode || extactCountIsKnown || knownCountUnderThreshold;
   }
 }

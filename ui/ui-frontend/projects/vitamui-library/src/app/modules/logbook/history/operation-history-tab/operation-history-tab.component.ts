@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, signal, SimpleChanges, input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -61,10 +61,10 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
   private readonly logbookService = inject(LogbookService);
   private readonly route = inject(ActivatedRoute);
 
-  @Input() id: string;
-  @Input() identifier: string;
-  @Input() collectionName: string;
-  @Input() filteringByIdentifier = true;
+  readonly id = input<string>(undefined);
+  readonly identifier = input<string>(undefined);
+  readonly collectionName = input<string>(undefined);
+  readonly filteringByIdentifier = input(true);
 
   events = signal<HistoryEvent[]>([]);
   loading = signal(false);
@@ -73,7 +73,7 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('identifier') || changes.hasOwnProperty('collectionName')) {
-      if (this.id && this.collectionName) {
+      if (this.id() && this.collectionName()) {
         this.initEvent();
       }
     }
@@ -92,7 +92,7 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
           paramMap.get('tenantIdentifier') ? +paramMap.get('tenantIdentifier') : Number(this.authService.user.proofTenantIdentifier),
         ),
         switchMap((tenantIdentifier) =>
-          this.logbookService.listOperationByIdAndCollectionName(this.id, this.collectionName, tenantIdentifier),
+          this.logbookService.listOperationByIdAndCollectionName(this.id(), this.collectionName(), tenantIdentifier),
         ),
         takeUntil(this.isDestroyed$),
       )
@@ -102,7 +102,7 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
             results
               .filter((event) => {
                 // FIXME: shouldn't we filter on API side?
-                return this.filteringByIdentifier ? this.filterByIdentifier(event) : true;
+                return this.filteringByIdentifier() ? this.filterByIdentifier(event) : true;
               })
               .slice(0, EVENT_LIMIT),
           );
@@ -113,6 +113,6 @@ export class OperationHistoryTabComponent implements OnChanges, OnDestroy {
   }
 
   filterByIdentifier(event: HistoryEvent): boolean {
-    return event.obId && event.obId === this.identifier;
+    return event.obId && event.obId === this.identifier();
   }
 }

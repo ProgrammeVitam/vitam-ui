@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import type { LogbookOperation } from '../../../../models/logbook-event.interface';
 import type { Event } from '../../event';
 import { EventDisplayHelperService } from '../../event-display-helper.service';
@@ -49,14 +49,13 @@ import { EventDisplayComponent } from './event-display/event-display.component';
 export class IngestEventDetailComponent implements OnInit, OnChanges {
   private readonly eventDisplayHelper = inject(EventDisplayHelperService);
 
-  @Input()
-  ingest: LogbookOperation;
+  readonly ingest = input<LogbookOperation>(undefined);
 
   events: Event[] = [];
   isShown = false;
 
   ngOnInit() {
-    this.events = this.eventDisplayHelper.initEvents(this.ingest);
+    this.events = this.eventDisplayHelper.initEvents(this.ingest());
   }
 
   ngOnChanges(changes: SimpleChanges): void {

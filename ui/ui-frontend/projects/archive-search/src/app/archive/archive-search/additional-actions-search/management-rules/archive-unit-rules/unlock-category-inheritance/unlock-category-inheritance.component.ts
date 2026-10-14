@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, signal, TemplateRef, input, viewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
@@ -70,12 +70,9 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @Input()
-  ruleCategory: string;
-  @Input()
-  hasExactCount: boolean;
-  @Input()
-  selectedItem: number;
+  readonly ruleCategory = input<string>(undefined);
+  readonly hasExactCount = input<boolean>(undefined);
+  readonly selectedItem = input<number>(undefined);
   itemsCategoryToUnlock = signal<string>(null);
   itemsToNotUpdate = signal<string>(null);
   resultNumberToShow: string;
@@ -94,8 +91,9 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   searchArchiveUnitsByCriteriaSubscription: Subscription;
   criteriaSearchDSLQuerySuscription: Subscription;
 
-  @ViewChild('confirmDeleteUnlockCategoryInheritance', { static: true })
-  confirmDeleteUnlockCategoryInheritance: TemplateRef<UnlockCategoryInheritanceComponent>;
+  readonly confirmDeleteUnlockCategoryInheritance = viewChild<TemplateRef<UnlockCategoryInheritanceComponent>>(
+    'confirmDeleteUnlockCategoryInheritance',
+  );
 
   constructor() {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
@@ -117,7 +115,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
 
     this.ruleTypeDUA = { preventInheritance: false, rules: [] };
     const managementRule: ManagementRules = {
-      category: this.ruleCategory,
+      category: this.ruleCategory(),
       ruleCategoryAction: this.ruleTypeDUA,
       actionType: RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE,
     };
@@ -128,7 +126,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
     });
 
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory,
+      (action) => action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory(),
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
@@ -153,7 +151,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -163,7 +161,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: MANAGEMENT_RULE_INHERITED_CRITERIA,
       values: [{ id: 'true', value: 'true' }],
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
@@ -171,12 +169,12 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    if (this.hasExactCount) {
+    if (this.hasExactCount()) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
           this.itemsCategoryToUnlock.set(resultsNumber.toString());
-          this.itemsToNotUpdate.set((this.selectedItem - resultsNumber).toString());
+          this.itemsToNotUpdate.set((this.selectedItem() - resultsNumber).toString());
           this.isLoading.set(false);
         });
     } else {
@@ -184,12 +182,12 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
           this.itemsCategoryToUnlock.set(data.totalResults.toString());
+          const selectedItem = this.selectedItem();
           this.itemsToNotUpdate.set(
-            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+              selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
-                ? this.resultNumberToShow
-                : (this.selectedItem - data.totalResults).toString(),
+              : (selectedItem - data.totalResults).toString(),
           );
           this.isLoading.set(false);
         });
@@ -197,7 +195,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   }
 
   onCancelUnlockCategoryInheritance() {
-    const dialogToOpen = this.confirmDeleteUnlockCategoryInheritance;
+    const dialogToOpen = this.confirmDeleteUnlockCategoryInheritance();
     const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteUnlockCategoryInheritanceSuscription = dialogRef
@@ -206,14 +204,14 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
           this.ruleActions = data.filter(
-            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
+            (action) => !(action.ruleType === this.ruleCategory() && action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
+            (rule) => !(rule.category === this.ruleCategory() && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);

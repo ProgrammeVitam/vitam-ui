@@ -38,14 +38,14 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   DestroyRef,
   ElementRef,
   forwardRef,
   HostListener,
   Injector,
-  ViewChild,
   inject,
+  contentChild,
+  viewChild,
 } from '@angular/core';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedPosition } from '@angular/cdk/overlay';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -81,12 +81,12 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
       !this.innerControl.pending &&
       this.innerControl.valid &&
       this.innerControl.dirty &&
-      this.ref.canConfirmInWrapper()
+      this.ref().canConfirmInWrapper()
     );
   }
 
-  @ContentChild(AbstractFormInputDirective) ref!: AbstractFormInputDirective;
-  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
+  readonly ref = contentChild.required(AbstractFormInputDirective);
+  readonly cdkConnectedOverlay = viewChild(CdkConnectedOverlay);
 
   @HostListener('focusin')
   focusIn() {
@@ -97,7 +97,7 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   onClick(target: EventTarget) {
     const htmlTarget = target as HTMLElement;
     const clickInside =
-      this.isInside(htmlTarget, this.#componentRef) || this.isInside(htmlTarget, this.cdkConnectedOverlay.overlayRef?.hostElement);
+      this.isInside(htmlTarget, this.#componentRef) || this.isInside(htmlTarget, this.cdkConnectedOverlay().overlayRef?.hostElement);
     const activeElementInside = this.isInside(document.activeElement, this.#componentRef);
     if (clickInside || activeElementInside) {
       clearTimeout(this.#cancelTimeout);
@@ -109,7 +109,7 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   @HostListener('focusout', ['$event.relatedTarget'])
   focusOut(target: EventTarget) {
     const htmlTarget = target as HTMLElement;
-    const overlayRef = this.cdkConnectedOverlay.overlayRef;
+    const overlayRef = this.cdkConnectedOverlay().overlayRef;
     if (this.isInside(htmlTarget, this.#componentRef) || this.isInside(htmlTarget, overlayRef.hostElement)) {
       return;
     }
@@ -140,13 +140,13 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   }
 
   ngAfterContentInit() {
-    this.innerControl = this.ref?.setControl(this.control);
+    this.innerControl = this.ref()?.setControl(this.control);
     // canConfirm depends on the inner control status, which may change asynchronously (async validators): refresh the view (zoneless)
     this.innerControl?.statusChanges.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe(() => this.#cdr.markForCheck());
   }
 
   override writeValue(value: any) {
-    this.ref?.writeValue(value);
+    this.ref()?.writeValue(value);
   }
 
   confirm() {

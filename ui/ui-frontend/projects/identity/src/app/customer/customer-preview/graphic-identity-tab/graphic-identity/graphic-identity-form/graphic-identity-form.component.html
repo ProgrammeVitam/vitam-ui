@@ -1,13 +1,13 @@
-@if (graphicIdentityForm) {
-  <form [formGroup]="graphicIdentityForm" id="graphicIdentityForm">
+@if (graphicIdentityForm()) {
+  <form [formGroup]="graphicIdentityForm()" id="graphicIdentityForm">
     <div class="d-flex justify-content-between">
       <div class="container-color">
         <div class="text large bold mb-4">{{ 'CUSTOMER.GRAPHIC_IDENTITY.COLOR_TITLE' | translate }}</div>
         <app-customer-colors-input
           class="d-inline-flex flex-column gap-3 align-items-stretch"
-          [formGroup]="$any(graphicIdentityForm.get('themeColors'))"
+          [formGroup]="$any(graphicIdentityForm().get('themeColors'))"
           [isUpdating]="true"
-          [disabled]="disabled"
+          [disabled]="disabled()"
           themeOverloadSelector="form#graphicIdentityForm"
         ></app-customer-colors-input>
       </div>
@@ -18,8 +18,8 @@
             <label class="text normal bold">{{ 'CUSTOMER.GRAPHIC_IDENTITY.LOGO_PORTAL_TITLE' | translate }}</label>
             <vitamui-drag-drop-file
               class="color-background image-area-big"
-              [disabled]="disabled"
-              [fileUrl]="graphicIdentityForm.get('portalUrl')?.value"
+              [disabled]="disabled()"
+              [fileUrl]="graphicIdentityForm().get('portalUrl')?.value"
               [logoSize]="{ width: 280, height: 100 }"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Portal, $event)"
@@ -33,8 +33,8 @@
             <label class="text normal bold">{{ 'CUSTOMER.GRAPHIC_IDENTITY.LOGO_HEADER_TITLE' | translate }}</label>
             <vitamui-drag-drop-file
               class="color-header-footer image-area-small"
-              [disabled]="disabled"
-              [fileUrl]="graphicIdentityForm.get('headerUrl')?.value"
+              [disabled]="disabled()"
+              [fileUrl]="graphicIdentityForm().get('headerUrl')?.value"
               [logoSize]="{ width: 280, height: 100 }"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Header, $event)"
@@ -46,8 +46,8 @@
             <label class="text normal bold">{{ 'CUSTOMER.GRAPHIC_IDENTITY.LOGO_FOOTER_TITLE' | translate }}</label>
             <vitamui-drag-drop-file
               class="color-header-footer image-area-small"
-              [disabled]="disabled"
-              [fileUrl]="graphicIdentityForm.get('footerUrl')?.value"
+              [disabled]="disabled()"
+              [fileUrl]="graphicIdentityForm().get('footerUrl')?.value"
               [logoSize]="{ width: 280, height: 100 }"
               [canDelete]="false"
               (file)="addOrReplaceLogo(ATTACHMENT_TYPE.Footer, $event)"

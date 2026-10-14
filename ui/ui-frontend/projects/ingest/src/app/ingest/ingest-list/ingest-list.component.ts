@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, input, OnChanges, OnDestroy, OnInit, output, SimpleChanges } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -67,41 +67,18 @@ export class IngestFilters {
   styleUrls: ['./ingest-list.component.scss'],
   imports: [OrderByButtonComponent, MatProgressSpinner, PipesModule, TranslatePipe, CommonModule, InfiniteScrollDirective],
 })
-export class IngestListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+export class IngestListComponent extends InfiniteScrollTable<any> implements OnChanges, OnDestroy, OnInit {
   ingestService: IngestService;
 
   IngestStatus = IngestStatus;
 
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>();
 
-  private _searchText: string;
+  readonly filters = input<IngestFilters>();
 
-  @Input()
-  set filters(filters: IngestFilters) {
-    this._filters = filters;
-    this.filterChange.next(filters);
-  }
+  readonly ingestThatHasChanged = input<LogbookOperation>();
 
-  @Input()
-  set ingestThatHasChanged(ingest: LogbookOperation) {
-    if (!this.dataSource()) {
-      return;
-    }
-    const index = this.dataSource().findIndex((o) => o.id === ingest.id);
-    this.dataSource.update((ingests) => {
-      const next = [...(ingests ?? [])];
-      next[index] = ingest;
-      return next;
-    });
-  }
-
-  private _filters: IngestFilters;
-
-  @Output() ingestClick = new EventEmitter<any>();
+  readonly ingestClick = output<any>();
 
   loaded = false;
 
@@ -118,6 +95,30 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     super(ingestService);
 
     this.ingestService = ingestService;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
+    if (changes['filters']) {
+      this.filterChange.next(this.filters());
+    }
+    if (changes['ingestThatHasChanged']) {
+      this.updateIngest(this.ingestThatHasChanged());
+    }
+  }
+
+  private updateIngest(ingest: LogbookOperation) {
+    if (!this.dataSource()) {
+      return;
+    }
+    const index = this.dataSource().findIndex((o) => o.id === ingest.id);
+    this.dataSource.update((ingests) => {
+      const next = [...(ingests ?? [])];
+      next[index] = ingest;
+      return next;
+    });
   }
 
   ngOnInit() {
@@ -157,21 +158,23 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
   buildIngestCriteriaFromSearch() {
     const criteria: any = {};
     criteria.evTypeProc = 'INGEST';
-    if (this._searchText !== undefined && this._searchText.length > 0) {
-      criteria['#id'] = this._searchText;
-      criteria.obIdIn = this._searchText;
-      criteria['events.agIdExt.TransferringAgency'] = this._searchText;
-      criteria['events.agIdExt.originatingAgency'] = this._searchText;
-      criteria['events.evDetData.ArchivalAgreement'] = this._searchText;
-      criteria['events.evDetData.EvDetailReq'] = this._searchText;
+    const searchText = this.searchText();
+    if (searchText !== undefined && searchText.length > 0) {
+      criteria['#id'] = searchText;
+      criteria.obIdIn = searchText;
+      criteria['events.agIdExt.TransferringAgency'] = searchText;
+      criteria['events.agIdExt.originatingAgency'] = searchText;
+      criteria['events.evDetData.ArchivalAgreement'] = searchText;
+      criteria['events.evDetData.EvDetailReq'] = searchText;
     }
 
-    if (this._filters) {
-      if (this._filters.startDate) {
-        criteria.evDateTime_Start = this._filters.startDate;
+    const filters = this.filters();
+    if (filters) {
+      if (filters.startDate) {
+        criteria.evDateTime_Start = filters.startDate;
       }
-      if (this._filters.endDate) {
-        const date = new Date(this._filters.endDate);
+      if (filters.endDate) {
+        const date = new Date(filters.endDate);
         date.setDate(date.getDate() + 1);
         criteria.evDateTime_End = date;
       }

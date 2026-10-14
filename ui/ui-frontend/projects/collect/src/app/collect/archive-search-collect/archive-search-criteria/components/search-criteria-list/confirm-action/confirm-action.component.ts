@@ -71,7 +71,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonConfirmDialogComponent } from 'vitamui-library';
@@ -85,10 +85,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 })
 export class ConfirmActionComponent {
   // delete or changeTab
-  @Input() dialogType = 'delete';
+  readonly dialogType = input('delete');
 
   // delete message values
-  @Input() objectName: string;
-  @Input() objectType: string;
-  @Input() objectDate: string;
+  readonly objectName = input<string>(undefined);
+  readonly objectType = input<string>(undefined);
+  readonly objectDate = input<string>(undefined);
 }

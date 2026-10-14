@@ -1,28 +1,29 @@
 <label class="text caption bold primary">
-  @if (labelRef) {
-    <ng-container *ngTemplateOutlet="labelRef"></ng-container>
+  @if (labelRef()) {
+    <ng-container *ngTemplateOutlet="labelRef()"></ng-container>
   } @else {
-    {{ label | empty }}
+    {{ label() | empty }}
   }
 </label>
-@if (isArray(value)) {
+@let currentValue = value();
+@if (isArray(currentValue)) {
   <ul>
-    @for (item of value; track item) {
+    @for (item of currentValue; track item) {
       <li class="text medium">{{ item | empty }}</li>
     }
   </ul>
 } @else {
   <div>
-    <span class="text medium" [class]="valueCss" [vitamuiTooltip]="valueTooltip" [outline]="true" vitamuiTooltipClass="secondary">
-      @if (valueUrl) {
-        <a [href]="valueUrl">{{ value | empty }}</a>
+    <span class="text medium" [class]="valueCss()" [vitamuiTooltip]="valueTooltip()" [outline]="true" vitamuiTooltipClass="secondary">
+      @if (valueUrl()) {
+        <a [href]="valueUrl()">{{ currentValue | empty }}</a>
       } @else {
-        {{ value | empty }}
+        {{ currentValue | empty }}
       }
     </span>
-    @if (canCopyValue) {
+    @if (canCopyValue()) {
       <button
-        (click)="copyToClipboard(value)"
+        (click)="copyToClipboard(currentValue)"
         class="btn btn-circle link primary xsmall d-inline-block ml-1"
         [vitamuiTooltip]="'COMMON.COPY' | translate"
         [outline]="true"

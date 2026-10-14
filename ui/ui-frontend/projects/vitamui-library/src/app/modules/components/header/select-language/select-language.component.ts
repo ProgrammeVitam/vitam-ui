@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, effect, inject, Input, untracked } from '@angular/core';
+import { Component, computed, effect, inject, untracked, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../auth.service';
@@ -61,7 +61,7 @@ export class SelectLanguageComponent {
    * select : displays a select box with the current selected lang as text.
    * button : displays a circle button with the current selected lang as an image.
    */
-  @Input() displayMode: 'select' | 'button' = 'button';
+  readonly displayMode = input<'select' | 'button'>('button');
 
   public minLangString = MinLangString;
 

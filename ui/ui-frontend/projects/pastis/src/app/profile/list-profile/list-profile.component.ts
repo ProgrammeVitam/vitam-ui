@@ -70,7 +70,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -158,7 +158,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   private readonly toggleService = inject(ToggleSidenavService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @ViewChild('confirmReplacement') confirmReplacement: TemplateRef<any>;
+  readonly confirmReplacement = viewChild<TemplateRef<any>>('confirmReplacement');
 
   retrievedProfiles = signal<ProfileDescription[]>([]);
 
@@ -382,7 +382,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
     ]);
 
     (this.isProfilAttached(profileDescription)
-      ? this.dialog.open(this.confirmReplacement, { panelClass: 'small' }).afterClosed()
+      ? this.dialog.open(this.confirmReplacement(), { panelClass: 'small' }).afterClosed()
       : of(true)
     )
       .pipe(

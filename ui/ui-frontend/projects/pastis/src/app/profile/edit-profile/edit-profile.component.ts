@@ -71,7 +71,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabContent, MatTabGroup } from '@angular/material/tabs';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -145,7 +145,7 @@ export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   profile: FileNode[];
 
-  @ViewChild(FileTreeComponent, { static: false }) fileTreeComponent: FileTreeComponent;
+  readonly fileTreeComponent = viewChild(FileTreeComponent);
 
   private _fileServiceCurrentTreeSubscription: Subscription;
 
@@ -216,6 +216,7 @@ export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.breadcrumbService.setRoot(node);
     this.fileService.nodeChange.next(node);
 
-    if (this.fileTreeComponent) this.fileTreeComponent.updateMetadataTable(node);
+    const fileTreeComponent = this.fileTreeComponent();
+    if (fileTreeComponent) fileTreeComponent.updateMetadataTable(node);
   }
 }

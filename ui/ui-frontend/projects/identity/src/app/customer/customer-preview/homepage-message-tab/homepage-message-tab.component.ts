@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { Customer, StartupService } from 'vitamui-library';
@@ -48,29 +48,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./homepage-message-tab.component.scss'],
   imports: [KeyValuePipe, TranslatePipe],
 })
-export class HomepageMessageTabComponent implements OnDestroy {
+export class HomepageMessageTabComponent implements OnChanges, OnDestroy {
   private readonly dialog = inject(MatDialog);
   private readonly startupService = inject(StartupService);
 
-  @Input()
-  set customer(customer: Customer) {
-    this._customer = customer;
-    this.resetTab(this.customer);
-  }
-  get customer(): Customer {
-    return this._customer;
-  }
-  private _customer: Customer;
+  readonly customer = input<Customer>();
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    this._readonly = readOnly;
-  }
-  get readonly(): boolean {
-    return this._readonly;
-  }
+  readonly readOnly = input<boolean>();
 
-  private _readonly: boolean;
   private readonly destroy = new Subject<void>();
 
   public portalTitle: string;
@@ -84,6 +69,12 @@ export class HomepageMessageTabComponent implements OnDestroy {
   };
 
   public language: string;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['customer']) {
+      this.resetTab(this.customer());
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroy.next();
@@ -101,7 +92,7 @@ export class HomepageMessageTabComponent implements OnDestroy {
         this.portalMessages = customer.portalMessages;
       }
       if (customer.portalTitles) {
-        this.portalTitles = this.customer.portalTitles;
+        this.portalTitles = this.customer().portalTitles;
       }
     }
 
@@ -112,7 +103,7 @@ export class HomepageMessageTabComponent implements OnDestroy {
   openUpdateHomepageMessage() {
     const dialogRef = this.dialog.open(HomepageMessageUpdateComponent, {
       disableClose: true,
-      data: { customer: this.customer },
+      data: { customer: this.customer() },
     });
     dialogRef.afterClosed().subscribe();
   }

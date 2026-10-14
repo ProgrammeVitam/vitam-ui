@@ -203,7 +203,7 @@ describe('ProjectPreviewComponent', () => {
   });
 
   it('should get project when update', async () => {
-    component.showEdit(component.tabs.get(0));
+    component.showEdit(component.tabs().at(0));
     await fixture.whenStable();
     expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
     expect(component.form.value.legalStatus).toEqual(project.legalStatus);
@@ -215,7 +215,7 @@ describe('ProjectPreviewComponent', () => {
 
   it('should update project without transactions', async () => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
-    component.showEdit(component.tabs.get(0));
+    component.showEdit(component.tabs().at(0));
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(false);
@@ -225,7 +225,7 @@ describe('ProjectPreviewComponent', () => {
 
   it('should update project with transactions', async () => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
-    component.showEdit(component.tabs.get(0));
+    component.showEdit(component.tabs().at(0));
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(true);

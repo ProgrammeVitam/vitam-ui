@@ -3,7 +3,7 @@
     <vitamui-slide-toggle
       formControlName="enabled"
       [vitamuiTooltip]="'GROUP.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate"
-      [vitamuiTooltipDisabled]="form.get('enabled').enabled || readOnly"
+      [vitamuiTooltipDisabled]="form.get('enabled').enabled || readOnly()"
     >
       @if (!form?.get('enabled').value) {
         <span>{{ 'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
@@ -65,7 +65,7 @@
     <div
       class="col-7"
       [vitamuiTooltip]="'GROUP.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate"
-      [vitamuiTooltipDisabled]="form?.get('level').enabled || readOnly"
+      [vitamuiTooltipDisabled]="form?.get('level').enabled || readOnly()"
     >
       <vitamui-common-editable-level-input
         formControlName="level"
@@ -84,14 +84,14 @@
 
   <!-- Units -->
   <div>
-    @if (!readOnly) {
+    @if (!readOnly()) {
       <button class="btn primary mb-3" (click)="openEditUnitsDialog()">
         {{ 'GROUP.INFORMATIONS.MODIF_UNITS_BUTTON' | translate }}
       </button>
     }
     <div class="align-items-center">
       <div class="text small primary mb-2">{{ 'GROUP.INFORMATIONS.UNITS_TABLE_TITLE' | translate }}</div>
-      @for (unit of getUnits(group); track unit) {
+      @for (unit of getUnits(group()); track unit) {
         <div class="text medium">{{ unit }}</div>
       }
     </div>

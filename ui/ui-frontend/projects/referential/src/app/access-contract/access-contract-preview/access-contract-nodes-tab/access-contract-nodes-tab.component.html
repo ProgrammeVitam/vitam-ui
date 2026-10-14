@@ -16,7 +16,7 @@
 
   <div class="w-100 mt-2">
     <div class="text normal bold">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.EXCLUDED_POSITIONS' | translate }}</div>
-    @if (!accessContract.excludedRootUnits || accessContract.excludedRootUnits.length === 0) {
+    @if (!accessContract().excludedRootUnits || accessContract().excludedRootUnits.length === 0) {
       <li class="text normal px-3">{{ 'ACCESS_CONTRACT.TAB.POSITIONS.NO_EXCLUDED_POSITION' | translate }}</li>
     } @else {
       @for (excludeRootUnitTitle of excludedRootUnitsTitles; track excludeRootUnitTitle) {

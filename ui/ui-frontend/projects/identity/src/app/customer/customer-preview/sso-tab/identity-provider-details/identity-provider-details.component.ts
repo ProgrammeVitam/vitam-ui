@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, inject, input, OnChanges, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
 
@@ -100,47 +100,17 @@ const UPDATE_DEBOUNCE_TIME = 200;
     OverlayModule,
   ],
 })
-export class IdentityProviderDetailsComponent {
+export class IdentityProviderDetailsComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly identityProviderService = inject(IdentityProviderService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input()
-  set identityProvider(identityProvider: IdentityProvider) {
-    this._identityProvider = identityProvider;
+  readonly identityProvider = input<IdentityProvider>();
 
-    if (!this._identityProvider.internal) {
-      this.idpMetadata.enable({ emitEvent: false });
-    }
-    if (identityProvider) {
-      this.manageForm(identityProvider);
-    }
-    this.previousValue = this.form.value;
-  }
+  readonly domains = input<Array<{ value: string; disabled: boolean }>>();
 
-  get identityProvider(): IdentityProvider {
-    return this._identityProvider;
-  }
-
-  private _identityProvider: IdentityProvider;
-
-  @Input()
-  set domains(domains: Array<{ value: string; disabled: boolean }>) {
-    this._domains = domains.map((domain: { value: string; disabled: boolean }) => {
-      if (this.identityProvider.patterns.includes(domain.value)) {
-        return { value: domain.value, disabled: false };
-      }
-
-      return domain;
-    });
-  }
-
-  get domains(): Array<{ value: string; disabled: boolean }> {
-    return this._domains;
-  }
-
-  private _domains: Array<{ value: string; disabled: boolean }> = [];
+  domainsState: Array<{ value: string; disabled: boolean }> = [];
   displayOIDCSAMLBLOCKS = false;
   private previousValue: {
     protocoleType: string;
@@ -163,31 +133,9 @@ export class IdentityProviderDetailsComponent {
     propagateLogout: boolean;
   };
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    this._readOnly = readOnly || this._identityProvider.internal;
-    if (readOnly) {
-      if (this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      }
-      if (this.idpMetadata.enabled) {
-        this.idpMetadata.disable({ emitEvent: false });
-      }
-    } else {
-      if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-      }
-      if (this.idpMetadata.disabled) {
-        this.idpMetadata.enable({ emitEvent: false });
-      }
-    }
-  }
+  readonly readOnly = input<boolean>();
 
-  get readOnly(): boolean {
-    return this._readOnly;
-  }
-
-  private _readOnly: boolean;
+  readOnlyState: boolean;
   jwsAlgorithms = JWS_ALGORITHMS;
   form: FormGroup;
   specificOidcControls: FormGroup;
@@ -203,6 +151,54 @@ export class IdentityProviderDetailsComponent {
       ...this.commonsControls.controls,
     });
     this.idpMetadata = new FormControl({ value: newFile([''], 'metadata.xml'), disabled: true });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['identityProvider']) {
+      this.onIdentityProviderChange();
+    }
+    if (changes['domains']) {
+      this.onDomainsChange();
+    }
+    if (changes['readOnly']) {
+      this.onReadOnlyChange();
+    }
+  }
+
+  private onIdentityProviderChange() {
+    const identityProvider = this.identityProvider();
+    if (!identityProvider.internal) {
+      this.idpMetadata.enable({ emitEvent: false });
+    }
+    if (identityProvider) {
+      this.manageForm(identityProvider);
+    }
+    this.previousValue = this.form.value;
+  }
+
+  private onDomainsChange() {
+    this.domainsState = this.domains().map((domain: { value: string; disabled: boolean }) => {
+      if (this.identityProvider().patterns.includes(domain.value)) {
+        return { value: domain.value, disabled: false };
+      }
+
+      return domain;
+    });
+  }
+
+  private onReadOnlyChange() {
+    const readOnly = this.readOnly();
+    this.readOnlyState = readOnly || this.identityProvider().internal;
+    this.setControlDisabled(this.form, readOnly);
+    this.setControlDisabled(this.idpMetadata, readOnly);
+  }
+
+  private setControlDisabled(control: AbstractControl, disabled: boolean) {
+    if (disabled && control.enabled) {
+      control.disable({ emitEvent: false });
+    } else if (!disabled && control.disabled) {
+      control.enable({ emitEvent: false });
+    }
   }
 
   updateForm() {
@@ -237,9 +233,9 @@ export class IdentityProviderDetailsComponent {
     return this.formBuilder.group({
       authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
       maximumAuthenticationLifetime: [null],
-      wantsAssertionsSigned: [this.identityProvider ? this.identityProvider.wantsAssertionsSigned : null, Validators.required],
-      authnRequestSigned: [this.identityProvider ? this.identityProvider.authnRequestSigned : null, Validators.required],
-      propagateLogout: [this.identityProvider ? this.identityProvider.propagateLogout : null, Validators.required],
+      wantsAssertionsSigned: [this.identityProvider() ? this.identityProvider().wantsAssertionsSigned : null, Validators.required],
+      authnRequestSigned: [this.identityProvider() ? this.identityProvider().authnRequestSigned : null, Validators.required],
+      propagateLogout: [this.identityProvider() ? this.identityProvider().propagateLogout : null, Validators.required],
     });
   }
 
@@ -268,7 +264,7 @@ export class IdentityProviderDetailsComponent {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => this.diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.identityProvider.id }, formData)),
+        map((formData) => extend({ id: this.identityProvider().id }, formData)),
         switchMap((formData) => this.identityProviderService.patch(formData)),
       )
       .subscribe(() => {
@@ -278,7 +274,7 @@ export class IdentityProviderDetailsComponent {
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
         filter(() => this.idpMetadata.valid),
-        switchMap(() => this.identityProviderService.updateMetadataFile(this.identityProvider.id, this.idpMetadata.value)),
+        switchMap(() => this.identityProviderService.updateMetadataFile(this.identityProvider().id, this.idpMetadata.value)),
       )
       .subscribe();
   }

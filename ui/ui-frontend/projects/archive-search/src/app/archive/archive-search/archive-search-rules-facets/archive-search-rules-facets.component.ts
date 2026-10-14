@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RuleFacets } from 'vitamui-library';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
 import { SearchStorageRulesFacetsComponent } from './search-storage-rules-facets/search-storage-rules-facets.component';
@@ -62,39 +62,28 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ArchiveSearchRulesFacetsComponent {
-  @Input()
-  totalResults: number;
+  readonly totalResults = input<number>(undefined);
 
-  @Input()
-  appraisalRuleFacets: RuleFacets;
+  readonly appraisalRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  accessRuleFacets: RuleFacets;
+  readonly accessRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  storageRuleFacets: RuleFacets;
+  readonly storageRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  disseminationRuleFacets: RuleFacets;
+  readonly disseminationRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  reuseRuleFacets: RuleFacets;
-  @Input()
-  classificationRuleFacets: RuleFacets;
+  readonly reuseRuleFacets = input<RuleFacets>(undefined);
+  readonly classificationRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  holdRuleFacets: RuleFacets;
+  readonly holdRuleFacets = input<RuleFacets>(undefined);
 
-  @Input()
-  tenantIdentifier: number;
+  readonly tenantIdentifier = input<number>(undefined);
 
-  @Input()
-  exactCount: boolean;
+  readonly exactCount = input<boolean>(undefined);
 
   facetsVisibles = true;
 
-  @Input()
-  defaultFacetTabIndex: number;
+  readonly defaultFacetTabIndex = input<number>(undefined);
 
   showHideFacets(show: boolean) {
     this.facetsVisibles = show;

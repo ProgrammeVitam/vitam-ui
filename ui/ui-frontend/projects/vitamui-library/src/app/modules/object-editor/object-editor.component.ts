@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DisplayObjectType } from '../object-viewer/types';
 import type { EditObject } from './models/edit-object.model';
@@ -49,10 +49,10 @@ import { PrimitiveEditorComponent } from './components/primitive-editor/primitiv
   imports: [FormsModule, ReactiveFormsModule, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })
 export class ObjectEditorComponent {
-  @Input() editObject!: EditObject;
+  readonly editObject = input<EditObject>(undefined);
 
   get formGroup(): FormGroup {
-    return this.editObject.control as FormGroup;
+    return this.editObject().control as FormGroup;
   }
 
   readonly DisplayObjectType = DisplayObjectType;

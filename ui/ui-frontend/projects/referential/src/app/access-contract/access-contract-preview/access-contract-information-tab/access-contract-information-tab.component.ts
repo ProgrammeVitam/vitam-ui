@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,21 +50,14 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./access-contract-information-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, FormsModule, PipesModule, TranslatePipe],
 })
-export class AccessContractInformationTabComponent {
+export class AccessContractInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly accessContractService = inject(AccessContractService);
   private readonly accessContractCreateValidators = inject(AccessContractCreateValidators);
 
-  @Input() set accessContract(accessContract: AccessContract) {
-    this.setAccessContract(accessContract);
-    this.resetForm(this.accessContract);
-  }
+  readonly accessContract = model<AccessContract>(undefined);
 
-  get accessContract(): AccessContract {
-    return this._accessContract;
-  }
-
-  @Output() updatedAccessContract: EventEmitter<AccessContract> = new EventEmitter<AccessContract>();
+  readonly updatedAccessContract = output<AccessContract>();
 
   public form: FormGroup;
   public submitted = false;
@@ -73,18 +66,23 @@ export class AccessContractInformationTabComponent {
   public rules: Option[] = RULE_TYPES;
   public ruleFilter = new FormControl(false);
 
-  private _accessContract: AccessContract;
-
   previousValue = (): any => {
     return {
-      status: this._accessContract.status,
-      name: this._accessContract.name,
-      description: this._accessContract.description,
-      accessLog: this._accessContract.accessLog,
-      ruleCategoryToFilter: this._accessContract.ruleCategoryToFilter,
-      creationDate: this._accessContract.creationDate,
+      status: this.accessContract().status,
+      name: this.accessContract().name,
+      description: this.accessContract().description,
+      accessLog: this.accessContract().accessLog,
+      ruleCategoryToFilter: this.accessContract().ruleCategoryToFilter,
+      creationDate: this.accessContract().creationDate,
     };
   };
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['accessContract']) {
+      this.setAccessContract(this.accessContract());
+      this.resetForm(this.accessContract());
+    }
+  }
 
   public onSubmit() {
     this.submitted = true;
@@ -93,10 +91,11 @@ export class AccessContractInformationTabComponent {
     }
     this.prepareSubmit().subscribe(
       () => {
-        this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
+        this.accessContractService.get(this.accessContract().identifier).subscribe((response) => {
           this.submitted = false;
-          this.accessContract = response;
-          this.resetForm(this.accessContract);
+          this.setAccessContract(response);
+          this.resetForm(this.accessContract());
+          this.resetForm(this.accessContract());
           this.updatedAccessContract.emit(response);
         });
       },
@@ -131,7 +130,7 @@ export class AccessContractInformationTabComponent {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this._accessContract.id, identifier: this._accessContract.identifier }, formData)),
+      map((formData) => extend({ id: this.accessContract().id, identifier: this.accessContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
         if (formData['status']) {
           if (formData['status'] === 'ACTIVE') {
@@ -170,7 +169,7 @@ export class AccessContractInformationTabComponent {
 
     this.ruleFilter.valueChanges.subscribe((val) => {
       if (val === true) {
-        this.form.controls['ruleCategoryToFilter'].setValue(this._accessContract.ruleCategoryToFilter);
+        this.form.controls['ruleCategoryToFilter'].setValue(this.accessContract().ruleCategoryToFilter);
       } else {
         this.form.controls['ruleCategoryToFilter'].setValue([]);
       }
@@ -188,16 +187,16 @@ export class AccessContractInformationTabComponent {
   }
 
   private setAccessContract(accessContract: AccessContract): void {
-    this._accessContract = accessContract;
+    this.accessContract.set(accessContract);
 
-    if (!this._accessContract.ruleCategoryToFilter) {
-      this._accessContract.ruleCategoryToFilter = [];
+    if (!this.accessContract().ruleCategoryToFilter) {
+      this.accessContract().ruleCategoryToFilter = [];
     }
 
-    this.ruleFilter.setValue(this._accessContract.ruleCategoryToFilter?.length > 0);
+    this.ruleFilter.setValue(this.accessContract().ruleCategoryToFilter?.length > 0);
 
-    if (!this._accessContract.description) {
-      this._accessContract.description = '';
+    if (!this.accessContract().description) {
+      this.accessContract().description = '';
     }
   }
 }

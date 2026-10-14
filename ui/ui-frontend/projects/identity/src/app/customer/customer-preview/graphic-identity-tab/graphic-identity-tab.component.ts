@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -51,31 +51,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./graphic-identity-tab.component.scss'],
   imports: [MatProgressSpinner, PipesModule, TranslatePipe],
 })
-export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
+export class GraphicIdentityTabComponent implements OnChanges, OnInit, OnDestroy {
   private readonly customerService = inject(CustomerService);
   private readonly dialog = inject(MatDialog);
   private readonly themeService = inject(ThemeService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input()
-  set customer(customer: Customer) {
-    this._customer = customer;
-    this.resetTab(this.customer);
-  }
-  get customer(): Customer {
-    return this._customer;
-  }
-  private _customer: Customer;
+  readonly customer = input<Customer>();
 
-  @Input()
-  set readOnly(readOnly: boolean) {
-    this._readonly = readOnly;
-  }
-  get readonly(): boolean {
-    return this._readonly;
-  }
+  readonly readOnly = input<boolean>();
 
-  private _readonly: boolean;
   private readonly destroy = new Subject<void>();
   public isLoading = false;
   public customerLogos: LogosSafeResourceUrl = {};
@@ -83,6 +68,12 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   public theme: Theme;
   public COLOR_NAME: { [colorId: string]: string };
   public THEME_COLORS = ThemeColorType;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['customer']) {
+      this.resetTab(this.customer());
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy.next();
   }
@@ -133,7 +124,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   openUpdateCustomerLogo() {
     const dialogRef = this.dialog.open(GraphicIdentityUpdateComponent, {
       disableClose: true,
-      data: { customer: this.customer, logos: this.customerLogos },
+      data: { customer: this.customer(), logos: this.customerLogos },
     });
     dialogRef.afterClosed().subscribe();
   }

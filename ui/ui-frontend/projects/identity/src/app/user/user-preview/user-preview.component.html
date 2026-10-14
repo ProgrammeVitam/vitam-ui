@@ -1,21 +1,23 @@
 <vitamui-common-sidenav-header
-  [badge]="user?.status === 'ENABLED' ? 'green' : user?.status === 'DISABLED' || user?.status === 'ANONYM' ? 'grey' : 'orange'"
-  [title]="user?.lastname.toUpperCase() + ' ' + user?.firstname"
-  [subtitle]="'(' + user?.identifier + ')'"
+  [badge]="user()?.status === 'ENABLED' ? 'green' : user()?.status === 'DISABLED' || user()?.status === 'ANONYM' ? 'grey' : 'orange'"
+  [title]="user()?.lastname.toUpperCase() + ' ' + user()?.firstname"
+  [subtitle]="'(' + user()?.identifier + ')'"
   [icon]="'vitamui-icon-user'"
   (onclose)="emitClose()"
 >
   <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-    <button mat-menu-item (click)="updateStatus('ENABLED')" [disabled]="user?.status === 'ENABLED'">
+    <button mat-menu-item (click)="updateStatus('ENABLED')" [disabled]="user()?.status === 'ENABLED'">
       {{ 'USER.OTHER_ACTION.ACTIVATE' | translate }}
     </button>
-    <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user?.status === 'DISABLED'">
+    <button mat-menu-item (click)="updateStatus('DISABLED')" [disabled]="user()?.status === 'DISABLED'">
       {{ 'USER.OTHER_ACTION.DEACTIVATE' | translate }}
     </button>
     <button
       mat-menu-item
-      (click)="deleteUser(user, 'REMOVED')"
-      [disabled]="user?.status === 'ENABLED' || user?.status === 'REMOVED' || user?.status === 'BLOCKED' || user?.status === 'ANONYM'"
+      (click)="deleteUser(user(), 'REMOVED')"
+      [disabled]="
+        user()?.status === 'ENABLED' || user()?.status === 'REMOVED' || user()?.status === 'BLOCKED' || user()?.status === 'ANONYM'
+      "
     >
       {{ 'USER.OTHER_ACTION.DELETE_PERSONAL_DATA' | translate }}
     </button>
@@ -26,9 +28,9 @@
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'USER.TAB.INFORMATIONS' | translate">
       <app-user-info-tab
-        [user]="user"
-        [customer]="customer"
-        [readOnly]="isPopup || user?.readonly || levelNotAllowed()"
+        [user]="user()"
+        [customer]="customer()"
+        [readOnly]="isPopup() || user()?.readonly || levelNotAllowed()"
         [adminUserProfile]="connectedUserInfo"
         [userInfo]="userInfo"
       ></app-user-info-tab>
@@ -36,10 +38,10 @@
 
     <mat-tab [label]="'USER.TAB.GROUP' | translate" class="no-padding">
       <app-user-group-tab
-        [user]="user"
-        [readOnly]="isPopup || user?.readonly || levelNotAllowed()"
+        [user]="user()"
+        [readOnly]="isPopup() || user()?.readonly || levelNotAllowed()"
         [userInfo]="connectedUserInfo"
-        [groups]="groups"
+        [groups]="groups()"
       ></app-user-group-tab>
     </mat-tab>
 
@@ -57,7 +59,9 @@
 <ng-template #confirmDisabledUserDialog>
   <mat-dialog-content>
     <p>
-      {{ 'USER.OTHER_ACTION.DEACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+      {{
+        'USER.OTHER_ACTION.DEACTIVATE_MESSAGE' | translate: { param1: user()?.firstname, param2: user()?.lastname, param3: user()?.email }
+      }}
     </p></mat-dialog-content
   >
 
@@ -70,7 +74,9 @@
 <ng-template #confirmEnabledUserDialog>
   <mat-dialog-content>
     <p>
-      {{ 'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate: { param1: user?.firstname, param2: user?.lastname, param3: user?.email } }}
+      {{
+        'USER.OTHER_ACTION.REACTIVATE_MESSAGE' | translate: { param1: user()?.firstname, param2: user()?.lastname, param3: user()?.email }
+      }}
     </p>
   </mat-dialog-content>
 
@@ -83,7 +89,7 @@
 <ng-template #confirmdeleteUserDialog>
   <mat-dialog-content>
     <p>
-      {{ 'USER.OTHER_ACTION.DELETE_MESSAGE' | translate: { firstname: user?.firstname, lastname: user?.lastname } }}
+      {{ 'USER.OTHER_ACTION.DELETE_MESSAGE' | translate: { firstname: user()?.firstname, lastname: user()?.lastname } }}
     </p>
   </mat-dialog-content>
 

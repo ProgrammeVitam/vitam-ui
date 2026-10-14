@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -49,13 +49,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./security-profile-information-tab.component.scss'],
   imports: [ReactiveFormsModule, InputComponent, SlideToggleComponent, TranslatePipe],
 })
-export class SecurityProfileInformationTabComponent {
+export class SecurityProfileInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly securityProfileService = inject(SecurityProfileService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() fullAccessUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() securityProfileUpdated: EventEmitter<SecurityProfile> = new EventEmitter<SecurityProfile>();
+  readonly updated = output<boolean>();
+  readonly fullAccessUpdated = output<boolean>();
+  readonly securityProfileUpdated = output<SecurityProfile>();
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
@@ -73,35 +73,16 @@ export class SecurityProfileInformationTabComponent {
 
   ruleFilter = new FormControl();
 
-  private _securityProfile: SecurityProfile;
-
   previousValue = (): any => {
     return (Object.keys(this.form.controls || {}) as (keyof SecurityProfile)[]).reduce((acc: any, key) => {
-      acc[key] = this._securityProfile[key];
+      acc[key] = this.securityProfile()[key];
       return acc;
     }, {} as Partial<SecurityProfile>);
   };
 
-  @Input()
-  set securityProfile(SecurityProfile: SecurityProfile) {
-    this._securityProfile = SecurityProfile;
-    this.resetForm(this.securityProfile);
-    this.updated.emit(false);
-  }
+  readonly securityProfile = model<SecurityProfile>(undefined);
 
-  get securityProfile(): SecurityProfile {
-    return this._securityProfile;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -109,6 +90,21 @@ export class SecurityProfileInformationTabComponent {
       name: [null, Validators.required],
       fullAccess: [null],
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['securityProfile']) {
+      this.setSecurityProfile(this.securityProfile());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
   }
 
   unchanged(): boolean {
@@ -137,9 +133,9 @@ export class SecurityProfileInformationTabComponent {
     }
     this.prepareSubmit().subscribe(
       () => {
-        this.securityProfileService.get(this._securityProfile.identifier).subscribe((response) => {
+        this.securityProfileService.get(this.securityProfile().identifier).subscribe((response) => {
           this.submitted.set(false);
-          this.securityProfile = response;
+          this.setSecurityProfile(response);
           this.fullAccessUpdated.emit(this.form.value.fullAccess);
           this.securityProfileUpdated.emit(response);
         });
@@ -148,6 +144,12 @@ export class SecurityProfileInformationTabComponent {
         this.submitted.set(false);
       },
     );
+  }
+
+  private setSecurityProfile(securityProfile: SecurityProfile) {
+    this.securityProfile.set(securityProfile);
+    this.resetForm(this.securityProfile());
+    this.updated.emit(false);
   }
 
   resetForm(SecurityProfile: SecurityProfile) {

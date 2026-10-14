@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -95,7 +95,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
 
   private previousTab: string | null = null;
   private subscription: Subscription;
-  @ViewChild(OntologyListComponent, { static: true }) ontologyListComponent: OntologyListComponent;
+  readonly ontologyListComponent = viewChild(OntologyListComponent);
   search = '';
   filters: string;
   tenantId: number;
@@ -152,7 +152,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
   }
 
   private refreshList() {
-    this.ontologyListComponent?.searchOntologyOrdered();
+    this.ontologyListComponent()?.searchOntologyOrdered();
   }
 
   onSearchSubmit(search: string) {

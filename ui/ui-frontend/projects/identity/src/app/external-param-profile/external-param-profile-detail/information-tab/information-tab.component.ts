@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, signal, input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { of, skip, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
@@ -92,9 +92,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   readonly activeAccessContractsIdentifiers = signal<string[]>(undefined);
   private isResetting = false;
 
-  @Input() externalParamProfile: ExternalParamProfile;
-  @Input() readOnly: boolean;
-  @Input() tenantIdentifier: string;
+  readonly externalParamProfile = input<ExternalParamProfile>(undefined);
+  readonly readOnly = input<boolean>(undefined);
+  readonly tenantIdentifier = input<string>(undefined);
 
   private updateFormSub: Subscription;
 
@@ -103,7 +103,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     this.initListenersOnFormsValuesChanges();
 
     this.externalParamProfileService
-      .getAllActiveAccessContracts(this.tenantIdentifier)
+      .getAllActiveAccessContracts(this.tenantIdentifier())
       .pipe(map((accessContracts) => accessContracts.map((accessContract) => accessContract.identifier)))
       .subscribe((activeAccessContractsIdentifiers) => this.activeAccessContractsIdentifiers.set(activeAccessContractsIdentifiers));
   }
@@ -115,7 +115,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('externalParamProfile') && this.form) {
       this.isResetting = true;
-      this.resetForm(this.externalParamProfile);
+      this.resetForm(this.externalParamProfile());
       this.previousValue = { ...this.form.getRawValue() } as ExternalParamProfile;
       this.isResetting = false;
     }
@@ -141,9 +141,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
         map((formData) =>
           extend(
             {
-              id: this.externalParamProfile.id,
-              idExternalParam: this.externalParamProfile.idExternalParam,
-              idProfile: this.externalParamProfile.idProfile,
+              id: this.externalParamProfile().id,
+              idExternalParam: this.externalParamProfile().idExternalParam,
+              idProfile: this.externalParamProfile().idProfile,
             },
             formData,
           ),
@@ -156,13 +156,13 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   private resetForm(externalParamProfile: ExternalParamProfile) {
     this.form.reset(externalParamProfile, { emitEvent: false });
     this.initFormValidators(externalParamProfile);
-    this.initFormActivationState(this.readOnly);
+    this.initFormActivationState(this.readOnly());
   }
 
   private initFormValidators(externalParamProfile: ExternalParamProfile) {
     this.form
       .get('name')
-      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+this.tenantIdentifier, externalParamProfile.name));
+      .setAsyncValidators(this.externalParamProfileValidators.nameExists(+this.tenantIdentifier(), externalParamProfile.name));
   }
 
   private initFormActivationState(readOnly: boolean) {

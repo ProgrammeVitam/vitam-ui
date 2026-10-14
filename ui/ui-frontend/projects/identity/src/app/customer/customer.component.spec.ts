@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of, Subject } from 'rxjs';
 import { ENVIRONMENT, InjectorModule, LoggerModule, StartupService } from 'vitamui-library';
@@ -85,12 +85,9 @@ class CustomerListStubComponent {
   imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class CustomerPreviewStubComponent {
-  @Input()
-  customer: any;
-  @Output()
-  previewClose = new EventEmitter();
-  @Input()
-  gdprReadOnlySettingStatus: boolean;
+  readonly customer = input<any>(undefined);
+  readonly previewClose = output();
+  readonly gdprReadOnlySettingStatus = input<boolean>(undefined);
 }
 
 @Component({
@@ -99,12 +96,9 @@ class CustomerPreviewStubComponent {
   imports: [MatMenuModule, MatSidenavModule, VitamUICommonTestModule],
 })
 class OwnerPreviewStubComponent {
-  @Input()
-  owner: any;
-  @Input()
-  tenant: any;
-  @Output()
-  previewClose = new EventEmitter();
+  readonly owner = input<any>(undefined);
+  readonly tenant = input<any>(undefined);
+  readonly previewClose = output();
 }
 
 describe('CustomerComponent', () => {

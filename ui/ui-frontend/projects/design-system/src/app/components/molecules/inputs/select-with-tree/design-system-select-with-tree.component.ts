@@ -34,18 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  OnInit,
-  QueryList,
-  ViewChildren,
-  signal,
-  afterNextRender,
-  Injector,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, afterNextRender, Injector, viewChildren } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -76,7 +65,7 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
 
   schemaOptions$: Observable<ItemNode<SchemaElement>[]>;
 
-  @ViewChildren(SelectWithTreeComponent, { read: ElementRef }) components: QueryList<ElementRef>;
+  readonly components = viewChildren(SelectWithTreeComponent, { read: ElementRef });
 
   ngOnInit() {
     this.initSchemaOptions();
@@ -100,7 +89,7 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
       // Focus the "Active" selects once they are rendered
       afterNextRender(
         () => {
-          this.components.forEach((component) => {
+          this.components().forEach((component) => {
             const nativeElement = component.nativeElement as HTMLElement;
             const isActive = nativeElement.getAttribute('data-active') === 'true';
             if (isActive) nativeElement.querySelector('mat-select').dispatchEvent(new Event('focus'));

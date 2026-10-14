@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, EventEmitter, forwardRef, Input, NgModule, Output, Pipe, PipeTransform, TemplateRef } from '@angular/core';
+import { Component, Directive, forwardRef, NgModule, Pipe, PipeTransform, TemplateRef, input, output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import type { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
 import { CdkStepper } from '@angular/cdk/stepper';
@@ -52,7 +52,7 @@ export class VitamUITenantSelectStubComponent {}
   providers: [{ provide: CdkStepper, useExisting: StepperStubComponent }],
 })
 export class StepperStubComponent {
-  @Input() selectedIndex: number;
+  readonly selectedIndex = input<number>(undefined);
   steps: any[] = [];
 }
 
@@ -68,7 +68,7 @@ export class StepperStubComponent {
   ],
 })
 export class VitamUIInputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: any;
+  readonly placeholder = input<any>(undefined);
 
   writeValue() {}
 
@@ -89,8 +89,8 @@ export class VitamUIInputStubComponent implements ControlValueAccessor {
   ],
 })
 export class InputStubComponent implements ControlValueAccessor {
-  @Input() placeholder: any;
-  @Input() textarea: boolean;
+  readonly placeholder = input<any>(undefined);
+  readonly textarea = input<boolean>(undefined);
 
   writeValue() {}
 
@@ -111,7 +111,7 @@ export class InputStubComponent implements ControlValueAccessor {
   ],
 })
 export class VitamUIInputPositiveNumberStubComponent implements ControlValueAccessor {
-  @Input() placeholder: any;
+  readonly placeholder = input<any>(undefined);
 
   writeValue() {}
 
@@ -132,7 +132,7 @@ export class VitamUIInputPositiveNumberStubComponent implements ControlValueAcce
   ],
 })
 export class VitamUITextareaStubComponent implements ControlValueAccessor {
-  @Input() placeholder: any;
+  readonly placeholder = input<any>(undefined);
 
   writeValue() {}
 
@@ -153,8 +153,8 @@ export class VitamUITextareaStubComponent implements ControlValueAccessor {
   ],
 })
 export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
-  @Input() disabled: boolean;
-  @Input() checked: any;
+  readonly disabled = input<boolean>(undefined);
+  readonly checked = input<any>(undefined);
   value: boolean;
 
   writeValue(value: boolean) {
@@ -170,8 +170,8 @@ export class VitamUISlideToggleStubComponent implements ControlValueAccessor {
 
 @Directive()
 export class EditableFieldStubComponent implements ControlValueAccessor {
-  @Input() validator: ValidatorFn;
-  @Input() asyncValidator: AsyncValidatorFn;
+  readonly validator = input<ValidatorFn>(undefined);
+  readonly asyncValidator = input<AsyncValidatorFn>(undefined);
   value: string;
 
   writeValue(value: string) {
@@ -195,7 +195,7 @@ export class EditableFieldStubComponent implements ControlValueAccessor {
   ],
 })
 export class VitamUIEditableEmailInputStubComponent extends EditableFieldStubComponent {
-  @Input() domains: string[];
+  readonly domains = input<string[]>(undefined);
 }
 
 @Component({
@@ -274,9 +274,9 @@ export class VitamUIAutocompleteMultiSelectStubComponent extends EditableFieldSt
   template: '',
 })
 export class VitamUIEditableOptionStubComponent {
-  @Input() value: any;
-  @Input() content: any;
-  @Input() disabled: any;
+  readonly value = input<any>(undefined);
+  readonly content = input<any>(undefined);
+  readonly disabled = input<any>(undefined);
 }
 
 @Component({
@@ -297,12 +297,12 @@ export class VitamUIEditableToggleGroupStubComponent extends EditableFieldStubCo
   template: '',
 })
 export class VitamUIEditableButtonToggleStubComponent {
-  @Input() value: any;
+  readonly value = input<any>(undefined);
 }
 
 @Component({
   selector: 'vitamui-common-editable-level-input',
-  template: '{{prefix}}',
+  template: '{{prefix()}}',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -312,10 +312,10 @@ export class VitamUIEditableButtonToggleStubComponent {
   ],
 })
 export class EditableLevelInputStubComponent implements ControlValueAccessor {
-  @Input() validator: any;
-  @Input() asyncValidator: any;
-  @Input() prefix: any;
-  @Input() disabled: boolean;
+  readonly validator = input<any>(undefined);
+  readonly asyncValidator = input<any>(undefined);
+  readonly prefix = input<any>(undefined);
+  readonly disabled = input<boolean>(undefined);
 
   writeValue() {}
 
@@ -355,9 +355,9 @@ export class DateTimeStubPipe implements PipeTransform {
   selector: '[vitamuiCommonInfiniteScroll]',
 })
 export class InfiniteScrollStubDirective {
-  @Input() vitamuiCommonInfiniteScrollThreshold: any;
-  @Input() vitamuiCommonInfiniteScrollDisable: any;
-  @Output() vitamuiScroll = new EventEmitter<void>();
+  readonly vitamuiCommonInfiniteScrollThreshold = input<any>(undefined);
+  readonly vitamuiCommonInfiniteScrollDisable = input<any>(undefined);
+  readonly vitamuiScroll = output<void>();
 }
 
 @Directive({
@@ -365,8 +365,8 @@ export class InfiniteScrollStubDirective {
   exportAs: 'vitamuiCommonTableFilter',
 })
 export class TableFilterStubDirective {
-  @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
-  @Output() readonly filterClosed = new EventEmitter();
+  readonly templateRef = input<TemplateRef<any>>(undefined, { alias: 'vitamuiCommonTableFilter' });
+  readonly filterClosed = output();
 }
 
 @Directive({
@@ -374,14 +374,14 @@ export class TableFilterStubDirective {
   exportAs: 'vitamuiRowCollapse',
 })
 export class RowCollapseStubDirective {
-  @Input() vitamuiCommonCollapse: any;
+  readonly vitamuiCommonCollapse = input<any>(undefined);
 }
 
 @Directive({
   selector: '[vitamuiCommonRowCollapseTriggerFor]',
 })
 export class RowCollapseTriggerForStubDirective {
-  @Input() vitamuiCommonRowCollapseTriggerFor: any;
+  readonly vitamuiCommonRowCollapseTriggerFor = input<any>(undefined);
 }
 
 const components = [

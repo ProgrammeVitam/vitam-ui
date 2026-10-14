@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, viewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -105,8 +105,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   private readonly snackBarService = inject(SnackBarService);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
-  @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
+  readonly confirmRuleActionsDialog = viewChild<TemplateRef<ManagementRulesComponent>>('confirmRuleActionsDialog');
+  readonly confirmLeaveRuleActionsDialog = viewChild<TemplateRef<ManagementRulesComponent>>('confirmLeaveRuleActionsDialog');
 
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
   criteriaSearchDSLQuery: SearchCriteriaDto;
@@ -690,7 +690,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       this.initializeParameters();
       this.location.back();
     } else {
-      const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog);
+      const dialogRef = this.dialog.open(this.confirmLeaveRuleActionsDialog());
 
       this.subscriptions.add(
         dialogRef
@@ -705,7 +705,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   submitUpdates() {
-    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog);
+    const dialogRef = this.dialog.open(this.confirmRuleActionsDialog());
     const actionAddOnRules: any = {};
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};

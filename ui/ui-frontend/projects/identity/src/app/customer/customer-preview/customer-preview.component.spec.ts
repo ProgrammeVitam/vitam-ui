@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, input, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import type { Customer } from 'vitamui-library';
@@ -52,9 +52,9 @@ import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-mes
   template: '',
 })
 export class InformationTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
-  @Input() gdprReadOnlyStatus: boolean;
+  readonly customer = input<Customer>(undefined);
+  readonly readOnly = input<boolean>(undefined);
+  readonly gdprReadOnlyStatus = input<boolean>(undefined);
 }
 
 @Component({
@@ -62,8 +62,8 @@ export class InformationTabStubComponent {
   template: '',
 })
 export class SsoTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  readonly customer = input<Customer>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 }
 
 @Component({
@@ -71,8 +71,8 @@ export class SsoTabStubComponent {
   template: '',
 })
 export class GraphicIdentityTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  readonly customer = input<Customer>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 }
 
 @Component({
@@ -80,8 +80,8 @@ export class GraphicIdentityTabStubComponent {
   template: '',
 })
 export class HomepageMessageTabStubComponent {
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
+  readonly customer = input<Customer>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 }
 
 @Component({
@@ -90,9 +90,9 @@ export class HomepageMessageTabStubComponent {
   template: '',
 })
 export class OperationHistoryTabStubComponent {
-  @Input() id: string;
-  @Input() identifier: string;
-  @Input() collectionName: string;
+  readonly id = input<string>(undefined);
+  readonly identifier = input<string>(undefined);
+  readonly collectionName = input<string>(undefined);
 }
 
 @Component({
@@ -103,8 +103,7 @@ export class OperationHistoryTabStubComponent {
 class TestHostComponent {
   customer: any;
 
-  @ViewChild(CustomerPreviewComponent, { static: false })
-  component: CustomerPreviewComponent;
+  readonly component = viewChild(CustomerPreviewComponent);
 }
 
 describe('CustomerPreviewComponent', () => {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -52,13 +52,13 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./context-information-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, DatepickerComponent, TranslatePipe],
 })
-export class ContextInformationTabComponent {
+export class ContextInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly contextService = inject(ContextService);
   private readonly securityProfileService = inject(SecurityProfileService);
   private readonly contextCreateValidators = inject(ContextCreateValidators);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   form: FormGroup;
 
@@ -79,26 +79,9 @@ export class ContextInformationTabComponent {
     }, {} as Partial<Context>);
   };
 
-  @Input()
-  set context(Context: Context) {
-    this._context = Context;
-    this.resetForm(this.context);
-    this.updated.emit(false);
-  }
+  readonly context = input<Context>(undefined);
 
-  get context(): Context {
-    return this._context;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -123,6 +106,27 @@ export class ContextInformationTabComponent {
     this.statusControl.valueChanges.subscribe((value) => {
       this.form.controls['status'].setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['context']) {
+      this.setContext(this.context());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
+  }
+
+  private setContext(context: Context) {
+    this._context = context;
+    this.resetForm(this._context);
+    this.updated.emit(false);
   }
 
   unchanged(): boolean {
@@ -170,7 +174,7 @@ export class ContextInformationTabComponent {
           .pipe(tap((response) => this.contextService.updated.next(response)))
           .subscribe((response) => {
             this.submitted.set(false);
-            this.context = response;
+            this.setContext(response);
           });
       },
       () => {

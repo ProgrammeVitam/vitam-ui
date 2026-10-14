@@ -38,14 +38,13 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
   Component,
-  EventEmitter,
   HostListener,
   inject,
-  Input,
   OnChanges,
-  Output,
   SimpleChanges,
-  ViewChild,
+  output,
+  viewChild,
+  model,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
@@ -79,24 +78,22 @@ export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
   private readonly ontologyService = inject(OntologyService);
   schemaService = inject(SchemaService);
 
-  @Output()
-  previewClose: EventEmitter<any> = new EventEmitter();
+  readonly previewClose = output<any>();
 
   title: string;
   identifier: string;
 
-  @Input()
-  selectedElement: Ontology | SchemaElement;
+  readonly selectedElement = model<Ontology | SchemaElement>(undefined);
   // tab indexes: info = 0; history = 2;
   tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
 
   tabLinks: Array<OntologyInformationTabComponent> = [];
-  @ViewChild('infoTab', { static: false }) infoTab: OntologyInformationTabComponent;
+  readonly infoTab = viewChild<OntologyInformationTabComponent>('infoTab');
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: BeforeUnloadEvent): string | void {
-    if (this.tabUpdated?.[this.tabs?.selectedIndex] && this.isOntology(this.selectedElement)) {
+    if (this.tabUpdated?.[this.tabs()?.selectedIndex] && this.isOntology(this.selectedElement())) {
       event.preventDefault();
       this.checkBeforeExit();
       event.returnValue = '';
@@ -105,17 +102,18 @@ export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit() {
-    this.tabLinks[0] = this.infoTab;
+    this.tabLinks[0] = this.infoTab();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedElement'] && this.selectedElement) {
-      if (this.isOntology(this.selectedElement)) {
-        this.title = this.selectedElement.shortName;
-        this.identifier = this.selectedElement.identifier;
+    const selectedElement = this.selectedElement();
+    if (changes['selectedElement'] && selectedElement) {
+      if (this.isOntology(selectedElement)) {
+        this.title = selectedElement.shortName;
+        this.identifier = selectedElement.identifier;
       } else {
-        this.title = this.selectedElement.ShortName;
-        this.identifier = this.selectedElement.FieldName;
+        this.title = selectedElement.ShortName;
+        this.identifier = selectedElement.FieldName;
       }
     }
   }
@@ -126,36 +124,36 @@ export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitOntologyUpdate: Observable<Ontology> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
+      const submitOntologyUpdate: Observable<Ontology> = this.tabLinks[this.tabs().selectedIndex].prepareSubmit();
 
       submitOntologyUpdate.subscribe(() => {
-        this.ontologyService.get((this.selectedElement as Ontology)?.identifier).subscribe((response) => {
-          this.selectedElement = response;
+        this.ontologyService.get((this.selectedElement() as Ontology)?.identifier).subscribe((response) => {
+          this.selectedElement.set(response);
           this.cdr.markForCheck();
         });
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.selectedElement as Ontology);
+      this.tabLinks[this.tabs().selectedIndex].resetForm(this.selectedElement() as Ontology);
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
 
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
   emitClose() {
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
     this.tabUpdated = [false, false];
     this.ontologyService.selectedId$.next(null);
     this.schemaService.selectedPath$.next(null);

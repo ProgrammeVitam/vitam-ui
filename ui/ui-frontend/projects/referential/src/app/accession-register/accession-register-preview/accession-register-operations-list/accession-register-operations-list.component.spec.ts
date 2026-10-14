@@ -86,14 +86,14 @@ describe('AccessionRegisterOperationsListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessionRegisterOperationsListComponent);
     component = fixture.componentInstance;
-    component.operations = [
+    fixture.componentRef.setInput('operations', [
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.PRESERVATION),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.INGEST),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.PRESERVATION),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.INGEST),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.TRANSFER_REPLY),
       AccessionRegisterFixtures.newOperations(RegisterValueEventType.ELIMINATION),
-    ];
+    ]);
     fixture.detectChanges();
   });
 

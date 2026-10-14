@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, HostBinding, inject, Input, Output } from '@angular/core';
+import { Component, HostBinding, inject, input, output } from '@angular/core';
 import { CdkStepper } from '@angular/cdk/stepper';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -45,18 +45,18 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './next-step.component.scss',
 })
 export class NextStepComponent {
-  @Input() disabled?: boolean;
+  readonly disabled = input<boolean>(undefined);
   /**
    * A reference to the CdkStepper instance. It is automatically injected by Angular if the component is a child of vitamui-stepper. Otherwise, a reference must be provided.
    */
-  @Input() stepper: CdkStepper = inject(CdkStepper, { optional: true });
+  readonly stepper = input<CdkStepper>(inject(CdkStepper, { optional: true }));
 
   // eslint-disable-next-line @angular-eslint/no-output-native
-  @Output() click = new EventEmitter();
+  readonly click = output<any>();
 
   @HostBinding('style.display')
   get display(): string {
-    const nbSteps = this.stepper.steps.length;
-    return nbSteps > 1 && this.stepper.selectedIndex + 1 < nbSteps ? 'inherit' : 'none';
+    const nbSteps = this.stepper().steps.length;
+    return nbSteps > 1 && this.stepper().selectedIndex + 1 < nbSteps ? 'inherit' : 'none';
   }
 }

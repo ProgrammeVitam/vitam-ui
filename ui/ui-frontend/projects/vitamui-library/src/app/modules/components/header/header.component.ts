@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -98,7 +98,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private readonly applicationService = inject(ApplicationService);
   private readonly globalEventService = inject(GlobalEventService);
 
-  @Input() hasLangSelection = false;
+  readonly hasLangSelection = input(false);
 
   /** TODO : rooting /account in portal module => move to header module */
   public trustedInlineLogoUrl: SafeUrl;

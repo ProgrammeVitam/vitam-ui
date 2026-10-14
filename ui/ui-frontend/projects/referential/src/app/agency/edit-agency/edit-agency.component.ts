@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, inject, signal, viewChild } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -90,8 +90,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
   private readonly translateService = inject(TranslateService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @ViewChild('confirmCancelDialog', { static: true })
-  confirmCancelDialog: TemplateRef<EditAgencyComponent>;
+  readonly confirmCancelDialog = viewChild<TemplateRef<EditAgencyComponent>>('confirmCancelDialog');
   dialogRefToClose: MatDialogRef<EditAgencyComponent>;
 
   private readonly subscriptions = new Subscription();
@@ -173,7 +172,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
     if (this.editObject().control.pristine) {
       this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
     } else {
-      this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog);
+      this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog());
     }
   }
 

@@ -43,9 +43,11 @@ import {
   forwardRef,
   inject,
   Injector,
-  Input,
   OnDestroy,
-  ViewChild,
+  SimpleChanges,
+  input,
+  model,
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatOption, MatOptionModule, MatOptionSelectionChange } from '@angular/material/core';
@@ -113,26 +115,15 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   private readonly cd = inject(ChangeDetectorRef);
   readonly sd = inject(ScrollDispatcher);
 
-  @Input() placeholder: string;
-  @Input() searchBarPlaceHolder: string;
+  readonly placeholder = input<string>(undefined);
+  readonly searchBarPlaceHolder = input<string>(undefined);
 
-  @Input() set multiple(multiple: boolean) {
-    this._multiple = multiple;
-    if (this._multiple) {
-      if (this.enableDisplaySelected === undefined) this.enableDisplaySelected = true;
-    }
-  }
-  get multiple(): boolean {
-    return this._multiple;
-  }
+  readonly multiple = input(false);
 
-  @Input() enableSearch = true;
-  @Input() enableDisplaySelected = true;
+  readonly enableSearch = input(true);
+  readonly enableDisplaySelected = model(true);
 
-  @Input({ required: true })
-  set options(itemNodes: ItemNode<T>[]) {
-    this.dataSource.data = itemNodes;
-  }
+  readonly options = input.required<ItemNode<T>[]>();
 
   protected nbSelectedItemsMap: { [k: string]: string } = {
     '=1': 'SELECT.SELECTED_ELEMENT.SINGULAR',
@@ -142,20 +133,20 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   /**
    * A function that must return the value to display from an item
    */
-  @Input({ required: true }) getDisplayValue: (item: T) => string;
+  readonly getDisplayValue = input.required<(item: T) => string>();
   /**
    * A function that must return the value from which to search when filtering. Defaults to getDisplayValue if not set.
    */
-  @Input() getSearchValue: (item: T) => string;
+  readonly getSearchValue = model<(item: T) => string>(undefined);
 
-  @Input() searchMinLength = 3;
-  @Input() searchDebounceTimeMs = 100;
+  readonly searchMinLength = input(3);
+  readonly searchDebounceTimeMs = input(100);
 
   searchText = '';
   showOnlySelectedOption = false;
 
-  @ViewChild('searchBar') searchBar: SearchBarComponent;
-  @ViewChild('matSelect') matSelect: MatSelect;
+  readonly searchBar = viewChild<SearchBarComponent>('searchBar');
+  readonly matSelect = viewChild<MatSelect>('matSelect');
 
   treeControl: FlatTreeControl<ItemFlatNode<T>>;
   dataSource: MatTreeFlatDataSource<ItemNode<T>, ItemFlatNode<T>>;
@@ -171,8 +162,6 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   private readonly search$: Subject<string> = new Subject();
   private searchSubscription: Subscription;
 
-  private _multiple = false;
-
   constructor() {
     const injector = inject(Injector);
 
@@ -182,34 +171,46 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   }
 
+  override ngOnChanges(changes: SimpleChanges): void {
+    if (changes['multiple'] && this.multiple()) {
+      if (this.enableDisplaySelected() === undefined) this.enableDisplaySelected.set(true);
+    }
+    if (changes['options']) {
+      this.dataSource.data = this.options();
+    }
+    super.ngOnChanges(changes);
+  }
+
   override ngOnDestroy() {
     this.searchSubscription?.unsubscribe();
   }
 
   ngAfterViewInit(): void {
-    if (!this.getSearchValue) this.getSearchValue = this.getDisplayValue;
+    if (!this.getSearchValue()) this.getSearchValue.set(this.getDisplayValue());
 
     this.checklistSelection.changed.asObservable().subscribe((_change) => {
       this.updateMatSelectTriggerContent();
     });
 
-    this.matSelect.options.changes.subscribe(() => this.updatedSelectedOptions());
+    this.matSelect().options.changes.subscribe(() => this.updatedSelectedOptions());
     this.updatedSelectedOptions();
     this.updateMatSelectTriggerContent();
 
-    const searchObservable = this.search$.pipe(debounceTime(this.searchDebounceTimeMs), distinctUntilChanged());
+    const searchObservable = this.search$.pipe(debounceTime(this.searchDebounceTimeMs()), distinctUntilChanged());
     this.searchSubscription = searchObservable.subscribe(() => this.doSearch());
 
     // Follow the active option (scrolls to keep the active option in the view) when navigating with arrow keys.
-    this.matSelect._keyManager.change.asObservable().subscribe((index) => {
-      const option = this.matSelect.options.get(index);
-      option?._getHostElement()?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    });
+    this.matSelect()
+      ._keyManager.change.asObservable()
+      .subscribe((index) => {
+        const option = this.matSelect().options.get(index);
+        option?._getHostElement()?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      });
 
     // Options order in matSelect won't reflect the order in the view after adding/removing Options (via tree node toggles) because of QueryList behaviour.
     // So, we have to update it to reflect the real order if we want to have keyboard accessibility and be able to navigate the options in the correct order with keyboard arrows.
-    this.matSelect.options.changes
-      .pipe(
+    this.matSelect()
+      .options.changes.pipe(
         map((options) => options.toArray()),
         filter((options: MatOption[]) => options.length > 1),
       )
@@ -218,12 +219,12 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
           const position = a._getHostElement().compareDocumentPosition(b._getHostElement());
           return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
         });
-        this.matSelect.options.reset(sortedOptions);
+        this.matSelect().options.reset(sortedOptions);
         this.syncActiveItem();
       });
 
-    this.searchBar?.searchInput?.nativeElement?.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
-    this.matSelect._elementRef.nativeElement.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
+    this.searchBar()?.searchInput()?.nativeElement?.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
+    this.matSelect()._elementRef.nativeElement.addEventListener('keydown', this.onKeydown.bind(this), { capture: true });
   }
 
   private onKeydown(event: KeyboardEvent) {
@@ -231,15 +232,16 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
       // Prevent mat-select to select/deselect everything with CTRL+A shortcut
       event.stopImmediatePropagation();
     }
-    const focusInSearchInput = [this.searchBar?.searchInput?.nativeElement].includes(event.target);
+    const searchBar = this.searchBar();
+    const focusInSearchInput = [searchBar?.searchInput()?.nativeElement].includes(event.target);
     if (focusInSearchInput) {
       if (['ArrowDown'].includes(event.code)) {
         // Get out of searchInput if arrow down
-        this.matSelect._elementRef.nativeElement.focus();
+        this.matSelect()._elementRef.nativeElement.focus();
       }
       if (['Enter'].includes(event.code)) {
         // Trigger search
-        this.onSearch(this.searchBar.searchValue, true);
+        this.onSearch(searchBar.searchValue(), true);
         // Native listener: refresh the view (zoneless)
         this.cd.markForCheck();
       }
@@ -249,8 +251,8 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
       }
     }
     if (!focusInSearchInput && ['Space', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
-      const index = this.matSelect._keyManager.activeItemIndex;
-      const option = this.matSelect.options.get(index);
+      const index = this.matSelect()._keyManager.activeItemIndex;
+      const option = this.matSelect().options.get(index);
 
       const node = this.treeControl.dataNodes.find((node) => node.id === option.value);
       if (['Space', 'Enter'].includes(event.code)) {
@@ -273,10 +275,10 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
    * This syncs the active item for accessibility. It is required after sorting the matSelect Options if we want to stay on the same element.
    */
   private syncActiveItem() {
-    const activeItem = this.matSelect._keyManager.activeItem;
+    const activeItem = this.matSelect()._keyManager.activeItem;
     setTimeout(() => {
-      const newIndex = this.matSelect.options.toArray().indexOf(activeItem);
-      this.matSelect._keyManager.setActiveItem(newIndex);
+      const newIndex = this.matSelect().options.toArray().indexOf(activeItem);
+      this.matSelect()._keyManager.setActiveItem(newIndex);
     });
   }
 
@@ -301,7 +303,7 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   trackBy = (_: number, _nodeData: ItemFlatNode<T>) => _nodeData.id;
 
   private matchSearch(node: ItemNode<T> | ItemFlatNode<T>, search: string) {
-    const nodeNormalizedValue = normalizeString(this.getSearchValue(node.item));
+    const nodeNormalizedValue = normalizeString(this.getSearchValue()(node.item));
     const searchNormalizedValue = normalizeString(search);
     return nodeNormalizedValue.indexOf(searchNormalizedValue) !== -1;
   }
@@ -333,12 +335,12 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   /** Toggle a leaf item selection */
   leafItemSelectionToggle(event: MatOptionSelectionChange<string>, node: ItemFlatNode<T>): void {
     if (event.isUserInput) {
-      if (this.multiple) {
+      if (this.multiple()) {
         this.checklistSelection.toggle(node);
       } else {
         if (this.checklistSelection.selected.includes(node)) {
           this.checklistSelection.clear(true);
-          this.matSelect.options.forEach((item) => item.deselect());
+          this.matSelect().options.forEach((item) => item.deselect());
         } else {
           this.checklistSelection.setSelection(node);
         }
@@ -347,7 +349,7 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   }
 
   private updateMatSelectTriggerContent(): void {
-    Object.defineProperties(this.matSelect, {
+    Object.defineProperties(this.matSelect(), {
       empty: {
         value: this.checklistSelection.selected.length <= 0,
         writable: true,
@@ -356,8 +358,8 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   }
 
   public openedChange(opened: boolean): void {
-    if (opened && this.enableSearch) {
-      this.searchBar.onFocus();
+    if (opened && this.enableSearch()) {
+      this.searchBar().onFocus();
     }
   }
 
@@ -371,10 +373,10 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
   }
 
   private updatedSelectedOptions() {
-    if (this.matSelect?.options) {
+    if (this.matSelect()?.options) {
       this.checklistSelection.selected.forEach((n) =>
-        this.matSelect.options
-          .find((option) => option.value === n.item)
+        this.matSelect()
+          .options.find((option) => option.value === n.item)
           ?.select(
             false, // Do not make form control dirty otherwise it would be dirty when the value is initialized
           ),
@@ -402,24 +404,24 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
         });
       });
     } else {
-      this.searchBar?.reset();
+      this.searchBar()?.reset();
       this.treeControl.collapseAll();
       this.treeControl.dataNodes.forEach((n) => (n.display = true));
     }
     this.syncActiveItem();
-    this.matSelect._elementRef.nativeElement.focus();
+    this.matSelect()._elementRef.nativeElement.focus();
   }
 
   public clearAllSelectedOptions(): void {
     this.checklistSelection.clear(true);
-    this.matSelect.options.forEach((item) => item.deselect());
+    this.matSelect().options.forEach((item) => item.deselect());
 
     this.showOnlySelectedOption = false;
     this.updateAfterToggleShowOnlySelectedOption();
   }
 
   public onSearch(search: string, forceSearch = false): void {
-    if (search && (search.length >= this.searchMinLength || forceSearch)) {
+    if (search && (search.length >= this.searchMinLength() || forceSearch)) {
       this.searchText = search;
     } else {
       this.searchText = undefined;

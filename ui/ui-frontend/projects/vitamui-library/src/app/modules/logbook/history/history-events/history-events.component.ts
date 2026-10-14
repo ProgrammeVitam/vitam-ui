@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { HistoryEvent } from '../../../models/logbook/event.interface';
 import { EventTypeLabelComponent } from '../../event-type-label/event-type-label.component';
@@ -48,7 +48,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [EventTypeLabelComponent, PipesModule, TranslatePipe],
 })
 export class HistoryEventsComponent {
-  @Input() events: HistoryEvent[];
+  readonly events = input<HistoryEvent[]>(undefined);
 
   checkEventData(event: HistoryEvent): boolean {
     return event?.data && event.data !== '{}';

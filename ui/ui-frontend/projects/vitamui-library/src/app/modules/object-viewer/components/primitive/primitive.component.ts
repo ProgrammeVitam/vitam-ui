@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import type { DisplayObject } from '../../models/display-object.model';
 import { DateDisplayService } from '../../services/date-display.service';
 import { DataComponent } from '../../../components/data/data.component';
@@ -51,21 +51,21 @@ export class PrimitiveComponent implements OnInit {
   private readonly dateDisplayService = inject(DateDisplayService);
   private readonly datePipe = inject(DatePipe);
 
-  @Input() displayObject: DisplayObject;
+  readonly displayObject = input<DisplayObject>(undefined);
 
   value: string;
 
   ngOnInit(): void {
-    const uiComponent = this.displayObject.displayRule?.ui?.component;
+    const uiComponent = this.displayObject().displayRule?.ui?.component;
 
     switch (uiComponent) {
       case 'datepicker':
       case 'datetime':
         const dateFormat = this.dateDisplayService.getFormat('datepicker'); // 'datetime' format is not supported, see #12739, #12744
-        this.value = this.datePipe.transform(this.displayObject.value, dateFormat);
+        this.value = this.datePipe.transform(this.displayObject().value, dateFormat);
         break;
       default:
-        this.value = this.displayObject.value;
+        this.value = this.displayObject().value;
     }
   }
 }

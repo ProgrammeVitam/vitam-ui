@@ -60,7 +60,7 @@ describe('FileFormatPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FileFormatPreviewComponent);
     component = fixture.componentInstance;
-    component.fileFormat = {
+    fixture.componentRef.setInput('fileFormat', {
       id: 'vitam_id',
       documentVersion: 0,
       version: '1.0',
@@ -76,7 +76,7 @@ describe('FileFormatPreviewComponent', () => {
       extensions: ['.puid'],
       createdDate: new Date().toISOString(),
       updateDate: new Date().toISOString(),
-    } satisfies FileFormat;
+    } satisfies FileFormat);
     fixture.detectChanges();
   });
 

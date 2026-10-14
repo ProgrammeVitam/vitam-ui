@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -82,8 +82,8 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
 
   accessContract: string;
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(ProbativeValueListComponent, { static: true }) probativeValueListComponent: ProbativeValueListComponent;
+  readonly searchBar = viewChild(SearchBarComponent);
+  readonly probativeValueListComponent = viewChild(ProbativeValueListComponent);
 
   constructor() {
     super();
@@ -115,10 +115,11 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnDes
   }
 
   private refreshList() {
-    if (!this.probativeValueListComponent) {
+    const probativeValueListComponent = this.probativeValueListComponent();
+    if (!probativeValueListComponent) {
       return;
     }
-    this.probativeValueListComponent.searchProbativeValueOrdered();
+    probativeValueListComponent.searchProbativeValueOrdered();
   }
 
   onSearchSubmit(search: string) {

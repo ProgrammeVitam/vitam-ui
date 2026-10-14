@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { Logger } from '../../../logger/logger';
 import { DateDisplayService } from '../../../object-viewer/services/date-display.service';
 import { ComponentType } from '../../../object-viewer/types';
@@ -69,23 +69,24 @@ export class PrimitiveEditorComponent implements OnInit {
   private readonly logger = inject(Logger);
   private readonly dateDisplayService = inject(DateDisplayService);
 
-  @Input() editObject: EditObject;
+  readonly editObject = input<EditObject>(undefined);
 
   uiComponent: ComponentType;
   dateFormat: string;
 
   ngOnInit(): void {
-    if (!this.editObject) return;
-    if (!this.editObject.control) this.logger.warn(this, this.editObject.path, 'No control assigned !');
+    const editObject = this.editObject();
+    if (!editObject) return;
+    if (!editObject.control) this.logger.warn(this, editObject.path, 'No control assigned !');
 
-    this.uiComponent = this.editObject.displayRule?.ui?.component;
+    this.uiComponent = editObject.displayRule?.ui?.component;
     this.dateFormat = this.dateDisplayService.getFormat(this.uiComponent);
   }
 
   protected readonly FormControl = FormControl;
 
   get control(): FormControl {
-    return this.editObject.control as FormControl;
+    return this.editObject().control as FormControl;
   }
 
   getPickerType(editObject: EditObject) {

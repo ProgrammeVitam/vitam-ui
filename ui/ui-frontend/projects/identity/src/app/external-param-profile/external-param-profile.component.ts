@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ExternalParamProfile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
@@ -66,7 +66,7 @@ export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProf
   dto: ExternalParamProfile;
   tenantIdentifier: string;
   public search: string;
-  @ViewChild(ExternalParamProfileListComponent, { static: true }) externalParamProfileListComponent: ExternalParamProfileListComponent;
+  readonly externalParamProfileListComponent = viewChild(ExternalParamProfileListComponent);
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -91,9 +91,10 @@ export class ExternalParamProfileComponent extends SidenavPage<ExternalParamProf
   }
 
   private refreshList() {
-    if (!this.externalParamProfileListComponent) {
+    const externalParamProfileListComponent = this.externalParamProfileListComponent();
+    if (!externalParamProfileListComponent) {
       return;
     }
-    this.externalParamProfileListComponent.search();
+    externalParamProfileListComponent.search();
   }
 }

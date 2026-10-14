@@ -34,18 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, input, output, model } from '@angular/core';
 import { Subscription } from 'rxjs';
 import type { Group } from 'vitamui-library';
 import { AuthService, isLevelAllowed, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
@@ -81,19 +70,20 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   private readonly authService = inject(AuthService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() isPopup: boolean;
+  readonly isPopup = input<boolean>(undefined);
 
-  @Input() group: Group;
+  readonly group = model<Group>(undefined);
 
-  @Output() previewClose = new EventEmitter();
+  readonly previewClose = output();
 
   private groupUpdateSub: Subscription;
   public groupUsersCount: number;
 
   ngOnInit(): void {
-    if (this.group) {
-      this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
-        this.group = groupRetrieved;
+    const group = this.group();
+    if (group) {
+      this.groupService.get(group.id).subscribe((groupRetrieved) => {
+        this.group.set(groupRetrieved);
         this.cdr.markForCheck();
         this.groupService.updated.next(groupRetrieved);
       });
@@ -101,7 +91,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
     this.groupUpdateSub = this.groupService.updated.subscribe((updatedGroup) => {
       if (updatedGroup) {
-        this.group = updatedGroup;
+        this.group.set(updatedGroup);
         this.cdr.markForCheck();
       }
     });
@@ -109,9 +99,10 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('group')) {
-      if (this.group) {
-        this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
-          this.group = groupRetrieved;
+      const group = this.group();
+      if (group) {
+        this.groupService.get(group.id).subscribe((groupRetrieved) => {
+          this.group.set(groupRetrieved);
           this.cdr.markForCheck();
           this.groupService.updated.next(groupRetrieved);
         });
@@ -120,8 +111,9 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   levelNotAllowed(): boolean {
-    if (this.group) {
-      return !isLevelAllowed(this.authService.user, this.group.level);
+    const group = this.group();
+    if (group) {
+      return !isLevelAllowed(this.authService.user, group.level);
     }
     return false;
   }

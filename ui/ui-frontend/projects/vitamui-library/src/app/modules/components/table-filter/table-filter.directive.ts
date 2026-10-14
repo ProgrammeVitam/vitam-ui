@@ -36,7 +36,7 @@
  */
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewContainerRef, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, TemplateRef, ViewContainerRef, inject, input, output } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiCommonTableFilter]',
@@ -47,9 +47,9 @@ export class TableFilterDirective {
   private readonly elementRef = inject(ElementRef);
   private readonly viewContainerRef = inject(ViewContainerRef);
 
-  @Input('vitamuiCommonTableFilter') templateRef: TemplateRef<any>;
+  readonly templateRef = input<TemplateRef<any>>(undefined, { alias: 'vitamuiCommonTableFilter' });
 
-  @Output() readonly filterClosed = new EventEmitter();
+  readonly filterClosed = output();
 
   private overlayRef: OverlayRef;
 
@@ -73,7 +73,7 @@ export class TableFilterDirective {
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-transparent-backdrop',
     });
-    const filterTemplatePortal = new TemplatePortal(this.templateRef, this.viewContainerRef);
+    const filterTemplatePortal = new TemplatePortal(this.templateRef(), this.viewContainerRef);
     this.overlayRef.attach(filterTemplatePortal);
 
     this.overlayRef.backdropClick().subscribe(() => {

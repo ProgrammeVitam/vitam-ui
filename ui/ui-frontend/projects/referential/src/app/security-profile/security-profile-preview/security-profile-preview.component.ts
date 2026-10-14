@@ -34,18 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  ChangeDetectorRef,
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  forwardRef,
-  HostListener,
-  inject,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, AfterViewInit, Component, forwardRef, HostListener, inject, output, viewChild, model } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -82,19 +71,19 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly securityProfileService = inject(SecurityProfileService);
 
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
-  @Input() securityProfile: SecurityProfile;
+  readonly previewClose = output<any>();
+  readonly securityProfile = model<SecurityProfile>(undefined);
 
   tabUpdated: boolean[] = [false, false, false];
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
 
   tabLinks: Array<SecurityProfileInformationTabComponent | SecurityProfilePermissionsTabComponent> = [];
-  @ViewChild('infoTab', { static: false }) infoTab: SecurityProfileInformationTabComponent;
-  @ViewChild('permsTab', { static: false }) permsTab: SecurityProfilePermissionsTabComponent;
+  readonly infoTab = viewChild<SecurityProfileInformationTabComponent>('infoTab');
+  readonly permsTab = viewChild<SecurityProfilePermissionsTabComponent>('permsTab');
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any): string | void {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       event.preventDefault();
       this.checkBeforeExit();
       return '';
@@ -102,9 +91,9 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
-    this.tabLinks[0] = this.infoTab;
-    this.tabLinks[1] = this.permsTab;
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
+    this.tabLinks[0] = this.infoTab();
+    this.tabLinks[1] = this.permsTab();
   }
 
   updatedChange(updated: boolean, index: number) {
@@ -113,49 +102,49 @@ export class SecurityProfilePreviewComponent implements AfterViewInit {
 
   async checkBeforeExit() {
     if (await this.confirmAction()) {
-      const submitAccessContractUpdate: Observable<SecurityProfile> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
+      const submitAccessContractUpdate: Observable<SecurityProfile> = this.tabLinks[this.tabs().selectedIndex].prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.securityProfileService.get(this.securityProfile.identifier).subscribe((response) => {
-          this.securityProfile = response;
+        this.securityProfileService.get(this.securityProfile().identifier).subscribe((response) => {
+          this.securityProfile.set(response);
           this.cdr.markForCheck();
-          this.permsTab.SecurityProfile = this.securityProfile;
+          this.permsTab().setSecurityProfile(this.securityProfile());
         });
       });
     } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.securityProfile);
+      this.tabLinks[this.tabs().selectedIndex].resetForm(this.securityProfile());
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
 
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
   updateFullAccess(newValue: boolean) {
-    this.securityProfile.fullAccess = newValue;
-    this.permsTab.SecurityProfile = this.securityProfile;
+    this.securityProfile().fullAccess = newValue;
+    this.permsTab().setSecurityProfile(this.securityProfile());
   }
 
   async emitClose() {
-    if (this.tabUpdated[this.tabs.selectedIndex]) {
+    if (this.tabUpdated[this.tabs().selectedIndex]) {
       await this.checkBeforeExit();
     }
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 
   updateSecurityProfile(securityProfileUpdated: SecurityProfile): void {
-    this.securityProfile = securityProfileUpdated;
-    this.permsTab.SecurityProfile = securityProfileUpdated;
+    this.securityProfile.set(securityProfileUpdated);
+    this.permsTab().setSecurityProfile(securityProfileUpdated);
   }
 }

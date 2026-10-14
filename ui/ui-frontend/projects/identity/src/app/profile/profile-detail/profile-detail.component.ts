@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectorRef, input, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import type { Profile } from 'vitamui-library';
 import { AuthService, isLevelAllowed, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
@@ -62,30 +62,33 @@ import { CommonModule } from '@angular/common';
     VitamuiSidenavHeaderComponent,
   ],
 })
-export class ProfileDetailComponent implements OnInit, OnDestroy {
+export class ProfileDetailComponent implements OnChanges, OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly rngProfileService = inject(ProfileService);
   private readonly authService = inject(AuthService);
 
-  @Input()
-  set id(id: string) {
-    this.rngProfileService.get(id).subscribe((profile) => {
-      this.profile = profile;
-      this.cdr.markForCheck();
-    });
-  }
-  @Input() profile: Profile;
-  @Input() isPopup: boolean;
+  readonly id = input<string>();
+  readonly profile = model<Profile>(undefined);
+  readonly isPopup = input<boolean>(undefined);
 
-  @Output() profileClose = new EventEmitter();
+  readonly profileClose = output();
 
   profileUpdateSub: Subscription;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['id']) {
+      this.rngProfileService.get(this.id()).subscribe((profile) => {
+        this.profile.set(profile);
+        this.cdr.markForCheck();
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.profileUpdateSub = this.rngProfileService.updated.subscribe((updatedProfile) => {
       if (updatedProfile) {
         this.rngProfileService.get(updatedProfile.id).subscribe((newProfileInfo) => {
-          this.profile = newProfileInfo;
+          this.profile.set(newProfileInfo);
           this.cdr.markForCheck();
         });
       }
@@ -93,8 +96,9 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   }
 
   levelNotAllowed(): boolean {
-    if (this.profile) {
-      return !isLevelAllowed(this.authService.user, this.profile.level);
+    const profile = this.profile();
+    if (profile) {
+      return !isLevelAllowed(this.authService.user, profile.level);
     }
     return false;
   }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import type { Application } from '../../../../models/application/application.interface';
 import { NgClass } from '@angular/common';
 import { HighlightPipe } from '../../../../pipes/highlight.pipe';
@@ -47,14 +47,11 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [NgClass, HighlightPipe, TranslatePipe],
 })
 export class MenuApplicationTileComponent implements OnInit {
-  @Input()
-  public application: Application;
+  public readonly application = input<Application>(undefined);
 
-  @Input()
-  public applicationUrl: string;
+  public readonly applicationUrl = input<string>(undefined);
 
-  @Input()
-  public hlCriteria?: string;
+  public readonly hlCriteria = input<string>(undefined);
 
   protected name: string;
   protected tooltip: string;
@@ -62,7 +59,7 @@ export class MenuApplicationTileComponent implements OnInit {
   constructor() {}
 
   public ngOnInit(): void {
-    const prefix = `APPLICATION.${this.application.identifier}`;
+    const prefix = `APPLICATION.${this.application().identifier}`;
     this.name = `${prefix}.NAME`;
     this.tooltip = `${prefix}.TOOLTIP`;
   }

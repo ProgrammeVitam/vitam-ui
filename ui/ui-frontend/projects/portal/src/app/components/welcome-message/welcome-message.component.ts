@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -44,9 +44,9 @@ import { SafeResourceUrl } from '@angular/platform-browser';
   imports: [],
 })
 export class WelcomeMessageComponent {
-  @Input() title: string;
+  readonly title = input<string>(undefined);
 
-  @Input() message: string;
+  readonly message = input<string>(undefined);
 
-  @Input() imgUrl: string | SafeResourceUrl;
+  readonly imgUrl = input<string | SafeResourceUrl>(undefined);
 }

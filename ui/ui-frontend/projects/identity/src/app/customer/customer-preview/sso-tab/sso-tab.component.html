@@ -1,7 +1,7 @@
 <div class="vitamui-panel" [class.active]="!selectedIdentityProvider">
   @if (!selectedIdentityProvider) {
     <div class="vitamui-panel-content">
-      @if (!readOnly) {
+      @if (!readOnly()) {
         <button class="btn primary" (click)="openCreateIDPDialog()" [disabled]="!domainsAvailable">
           <div [vitamuiTooltipDisabled]="domainsAvailable" [vitamuiTooltip]="'CUSTOMER.SSO.UNAVAILABLE_DOMAINS' | translate">
             {{ 'CUSTOMER.SSO.BUTTON' | translate }}
@@ -74,7 +74,7 @@
         <app-identity-provider-details
           [identityProvider]="selectedIdentityProvider"
           [domains]="domains()"
-          [readOnly]="readOnly || selectedIdentityProvider.readonly"
+          [readOnly]="readOnly() || selectedIdentityProvider.readonly"
         ></app-identity-provider-details>
       </div>
     </div>

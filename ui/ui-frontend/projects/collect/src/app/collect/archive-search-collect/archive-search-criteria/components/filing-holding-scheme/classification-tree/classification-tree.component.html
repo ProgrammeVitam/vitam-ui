@@ -2,7 +2,7 @@
   <div class="tree-text">
     <div class="tree-title">
       <span>{{ 'COLLECT.FILING_SCHEMA.TREE_TITLE' | translate }}</span>
-      @if (loadingNodeUnit) {
+      @if (loadingNodeUnit()) {
         <mat-spinner diameter="20" color="accent"></mat-spinner>
       }
     </div>
@@ -11,10 +11,10 @@
     <i class="vitamui-icon vitamui-icon-close" (click)="onClosePanel()"></i>
   </button>
 </div>
-@if (!loadingHolding) {
+@if (!loadingHolding()) {
   <div>
     <div class="tree-filing-scheme">
-      <mat-tree [dataSource]="nestedDataSourceFull" [treeControl]="nestedTreeControlFull" class="filing-holding-scheme-tree">
+      <mat-tree [dataSource]="nestedDataSourceFull()" [treeControl]="nestedTreeControlFull()" class="filing-holding-scheme-tree">
         <mat-tree-node *matTreeNodeDef="let node; when: nodeHasNoChidren">
           @if (nodeHasMatchsOrShowAll(node)) {
             <div class="mat-tree-node filing-holding-scheme-tree-node flex-row">
@@ -22,13 +22,13 @@
                 <vitamui-tree-node
                   [node]="node"
                   [icon]="getNodeUnitIcon(node)"
-                  (nodeToggle)="nestedTreeControlFull.toggle(node)"
+                  (nodeToggle)="nestedTreeControlFull().toggle(node)"
                   (labelClick)="onShowNodeDetails(node.id)"
                   disabled
                 >
                 </vitamui-tree-node>
               </div>
-              @if (hasMatchesInSearch && node?.count !== null && node?.count > 0) {
+              @if (hasMatchesInSearch() && node?.count !== null && node?.count > 0) {
                 <span class="badge badge-secondary pad">{{ node?.count | number: '1.0' }}</span>
               }
             </div>
@@ -40,12 +40,12 @@
               <vitamui-tree-node
                 [node]="node"
                 [icon]="getNodeUnitIcon(node)"
-                [expanded]="nestedTreeControlFull.isExpanded(node)"
-                (nodeToggle)="nestedTreeControlFull.toggle(node)"
+                [expanded]="nestedTreeControlFull().isExpanded(node)"
+                (nodeToggle)="nestedTreeControlFull().toggle(node)"
                 (labelClick)="onShowNodeDetails(node.id)"
               >
               </vitamui-tree-node>
-              @if (hasMatchesInSearch && node?.count !== null && node?.count > 0) {
+              @if (hasMatchesInSearch() && node?.count !== null && node?.count > 0) {
                 <span class="badge badge-secondary pad">
                   {{ node?.count | number: '1.0' }}
                 </span>
@@ -53,8 +53,8 @@
             </div>
           }
           @if (nodeHasMatchsOrShowAll(node)) {
-            <div [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFull.isExpanded(node)" class="flex-column childs">
-              @if (nestedTreeControlFull.isExpanded(node)) {
+            <div [class.filing-holding-scheme-tree-invisible]="!nestedTreeControlFull().isExpanded(node)" class="flex-column childs">
+              @if (nestedTreeControlFull().isExpanded(node)) {
                 <ng-container matTreeNodeOutlet> </ng-container>
               }
             </div>
@@ -65,7 +65,7 @@
         </mat-tree-node>
       </mat-tree>
     </div>
-    @if (nestedDataSourceFull.data.length <= 0) {
+    @if (nestedDataSourceFull().data.length <= 0) {
       <div class="area-show-tree">
         {{ 'COLLECT.FILING_SCHEMA.NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT' | translate }}
       </div>
@@ -73,7 +73,7 @@
   </div>
 }
 
-@if (loadingHolding) {
+@if (loadingHolding()) {
   <div>
     <mat-spinner diameter="50" color="accent"></mat-spinner>
   </div>

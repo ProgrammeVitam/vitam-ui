@@ -39,12 +39,12 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
-  Input,
   OnChanges,
   OnDestroy,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
+  viewChild,
+  input,
 } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig } from '@angular/material/dialog';
 import { of, Subscription } from 'rxjs';
@@ -93,9 +93,9 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   private readonly matDialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() editObject: EditObject;
+  readonly editObject = input<EditObject>(undefined);
 
-  @ViewChild('removeDialog') removeDialog: TemplateRef<GroupEditorComponent>;
+  readonly removeDialog = viewChild<TemplateRef<GroupEditorComponent>>('removeDialog');
 
   entries: [key: string, value: any][] = [];
   favoriteEntry: [key: string, value: any];
@@ -111,9 +111,10 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
     const { editObject } = changes;
 
     if (editObject) {
-      if (this.editObject?.childrenChange) {
+      const editObjectValue = this.editObject();
+      if (editObjectValue?.childrenChange) {
         if (this.subscription) this.subscription.unsubscribe();
-        this.subscription = this.editObject.childrenChange.subscribe(() => {
+        this.subscription = editObjectValue.childrenChange.subscribe(() => {
           this.computeLayout();
           this.computeActions();
           this.isEmptyObject(editObject.currentValue);
@@ -136,25 +137,26 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   }
 
   computeLayout() {
-    this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.editObject);
-    this.favoritePath = this.favoriteEntryService.favoritePath(this.editObject);
-    this.rows = this.layoutService.compute(this.editObject) as EditObject[][];
+    this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.editObject());
+    this.favoritePath = this.favoriteEntryService.favoritePath(this.editObject());
+    this.rows = this.layoutService.compute(this.editObject()) as EditObject[][];
   }
 
   computeActions() {
-    if (!this.editObject?.actions) return;
+    const editObject = this.editObject();
+    if (!editObject?.actions) return;
 
-    const current: Action = this.editObject.actions['remove'];
+    const current: Action = editObject.actions['remove'];
     if (current) {
-      const next: Action = this.withValidation(current, () => this.typeService.isConsistent(this.editObject.control.value));
+      const next: Action = this.withValidation(current, () => this.typeService.isConsistent(this.editObject().control.value));
       this.replaceAction(current, next);
     }
 
-    this.actionList = Object.values(this.editObject.actions);
+    this.actionList = Object.values(editObject.actions);
   }
 
   toggle(): void {
-    this.editObject.open = !this.editObject.open;
+    this.editObject().open = !this.editObject().open;
   }
 
   stopPropagation(event: Event) {
@@ -178,7 +180,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
         if (!predicate()) return handler();
 
         const subscription: Subscription = this.matDialog
-          .open(this.removeDialog, this.dialogConfig)
+          .open(this.removeDialog(), this.dialogConfig)
           .afterClosed()
           .pipe(
             filter((value) => value),
@@ -194,7 +196,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   }
 
   private replaceAction(current: Action, next: Action): void {
-    delete this.editObject.actions[current.name];
-    this.editObject.actions[next.name] = next;
+    delete this.editObject().actions[current.name];
+    this.editObject().actions[next.name] = next;
   }
 }

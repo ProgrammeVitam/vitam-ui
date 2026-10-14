@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ObjectQualifierType } from '../../../models/units/object-qualifier.enums';
 import { ValidationError } from '../../../models/units/unit.interface';
@@ -73,8 +73,8 @@ type MeasurementDisplayMode = 'SYMBOL' | 'NAME';
 export class PhysicalArchiveViewerComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
 
-  @Input() archive: VersionWithQualifierDto;
-  @Input() errorMessages: Record<string, ValidationError[]>;
+  readonly archive = input<VersionWithQualifierDto>(undefined);
+  readonly errorMessages = input<Record<string, ValidationError[]>>(undefined);
 
   // Component configuration
   private readonly measurementDisplayMode: MeasurementDisplayMode = 'NAME';
@@ -91,13 +91,14 @@ export class PhysicalArchiveViewerComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    if (!this.archive) {
+    const archive = this.archive();
+    if (!archive) {
       console.warn('No archive passed as parameter');
 
       return;
     }
 
-    this.isPhysical = this.archive.qualifier === ObjectQualifierType.PHYSICALMASTER;
+    this.isPhysical = archive.qualifier === ObjectQualifierType.PHYSICALMASTER;
 
     if (!this.isPhysical) {
       console.warn('Non physical archive passed as parameter');
@@ -109,7 +110,7 @@ export class PhysicalArchiveViewerComponent implements OnInit {
   }
 
   toggleArchiveMetadataDisplay(): void {
-    this.archive.opened = !this.archive.opened;
+    this.archive().opened = !this.archive().opened;
   }
 
   private isAllowedDisplayValue(displayValue: DisplayValue): boolean {
@@ -117,7 +118,8 @@ export class PhysicalArchiveViewerComponent implements OnInit {
   }
 
   hasErrors() {
-    return this.errorMessages && this.errorMessages[this.archive['#id']] !== undefined;
+    const errorMessages = this.errorMessages();
+    return errorMessages?.[this.archive()['#id']] !== undefined;
   }
 
   private translateMeasurementDisplayValue(displayValue: DisplayValue): DisplayValue {
@@ -160,7 +162,7 @@ export class PhysicalArchiveViewerComponent implements OnInit {
   }
 
   private computeDisplayValues(): DisplayValue[] {
-    const section = (this.archive as any)[this.name];
+    const section = (this.archive() as any)[this.name];
     const sectionKeys = Object.keys(section);
 
     return sectionKeys.map((key: string): DisplayValue => {

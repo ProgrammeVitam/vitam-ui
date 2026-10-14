@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FacetDetails } from '../../models/operation/facet-details.interface';
 import { CommonModule } from '@angular/common';
 
@@ -50,14 +50,13 @@ export class LogbookOperationFacetComponent {
    * The title of the component that contains a list of Facet
    * It can be in English or in French
    */
-  @Input()
-  facetTitle: string;
+  readonly facetTitle = input<string>(undefined);
 
   /**
    * An action to execute that allows to filter the list of results
    * For static facet, it's not necessary to execute this action
    */
-  @Output() filter = new EventEmitter<string>();
+  readonly filter = output<string>();
 
   /**
    * The list of Facets to create
@@ -71,8 +70,7 @@ export class LogbookOperationFacetComponent {
    * filter : the parameter used to lunch the filter on results
    *
    */
-  @Input()
-  facetDetails: FacetDetails[];
+  readonly facetDetails = input<FacetDetails[]>(undefined);
 
   onFilter(facet: FacetDetails) {
     if (facet.clickable) {

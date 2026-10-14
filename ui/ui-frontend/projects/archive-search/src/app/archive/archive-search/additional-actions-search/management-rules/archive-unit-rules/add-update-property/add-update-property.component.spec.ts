@@ -148,7 +148,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should the stepValid parameter be true after the update of the final action', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     currentTestRuleActions = [
       {
         ruleType: 'AppraisalRule',
@@ -203,7 +203,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should the showText and the stepValid parameters be false after updating the final action', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     currentTestRuleActions = [
       {
         ruleType: 'AppraisalRule',
@@ -259,7 +259,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should add rule property cancel button be disabled when adding an AppraisalRule', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     currentTestRuleActions = [
       {
         ruleType: 'AppraisalRule',
@@ -286,7 +286,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should add rule property cancel button be disabled when adding a StorageRule', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.STORAGERULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.STORAGERULE);
     currentTestRuleActions = [
       {
         ruleType: 'StorageRule',
@@ -313,7 +313,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should add rule property cancel button be enabled when adding a ClassificationRule', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.CLASSIFICATIONRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.CLASSIFICATIONRULE);
     currentTestRuleActions = [
       {
         ruleType: 'ClassificationRule',
@@ -340,7 +340,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should add rule property cancel button be disabled when blocking a rule inheritance for AppraisalRule', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     currentTestRuleActions = [
       {
         ruleType: 'AppraisalRule',
@@ -367,7 +367,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should add rule property cancel button be disabled when blocking AppraisalRule category inheritance', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     currentTestRuleActions = [
       {
         ruleType: 'AppraisalRule',
@@ -394,7 +394,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should add rule property cancel button be disabled when unocking AppraisalRule category inheritance', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     currentTestRuleActions = [
       {
         ruleType: 'AppraisalRule',
@@ -421,7 +421,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should a final action be defined after updating the property bloc', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleTypeDUA = ruleCategoryAction;
 
     currentTestManagementRules = [
@@ -480,7 +480,7 @@ describe('AddUpdatePropertyComponent', () => {
 
   it('should call getManagementRules of ManagementRulesSharedDataService', () => {
     // Given
-    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    fixture.componentRef.setInput('ruleCategory', RuleTypeEnum.APPRAISALRULE);
     component.ruleTypeDUA = ruleCategoryAction;
     currentTestRuleActions = [
       {

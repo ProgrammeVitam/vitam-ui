@@ -183,10 +183,10 @@ describe('EditableFieldComponent', () => {
   });
 
   it('should set disabled', () => {
-    expect(component.disabled).toBeFalsy();
+    expect(component.disabled()).toBeFalsy();
     component.setDisabledState(true);
-    expect(component.disabled).toBeTruthy();
+    expect(component.disabled()).toBeTruthy();
     component.setDisabledState(false);
-    expect(component.disabled).toBeFalsy();
+    expect(component.disabled()).toBeFalsy();
   });
 });

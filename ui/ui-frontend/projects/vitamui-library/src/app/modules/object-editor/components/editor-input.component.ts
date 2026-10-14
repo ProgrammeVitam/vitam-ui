@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { HintComponent } from '../../components/hint/hint.component';
 import { PipesModule } from '../../pipes/pipes.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -44,14 +44,15 @@ import { InputComponent } from '../../../../lib/components/input/input.component
 @Component({
   selector: 'vitamui-editor-input',
   template: `
-    <vitamui-input [formControl]="control" [placeholder]="label | translate | empty" [required]="required" class="w-100"> </vitamui-input>
-    <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
+    <vitamui-input [formControl]="control()" [placeholder]="label() | translate | empty" [required]="required()" class="w-100">
+    </vitamui-input>
+    <vitamui-hint [control]="control()" [hint]="hint()"></vitamui-hint>
   `,
   imports: [HintComponent, PipesModule, TranslatePipe, InputComponent, ReactiveFormsModule],
 })
 export class EditorInputComponent {
-  @Input({ required: true }) control!: FormControl;
-  @Input() label?: string;
-  @Input() hint?: string;
-  @Input() required: boolean = false;
+  readonly control = input.required<FormControl>();
+  readonly label = input<string>(undefined);
+  readonly hint = input<string>(undefined);
+  readonly required = input<boolean>(false);
 }

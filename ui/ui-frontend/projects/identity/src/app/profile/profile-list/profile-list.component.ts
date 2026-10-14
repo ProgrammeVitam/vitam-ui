@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import {
@@ -65,15 +65,10 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./profile-list.component.scss'],
   imports: [NgClass, MatProgressSpinner, PipesModule, TranslatePipe, CommonModule, EllipsisDirective, InfiniteScrollDirective],
 })
-export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnDestroy, OnInit {
+export class ProfileListComponent extends InfiniteScrollTable<Profile> implements OnChanges, OnDestroy, OnInit {
   rngProfileService: ProfileService;
 
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
-  private _searchText: string;
+  readonly searchText = input<string>();
 
   orderBy = 'name';
   direction = Direction.ASCENDANT;
@@ -83,9 +78,9 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
   private readonly orderChange = new Subject<string>();
   private readonly searchKeys = ['name', 'description', 'identifier'];
 
-  @Output() profileClick = new EventEmitter<Profile>();
+  readonly profileClick = output<Profile>();
 
-  private updatedProfileSub: Subscription;
+  private readonly updatedProfileSub: Subscription;
 
   constructor() {
     const rngProfileService = inject(ProfileService);
@@ -121,6 +116,12 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
     });
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['searchText']) {
+      this.searchChange.next(this.searchText());
+    }
+  }
+
   ngOnInit() {
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(
       startWith(null),
@@ -137,7 +138,7 @@ export class ProfileListComponent extends InfiniteScrollTable<Profile> implement
   override search() {
     const defaultCriterion: Criterion = { key: 'applicationName', value: ApplicationId.USERS_APP, operator: Operators.equals };
     const query: CriteriaSearchQuery = {
-      criteria: [defaultCriterion, ...buildCriteriaFromSearch(this._searchText, this.searchKeys)],
+      criteria: [defaultCriterion, ...buildCriteriaFromSearch(this.searchText(), this.searchKeys)],
     };
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
 

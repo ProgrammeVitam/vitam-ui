@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, forwardRef, inject, Input, Output } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, input, output, linkedSignal } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from 'vitamui-library';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
@@ -68,23 +68,15 @@ export const EDITABLE_DOMAIN_INPUT_VALUE_ACCESSOR: any = {
 export class EditableCustomParamsComponent extends EditableFieldComponent {
   array: any[] = [];
 
-  selected: string;
+  readonly selected = linkedSignal(() => this.defaultDomain());
   private domainInputClicked = false;
   override get canConfirm(): boolean {
     return this.editMode && !this.control.pending && this.control.valid && this.control.dirty;
   }
-  @Input()
-  set defaultDomain(defaultDomain: string) {
-    this._defaultDomain = defaultDomain;
-    this.selected = defaultDomain;
-  }
-  get defaultDomain(): string {
-    return this._defaultDomain;
-  }
-  private _defaultDomain: string;
+  readonly defaultDomain = input<string>();
 
-  @Output() defaultDomainChange = new EventEmitter<string>();
-  @Input() placeholder: string;
+  readonly defaultDomainChange = output<string>();
+  readonly placeholder = input<string>(undefined);
   constructor() {
     const elementRef = inject(ElementRef);
 
@@ -103,7 +95,7 @@ export class EditableCustomParamsComponent extends EditableFieldComponent {
 
   override cancel() {
     super.cancel();
-    this.selected = this.defaultDomain;
+    this.selected.set(this.defaultDomain());
   }
 
   override onClick(target: HTMLElement) {
@@ -115,7 +107,7 @@ export class EditableCustomParamsComponent extends EditableFieldComponent {
 
       return;
     }
-    const overlayRef = this.cdkConnectedOverlay.overlayRef;
+    const overlayRef = this.cdkConnectedOverlay().overlayRef;
     if (this.isInside(target, this.elementRef.nativeElement) || this.isInside(target, overlayRef.hostElement)) {
       return;
     }

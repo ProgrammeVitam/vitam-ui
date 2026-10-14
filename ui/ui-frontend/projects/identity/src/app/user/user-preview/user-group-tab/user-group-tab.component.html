@@ -1,7 +1,7 @@
-@if (user?.status !== 'REMOVED') {
+@if (user()?.status !== 'REMOVED') {
   <div>
-    @if (showUpdateButton) {
-      <button class="btn primary mb-4" (click)="openAttributionGroupe()" [disabled]="userInfo.type === 'NONE'">
+    @if (showUpdateButton()) {
+      <button class="btn primary mb-4" (click)="openAttributionGroupe()" [disabled]="userInfo().type === 'NONE'">
         <div>
           {{ 'COMMON.UPDATE' | translate }}
         </div>
@@ -40,7 +40,7 @@
   </div>
 }
 
-@if (user?.status === 'REMOVED') {
+@if (user()?.status === 'REMOVED') {
   <div>
     <h2>ATTENTION</h2>
     L'utilisateur que vous cherchez est déja supprimé

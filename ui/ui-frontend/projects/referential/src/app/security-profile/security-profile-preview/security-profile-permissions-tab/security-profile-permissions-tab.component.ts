@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,19 +50,17 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./security-profile-permissions-tab.component.scss'],
   imports: [ReactiveFormsModule, SecurityProfileEditPermissionComponent, TranslatePipe],
 })
-export class SecurityProfilePermissionsTabComponent {
+export class SecurityProfilePermissionsTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly SecurityProfileService = inject(SecurityProfileService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   form: FormGroup;
 
   submited = signal(false);
 
   ruleFilter = new FormControl();
-
-  private _SecurityProfile: SecurityProfile;
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
@@ -75,32 +73,12 @@ export class SecurityProfilePermissionsTabComponent {
   ];
 
   previousValue = (): SecurityProfile => {
-    return this._SecurityProfile;
+    return this.SecurityProfile();
   };
 
-  @Input()
-  set SecurityProfile(SecurityProfile: SecurityProfile) {
-    if (!SecurityProfile.permissions) {
-      SecurityProfile.permissions = [];
-    }
+  readonly SecurityProfile = model<SecurityProfile>(undefined);
 
-    this._SecurityProfile = SecurityProfile;
-    this.resetForm(this.SecurityProfile);
-  }
-
-  get SecurityProfile(): SecurityProfile {
-    return this._SecurityProfile;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -113,6 +91,21 @@ export class SecurityProfilePermissionsTabComponent {
         this.form.controls['ruleCategoryToFilter'].setValue(new Array<string>());
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['SecurityProfile']) {
+      this.setSecurityProfile(this.SecurityProfile());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
   }
 
   unchanged(): boolean {
@@ -162,15 +155,24 @@ export class SecurityProfilePermissionsTabComponent {
     }
     this.prepareSubmit().subscribe(
       () => {
-        this.SecurityProfileService.get(this.SecurityProfile.identifier).subscribe((response) => {
+        this.SecurityProfileService.get(this.SecurityProfile().identifier).subscribe((response) => {
           this.submited.set(false);
-          this.SecurityProfile = response;
+          this.setSecurityProfile(response);
         });
       },
       () => {
         this.submited.set(false);
       },
     );
+  }
+
+  setSecurityProfile(SecurityProfile: SecurityProfile) {
+    if (!SecurityProfile.permissions) {
+      SecurityProfile.permissions = [];
+    }
+
+    this.SecurityProfile.set(SecurityProfile);
+    this.resetForm(this.SecurityProfile());
   }
 
   resetForm(SecurityProfile: SecurityProfile) {

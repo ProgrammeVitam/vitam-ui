@@ -70,11 +70,11 @@ describe('IngestEventDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestEventDetailComponent);
     component = fixture.componentInstance;
-    component.ingest = {
+    fixture.componentRef.setInput('ingest', {
       id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
       agIdExt: {},
       events: [{}],
-    };
+    });
     component.events = [
       new Event({ eventData: '{"some": "data1"}' }, []),
       new Event({ eventData: '{"some": "data2"}' }, [new Event({ eventData: '{"some": "data2"}' }, [])]),

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, DestroyRef, inject, Input, OnInit, output, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, output, signal, input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
@@ -66,7 +66,7 @@ const ACTION_TYPE_KEY = 'PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.';
   styleUrls: ['./preservation-scenario-list.component.scss'],
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
-export class PreservationScenarioListComponent implements OnInit {
+export class PreservationScenarioListComponent implements OnChanges, OnInit {
   private readonly translateService = inject(TranslateService);
   readonly preservationScenariosService = inject(PreservationScenariosService);
   readonly griffinsService = inject(GriffinsService);
@@ -92,14 +92,18 @@ export class PreservationScenarioListComponent implements OnInit {
 
   private readonly searchChange = new Subject<string>();
 
-  @Input()
-  set searchText(value: string) {
-    this._searchText = value ?? '';
-    this.searchChange.next(this._searchText);
-  }
+  readonly searchText = input<string>(undefined);
 
   constructor() {
     this.searchChange.pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), takeUntilDestroyed()).subscribe(() => this.applyFilterAndSort());
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const value = this.searchText();
+      this._searchText = value ?? '';
+      this.searchChange.next(this._searchText);
+    }
   }
 
   ngOnInit() {

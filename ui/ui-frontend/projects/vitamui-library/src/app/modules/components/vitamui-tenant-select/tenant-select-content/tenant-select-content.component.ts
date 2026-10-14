@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MenuOption } from '../../../models/menu-option.interface';
 
@@ -48,9 +48,9 @@ export class TenantSelectContentComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  @Input() tenants: MenuOption[];
+  readonly tenants = input<MenuOption[]>(undefined);
 
-  @Output() tenantSelected: EventEmitter<number> = new EventEmitter<number>();
+  readonly tenantSelected = output<number>();
 
   selectTenantIdentifier(tenantIdentifier: number) {
     this.router.navigate(['./' + tenantIdentifier], { relativeTo: this.route });

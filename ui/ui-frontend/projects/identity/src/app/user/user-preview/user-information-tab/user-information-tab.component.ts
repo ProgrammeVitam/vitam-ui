@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -110,11 +110,11 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   private readonly startupService = inject(StartupService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() user: User;
-  @Input() userInfo: UserInfo;
-  @Input() customer: Customer;
-  @Input() readOnly: boolean;
-  @Input() adminUserProfile: AdminUserProfile;
+  readonly user = input<User>(undefined);
+  readonly userInfo = input<UserInfo>(undefined);
+  readonly customer = input<Customer>(undefined);
+  readonly readOnly = input<boolean>(undefined);
+  readonly adminUserProfile = input<AdminUserProfile>(undefined);
 
   public maxStreetLength: number;
   public form: FormGroup;
@@ -202,7 +202,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         map((formData) => {
           // centerCodes is used for auto-provisioning (Xelians) and should be an array
           const centerCodes = formData['centerCodes']?.split(',')?.map((v: string) => v.trim());
-          return { ...formData, id: this.user.id, centerCodes };
+          return { ...formData, id: this.user().id, centerCodes };
         }),
         switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null)))),
       )
@@ -218,8 +218,8 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.userInfoForm.getRawValue(), this.previousUserInfoValue)),
         filter((formData) => !isEmpty(formData)),
-        map((formData) => extend({ id: this.userInfo.id }, formData)),
-        switchMap((formData) => this.userInfoService.patch(formData, this.user).pipe(catchError(() => of(null)))),
+        map((formData) => extend({ id: this.userInfo().id }, formData)),
+        switchMap((formData) => this.userInfoService.patch(formData, this.user()).pipe(catchError(() => of(null)))),
       )
       .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(userInfo));
 
@@ -243,7 +243,9 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   }
 
   private canModifyOtp() {
-    return this.adminUserProfile || !this.adminUserProfile.multifactorAllowed || (this.customer && this.customer.otp !== OtpState.OPTIONAL);
+    const adminUserProfile = this.adminUserProfile();
+    const customer = this.customer();
+    return adminUserProfile || !adminUserProfile.multifactorAllowed || (customer && customer.otp !== OtpState.OPTIONAL);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -253,12 +255,14 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
       changes.hasOwnProperty('customer') ||
       changes.hasOwnProperty('adminUserProfile')
     ) {
-      if (this.user && this.customer && this.adminUserProfile) {
-        this.resetForm(this.user);
+      const user = this.user();
+      if (user && this.customer() && this.adminUserProfile()) {
+        this.resetForm(user);
       }
     }
-    if (changes.hasOwnProperty('userInfo') && this.userInfo) {
-      this.resetUserInfoForm(this.userInfo);
+    const userInfo = this.userInfo();
+    if (changes.hasOwnProperty('userInfo') && userInfo) {
+      this.resetUserInfoForm(userInfo);
     }
   }
 
@@ -293,8 +297,9 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   private initFormActivationState(form: FormGroup) {
     // get customer email domains
     this.customerEmailDomains = [];
-    this.customer.emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
-    if (this.readOnly || !this.adminUserProfile.standardAttrsAllowed) {
+    this.customer().emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
+    const adminUserProfile = this.adminUserProfile();
+    if (this.readOnly() || !adminUserProfile.standardAttrsAllowed) {
       form.disable({ emitEvent: false });
 
       return;
@@ -304,7 +309,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
 
     form.get('identifier').disable({ emitEvent: false });
     form.get('level').disable({ emitEvent: false });
-    if (!this.adminUserProfile.genericAllowed) {
+    if (!adminUserProfile.genericAllowed) {
       form.get('type').disable({ emitEvent: false });
     }
 

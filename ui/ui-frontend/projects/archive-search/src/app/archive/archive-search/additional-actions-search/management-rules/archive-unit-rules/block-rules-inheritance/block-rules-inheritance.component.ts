@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -68,13 +68,11 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly ruleService = inject(RuleService);
 
-  @Input()
-  ruleCategory: string;
-  @Output() delete = new EventEmitter<any>();
-  @Output() confirmStep = new EventEmitter<any>();
-  @Output() cancelStep = new EventEmitter<any>();
-  @Input()
-  rulesList: Observable<Rule[]>;
+  readonly ruleCategory = input<string>(undefined);
+  readonly delete = output<any>();
+  readonly confirmStep = output<void>();
+  readonly cancelStep = output<void>();
+  readonly rulesList = input<Observable<Rule[]>>(undefined);
 
   ruleOptions = signal<VitamuiSelectOptions>(null);
 
@@ -97,8 +95,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
     rule: string;
   };
 
-  @ViewChild('confirmDeleteBlockBlocRuleDialog', { static: true })
-  confirmDeleteBlockBlocRuleDialog: TemplateRef<BlockRulesInheritanceComponent>;
+  readonly confirmDeleteBlockBlocRuleDialog = viewChild<TemplateRef<BlockRulesInheritanceComponent>>('confirmDeleteBlockBlocRuleDialog');
 
   constructor() {
     this.previousRuleDetails = {
@@ -125,7 +122,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
+    this.ruleService.getRuleOptionsList(this.rulesList(), this.ruleCategory()).subscribe((options) => this.ruleOptions.set(options));
   }
 
   ngOnDestroy() {
@@ -146,6 +143,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
     if (formData) {
       if (formData.rule) {
         this.disabledControl.set(false);
+        // TODO: The 'emit' function requires a mandatory any argument
         this.cancelStep.emit();
         return true;
       }
@@ -154,7 +152,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   onDelete() {
-    const dialogToOpen = this.confirmDeleteBlockBlocRuleDialog;
+    const dialogToOpen = this.confirmDeleteBlockBlocRuleDialog();
     const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlocRuleSuscription = dialogRef
@@ -180,11 +178,11 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
       ).ruleCategoryAction;
 
       if (rule.rule !== this.lastRuleId) {
@@ -194,18 +192,18 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
         }
         this.ruleTypeDUA.preventRulesIdToAdd.push(rule.rule);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         this.ruleTypeDUA = { rules: [], preventRulesIdToAdd: [rule.rule] };
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.ADD_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
       this.ruleTypeDUA = { rules: [], preventRulesIdToAdd: [rule.rule] };
       const managementRule: ManagementRules = {
-        category: this.ruleCategory,
+        category: this.ruleCategory(),
         ruleCategoryAction: this.ruleTypeDUA,
         actionType: RuleActionsEnum.ADD_RULES,
       };
@@ -213,6 +211,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
     }
 
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
+    // TODO: The 'emit' function requires a mandatory any argument
     this.confirmStep.emit();
     this.lastRuleId = this.ruleDetailsForm.get('rule').value;
   }

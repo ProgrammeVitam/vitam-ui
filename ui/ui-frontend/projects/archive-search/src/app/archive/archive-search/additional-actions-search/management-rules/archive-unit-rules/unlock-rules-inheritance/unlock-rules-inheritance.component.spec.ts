@@ -204,7 +204,7 @@ describe('UnlockRulesInheritanceComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UnlockRulesInheritanceComponent);
     component = fixture.componentInstance;
-    component.rulesList = new Observable<Rule[]>();
+    fixture.componentRef.setInput('rulesList', new Observable<Rule[]>());
     fixture.detectChanges();
   });
 

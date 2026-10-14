@@ -26,7 +26,7 @@
 -->
 
 <div class="pastis-breadcrumb">
-  @for (d of data; track d; let last = $last) {
+  @for (d of data(); track d; let last = $last) {
     <span (click)="onClick(d, !last)">{{ getLabel(d) | translate }}</span>
     @if (!last) {
       <i class="material-icons px-2">trending_flat</i>

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, input, output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import {
@@ -75,8 +75,8 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   projectsService: ProjectsService;
   private readonly router = inject(Router);
 
-  @Input() tenantIdentifier: string;
-  @Output() previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
+  readonly tenantIdentifier = input<string>(undefined);
+  readonly previewProjectDetailsPanel = output<any>();
   selectedProjectId$: Subject<string>;
   projectUpdated: Subscription;
   getProjectIcon = getProjectIcon;
@@ -138,7 +138,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
   }
 
   searchArchiveUnitsByProject(project: Project) {
-    this.router.navigate(['collect/tenant/' + this.tenantIdentifier + '/units', project.id]);
+    this.router.navigate(['collect/tenant/' + this.tenantIdentifier() + '/units', project.id]);
   }
 
   searchTransactions(project: Project) {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Option, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
@@ -46,7 +46,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './schema-information-tab.component.scss',
   imports: [FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
-export class SchemaInformationTabComponent {
+export class SchemaInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   schemaService = inject(SchemaService);
 
@@ -90,21 +90,7 @@ export class SchemaInformationTabComponent {
     { key: 'MANY_REQUIRED', label: 'MANY_REQUIRED', info: '' },
   ];
 
-  private _inputSchema: SchemaElement;
-
-  @Input()
-  set inputSchema(schema: SchemaElement) {
-    if (!schema || !this.form) return;
-
-    this._inputSchema = schema;
-    this.form.patchValue(schema);
-    this.isExternal = schema?.Origin === 'EXTERNAL';
-    this.stringSizeVisible = ['TEXT', 'KEYWORD'].includes(schema?.Type);
-    this.showCustomSearchTypes = !['OBJECT'].includes(schema?.Type) && schema?.CustomSearchTypes?.length > 0;
-  }
-  get inputSchema(): SchemaElement {
-    return this._inputSchema;
-  }
+  readonly inputSchema = input<SchemaElement>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -127,5 +113,17 @@ export class SchemaInformationTabComponent {
       CreationDate: [{ value: null, disabled: true }],
       LastUpdate: [{ value: null, disabled: true }],
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['inputSchema']) {
+      const schema = this.inputSchema();
+      if (!schema || !this.form) return;
+
+      this.form.patchValue(schema);
+      this.isExternal = schema?.Origin === 'EXTERNAL';
+      this.stringSizeVisible = ['TEXT', 'KEYWORD'].includes(schema?.Type);
+      this.showCustomSearchTypes = !['OBJECT'].includes(schema?.Type) && schema?.CustomSearchTypes?.length > 0;
+    }
   }
 }

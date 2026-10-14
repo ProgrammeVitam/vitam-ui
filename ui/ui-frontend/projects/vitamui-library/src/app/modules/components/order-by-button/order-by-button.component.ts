@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, model, output } from '@angular/core';
 
 import { Direction } from '../../vitamui-table/direction.enum';
 
@@ -45,23 +45,19 @@ import { Direction } from '../../vitamui-table/direction.enum';
   imports: [],
 })
 export class OrderByButtonComponent {
-  @Input() orderByKey: string;
-  @Input() orderBy: string;
-  @Input() direction: Direction;
+  readonly orderByKey = input<string>(undefined);
+  readonly orderBy = model<string>(undefined);
+  readonly direction = model<Direction>(undefined);
 
-  @Output() readonly orderChange = new EventEmitter<string>();
-  @Output() readonly orderByChange = new EventEmitter<string>();
-  @Output() readonly directionChange = new EventEmitter<Direction>();
+  readonly orderChange = output<string>();
 
   toggleOrder() {
-    if (this.orderBy === this.orderByKey) {
-      this.direction = this.direction !== Direction.DESCENDANT ? Direction.DESCENDANT : Direction.ASCENDANT;
+    if (this.orderBy() === this.orderByKey()) {
+      this.direction.set(this.direction() !== Direction.DESCENDANT ? Direction.DESCENDANT : Direction.ASCENDANT);
     } else {
-      this.orderBy = this.orderByKey;
-      this.orderByChange.emit(this.orderBy);
-      this.direction = Direction.ASCENDANT;
+      this.orderBy.set(this.orderByKey());
+      this.direction.set(Direction.ASCENDANT);
     }
-    this.directionChange.emit(this.direction);
-    this.orderChange.emit();
+    this.orderChange.emit(undefined);
   }
 }

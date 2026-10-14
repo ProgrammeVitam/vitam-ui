@@ -60,7 +60,7 @@ describe('ContextPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPreviewComponent);
     component = fixture.componentInstance;
-    component.context = {
+    fixture.componentRef.setInput('context', {
       id: 'aegqaaaaaahbzl4naaovqamcuzgxyjyaaaaq',
       name: 'admin-context',
       identifier: 'CT-000001',
@@ -72,7 +72,7 @@ describe('ContextPreviewComponent', () => {
       permissions: [],
       activationDate: 'activationDate',
       deactivationDate: 'deactivationDate',
-    } satisfies Context;
+    } satisfies Context);
     fixture.detectChanges();
   });
 

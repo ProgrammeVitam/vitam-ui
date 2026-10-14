@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { merge, Subject, Subscription, timer } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import {
@@ -107,25 +107,19 @@ export class AuditFilters {
     InfiniteScrollDirective,
   ],
 })
-export class AuditListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+export class AuditListComponent extends InfiniteScrollTable<any> implements OnChanges, OnDestroy, OnInit {
   auditService: AuditService;
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search') set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private _searchText: string;
 
-  @Input() set filters(filters: AuditFilters) {
-    this._filters = filters;
-    this.filterChange.next(filters);
-  }
+  readonly filters = input<AuditFilters>(undefined);
 
   private _filters: AuditFilters;
 
-  @Output() auditClick = new EventEmitter<any>();
+  readonly auditClick = output<any>();
 
   public loaded = false;
   public orderBy = 'evDateTime';
@@ -143,6 +137,19 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
     super(auditService);
 
     this.auditService = auditService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
+    if (changes['filters']) {
+      const filters = this.filters();
+      this._filters = filters;
+      this.filterChange.next(filters);
+    }
   }
 
   ngOnInit() {
@@ -308,6 +315,6 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
       }
     });
     this.dataSource.set(list);
-    changedItems.forEach((item) => this.auditClick.next(item));
+    changedItems.forEach((item) => this.auditClick.emit(item));
   }
 }

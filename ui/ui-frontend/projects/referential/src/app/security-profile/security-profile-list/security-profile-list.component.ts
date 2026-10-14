@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  output,
+  viewChild,
+  input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -60,22 +72,18 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./security-profile-list.component.scss'],
   imports: [OrderByButtonComponent, MatProgressSpinner, TranslatePipe, CommonModule, InfiniteScrollDirective],
 })
-export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
+export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnChanges, OnDestroy, OnInit {
   securityProfileService: SecurityProfileService;
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private _searchText: string;
 
-  @Output() contextClick = new EventEmitter<SecurityProfile>();
+  readonly contextClick = output<SecurityProfile>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<SecurityProfileListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  readonly filterTemplate = viewChild<TemplateRef<SecurityProfileListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
 
   loaded = false;
   filterMap: { [key: string]: any[] } = {
@@ -90,16 +98,7 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
 
-  @Input()
-  get connectedUserInfo(): AdminUserProfile {
-    return this._connectedUserInfo;
-  }
-
-  set connectedUserInfo(userInfo: AdminUserProfile) {
-    this._connectedUserInfo = userInfo;
-  }
-
-  private _connectedUserInfo: AdminUserProfile;
+  readonly connectedUserInfo = input<AdminUserProfile>(undefined);
 
   constructor() {
     const securityProfileService = inject(SecurityProfileService);
@@ -107,6 +106,14 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     super(securityProfileService);
 
     this.securityProfileService = securityProfileService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {

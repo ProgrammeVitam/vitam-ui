@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, TemplateRef, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, throwError } from 'rxjs';
@@ -90,8 +90,9 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
 
   subscriptions: Subscription;
 
-  @ViewChild('confirmDeleteUpdateUnitsMetadataDialog', { static: true })
-  confirmDeleteUpdateUnitsMetadataDialog: TemplateRef<UpdateUnitsMetadataComponent>;
+  readonly confirmDeleteUpdateUnitsMetadataDialog = viewChild<TemplateRef<UpdateUnitsMetadataComponent>>(
+    'confirmDeleteUpdateUnitsMetadataDialog',
+  );
 
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
@@ -127,7 +128,7 @@ export class UpdateUnitsMetadataComponent implements OnDestroy {
   }
 
   onCancel() {
-    const dialogToOpen = this.confirmDeleteUpdateUnitsMetadataDialog;
+    const dialogToOpen = this.confirmDeleteUpdateUnitsMetadataDialog();
     this.dialogRefToClose = this.dialog.open(dialogToOpen);
   }
 

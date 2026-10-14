@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, output, input } from '@angular/core';
 import { first } from 'rxjs/operators';
 import {
   IngestStatus,
@@ -84,9 +84,9 @@ export class IngestPreviewComponent implements OnInit, OnChanges {
 
   ingest: LogbookOperation;
 
-  @Input() ingestFromParent: LogbookOperation;
-  @Output() previewClose = new EventEmitter();
-  @Output() ingestHasChanged = new EventEmitter<LogbookOperation>();
+  readonly ingestFromParent = input<LogbookOperation>(undefined);
+  readonly previewClose = output();
+  readonly ingestHasChanged = output<LogbookOperation>();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['ingestFromParent']) {
@@ -101,18 +101,17 @@ export class IngestPreviewComponent implements OnInit, OnChanges {
   }
 
   setLogbookOperationIfIfHasBeenReloaded(logbookOperations: LogbookOperation[]) {
-    const logbookOperationUpdated = logbookOperations.find((e) => e.id === this.ingestFromParent.id);
-    if (logbookOperationUpdated) {
+    if (logbookOperations.some((e) => e.id === this.ingestFromParent().id)) {
       this.reloadLogbookOperation();
     }
   }
 
   reloadLogbookOperation() {
     this.ingestService
-      .getIngestOperation(this.ingestFromParent.id)
+      .getIngestOperation(this.ingestFromParent().id)
       .pipe(first())
       .subscribe((receivedLogbookOperation) => {
-        if (this.ingestFromParent.id === receivedLogbookOperation.id) {
+        if (this.ingestFromParent().id === receivedLogbookOperation.id) {
           this.updateIngest(receivedLogbookOperation);
         }
       });

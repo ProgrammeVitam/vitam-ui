@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -65,7 +65,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     TranslatePipe,
   ],
 })
-export class AccessContractWriteAccessTabComponent implements OnInit {
+export class AccessContractWriteAccessTabComponent implements OnChanges, OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly accessContractService = inject(AccessContractService);
 
@@ -77,28 +77,17 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
     { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
-  @Input() set accessContract(accessContract: AccessContract) {
-    accessContract.dataObjectVersion = accessContract.dataObjectVersion || [];
-    this._accessContract = accessContract;
-
-    this.resetForm(this.accessContract);
-  }
-
-  get accessContract(): AccessContract {
-    return this._accessContract;
-  }
+  readonly accessContract = model<AccessContract>(undefined);
 
   public form: FormGroup;
   public submitted = signal(false);
 
-  private _accessContract: AccessContract;
-
   previousValue = (): any => {
     return {
-      writingPermission: this._accessContract.writingPermission,
-      writingRestrictedDesc: this._accessContract.writingRestrictedDesc,
-      everyDataObjectVersion: this._accessContract.everyDataObjectVersion,
-      dataObjectVersion: this._accessContract.dataObjectVersion.sort(),
+      writingPermission: this.accessContract().writingPermission,
+      writingRestrictedDesc: this.accessContract().writingRestrictedDesc,
+      everyDataObjectVersion: this.accessContract().everyDataObjectVersion,
+      dataObjectVersion: this.accessContract().dataObjectVersion.sort(),
     };
   };
 
@@ -110,6 +99,12 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
       everyDataObjectVersion: [true],
       dataObjectVersion: [[]],
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['accessContract']) {
+      this.setAccessContract(this.accessContract());
+    }
   }
 
   ngOnInit() {
@@ -145,9 +140,9 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
 
     this.prepareSubmit().subscribe(
       () => {
-        this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
+        this.accessContractService.get(this.accessContract().identifier).subscribe((response) => {
           this.submitted.set(false);
-          this.accessContract = response;
+          this.setAccessContract(response);
         });
       },
       () => {
@@ -170,11 +165,18 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   prepareSubmit(): Observable<AccessContract> {
     return of(diff(this.formDataValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this._accessContract.id, identifier: this._accessContract.identifier }, formData)),
+      map((formData) => extend({ id: this.accessContract().id, identifier: this.accessContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.accessContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
     );
+  }
+
+  private setAccessContract(accessContract: AccessContract) {
+    accessContract.dataObjectVersion = accessContract.dataObjectVersion || [];
+    this.accessContract.set(accessContract);
+
+    this.resetForm(this.accessContract());
   }
 
   resetForm(accessContract: AccessContract): void {

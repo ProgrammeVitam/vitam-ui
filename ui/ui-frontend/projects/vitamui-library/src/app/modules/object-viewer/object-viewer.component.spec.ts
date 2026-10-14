@@ -120,8 +120,8 @@ describe('ObjectViewerComponent', () => {
   });
 
   it('should create with any', () => {
-    component.data = data;
-    component.template = customTemplate;
+    fixture.componentRef.setInput('data', data);
+    fixture.componentRef.setInput('template', customTemplate);
 
     component.ngOnChanges({
       data: new SimpleChange(null, data, true),
@@ -130,8 +130,8 @@ describe('ObjectViewerComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.data).toBeTruthy();
-    expect(component.template).toBeTruthy();
+    expect(component.data()).toBeTruthy();
+    expect(component.template()).toBeTruthy();
   });
 });
 

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
@@ -52,7 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./sso-tab.component.scss'],
   imports: [TooltipDirective, IdentityProviderDetailsComponent, TranslatePipe],
 })
-export class SsoTabComponent implements OnDestroy, OnInit {
+export class SsoTabComponent implements OnChanges, OnDestroy, OnInit {
   dialog = inject(MatDialog);
   private readonly identityProviderService = inject(IdentityProviderService);
   private readonly providerApi = inject(ProviderApiService);
@@ -64,26 +64,24 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   selectedIdentityProvider: IdentityProvider;
   readonly domains = signal<Array<{ value: string; disabled: boolean }>>([]);
 
-  @Input()
-  set customer(customer: Customer) {
-    this._customer = customer;
-    this.selectedIdentityProvider = null;
-    if (!this._customer) {
-      return;
-    }
-    this.identityProviderService.getAll(this.customer.id).subscribe((providers: IdentityProvider[]) => {
-      this.providers.set(providers);
-    });
-    this.refreshAvailableDomains();
-  }
-  get customer(): Customer {
-    return this._customer;
-  }
-  private _customer: Customer;
+  readonly customer = input<Customer>();
 
-  @Input() readOnly: boolean;
+  readonly readOnly = input<boolean>(undefined);
 
   private updatedProviderSub: Subscription;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['customer']) {
+      this.selectedIdentityProvider = null;
+      if (!this.customer()) {
+        return;
+      }
+      this.identityProviderService.getAll(this.customer().id).subscribe((providers: IdentityProvider[]) => {
+        this.providers.set(providers);
+      });
+      this.refreshAvailableDomains();
+    }
+  }
 
   ngOnInit() {
     this.updatedProviderSub = this.identityProviderService.updated.subscribe((updatedProvider: IdentityProvider) => {
@@ -101,7 +99,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   openCreateIDPDialog() {
     const dialogRef = this.dialog.open(IdentityProviderCreateComponent, {
       data: {
-        customer: this.customer,
+        customer: this.customer(),
         domains: this.domains(),
       },
       disableClose: true,
@@ -138,9 +136,9 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   }
 
   private refreshAvailableDomains() {
-    this.identityProviderService.getDomainByCustomerId(this.customer.id).subscribe((domains) => {
+    this.identityProviderService.getDomainByCustomerId(this.customer().id).subscribe((domains) => {
       this.domains.set(
-        this.customer.emailDomains.map((domain) => {
+        this.customer().emailDomains.map((domain) => {
           return { value: domain, disabled: domains.includes(domain) };
         }),
       );

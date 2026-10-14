@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, TemplateRef, viewChild, input } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Subscription } from 'rxjs';
@@ -53,13 +53,13 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly dialog = inject(MatDialog);
 
-  @Input()
-  ruleCategory: string;
+  readonly ruleCategory = input<string>(undefined);
   ruleActions: ActionsRules[];
   showText: boolean;
   showConfirmDeleteBlockCategoryInheritanceSuscription: Subscription;
-  @ViewChild('confirmDeleteBlockCategoryInheritance', { static: true })
-  confirmDeleteBlockCategoryInheritance: TemplateRef<BlockCategoryInheritanceComponent>;
+  readonly confirmDeleteBlockCategoryInheritance = viewChild<TemplateRef<BlockCategoryInheritanceComponent>>(
+    'confirmDeleteBlockCategoryInheritance',
+  );
   ruleActionsSubscription: Subscription;
   managementRulesSubscription: Subscription;
   managementRules: ManagementRules[] = [];
@@ -72,7 +72,7 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
     this.showConfirmDeleteBlockCategoryInheritanceSuscription?.unsubscribe();
   }
   onCancelBlockCategoryInheritance() {
-    const dialogToOpen = this.confirmDeleteBlockCategoryInheritance;
+    const dialogToOpen = this.confirmDeleteBlockCategoryInheritance();
     const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlockCategoryInheritanceSuscription = dialogRef
@@ -81,14 +81,14 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
           this.ruleActions = data.filter(
-            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE),
+            (action) => !(action.ruleType === this.ruleCategory() && action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE),
+            (rule) => !(rule.category === this.ruleCategory() && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE),
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
@@ -101,7 +101,7 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
     });
     this.ruleTypeDUA = { preventInheritance: true, rules: [] };
     const managementRule: ManagementRules = {
-      category: this.ruleCategory,
+      category: this.ruleCategory(),
       ruleCategoryAction: this.ruleTypeDUA,
       actionType: RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE,
     };
@@ -112,7 +112,7 @@ export class BlockCategoryInheritanceComponent implements OnDestroy {
     });
 
     this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory,
+      (action) => action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory(),
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);

@@ -178,7 +178,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
       '#approximate_creation_date': '2022-09-30T13:01:56.381',
       '#approximate_update_date': '2022-09-30T13:01:56.381',
     };
-    component.archiveUnit = archiveUnit;
+    fixture.componentRef.setInput('archiveUnit', archiveUnit);
     fixture.detectChanges();
   });
 
@@ -222,7 +222,7 @@ describe('ArchiveUnitInformationTabComponent', () => {
 
     vi.spyOn(archiveServiceMock, 'downloadObjectFromUnit');
     (accessContractServiceMock as any).currentAccessContract$ = of(accessContractEveryObject);
-    component.archiveUnit = archiveUnit;
+    fixture.componentRef.setInput('archiveUnit', archiveUnit);
     component.ngOnChanges({
       archiveUnit: new SimpleChange(null, archiveUnit, true),
     });

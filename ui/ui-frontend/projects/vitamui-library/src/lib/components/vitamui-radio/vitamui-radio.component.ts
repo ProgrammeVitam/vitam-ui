@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input, model } from '@angular/core';
 
 import { VitamUIRadioGroupService } from '../vitamui-radio-group/vitamui-radio-group.service';
 import { NgClass } from '@angular/common';
@@ -49,17 +49,14 @@ import { NgClass } from '@angular/common';
 export class VitamUIRadioComponent implements OnInit {
   private readonly radioGroupService = inject(VitamUIRadioGroupService);
 
-  @Input()
-  value: string;
+  readonly value = input<string>(undefined);
 
-  @Input()
-  label: string;
+  readonly label = input<string>(undefined);
 
-  @Input()
-  checked: boolean;
+  readonly checked = model<boolean>(undefined);
 
   ngOnInit() {
-    this.checked = this.checked !== undefined;
+    this.checked.set(this.checked() !== undefined);
   }
 
   changed() {

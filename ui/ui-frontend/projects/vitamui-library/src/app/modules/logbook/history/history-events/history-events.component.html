@@ -1,4 +1,4 @@
-@for (event of events; track event) {
+@for (event of events(); track event) {
   <div
     class="history-event-item"
     [class.event-error]="event.outcome === 'KO' || event.outcome === 'FATAL'"

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, DestroyRef, inject, Input, OnInit, output, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, output, signal, input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
@@ -66,7 +66,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./griffin-list.component.scss'],
   imports: [CommonModule, TranslatePipe, VitamUICommonModule, MatProgressSpinnerModule],
 })
-export class GriffinListComponent implements OnInit {
+export class GriffinListComponent implements OnChanges, OnInit {
   readonly griffinsService = inject(GriffinsService);
   readonly preservationScenariosService = inject(PreservationScenariosService);
   private readonly destroyRef = inject(DestroyRef);
@@ -96,14 +96,18 @@ export class GriffinListComponent implements OnInit {
 
   private readonly searchChange = new Subject<string>();
 
-  @Input()
-  set searchText(value: string) {
-    this._searchText = value ?? '';
-    this.searchChange.next(this._searchText);
-  }
+  readonly searchText = input<string>(undefined);
 
   constructor() {
     this.searchChange.pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS), takeUntilDestroyed()).subscribe(() => this.applyFilterAndSort());
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const value = this.searchText();
+      this._searchText = value ?? '';
+      this.searchChange.next(this._searchText);
+    }
   }
 
   ngOnInit() {

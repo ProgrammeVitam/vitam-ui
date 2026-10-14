@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -92,17 +92,13 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   private readonly ruleService = inject(RuleService);
   private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
-  @Output() delete = new EventEmitter<any>();
-  @Output() confirmStep = new EventEmitter<any>();
-  @Output() cancelStep = new EventEmitter<any>();
-  @Input()
-  selectedItem: number;
-  @Input()
-  ruleCategory: string;
-  @Input()
-  hasExactCount: boolean;
-  @Input()
-  rulesList: Observable<Rule[]>;
+  readonly delete = output<any>();
+  readonly confirmStep = output<void>();
+  readonly cancelStep = output<void>();
+  readonly selectedItem = input<number>(undefined);
+  readonly ruleCategory = input<string>(undefined);
+  readonly hasExactCount = input<boolean>(undefined);
+  readonly rulesList = input<Observable<Rule[]>>(undefined);
 
   ruleOptions = signal<VitamuiSelectOptions>(null);
 
@@ -130,8 +126,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   managementRulesSubscription: Subscription;
   searchArchiveUnitsByCriteriaSubscription: Subscription;
 
-  @ViewChild('confirmDeleteUnlockBlocRuleDialog', { static: true })
-  confirmDeleteUnlockBlocRuleDialog: TemplateRef<UnlockRulesInheritanceComponent>;
+  readonly confirmDeleteUnlockBlocRuleDialog = viewChild<TemplateRef<UnlockRulesInheritanceComponent>>('confirmDeleteUnlockBlocRuleDialog');
 
   constructor() {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
@@ -173,11 +168,11 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       ) !== -1
     ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
+        (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
       ).ruleCategoryAction;
 
       if (rule.rule !== this.lastRuleId) {
@@ -187,18 +182,18 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
         }
         this.ruleTypeDUA.preventRulesIdToRemove.push(rule.rule);
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       } else {
         this.ruleTypeDUA = { rules: [], preventRulesIdToRemove: [rule.rule] };
         this.managementRules.find(
-          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
+          (managementRule) => managementRule.category === this.ruleCategory() && managementRule.actionType === RuleActionsEnum.DELETE_RULES,
         ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
       this.ruleTypeDUA = { rules: [], preventRulesIdToRemove: [rule.rule] };
       const managementRule: ManagementRules = {
-        category: this.ruleCategory,
+        category: this.ruleCategory(),
         ruleCategoryAction: this.ruleTypeDUA,
         actionType: RuleActionsEnum.DELETE_RULES,
       };
@@ -207,12 +202,13 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
 
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.addRuleToQuery();
+    // TODO: The 'emit' function requires a mandatory any argument
     this.confirmStep.emit();
     this.lastRuleId = this.ruleDetailsForm.get('rule').value;
   }
 
   onDeleteBloc() {
-    const dialogToOpen = this.confirmDeleteUnlockBlocRuleDialog;
+    const dialogToOpen = this.confirmDeleteUnlockBlocRuleDialog();
     const dialogRef = this.dialog.open(dialogToOpen);
 
     this.showConfirmDeleteBlocRuleSuscription = dialogRef
@@ -224,7 +220,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
+    this.ruleService.getRuleOptionsList(this.rulesList(), this.ruleCategory()).subscribe((options) => this.ruleOptions.set(options));
   }
 
   ngOnDestroy(): void {
@@ -246,7 +242,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -256,7 +252,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     const criteriaWithRuleIdToCheck: SearchCriteriaEltDto = {
       criteria: APPRAISAL_PREVENT_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.IN,
       dataType: CriteriaDataType.STRING,
     };
@@ -264,7 +260,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     const onlyUAWithNoInheritance: SearchCriteriaEltDto = {
       criteria: APPRAISAL_RULE_INHERITED_CRITERIA,
       values: [{ id: 'false', value: 'false' }],
-      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
@@ -273,12 +269,12 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyUAWithNoInheritance);
 
-    if (this.hasExactCount) {
+    if (this.hasExactCount()) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
           this.itemsWithSameRule.set(resultsNumber.toString());
-          this.itemsToNotUpdate.set((this.selectedItem - resultsNumber).toString());
+          this.itemsToNotUpdate.set((this.selectedItem() - resultsNumber).toString());
           this.isLoading.set(false);
         });
     } else {
@@ -286,12 +282,12 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
           this.itemsWithSameRule.set(data.totalResults.toString());
+          const selectedItem = this.selectedItem();
           this.itemsToNotUpdate.set(
-            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+            data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold ||
+              selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
-                ? this.resultNumberToShow
-                : (this.selectedItem - data.totalResults).toString(),
+              : (selectedItem - data.totalResults).toString(),
           );
 
           this.isLoading.set(false);
@@ -311,6 +307,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     if (formData) {
       if (formData.rule) {
         this.disabledControl.set(false);
+        // TODO: The 'emit' function requires a mandatory any argument
         this.cancelStep.emit();
         return true;
       }
