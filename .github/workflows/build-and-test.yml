@@ -140,6 +140,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-test-reports
+          path: ui/ui-frontend # The artifact root is ui/ui-frontend (common ancestor of uploaded paths), so restore it there
+      - name: Make frontend LCOV paths relative to repository root # LCOV files reference sources relatively to ui/ui-frontend, while Sonar resolves them from the repository root
+        run: sed -i 's#^SF:projects/#SF:ui/ui-frontend/projects/#' ui/ui-frontend/coverage/*/lcov.info
       - name: Download backend test reports
         uses: actions/download-artifact@v4
         with:
