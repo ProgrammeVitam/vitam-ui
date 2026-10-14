@@ -4,7 +4,7 @@ info:
     contact:
         name: Programme Vitam
         email: contact@programmevitam.fr
-    version: 10.0.0-SNAPSHOT
+    version: 10.1.0-SNAPSHOT
 servers:
     -   url: http://dev.vitamui.com:8084
         description: Generated server url
