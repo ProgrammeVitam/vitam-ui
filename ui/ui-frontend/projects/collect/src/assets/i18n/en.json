@@ -203,7 +203,8 @@
       "ADD_FILE": "Drag and drop ",
       "BROWSE": "or browse",
       "ADD_FILE_DESCRIPTION": "Max size: 1 GB",
-      "UPLOAD_SIP_ERROR": "SIP file validation error"
+      "UPLOAD_SIP_ERROR": "SIP file validation error",
+      "UPLOAD_QUOTA_EXCEEDED_ERROR": "The storage quota allocated to your tenant has been reached. Please contact your administrator."
     },
     "MODAL": {
       "TITLE": "Create an upload project",

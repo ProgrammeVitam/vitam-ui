@@ -203,7 +203,8 @@
       "ADD_FILE": "Glisser-déposer",
       "BROWSE": "ou Parcourir",
       "ADD_FILE_DESCRIPTION": "Poids maximal conseillé : 1 GB",
-      "UPLOAD_SIP_ERROR": "Erreur de validation du fichier SIP"
+      "UPLOAD_SIP_ERROR": "Erreur de validation du fichier SIP",
+      "UPLOAD_QUOTA_EXCEEDED_ERROR": "Le quota de stockage alloué à votre tenant est atteint. Veuillez contacter votre administrateur."
     },
     "MODAL": {
       "TITLE": "Créer un projet de versement",
