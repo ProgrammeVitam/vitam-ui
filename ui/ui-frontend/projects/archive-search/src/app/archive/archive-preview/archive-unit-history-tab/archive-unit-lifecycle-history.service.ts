@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, forkJoin, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, forkJoin, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import type { ApiEvent } from 'vitamui-library';
-import { VitamuiHttpHeaders } from 'vitamui-library';
+import { VitamuiHttpHeaders, addSkipErrorNotificationHeader } from 'vitamui-library';
 import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { ConsolidatedLifecycleEvent, LifecycleOrigin, OperationLifecycleGroup } from './archive-unit-lifecycle-history.model';
 
@@ -61,7 +61,21 @@ export class ArchiveUnitLifecycleHistoryService {
 
     const unitEvents$ = this.fetchLifecycleEvents(this.archiveApiService.getUnitLifecycles(unitId, headers), 'UA');
     const objectGroupEvents$ = objectGroupId
-      ? this.fetchLifecycleEvents(this.archiveApiService.getObjectGroupLifecycles(objectGroupId, headers), 'GOT')
+      ? this.fetchLifecycleEvents(
+          this.archiveApiService.getObjectGroupLifecycles(objectGroupId, addSkipErrorNotificationHeader(headers)),
+          'GOT',
+        ).pipe(
+          // FIXME: temporary workaround until Vitam fixes the object group lifecycle access check (Bug #16935).
+          // Vitam wrongly refuses access with access contracts filtering on management rules.
+          // HTTP errors are ignored here so that the unit history is still displayed.
+          catchError((error) => {
+            if (error instanceof HttpErrorResponse) {
+              console.warn(error);
+              return of([] as (ApiEvent & { origin: LifecycleOrigin })[]);
+            }
+            return throwError(() => error);
+          }),
+        )
       : of([] as (ApiEvent & { origin: LifecycleOrigin })[]);
 
     return forkJoin([unitEvents$, objectGroupEvents$]).pipe(
