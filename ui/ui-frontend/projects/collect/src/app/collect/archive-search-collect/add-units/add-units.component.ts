@@ -58,13 +58,15 @@ import { ArchiveCollectService } from '../archive-collect.service';
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
 import { FormControl, Validators } from '@angular/forms';
 import { last, tap } from 'rxjs/operators';
-import { HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType } from '@angular/common/http';
 
 export enum ImportType {
   DIRECTORIES_FILES = 'DIRECTORIES_FILES',
   COMPRESSED = 'COMPRESSED',
   SIP = 'SIP',
 }
+
+const HTTP_STATUS_INSUFFICIENT_STORAGE = 507;
 
 @Component({
   selector: 'app-add-units',
@@ -195,8 +197,15 @@ export class AddUnitsComponent implements OnInit {
         finalize(() => (this.isLoading = false)),
       )
       .subscribe({
-        error: (e) => {
-          console.error(e);
+        error: (error: HttpErrorResponse) => {
+          console.error(error);
+          this.snackBarService.open({
+            message:
+              error.status === HTTP_STATUS_INSUFFICIENT_STORAGE
+                ? 'COLLECT.UPLOAD.UPLOAD_QUOTA_EXCEEDED_ERROR'
+                : 'COLLECT.UPLOAD.UPLOAD_SIP_ERROR',
+            duration: 10_000,
+          });
         },
       });
   }

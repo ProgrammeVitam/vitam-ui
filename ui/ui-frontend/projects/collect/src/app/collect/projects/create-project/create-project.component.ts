@@ -44,7 +44,7 @@ import { ProjectsService } from '../projects.service';
 import { TransactionsService } from '../transactions.service';
 import { ArchiveCollectService } from '../../archive-search-collect/archive-collect.service';
 import { SipImportTrackingService } from '../../shared/sip-import-tracking.service';
-import { HttpEventType, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpStatusCode } from '@angular/common/http';
 import {
   ExternalReferentialService,
   fetchTitle,
@@ -86,6 +86,8 @@ export enum AttachmentMode {
 }
 
 export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
+
+const HTTP_STATUS_INSUFFICIENT_STORAGE = 507;
 
 @Component({
   selector: 'app-create-project',
@@ -598,10 +600,13 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
             this.dialogRefToClose = this.dialog.open(dialogToOpen);
           }
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           this.logger.error(error);
           this.snackBarService.open({
-            message: 'COLLECT.UPLOAD.UPLOAD_SIP_ERROR',
+            message:
+              error.status === HTTP_STATUS_INSUFFICIENT_STORAGE
+                ? 'COLLECT.UPLOAD.UPLOAD_QUOTA_EXCEEDED_ERROR'
+                : 'COLLECT.UPLOAD.UPLOAD_SIP_ERROR',
             duration: 10_000,
           });
           return throwError(error);
