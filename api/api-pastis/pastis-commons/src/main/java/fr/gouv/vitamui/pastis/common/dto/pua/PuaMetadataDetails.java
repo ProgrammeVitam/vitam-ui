@@ -52,7 +52,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PuaMetadataDetails {
 
-    private static final String PATTERN = "pattern";
+    private static final String PATTERN_KEY = "pattern";
 
     String type;
     String description;
@@ -84,8 +84,8 @@ public class PuaMetadataDetails {
                 jsonObject.remove("enum");
             }
             if (pattern != null) {
-                items.put(PATTERN, jsonObject.getString(PATTERN));
-                jsonObject.remove(PATTERN);
+                items.put(PATTERN_KEY, jsonObject.getString(PATTERN_KEY));
+                jsonObject.remove(PATTERN_KEY);
             }
             result = jsonObject.toString();
         }
