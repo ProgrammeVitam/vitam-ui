@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -42,15 +42,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './information-bloc.component.html',
   styleUrl: './information-bloc.component.scss',
   imports: [TranslatePipe],
+  host: {
+    '[class]': 'color()',
+  },
 })
 export class InformationBlocComponent {
-  @HostBinding('class')
-  @Input()
-  color: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'neutral' = 'danger';
+  readonly color = input<'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'neutral'>('danger');
   messageKey = 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.SOME_OBJECTS_CONTAINS_ERRORS';
-  @Input() icon: 'exclamation-point' | 'anomalie' | 'info' = 'exclamation-point';
-  @Input() decoration: 'default' | 'bordered' = 'default';
-  @Input() withObjectsTabLink = false;
+  readonly icon = input<'exclamation-point' | 'anomalie' | 'info'>('exclamation-point');
+  readonly decoration = input<'default' | 'bordered'>('default');
+  readonly withObjectsTabLink = input(false);
 
-  @Output() openObjectsTab = new EventEmitter();
+  readonly openObjectsTab = output();
 }

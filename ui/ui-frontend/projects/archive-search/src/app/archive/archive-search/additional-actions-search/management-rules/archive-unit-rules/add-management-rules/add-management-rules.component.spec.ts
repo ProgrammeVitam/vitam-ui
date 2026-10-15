@@ -220,7 +220,7 @@ describe('AddManagementRulesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddManagementRulesComponent);
     component = fixture.componentInstance;
-    component.rulesList = new Observable<Rule[]>();
+    fixture.componentRef.setInput('rulesList', new Observable<Rule[]>());
     fixture.detectChanges();
   });
 

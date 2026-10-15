@@ -54,7 +54,7 @@ describe('NodeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NodeComponent);
     component = fixture.componentInstance;
-    component.node = {
+    fixture.componentRef.setInput('node', {
       id: 'id',
       label: 'label',
       type: FileType.FOLDER_INGEST,
@@ -63,7 +63,7 @@ describe('NodeComponent', () => {
       vitamId: 'vitamId',
       parents: [],
       checked: true,
-    };
+    });
     fixture.detectChanges();
   });
 

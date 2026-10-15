@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject } from 'rxjs';
 import { AuthService, ExternalParamProfile, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
@@ -48,9 +48,9 @@ import { InformationTabComponent } from './information-tab/information-tab.compo
   template: '',
 })
 class InformationTabStubComponent {
-  @Input() externalParamProfile: ExternalParamProfile;
-  @Input() readOnly: boolean;
-  @Input() tenantIdentifier: string;
+  readonly externalParamProfile = input<ExternalParamProfile>(undefined);
+  readonly readOnly = input<boolean>(undefined);
+  readonly tenantIdentifier = input<string>(undefined);
 }
 
 describe('ExternalParamProfilDetailComponent', () => {

@@ -37,14 +37,16 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   inject,
-  Input,
   OnDestroy,
   OnInit,
-  Output,
   TemplateRef,
-  ViewChild,
+  input,
+  output,
+  viewChild,
+  model,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -99,7 +101,7 @@ import { CommonModule } from '@angular/common';
     VitamuiSidenavHeaderComponent,
   ],
 })
-export class UserPreviewComponent implements OnDestroy, OnInit {
+export class UserPreviewComponent implements OnChanges, OnDestroy, OnInit {
   private readonly matDialog = inject(MatDialog);
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
@@ -109,47 +111,16 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   private readonly userInfoService = inject(UserInfoService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() isPopup: boolean;
+  readonly isPopup = input<boolean>(undefined);
 
-  _user: User;
+  readonly user = model<User>();
+  readonly customer = input<Customer>(undefined);
 
-  get user(): User {
-    return this._user;
-  }
-  @Input()
-  set user(user: User) {
-    this._user = user;
-    this.collectionsMap = new Map();
-    const map = new Map();
-    const ids: string[] = [];
-    if (this._user) {
-      map.set(this._user.id, 'users');
-      ids.push(this._user.identifier);
+  readonly previewClose = output();
 
-      if (this._user.userInfoId) {
-        this.userInfoService.get(this._user.userInfoId).subscribe((response) => {
-          this.userInfo = response;
-          ids.push(this.userInfo.identifier);
-          map.set(this.userInfo.id, 'userinfos');
-          this.collectionsMap = map;
-          this.identifiers = ids;
-          this.cdr.markForCheck();
-        });
-      } else {
-        this.collectionsMap = map;
-        this.identifiers = ids;
-      }
-    }
-    // the user may be set from async callbacks (dialog close, patch, userUpdated): refresh the view (zoneless)
-    this.cdr.markForCheck();
-  }
-  @Input() customer: Customer;
-
-  @Output() previewClose = new EventEmitter();
-
-  @ViewChild('confirmDisabledUserDialog', { static: true }) confirmDisabledUserDialog: TemplateRef<UserPreviewComponent>;
-  @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
-  @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
+  readonly confirmDisabledUserDialog = viewChild<TemplateRef<UserPreviewComponent>>('confirmDisabledUserDialog');
+  readonly confirmEnabledUserDialog = viewChild<TemplateRef<UserPreviewComponent>>('confirmEnabledUserDialog');
+  readonly confirmdeleteUserDialog = viewChild<TemplateRef<UserPreviewComponent>>('confirmdeleteUserDialog');
 
   public connectedUserInfo: AdminUserProfile;
   public userUpdatedSub: Subscription;
@@ -158,24 +129,22 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   public collectionsMap: Map<string, string>;
   public identifiers: string[];
 
-  @Input()
-  get groups(): Group[] {
-    return this._groups;
-  }
-  set groups(groupList: Group[]) {
-    this._groups = groupList;
-  }
+  readonly groups = input<Group[]>();
 
   get isVitamEnabled(): boolean {
     return this.startupService.isVitamEnabled();
   }
 
-  private _groups: Group[];
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['user']) {
+      this.onUserChange(this.user());
+    }
+  }
 
   ngOnInit() {
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
     this.userUpdatedSub = this.userService.userUpdated.subscribe((updatedUser: User) => {
-      this.user = updatedUser;
+      this.setUser(updatedUser);
     });
   }
 
@@ -186,24 +155,24 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   updateStatus(status: string) {
     let dialogToOpen;
     if (status === 'ENABLED') {
-      dialogToOpen = this.confirmEnabledUserDialog;
+      dialogToOpen = this.confirmEnabledUserDialog();
     } else if (status === 'DISABLED') {
-      dialogToOpen = this.confirmDisabledUserDialog;
+      dialogToOpen = this.confirmDisabledUserDialog();
     }
     const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.userService.patch({ id: this.user.id, status }).subscribe((user) => {
-          this.user = user;
+        this.userService.patch({ id: this.user().id, status }).subscribe((user) => {
+          this.setUser(user);
         });
       });
   }
 
   levelNotAllowed(): boolean {
-    if (this.user) {
-      return !isLevelAllowed(this.authService.user, this.user.level);
+    if (this.user()) {
+      return !isLevelAllowed(this.authService.user, this.user().level);
     }
     return false;
   }
@@ -228,7 +197,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     };
 
     let dialogToOpen;
-    dialogToOpen = this.confirmdeleteUserDialog;
+    dialogToOpen = this.confirmdeleteUserDialog();
     const dialogRef = this.matDialog.open(dialogToOpen);
     dialogRef
       .afterClosed()
@@ -236,7 +205,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
       .subscribe(() => {
         this.userService
           .deleteUser({
-            id: this.user.id,
+            id: this.user().id,
             lastname,
             email,
             address,
@@ -249,9 +218,40 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
             internalCode,
           })
           .subscribe((user) => {
-            this.user = user;
+            this.setUser(user);
             this.emitClose();
           });
       });
+  }
+
+  private setUser(user: User) {
+    this.user.set(user);
+    this.onUserChange(user);
+  }
+
+  private onUserChange(user: User) {
+    this.collectionsMap = new Map();
+    const map = new Map();
+    const ids: string[] = [];
+    if (user) {
+      map.set(user.id, 'users');
+      ids.push(user.identifier);
+
+      if (user.userInfoId) {
+        this.userInfoService.get(user.userInfoId).subscribe((response) => {
+          this.userInfo = response;
+          ids.push(this.userInfo.identifier);
+          map.set(this.userInfo.id, 'userinfos');
+          this.collectionsMap = map;
+          this.identifiers = ids;
+          this.cdr.markForCheck();
+        });
+      } else {
+        this.collectionsMap = map;
+        this.identifiers = ids;
+      }
+    }
+    // the user may be set from async callbacks (dialog close, patch, userUpdated): refresh the view (zoneless)
+    this.cdr.markForCheck();
   }
 }

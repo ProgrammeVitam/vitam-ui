@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, input } from '@angular/core';
 import type { EditObject } from '../models/edit-object.model';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -45,49 +45,51 @@ import { EditorSelectComponent } from './editor-select.component';
   template: `
     <vitamui-editor-select
       [control]="selectedControl"
-      [label]="editObject.displayRule?.ui?.label"
-      [hint]="editObject.hint"
-      [options]="editObject.options"
-      [multiple]="editObject.cardinality.includes('MANY')"
-      [required]="editObject.required"
+      [label]="editObject().displayRule?.ui?.label"
+      [hint]="editObject().hint"
+      [options]="editObject().options"
+      [multiple]="editObject().cardinality.includes('MANY')"
+      [required]="editObject().required"
     ></vitamui-editor-select>
   `,
   imports: [EditorSelectComponent],
 })
 export class EditorListSelectComponent implements OnInit, OnDestroy {
-  @Input({ required: true }) editObject!: EditObject;
+  readonly editObject = input.required<EditObject>();
 
   control: FormControl;
 
   get selectedControl(): FormControl {
-    return this.control || (this.editObject.control as FormControl);
+    return this.control || (this.editObject().control as FormControl);
   }
 
   private readonly subscriptions = new Subscription();
 
   ngOnInit() {
-    const isMultiple = this.editObject.cardinality.includes('MANY');
-    let initialSelection = this.editObject.options.filter((option) => this.editObject.control.value.includes(option));
+    const isMultiple = this.editObject().cardinality.includes('MANY');
+    let initialSelection = this.editObject().options.filter((option) => this.editObject().control.value.includes(option));
 
-    if (!initialSelection.length && this.editObject.options.length) {
-      initialSelection = [this.editObject.options[0]];
+    const editObject = this.editObject();
+    if (!initialSelection.length && editObject.options.length) {
+      initialSelection = [editObject.options[0]];
     }
 
     if (isMultiple) {
-      this.editObject.control.setValue(initialSelection);
+      editObject.control.setValue(initialSelection);
     } else {
-      const validators = Object.keys(this.editObject).reduce((acc, key) => {
-        if (key === 'required' && this.editObject[key]) acc.push(Validators.required);
+      const validators = Object.keys(editObject).reduce((acc, key) => {
+        if (key === 'required' && this.editObject()[key]) acc.push(Validators.required);
 
         return acc;
       }, []);
-      const value = initialSelection[0] || this.editObject.options[0] || null;
+      const value = initialSelection[0] || editObject.options[0] || null;
       this.control = new FormControl<string>(null, validators);
       this.subscriptions.add(
         this.control.valueChanges.subscribe((value) => {
-          if (this.editObject.control.value !== value) {
-            this.editObject.control.setValue([value]);
-            this.editObject.control.markAsDirty();
+          const editObjectValue = this.editObject();
+          if (editObjectValue.control.value !== value) {
+            editObjectValue.control.setValue([value]);
+            editObjectValue.control.markAsDirty();
           }
         }),
       );

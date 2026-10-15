@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  output,
+  viewChild,
+  input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { merge, Subject } from 'rxjs';
@@ -78,7 +90,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     InfiniteScrollDirective,
   ],
 })
-export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
+export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnChanges, OnDestroy, OnInit {
   fileFormatService: FileFormatService;
   private readonly matDialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
@@ -86,18 +98,14 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   private readonly startupService = inject(StartupService);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private _searchText: string;
 
-  @Output() fileFormatClick = new EventEmitter<FileFormat>();
+  readonly fileFormatClick = output<FileFormat>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<FileFormatListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  readonly filterTemplate = viewChild<TemplateRef<FileFormatListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
 
   override overridePendingChange: true;
   loaded = false;
@@ -110,16 +118,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   private readonly orderChange = new Subject<void>();
   private readonly destroy$ = new Subject<void>();
 
-  @Input()
-  get connectedUserInfo(): AdminUserProfile {
-    return this._connectedUserInfo;
-  }
-
-  set connectedUserInfo(userInfo: AdminUserProfile) {
-    this._connectedUserInfo = userInfo;
-  }
-
-  private _connectedUserInfo: AdminUserProfile;
+  readonly connectedUserInfo = input<AdminUserProfile>(undefined);
 
   constructor() {
     const fileFormatService = inject(FileFormatService);
@@ -127,6 +126,14 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     super(fileFormatService);
 
     this.fileFormatService = fileFormatService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {
@@ -186,8 +193,8 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
   deleteFileFormatDialog(fileFormat: FileFormat) {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
 
-    dialog.componentInstance.objectType = this.translateService.instant('FILE_FORMATS.HOME.FILE_FORMAT');
-    dialog.componentInstance.objectName = fileFormat.puid;
+    dialog.componentRef.setInput('objectType', this.translateService.instant('FILE_FORMATS.HOME.FILE_FORMAT'));
+    dialog.componentRef.setInput('objectName', fileFormat.puid);
 
     dialog
       .afterClosed()

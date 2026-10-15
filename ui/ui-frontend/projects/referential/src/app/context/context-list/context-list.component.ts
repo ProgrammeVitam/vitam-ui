@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  output,
+  viewChild,
+  input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil, tap } from 'rxjs/operators';
@@ -79,25 +91,21 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     InfiniteScrollDirective,
   ],
 })
-export class ContextListComponent extends InfiniteScrollTable<Context> implements OnDestroy, OnInit {
+export class ContextListComponent extends InfiniteScrollTable<Context> implements OnChanges, OnDestroy, OnInit {
   contextService: ContextService;
   private readonly route = inject(ActivatedRoute);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search')
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private readonly destroy$: Subject<void> = new Subject<void>();
 
   private _searchText: string;
 
-  @Output() contextClick = new EventEmitter<Context>();
+  readonly contextClick = output<Context>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<ContextListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
+  readonly filterTemplate = viewChild<TemplateRef<ContextListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
 
   loaded = false;
 
@@ -113,16 +121,7 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<void>();
 
-  @Input()
-  get connectedUserInfo(): AdminUserProfile {
-    return this._connectedUserInfo;
-  }
-
-  set connectedUserInfo(userInfo: AdminUserProfile) {
-    this._connectedUserInfo = userInfo;
-  }
-
-  private _connectedUserInfo: AdminUserProfile;
+  readonly connectedUserInfo = input<AdminUserProfile>(undefined);
 
   constructor() {
     const contextService = inject(ContextService);
@@ -130,6 +129,14 @@ export class ContextListComponent extends InfiniteScrollTable<Context> implement
     super(contextService);
 
     this.contextService = contextService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {

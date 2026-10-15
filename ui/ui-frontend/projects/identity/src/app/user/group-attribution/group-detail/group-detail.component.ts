@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, input } from '@angular/core';
 import { EllipsisDirective, Group, Profile, TooltipDirective } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
 import { CommonModule, TitleCasePipe } from '@angular/common';
@@ -49,7 +49,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class GroupDetailComponent implements OnInit {
   private readonly groupService = inject(GroupService);
 
-  @Input() group: Pick<Group, 'id' | 'description' | 'level'>;
+  readonly group = input<Pick<Group, 'id' | 'description' | 'level'>>(undefined);
 
   public readonly groupProfiles = signal<Profile[]>(undefined);
 
@@ -58,8 +58,9 @@ export class GroupDetailComponent implements OnInit {
   }
 
   getGroupProfiles() {
-    if (this.group) {
-      this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
+    const group = this.group();
+    if (group) {
+      this.groupService.get(group.id).subscribe((groupRetrieved) => {
         this.groupProfiles.set(groupRetrieved.profiles);
       });
     }

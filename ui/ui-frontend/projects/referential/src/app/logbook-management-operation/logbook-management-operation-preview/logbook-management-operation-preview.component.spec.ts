@@ -83,9 +83,9 @@ describe('LogbookManagementOperationPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookManagementOperationPreviewComponent);
     component = fixture.componentInstance;
-    component.tenant = {};
-    component.tenantIdentifier = 42;
-    component.operation = {
+    fixture.componentRef.setInput('tenant', {});
+    fixture.componentRef.setInput('tenantIdentifier', 42);
+    fixture.componentRef.setInput('operation', {
       globalState: 'PAUSE',
       nextStep: '',
       operationId: 'aecaaereragfogjqbaai6malzquerteaaaq',
@@ -96,7 +96,7 @@ describe('LogbookManagementOperationPreviewComponent', () => {
       stepStatus: 'KO',
       stepCancellable: false,
       forcedCancellation: false,
-    };
+    });
     fixture.detectChanges();
   });
 
@@ -104,9 +104,9 @@ describe('LogbookManagementOperationPreviewComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should get the correct Operation status', () => {
-    expect(component.operationStatus(component.operation)).toEqual('KO');
+    expect(component.operationStatus(component.operation())).toEqual('KO');
   });
   it('should get the correct Operation status', () => {
-    expect(component.operation.globalState).toEqual('PAUSE');
+    expect(component.operation().globalState).toEqual('PAUSE');
   });
 });

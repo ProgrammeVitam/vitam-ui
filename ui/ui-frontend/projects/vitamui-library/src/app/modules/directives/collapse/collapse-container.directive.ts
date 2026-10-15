@@ -34,28 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterContentInit, ContentChildren, Directive, QueryList } from '@angular/core';
+import { AfterContentInit, Directive, contentChildren } from '@angular/core';
 
 import { CollapseDirective } from './collapse.directive';
+import { queryChanges } from '../../utils/query-changes.util';
 
 @Directive({ selector: '[vitamuiCommonCollapseContainer]' })
 export class CollapseContainerDirective implements AfterContentInit {
-  @ContentChildren(CollapseDirective) collapseDirectives: QueryList<CollapseDirective>;
+  readonly collapseDirectives = contentChildren(CollapseDirective);
+  private readonly collapseDirectivesChanges = queryChanges(this.collapseDirectives);
 
   constructor() {}
 
   ngAfterContentInit() {
     this.subscribeToExpandEvents();
-    this.collapseDirectives.changes.subscribe(() => this.subscribeToExpandEvents());
+    this.collapseDirectivesChanges.subscribe(() => this.subscribeToExpandEvents());
   }
 
   private subscribeToExpandEvents() {
-    this.collapseDirectives.forEach((collapseDirective) => {
+    this.collapseDirectives().forEach((collapseDirective) => {
       collapseDirective.expanded.subscribe(() => this.collapseAllExcept(collapseDirective));
     });
   }
 
   private collapseAllExcept(collapseDirective: CollapseDirective) {
-    this.collapseDirectives.filter((e) => e !== collapseDirective).forEach((e) => e.collapse());
+    this.collapseDirectives()
+      .filter((e) => e !== collapseDirective)
+      .forEach((e) => e.collapse());
   }
 }

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, signal, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ViewEncapsulation, output, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MatCell,
@@ -218,7 +218,7 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+  readonly autosize = viewChild<CdkTextareaAutosize>('autosize');
 
   sedaVersionLabel: string;
   rootAdditionalProperties: boolean;
@@ -278,11 +278,11 @@ export class FileTreeMetadataComponent implements OnInit, OnDestroy {
   additionalPropertiesMetadonnee: boolean;
   buttonClickedId?: number;
 
-  @Output() insertItem: EventEmitter<FileNodeInsertParams> = new EventEmitter<FileNodeInsertParams>();
-  @Output() addNode: EventEmitter<FileNode> = new EventEmitter<FileNode>();
-  @Output() insertAttributes: EventEmitter<FileNodeInsertAttributeParams> = new EventEmitter<FileNodeInsertAttributeParams>();
-  @Output() removeNode: EventEmitter<FileNode> = new EventEmitter<FileNode>();
-  @Output() duplicateNode: EventEmitter<FileNode> = new EventEmitter<FileNode>();
+  readonly insertItem = output<FileNodeInsertParams>();
+  readonly addNode = output<FileNode>();
+  readonly insertAttributes = output<FileNodeInsertAttributeParams>();
+  readonly removeNode = output<FileNode>();
+  readonly duplicateNode = output<FileNode>();
 
   private _profileServiceProfileModeSubscription: Subscription;
   private _fileServiceSubscription: Subscription;

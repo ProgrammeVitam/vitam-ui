@@ -36,7 +36,7 @@
  */
 import { Profile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ProfileCreateComponent } from './profile-create/profile-create.component';
@@ -65,7 +65,7 @@ export class ProfileComponent extends SidenavPage<Profile> {
 
   public search: string;
 
-  @ViewChild(ProfileListComponent, { static: true }) profileListComponent: ProfileListComponent;
+  readonly profileListComponent = viewChild(ProfileListComponent);
 
   openProfilAdminCreateDialog() {
     const dialogRef = this.dialog.open(ProfileCreateComponent, { disableClose: true });
@@ -81,10 +81,11 @@ export class ProfileComponent extends SidenavPage<Profile> {
   }
 
   private refreshList() {
-    if (!this.profileListComponent) {
+    const profileListComponent = this.profileListComponent();
+    if (!profileListComponent) {
       return;
     }
 
-    this.profileListComponent.search();
+    profileListComponent.search();
   }
 }

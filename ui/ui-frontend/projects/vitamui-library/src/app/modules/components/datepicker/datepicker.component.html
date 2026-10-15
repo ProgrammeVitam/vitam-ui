@@ -1,6 +1,6 @@
 <div class="vitamui-input" [class.disabled]="control.disabled">
   <label>
-    {{ label | translate }}
+    {{ label() | translate }}
     @if (isRequired()) {
       <span class="required-marker">*</span>
     }
@@ -10,8 +10,8 @@
     [matDatepicker]="datepicker"
     [value]="datePickerValue"
     (dateChange)="onDateChange('day', $event.value)"
-    [min]="min"
-    [max]="max"
+    [min]="min()"
+    [max]="max()"
   />
   <input
     #vitamUIInput
@@ -28,18 +28,18 @@
   <mat-datepicker
     #datepicker
     panelClass="picker"
-    [startView]="startView"
+    [startView]="startView()"
     [disabled]="control.disabled"
     (yearSelected)="onDateChange('year', $event)"
     (monthSelected)="onDateChange('month', $event)"
   ></mat-datepicker>
 </div>
 <div #hintArea class="hint-area">
-  @if (hint && (control.valid || control.disabled || control.pristine)) {
+  @if (hint() && (control.valid || control.disabled || control.pristine)) {
     <div class="info">
       <i class="vitamui-icon vitamui-icon-info"></i>
-      @if (hint) {
-        <mat-hint> {{ hint | translate }} </mat-hint>
+      @if (hint()) {
+        <mat-hint> {{ hint() | translate }} </mat-hint>
       }
     </div>
   }

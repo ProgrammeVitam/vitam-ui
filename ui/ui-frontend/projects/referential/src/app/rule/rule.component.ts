@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -86,7 +86,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   private readonly translateService = inject(TranslateService);
   private readonly securityService = inject(SecurityService);
 
-  @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
+  readonly ruleListComponentListComponent = viewChild(RuleListComponent);
 
   search: string = '';
   filters: string;
@@ -124,10 +124,11 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   }
 
   private refreshList() {
-    if (!this.ruleListComponentListComponent) {
+    const ruleListComponentListComponent = this.ruleListComponentListComponent();
+    if (!ruleListComponentListComponent) {
       return;
     }
-    this.ruleListComponentListComponent.searchRuleOrdered();
+    ruleListComponentListComponent.searchRuleOrdered();
   }
 
   changeTenant(tenantIdentifier: number) {

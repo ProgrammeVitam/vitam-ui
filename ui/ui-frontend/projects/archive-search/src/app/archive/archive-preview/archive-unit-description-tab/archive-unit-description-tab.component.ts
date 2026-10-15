@@ -37,16 +37,16 @@
 import {
   Component,
   computed,
-  EventEmitter,
+  effect,
   inject,
   input,
-  Input,
+  model,
   OnChanges,
   OnDestroy,
-  Output,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
+  untracked,
+  viewChild,
 } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -85,11 +85,11 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   private readonly translateService = inject(TranslateService);
 
   archiveUnit = input<ArchiveUnit>();
-  @Input() editMode = false;
-  @Output() editModeChange = new EventEmitter<boolean>();
+  readonly editMode = model(false);
 
-  @ViewChild('updateDialog') updateDialog: TemplateRef<ArchiveUnitDescriptionTabComponent>;
-  @ViewChild('cancelDialog') cancelDialog: TemplateRef<ArchiveUnitDescriptionTabComponent>;
+  readonly updateDialog = viewChild<TemplateRef<ArchiveUnitDescriptionTabComponent>>('updateDialog');
+  readonly cancelDialog = viewChild<TemplateRef<ArchiveUnitDescriptionTabComponent>>('cancelDialog');
+  readonly editor = viewChild(ArchiveUnitEditorComponent);
 
   archiveUnitEditor: ArchiveUnitEditorComponent;
   editObject: EditObject;
@@ -143,6 +143,32 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
     switchMap((jsonPatchDto) => this.archiveUnitService.asyncPartialUpdateArchiveUnitByCommands(jsonPatchDto)),
   );
 
+  constructor() {
+    effect(() => {
+      const editor = this.editor();
+      if (!editor) return;
+
+      untracked(() => {
+        this.archiveUnitEditor = editor;
+
+        this.subscriptions.add(
+          this.archiveUnitEditor.editObject$
+            .pipe(
+              tap((editObject) => (this.editObject = editObject)),
+              switchMap((editObject) => {
+                if (!editObject?.control) {
+                  return new Observable<void>();
+                }
+                // Combine valueChanges and statusChanges into a single stream
+                return merge(editObject.control.valueChanges, editObject.control.statusChanges).pipe(startWith(null));
+              }),
+            )
+            .subscribe(() => this.updateCanSave()),
+        );
+      });
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['editMode']) {
       this.updateCanSave();
@@ -151,27 +177,6 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
-  }
-
-  @ViewChild(ArchiveUnitEditorComponent) set editor(editor: ArchiveUnitEditorComponent) {
-    if (!editor) return;
-
-    this.archiveUnitEditor = editor;
-
-    this.subscriptions.add(
-      this.archiveUnitEditor.editObject$
-        .pipe(
-          tap((editObject) => (this.editObject = editObject)),
-          switchMap((editObject) => {
-            if (!editObject?.control) {
-              return new Observable<void>();
-            }
-            // Combine valueChanges and statusChanges into a single stream
-            return merge(editObject.control.valueChanges, editObject.control.statusChanges).pipe(startWith(null));
-          }),
-        )
-        .subscribe(() => this.updateCanSave()),
-    );
   }
 
   private updateCanSave(): void {
@@ -210,7 +215,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
   }
 
   isModified(): boolean {
-    return this.editMode && this.editObject?.control?.dirty;
+    return this.editMode() && this.editObject?.control?.dirty;
   }
 
   collectInvalidNode(editObject: EditObject): EditObject[] {
@@ -235,7 +240,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
     }
     this.subscriptions.add(
       this.dialog
-        .open(this.cancelDialog, this.dialogConfig)
+        .open(this.cancelDialog(), this.dialogConfig)
         .afterClosed()
         .pipe(
           filter((shouldUpdate: boolean) => Boolean(shouldUpdate || this.backToDisplayMode())),
@@ -280,7 +285,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
 
     this.subscriptions.add(
       this.dialog
-        .open(this.updateDialog, this.dialogConfig)
+        .open(this.updateDialog(), this.dialogConfig)
         .afterClosed()
         .pipe(
           filter((result: boolean) => result),
@@ -341,8 +346,7 @@ export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy 
 
   private backToDisplayMode(): void {
     this.spinnerOverlayService.close();
-    this.editMode = false;
+    this.editMode.set(false);
     this.canSave = false;
-    this.editModeChange.emit(this.editMode);
   }
 }

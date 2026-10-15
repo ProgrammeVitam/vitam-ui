@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
@@ -59,8 +59,7 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   private readonly translateService = inject(TranslateService);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Output()
-  storedSearchCriteriaHistory = new EventEmitter<any>();
+  readonly storedSearchCriteriaHistory = output<any>();
 
   searchCriteriaHistory = signal<SearchCriteriaHistory[]>([]);
   private readonly orderChange = new Subject<void>();
@@ -107,9 +106,9 @@ export class SearchCriteriaListComponent implements OnInit, OnDestroy {
 
   deleteSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
     const dialog = this.dialog.open(ConfirmActionComponent);
-    dialog.componentInstance.objectType = this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.OBJECT_TYPE');
-    dialog.componentInstance.objectName = searchCriteriaHistory.name;
-    dialog.componentInstance.objectDate = searchCriteriaHistory.savingDate;
+    dialog.componentRef.setInput('objectType', this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.OBJECT_TYPE'));
+    dialog.componentRef.setInput('objectName', searchCriteriaHistory.name);
+    dialog.componentRef.setInput('objectDate', searchCriteriaHistory.savingDate);
 
     dialog
       .afterClosed()

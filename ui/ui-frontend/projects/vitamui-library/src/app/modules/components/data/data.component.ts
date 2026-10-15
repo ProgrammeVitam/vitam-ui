@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ContentChild, inject, Input, TemplateRef } from '@angular/core';
+import { Component, inject, TemplateRef, input, contentChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
 
@@ -52,14 +52,14 @@ import { TooltipDirective } from '../common-tooltip/tooltip.directive';
 export class DataComponent {
   private readonly clipboard = inject(Clipboard);
 
-  @Input() label: string;
-  @Input() value: string | string[];
-  @Input() valueCss?: string;
-  @Input() valueUrl?: string;
-  @Input() valueTooltip?: string;
-  @Input() canCopyValue = false;
+  readonly label = input<string>(undefined);
+  readonly value = input<string | string[]>(undefined);
+  readonly valueCss = input<string>(undefined);
+  readonly valueUrl = input<string>(undefined);
+  readonly valueTooltip = input<string>(undefined);
+  readonly canCopyValue = input(false);
 
-  @ContentChild('label') labelRef: TemplateRef<any>;
+  readonly labelRef = contentChild<TemplateRef<any>>('label');
 
   copyToClipboard(text: string) {
     this.clipboard.copy(text);

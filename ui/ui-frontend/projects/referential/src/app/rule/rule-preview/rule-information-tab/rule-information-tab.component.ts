@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -53,13 +53,13 @@ const RULES_APP = 'RULES_APP';
   styleUrls: ['./rule-information-tab.component.scss'],
   imports: [ReactiveFormsModule, SelectComponent, InputComponent, AsyncPipe, TranslatePipe],
 })
-export class RuleInformationTabComponent implements OnInit {
+export class RuleInformationTabComponent implements OnChanges, OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
   private readonly securityService = inject(SecurityService);
   private readonly ruleService = inject(RuleService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   form: FormGroup;
 
@@ -73,32 +73,13 @@ export class RuleInformationTabComponent implements OnInit {
   tenantIdentifier: number;
   hasUpdateRuleRole$: Observable<boolean>;
 
-  private oldRule: Rule;
-
   previousValue(): Rule {
-    return this.oldRule;
+    return this.rule();
   }
 
-  @Input()
-  set rule(rule: Rule) {
-    this.oldRule = rule;
-    this.resetForm(this.rule);
-    this.updated.emit(false);
-  }
+  readonly rule = model<Rule>(undefined);
 
-  get rule(): Rule {
-    return this.oldRule;
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -108,6 +89,21 @@ export class RuleInformationTabComponent implements OnInit {
       ruleDuration: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
       ruleMeasurement: [null, Validators.required],
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['rule']) {
+      this.setRule(this.rule());
+    }
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
   }
 
   ngOnInit() {
@@ -159,15 +155,21 @@ export class RuleInformationTabComponent implements OnInit {
 
     this.prepareSubmit().subscribe(
       () => {
-        this.ruleService.get(this.oldRule.ruleId).subscribe((response) => {
+        this.ruleService.get(this.rule().ruleId).subscribe((response) => {
           this.submited.set(false);
-          this.rule = response;
+          this.setRule(response);
         });
       },
       () => {
         this.submited.set(false);
       },
     );
+  }
+
+  private setRule(rule: Rule) {
+    this.rule.set(rule);
+    this.resetForm(this.rule());
+    this.updated.emit(false);
   }
 
   resetForm(rule: Rule) {

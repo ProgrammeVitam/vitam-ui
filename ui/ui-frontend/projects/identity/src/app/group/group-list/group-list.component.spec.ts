@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Directive, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, Directive, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -52,8 +52,7 @@ import { GroupListComponent } from './group-list.component';
   selector: '[vitamuiCollapseTriggerFor]',
 })
 class CollapseTriggerForStubDirective {
-  @Input()
-  vitamuiCollapseTriggerFor: any;
+  readonly vitamuiCollapseTriggerFor = input<any>(undefined);
 }
 
 @Directive({
@@ -62,8 +61,7 @@ class CollapseTriggerForStubDirective {
   exportAs: 'vitamuiCollapse',
 })
 class CollapseStubDirective {
-  @Input()
-  vitamuiCollapse: any;
+  readonly vitamuiCollapse = input<any>(undefined);
 }
 
 @Component({
@@ -71,12 +69,9 @@ class CollapseStubDirective {
   template: '',
 })
 class OwnerListStubComponent {
-  @Input()
-  profileGroup: any;
-  @Input()
-  owners: any;
-  @Input()
-  tenants: any;
+  readonly profileGroup = input<any>(undefined);
+  readonly owners = input<any>(undefined);
+  readonly tenants = input<any>(undefined);
 }
 
 let component: GroupListComponent;

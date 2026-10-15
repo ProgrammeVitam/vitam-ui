@@ -48,12 +48,13 @@ import {
   HostListener,
   inject,
   Injector,
-  Input,
-  QueryList,
   Resource,
   Signal,
-  ViewChild,
-  ViewChildren,
+  input,
+  signal,
+  SimpleChanges,
+  viewChild,
+  viewChildren,
 } from '@angular/core';
 import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
@@ -78,6 +79,7 @@ import { normalizeString } from '../../utils/string.util';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TooltipDirective } from '../../../app/modules/components/common-tooltip/tooltip.directive';
 import { EllipsisDirective } from '../../../app/modules/directives/ellipsis/ellipsis.directive';
+import { queryChanges } from '../../../app/modules/utils/query-changes.util';
 
 export const VITAMUI_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -131,54 +133,20 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   private destroyed = false;
   readonly sd = inject(ScrollDispatcher);
 
-  @Input() placeholder: string;
-  @Input() searchBarPlaceHolder: string;
+  readonly placeholder = input<string>(undefined);
+  readonly searchBarPlaceHolder = input<string>(undefined);
 
-  @Input() set multiple(multiple: boolean) {
-    this._multiple = multiple;
-    if (this._multiple) {
-      if (this.enableSelectAll === undefined) this.enableSelectAll = true;
-      if (this.enableDisplaySelected === undefined) this.enableDisplaySelected = true;
-    }
-  }
+  readonly multiple = input(false);
 
-  get multiple(): boolean {
-    return this._multiple;
-  }
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  readonly enableSelectAllInput = input<boolean>(undefined, { alias: 'enableSelectAll' });
+  readonly enableSelectAll = signal<boolean>(undefined);
 
-  @Input() set enableSelectAll(enableSelectAll: boolean) {
-    this._enableSelectAll = enableSelectAll;
-    if (!this._enableSelectAll) {
-      this.visibleItemsInSearchView = 5;
-      this.resizeContainerHeightInSearchView();
-    }
-  }
+  readonly enableSearch = input(true);
 
-  get enableSelectAll(): boolean {
-    return this._enableSelectAll;
-  }
-
-  @Input() set enableSearch(enableSearch: boolean) {
-    this._enableSearch = enableSearch;
-    if (!this._enableSearch) {
-      this.resizeContainerHeightInSearchView();
-    }
-  }
-
-  get enableSearch(): boolean {
-    return this._enableSearch;
-  }
-
-  @Input() set enableDisplaySelected(enableDisplaySelected: boolean) {
-    this._enableDisplaySelected = enableDisplaySelected;
-    if (!this._enableDisplaySelected) {
-      this.resizeContainerHeightInSearchView();
-    }
-  }
-
-  get enableDisplaySelected(): boolean {
-    return this._enableDisplaySelected;
-  }
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  readonly enableDisplaySelectedInput = input<boolean>(undefined, { alias: 'enableDisplaySelected' });
+  readonly enableDisplaySelected = signal<boolean>(undefined);
 
   private isResource(
     optionsParam: VitamuiSelectOptions | any[] | Resource<VitamuiSelectOptions | any[]>,
@@ -186,8 +154,57 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     return !!(optionsParam as Resource<VitamuiSelectOptions | any[]>)?.isLoading;
   }
 
-  @Input({ required: true })
-  set options(optionsParam: VitamuiSelectOptions | any[] | Resource<VitamuiSelectOptions | any[]>) {
+  readonly options = input.required<VitamuiSelectOptions | any[] | Resource<VitamuiSelectOptions | any[]>>();
+
+  override ngOnChanges(changes: SimpleChanges): void {
+    // Handle the inputs in the order they were set, as the former input setters did
+    for (const inputName of Object.keys(changes)) {
+      switch (inputName) {
+        case 'multiple':
+          this.onMultipleChange();
+          break;
+        case 'enableSelectAllInput':
+          this.onEnableSelectAllChange();
+          break;
+        case 'enableSearch':
+          if (!this.enableSearch()) {
+            this.resizeContainerHeightInSearchView();
+          }
+          break;
+        case 'enableDisplaySelectedInput':
+          this.onEnableDisplaySelectedChange();
+          break;
+        case 'options':
+          this.onOptionsChange();
+          break;
+      }
+    }
+    super.ngOnChanges(changes);
+  }
+
+  private onMultipleChange() {
+    if (!this.multiple()) return;
+    if (this.enableSelectAll() === undefined) this.enableSelectAll.set(true);
+    if (this.enableDisplaySelected() === undefined) this.enableDisplaySelected.set(true);
+  }
+
+  private onEnableSelectAllChange() {
+    this.enableSelectAll.set(this.enableSelectAllInput());
+    if (!this.enableSelectAll()) {
+      this.visibleItemsInSearchView = 5;
+      this.resizeContainerHeightInSearchView();
+    }
+  }
+
+  private onEnableDisplaySelectedChange() {
+    this.enableDisplaySelected.set(this.enableDisplaySelectedInput());
+    if (!this.enableDisplaySelected()) {
+      this.resizeContainerHeightInSearchView();
+    }
+  }
+
+  private onOptionsChange() {
+    const optionsParam = this.options();
     if (this.isResource(optionsParam)) {
       this.optionsResource = optionsParam;
     } else {
@@ -221,8 +238,8 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
   private optionsResource: Resource<VitamuiSelectOptions | any[]>;
 
-  @Input() selectAllLabel = 'SELECT.SELECT_ALL';
-  @Input() allSelectedLabel?: string;
+  readonly selectAllLabel = input('SELECT.SELECT_ALL');
+  readonly allSelectedLabel = input<string>(undefined);
   loading: Signal<boolean> = computed(() => (this.optionsResource ? this.optionsResource.isLoading() : false));
 
   public displayedOptions: Option[] = [];
@@ -242,24 +259,21 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   private visibleItemsInSearchView = 5;
   private preselectedOptionKeys: string[] = [];
   private customSorting: (a: Option, b: Option) => number;
-  private _multiple = false;
-  private _enableSearch = true;
-  private _enableSelectAll?: boolean;
-  private _enableDisplaySelected?: boolean;
   private isUpdatingTrigger = false; // Prevent infinite recursion
 
-  @ViewChild('searchBar') searchBar: SearchBarComponent;
-  @ViewChild('scrollViewport') private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  @ViewChildren(MatOption) optionKeys: QueryList<MatOption>;
-  @ViewChild('matSelect') matSelect: MatSelect;
-  @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+  readonly searchBar = viewChild<SearchBarComponent>('searchBar');
+  private readonly cdkVirtualScrollViewport = viewChild<CdkVirtualScrollViewport>('scrollViewport');
+  readonly optionKeys = viewChildren(MatOption);
+  private readonly optionKeysChanges = queryChanges(this.optionKeys);
+  readonly matSelect = viewChild<MatSelect>('matSelect');
+  readonly viewport = viewChild(CdkVirtualScrollViewport);
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      const focusedOptionIndex = this.optionKeys.toArray().find((option) => option.active === true);
+      const focusedOptionIndex = this.optionKeys().find((option) => option.active === true);
       if (focusedOptionIndex) {
-        this.cdkVirtualScrollViewport.scrollToIndex(+focusedOptionIndex.id);
+        this.cdkVirtualScrollViewport().scrollToIndex(+focusedOptionIndex.id);
       }
     }
   }
@@ -291,13 +305,13 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
     this.sd
       .scrolled()
-      .pipe(filter((scrollable) => this.cdkVirtualScrollViewport === scrollable))
+      .pipe(filter((scrollable) => this.cdkVirtualScrollViewport() === scrollable))
       .subscribe(() => {
         this.updateSelectAll();
         this.syncRenderedOptionsSelection();
       });
 
-    this.optionKeys.changes.subscribe(() => this.syncRenderedOptionsSelection());
+    this.optionKeysChanges.subscribe(() => this.syncRenderedOptionsSelection());
 
     this.addEventListeners();
 
@@ -316,8 +330,8 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   private addEventListeners() {
     const eventListener = this.onKeydown.bind(this);
 
-    const searchInputElement: HTMLInputElement | undefined = this.searchBar?.searchInput?.nativeElement;
-    const matSelectElement: HTMLInputElement | undefined = this.matSelect?._elementRef?.nativeElement;
+    const searchInputElement: HTMLInputElement | undefined = this.searchBar()?.searchInput()?.nativeElement;
+    const matSelectElement: HTMLInputElement | undefined = this.matSelect()?._elementRef?.nativeElement;
 
     searchInputElement?.removeEventListener('keydown', eventListener);
     matSelectElement?.removeEventListener('keydown', eventListener);
@@ -349,7 +363,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       setTimeout(() => {
         if (!this.loading()) {
           this.ensureValueDisplay();
-          this.viewport?.checkViewportSize();
+          this.viewport()?.checkViewportSize();
 
           if (this.selectedOptions.length > 0) {
             this.scrollToSelectedOption();
@@ -358,8 +372,8 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       });
     }
 
-    if (opened && this.enableSearch) {
-      this.searchBar?.onFocus();
+    if (opened && this.enableSearch()) {
+      this.searchBar()?.onFocus();
     }
   }
 
@@ -374,7 +388,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       this.resizeContainerHeightInSearchView();
       this.searchTextControl.reset();
     } else {
-      this.searchBar?.reset();
+      this.searchBar()?.reset();
     }
   }
   protected toggleSelectAll(event: MouseEvent): void {
@@ -392,7 +406,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   protected clearAllSelectedOptions(): void {
     this.showOnlySelectedOption = false;
     this.control.reset();
-    this.onChange(this._multiple ? [] : undefined);
+    this.onChange(this.multiple() ? [] : undefined);
   }
 
   protected onSearch(value: string): void {
@@ -410,8 +424,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   protected onSelectClosed(): void {
     this.onTouched();
     this.showOnlySelectedOption = false;
-    if (this.searchBar && this.enableSearch) {
-      this.searchBar.reset();
+    const searchBar = this.searchBar();
+    if (searchBar && this.enableSearch()) {
+      searchBar.reset();
     }
     this.searchTextControl.reset();
   }
@@ -420,7 +435,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.searchTextControl.reset();
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
-    this.searchBar?.onFocus();
+    this.searchBar()?.onFocus();
   }
 
   protected onSelectionChange(change: MatOptionSelectionChange) {
@@ -431,7 +446,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     const value = change.source.value;
     const uncheckingOption = this.selectedOptions.some((selectedOption) => selectedOption.key === value);
 
-    if (this._multiple) {
+    if (this.multiple()) {
       if (uncheckingOption) {
         this.selectedOptions = this.selectedOptions.filter((selectedOption) => selectedOption.key !== value);
       } else {
@@ -448,10 +463,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
     if (this.selectedOptions.length === 0) {
       this.clearAllSelectedOptions();
-      this.updateMatSelectTriggerContent(this._multiple ? [] : undefined);
+      this.updateMatSelectTriggerContent(this.multiple() ? [] : undefined);
     } else {
       const selectedKeys = [...this.selectedOptions.map((option) => option.key)].sort();
-      const valueToPropagate = this._multiple ? selectedKeys : selectedKeys[0];
+      const valueToPropagate = this.multiple() ? selectedKeys : selectedKeys[0];
       this.onChange(valueToPropagate);
       this.updateMatSelectTriggerContent(valueToPropagate);
     }
@@ -463,7 +478,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       return o1 === o2;
     }
 
-    if (this.multiple && Array.isArray(o1) && Array.isArray(o2)) {
+    if (this.multiple() && Array.isArray(o1) && Array.isArray(o2)) {
       if (o1.length !== o2.length) return false;
       return o1.every((val) => o2.includes(val));
     }
@@ -506,28 +521,25 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     this.control.reset = (value?: any, options?: any) => {
       this.updateSelectedOptionsFromValue(value);
       previousReset.bind(this.control)(value, options);
-      this.matSelect._onBlur(); // Required to prevent the label to keep floating when resetting the value
+      this.matSelect()._onBlur(); // Required to prevent the label to keep floating when resetting the value
     };
   }
 
   private updateSelectedOptionsFromValue(value: any) {
     (this.control as any).resetValue = value;
-    this.selectedOptions = this._multiple
+    this.selectedOptions = this.multiple()
       ? this.allOptions.filter((option) => (value || []).includes(option.key))
       : this.allOptions.filter((option) => option.key === value);
   }
 
   private updateSelectAll(): void {
-    if (
-      !this.showOnlySelectedOption &&
-      this.optionKeys &&
-      this.optionKeys.filter((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).length !== 0
-    ) {
+    const optionKeys = this.optionKeys();
+    if (!this.showOnlySelectedOption && optionKeys && optionKeys.some((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS)) {
       const selectedOptionsCount = this.getSelectedOptionsCount();
       if (selectedOptionsCount === this.allOptions.length) {
-        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).select(false);
+        optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).select(false);
       } else {
-        this.optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).deselect(false);
+        optionKeys.find((optionKey) => optionKey.value === this.SELECT_ALL_OPTIONS).deselect(false);
       }
       this.cd.detectChanges();
     }
@@ -541,7 +553,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       this.onChange(selectedKeys);
 
       // visual synchronization
-      this.optionKeys?.forEach((option) => {
+      this.optionKeys()?.forEach((option) => {
         if (option.value !== this.SELECT_ALL_OPTIONS) {
           option.select(false);
         }
@@ -549,7 +561,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     } else {
       this.clearAllSelectedOptions();
 
-      this.optionKeys?.forEach((option) => {
+      this.optionKeys()?.forEach((option) => {
         option.deselect(false);
       });
     }
@@ -560,7 +572,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
 
   private resizeContainerHeightInSearchView(): void {
     this.containerHeightInSearchView = this.calculateContainerHeight(
-      this.displayedOptions.length + (this._multiple && this.enableSelectAll ? 1 : 0),
+      this.displayedOptions.length + (this.multiple() && this.enableSelectAll() ? 1 : 0),
       this.visibleItemsInSearchView,
     );
     this.checkViewportSize();
@@ -578,8 +590,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   private checkViewportSize(): void {
-    if (this.cdkVirtualScrollViewport) {
-      this.cdkVirtualScrollViewport.checkViewportSize();
+    const cdkVirtualScrollViewport = this.cdkVirtualScrollViewport();
+    if (cdkVirtualScrollViewport) {
+      cdkVirtualScrollViewport.checkViewportSize();
     }
   }
 
@@ -588,15 +601,16 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       // Prevent mat-select to select/deselect everything with CTRL+A shortcut
       event.stopImmediatePropagation();
     }
-    const focusInSearchInput = [this.searchBar?.searchInput?.nativeElement].includes(event.target);
+    const searchBar = this.searchBar();
+    const focusInSearchInput = [searchBar?.searchInput()?.nativeElement].includes(event.target);
     if (focusInSearchInput) {
       if (['ArrowDown'].includes(event.code)) {
         // Get out of searchInput if arrow down
-        this.matSelect._elementRef.nativeElement.focus();
+        this.matSelect()._elementRef.nativeElement.focus();
       }
       if (['Enter'].includes(event.code)) {
         // Trigger search (native listener: refresh the view, zoneless)
-        this.onSearch(this.searchBar.searchValue);
+        this.onSearch(searchBar.searchValue());
         this.cd.markForCheck();
       }
       if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.code)) {
@@ -607,9 +621,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   private updateMatSelectTriggerContent(valueOverride?: any): void {
-    if (!this.matSelect || this.isUpdatingTrigger) return;
+    const matSelect = this.matSelect();
+    if (!matSelect || this.isUpdatingTrigger) return;
 
-    Object.defineProperties(this.matSelect, {
+    Object.defineProperties(matSelect, {
       empty: {
         value: this.selectedOptions.length <= 0,
         writable: true,
@@ -622,9 +637,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
       this.isUpdatingTrigger = true;
 
       try {
-        this.matSelect.value = valueToDisplay;
-        this.matSelect._onChange(valueToDisplay);
-        this.matSelect.stateChanges.next();
+        matSelect.value = valueToDisplay;
+        matSelect._onChange(valueToDisplay);
+        matSelect.stateChanges.next();
       } finally {
         this.isUpdatingTrigger = false;
       }
@@ -632,18 +647,18 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   focus() {
-    this.matSelect.focus();
+    this.matSelect().focus();
   }
 
   private scrollToSelectedOption(): void {
-    if (!this.viewport || this.selectedOptions.length === 0) return;
+    if (!this.viewport() || this.selectedOptions.length === 0) return;
 
     const firstSelectedOption = this.selectedOptions[0];
     const index = this.displayedOptions.findIndex((opt) => opt.key === firstSelectedOption.key);
 
     if (index >= 0) {
       setTimeout(() => {
-        this.viewport.scrollToIndex(index, 'smooth');
+        this.viewport().scrollToIndex(index, 'smooth');
       }, 100);
     }
   }
@@ -664,12 +679,12 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   private ensureValueDisplay(): void {
-    if (!this.matSelect || !this.control?.value) return;
+    if (!this.matSelect() || !this.control?.value) return;
 
     setTimeout(() => {
       if (this.destroyed) return;
       this.updateMatSelectTriggerContent();
-      if (this.multiple && Array.isArray(this.control.value)) {
+      if (this.multiple() && Array.isArray(this.control.value)) {
         this.selectedOptions = this.allOptions.filter((option) => this.control.value.includes(option.key));
       }
       this.syncRenderedOptionsSelection();
@@ -678,10 +693,11 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   private syncRenderedOptionsSelection(): void {
-    if (!this.optionKeys) return;
+    const optionKeys = this.optionKeys();
+    if (!optionKeys) return;
 
     const selectedKeys = new Set(this.selectedOptions.map((option) => String(option.key)));
-    this.optionKeys.forEach((optionKey) => {
+    optionKeys.forEach((optionKey) => {
       if (optionKey.value === this.SELECT_ALL_OPTIONS) return;
 
       const shouldBeSelected = selectedKeys.has(String(optionKey.value));

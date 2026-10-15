@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, OnChanges, OnDestroy, SimpleChanges, input, viewChild } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EditableFieldComponent } from '../editable-field/editable-field.component';
@@ -59,12 +59,12 @@ export const MULTIPLE_INPUT_VALUE_ACCESSOR: any = {
 export class VitamuiMultiInputsComponent extends EditableFieldComponent implements OnDestroy, OnChanges {
   values: string[] = [];
 
-  @Input() maxlength: number;
-  @Input() truncateLimit = 20;
-  @Input() type = 'text';
-  @Input() searchActivated = false;
-  @Input() reset = false;
-  @ViewChild('input') private input: ElementRef;
+  readonly maxlength = input<number>(undefined);
+  readonly truncateLimit = input(20);
+  readonly type = input('text');
+  readonly searchActivated = input(false);
+  readonly reset = input(false);
+  private readonly input = viewChild<ElementRef>('input');
   valSub: Subscription;
 
   constructor() {
@@ -81,7 +81,7 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
 
   override enterEditMode() {
     super.enterEditMode();
-    setTimeout(() => this.input.nativeElement.focus(), 0);
+    setTimeout(() => this.input().nativeElement.focus(), 0);
   }
 
   override confirm() {
@@ -111,7 +111,8 @@ export class VitamuiMultiInputsComponent extends EditableFieldComponent implemen
     this.valSub.unsubscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  override ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
     if (changes['reset']?.currentValue) {
       this.values = [];
       this.onChange(this.values);

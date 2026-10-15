@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  output,
+  viewChild,
+  input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { merge, Subject } from 'rxjs';
@@ -65,25 +77,22 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   styleUrls: ['./agency-list.component.scss'],
   imports: [MatProgressSpinnerModule, MatSidenavModule, VitamUICommonModule, TranslatePipe],
 })
-export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnDestroy, OnInit {
+export class AgencyListComponent extends InfiniteScrollTable<Agency> implements OnChanges, OnDestroy, OnInit {
   agencyService: AgencyService;
   private readonly route = inject(ActivatedRoute);
   private readonly matDialog = inject(MatDialog);
   private readonly securityService = inject(SecurityService);
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('search') set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined, { alias: 'search' });
 
   private _searchText: string;
 
-  @Output() agencyClick = new EventEmitter<Agency>();
+  readonly agencyClick = output<Agency>();
 
-  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<AgencyListComponent>;
-  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
-  @ViewChild('confirmDeleteDialog', { static: true }) confirmDeleteDialog: TemplateRef<AgencyListComponent>;
+  readonly filterTemplate = viewChild<TemplateRef<AgencyListComponent>>('filterTemplate');
+  readonly filterButton = viewChild<ElementRef>('filterButton');
+  readonly confirmDeleteDialog = viewChild<TemplateRef<AgencyListComponent>>('confirmDeleteDialog');
 
   agencyToDelete: Agency;
   hasDeleteRole = false;
@@ -94,15 +103,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
 
-  @Input() get connectedUserInfo(): AdminUserProfile {
-    return this._connectedUserInfo;
-  }
-
-  set connectedUserInfo(userInfo: AdminUserProfile) {
-    this._connectedUserInfo = userInfo;
-  }
-
-  private _connectedUserInfo: AdminUserProfile;
+  readonly connectedUserInfo = input<AdminUserProfile>(undefined);
   private readonly destroyer$ = new Subject<void>();
 
   constructor() {
@@ -111,6 +112,14 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
     super(agencyService);
 
     this.agencyService = agencyService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {
@@ -144,7 +153,7 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
   public deleteAgencyDialog(agency: Agency): void {
     this.agencyToDelete = agency;
     this.matDialog
-      .open(this.confirmDeleteDialog, { panelClass: 'small' })
+      .open(this.confirmDeleteDialog(), { panelClass: 'small' })
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {

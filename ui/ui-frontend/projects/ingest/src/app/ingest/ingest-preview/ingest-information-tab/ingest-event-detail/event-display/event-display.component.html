@@ -1,14 +1,14 @@
 <div class="col-g-1 ingestDetails">
   <div style="height: 100%; background-color: white"></div>
   <div class="history-event-title">
-    <vitamui-common-event-type-label [key]="event.eventData.evType"></vitamui-common-event-type-label>
+    <vitamui-common-event-type-label [key]="event().eventData.evType"></vitamui-common-event-type-label>
   </div>
   <div class="no-padding" [ngClass]="[ingestEventRowStyle]">
-    {{ event.eventData.outMessg }}
+    {{ event().eventData.outMessg }}
   </div>
 </div>
 
-@for (task of event.subEvents; track task) {
+@for (task of event().subEvents; track task) {
   <div class="eventChild">
     <app-vitam-event-display [event]="task"></app-vitam-event-display>
   </div>

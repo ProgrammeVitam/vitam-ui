@@ -1,12 +1,12 @@
 <div class="vitamui-sidepanel">
-  @if (inputProfile) {
-    <vitamui-common-sidenav-header [title]="inputProfile.name" [subtitle]="inputProfile.identifier" (onclose)="emitClose()">
+  @if (inputProfile()) {
+    <vitamui-common-sidenav-header [title]="inputProfile().name" [subtitle]="inputProfile().identifier" (onclose)="emitClose()">
       @if (isProfilAttached()) {
         <vitamui-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="editProfile(inputProfile)">
+          <button mat-menu-item (click)="editProfile(inputProfile())">
             {{ 'PROFILE_PREVIEW.MENU.MODIFIER_PROFILE' | translate }}
           </button>
-          <button mat-menu-item (click)="downloadProfile(inputProfile)">
+          <button mat-menu-item (click)="downloadProfile(inputProfile())">
             {{ 'PROFILE_PREVIEW.MENU.TELECHARGER_PROFILE' | translate }}
           </button>
         </vitamui-menu-button>
@@ -23,7 +23,7 @@
           #infoTab
           (updated)="updatedChange($event, 0)"
           (closed)="closeNotice($event)"
-          [inputProfile]="inputProfile"
+          [inputProfile]="inputProfile()"
           [readOnly]="isPopup"
         >
         </profile-information-tab>

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControlWarn } from './form-control-warn';
@@ -47,15 +47,17 @@ import { FormErrorComponent } from './form-error/form-error.component';
   styleUrl: './form-errors.component.scss',
 })
 export class FormErrorsComponent {
-  @Input({ required: true }) control: AbstractControl;
+  readonly control = input.required<AbstractControl>();
   /**
    * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
    * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
    */
-  @Input() errorMessageMap: { [key: string]: string } = {};
+  readonly errorMessageMap = input<{
+    [key: string]: string;
+  }>({});
 
   get errors() {
-    return { ...((this.control as FormControlWarn).warnings || {}), ...(this.control.errors || {}) };
+    return { ...(this.control() as FormControlWarn).warnings, ...this.control().errors };
   }
 
   protected readonly Object = Object;

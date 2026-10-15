@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectorRef, Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, inject, Injector, OnInit, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   MatNestedTreeNode,
@@ -81,18 +81,16 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
   filingPlanService = inject(FilingPlanService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() dataSource: Unit[];
+  readonly dataSource = input<Unit[]>(undefined);
   /** @deprecated should be removed - see VitamUIHttpInterceptor */
-  @Input() tenantIdentifier: number;
-  @Input() mode: FilingPlanMode;
-  @Input() componentId: string = uuid();
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly mode = input<FilingPlanMode>(undefined);
+  readonly componentId = input<string>(uuid());
 
   selectedNodes: { included: string[]; excluded: string[] } = {
     included: [],
     excluded: [],
   };
-
-  override disabled: boolean;
 
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
@@ -107,11 +105,12 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
 
   override ngOnInit(): void {
     super.ngOnInit();
-    if (this.dataSource) {
-      const nodes = this.filingPlanService.loadTreeFromDataSource(this.dataSource, this.componentId);
+    const dataSource = this.dataSource();
+    if (dataSource) {
+      const nodes = this.filingPlanService.loadTreeFromDataSource(dataSource, this.componentId());
       this.setNodes(nodes);
     } else {
-      this.filingPlanService.loadTree(this.componentId).subscribe((nodes) => {
+      this.filingPlanService.loadTree(this.componentId()).subscribe((nodes) => {
         this.setNodes(nodes);
         // Tree data, selection and pending state are updated from an HTTP callback: refresh the view (zoneless)
         this.cdr.markForCheck();
@@ -146,13 +145,14 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
       childNode.checked = check;
       childNode.disabledChild = false;
 
-      if (this.mode === FilingPlanMode.INCLUDE_ONLY) {
+      const mode = this.mode();
+      if (mode === FilingPlanMode.INCLUDE_ONLY) {
         childNode.disabled = check;
       }
 
       this.selectedNodes.included = this.selectedNodes.included.filter((id) => childNode.vitamId !== id);
 
-      if (this.mode === FilingPlanMode.BOTH) {
+      if (mode === FilingPlanMode.BOTH) {
         if (enableAllChildren) {
           childNode.disabled = false;
         } else {
@@ -217,7 +217,8 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
   emitVitamId(node: Node) {
     const nodeChecked = node.checked;
 
-    if (this.mode === FilingPlanMode.BOTH) {
+    const mode = this.mode();
+    if (mode === FilingPlanMode.BOTH) {
       this.updateParentsStatus(node.parents, nodeChecked, node.disabledChild);
       let enableAllChildren = false;
       if (!nodeChecked) {
@@ -226,11 +227,11 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
       this.updateChildrenStatusAndSelectedNodes(node.children, nodeChecked, enableAllChildren);
     }
 
-    if (this.mode === FilingPlanMode.INCLUDE_ONLY) {
+    if (mode === FilingPlanMode.INCLUDE_ONLY) {
       this.updateChildrenStatusAndSelectedNodes(node.children, node.checked);
     }
 
-    if (this.mode === FilingPlanMode.SOLO && nodeChecked) {
+    if (mode === FilingPlanMode.SOLO && nodeChecked) {
       this.unselectOther(node.vitamId, this.nestedDataSource.data);
     }
 
@@ -238,14 +239,14 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     // remove old inclusion/exclusion because of a parent change status
     if (nodeChecked) {
       const oldExcludedIndex = this.selectedNodes.excluded.findIndex((id) => node.vitamId === id);
-      if (this.mode === FilingPlanMode.BOTH && oldExcludedIndex !== -1) {
+      if (mode === FilingPlanMode.BOTH && oldExcludedIndex !== -1) {
         this.selectedNodes.excluded.splice(oldExcludedIndex, 1);
       } else {
         this.selectedNodes.included.push(node.vitamId);
       }
     } else {
       const oldIncludedIndex = this.selectedNodes.included.findIndex((id) => node.vitamId === id);
-      if (this.mode === FilingPlanMode.BOTH && oldIncludedIndex === -1) {
+      if (mode === FilingPlanMode.BOTH && oldIncludedIndex === -1) {
         this.selectedNodes.excluded.push(node.vitamId);
       } else {
         this.selectedNodes.included.splice(oldIncludedIndex, 1);
@@ -279,31 +280,32 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     for (const node of nodes) {
       if (!node || shouldStop) continue;
 
-      if (this.mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {
+      const mode = this.mode();
+      if (mode === FilingPlanMode.SOLO && obj.included && obj.included.includes(node.vitamId)) {
         node.checked = true;
         shouldStop = true;
         break;
       }
 
-      if (this.mode === FilingPlanMode.INCLUDE_ONLY && !parentChecked && obj.included && obj.included.includes(node.vitamId)) {
+      if (mode === FilingPlanMode.INCLUDE_ONLY && !parentChecked && obj.included?.includes(node.vitamId)) {
         node.checked = true;
         this.updateChildrenStatusAndSelectedNodes(node.children, true);
         continue;
       }
 
       if (
-        this.mode === FilingPlanMode.BOTH &&
+        mode === FilingPlanMode.BOTH &&
         node.parents?.length > 0 &&
         (node.parents[0].disabled || (obj.excluded && obj.excluded.includes(node.parents[0].vitamId)))
       ) {
         node.disabled = true;
       }
 
-      if ((this.mode === FilingPlanMode.BOTH && !parentChecked && obj.included && obj.included.includes(node.vitamId)) || parentChecked) {
+      if ((mode === FilingPlanMode.BOTH && !parentChecked && obj.included?.includes(node.vitamId)) || parentChecked) {
         node.checked = true;
       }
 
-      if (this.mode === FilingPlanMode.BOTH && parentChecked && obj.excluded && obj.excluded.includes(node.vitamId)) {
+      if (mode === FilingPlanMode.BOTH && parentChecked && obj.excluded?.includes(node.vitamId)) {
         node.checked = false;
         this.updateParentsStatus(node.parents, false, node.disabledChild);
       }
@@ -320,6 +322,6 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.disabledState.set(isDisabled);
   }
 }

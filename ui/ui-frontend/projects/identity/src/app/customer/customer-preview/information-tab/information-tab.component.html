@@ -188,7 +188,7 @@
 
   <div class="row">
     <div class="col-12 form-control">
-      <vitamui-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus">
+      <vitamui-slide-toggle formControlName="gdprAlert" [disabled]="gdprReadOnlyStatus()">
         {{ 'CUSTOMER.INFORMATIONS.ALERT_ON_INACTIVE_USERS' | translate }}
       </vitamui-slide-toggle>
     </div>
@@ -197,7 +197,7 @@
     <div class="row">
       <div class="col-12 form-control">
         <vitamui-common-editable-input
-          [disabled]="gdprReadOnlyStatus && !form?.get('gdprAlert')?.value"
+          [disabled]="gdprReadOnlyStatus() && !form?.get('gdprAlert')?.value"
           formControlName="gdprAlertDelay"
           [label]="'CUSTOMER.INFORMATIONS.ALERT_DURATION_ON_INACTIVE_USERS.LABEL' | translate"
           [validator]="form?.get('gdprAlertDelay')?.validator"

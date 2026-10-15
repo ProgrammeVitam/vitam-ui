@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -95,7 +95,7 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   public search = '';
   public tenantIdentifier: number;
 
-  @ViewChild(AccessContractListComponent, { static: true }) accessContractListComponent: AccessContractListComponent;
+  readonly accessContractListComponent = viewChild(AccessContractListComponent);
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').pipe(shareReplay(1));
 
@@ -178,10 +178,11 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   }
 
   private refreshList() {
-    if (!this.accessContractListComponent) {
+    const accessContractListComponent = this.accessContractListComponent();
+    if (!accessContractListComponent) {
       return;
     }
 
-    this.accessContractListComponent.searchAccessContractOrdered();
+    accessContractListComponent.searchAccessContractOrdered();
   }
 }

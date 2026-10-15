@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,16 +50,15 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./ingest-contract-object-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
-export class IngestContractObjectTabComponent {
+export class IngestContractObjectTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
+  readonly isFormValid = output<boolean>();
 
   form: FormGroup;
   submited = signal(false);
-  private _ingestContract: IngestContract;
 
   // FIXME: Get list from common var ?
   usages: Option[] = [
@@ -72,41 +71,17 @@ export class IngestContractObjectTabComponent {
 
   previousValue = (): any => {
     return {
-      masterMandatory: this._ingestContract.masterMandatory,
-      everyDataObjectVersion: this._ingestContract.everyDataObjectVersion,
-      dataObjectVersion: this._ingestContract.dataObjectVersion,
+      masterMandatory: this.ingestContract().masterMandatory,
+      everyDataObjectVersion: this.ingestContract().everyDataObjectVersion,
+      dataObjectVersion: this.ingestContract().dataObjectVersion,
     };
   };
 
-  @Input()
-  set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-    if (!this._ingestContract.dataObjectVersion) {
-      this._ingestContract.dataObjectVersion = [];
-    }
-    this.resetForm(this.previousValue());
-    this.updated.emit(false);
-  }
+  readonly ingestContract = model<IngestContract>(undefined);
 
-  get ingestContract(): IngestContract {
-    return this._ingestContract;
-  }
+  readonly isTabActive = input<boolean>(undefined);
 
-  @Input() set isTabActive(isActive: boolean) {
-    if (isActive) {
-      this.resetForm(this.ingestContract);
-    }
-  }
-
-  @Input()
-  set readOnly(readOnly: boolean) {
-    if (readOnly && this.form.enabled) {
-      this.form.disable({ emitEvent: false });
-    } else if (this.form.disabled) {
-      this.form.enable({ emitEvent: false });
-      this.form.get('identifier').disable({ emitEvent: false });
-    }
-  }
+  readonly readOnly = input<boolean>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -128,6 +103,27 @@ export class IngestContractObjectTabComponent {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['readOnly']) {
+      const readOnly = this.readOnly();
+      if (readOnly && this.form.enabled) {
+        this.form.disable({ emitEvent: false });
+      } else if (this.form.disabled) {
+        this.form.enable({ emitEvent: false });
+        this.form.get('identifier').disable({ emitEvent: false });
+      }
+    }
+    if (changes['ingestContract']) {
+      this.setIngestContract(this.ingestContract());
+    }
+    if (changes['isTabActive']) {
+      const isActive = this.isTabActive();
+      if (isActive) {
+        this.resetForm(this.ingestContract());
+      }
+    }
+  }
+
   unchanged(): boolean {
     const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
@@ -137,7 +133,7 @@ export class IngestContractObjectTabComponent {
   prepareSubmit(): Observable<IngestContract> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({ id: this._ingestContract.id, identifier: this._ingestContract.identifier }, formData)),
+      map((formData) => extend({ id: this.ingestContract().id, identifier: this.ingestContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
         this.ingestContractService.patch(formData).pipe(catchError(() => of(null))),
       ),
@@ -148,9 +144,9 @@ export class IngestContractObjectTabComponent {
     this.submited.set(true);
     this.prepareSubmit().subscribe(
       () => {
-        this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
+        this.ingestContractService.get(this.ingestContract().identifier).subscribe((response) => {
           this.submited.set(false);
-          this.ingestContract = response;
+          this.setIngestContract(response);
         });
       },
       () => {
@@ -165,6 +161,15 @@ export class IngestContractObjectTabComponent {
       (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending);
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
+  }
+
+  private setIngestContract(ingestContract: IngestContract) {
+    this.ingestContract.set(ingestContract);
+    if (!this.ingestContract().dataObjectVersion) {
+      this.ingestContract().dataObjectVersion = [];
+    }
+    this.resetForm(this.previousValue());
+    this.updated.emit(false);
   }
 
   resetForm(ingestContract: IngestContract) {

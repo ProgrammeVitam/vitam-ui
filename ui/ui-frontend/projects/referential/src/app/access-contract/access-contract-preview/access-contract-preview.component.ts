@@ -38,13 +38,13 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
   Component,
-  EventEmitter,
   forwardRef,
   HostListener,
   inject,
-  Input,
-  Output,
-  ViewChild,
+  input,
+  output,
+  viewChild,
+  model,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
@@ -91,27 +91,27 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly accessContractService = inject(AccessContractService);
 
-  @Input() accessContract: AccessContract;
-  @Input() tenantIdentifier: number;
+  readonly accessContract = model<AccessContract>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
 
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  readonly previewClose = output<any>();
 
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
   updatableTabs: {
     id: string;
     component?: AccessContractInformationTabComponent | AccessContractWriteAccessTabComponent;
   }[] = [];
 
-  @ViewChild('infoTab', { static: false }) infoTab: AccessContractInformationTabComponent;
-  @ViewChild('authorizationsTab', { static: false }) authorizationsTab: AccessContractAuthorizationsTabComponent;
-  @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
+  readonly infoTab = viewChild<AccessContractInformationTabComponent>('infoTab');
+  readonly authorizationsTab = viewChild<AccessContractAuthorizationsTabComponent>('authorizationsTab');
+  readonly writeTab = viewChild<AccessContractWriteAccessTabComponent>('writeTab');
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
     this.updatableTabs = [
-      { id: 'infoTab', component: this.infoTab },
+      { id: 'infoTab', component: this.infoTab() },
       { id: 'authorizationsTab' },
-      { id: 'writeTab', component: this.writeTab },
+      { id: 'writeTab', component: this.writeTab() },
       { id: 'positionTab' },
       { id: 'historyTab' },
     ];
@@ -130,7 +130,7 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   public async emitClose() {
     await this.checkBeforeExit();
 
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 
   private async checkBeforeExit() {
@@ -143,13 +143,13 @@ export class AccessContractPreviewComponent implements AfterViewInit {
       const submitAccessContractUpdate: Observable<AccessContract> = activeTabComponent.prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.accessContractService.get(this.accessContract.identifier).subscribe((response) => {
-          this.accessContract = response;
+        this.accessContractService.get(this.accessContract().identifier).subscribe((response) => {
+          this.accessContract.set(response);
           this.cdr.markForCheck();
         });
       });
     } else {
-      activeTabComponent.resetForm(this.accessContract);
+      activeTabComponent.resetForm(this.accessContract());
     }
   }
 
@@ -157,21 +157,21 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     await this.checkBeforeExit();
 
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   private async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
   updatedAccessContract(accessContract: AccessContract) {
-    this.accessContract = accessContract;
+    this.accessContract.set(accessContract);
   }
 
   private getActiveTab() {
-    const activeIndex = this.tabs.selectedIndex;
+    const activeIndex = this.tabs().selectedIndex;
     return this.updatableTabs[activeIndex];
   }
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, SimpleChanges, input } from '@angular/core';
 import type { DisplayObject } from '../../models/display-object.model';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
 import { TypeService } from '../../services/type.service';
@@ -54,7 +54,7 @@ export class ListComponent implements OnChanges {
   private readonly typeService = inject(TypeService);
   private readonly favoriteEntryService = inject(FavoriteEntryService);
 
-  @Input() displayObject: DisplayObject;
+  readonly displayObject = input<DisplayObject>(undefined);
 
   isPrimitiveList: boolean;
 
@@ -65,13 +65,14 @@ export class ListComponent implements OnChanges {
     const { displayObject } = changes;
 
     if (displayObject) {
-      this.favoriteEntryService.favoriteEntry(this.displayObject);
-      this.isPrimitiveList = this.typeService.isPrimitiveList(this.displayObject.value);
-      this.childrenValues = this.displayObject.children.map((c) => c.value);
+      const displayObjectValue = this.displayObject();
+      this.favoriteEntryService.favoriteEntry(displayObjectValue);
+      this.isPrimitiveList = this.typeService.isPrimitiveList(displayObjectValue.value);
+      this.childrenValues = displayObjectValue.children.map((c) => c.value);
     }
   }
 
   toggle(): void {
-    this.displayObject.open = !this.displayObject.open;
+    this.displayObject().open = !this.displayObject().open;
   }
 }

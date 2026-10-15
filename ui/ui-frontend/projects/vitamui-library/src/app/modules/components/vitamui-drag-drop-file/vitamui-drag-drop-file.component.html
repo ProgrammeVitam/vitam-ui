@@ -1,14 +1,14 @@
-@if (imageUrl && canDelete) {
-  <mat-icon [class.disabled]="disabled" (click)="onDelete()" class="delete pointer">clear</mat-icon>
+@if (imageUrl && canDelete()) {
+  <mat-icon [class.disabled]="disabled()" (click)="onDelete()" class="delete pointer">clear</mat-icon>
 }
-<div [class.disabled]="disabled">
+<div [class.disabled]="disabled()">
   <div class="drag-and-drop-area" vitamuiCommonDragAndDrop (fileToUploadEmitter)="handleImage($event)">
     <input type="file" #fileSearch class="d-none" (change)="handleImage($event.target.files)" />
     <div class="image-area d-flex flex-column justify-content-center align-items-center">
-      @if (!imageUrl && messContent) {
+      @if (!imageUrl && messContent()) {
         <div class="">
           <h5>
-            {{ messContent }}
+            {{ messContent() }}
           </h5>
         </div>
       }
@@ -20,7 +20,7 @@
   <div class="d-flex flex-column pt-2">
     <span (click)="addLogo()" class="upload pointer text caption light bold">
       <mat-icon class="pj">attach_file</mat-icon>
-      {{ messPj }}
+      {{ messPj() }}
     </span>
     <small class="error-message">
       @if (hasError) {

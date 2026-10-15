@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, output } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -72,8 +72,8 @@ export class FilingHoldingSchemeComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
-  @Output() showArchiveUnitDetails = new EventEmitter<Unit>();
-  @Output() switchView: EventEmitter<void> = new EventEmitter();
+  readonly showArchiveUnitDetails = output<Unit>();
+  readonly switchView = output<void>();
   private subscriptions = new Subscription();
 
   tenantIdentifier: number;

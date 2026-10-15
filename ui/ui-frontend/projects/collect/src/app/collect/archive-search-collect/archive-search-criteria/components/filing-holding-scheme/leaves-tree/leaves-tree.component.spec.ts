@@ -119,7 +119,7 @@ describe('LeavesTreeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LeavesTreeComponent);
     component = fixture.componentInstance;
-    component.loadingNodeUnit = true;
+    fixture.componentRef.setInput('loadingNodeUnit', true);
     nestedDataSource = new MatTreeNestedDataSource();
     nestedDataSource.data = [
       newTreeNode('node-0', 1, [
@@ -130,12 +130,12 @@ describe('LeavesTreeComponent', () => {
         newTreeNode('node-0-4', 0),
       ]),
     ];
-    component.nestedDataSourceLeaves = nestedDataSource;
+    fixture.componentRef.setInput('nestedDataSourceLeaves', nestedDataSource);
     resultFacets = [
       { node: 'node-0', count: 1 },
       { node: 'node-0-1', count: 1 },
     ];
-    component.searchRequestResultFacets = resultFacets;
+    fixture.componentRef.setInput('searchRequestResultFacets', resultFacets);
     fixture.detectChanges();
   });
 

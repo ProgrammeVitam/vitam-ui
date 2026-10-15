@@ -3,15 +3,15 @@
   [colorPicker]="color"
   (colorPickerChange)="handlePicker($event)"
   (colorPickerOpen)="onPickerOpen()"
-  [disabled]="disabled"
+  [disabled]="disabled()"
   (change)="forceHex()"
   (keyup)="forceHex()"
-  [formControl]="colorInput"
+  [formControl]="colorInput()"
   cpAlphaChannel="disabled"
   [cpDisableInput]="true"
   cpOutputFormat="hex"
   [maxlength]="7"
-  [placeholder]="placeholder"
+  [placeholder]="placeholder()"
   [errorMessageMap]="{
     colorTooLight: 'CUSTOMER.GRAPHIC_IDENTITY.TOO_LIGHT' | translate,
     colorTooDark: 'CUSTOMER.GRAPHIC_IDENTITY.TOO_DARK' | translate,

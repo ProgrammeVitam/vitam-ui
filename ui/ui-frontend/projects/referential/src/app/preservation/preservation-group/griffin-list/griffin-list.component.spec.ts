@@ -87,7 +87,7 @@ describe('GriffinListComponent', () => {
     matDialogOpen = vi.spyOn(fixture.debugElement.injector.get(MatDialog), 'open');
     whenDialogClosesWith(true);
 
-    component.searchText = '';
+    fixture.componentRef.setInput('searchText', '');
     fixture.detectChanges();
   }
 
@@ -139,7 +139,7 @@ describe('GriffinListComponent', () => {
 
       fixture = TestBed.createComponent(GriffinListComponent);
       component = fixture.componentInstance;
-      component.searchText = '';
+      fixture.componentRef.setInput('searchText', '');
       fixture.detectChanges();
 
       expect(component.canDelete()).toBe(false);

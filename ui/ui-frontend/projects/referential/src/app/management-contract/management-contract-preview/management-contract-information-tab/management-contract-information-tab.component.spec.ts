@@ -139,7 +139,7 @@ describe('ManagementContractInformationTabComponent', () => {
       description: 'Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
       status: true,
     };
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
     component.form.setValue(managementContractForm);
 
     vi.spyOn(managementContractServiceMock, 'patch');
@@ -154,7 +154,7 @@ describe('ManagementContractInformationTabComponent', () => {
 
   it('should return the correct managementContract sended', () => {
     // Given
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
 
     // When
     const managementContratForm = component.previousValue();
@@ -178,7 +178,7 @@ describe('ManagementContractInformationTabComponent', () => {
       description: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
       status: true,
     };
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
     component.form.setValue(managementContractForm);
     vi.spyOn(managementContractServiceMock, 'get');
     vi.spyOn(managementContractServiceMock, 'patch');
@@ -215,7 +215,7 @@ describe('ManagementContractInformationTabComponent', () => {
       description: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
       status: true,
     };
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
     component.form.setValue(managementContractForm);
 
     // When
@@ -229,7 +229,8 @@ describe('ManagementContractInformationTabComponent', () => {
     vi.spyOn(managementContractServiceMock, 'patch');
 
     // Given
-    component.inputManagementContract = managementContract;
+    fixture.componentRef.setInput('inputManagementContract', managementContract);
+    fixture.detectChanges();
 
     // When
     component.form.setValue({
@@ -254,7 +255,8 @@ describe('ManagementContractInformationTabComponent', () => {
     vi.spyOn(managementContractServiceMock, 'patch');
 
     // Given
-    component.inputManagementContract = managementContract;
+    fixture.componentRef.setInput('inputManagementContract', managementContract);
+    fixture.detectChanges();
 
     // When
     component.form.setValue({

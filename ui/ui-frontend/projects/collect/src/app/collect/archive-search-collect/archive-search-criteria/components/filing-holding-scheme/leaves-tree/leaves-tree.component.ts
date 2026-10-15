@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnDestroy, OnInit, signal, SimpleChanges, input, output } from '@angular/core';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNodeDef, MatTreeNodeOutlet } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
@@ -82,16 +82,16 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   private readonly archiveCollectService = inject(ArchiveCollectService);
   private readonly configurationsService = inject(ConfigurationsApiService);
 
-  @Input() loadingNodeUnit: boolean;
-  @Input() transactionId: string;
+  readonly loadingNodeUnit = input<boolean>(undefined);
+  readonly transactionId = input<string>(undefined);
   // Already a graph
-  @Input() nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
-  @Input() searchRequestResultFacets: ResultFacet[];
-  @Input() searchRequestTotalResults: number;
+  readonly nestedDataSourceLeaves = input<MatTreeNestedDataSource<FilingHoldingSchemeNode>>(undefined);
+  readonly searchRequestResultFacets = input<ResultFacet[]>(undefined);
+  readonly searchRequestTotalResults = input<number>(undefined);
 
-  @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
-  @Output() showNodeDetail: EventEmitter<Pair> = new EventEmitter();
-  @Output() switchView: EventEmitter<void> = new EventEmitter();
+  readonly addToSearchCriteria = output<FilingHoldingSchemeNode>();
+  readonly showNodeDetail = output<Pair>();
+  readonly switchView = output<void>();
 
   virtualPathLimitReached = signal(false);
 
@@ -118,18 +118,19 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.allNonOrphanNodes = this.nestedDataSourceLeaves.data.filter((node) => node.id !== 'ORPHANS_NODE');
+    this.allNonOrphanNodes = this.nestedDataSourceLeaves().data.filter((node) => node.id !== 'ORPHANS_NODE');
     this.subscribeOnSearchCriteriasUpdate();
     this.subscribeOnSelectedNode();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['nestedDataSourceLeaves'] || changes['searchRequestResultFacets']) {
-      this.virtualPathLimitReached.set(this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE);
-      this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
+      const searchRequestResultFacets = this.searchRequestResultFacets();
+      this.virtualPathLimitReached.set(searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE);
+      this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves().data;
       if (this.searchCriterias) {
         this.leavesTreeService
-          .loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves.data, this.searchRequestResultFacets)
+          .loadNodesDetailsFromFacetsIdsAndAddThem(this.nestedDataSourceLeaves().data, searchRequestResultFacets)
           .subscribe(() => this.refreshTreeNodes());
       }
       if (changes['searchRequestResultFacets'] && changes['searchRequestResultFacets']['currentValue']?.length > 0) {
@@ -138,7 +139,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
       this.refreshTreeNodes();
     }
     if (changes['transactionId']) {
-      this.leavesTreeService.setTransactionId(this.transactionId);
+      this.leavesTreeService.setTransactionId(this.transactionId());
     }
     this.nonOrphanNodeSelected = this.allNonOrphanNodes.some((node) => node.id === this.unitId);
     this.nonOrphanChildNodeSelected = this.allNonOrphanNodes.some((node) => this.allunitups?.includes(node.id));
@@ -153,9 +154,10 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private refreshTreeNodes() {
-    const data = this.nestedDataSourceLeaves.data;
-    this.nestedDataSourceLeaves.data = [];
-    this.nestedDataSourceLeaves.data = data;
+    const nestedDataSourceLeaves = this.nestedDataSourceLeaves();
+    const data = nestedDataSourceLeaves.data;
+    nestedDataSourceLeaves.data = [];
+    nestedDataSourceLeaves.data = data;
   }
 
   private firstToggle(node: FilingHoldingSchemeNode): boolean {

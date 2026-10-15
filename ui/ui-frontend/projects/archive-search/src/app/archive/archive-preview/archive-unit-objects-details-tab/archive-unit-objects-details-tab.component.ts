@@ -36,7 +36,7 @@
  */
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
 import {
   AccessContract,
   AccessContractService,
@@ -70,7 +70,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @Input() archiveUnit: Unit;
+  readonly archiveUnit = input<Unit>(undefined);
 
   hasDownloadDocumentRole = false;
 
@@ -109,13 +109,14 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   unitHasObject(): boolean {
-    return this.allowedDescriptionLevel.includes(this.archiveUnit.DescriptionLevel as any) && !!this.archiveUnit['#object'];
+    const archiveUnit = this.archiveUnit();
+    return this.allowedDescriptionLevel.includes(archiveUnit.DescriptionLevel as any) && !!archiveUnit['#object'];
   }
 
   onClickDownloadObject(event: Event, versionWithQualifier: VersionWithQualifierDto) {
     event.stopPropagation();
     return this.archiveService.downloadObjectFromUnit(
-      this.archiveUnit['#id'],
+      this.archiveUnit()['#id'],
       versionWithQualifier.qualifier,
       versionWithQualifier.version,
     );
@@ -126,17 +127,19 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   getObjectVersionsWithQualifiers() {
-    if (this.archiveUnit.objectGroup || !this.unitHasObject()) {
+    const archiveUnit = this.archiveUnit();
+    if (archiveUnit.objectGroup || !this.unitHasObject()) {
       return;
     }
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/json')
       .append(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContract.id);
-    this.archiveService.getObjectById(this.archiveUnit['#id'], headers).subscribe({
+    this.archiveService.getObjectById(archiveUnit['#id'], headers).subscribe({
       next: (unitObject) => {
-        this.archiveUnit.objectGroup = unitObject;
-        this.archiveUnit.objectGroup.versionsWithQualifiers = qualifiersToVersionsWithQualifier(unitObject['#qualifiers']);
-        this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup.next(this.archiveUnit);
+        const archiveUnitValue = this.archiveUnit();
+        archiveUnitValue.objectGroup = unitObject;
+        archiveUnitValue.objectGroup.versionsWithQualifiers = qualifiersToVersionsWithQualifier(unitObject['#qualifiers']);
+        this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup.next(archiveUnitValue);
         this.setDownloadableOnVersionsWithQualifiers();
         this.setFirstVersionWithQualifierOpen();
         // archiveUnit is an input mutated in place: request a refresh explicitly (zoneless).
@@ -147,10 +150,11 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   private setDownloadableOnVersionsWithQualifiers() {
-    if (!this.archiveUnit?.objectGroup?.versionsWithQualifiers) {
+    const archiveUnit = this.archiveUnit();
+    if (!archiveUnit?.objectGroup?.versionsWithQualifiers) {
       return;
     }
-    this.archiveUnit.objectGroup.versionsWithQualifiers.forEach((versionWithQualifier) => {
+    archiveUnit.objectGroup.versionsWithQualifiers.forEach((versionWithQualifier) => {
       versionWithQualifier.downloadAllowed = this.accessContractAllowDownloadFor(versionWithQualifier);
     });
   }
@@ -166,8 +170,9 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   }
 
   setFirstVersionWithQualifierOpen() {
-    if (this.archiveUnit.objectGroup.versionsWithQualifiers?.length > 0) {
-      this.archiveUnit.objectGroup.versionsWithQualifiers[0].opened = true;
+    const archiveUnit = this.archiveUnit();
+    if (archiveUnit.objectGroup.versionsWithQualifiers?.length > 0) {
+      archiveUnit.objectGroup.versionsWithQualifiers[0].opened = true;
     }
   }
 

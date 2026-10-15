@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, Input } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, input } from '@angular/core';
 import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { EditableFieldComponent } from '../editable-field.component';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
@@ -56,7 +56,7 @@ export const EDITABLE_LEVEL_INPUT_VALUE_ACCESSOR: any = {
   imports: [CdkOverlayOrigin, LevelInputComponent, FormsModule, ReactiveFormsModule, CdkConnectedOverlay, TranslatePipe, SubLevelPipe],
 })
 export class EditableLevelInputComponent extends EditableFieldComponent {
-  @Input() prefix: string;
+  readonly prefix = input<string>(undefined);
 
   constructor() {
     const elementRef = inject(ElementRef);

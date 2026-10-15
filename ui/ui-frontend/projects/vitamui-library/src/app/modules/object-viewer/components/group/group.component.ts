@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
 import type { DisplayObject } from '../../models/display-object.model';
 import { internationalizedKeys } from '../../services/display-object-helper.service';
 import { FavoriteEntryService } from '../../services/favorite-entry.service';
@@ -58,7 +58,7 @@ export class GroupComponent implements OnInit, OnChanges {
   private readonly layoutService = inject(LayoutService);
   private readonly favoriteEntryService = inject(FavoriteEntryService);
 
-  @Input() displayObject: DisplayObject;
+  readonly displayObject = input<DisplayObject>(undefined);
 
   favoriteEntry: [key: string, value: any];
   favoritePath: string;
@@ -69,8 +69,9 @@ export class GroupComponent implements OnInit, OnChanges {
   readonly entries = Object.entries as (value: object) => [string, string | string[]][];
 
   ngOnInit(): void {
-    if (this.displayObject.key !== 'Generalities') {
-      this.displayObject.open = false;
+    const displayObject = this.displayObject();
+    if (displayObject.key !== 'Generalities') {
+      displayObject.open = false;
     }
   }
 
@@ -78,19 +79,20 @@ export class GroupComponent implements OnInit, OnChanges {
     const { displayObject } = changes;
 
     if (displayObject) {
-      this.display = this.displayObject.key
-        ? internationalizedKeys.includes(this.displayObject.key)
-          ? 'KEY-VALUE-OBJECTS'
-          : 'ACCORDION'
-        : 'ROWS';
+      const displayObjectValue = this.displayObject();
+      if (!displayObjectValue.key) {
+        this.display = 'ROWS';
+      } else {
+        this.display = internationalizedKeys.includes(displayObjectValue.key) ? 'KEY-VALUE-OBJECTS' : 'ACCORDION';
+      }
 
-      this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.displayObject);
-      this.favoritePath = this.favoriteEntryService.favoritePath(this.displayObject);
-      this.rows = this.layoutService.compute(this.displayObject);
+      this.favoriteEntry = this.favoriteEntryService.favoriteEntry(this.displayObject());
+      this.favoritePath = this.favoriteEntryService.favoritePath(this.displayObject());
+      this.rows = this.layoutService.compute(this.displayObject());
     }
   }
 
   toggle(): void {
-    this.displayObject.open = !this.displayObject.open;
+    this.displayObject().open = !this.displayObject().open;
   }
 }

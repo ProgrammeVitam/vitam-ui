@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -78,7 +78,7 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   isLPExtended = false;
   createDialogSub: Subscription;
 
-  @ViewChild(ProjectListComponent, { static: true }) projectListComponent: ProjectListComponent;
+  readonly projectListComponent = viewChild(ProjectListComponent);
 
   constructor() {
     const projectsService = inject(ProjectsService);
@@ -105,7 +105,7 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
     });
 
     this.createDialogSub = dialogRef.afterClosed().subscribe(() => {
-      this.projectListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT));
+      this.projectListComponent().search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT));
     });
   }
 
@@ -130,6 +130,6 @@ export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
       : null;
 
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT, criteria);
-    this.projectListComponent.search(pageRequest);
+    this.projectListComponent().search(pageRequest);
   }
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HintComponent } from '../../components/hint/hint.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -47,9 +47,9 @@ import { FormErrorsComponent } from '../../../../lib/components/form-errors/form
   selector: 'vitamui-editor-select',
   template: `
     <mat-form-field class="mb-4 w-100 vitamui-mat-select">
-      <mat-label>{{ label | translate | empty }}</mat-label>
-      <mat-select [formControl]="control" [multiple]="multiple" panelClass="vitamui-mat-select">
-        @for (option of options; track option) {
+      <mat-label>{{ label() | translate | empty }}</mat-label>
+      <mat-select [formControl]="control()" [multiple]="multiple()" panelClass="vitamui-mat-select">
+        @for (option of options(); track option) {
           <mat-option [value]="option">
             {{ option }}
           </mat-option>
@@ -60,16 +60,16 @@ import { FormErrorsComponent } from '../../../../lib/components/form-errors/form
         <i class="material-icons">keyboard_arrow_down</i>
       </div>
     </mat-form-field>
-    <vitamui-hint [control]="control" [hint]="hint"></vitamui-hint>
-    <vitamui-form-errors [control]="control"></vitamui-form-errors>
+    <vitamui-hint [control]="control()" [hint]="hint()"></vitamui-hint>
+    <vitamui-form-errors [control]="control()"></vitamui-form-errors>
   `,
   imports: [ReactiveFormsModule, HintComponent, TranslatePipe, PipesModule, MatFormFieldModule, MatSelectModule, FormErrorsComponent],
 })
 export class EditorSelectComponent {
-  @Input({ required: true }) control!: FormControl;
-  @Input() options: string[] = [];
-  @Input() multiple: boolean = false;
-  @Input() required: boolean = false;
-  @Input() label?: string;
-  @Input() hint?: string;
+  readonly control = input.required<FormControl>();
+  readonly options = input<string[]>([]);
+  readonly multiple = input<boolean>(false);
+  readonly required = input<boolean>(false);
+  readonly label = input<string>(undefined);
+  readonly hint = input<string>(undefined);
 }

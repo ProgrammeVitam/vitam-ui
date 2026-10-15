@@ -61,11 +61,11 @@ describe('IngestInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestInformationTabComponent);
     component = fixture.componentInstance;
-    component.ingest = {
+    fixture.componentRef.setInput('ingest', {
       id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
       agIdExt: {},
       events: [{}],
-    };
+    });
     fixture.detectChanges();
   });
 

@@ -58,13 +58,13 @@ describe('SecurityProfilePreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfilePreviewComponent);
     component = fixture.componentInstance;
-    component.securityProfile = {
+    fixture.componentRef.setInput('securityProfile', {
       id: 'vitam_id',
       name: 'Name',
       identifier: 'SP-000001',
       fullAccess: true,
       permissions: [],
-    };
+    });
     fixture.detectChanges();
   });
 

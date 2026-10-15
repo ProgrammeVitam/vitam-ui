@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output, input, OnChanges, SimpleChanges } from '@angular/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -77,7 +77,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
     InfiniteScrollDirective,
   ],
 })
-export class IngestContractListComponent extends InfiniteScrollTable<IngestContract> implements OnDestroy, OnInit {
+export class IngestContractListComponent extends InfiniteScrollTable<IngestContract> implements OnChanges, OnDestroy, OnInit {
   ingestContractService: IngestContractService;
 
   orderBy = 'Name';
@@ -93,14 +93,9 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
   private readonly searchChange = new Subject<string>();
   public readonly orderChange = new Subject<void>();
 
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.searchChange.next(searchText);
-  }
+  readonly searchText = input<string>(undefined);
 
-  @Output()
-  ingestContractClick = new EventEmitter<IngestContract>();
+  readonly ingestContractClick = output<IngestContract>();
 
   constructor() {
     const ingestContractService = inject(IngestContractService);
@@ -108,6 +103,14 @@ export class IngestContractListComponent extends InfiniteScrollTable<IngestContr
     super(ingestContractService);
 
     this.ingestContractService = ingestContractService;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.searchChange.next(searchText);
+    }
   }
 
   ngOnInit() {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, input, output } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../../auth.service';
 import { ThemeDataType } from '../../../models/customer/theme/themeDataType.enum';
@@ -51,12 +51,12 @@ export class UserPhotoComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
   private readonly authService = inject(AuthService);
 
-  @Input() photo: string;
-  @Input() size = 40;
-  @Input() hasStatus = false;
-  @Input() statusCondition = false;
+  readonly photo = input<string>(undefined);
+  readonly size = input(40);
+  readonly hasStatus = input(false);
+  readonly statusCondition = input(false);
 
-  @Output() photoClicked = new EventEmitter<any>();
+  readonly photoClicked = output<any>();
   public userDefaultLogoUrl = signal<SafeResourceUrl>(undefined);
 
   ngOnInit() {

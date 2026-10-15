@@ -92,7 +92,7 @@ describe('OntologyInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OntologyInformationTabComponent);
     component = fixture.componentInstance;
-    component.inputOntology = ontologyValue;
+    fixture.componentRef.setInput('inputOntology', ontologyValue);
     fixture.detectChanges();
   });
 

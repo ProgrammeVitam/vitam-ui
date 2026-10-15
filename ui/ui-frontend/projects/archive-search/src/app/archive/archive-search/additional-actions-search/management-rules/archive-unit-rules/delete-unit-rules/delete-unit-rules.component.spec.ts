@@ -220,7 +220,7 @@ describe('DeleteUnitRulesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DeleteUnitRulesComponent);
     component = fixture.componentInstance;
-    component.rulesList = new Observable<Rule[]>();
+    fixture.componentRef.setInput('rulesList', new Observable<Rule[]>());
     fixture.detectChanges();
   });
 

@@ -96,7 +96,7 @@ describe('PreservationScenarioListComponent', () => {
     matDialogOpen = vi.spyOn(fixture.debugElement.injector.get(MatDialog), 'open');
     whenDialogClosesWith(true);
 
-    component.searchText = '';
+    fixture.componentRef.setInput('searchText', '');
     fixture.detectChanges();
   });
 

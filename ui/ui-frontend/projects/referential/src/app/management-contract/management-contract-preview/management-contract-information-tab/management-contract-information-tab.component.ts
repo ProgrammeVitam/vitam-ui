@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, inject, output, model, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -50,32 +50,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./management-contract-information-tab.component.scss'],
   imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, MatProgressSpinner, PipesModule, TranslatePipe],
 })
-export class ManagementContractInformationTabComponent {
+export class ManagementContractInformationTabComponent implements OnChanges {
   private readonly formBuilder = inject(FormBuilder);
   private readonly managementContractService = inject(ManagementContractService);
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   form: FormGroup;
   submitting = false;
 
-  @Input()
-  set inputManagementContract(managementContract: ManagementContract) {
-    this._inputManagementContract = managementContract;
-
-    if (!managementContract.description) {
-      this._inputManagementContract.description = '';
-    }
-
-    this.resetForm(this.inputManagementContract);
-    this.updated.emit(false);
-  }
-
-  get inputManagementContract(): ManagementContract {
-    return this._inputManagementContract;
-  }
-
-  _inputManagementContract: ManagementContract;
+  readonly inputManagementContract = model<ManagementContract>(undefined);
 
   constructor() {
     this.form = this.formBuilder.group({
@@ -86,13 +70,19 @@ export class ManagementContractInformationTabComponent {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['inputManagementContract']) {
+      this.setInputManagementContract(this.inputManagementContract());
+    }
+  }
+
   previousValue = (): any => {
     return {
-      id: this._inputManagementContract.id,
-      identifier: this._inputManagementContract.identifier,
-      name: this._inputManagementContract.name,
-      description: this._inputManagementContract.description,
-      status: this._inputManagementContract.status === 'ACTIVE',
+      id: this.inputManagementContract().id,
+      identifier: this.inputManagementContract().identifier,
+      name: this.inputManagementContract().name,
+      description: this.inputManagementContract().description,
+      status: this.inputManagementContract().status === 'ACTIVE',
     };
   };
 
@@ -134,15 +124,26 @@ export class ManagementContractInformationTabComponent {
     this.submitting = true;
     this.prepareSubmit().subscribe(
       () => {
-        this.managementContractService.get(this._inputManagementContract.identifier).subscribe((response) => {
+        this.managementContractService.get(this.inputManagementContract().identifier).subscribe((response) => {
           this.submitting = false;
-          this.inputManagementContract = response;
+          this.setInputManagementContract(response);
         });
       },
       () => {
         this.submitting = false;
       },
     );
+  }
+
+  private setInputManagementContract(managementContract: ManagementContract) {
+    this.inputManagementContract.set(managementContract);
+
+    if (!managementContract.description) {
+      this.inputManagementContract().description = '';
+    }
+
+    this.resetForm(this.inputManagementContract());
+    this.updated.emit(false);
   }
 
   resetForm(managementContract: ManagementContract) {

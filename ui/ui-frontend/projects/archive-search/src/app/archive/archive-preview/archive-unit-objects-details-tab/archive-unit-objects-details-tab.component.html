@@ -1,4 +1,4 @@
-@if (archiveUnit.objectGroup) {
+@if (archiveUnit().objectGroup) {
   <div>
     <div class="object-details-group IDS">
       <div class="row">
@@ -10,7 +10,7 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.OBJECT_GROUP_ID' | translate }}</label>
-            <div>{{ archiveUnit.objectGroup['#id'] }}</div>
+            <div>{{ archiveUnit().objectGroup['#id'] }}</div>
           </div>
         </div>
       </div>
@@ -18,16 +18,16 @@
         <div class="col">
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.CREATION_DATE' | translate }}</label>
-            <div>{{ archiveUnit.objectGroup['#approximate_creation_date'] }}</div>
+            <div>{{ archiveUnit().objectGroup['#approximate_creation_date'] }}</div>
           </div>
           <div class="read-only-field">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.LAST_MODIFIED_DATE' | translate }}</label>
-            <div>{{ archiveUnit.objectGroup['#approximate_update_date'] }}</div>
+            <div>{{ archiveUnit().objectGroup['#approximate_update_date'] }}</div>
           </div>
         </div>
       </div>
     </div>
-    @for (versionWithQualifier of archiveUnit.objectGroup.versionsWithQualifiers; track versionWithQualifier) {
+    @for (versionWithQualifier of archiveUnit().objectGroup.versionsWithQualifiers; track versionWithQualifier) {
       <div class="object-container">
         @if (versionWithQualifier.qualifier === 'PhysicalMaster') {
           <vitamui-common-physical-archive-viewer [archive]="versionWithQualifier"></vitamui-common-physical-archive-viewer>

@@ -1,10 +1,10 @@
-@if (ingest) {
+@if (ingest()) {
   <div class="gap-2">
-    <vitamui-common-data [label]="'INGEST_DETAIL.DEPOSIT_ID' | translate" [value]="ingest.obIdIn"></vitamui-common-data>
+    <vitamui-common-data [label]="'INGEST_DETAIL.DEPOSIT_ID' | translate" [value]="ingest().obIdIn"></vitamui-common-data>
     <vitamui-common-data [label]="'INGEST_DETAIL.NAME' | translate" [value]="evDetDataDeflated?.EvDetailReq"></vitamui-common-data>
     <vitamui-common-data
       [label]="'INGEST_DETAIL.OPERATION_ID' | translate"
-      [value]="ingest.id"
+      [value]="ingest().id"
       [valueUrl]="getOpiUrl$() | async"
       [valueTooltip]="'INGEST_DETAIL.OPERATION_ID_TOOLTIP' | translate"
       [canCopyValue]="true"
@@ -13,12 +13,12 @@
       <vitamui-common-data
         class="col-6"
         [label]="'INGEST_DETAIL.START_DATE' | translate"
-        [value]="ingest?.evDateTime | dateTime: 'dd/MM/yyyy'"
+        [value]="ingest()?.evDateTime | dateTime: 'dd/MM/yyyy'"
       ></vitamui-common-data>
       <vitamui-common-data
         class="col-6"
         [label]="'INGEST_DETAIL.END_DATE' | translate"
-        [value]="ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy'"
+        [value]="ingestEndDate(ingest()) | dateTime: 'dd/MM/yyyy'"
       ></vitamui-common-data>
       @if (referentialNames$ | async; as names) {
         <vitamui-common-data
@@ -61,7 +61,7 @@
       <label class="text caption bold primary">{{ 'INGEST_DETAIL.OPERATION_DETAILS' | translate }}</label>
       @if (hasEvent()) {
         <div>
-          <app-ingest-event-detail [ingest]="ingest"></app-ingest-event-detail>
+          <app-ingest-event-detail [ingest]="ingest()"></app-ingest-event-detail>
         </div>
       }
     </div>

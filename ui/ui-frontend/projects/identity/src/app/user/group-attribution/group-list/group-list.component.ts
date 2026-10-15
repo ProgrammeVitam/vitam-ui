@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, input, output, model, linkedSignal } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CollapseDirective, EllipsisDirective, Profile, SearchBarComponent } from 'vitamui-library';
 import { GroupSelection } from './../../group-selection.interface';
@@ -51,65 +51,61 @@ import { CommonModule } from '@angular/common';
 export class GroupListComponent implements OnInit {
   data = inject(MAT_DIALOG_DATA);
 
-  public groupName: string;
-
   private initialGroups: GroupSelection[];
 
   public groupProfiles: Profile[] = [];
 
-  @Input()
-  public groups: GroupSelection[];
+  public readonly groups = model<GroupSelection[]>(undefined);
 
-  @Input()
-  public searchActiv = false;
+  public readonly searchActiv = input(false);
 
-  @Input()
-  public set userGroupName(val: string) {
-    this.groupName = val;
-  }
+  public readonly userGroupName = input<string>();
 
-  @Output()
-  public selectedGroupEvent = new EventEmitter<GroupSelection>();
+  public readonly groupName = linkedSignal(() => this.userGroupName());
+
+  public readonly selectedGroupEvent = output<GroupSelection>();
 
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
 
   ngOnInit() {
-    this.initialGroups = this.groups.slice();
+    this.initialGroups = this.groups().slice();
   }
 
   updateGroup(groupId: string, groupName: string) {
-    this.groupName = groupName;
+    this.groupName.set(groupName);
     this.unselectAllGroups();
-    const selectedGroup = this.groups.find((group) => group.id === groupId);
+    const selectedGroup = this.groups().find((group) => group.id === groupId);
     selectedGroup.selected = true;
     this.selectedGroupEvent.emit(selectedGroup);
   }
 
   unselectAllGroups() {
-    this.groups.forEach((group) => (group.selected = false));
+    this.groups().forEach((group) => (group.selected = false));
   }
 
   public findGroup(id: string): GroupSelection {
-    return this.groups.find((value) => value.id === id);
+    return this.groups().find((value) => value.id === id);
   }
   public onSearch(text?: string): void {
     this.resetgroups();
     if (text !== null && text.length > 0) {
-      this.groups = this.groups.filter(
-        (group) =>
-          group.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
-          group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
+      this.groups.set(
+        this.groups().filter(
+          (group) =>
+            group.name.toLocaleLowerCase().includes(text.toLocaleLowerCase()) ||
+            group.description.toLocaleLowerCase().includes(text.toLocaleLowerCase()),
+        ),
       );
     }
   }
 
   public resetgroups(): void {
-    this.groups = this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX]
-      ? this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX]
-      : this.initialGroups;
-    this.groups.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1));
+    this.groups.set(
+      this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX] ? this.data[this.CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX] : this.initialGroups,
+    );
+    this.groups().sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1));
     if (this.data[1]) {
-      const selectedGroup = this.groups.find((group) => group.id === this.data[1].id);
+      const selectedGroup = this.groups().find((group) => group.id === this.data[1].id);
       if (selectedGroup) {
         selectedGroup.selected = true;
       }

@@ -1,23 +1,23 @@
-@if (pending) {
+@if (pending()) {
   <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
 }
-@if (!pending) {
+@if (!pending()) {
   @if (canLoadExactCount) {
     <a
       [vitamuiTooltip]="'ARCHIVE_SEARCH.RETRIEVE_EXACT_COUNT' | translate"
       [vitamuiTooltipShowDelay]="300"
       class="link-without-underline"
       (click)="loadExactCount()"
-      >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ threshold }}
+      >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ threshold() }}
     </a>
   }
   @if (!canLoadExactCount) {
-    <span>{{ archiveUnitCount }}</span>
+    <span>{{ archiveUnitCount() }}</span>
   }
   <span>
     {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} /
     {{ (displaySelectedArchiveUnitCount ? '' : 'ARCHIVE_SEARCH.MORE_THAN') | translate }}
-    {{ displaySelectedArchiveUnitCount ? selectedArchiveUnitCount : threshold }}
-    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural: selectedArchiveUnitCount }}
+    {{ displaySelectedArchiveUnitCount ? selectedArchiveUnitCount() : threshold() }}
+    {{ 'ARCHIVE_SEARCH.ONE_SELECTED' | translate | plural: selectedArchiveUnitCount() }}
   </span>
 }

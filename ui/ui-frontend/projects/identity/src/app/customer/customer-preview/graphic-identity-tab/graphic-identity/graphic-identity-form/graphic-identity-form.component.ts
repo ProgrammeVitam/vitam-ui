@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AttachmentType, Logo, ThemeService, VitamuiDragDropFileComponent } from 'vitamui-library';
 import { CustomerColorsInputComponent } from '../../../../customer-create/customer-colors-input/customer-colors-input.component';
@@ -49,14 +49,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class GraphicIdentityFormComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
 
-  @Input()
-  public graphicIdentityForm: FormGroup;
+  public readonly graphicIdentityForm = input<FormGroup>(undefined);
 
-  @Input()
-  public disabled = false;
+  public readonly disabled = input(false);
 
-  @Output()
-  public formChange = new EventEmitter<{ form: FormGroup; logos: Logo[] }>();
+  public readonly formChange = output<{
+    form: FormGroup;
+    logos: Logo[];
+  }>();
 
   public ATTACHMENT_TYPE = AttachmentType;
   private logos: Logo[] = [];
@@ -64,20 +64,23 @@ export class GraphicIdentityFormComponent implements OnInit {
   ngOnInit() {
     this.applyTheme();
 
-    this.graphicIdentityForm.valueChanges.subscribe(() => {
-      this.formChange.emit({ form: this.graphicIdentityForm, logos: this.logos });
+    this.graphicIdentityForm().valueChanges.subscribe(() => {
+      this.formChange.emit({ form: this.graphicIdentityForm(), logos: this.logos });
     });
 
-    this.graphicIdentityForm.get('themeColors').valueChanges.subscribe(() => {
-      this.graphicIdentityForm.updateValueAndValidity();
-      this.applyTheme();
-      this.formChange.emit({ form: this.graphicIdentityForm, logos: this.logos });
-    });
+    this.graphicIdentityForm()
+      .get('themeColors')
+      .valueChanges.subscribe(() => {
+        this.graphicIdentityForm().updateValueAndValidity();
+        this.applyTheme();
+        this.formChange.emit({ form: this.graphicIdentityForm(), logos: this.logos });
+      });
   }
 
   private applyTheme(): void {
-    if (this.graphicIdentityForm.valid) {
-      const colors = this.themeService.getThemeColors(this.graphicIdentityForm.get('themeColors').value);
+    const graphicIdentityForm = this.graphicIdentityForm();
+    if (graphicIdentityForm.valid) {
+      const colors = this.themeService.getThemeColors(graphicIdentityForm.get('themeColors').value);
       this.themeService.overloadLocalTheme(colors, '#toOverride');
     }
   }
@@ -90,6 +93,6 @@ export class GraphicIdentityFormComponent implements OnInit {
     } else {
       this.logos[index] = logo;
     }
-    this.formChange.emit({ form: this.graphicIdentityForm, logos: this.logos });
+    this.formChange.emit({ form: this.graphicIdentityForm(), logos: this.logos });
   }
 }

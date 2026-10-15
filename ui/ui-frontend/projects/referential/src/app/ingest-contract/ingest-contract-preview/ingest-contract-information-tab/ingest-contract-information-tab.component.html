@@ -38,14 +38,14 @@
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate"
-      [ngModel]="ingestContract.creationDate ? (ingestContract.creationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [ngModel]="ingestContract().creationDate ? (ingestContract().creationDate | dateTime: 'dd/MM/yyyy') : '-'"
       [ngModelOptions]="{ standalone: true }"
       disabled
     ></vitamui-input>
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate"
-      [ngModel]="ingestContract.lastUpdate ? (ingestContract.lastUpdate | dateTime: 'dd/MM/yyyy') : '-'"
+      [ngModel]="ingestContract().lastUpdate ? (ingestContract().lastUpdate | dateTime: 'dd/MM/yyyy') : '-'"
       [ngModelOptions]="{ standalone: true }"
       disabled
     ></vitamui-input>
@@ -53,8 +53,8 @@
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate"
       [ngModel]="
-        ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate
-          ? (ingestContract.activationDate | dateTime: 'dd/MM/yyyy')
+        ingestContract()?.status === 'ACTIVE' && ingestContract()?.activationDate
+          ? (ingestContract().activationDate | dateTime: 'dd/MM/yyyy')
           : '-'
       "
       [ngModelOptions]="{ standalone: true }"
@@ -63,7 +63,7 @@
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
-      [ngModel]="ingestContract?.deactivationDate ? (ingestContract.deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
+      [ngModel]="ingestContract()?.deactivationDate ? (ingestContract().deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
       [ngModelOptions]="{ standalone: true }"
       disabled
     ></vitamui-input>

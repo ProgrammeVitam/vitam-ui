@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, inject, OnDestroy, OnInit, output, viewChildren, input, OnChanges, SimpleChanges } from '@angular/core';
 import { finalize, Subscription } from 'rxjs';
 import {
   ClickOutsideDirective,
@@ -75,7 +75,7 @@ import { SchemaDeleteDialogComponent, SchemaDeleteDialogComponentData } from './
   templateUrl: './schema-list.component.html',
   styleUrls: ['./schema-list.component.scss'],
 })
-export class SchemaListComponent implements OnInit, OnDestroy {
+export class SchemaListComponent implements OnChanges, OnInit, OnDestroy {
   schemaService = inject(SchemaService);
   private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
@@ -83,15 +83,11 @@ export class SchemaListComponent implements OnInit, OnDestroy {
 
   private _searchText: string;
   private lastSelectedPath: string = '';
-  @Input()
-  set searchText(searchText: string) {
-    this._searchText = searchText;
-    this.filter();
-  }
+  readonly searchText = input<string>(undefined);
 
-  @Output() schemaClick = new EventEmitter<SchemaElement>();
+  readonly schemaClick = output<SchemaElement>();
 
-  @ViewChildren(MatRow, { read: ElementRef }) rows: QueryList<ElementRef>;
+  readonly rows = viewChildren(MatRow, { read: ElementRef });
   pending = false;
   private readonly subscriptions = new Subscription();
 
@@ -104,6 +100,14 @@ export class SchemaListComponent implements OnInit, OnDestroy {
     );
     this.treeControl = new FlatTreeControl<ItemFlatNode<SchemaElement>>(ItemNodeUtils.getLevel, ItemNodeUtils.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchText']) {
+      const searchText = this.searchText();
+      this._searchText = searchText;
+      this.filter();
+    }
   }
 
   ngOnInit() {
@@ -234,14 +238,14 @@ export class SchemaListComponent implements OnInit, OnDestroy {
   }
 
   previewDelete(item: SchemaElement) {
-    this.rows
+    this.rows()
       .map((row) => row.nativeElement as HTMLElement)
       .filter((row) => row.classList.contains(`path-${item.Path}`) || row.className.includes(`path-${item.Path}.`))
       .forEach((row) => row.classList.add('selected'));
   }
 
   hidePreviewDelete() {
-    this.rows.forEach((row) => (row.nativeElement as HTMLElement).classList.remove('selected'));
+    this.rows().forEach((row) => (row.nativeElement as HTMLElement).classList.remove('selected'));
   }
 
   selectLine(schema: SchemaElement) {

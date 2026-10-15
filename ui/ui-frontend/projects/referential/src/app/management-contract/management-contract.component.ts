@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
@@ -74,7 +74,7 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
   private readonly route = inject(ActivatedRoute);
   private readonly applicationService = inject(ApplicationService);
 
-  @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
+  readonly managementContractListComponent = viewChild(ManagementContractListComponent);
 
   search = '';
   tenantId: number;
@@ -117,10 +117,11 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
   }
 
   private refreshList() {
-    if (!this.managementContractListComponent) {
+    const managementContractListComponent = this.managementContractListComponent();
+    if (!managementContractListComponent) {
       return;
     }
-    this.managementContractListComponent.searchManagementContractOrdered();
+    managementContractListComponent.searchManagementContractOrdered();
   }
 
   onSearchSubmit(search: string) {

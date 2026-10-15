@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, HostBinding, HostListener, Input } from '@angular/core';
+import { Directive, HostBinding, HostListener, input } from '@angular/core';
 
 import { RowCollapseDirective } from './row-collapse.directive';
 
 @Directive({ selector: '[vitamuiCommonRowCollapseTriggerFor]' })
 export class RowCollapseTriggerForDirective {
-  @Input() vitamuiCommonRowCollapseTriggerFor: RowCollapseDirective;
+  readonly vitamuiCommonRowCollapseTriggerFor = input<RowCollapseDirective>(undefined);
 
   constructor() {}
 
@@ -52,6 +52,6 @@ export class RowCollapseTriggerForDirective {
 
   @HostListener('click')
   toggle() {
-    this.vitamuiCommonRowCollapseTriggerFor.toggle();
+    this.vitamuiCommonRowCollapseTriggerFor().toggle();
   }
 }

@@ -34,26 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input, OnDestroy } from '@angular/core';
+import { Directive, input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Directive({ selector: '[vitamuiAutocompletePosition]' })
-export class AutocompletePositionDirective implements OnDestroy {
-  private matAutocompleteTrigger: MatAutocompleteTrigger;
-
-  @Input('vitamuiAutocompletePosition') set autocompletePosition(value: MatAutocompleteTrigger) {
-    this.matAutocompleteTrigger = value;
-    window.addEventListener('scroll', this.scrollEvent, true);
-  }
+export class AutocompletePositionDirective implements OnChanges, OnDestroy {
+  readonly autocompletePosition = input<MatAutocompleteTrigger>(undefined, { alias: 'vitamuiAutocompletePosition' });
 
   private readonly scrollEvent = (): void => {
-    if (this.matAutocompleteTrigger == null) {
+    const matAutocompleteTrigger = this.autocompletePosition();
+    if (matAutocompleteTrigger == null) {
       return;
     }
-    if (this.matAutocompleteTrigger.panelOpen) {
-      this.matAutocompleteTrigger.updatePosition();
+    if (matAutocompleteTrigger.panelOpen) {
+      matAutocompleteTrigger.updatePosition();
     }
   };
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['autocompletePosition']) {
+      window.addEventListener('scroll', this.scrollEvent, true);
+    }
+  }
 
   ngOnDestroy() {
     window.removeEventListener('scroll', this.scrollEvent, true);

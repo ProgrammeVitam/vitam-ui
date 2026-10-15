@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -82,9 +82,9 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
   private readonly customerDataService = inject(CustomerDataService);
   private readonly dialog = inject(MatDialog);
 
-  @Output() customerClick = new EventEmitter<Customer>();
-  @Output() ownerClick = new EventEmitter<Owner>();
-  @Output() tenantClick = new EventEmitter<any>();
+  readonly customerClick = output<Customer>();
+  readonly ownerClick = output<Owner>();
+  readonly tenantClick = output<any>();
   override overridePendingChange = true;
 
   tenants: Tenant[] = [];

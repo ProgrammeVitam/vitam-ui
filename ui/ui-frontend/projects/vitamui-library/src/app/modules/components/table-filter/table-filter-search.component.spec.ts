@@ -88,16 +88,16 @@ describe('TableFilterSearchComponent', () => {
     expect(options.length).toBe(4);
 
     expect(options[0].nativeElement.textContent).toContain(testhost.options[0].label);
-    expect(options[0].componentInstance.value).toBe(testhost.options[0].value);
+    expect(options[0].componentInstance.value()).toBe(testhost.options[0].value);
 
     expect(options[1].nativeElement.textContent).toContain(testhost.options[1].label);
-    expect(options[1].componentInstance.value).toBe(testhost.options[1].value);
+    expect(options[1].componentInstance.value()).toBe(testhost.options[1].value);
 
     expect(options[2].nativeElement.textContent).toContain(testhost.options[2].label);
-    expect(options[2].componentInstance.value).toBe(testhost.options[2].value);
+    expect(options[2].componentInstance.value()).toBe(testhost.options[2].value);
 
     expect(options[3].nativeElement.textContent).toContain(testhost.options[3].label);
-    expect(options[3].componentInstance.value).toBe(testhost.options[3].value);
+    expect(options[3].componentInstance.value()).toBe(testhost.options[3].value);
   });
 
   it('should select the values on click', () => {

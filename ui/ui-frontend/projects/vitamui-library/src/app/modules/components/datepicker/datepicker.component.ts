@@ -44,10 +44,10 @@ import {
   inject,
   Injector,
   input,
-  Input,
+  model,
   OnInit,
   Signal,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { AbstractControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import type { PickerType } from './datepicker.interface';
@@ -87,15 +87,15 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
 export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {
   private readonly datePipe = inject(DatePipe);
 
-  @Input() pickerType: PickerType = 'day';
+  readonly pickerType = input<PickerType>('day');
   // May be yyyy-MM-dd, dd/MM/yyyy, yyyy or any other date format
   format = input<string>();
-  @Input() startView: MatDatepicker<Date>['startView'];
-  @Input() label = 'DATE.DATE';
-  @Input() hint: string;
-  @Input() min?: Date;
-  @Input() max?: Date;
-  @Input() outputType: 'String' | 'Date' = 'String';
+  readonly startView = model<MatDatepicker<Date>['startView']>(undefined);
+  readonly label = input('DATE.DATE');
+  readonly hint = input<string>(undefined);
+  readonly min = input<Date>(undefined);
+  readonly max = input<Date>(undefined);
+  readonly outputType = input<'String' | 'Date'>('String');
 
   // We store a value specific for the datepicker to store a Date object and not a String for datepicker to keep the currently selected value
   datePickerValue: Date;
@@ -107,14 +107,14 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     return !!this.displayedValue;
   }
 
-  @ViewChild('vitamUIInput') private vitamUIInput: ElementRef;
-  @ViewChild('datepicker') private datepicker: MatDatepicker<Date>;
-  @ViewChild('hintArea') private hintArea: ElementRef;
+  private readonly vitamUIInput = viewChild<ElementRef>('vitamUIInput');
+  private readonly datepicker = viewChild<MatDatepicker<Date>>('datepicker');
+  private readonly hintArea = viewChild<ElementRef>('hintArea');
 
   @HostListener('click', ['$event.target'])
   onClick(target: EventTarget) {
-    if (!this.hintArea.nativeElement.contains(target as Node)) {
-      this.vitamUIInput.nativeElement.focus();
+    if (!this.hintArea().nativeElement.contains(target as Node)) {
+      this.vitamUIInput().nativeElement.focus();
     }
   }
 
@@ -139,11 +139,11 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   override ngOnInit() {
     super.ngOnInit();
 
-    this.selectedFormat = computed(() => this.format() || this.defaultFormatMapping.get(this.pickerType));
+    this.selectedFormat = computed(() => this.format() || this.defaultFormatMapping.get(this.pickerType()));
 
-    if (!this.startView) this.startView = this.startViewMapping.get(this.pickerType);
+    if (!this.startView()) this.startView.set(this.startViewMapping.get(this.pickerType()));
     this.control.addValidators((control: AbstractControl<Date | string>) => {
-      const customControl = this.outputType === 'Date' ? ({ value: this.formatDateToString(control.value) } as AbstractControl) : control;
+      const customControl = this.outputType() === 'Date' ? ({ value: this.formatDateToString(control.value) } as AbstractControl) : control;
       return CustomValidators.date(this.selectedFormat())(customControl);
     });
   }
@@ -161,7 +161,7 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
 
   onBlur() {
     this.onTouched();
-    if (this.displayedValue !== (this.outputType === 'Date' ? this.formatDateToString(this.control.value) : this.control.value)) {
+    if (this.displayedValue !== (this.outputType() === 'Date' ? this.formatDateToString(this.control.value) : this.control.value)) {
       const parsed = DateTime.fromFormat(this.displayedValue, this.selectedFormat());
 
       if (parsed.isValid) {
@@ -185,9 +185,10 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   }
 
   onDateChange(type: PickerType, date: Date) {
-    if (this.pickerType === type) {
+    if (this.pickerType() === type) {
       this.changeValue(date);
-      if (this.datepicker.opened) this.datepicker.close();
+      const datepicker = this.datepicker();
+      if (datepicker.opened) datepicker.close();
     }
   }
 
@@ -198,7 +199,7 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   private changeValue(date: Date) {
     this.datePickerValue = date;
     if (date) this.displayedValue = this.formatDateToString(date);
-    const typedDate: string | Date = this.outputType === 'Date' ? date : this.displayedValue;
+    const typedDate: string | Date = this.outputType() === 'Date' ? date : this.displayedValue;
     this.control.setValue(typedDate);
     this.onChange(typedDate);
   }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, linkedSignal, output } from '@angular/core';
 import type { MenuOption } from '../../../models/menu-option.interface';
 import { Option } from '../../autocomplete/utils/option.interface';
 import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
@@ -47,29 +47,28 @@ import { MatOption, MatSelect } from '@angular/material/select';
   imports: [MatFormField, MatLabel, MatSelect, MatOption, MatSuffix],
 })
 export class ItemSelectComponent {
-  @Input() label: string;
-  @Input() selectedLabel: string;
-  @Input() items: MenuOption[];
-  @Input() appearance: 'fill' | 'outline' = 'fill';
-  @Input() panelClass: string = '';
-  @Output() itemSelected = new EventEmitter<MenuOption>();
+  readonly label = input<string>(undefined);
+  readonly selectedLabel = input<string>(undefined);
+  readonly items = input<MenuOption[]>(undefined);
+  readonly appearance = input<'fill' | 'outline'>('fill');
+  readonly panelClass = input<string>('');
+  readonly itemSelected = output<MenuOption>();
 
-  @Input() set selectedItem(value: MenuOption) {
-    if (value) {
-      this._selectedItem = value.label;
-    }
-  }
+  readonly selectedItem = input<MenuOption>(undefined);
 
-  public _selectedItem: string;
+  public readonly _selectedItem = linkedSignal<MenuOption, string>({
+    source: this.selectedItem,
+    computation: (value, previous) => (value ? value.label : previous?.value),
+  });
 
   constructor() {}
 
   public selectItem(itemLabel: string): void {
-    const item = this.items.find((value) => value.label === itemLabel);
+    const item = this.items().find((value) => value.label === itemLabel);
     this.itemSelected.emit(item);
   }
 
   getItems(): Option[] {
-    return this.items.map((item) => ({ key: item.label, label: item.label }));
+    return this.items().map((item) => ({ key: item.label, label: item.label }));
   }
 }

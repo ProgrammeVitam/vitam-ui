@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, input, output, viewChild } from '@angular/core';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 @Component({
@@ -44,18 +44,18 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
   imports: [SearchBarComponent],
 })
 export class VitamuiBannerComponent {
-  @Input() searchbarPlaceholder: string;
-  @Input() disableSearchBar = false;
-  @Input() searchValue: string = null;
+  readonly searchbarPlaceholder = input<string>(undefined);
+  readonly disableSearchBar = input(false);
+  readonly searchValue = input<string>(null);
 
-  @Output() action = new EventEmitter<string>();
+  readonly action = output<string>();
   // eslint-disable-next-line @angular-eslint/no-output-native
-  @Output() search = new EventEmitter<string>();
-  @Output() searchChanged = new EventEmitter<string>();
+  readonly search = output<string>();
+  readonly searchChanged = output<string>();
 
-  @ViewChild(SearchBarComponent) searchBarComponent: SearchBarComponent;
+  readonly searchBarComponent = viewChild(SearchBarComponent);
 
   setValue(value: string) {
-    this.searchBarComponent.searchValue = value;
+    this.searchBarComponent().searchValue.set(value);
   }
 }

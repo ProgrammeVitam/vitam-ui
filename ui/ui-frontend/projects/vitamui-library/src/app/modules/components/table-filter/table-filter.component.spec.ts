@@ -88,16 +88,16 @@ describe('TableFilterComponent', () => {
     expect(options.length).toBe(4);
 
     expect(options[0].nativeElement.textContent).toContain('Option 0');
-    expect(options[0].componentInstance.value).toBe(0);
+    expect(options[0].componentInstance.value()).toBe(0);
 
     expect(options[1].nativeElement.textContent).toContain('Option 1');
-    expect(options[1].componentInstance.value).toBe(1);
+    expect(options[1].componentInstance.value()).toBe(1);
 
     expect(options[2].nativeElement.textContent).toContain('Option 2');
-    expect(options[2].componentInstance.value).toBe(2);
+    expect(options[2].componentInstance.value()).toBe(2);
 
     expect(options[3].nativeElement.textContent).toContain('Option 3');
-    expect(options[3].componentInstance.value).toBe(3);
+    expect(options[3].componentInstance.value()).toBe(3);
   });
 
   it('should select the values on click', () => {

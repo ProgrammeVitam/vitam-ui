@@ -1,43 +1,43 @@
-<div [ngClass]="extended ? 'extended-vitamui-sidepanel' : 'vitamui-sidepanel'">
+<div [ngClass]="extended() ? 'extended-vitamui-sidepanel' : 'vitamui-sidepanel'">
   <div class="vitamui-sidepanel-header">
     <div class="d-flex justify-content-end pr-4">
-      <button class="btn link cancel" (click)="onclose.emit()">
+      <button class="btn link cancel" (click)="onclose.emit(undefined)">
         <i class="vitamui-icon vitamui-icon-close"></i>
       </button>
     </div>
 
-    @if (!loading) {
+    @if (!loading()) {
       <div
         class="title"
-        [vitamuiTooltip]="hasToolTipOnTitle && toolTipTitleText ? toolTipTitleText : null"
-        [vitamuiTooltipPosition]="hasToolTipOnTitle && toolTipTitleText ? 'BOTTOM' : null"
+        [vitamuiTooltip]="hasToolTipOnTitle() && toolTipTitleText() ? toolTipTitleText() : null"
+        [vitamuiTooltipPosition]="hasToolTipOnTitle() && toolTipTitleText() ? 'BOTTOM' : null"
       >
         <i
-          class="vitamui-icon {{ icon }} mr-2"
+          class="vitamui-icon {{ icon() }} mr-2"
           [ngClass]="{
-            'status-badge-red': badge === 'red',
-            'status-badge-green': badge === 'green',
-            'status-badge-grey': badge === 'grey',
-            'status-badge-orange': badge === 'orange',
-            'status-badge-black': badge === 'black',
+            'status-badge-red': badge() === 'red',
+            'status-badge-green': badge() === 'green',
+            'status-badge-grey': badge() === 'grey',
+            'status-badge-orange': badge() === 'orange',
+            'status-badge-black': badge() === 'black',
           }"
         >
         </i>
         <div>
-          <h5 class="m-0" [ngClass]="{ 'text-primary': hasToolTipOnTitle && toolTipTitleText }">
-            {{ title }}
+          <h5 class="m-0" [ngClass]="{ 'text-primary': hasToolTipOnTitle() && toolTipTitleText() }">
+            {{ title() }}
           </h5>
           <p
             class="m-0"
             [ngClass]="{
-              'text large light': hasToolTipOnTitle && toolTipTitleText,
-              'text medium': !(hasToolTipOnTitle && toolTipTitleText),
+              'text large light': hasToolTipOnTitle() && toolTipTitleText(),
+              'text medium': !(hasToolTipOnTitle() && toolTipTitleText()),
             }"
           >
-            {{ subtitle }}
+            {{ subtitle() }}
           </p>
         </div>
-        @if (!actionsBelowTitle) {
+        @if (!actionsBelowTitle()) {
           <div class="d-flex align-items-end justify-content-end actions">
             <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
           </div>
@@ -49,7 +49,7 @@
       </div>
     }
 
-    @if (actionsBelowTitle) {
+    @if (actionsBelowTitle()) {
       <div class="title-actions">
         <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
       </div>

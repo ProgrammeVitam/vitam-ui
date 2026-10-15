@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, input, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -72,8 +72,8 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly snackBarService = inject(SnackBarService);
 
-  @Input() probativeValue: any;
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
+  readonly probativeValue = input<any>(undefined);
+  readonly previewClose = output<any>();
 
   public hasAccessContract = signal<boolean>(undefined);
 
@@ -112,13 +112,13 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   }
 
   public closePanel() {
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 
   public downloadReport() {
     this.isLoading.set(true);
     this.probativeValueService
-      .export(this.probativeValue.id, this.accessContract)
+      .export(this.probativeValue().id, this.accessContract)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         error: (e) => console.error(e),

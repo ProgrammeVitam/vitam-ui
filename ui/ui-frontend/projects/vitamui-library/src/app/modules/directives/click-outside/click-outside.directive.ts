@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, output } from '@angular/core';
 
 @Directive({
   selector: '[vitamuiClickOutside]',
@@ -42,7 +42,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } fro
 export class ClickOutsideDirective {
   private readonly elementRef = inject(ElementRef);
 
-  @Output() vitamuiClickOutside = new EventEmitter<void>();
+  readonly vitamuiClickOutside = output<void>();
 
   @HostListener('document:mousedown', ['$event'])
   onClick(event: Event) {

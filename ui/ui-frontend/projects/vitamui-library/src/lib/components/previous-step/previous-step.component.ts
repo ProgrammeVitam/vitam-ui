@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostBinding, inject, Input } from '@angular/core';
+import { Component, HostBinding, inject, input } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CdkStepper } from '@angular/cdk/stepper';
 
@@ -45,14 +45,14 @@ import { CdkStepper } from '@angular/cdk/stepper';
   styleUrl: './previous-step.component.scss',
 })
 export class PreviousStepComponent {
-  @Input() disabled?: boolean;
+  readonly disabled = input<boolean>(undefined);
   /**
    * A reference to the CdkStepper instance. It is automatically injected by Angular if the component is a child of vitamui-stepper. Otherwise, a reference must be provided.
    */
-  @Input() stepper: CdkStepper = inject(CdkStepper, { optional: true });
+  readonly stepper = input<CdkStepper>(inject(CdkStepper, { optional: true }));
 
   @HostBinding('style.display')
   get display(): string {
-    return this.stepper.selectedIndex > 0 ? 'inherit' : 'none';
+    return this.stepper().selectedIndex > 0 ? 'inherit' : 'none';
   }
 }

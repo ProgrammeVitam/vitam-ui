@@ -123,7 +123,7 @@ describe('ManagementContractStorageTabComponent', () => {
       objectGroupStrategy: 'default',
       objectStrategy: 'default',
     };
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
     component.form.setValue(storageStrategyForm);
 
     vi.spyOn(managementContractServiceMock, 'patch');
@@ -138,7 +138,7 @@ describe('ManagementContractStorageTabComponent', () => {
 
   it('should return the correct StorageStrategy sended', () => {
     // Given
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
 
     // When
     const storageStrategy = component.previousValue();
@@ -158,7 +158,7 @@ describe('ManagementContractStorageTabComponent', () => {
       objectStrategy: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
     };
     // component.inputManagementContract = managementContract;
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
     component.form.setValue(storageStrategyForm);
     vi.spyOn(managementContractServiceMock, 'get');
     vi.spyOn(managementContractServiceMock, 'patch');
@@ -186,7 +186,7 @@ describe('ManagementContractStorageTabComponent', () => {
       objectGroupStrategy: 'MCDefaultStorageAll',
       objectStrategy: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
     };
-    component._inputManagementContract = managementContract;
+    component.inputManagementContract.set(managementContract);
     component.form.setValue(storageStrategyForm);
 
     // When

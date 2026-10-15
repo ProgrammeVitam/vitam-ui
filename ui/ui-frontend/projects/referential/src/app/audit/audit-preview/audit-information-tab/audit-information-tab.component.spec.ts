@@ -104,7 +104,7 @@ describe('AuditInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AuditInformationTabComponent);
     component = fixture.componentInstance;
-    component.audit = auditValue;
+    fixture.componentRef.setInput('audit', auditValue);
     fixture.detectChanges();
   });
 

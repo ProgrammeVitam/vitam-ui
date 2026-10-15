@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, Output, signal } from '@angular/core';
+import { Component, inject, OnChanges, signal, input, output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
 import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
@@ -55,23 +55,23 @@ export class IngestContractSignatureTabComponent implements OnChanges {
 
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
 
-  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  readonly updated = output<boolean>();
 
   form: FormGroup;
   submitting = signal(false);
   private _ingestContract: IngestContract;
 
-  @Input()
-  set ingestContract(ingestContract: IngestContract) {
-    this._ingestContract = ingestContract;
-    this.resetForm(ingestContract);
-    this.updated.emit(false);
-  }
+  readonly ingestContract = input<IngestContract>(undefined);
 
-  @Input()
-  readOnly: boolean;
+  readonly readOnly = input<boolean>(undefined);
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['ingestContract']) {
+      const ingestContract = this.ingestContract();
+      this._ingestContract = ingestContract;
+      this.resetForm(ingestContract);
+      this.updated.emit(false);
+    }
     const defaultSignaturePolicy: SignaturePolicy = {
       signedDocument: SignedDocumentPolicyEnum.ALLOWED,
       declaredSignature: false,
@@ -155,9 +155,9 @@ export class IngestContractSignatureTabComponent implements OnChanges {
 
   resetForm(ingestContract: IngestContract) {
     if (ingestContract.signaturePolicy) {
-      const disabledCheckbox = this._ingestContract.signaturePolicy.signedDocument == SignedDocumentPolicyEnum.FORBIDDEN || this.readOnly;
+      const disabledCheckbox = this._ingestContract.signaturePolicy.signedDocument == SignedDocumentPolicyEnum.FORBIDDEN || this.readOnly();
       this.form = this.formBuilder.group({
-        signedDocument: { value: this._ingestContract.signaturePolicy.signedDocument, disabled: this.readOnly },
+        signedDocument: { value: this._ingestContract.signaturePolicy.signedDocument, disabled: this.readOnly() },
         declaredSignature: {
           value: this._ingestContract.signaturePolicy.declaredSignature,
           disabled: disabledCheckbox,
@@ -173,10 +173,10 @@ export class IngestContractSignatureTabComponent implements OnChanges {
       });
     } else {
       this.form = this.formBuilder.group({
-        signedDocument: { value: SignedDocumentPolicyEnum.ALLOWED, disabled: this.readOnly },
-        declaredSignature: { value: false, disabled: this.readOnly },
-        declaredTimestamp: { value: false, disabled: this.readOnly },
-        declaredAdditionalProof: { value: false, disabled: this.readOnly },
+        signedDocument: { value: SignedDocumentPolicyEnum.ALLOWED, disabled: this.readOnly() },
+        declaredSignature: { value: false, disabled: this.readOnly() },
+        declaredTimestamp: { value: false, disabled: this.readOnly() },
+        declaredAdditionalProof: { value: false, disabled: this.readOnly() },
       });
     }
   }

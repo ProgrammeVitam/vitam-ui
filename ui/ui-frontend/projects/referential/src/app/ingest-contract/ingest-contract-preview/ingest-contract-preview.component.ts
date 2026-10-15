@@ -38,15 +38,15 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
   Component,
-  EventEmitter,
   forwardRef,
   HostListener,
   inject,
-  Input,
   OnChanges,
-  Output,
   SimpleChanges,
-  ViewChild,
+  input,
+  output,
+  viewChild,
+  model,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
@@ -92,14 +92,14 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly ingestContractService = inject(IngestContractService);
 
-  @Output() previewClose: EventEmitter<any> = new EventEmitter();
-  @Input() ingestContract: IngestContract;
-  @Input() tenantIdentifier: number;
-  @Input() readOnly: boolean;
+  readonly previewClose = output<any>();
+  readonly ingestContract = model<IngestContract>(undefined);
+  readonly tenantIdentifier = input<number>(undefined);
+  readonly readOnly = input<boolean>(undefined);
 
   isPopup: boolean;
 
-  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
+  readonly tabs = viewChild<MatTabGroup>('tabs');
   updatableTabs: {
     id: string;
     component?:
@@ -112,11 +112,11 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     valid: boolean;
   }[] = [];
 
-  @ViewChild('infoTab', { static: false }) infoTab: IngestContractInformationTabComponent;
-  @ViewChild('formatsTab', { static: false }) formatsTab: IngestContractFormatTabComponent;
-  @ViewChild('objectsTab', { static: false }) objectsTab: IngestContractObjectTabComponent;
-  @ViewChild('heritageTab', { static: false }) heritageTab: IngestContractHeritageTabComponent;
-  @ViewChild('signatureTab', { static: false }) signatureTab: IngestContractSignatureTabComponent;
+  readonly infoTab = viewChild<IngestContractInformationTabComponent>('infoTab');
+  readonly formatsTab = viewChild<IngestContractFormatTabComponent>('formatsTab');
+  readonly objectsTab = viewChild<IngestContractObjectTabComponent>('objectsTab');
+  readonly heritageTab = viewChild<IngestContractHeritageTabComponent>('heritageTab');
+  readonly signatureTab = viewChild<IngestContractSignatureTabComponent>('signatureTab');
 
   @HostListener('window:beforeunload', ['$event'])
   async beforeunloadHandler(event: any): Promise<string | void> {
@@ -130,19 +130,19 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('ingestContract')) {
-      this.ingestContract = changes['ingestContract'].currentValue;
+      this.ingestContract.set(changes['ingestContract'].currentValue);
     }
   }
 
   ngAfterViewInit() {
-    this.tabs._handleClick = this.interceptTabChange.bind(this);
+    this.tabs()._handleClick = this.interceptTabChange.bind(this);
     this.updatableTabs = [
-      { id: 'infoTab', component: this.infoTab, updated: false, valid: false },
-      { id: 'formatsTab', component: this.formatsTab, updated: false, valid: false },
-      { id: 'objectsTab', component: this.objectsTab, updated: false, valid: false },
-      { id: 'heritageTab', component: this.heritageTab, updated: false, valid: true },
+      { id: 'infoTab', component: this.infoTab(), updated: false, valid: false },
+      { id: 'formatsTab', component: this.formatsTab(), updated: false, valid: false },
+      { id: 'objectsTab', component: this.objectsTab(), updated: false, valid: false },
+      { id: 'heritageTab', component: this.heritageTab(), updated: false, valid: true },
       { id: 'attachmentTab', updated: false, valid: true },
-      { id: 'signatureTab', component: this.signatureTab, updated: false, valid: true },
+      { id: 'signatureTab', component: this.signatureTab(), updated: false, valid: true },
       { id: 'historyTab', updated: false, valid: true },
     ];
   }
@@ -169,13 +169,13 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
       const submitAccessContractUpdate: Observable<IngestContract> = activeTabComponent.prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.ingestContractService.get(this.ingestContract.identifier).subscribe((response) => {
-          this.ingestContract = response;
+        this.ingestContractService.get(this.ingestContract().identifier).subscribe((response) => {
+          this.ingestContract.set(response);
           this.cdr.markForCheck();
         });
       });
     } else {
-      activeTabComponent.resetForm(this.ingestContract);
+      activeTabComponent.resetForm(this.ingestContract());
     }
   }
 
@@ -185,12 +185,12 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
       await this.checkBeforeExit();
     }
     const args = [tab, tabHeader, idx];
-    return MatTabGroup.prototype._handleClick.apply(this.tabs, args);
+    return MatTabGroup.prototype._handleClick.apply(this.tabs(), args);
   }
 
   async confirmAction(): Promise<boolean> {
     const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'small' });
-    dialog.componentInstance.dialogType = 'changeTab';
+    dialog.componentRef.setInput('dialogType', 'changeTab');
     return await dialog.afterClosed().toPromise();
   }
 
@@ -199,15 +199,15 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
     if (activeTab.valid && activeTab.updated) {
       await this.checkBeforeExit();
     }
-    this.previewClose.emit();
+    this.previewClose.emit(undefined);
   }
 
   updatedIngestContract(ingestContract: IngestContract) {
-    this.ingestContract = ingestContract;
+    this.ingestContract.set(ingestContract);
   }
 
   private getActiveTab() {
-    const activeIndex = this.tabs.selectedIndex;
+    const activeIndex = this.tabs().selectedIndex;
     return this.updatableTabs[activeIndex];
   }
 }
