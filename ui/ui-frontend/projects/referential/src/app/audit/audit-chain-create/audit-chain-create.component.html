@@ -79,7 +79,7 @@
 
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="!canSubmit() || isDisabledButton">
+          <button type="submit" class="btn primary" [disabled]="!canSubmit() || isDisabledButton()">
             {{ 'AUDIT.CHAIN_CREATE_DIALOG.START_AUDIT' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,6 +46,10 @@ import { FileFormatInformationTabComponent } from './file-format-information-tab
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 describe('FileFormatInformationTabComponent', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   let component: FileFormatInformationTabComponent;
   let fixture: ComponentFixture<FileFormatInformationTabComponent>;
 
@@ -126,8 +130,9 @@ describe('FileFormatInformationTabComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', fakeAsync(() => {
-    tick();
+  it('should create', async () => {
+    vi.useFakeTimers();
+    await vi.advanceTimersByTimeAsync(0);
     expect(component).toBeTruthy();
-  }));
+  });
 });

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, signal, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
@@ -65,8 +65,8 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   @Input() identifiers: string[];
   @Input() filteringByIdentifier = true;
 
-  events: HistoryEvent[] = [];
-  loading = false;
+  events = signal<HistoryEvent[]>([]);
+  loading = signal(false);
 
   private readonly isDestroyed$ = new Subject<void>();
 
@@ -86,8 +86,8 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
   }
 
   initEvent() {
-    this.loading = true;
-    this.events = [];
+    this.loading.set(true);
+    this.events.set([]);
     this.route.paramMap
       .pipe(
         map((paramMap) =>
@@ -98,13 +98,15 @@ export class MultiOperationHistoryTabComponent implements OnChanges, OnDestroy {
       )
       .subscribe(
         (results) => {
-          this.events = results
-            // FIXME: shouldn't we filter on API side?
-            .filter((event) => (this.filteringByIdentifier ? this.filterByIdentifier(event) : true))
-            .slice(0, EVENT_LIMIT);
-          this.loading = false;
+          this.events.set(
+            results
+              // FIXME: shouldn't we filter on API side?
+              .filter((event) => (this.filteringByIdentifier ? this.filterByIdentifier(event) : true))
+              .slice(0, EVENT_LIMIT),
+          );
+          this.loading.set(false);
         },
-        () => (this.loading = false),
+        () => this.loading.set(false),
       );
   }
 

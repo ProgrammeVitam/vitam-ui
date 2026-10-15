@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { AuthService, StartupService } from 'vitamui-library';
 import { AppComponent } from './app.component';
@@ -62,17 +62,17 @@ describe('AppComponent', () => {
       .compileComponents();
   });
 
-  it('should create the app', waitForAsync(() => {
+  it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     console.log('Create App: ', app);
     expect(app).toBeTruthy();
-  }));
+  });
 
-  it(`should have as title 'Identity App'`, waitForAsync(() => {
+  it(`should have as title 'Identity App'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     console.log('Title App: ', app);
     expect(app.title).toEqual('Identity App');
-  }));
+  });
 });

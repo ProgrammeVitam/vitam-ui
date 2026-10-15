@@ -293,7 +293,7 @@ describe('AuditListComponent', () => {
     // Given
     const existenceAudit = auditOfType('PROCESS_AUDIT', 'AUDIT_FILE_EXISTING');
     const integrityAudit = auditOfType('PROCESS_AUDIT', 'AUDIT_FILE_INTEGRITY');
-    component.dataSource = [existenceAudit, integrityAudit];
+    component.dataSource.set([existenceAudit, integrityAudit]);
     // When
     component['_filters'] = { startDate: null, endDate: null, types: [AuditCategoryFilter.AUDIT_FILE_EXISTING] };
     // Then
@@ -303,7 +303,7 @@ describe('AuditListComponent', () => {
   it('All the audits should be listed when no type is selected', () => {
     // Given
     const audit = auditOfType('PROCESS_AUDIT', 'AUDIT_FILE_EXISTING');
-    component.dataSource = [audit];
+    component.dataSource.set([audit]);
     // When
     component['_filters'] = { startDate: null, endDate: null, types: [] };
     // Then

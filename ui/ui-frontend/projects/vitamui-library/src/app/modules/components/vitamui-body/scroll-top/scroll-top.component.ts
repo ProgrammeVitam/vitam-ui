@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -50,7 +50,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
   private readonly router = inject(Router);
 
-  public windowScrolled = false;
+  public windowScrolled = signal(false);
   private contentRendered = false;
   private routerSubscription: Subscription;
   private scrollElement: Element;
@@ -61,7 +61,7 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
-      this.windowScrolled = false;
+      this.windowScrolled.set(false);
       this.contentRendered = false;
     });
   }
@@ -81,9 +81,9 @@ export class ScrollTopComponent implements OnInit, AfterViewChecked, OnDestroy {
           // Définir le listener une fois
           this.scrollListener = () => {
             if (this.scrollElement.scrollTop > 250) {
-              this.windowScrolled = true;
-            } else if ((this.windowScrolled && window.pageYOffset) || this.scrollElement.scrollTop < 10) {
-              this.windowScrolled = false;
+              this.windowScrolled.set(true);
+            } else if ((this.windowScrolled() && window.pageYOffset) || this.scrollElement.scrollTop < 10) {
+              this.windowScrolled.set(false);
             }
           };
 

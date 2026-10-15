@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, forwardRef, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, inject, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { AccessContractService, AuthService, ContextPermission, Option, SelectComponent, Tenant, TooltipDirective } from 'vitamui-library';
 import { CustomerApiService } from '../../../core/api/customer-api.service';
@@ -63,6 +63,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
   private readonly authService = inject(AuthService);
   private readonly accessService = inject(AccessContractService);
   private readonly ingestService = inject(IngestContractService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   permissions: ContextPermission[];
   selectedOrganisations: string[];
@@ -109,6 +110,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
             }
           });
         }
+        this.cdr.markForCheck();
       });
     });
 
@@ -131,6 +133,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
           );
           return acc;
         }, new Map());
+        this.cdr.markForCheck();
       });
 
       // Get the ingest contracts
@@ -151,6 +154,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
           );
           return acc;
         }, new Map());
+        this.cdr.markForCheck();
       });
     }
   }
@@ -204,6 +208,7 @@ export class ContextEditPermissionComponent implements ControlValueAccessor, OnI
     } else {
       this.permissions = [];
     }
+    this.cdr.markForCheck();
     if (this.onChange) {
       this.onChange(this.permissions);
     }

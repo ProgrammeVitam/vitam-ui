@@ -47,14 +47,14 @@
 
       <mat-dialog-actions>
         @if (!form.value.fullAccess) {
-          <vitamui-next-step [disabled]="firstStepInvalid() || isDisabledButton"></vitamui-next-step>
+          <vitamui-next-step [disabled]="firstStepInvalid() || isDisabledButton()"></vitamui-next-step>
         }
         @if (form.value.fullAccess) {
           <button
             type="button"
             class="btn primary"
             cdkStepperNext
-            [disabled]="form.pending || form.invalid || isDisabledButton"
+            [disabled]="form.pending || form.invalid || isDisabledButton()"
             (click)="finishAfterFirstStep()"
           >
             {{ 'COMMON.TERMINATE' | translate }}
@@ -71,7 +71,7 @@
         </mat-dialog-content>
         <mat-dialog-actions>
           <div>
-            <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">
+            <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton()">
               {{ 'COMMON.TERMINATE' | translate }}
             </button>
             <button type="button" class="btn cancel link" (click)="onCancel()">

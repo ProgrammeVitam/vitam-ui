@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges } from '@angular/core';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNodeDef, MatTreeNodeOutlet } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
@@ -93,7 +93,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() showNodeDetail: EventEmitter<Pair> = new EventEmitter();
   @Output() switchView: EventEmitter<void> = new EventEmitter();
 
-  virtualPathLimitReached = false;
+  virtualPathLimitReached = signal(false);
 
   unitId: string = '';
   allunitups: string[] = [];
@@ -112,7 +112,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.leavesTreeService = new LeavesTreeService(this.archiveCollectService, this.configurationsService);
     this.subscriptions.add(
       this.leavesTreeService.virtualPathSearchLimitReached.pipe(first((status) => status === true)).subscribe(() => {
-        this.virtualPathLimitReached = true;
+        this.virtualPathLimitReached.set(true);
       }),
     );
   }
@@ -125,7 +125,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['nestedDataSourceLeaves'] || changes['searchRequestResultFacets']) {
-      this.virtualPathLimitReached = this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE;
+      this.virtualPathLimitReached.set(this.searchRequestResultFacets?.length >= FACETS_DEFAULT_SIZE);
       this.nestedTreeControlLeaves.dataNodes = this.nestedDataSourceLeaves.data;
       if (this.searchCriterias) {
         this.leavesTreeService

@@ -1,7 +1,7 @@
 <div class="vitamui-heading">
   <vitamui-title-breadcrumb [data]="dataBreadcrumb">
     <div class="d-flex align-items-center d-flex">
-      <vitamui-common-user-photo class="mr-1" [photo]="account?.photo"></vitamui-common-user-photo>
+      <vitamui-common-user-photo class="mr-1" [photo]="account()?.photo"></vitamui-common-user-photo>
       <span class="pl-2">{{ 'ACCOUNT.TITLE' | translate }}</span>
     </div>
   </vitamui-title-breadcrumb>
@@ -19,7 +19,9 @@
 <div class="vitamui-content">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
     <mat-tab [label]="'ACCOUNT.TAB.INFORMATIONS' | translate">
-      <vitamui-common-account-information-tab [account]="account"></vitamui-common-account-information-tab>
+      @if (account(); as acc) {
+        <vitamui-common-account-information-tab [account]="acc"></vitamui-common-account-information-tab>
+      }
     </mat-tab>
   </mat-tab-group>
 </div>

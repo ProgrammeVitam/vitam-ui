@@ -234,7 +234,7 @@ describe('ArchiveSearchComponent', () => {
 
     it('should be false', () => {
       component.showHidePanel(false);
-      expect(component.showCriteriaPanel).toBeFalsy();
+      expect(component.showCriteriaPanel()).toBeFalsy();
     });
 
     it('should call hasArchiveSearchRole', () => {

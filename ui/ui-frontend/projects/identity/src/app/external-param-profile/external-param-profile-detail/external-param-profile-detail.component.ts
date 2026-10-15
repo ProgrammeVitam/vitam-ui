@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ExternalParamProfile, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { ExternalParamProfileService } from '../external-param-profile.service';
@@ -65,6 +65,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
 })
 export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly sharedService = inject(SharedService);
   private readonly externalParamProfileServiceService = inject(ExternalParamProfileService);
 
@@ -78,6 +79,7 @@ export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
   constructor() {
     this.sharedService.getReadOnly().subscribe((readOnly) => {
       this.readOnly = readOnly;
+      this.cdr.markForCheck();
     });
   }
 
@@ -86,6 +88,7 @@ export class ExternalParamProfileDetailComponent implements OnInit, OnDestroy {
       if (externalParamProfile) {
         this.externalParamProfileServiceService.getOne(externalParamProfile.idProfile).subscribe((newExternalParamProfile) => {
           this.externalParamProfile = newExternalParamProfile;
+          this.cdr.markForCheck();
         });
       }
     });

@@ -1,23 +1,23 @@
 <div class="container">
-  @if (isLoading) {
+  @if (isLoading()) {
     <div class="vitamui-min-content">
       <mat-spinner class="vitamui-spinner large"></mat-spinner>
     </div>
   } @else {
-    @if (showText && itemsCategoryToUnlock !== '0') {
+    @if (showText() && itemsCategoryToUnlock() !== '0') {
       <div class="row message-text-ok">
         <div class="col-12 d-flex align-items-center">
           <i class="material-icons">check_circle</i
-          ><span class="p-2">{{ itemsCategoryToUnlock }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+          ><span class="p-2">{{ itemsCategoryToUnlock() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
         </div>
       </div>
     }
-    @if (showText && itemsToNotUpdate !== '0') {
+    @if (showText() && itemsToNotUpdate() !== '0') {
       <div class="row message-text-ko">
         <div class="col-12 d-flex align-items-center">
           <i class="material-icons">error</i
           ><span class="p-2">{{
-            'RULES.APPRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate }
+            'RULES.APPRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate() }
           }}</span>
         </div>
       </div>
@@ -41,20 +41,22 @@
 </ng-template>
 
 <ng-template #okTotalFound>
-  @if (showText && itemsCategoryToUnlock !== '0') {
+  @if (showText() && itemsCategoryToUnlock() !== '0') {
     <div class="row message-text-ok">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">check_circle</i
-        ><span class="p-2">{{ itemsCategoryToUnlock }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+        ><span class="p-2">{{ itemsCategoryToUnlock() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
       </div>
     </div>
   }
 
-  @if (showText && itemsToNotUpdate !== '0') {
+  @if (showText() && itemsToNotUpdate() !== '0') {
     <div class="row message-text-ko">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">error</i
-        ><span class="p-2">{{ 'RULES.APPRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</span>
+        ><span class="p-2">{{
+          'RULES.APPRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate() }
+        }}</span>
       </div>
     </div>
   }

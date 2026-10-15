@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -83,6 +94,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   logbookManagementOperationService = inject(LogbookManagementOperationService);
 
   @Input() operation: OperationDetails;
@@ -107,6 +119,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
     if (this.logbookManagementOperationService.operationUpdated) {
       this.operationUpdatedSub = this.logbookManagementOperationService.operationUpdated.subscribe((updatedOperation: OperationDetails) => {
         this.operation = updatedOperation;
+        this.cdr.markForCheck();
       });
     }
   }
@@ -127,6 +140,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
         this.logbookManagementOperationService.updateOperationProcessExecution(operation.operationId, actionId).subscribe((operations) => {
           if (operations) {
             this.operation = operations.results[operations.hits.total - 1];
+            this.cdr.markForCheck();
           }
         });
       });
@@ -147,6 +161,7 @@ export class LogbookManagementOperationPreviewComponent implements OnInit, OnDes
           .subscribe((operations) => {
             if (operations.results) {
               this.operation = operations.results[operations.hits.total - 1];
+              this.cdr.markForCheck();
             }
           });
       });

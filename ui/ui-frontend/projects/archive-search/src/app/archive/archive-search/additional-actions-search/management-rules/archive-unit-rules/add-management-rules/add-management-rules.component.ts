@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -112,7 +112,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   @Input()
   rulesList: Observable<Rule[]>;
 
-  ruleOptions: VitamuiSelectOptions;
+  ruleOptions = signal<VitamuiSelectOptions>(null);
 
   ruleDetailsForm: FormGroup;
   ruleTypeDUA: RuleCategoryAction;
@@ -135,9 +135,9 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   getRuleSuscription: Subscription;
   searchArchiveUnitsByCriteriaSubscription: Subscription;
 
-  isLoading = false;
-  isWarningLoading = false;
-  isDisabled = true;
+  isLoading = signal(false);
+  isWarningLoading = signal(false);
+  isDisabled = signal(true);
   managementRules: ManagementRules[] = [];
   managementRulesSubscription: Subscription;
   rule: Rule;
@@ -190,7 +190,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
           this.ruleDetailsForm.patchValue({ name: ruleResponse.ruleValue });
         });
         this.cancelStep.emit();
-        this.isDisabled = false;
+        this.isDisabled.set(false);
         return true;
       }
     }
@@ -198,7 +198,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
   }
 
   ngOnDestroy() {
@@ -216,7 +216,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   }
 
   addRuleToQuery() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
@@ -241,18 +241,18 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     if (this.hasExactCount) {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
-        .pipe(finalize(() => (this.isLoading = false)))
+        .pipe(finalize(() => this.isLoading.set(false)))
         .subscribe({
           next: (resultsNumber) => {
             this.itemsWithSameRule = resultsNumber;
             this.itemsToUpdate = this.selectedItem - resultsNumber;
           },
-          error: () => (this.isLoading = false),
+          error: () => this.isLoading.set(false),
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
-        .pipe(finalize(() => (this.isLoading = false)))
+        .pipe(finalize(() => this.isLoading.set(false)))
         .subscribe({
           next: (data) => {
             this.itemsWithSameRule = data.totalResults;
@@ -264,7 +264,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
                   ? this.resultNumberToShow
                   : this.selectedItem - data.totalResults;
           },
-          error: () => (this.isLoading = false),
+          error: () => this.isLoading.set(false),
         });
     }
     if (this.ruleDetailsForm.get('startDate').value) {
@@ -273,7 +273,7 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
   }
 
   addRuleAndStartDateToQuery() {
-    this.isWarningLoading = true;
+    this.isWarningLoading.set(true);
     this.initDSLQuery();
     if (this.ruleDetailsForm.get('startDate').value) {
       const criteriaWithId: SearchCriteriaEltDto = {
@@ -309,15 +309,15 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
       if (this.hasExactCount) {
         this.archiveService
           .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
-          .pipe(finalize(() => (this.isWarningLoading = false)))
+          .pipe(finalize(() => this.isWarningLoading.set(false)))
           .subscribe({
             next: (resultsNumber) => (this.itemsWithSameRuleAndDate = resultsNumber),
-            error: () => (this.isWarningLoading = false),
+            error: () => this.isWarningLoading.set(false),
           });
       } else {
         this.archiveService
           .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
-          .pipe(finalize(() => (this.isWarningLoading = false)))
+          .pipe(finalize(() => this.isWarningLoading.set(false)))
           .subscribe({
             next: (data) => {
               this.itemsWithSameRuleAndDate =
@@ -325,14 +325,14 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
                   ? this.resultNumberToShow
                   : data.totalResults;
             },
-            error: () => (this.isWarningLoading = false),
+            error: () => this.isWarningLoading.set(false),
           });
       }
     }
   }
 
   patchForm(data: any): boolean {
-    this.isDisabled = false;
+    this.isDisabled.set(false);
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
       startDate: this.ruleDetailsForm.get('startDate').value,
@@ -388,13 +388,13 @@ export class AddManagementRulesComponent implements OnDestroy, OnInit {
     }
 
     this.isShowCheckButton = !this.isShowCheckButton;
-    this.isDisabled = false;
+    this.isDisabled.set(false);
   }
 
   submit() {
-    this.isDisabled = true;
+    this.isDisabled.set(true);
     this.showText = true;
-    this.isLoading = true;
+    this.isLoading.set(true);
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
       startDate: this.ruleDetailsForm.get('startDate').value,

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -56,8 +56,8 @@ export class ManagementContractStorageTabComponent implements OnDestroy {
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
-  submited = false;
-  showSpinner = false;
+  submited = signal(false);
+  showSpinner = signal(false);
   storageStrategy: StorageStrategy = {
     unitStrategy: '',
     objectGroupStrategy: '',
@@ -125,19 +125,19 @@ export class ManagementContractStorageTabComponent implements OnDestroy {
   }
 
   onSubmit() {
-    this.submited = true;
-    this.showSpinner = true;
+    this.submited.set(true);
+    this.showSpinner.set(true);
     this.prepareSubmit().subscribe(
       () => {
         this.managementContractService.get(this._inputManagementContract.identifier).subscribe((response) => {
-          this.submited = false;
-          this.showSpinner = false;
+          this.submited.set(false);
+          this.showSpinner.set(false);
           this.inputManagementContract = response;
         });
       },
       () => {
-        this.submited = false;
-        this.showSpinner = false;
+        this.submited.set(false);
+        this.showSpinner.set(false);
       },
     );
   }

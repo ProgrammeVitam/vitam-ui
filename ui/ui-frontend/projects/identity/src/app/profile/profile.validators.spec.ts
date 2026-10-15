@@ -34,12 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
 import { ProfileService } from './profile.service';
 import { ProfileValidators } from './profile.validators';
+
+beforeEach(() => {
+  vi.useFakeTimers();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('ProfileValidators', () => {
   const createValidators = (profileServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
@@ -49,7 +57,7 @@ describe('ProfileValidators', () => {
     return TestBed.runInInjectionContext(() => new ProfileValidators());
   };
 
-  it('should return null', fakeAsync(() => {
+  it('should return null', () => {
     const profileServiceSpy = {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
@@ -58,11 +66,11 @@ describe('ProfileValidators', () => {
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, 'TEST', 'USERS_APP', '123456');
-  }));
+  });
 
-  it('should return { nameExists: true }', fakeAsync(() => {
+  it('should return { nameExists: true }', () => {
     const profileServiceSpy = {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
@@ -71,11 +79,11 @@ describe('ProfileValidators', () => {
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, 'TEST', 'USERS_APP', '123456');
-  }));
+  });
 
-  it('should not call the service', fakeAsync(() => {
+  it('should not call the service', () => {
     const profileServiceSpy = {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
@@ -84,11 +92,11 @@ describe('ProfileValidators', () => {
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(profileServiceSpy.exists).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should call the service', fakeAsync(() => {
+  it('should call the service', () => {
     const profileServiceSpy = {
       exists: vi.fn().mockName('ProfileService.exists'),
     };
@@ -97,7 +105,7 @@ describe('ProfileValidators', () => {
     from(profileValidators.nameExists(42, 'TEST', 'USERS_APP', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(profileServiceSpy.exists).toHaveBeenCalledWith(42, 'TEST', 'USERS_APP', '111111');
-  }));
+  });
 });

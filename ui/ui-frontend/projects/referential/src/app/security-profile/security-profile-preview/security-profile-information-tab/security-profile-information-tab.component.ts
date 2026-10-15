@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -69,7 +69,7 @@ export class SecurityProfileInformationTabComponent {
 
   form: FormGroup;
 
-  submitted = false;
+  submitted = signal(false);
 
   ruleFilter = new FormControl();
 
@@ -131,21 +131,21 @@ export class SecurityProfileInformationTabComponent {
   }
 
   onSubmit() {
-    this.submitted = true;
+    this.submitted.set(true);
     if (this.form.invalid) {
       return;
     }
     this.prepareSubmit().subscribe(
       () => {
         this.securityProfileService.get(this._securityProfile.identifier).subscribe((response) => {
-          this.submitted = false;
+          this.submitted.set(false);
           this.securityProfile = response;
           this.fullAccessUpdated.emit(this.form.value.fullAccess);
           this.securityProfileUpdated.emit(response);
         });
       },
       () => {
-        this.submitted = false;
+        this.submitted.set(false);
       },
     );
   }

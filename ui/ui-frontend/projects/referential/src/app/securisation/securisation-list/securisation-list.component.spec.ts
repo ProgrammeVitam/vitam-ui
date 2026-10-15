@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 
@@ -45,6 +45,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('SecurisationListComponent', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   let component: SecurisationListComponent;
   let fixture: ComponentFixture<SecurisationListComponent>;
 
@@ -73,7 +77,8 @@ describe('SecurisationListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', fakeAsync(() => {
+  it('should create', async () => {
+    vi.useFakeTimers();
     expect(component).toBeTruthy();
-  }));
+  });
 });

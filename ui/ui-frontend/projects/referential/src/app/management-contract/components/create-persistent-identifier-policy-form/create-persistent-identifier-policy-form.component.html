@@ -7,7 +7,7 @@
     [multiple]="false"
     [enableSearch]="false"
   ></vitamui-select>
-  @if (isExistingTypeOption) {
+  @if (isExistingTypeOption()) {
     <vitamui-input
       formControlName="authority"
       [placeholder]="'CONTRACT_MANAGEMENT.FORM_UPDATE.NAMING_AUTHORITY' | translate"
@@ -23,15 +23,15 @@
         </mat-checkbox>
       </div>
     </div>
-    <div class="r-header row dark-background" [ngClass]="{ opened: objectUsagePoliciesToggle }" (click)="toggle($event)">
+    <div class="r-header row dark-background" [ngClass]="{ opened: objectUsagePoliciesToggle() }" (click)="toggle($event)">
       <div class="col">
         <mat-checkbox formControlName="shouldConcernObjects">
           <div class="d-flex align-items-center">
             <i
               class="vitamui-icon icon primary"
               [ngClass]="{
-                'vitamui-icon-chevron-down': objectUsagePoliciesToggle,
-                'vitamui-icon-chevron-right': !objectUsagePoliciesToggle,
+                'vitamui-icon-chevron-down': objectUsagePoliciesToggle(),
+                'vitamui-icon-chevron-right': !objectUsagePoliciesToggle(),
               }"
             ></i>
             <span>{{ 'CONTRACT_MANAGEMENT.FORM_UPDATE.TECHNICAL_OBJECT' | translate }}</span>
@@ -39,7 +39,7 @@
         </mat-checkbox>
       </div>
     </div>
-    <div class="p-3 dark-background" [ngStyle]="{ display: objectUsagePoliciesToggle ? 'block' : 'none' }">
+    <div class="p-3 dark-background" [ngStyle]="{ display: objectUsagePoliciesToggle() ? 'block' : 'none' }">
       <div class="container" formArrayName="objectUsagePolicies">
         @for (objectUsagePolicy of getObjectUsagePolicies(); track objectUsagePolicy; let i = $index) {
           <div class="row" [formGroupName]="i">

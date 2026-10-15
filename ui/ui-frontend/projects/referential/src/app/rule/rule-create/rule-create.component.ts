@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -85,7 +85,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
 
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
-  isDisabledButton = false;
+  isDisabledButton = signal(false);
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
@@ -121,16 +121,16 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
-      this.isDisabledButton = true;
+      this.isDisabledButton.set(true);
       return;
     }
 
     const format: Rule = this.form.value;
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
 
     this.ruleService.create(format).subscribe(
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
 
         this.dialogRef.close({ success: true });
       },

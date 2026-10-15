@@ -7,7 +7,7 @@
         [(ngModel)]="selectedProfile"
         [ngModelOptions]="{ standalone: true }"
         [placeholder]="'PROFILE.POP-UP_SELECT_NOTICE.LIST_NOTICE' | translate"
-        [options]="profileOptions"
+        [options]="profileOptions()"
         [enableSearch]="false"
       ></vitamui-select>
     </mat-dialog-content>

@@ -1,15 +1,15 @@
 <vitamui-common-sidenav-header
-  [title]="event?.id | truncate: 30"
+  [title]="event()?.id | truncate: 30"
   (onclose)="emitClose()"
-  [badge]="event | eventTypeBadgeColor"
+  [badge]="event() | eventTypeBadgeColor"
   [hasToolTipOnTitle]="true"
-  [toolTipTitleText]="event?.id"
+  [toolTipTitleText]="event()?.id"
   [toolTipTitleDuration]="300"
   [actionsBelowTitle]="true"
 >
-  @if (showDownloadButton) {
-    <button class="btn primary ml-1" (click)="downloadReports()" [disabled]="disableDownloadButton">
-      {{ downloadButtonTitle | translate }}
+  @if (showDownloadButton()) {
+    <button class="btn primary ml-1" (click)="downloadReports()" [disabled]="disableDownloadButton()">
+      {{ downloadButtonTitle() | translate }}
     </button>
   }
   @if (hasATRDownloadable()) {
@@ -24,60 +24,60 @@
       <div class="read-only-field">
         <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.OPERATION_CATEGORY' | translate }}</label>
         <div class="word-break">
-          <vitamui-common-event-type-label [key]="event?.typeProc"></vitamui-common-event-type-label>
+          <vitamui-common-event-type-label [key]="event()?.typeProc"></vitamui-common-event-type-label>
         </div>
       </div>
 
       <div class="d-flex">
         <div class="read-only-field mr-5">
           <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.EXTERNAL_AGENTS_INDENTIFIERS' | translate }}</label>
-          <div class="word-break">{{ event?.agIdExt }}</div>
+          <div class="word-break">{{ event()?.agIdExt }}</div>
         </div>
         <div class="read-only-field">
           <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.ASSOCIATED_CONTRACT' | translate }}</label>
-          <div class="word-break">{{ event?.rightsStatementIdentifier }}</div>
+          <div class="word-break">{{ event()?.rightsStatementIdentifier }}</div>
         </div>
       </div>
 
       <div class="d-flex">
         <div class="read-only-field mr-5">
           <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.APPLICATION_IDENTIFIER' | translate }}</label>
-          <div class="word-break">{{ event?.agIdApp }}</div>
+          <div class="word-break">{{ event()?.agIdApp }}</div>
         </div>
         <div class="read-only-field">
           <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.TRANSACTION_NUMBER' | translate }}</label>
-          <div class="word-break">{{ event?.idRequest }}</div>
+          <div class="word-break">{{ event()?.idRequest }}</div>
         </div>
       </div>
 
       <div class="d-flex">
         <div class="read-only-field mr-5">
           <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.OPERATION_IDENTIFIER' | translate }}</label>
-          <div class="word-break">{{ event?.id }}</div>
+          <div class="word-break">{{ event()?.id }}</div>
         </div>
         <div class="read-only-field">
           <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.INTERNAL_ACTORS' | translate }}</label>
-          <div class="word-break">{{ event?.agId }}</div>
+          <div class="word-break">{{ event()?.agId }}</div>
         </div>
       </div>
 
       <div class="read-only-field">
         <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.REPORT' | translate }}</label>
-        <div>{{ reportFileName }}</div>
+        <div>{{ reportFileName() }}</div>
       </div>
 
       <div class="read-only-field">
         <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.ADDITIONAL_OPERATION_INFORMATIONS' | translate }}</label>
-        <div class="word-break">{{ event?.data }}</div>
+        <div class="word-break">{{ event()?.data }}</div>
       </div>
 
       <div class="read-only-field">
         <label>{{ 'LOGBOOK_OPERATION_DETAIL.TAB.INFORMATIONS.MESSAGE' | translate }}</label>
-        <div>{{ (event | lastEvent)?.outMessage }}</div>
+        <div>{{ (event() | lastEvent)?.outMessage }}</div>
       </div>
     </mat-tab>
     <mat-tab [label]="'LOGBOOK_OPERATION_DETAIL.TAB.DETAILS.TITLE' | translate">
-      <vitamui-common-history-events [events]="event?.events"></vitamui-common-history-events>
+      <vitamui-common-history-events [events]="event()?.events"></vitamui-common-history-events>
     </mat-tab>
   </mat-tab-group>
 </div>

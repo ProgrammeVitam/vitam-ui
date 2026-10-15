@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -66,6 +66,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ContextPermissionTabComponent implements OnInit {
   dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly contextService = inject(ContextService);
   private readonly customerApiService = inject(CustomerApiService);
   private readonly tenantApiService = inject(TenantApiService);
@@ -173,10 +174,12 @@ export class ContextPermissionTabComponent implements OnInit {
       }
 
       this.dataLoaded = true;
+      this.cdr.markForCheck();
     });
 
     this.contextService.updated.subscribe((updatedContext: Context) => {
       this.context = updatedContext;
+      this.cdr.markForCheck();
     });
   }
 
@@ -247,12 +250,14 @@ export class ContextPermissionTabComponent implements OnInit {
           .pipe(tap((response) => this.contextService.updated.next(response)))
           .subscribe((response) => {
             this.submited = false;
+            this.cdr.markForCheck();
             this.context = response;
             this.hasChanged();
           });
       },
       () => {
         this.submited = false;
+        this.cdr.markForCheck();
       },
     );
   }
@@ -272,6 +277,7 @@ export class ContextPermissionTabComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.permissions) {
         this.updatedPermissions = result.permissions;
+        this.cdr.markForCheck();
         // Check if the permissions have been modified
         this.hasChanged();
         if (!this.unchanged || !this.submited) {

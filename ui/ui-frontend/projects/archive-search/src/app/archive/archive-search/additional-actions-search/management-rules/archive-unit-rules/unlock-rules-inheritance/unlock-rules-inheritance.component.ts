@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -104,12 +104,12 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   @Input()
   rulesList: Observable<Rule[]>;
 
-  ruleOptions: VitamuiSelectOptions;
+  ruleOptions = signal<VitamuiSelectOptions>(null);
 
   resultNumberToShow: string;
   rule: Rule;
-  itemsWithSameRule: string;
-  itemsToNotUpdate: string;
+  itemsWithSameRule = signal<string>(null);
+  itemsToNotUpdate = signal<string>(null);
   criteriaSearchDSLQuery: SearchCriteriaDto;
   managementRules: ManagementRules[] = [];
   ruleTypeDUA: RuleCategoryAction = { preventRulesIdToRemove: [] };
@@ -120,9 +120,9 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     rule: string;
   };
 
-  showText = false;
-  isLoading = false;
-  disabledControl = true;
+  showText = signal(false);
+  isLoading = signal(false);
+  disabledControl = signal(true);
 
   getRuleSuscription: Subscription;
   showConfirmDeleteBlocRuleSuscription: Subscription;
@@ -159,9 +159,9 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   addPreventRuleIdToDelete() {
-    this.disabledControl = true;
-    this.showText = true;
-    this.isLoading = !this.isLoading;
+    this.disabledControl.set(true);
+    this.showText.set(true);
+    this.isLoading.set(true);
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
@@ -224,7 +224,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
   }
 
   ngOnDestroy(): void {
@@ -242,7 +242,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   addRuleToQuery() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
@@ -277,23 +277,24 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
-          this.itemsWithSameRule = resultsNumber.toString();
-          this.itemsToNotUpdate = (this.selectedItem - resultsNumber).toString();
-          this.isLoading = false;
+          this.itemsWithSameRule.set(resultsNumber.toString());
+          this.itemsToNotUpdate.set((this.selectedItem - resultsNumber).toString());
+          this.isLoading.set(false);
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
-          this.itemsWithSameRule = data.totalResults.toString();
-          this.itemsToNotUpdate =
+          this.itemsWithSameRule.set(data.totalResults.toString());
+          this.itemsToNotUpdate.set(
             data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
               : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
-                : (this.selectedItem - data.totalResults).toString();
+                : (this.selectedItem - data.totalResults).toString(),
+          );
 
-          this.isLoading = false;
+          this.isLoading.set(false);
         });
     }
   }
@@ -309,7 +310,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   isEmpty(formData: any): boolean {
     if (formData) {
       if (formData.rule) {
-        this.disabledControl = false;
+        this.disabledControl.set(false);
         this.cancelStep.emit();
         return true;
       }

@@ -240,6 +240,8 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
       if (['Enter'].includes(event.code)) {
         // Trigger search
         this.onSearch(this.searchBar.searchValue, true);
+        // Native listener: refresh the view (zoneless)
+        this.cd.markForCheck();
       }
       if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.code)) {
         // Prevent most keyboard keypress to be interpreted by the mat-select, otherwise it would "search" in options or open/close toggles
@@ -262,6 +264,8 @@ export class SelectWithTreeComponent<T> extends AbstractFormInputDirective imple
       }
 
       this.syncActiveItem();
+      // Native listener: refresh the view (zoneless)
+      this.cd.markForCheck();
     }
   }
 

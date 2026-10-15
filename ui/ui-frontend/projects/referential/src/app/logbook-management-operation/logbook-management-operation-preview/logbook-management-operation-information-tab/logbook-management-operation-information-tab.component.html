@@ -25,9 +25,9 @@
   </div>
   <div class="col-6 mb-3">
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.FINAL_DATE' | translate }}</label>
-    <div>{{ getEventEndDate(event)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
+    <div>{{ getEventEndDate(event())?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
     <span class="date">
-      {{ getEventEndDate(event)?.dateTime | dateTime: 'HH:mm:ss' }}
+      {{ getEventEndDate(event())?.dateTime | dateTime: 'HH:mm:ss' }}
     </span>
   </div>
 </div>
@@ -66,13 +66,13 @@
 <div class="row">
   <div class="col-12 mb-3">
     <label>{{ 'LOGBOOK_OPERATION_INFORMATIONS.MESSAGE' | translate }}</label>
-    <div>{{ getLastEvent(event)?.outMessage }}</div>
+    <div>{{ getLastEvent(event())?.outMessage }}</div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-12 mb-3">
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.MORE_DETAILS' | translate }}</label>
-    <div>{{ event?.data }}</div>
+    <div>{{ event()?.data }}</div>
   </div>
 </div>

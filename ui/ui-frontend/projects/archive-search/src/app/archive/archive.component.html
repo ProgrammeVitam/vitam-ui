@@ -1,6 +1,6 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  @if (foundAccessContract) {
-    <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" vitamuiCommonResizeSidebar="left">
+  @if (foundAccessContract()) {
+    <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show()" vitamuiCommonResizeSidebar="left">
       <app-filing-holding-scheme (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"></app-filing-holding-scheme>
     </mat-sidenav>
   }
@@ -29,14 +29,14 @@
         <h5>{{ 'APPLICATION.ARCHIVE_SEARCH_MANAGEMENT_APP.NAME' | translate }}</h5>
       </vitamui-title-breadcrumb>
     </div>
-    @if (foundAccessContract) {
+    @if (foundAccessContract()) {
       <div class="vitamui-content">
         <div class="row">
-          @if (!show) {
+          @if (!show()) {
             <button
               type="button"
               class="btn secondary right-arround left-not-arround"
-              (click)="hiddenTreeBlock(show)"
+              (click)="hiddenTreeBlock(show())"
               [vitamuiTooltip]="'ARCHIVE_SEARCH.SHOW_TREES_PLANS' | translate"
               [vitamuiTooltipShowDelay]="300"
             >

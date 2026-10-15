@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { EMPTY, Observable } from 'rxjs';
 import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
@@ -58,7 +58,7 @@ export class IngestContractSignatureTabComponent implements OnChanges {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  submitting = false;
+  submitting = signal(false);
   private _ingestContract: IngestContract;
 
   @Input()
@@ -115,14 +115,14 @@ export class IngestContractSignatureTabComponent implements OnChanges {
   }
 
   onSubmit() {
-    this.submitting = true;
+    this.submitting.set(true);
     this.prepareSubmit().subscribe(
       (ingestContract: IngestContract) => {
         this._ingestContract.signaturePolicy = ingestContract.signaturePolicy;
-        this.submitting = false;
+        this.submitting.set(false);
       },
       (error) => {
-        this.submitting = false;
+        this.submitting.set(false);
         console.error(error);
       },
     );

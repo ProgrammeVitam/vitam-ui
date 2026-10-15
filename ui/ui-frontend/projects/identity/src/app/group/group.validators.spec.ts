@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
@@ -48,8 +48,16 @@ const createValidators = (groupServiceSpy: { exists?: ReturnType<typeof vi.fn>; 
   return TestBed.runInInjectionContext(() => new GroupValidators());
 };
 
+beforeEach(() => {
+  vi.useFakeTimers();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 describe('ProfileGroupValidators nameExist', () => {
-  it('should return null', fakeAsync(() => {
+  it('should return null', () => {
     const groupServiceSpy = {
       exists: vi.fn().mockName('GroupService.exists'),
     };
@@ -58,11 +66,11 @@ describe('ProfileGroupValidators nameExist', () => {
     from(groupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toBeNull();
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.exists).toHaveBeenCalledWith('42', '123456');
-  }));
+  });
 
-  it('should return { nameExists: true }', fakeAsync(() => {
+  it('should return { nameExists: true }', () => {
     const groupServiceSpy = {
       exists: vi.fn().mockName('GroupService.exists'),
     };
@@ -71,11 +79,11 @@ describe('ProfileGroupValidators nameExist', () => {
     from(profileGroupValidators.nameExists('42')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.exists).toHaveBeenCalledWith('42', '123456');
-  }));
+  });
 
-  it('should not call the service', fakeAsync(() => {
+  it('should not call the service', () => {
     const groupServiceSpy = {
       exists: vi.fn().mockName('GroupService.exists'),
     };
@@ -84,11 +92,11 @@ describe('ProfileGroupValidators nameExist', () => {
     from(profileGroupValidators.nameExists('42', '123456')(new FormControl('123456'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.exists).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should call the service', fakeAsync(() => {
+  it('should call the service', () => {
     const groupServiceSpy = {
       exists: vi.fn().mockName('GroupService.exists'),
     };
@@ -97,13 +105,13 @@ describe('ProfileGroupValidators nameExist', () => {
     from(profileGroupValidators.nameExists('42', '123456')(new FormControl('111111'))).subscribe((result) => {
       expect(result).toEqual({ nameExists: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.exists).toHaveBeenCalledWith('42', '111111');
-  }));
+  });
 });
 
 describe('ProfileGroupValidators unitExists', () => {
-  it('should return null', fakeAsync(() => {
+  it('should return null', () => {
     const groupServiceSpy = {
       unitExists: vi.fn().mockName('GroupService.unitExists'),
     };
@@ -112,11 +120,11 @@ describe('ProfileGroupValidators unitExists', () => {
     from(groupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
       expect(result).toBeNull();
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite1');
-  }));
+  });
 
-  it('should return { unitExists: true }', fakeAsync(() => {
+  it('should return { unitExists: true }', () => {
     const groupServiceSpy = {
       unitExists: vi.fn().mockName('GroupService.unitExists'),
     };
@@ -125,11 +133,11 @@ describe('ProfileGroupValidators unitExists', () => {
     from(profileGroupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
       expect(result).toEqual({ unitExists: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite1');
-  }));
+  });
 
-  it('should not call the service', fakeAsync(() => {
+  it('should not call the service', () => {
     const groupServiceSpy = {
       unitExists: vi.fn().mockName('GroupService.unitExists'),
     };
@@ -138,11 +146,11 @@ describe('ProfileGroupValidators unitExists', () => {
     from(profileGroupValidators.unitExists('customerId', ['unite2'])(new FormControl('unite2'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.unitExists).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should call the service', fakeAsync(() => {
+  it('should call the service', () => {
     const groupServiceSpy = {
       unitExists: vi.fn().mockName('GroupService.unitExists'),
     };
@@ -151,7 +159,7 @@ describe('ProfileGroupValidators unitExists', () => {
     from(profileGroupValidators.unitExists('customerId')(new FormControl('unite2'))).subscribe((result) => {
       expect(result).toEqual({ unitExists: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite2');
-  }));
+  });
 });

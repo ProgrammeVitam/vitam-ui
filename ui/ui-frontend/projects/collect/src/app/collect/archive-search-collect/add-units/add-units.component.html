@@ -12,7 +12,7 @@
   <!-- stepIndex 1 : upload de fichier -->
   <cdk-step>
     <mat-dialog-content>
-      @if (isLoading) {
+      @if (isLoading()) {
         <div class="vitamui-min-content">
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>
@@ -64,8 +64,8 @@
     <mat-dialog-content>
       <div class="main-content">
         <div class="form-group">
-          @if (projectUnits) {
-            <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="linkParentIdControl" [dataSource]="projectUnits">
+          @if (projectUnits()) {
+            <vitamui-library-filing-plan [mode]="FilingPlanMode.SOLO" [formControl]="linkParentIdControl" [dataSource]="projectUnits()">
             </vitamui-library-filing-plan>
           }
         </div>
@@ -73,10 +73,10 @@
     </mat-dialog-content>
     <mat-dialog-actions>
       <div>
-        <button (click)="validateAndUpload()" [disabled]="isLoading" class="btn primary" type="button">
+        <button (click)="validateAndUpload()" [disabled]="isLoading()" class="btn primary" type="button">
           {{ 'COMMON.SUBMIT' | translate }}
         </button>
-        <button (click)="cancel()" [disabled]="isLoading" class="btn cancel link" type="button">
+        <button (click)="cancel()" [disabled]="isLoading()" class="btn cancel link" type="button">
           {{ 'COMMON.UNDO' | translate }}
         </button>
       </div>
@@ -115,7 +115,7 @@
       </div>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button (click)="close(true)" [disabled]="isLoading" class="btn primary" type="button">
+      <button (click)="close(true)" [disabled]="isLoading()" class="btn primary" type="button">
         {{ 'COMMON.CLOSE' | translate }}
       </button>
     </mat-dialog-actions>

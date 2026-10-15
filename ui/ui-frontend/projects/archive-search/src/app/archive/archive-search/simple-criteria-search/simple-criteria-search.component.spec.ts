@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, of } from 'rxjs';
@@ -85,7 +85,7 @@ describe('SimpleCriteriaSearchComponent', () => {
     schema = new BehaviorSubject<ItemNode<SchemaElement>[]>([]);
     const schemaServiceMock = {
       getDescriptiveSchemaTree: () => schema,
-      getSchema: () => of(),
+      getSchema: () => of([]),
     };
 
     await TestBed.configureTestingModule({
@@ -169,7 +169,7 @@ describe('SimpleCriteriaSearchComponent', () => {
     expect(archiveExchangeDataServiceMock.addSimpleSearchCriteriaSubject).toHaveBeenCalled();
   });
 
-  it('should have 4 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', fakeAsync(() => {
+  it('should have 4 vitamui editables inputs and no formFieldValueWrapper when exact search on Title is disabled', async () => {
     // Given
     setTimeout(() =>
       schema.next([
@@ -182,8 +182,9 @@ describe('SimpleCriteriaSearchComponent', () => {
         },
       ]),
     );
-    tick(0);
+    await new Promise((resolve) => setTimeout(resolve));
     fixture.detectChanges();
+    await fixture.whenStable();
 
     // When
     const nativeElement = fixture.nativeElement;
@@ -193,8 +194,8 @@ describe('SimpleCriteriaSearchComponent', () => {
     // Then
     expect(editableInputs.length).toBe(4);
     expect(formFieldValueWrapper.length).toBe(0);
-  }));
-  it('should have 3 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', fakeAsync(() => {
+  });
+  it('should have 3 vitamui editables inputs and 1 formFieldValueWrapper when exact search on Title is enabled', async () => {
     // Given
     setTimeout(() =>
       schema.next([
@@ -208,8 +209,9 @@ describe('SimpleCriteriaSearchComponent', () => {
         },
       ]),
     );
-    tick(0);
+    await new Promise((resolve) => setTimeout(resolve));
     fixture.detectChanges();
+    await fixture.whenStable();
 
     // When
     const nativeElement = fixture.nativeElement;
@@ -219,5 +221,5 @@ describe('SimpleCriteriaSearchComponent', () => {
     // Then
     expect(editableInputs.length).toBe(3);
     expect(formFieldValueWrapper.length).toBe(1);
-  }));
+  });
 });

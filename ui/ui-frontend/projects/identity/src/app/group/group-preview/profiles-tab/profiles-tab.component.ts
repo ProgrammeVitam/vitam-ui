@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Group, Profile, TooltipDirective } from 'vitamui-library';
@@ -56,7 +56,7 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
 
   @Input() readOnly: boolean;
 
-  profilesDisplay: any[];
+  readonly profilesDisplay = signal<any[]>([]);
   updatedGroup: Subscription;
   public groupProfiles: Profile[];
 
@@ -69,10 +69,10 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
   }
 
   initializeProfilesList(groupProfiles: Profile[]): void {
-    this.profilesDisplay = [];
+    const profilesDisplay: any[] = [];
     if (groupProfiles) {
       groupProfiles.forEach((profile) =>
-        this.profilesDisplay.push({
+        profilesDisplay.push({
           id: profile.id,
           appId: profile.applicationName,
           tenantName: profile.tenantName,
@@ -81,7 +81,7 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
         }),
       );
 
-      this.profilesDisplay.sort((first, second) => {
+      profilesDisplay.sort((first, second) => {
         if (first.appName > second.appName) {
           return 1;
         }
@@ -92,6 +92,7 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
         return 0;
       });
     }
+    this.profilesDisplay.set(profilesDisplay);
   }
 
   openEditProfilesDialog() {

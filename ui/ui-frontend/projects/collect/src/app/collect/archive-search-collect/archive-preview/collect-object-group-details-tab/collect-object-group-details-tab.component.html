@@ -1,4 +1,4 @@
-@if (unitObject) {
+@if (unitObject(); as unitObject) {
   <div class="object-details-group IDS">
     @if (objectsGroupErrors().length) {
       <div class="mb-3">
@@ -43,12 +43,12 @@
   </div>
 }
 
-@for (versionWithQualifier of versionsWithQualifiersOrdered; track versionWithQualifier) {
+@for (versionWithQualifier of versionsWithQualifiersOrdered(); track versionWithQualifier) {
   <div class="object-container">
     @if (versionWithQualifier.qualifier === 'PhysicalMaster') {
       <vitamui-common-physical-archive-viewer
         [archive]="versionWithQualifier"
-        [errorMessages]="errorMessagesGot"
+        [errorMessages]="errorMessagesGot()"
       ></vitamui-common-physical-archive-viewer>
     }
     @if (versionWithQualifier.qualifier !== 'PhysicalMaster') {
@@ -64,7 +64,7 @@
                 versionWithQualifier?.version +
                 ')'
             }}
-            @if (errorMessagesGot && errorMessagesGot[versionWithQualifier['#id']]) {
+            @if (errorMessagesGot() && errorMessagesGot()[versionWithQualifier['#id']]) {
               <div class="status-badge-red status-badge-mini ml-2 mt-1"></div>
             }
           </div>
@@ -76,7 +76,7 @@
           </div>
           <button
             class="btn btn-circle small primary"
-            [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole"
+            [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole()"
             (click)="onClickDownloadObject($event, versionWithQualifier)"
           >
             <i class="vitamui-icon vitamui-icon-telecharger"></i>
@@ -292,12 +292,12 @@
           </div>
           <div class="row-separator"></div>
         </div>
-        @if (errorMessagesGot && errorMessagesGot[versionWithQualifier['#id']]) {
+        @if (errorMessagesGot() && errorMessagesGot()[versionWithQualifier['#id']]) {
           <div class="d-flex flex-column gap-2 align-items-stretch">
             <div class="text normal bold danger">
               {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FIELDS.ENCOUNTERED_ERRORS' | translate | uppercase }}
             </div>
-            @for (error of errorMessagesGot[versionWithQualifier['#id']]; track $index) {
+            @for (error of errorMessagesGot()[versionWithQualifier['#id']]; track $index) {
               <vitamui-information-detail [error]="error"></vitamui-information-detail>
             }
           </div>
@@ -305,7 +305,7 @@
         <div class="object-details-group download-object">
           <button
             class="btn primary download-btn"
-            [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole"
+            [disabled]="versionWithQualifier?.Size === 0 || !hasDownloadDocumentRole()"
             (click)="onClickDownloadObject($event, versionWithQualifier)"
           >
             <i class="vitamui-icon vitamui-icon-telecharger"></i>

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Route, Router, RouterLink, RouterLinkActive, RouterOutlet, Routes } from '@angular/router';
 import {
   AppConfiguration,
@@ -90,7 +90,7 @@ export class AppComponent {
   title = 'Design system App';
 
   routes: Routes;
-  searchOptions: VitamuiSelectOptions;
+  readonly searchOptions = signal<VitamuiSelectOptions>(undefined);
   form: FormGroup;
   url: string;
 
@@ -136,12 +136,14 @@ export class AppComponent {
 
     // Make sure the translations are loaded, and reload on translation change
     translateService.onLangChange.subscribe(() => {
-      this.searchOptions = this.routes.reduce(
-        (acc, route) => {
-          extractSearchData('', route, acc);
-          return acc;
-        },
-        { options: [], customSorting: (a, b) => a.label.localeCompare(b.label) } as VitamuiSelectOptions,
+      this.searchOptions.set(
+        this.routes.reduce(
+          (acc, route) => {
+            extractSearchData('', route, acc);
+            return acc;
+          },
+          { options: [], customSorting: (a, b) => a.label.localeCompare(b.label) } as VitamuiSelectOptions,
+        ),
       );
     });
 

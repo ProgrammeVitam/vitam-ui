@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 import type { SafeResourceUrl } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -49,6 +49,7 @@ import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-dr
 })
 export class VitamuiDragDropFileComponent {
   private readonly translateService = inject(TranslateService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   private readonly IMAGE_TYPE_PREFIX = 'image';
   private imageToUpload: File = null;
@@ -128,6 +129,8 @@ export class VitamuiDragDropFileComponent {
         } else {
           this.imageUrl = logoUrl as string;
         }
+        // Image loading callbacks run outside change detection: refresh the view (zoneless)
+        this.cdr.markForCheck();
       };
     };
     reader.readAsDataURL(this.imageToUpload);

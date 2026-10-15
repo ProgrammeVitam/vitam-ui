@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -108,6 +108,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   private readonly userCreateValidators = inject(UserCreateValidators);
   private readonly countryService = inject(CountryService);
   private readonly startupService = inject(StartupService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() user: User;
   @Input() userInfo: UserInfo;
@@ -208,6 +209,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
       .subscribe((user: User) => {
         if (user) {
           this.resetForm(user);
+          this.cdr.markForCheck();
         }
       });
 
@@ -223,6 +225,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
+      this.cdr.markForCheck();
     });
   }
 
@@ -235,6 +238,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         this.showTooltip = false;
         form.get('otp').enable({ emitEvent: true });
       }
+      this.cdr.markForCheck();
     }
   }
 

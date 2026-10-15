@@ -102,13 +102,13 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   }
 
   ngOnInit() {
-    this.pending = true;
+    this.pending.set(true);
     this.ontologyService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.shortName, Direction.ASCENDANT))
-      .pipe(finalize(() => (this.pending = false)))
+      .pipe(finalize(() => this.pending.set(false)))
       .subscribe({
         next: (data: Ontology[]) => {
-          this.dataSource = data;
+          this.dataSource.set(data);
         },
         error: (e) => console.error(e),
       });
@@ -170,10 +170,14 @@ export class OntologyListComponent extends InfiniteScrollTable<Ontology> impleme
   private replaceUpdatedOntology(): void {
     this.subscriptions.add(
       this.ontologyService.updated.pipe(takeUntil(this.destroy$)).subscribe((updatedOntology: Ontology) => {
-        const index = this.dataSource.findIndex((item: Ontology) => item.id === updatedOntology.id);
-        if (index !== -1) {
-          this.dataSource[index] = updatedOntology;
-        }
+        this.dataSource.update((ontologies) => {
+          const list = [...(ontologies ?? [])];
+          const index = list.findIndex((item: Ontology) => item.id === updatedOntology.id);
+          if (index !== -1) {
+            list[index] = updatedOntology;
+          }
+          return list;
+        });
       }),
     );
   }

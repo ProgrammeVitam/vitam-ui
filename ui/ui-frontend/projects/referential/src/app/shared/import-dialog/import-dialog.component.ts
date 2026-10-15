@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import {
   ApplicationId,
@@ -74,7 +74,7 @@ export class ImportDialogComponent implements OnDestroy {
   private readonly snackBarService = inject(SnackBarService);
   translateService = inject(TranslateService);
 
-  public isLoading = false;
+  public isLoading = signal(false);
   private readonly destroy = new Subject<void>();
   extensions: string[] = [];
   usesCsvValidator: boolean;
@@ -87,7 +87,7 @@ export class ImportDialogComponent implements OnDestroy {
   }
 
   public submitFile(): void {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.referentialImportService
       .importReferential(this.dialogParams.referential, this.fileControl.value[0])
       .pipe(takeUntil(this.destroy))
@@ -107,7 +107,7 @@ export class ImportDialogComponent implements OnDestroy {
           this.dialogRef.close({ successfulImport: true });
         },
         error: (error: unknown) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
           if (error instanceof ReferentialImportInvalidFileError) {
             // The file was rejected before any operation was created: no link to the operations log
             this.snackBarService.open({

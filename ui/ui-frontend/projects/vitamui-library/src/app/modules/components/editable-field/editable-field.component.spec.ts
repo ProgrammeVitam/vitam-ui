@@ -51,7 +51,7 @@ describe('EditableFieldComponent', () => {
     }),
   );
   beforeEach(() => {
-    component = new EditableFieldComponent({ nativeElement: document.createElement('dummy') });
+    component = TestBed.runInInjectionContext(() => new EditableFieldComponent({ nativeElement: document.createElement('dummy') }));
   });
 
   it('should create', () => {

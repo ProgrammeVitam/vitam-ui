@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -185,16 +185,16 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   hasError = false;
   errorMessage: string;
-  schemaOptions: ItemNode<SchemaElement>[];
+  schemaOptions = signal<ItemNode<SchemaElement>[]>(undefined);
   filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   jsltFileControl: FormControl<File[]> = new FormControl([]);
   zipFileStatus$: Observable<ZipFileStatus>;
-  units: Unit[];
+  units = signal<Unit[]>(undefined);
   compressedZip: Blob;
-  easOptions: Option[] = [];
-  archiveProfileOptions: Option[] = [];
-  archivalAgreementOptions: Option[] = [];
-  agenciesOptions: Option[] = [];
+  easOptions = signal<Option[]>([]);
+  archiveProfileOptions = signal<Option[]>([]);
+  archivalAgreementOptions = signal<Option[]>([]);
+  agenciesOptions = signal<Option[]>([]);
 
   errorsDetails: VitamErrorDetails[];
 
@@ -228,7 +228,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   constructor() {
     const filingPlanService = inject(FilingPlanService);
 
-    filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
+    filingPlanService.loadFilingPlan().subscribe((units) => this.units.set(units));
   }
 
   get linkParentIdControl() {
@@ -237,10 +237,10 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.initForm();
-    this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => (this.schemaOptions = schema));
+    this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => this.schemaOptions.set(schema));
 
     this.externalReferentialService.getElectronicArchivingSystemOptions$().subscribe((easOptions) => {
-      this.easOptions = easOptions;
+      this.easOptions.set(easOptions);
       this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
       this.setDefaultArchivingSystemValue();
       this.onArchivingSystemChangeValue();
@@ -255,7 +255,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.resetExternalReferentialIdentifiers();
     if (!this.connectedToArchivingSystem) {
       this.projectForm.get('archivingSystem')?.setValue(null);
-    } else if (this.easOptions.length < 2) {
+    } else if (this.easOptions().length < 2) {
       // has single Option
       this.setDefaultArchivingSystemValue();
     }
@@ -294,9 +294,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         })),
       )
       .subscribe(({ archivalAgreementOptions, archiveProfileOptions, agenciesOptions }) => {
-        this.archivalAgreementOptions = archivalAgreementOptions;
-        this.archiveProfileOptions = archiveProfileOptions;
-        this.agenciesOptions = agenciesOptions;
+        this.archivalAgreementOptions.set(archivalAgreementOptions);
+        this.archiveProfileOptions.set(archiveProfileOptions);
+        this.agenciesOptions.set(agenciesOptions);
       });
   }
 
@@ -560,7 +560,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.moveToNextStep();
     this.projectsService
       .create(project)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        }),
+      )
       .subscribe({
         next: (_result) => {
           this.snackBarService.open({
@@ -627,6 +632,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         last((httpEvent) => httpEvent.type === HttpEventType.Response),
         finalize(() => {
           this.isLoading = false;
+          this.cdr.markForCheck();
         }),
       )
       .subscribe({
@@ -676,8 +682,8 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     if (this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant) {
       if (!selectedNode?.unitUp?.included?.length) return '';
       const vitamId = selectedNode?.unitUp?.included[0];
-      if (!vitamId || !this.units) return '';
-      const foundNode = this.units.find((unit) => unit['#id'] === vitamId);
+      if (!vitamId || !this.units()) return '';
+      const foundNode = this.units().find((unit) => unit['#id'] === vitamId);
       return foundNode ? ` : ${fetchTitle(foundNode.Title, foundNode.Title_)}` : '';
     } else {
       // When not connected to local EAS (different tenant or SAE), unitUp is a simple string
@@ -688,7 +694,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   getName(item: SchemaElement): string {
     const path = item.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
-      children: this.schemaOptions,
+      children: this.schemaOptions(),
     } as ItemNode<SchemaElement>);
     return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }

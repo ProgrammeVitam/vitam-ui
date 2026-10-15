@@ -142,7 +142,7 @@
 
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isLoading">
+          <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isLoading()">
             {{ 'COMMON.TERMINATE' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

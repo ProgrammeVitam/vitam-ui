@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, Input, OnDestroy, signal, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
@@ -76,18 +76,18 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   hasExactCount: boolean;
   @Input()
   selectedItem: number;
-  itemsCategoryToUnlock: string;
-  itemsToNotUpdate: string;
+  itemsCategoryToUnlock = signal<string>(null);
+  itemsToNotUpdate = signal<string>(null);
   resultNumberToShow: string;
 
   ruleActions: ActionsRules[];
-  showText: boolean;
+  showText = signal(false);
   ruleActionsSubscription: Subscription;
   managementRulesSubscription: Subscription;
   managementRules: ManagementRules[] = [];
   ruleTypeDUA: RuleCategoryAction;
   isValidValue = false;
-  isLoading = false;
+  isLoading = signal(false);
 
   criteriaSearchDSLQuery: SearchCriteriaDto;
   showConfirmDeleteUnlockCategoryInheritanceSuscription: Subscription;
@@ -108,8 +108,8 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   }
 
   onUnlockCategoryInheritance() {
-    this.showText = true;
-    this.isLoading = !this.isLoading;
+    this.showText.set(true);
+    this.isLoading.set(true);
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
@@ -132,7 +132,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
     ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
-    this.showText = true;
+    this.showText.set(true);
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
     });
@@ -149,7 +149,7 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
   }
 
   addControlQuery() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
@@ -175,22 +175,23 @@ export class UnlockCategoryInheritanceComponent implements OnDestroy {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
-          this.itemsCategoryToUnlock = resultsNumber.toString();
-          this.itemsToNotUpdate = (this.selectedItem - resultsNumber).toString();
-          this.isLoading = false;
+          this.itemsCategoryToUnlock.set(resultsNumber.toString());
+          this.itemsToNotUpdate.set((this.selectedItem - resultsNumber).toString());
+          this.isLoading.set(false);
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
-          this.itemsCategoryToUnlock = data.totalResults.toString();
-          this.itemsToNotUpdate =
+          this.itemsCategoryToUnlock.set(data.totalResults.toString());
+          this.itemsToNotUpdate.set(
             data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
               : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
                 ? this.resultNumberToShow
-                : (this.selectedItem - data.totalResults).toString();
-          this.isLoading = false;
+                : (this.selectedItem - data.totalResults).toString(),
+          );
+          this.isLoading.set(false);
         });
     }
   }

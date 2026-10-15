@@ -82,8 +82,8 @@
 
       <mat-dialog-actions>
         <div>
-          <vitamui-next-step [disabled]="secondStepInvalid() || isDisabledButton"></vitamui-next-step>
-          <button type="button" class="btn cancel link" [disabled]="isDisabledButton" (click)="onCancel()">
+          <vitamui-next-step [disabled]="secondStepInvalid() || isDisabledButton()"></vitamui-next-step>
+          <button type="button" class="btn cancel link" [disabled]="isDisabledButton()" (click)="onCancel()">
             {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
@@ -126,10 +126,10 @@
 
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="!hasValidPersistentIdentifierPolicies() || isDisabledButton">
+          <button type="submit" class="btn primary" [disabled]="!hasValidPersistentIdentifierPolicies() || isDisabledButton()">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
-          <button type="button" class="btn cancel link" [disabled]="isDisabledButton" (click)="onCancel()">
+          <button type="button" class="btn cancel link" [disabled]="isDisabledButton()" (click)="onCancel()">
             {{ 'COMMON.UNDO' | translate }}
           </button>
         </div>
