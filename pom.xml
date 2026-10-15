@@ -104,7 +104,6 @@
         <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <maven.site.plugin.version>3.9.1</maven.site.plugin.version>
-        <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
         <maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
         <maven.swagger2markup.plugin.version>1.3.3</maven.swagger2markup.plugin.version>
         <maven.war.plugin.version>3.4.0</maven.war.plugin.version>
@@ -420,19 +419,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    <version>${maven.sonar.plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sonar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${maven.jacoco.plugin.version}</version>
@@ -636,136 +622,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <!-- This profile is used to generate sonar-metrics sonar informations.-->
-        <profile>
-            <id>sonar-metrics</id>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                    </resource>
-                    <resource>
-                        <directory>target/www/</directory>
-                        <targetPath>static/</targetPath>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <argLine>@{argLine}</argLine>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.github.spotbugs</groupId>
-                        <artifactId>spotbugs-maven-plugin</artifactId>
-                        <version>${maven.spotbugs.plugin.version}</version>
-                        <configuration>
-                            <failOnError>false</failOnError>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>check</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-pmd-plugin</artifactId>
-                        <configuration>
-                            <rulesets>
-                                <ruleset>${main.basedir}/pmd-rulesets.xml</ruleset>
-                            </rulesets>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>check</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.owasp</groupId>
-                        <artifactId>dependency-check-maven</artifactId>
-                        <version>${maven.dependencycheck.version}</version>
-                        <configuration>
-                            <formats>
-                                <format>XML</format>
-                                <format>HTML</format>
-                                <format>JSON</format>
-                            </formats>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default-cli</id>
-                                <goals>
-                                    <goal>aggregate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <properties>
-                <!-- Set project configuration file for test coverage -->
-                <angular.additional.test.informations>
-                    --karma-config=${main.basedir}/ui/ui-frontend/projects/${angular.build.project}/karma.conf.ci.js
-                </angular.additional.test.informations>
-                <maven.test.failure.ignore>true</maven.test.failure.ignore>
-            </properties>
-        </profile>
-        <!-- This profile is used to update sonar informations.-->
-        <profile>
-            <id>sonar</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonarsource.scanner.maven</groupId>
-                        <artifactId>sonar-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-            <properties>
-                <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.coverage.exclusions>**/*Dto.java, **/domain/*.java, **/vitam/seda/*.java,
-                    **/*spec.ts, **/*.scss,
-                    **/*.css
-                </sonar.coverage.exclusions>
-                <sonar.cpd.exclusions>**/*Dto.java, **/domain/*.java, **/*spec.ts</sonar.cpd.exclusions>
-                <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
-                <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
-                <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
-                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html
-                </sonar.dependencyCheck.htmlReportPath>
-                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json
-                </sonar.dependencyCheck.jsonReportPath>
-                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml
-                </sonar.dependencyCheck.xmlReportPath>
-                <!-- TODO: This properties need to bo specify by the user who execute
-                the report (ex: Jenkins or developper) -->
-                <sonar.host.url/>
-                <!-- TODO: This properties need to bo specify by the user who execute
-                the report (ex: Jenkins or developper) -->
-                <sonar.login/>
-                <sonar.typescript.lcov.reportPaths>
-                    ${main.basedir}/ui/ui-frontend/target/coverage/commons/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/flow/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/identity/lcov.info,${main.basedir}/ui/ui-frontend/target/coverage/portal/lcov.info
-                </sonar.typescript.lcov.reportPaths>
-            </properties>
-
         </profile>
 
         <!-- This profile is used to generate swagger documentation. -->

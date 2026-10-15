@@ -119,10 +119,6 @@ This profile is used to push the generated rpm package.
 
 Only Maven modules with `rpm.skip = false` in their properties are eligible.
 
-### sonar
-
-This profile is used to update sonar information.
-
 ### webpack
 
 This profile is used to build the entire project, backend & frontend included.
@@ -247,19 +243,9 @@ mvn clean verify -Pintegration
 
 Use the `rpm` and `webpack` maven profiles to build the project and package to RPM: `mvn clean package -Prpm,webpack`
 
-### Execute sonar report
+### Code quality analysis
 
-```sh
-mvn clean verify -Psonar
-```
-
-You can specify properties to change URL and login to sonar:
-
-```sh
-mvn clean verify -Psonar \
-    -Dsonar.host.url=http://localhost:9000 \
-    -Dsonar.login=<TOKEN AUTHENTICATION>
-```
+The code is analyzed by [SonarCloud](https://sonarcloud.io/project/overview?id=programmevitam-1_vitam-ui) in the GitHub Actions `build-and-test` workflow, configured by `sonar-project.properties`.
 
 ### Deploy artifact
 
