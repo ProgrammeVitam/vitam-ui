@@ -83,6 +83,12 @@ coverage/
 **/.vscode/
 
 ######################
+# Claude Code
+######################
+**/.claude/settings.local.json
+tools/docker/mcp/runtime/
+
+######################
 # Maven
 ######################
 **/target/
