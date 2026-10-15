@@ -182,7 +182,6 @@ npm run test:identity -- --watch
 - `dev` - Full build with frontend, dev optimizations
 - `prod` - Full build with frontend, production optimizations
 - `vitam` - For internal Vitam developers (uses private Nexus repos)
-- `sonar` - Generate SonarQube reports
 - `swagger` - Generate Swagger JSON files
 
 ## Important Notes
