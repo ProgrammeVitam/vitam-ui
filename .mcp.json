@@ -15,6 +15,18 @@
         "--usageStatistics=false",
         "--performanceCrux=false"
       ]
+    },
+    "mongodb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mongodb-mcp-server@3.0.5",
+        "--readOnly",
+        "--telemetry",
+        "disabled",
+        "--disabledTools",
+        "search-knowledge,list-knowledge-sources,atlas-local-list-deployments,atlas-local-connect-deployment"
+      ]
     }
   }
 }
