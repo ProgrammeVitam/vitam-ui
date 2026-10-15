@@ -9,7 +9,8 @@ The servers are not running between calls: the gateway starts a container for ea
 
 The servers that keep a state between calls or work with the host are declared directly in `.mcp.json` and started by each Claude Code session, outside the gateway (Node.js must be in the `PATH` of Claude Code):
 
-- `chrome-devtools`: drives a Chrome browser to debug the apps run in dev mode (see [Chrome DevTools](#chrome-devtools)).
+- `chrome-devtools`: drives a Chrome browser to debug the apps run in dev mode (see [Chrome DevTools](#chrome-devtools));
+- `mongodb`: read-only access to the dev MongoDB (see [MongoDB](#mongodb)).
 
 ## Setup
 
@@ -20,9 +21,10 @@ The servers that keep a state between calls or work with the host are declared d
    {
      "env": {
        "SONARQUBE_TOKEN": "<SonarCloud token>",
-       "MCP_GATEWAY_AUTH_TOKEN": "<random value>"
+       "MCP_GATEWAY_AUTH_TOKEN": "<random value>",
+       "MDB_MCP_CONNECTION_STRING": "mongodb://mongod_dbuser_admin:<password>@localhost:27018/?authSource=admin&directConnection=true"
      },
-     "enabledMcpjsonServers": ["vitam-ui", "chrome-devtools"]
+     "enabledMcpjsonServers": ["vitam-ui", "chrome-devtools", "mongodb"]
    }
    ```
 
@@ -43,6 +45,15 @@ On its first tool call, it opens a Chrome window with a dedicated profile (`~/.c
 
 The window is closed with the Claude Code session. Only one session at a time can use the profile. Usage statistics and the sending of URLs to the Chrome UX Report API are disabled.
 
+## MongoDB
+
+[`mongodb-mcp-server`](https://github.com/mongodb-js/mongodb-mcp-server) lets Claude Code list the databases and collections of the dev MongoDB started by `tools/docker/mongo`, infer their schema, and run `find`, `count`, `aggregate` and `explain` queries, for instance to check the IAM data (customers, groups, profiles, users) or to prepare a migration script.
+
+- It runs with `--readOnly`: the tools that create, update or delete data are not registered, and `aggregate` rejects the `$out` and `$merge` stages.
+- The tools querying the external MongoDB Assistant knowledge base (`search-knowledge`, `list-knowledge-sources`) and managing local Atlas deployments (`atlas-local-*`) are disabled.
+- It connects with `MDB_MCP_CONNECTION_STRING`, inherited from the `env` block of `.claude/settings.local.json`. The `mongod_dbuser_admin` account of `tools/docker/mongo/mongo_vars_dev.yml` sees all the databases; `directConnection=true` is required because the replica set advertises the `vitamui-mongo` container host name.
+- Telemetry is disabled.
+
 ## Files
 
 - `catalog.yaml`: definition of the MCP servers.
@@ -53,6 +64,7 @@ The window is closed with the Claude Code session. Only one session at a time ca
 ## Limits
 
 - `start.sh` needs bash and python3: Linux, macOS and WSL.
+- The variables of the `env` block of `.claude/settings.local.json` are visible to all the commands run by Claude Code.
 - `angular-cli`: the `build`, `test` and `devserver.*` tools run in the container: there is no Chrome for `test`, the dev server ports are not published, and on macOS the host `node_modules` contain native binaries for macOS, not Linux. Prefer the `npm run` commands for these tasks.
 
 ## Troubleshooting
