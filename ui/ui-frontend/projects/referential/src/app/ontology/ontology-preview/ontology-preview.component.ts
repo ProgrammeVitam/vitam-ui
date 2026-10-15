@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {
+  ChangeDetectorRef,
   AfterViewInit,
   Component,
   EventEmitter,
@@ -74,6 +75,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly ontologyService = inject(OntologyService);
   schemaService = inject(SchemaService);
 
@@ -129,6 +131,7 @@ export class OntologyPreviewComponent implements AfterViewInit, OnChanges {
       submitOntologyUpdate.subscribe(() => {
         this.ontologyService.get((this.selectedElement as Ontology)?.identifier).subscribe((response) => {
           this.selectedElement = response;
+          this.cdr.markForCheck();
         });
       });
     } else {

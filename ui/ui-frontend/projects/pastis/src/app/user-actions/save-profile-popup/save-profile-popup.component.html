@@ -46,7 +46,7 @@
       <cdk-step>
         <mat-dialog-content class="gap-3 align-items-stretch">
           <div class="row">
-            @if (externalIdentifierEnabled) {
+            @if (externalIdentifierEnabled()) {
               <div class="col-10 form-control">
                 <vitamui-input
                   class="col-9 px-0"
@@ -121,7 +121,7 @@
               [(ngModel)]="selectedProfile"
               [ngModelOptions]="{ standalone: true }"
               [placeholder]="'PROFILE.POP-UP_SELECT_NOTICE.LIST_NOTICE' | translate"
-              [options]="profileOptions"
+              [options]="profileOptions()"
               [enableSearch]="false"
             ></vitamui-select>
           </mat-dialog-content>

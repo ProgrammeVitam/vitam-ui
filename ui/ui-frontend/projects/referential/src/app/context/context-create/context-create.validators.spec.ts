@@ -34,14 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 import { ContextCreateValidators } from './context-create.validators';
 
 describe('Context Create Validators', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('uniqueCode', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const contextServiceSpy = {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
@@ -52,12 +57,13 @@ describe('Context Create Validators', () => {
         expect(result).toBeNull();
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
       expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should return { nameExists: true }', fakeAsync(() => {
+    it('should return { nameExists: true }', async () => {
+      vi.useFakeTimers();
       const contextServiceSpy = {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
@@ -69,12 +75,13 @@ describe('Context Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
       expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should not call the service', fakeAsync(() => {
+    it('should not call the service', async () => {
+      vi.useFakeTimers();
       const contextServiceSpy = {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
@@ -84,11 +91,12 @@ describe('Context Create Validators', () => {
         expect(result).toEqual(null);
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(contextServiceSpy.existsProperties).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const contextServiceSpy = {
         existsProperties: vi.fn().mockName('ContextService.existsProperties'),
       };
@@ -99,10 +107,10 @@ describe('Context Create Validators', () => {
         expect(result).not.toBeNull();
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
 
       expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
       expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
-    }));
+    });
   });
 });

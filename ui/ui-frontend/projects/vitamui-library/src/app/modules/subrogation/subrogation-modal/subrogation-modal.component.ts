@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
@@ -75,7 +75,7 @@ export class SubrogationModalComponent implements OnInit {
   private readonly snackBarService = inject(SnackBarService);
   private readonly subrogationService = inject(SubrogationService);
 
-  public stepIndex = 0;
+  public stepIndex = signal(0);
   public domains: string[];
   public customerId: string;
   public user: { email: string; firstname: string; lastname: string };
@@ -96,7 +96,7 @@ export class SubrogationModalComponent implements OnInit {
     this.customerId = this.data.customerId;
     this.user = this.data.user;
     if (this.user) {
-      this.stepIndex = 1;
+      this.stepIndex.set(1);
       this.retrieveOrCreateSubrogation(this.user.email);
     } else {
       this.form.get('domain').setValue(this.domains[0], { emitEvent: false });
@@ -111,7 +111,7 @@ export class SubrogationModalComponent implements OnInit {
     this.subrogationService.checkCurrentUserIsInSubrogation().subscribe((response: Subrogation) => {
       if (response.id) {
         if (response.surrogate === surrogateEmail) {
-          this.stepIndex = 1;
+          this.stepIndex.set(1);
           // TODO subscribe to the modal close event and cancel the subrogation
           this.pending = true;
           this.subrogation = response;
@@ -159,7 +159,7 @@ export class SubrogationModalComponent implements OnInit {
     };
     this.subrogationService.createSubrogation(this.subrogation).subscribe(
       (subrogation) => {
-        this.stepIndex = 1;
+        this.stepIndex.set(1);
         this.subrogation = subrogation;
         this.subrogationService.checkSubrogationStatus(this.subrogation, this.dialogRef).subscribe(() => {
           this.logoutAndLaunchSubrogation(this.subrogation);

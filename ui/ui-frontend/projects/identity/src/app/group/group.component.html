@@ -16,7 +16,7 @@
           <span>{{ 'GROUP.HOME.ACTION_BUTTON' | translate }}</span>
         </button>
 
-        <button class="btn secondary ml-3" (click)="exportProfilesAsExcel()" [disabled]="exportButtonDisabled">
+        <button class="btn secondary ml-3" (click)="exportProfilesAsExcel()" [disabled]="exportButtonDisabled()">
           <span>{{ 'GROUP.HOME.EXPORT' | translate }}</span>
         </button>
       </vitamui-banner>

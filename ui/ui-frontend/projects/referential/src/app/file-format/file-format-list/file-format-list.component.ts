@@ -135,7 +135,7 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
     this.fileFormatService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: FileFormat[]) => {
-        this.dataSource = data;
+        this.dataSource.set(data);
       });
 
     const searchCriteriaChange = merge(this.searchChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -209,10 +209,14 @@ export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> imp
 
   private replaceUpdatedFileFormat(): void {
     this.fileFormatService.updated.pipe(takeUntil(this.destroy$)).subscribe((ffUpdated: FileFormat) => {
-      const index = this.dataSource.findIndex((item: FileFormat) => item.id === ffUpdated.id);
-      if (index !== -1) {
-        this.dataSource[index] = ffUpdated;
-      }
+      this.dataSource.update((formats) => {
+        const list = [...(formats ?? [])];
+        const index = list.findIndex((item: FileFormat) => item.id === ffUpdated.id);
+        if (index !== -1) {
+          list[index] = ffUpdated;
+        }
+        return list;
+      });
     });
   }
 }

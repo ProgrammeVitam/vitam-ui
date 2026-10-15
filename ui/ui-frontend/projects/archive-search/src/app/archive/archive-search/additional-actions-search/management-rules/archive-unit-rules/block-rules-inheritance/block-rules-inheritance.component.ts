@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -76,11 +76,11 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   @Input()
   rulesList: Observable<Rule[]>;
 
-  ruleOptions: VitamuiSelectOptions;
+  ruleOptions = signal<VitamuiSelectOptions>(null);
 
-  showText = false;
+  showText = signal(false);
   isLoading = false;
-  disabledControl = true;
+  disabledControl = signal(true);
 
   getRuleSuscription: Subscription;
   showConfirmDeleteBlocRuleSuscription: Subscription;
@@ -125,7 +125,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
   }
 
   ngOnDestroy() {
@@ -145,7 +145,7 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   isEmpty(formData: any): boolean {
     if (formData) {
       if (formData.rule) {
-        this.disabledControl = false;
+        this.disabledControl.set(false);
         this.cancelStep.emit();
         return true;
       }
@@ -166,8 +166,8 @@ export class BlockRulesInheritanceComponent implements OnDestroy, OnInit {
   }
 
   blockRuleInheritance() {
-    this.disabledControl = true;
-    this.showText = true;
+    this.disabledControl.set(true);
+    this.showText.set(true);
     this.isLoading = !this.isLoading;
 
     const rule: RuleAction = {

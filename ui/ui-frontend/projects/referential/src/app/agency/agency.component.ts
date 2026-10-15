@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -78,6 +78,7 @@ import { map } from 'rxjs/operators';
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
   private readonly securityService = inject(SecurityService);
   private readonly agencyService = inject(AgencyService);
@@ -97,11 +98,15 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params['tenantIdentifier'];
+      this.cdr.markForCheck();
     });
     this.queryParamsService
       .getQueryParams()
       .pipe(map((queryParam) => queryParam['s'] || ''))
-      .subscribe((s) => (this.search = s));
+      .subscribe((s) => {
+        this.search = s;
+        this.cdr.markForCheck();
+      });
 
     zip(
       this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_CREATE_AGENCIES, this.tenantIdentifier),
@@ -113,6 +118,7 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       this.hasImportRole = values[1];
       this.hasExportRole = values[2];
       this.hasUpdateRole = values[3];
+      this.cdr.markForCheck();
     });
   }
 

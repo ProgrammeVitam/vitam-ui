@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { IngestList } from '../../core/common/ingest-list';
 import { UploadService } from '../../core/common/upload.service';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -51,19 +51,19 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class UploadTrackingComponent {
   private readonly uploadSipService = inject(UploadService);
 
-  ingestList: IngestList;
-  displayTracking = false;
+  ingestList = signal<IngestList>(new IngestList());
+  displayTracking = signal(false);
 
   constructor() {
     this.uploadSipService.filesStatus().subscribe((ingestList) => {
-      this.ingestList = ingestList;
-      if (this.ingestList.wipNumber > 0) {
-        this.displayTracking = true;
+      this.ingestList.set(ingestList);
+      if (ingestList.wipNumber > 0) {
+        this.displayTracking.set(true);
       }
     });
   }
 
   toggleTracking() {
-    this.displayTracking = !this.displayTracking;
+    this.displayTracking.update((displayTracking) => !displayTracking);
   }
 }

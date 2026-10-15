@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
@@ -83,7 +83,7 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
   }>(MAT_DIALOG_DATA);
 
   form: FormGroup;
-  originatingAgenciesOptions: VitamuiSelectOptions = { options: [] };
+  originatingAgenciesOptions = signal<VitamuiSelectOptions>({ options: [] });
   itemSelected: number;
   reassignmentMode: ReassignmentMode;
   private readonly destroy$ = new Subject<void>();
@@ -109,7 +109,7 @@ export class OriginatingAgencyReassignmentDialogComponent implements OnInit, OnD
 
     this.agencyService
       .getOriginatingAgenciesAsOptions()
-      .subscribe((opts: Option[]) => (this.originatingAgenciesOptions = { options: opts }));
+      .subscribe((opts: Option[]) => this.originatingAgenciesOptions.set({ options: opts }));
 
     this.confirmDialogService
       .listenToEscapeKeyPress(this.dialogRef)

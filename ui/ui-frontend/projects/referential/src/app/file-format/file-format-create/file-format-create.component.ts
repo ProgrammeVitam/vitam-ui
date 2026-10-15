@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -76,7 +76,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   hasError = true;
   message: string;
   isCreationPending = false;
-  isDisabledButton = false;
+  isDisabledButton = signal(false);
 
   private keyPressSubscription: Subscription;
 
@@ -127,10 +127,10 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
-      this.isDisabledButton = true;
+      this.isDisabledButton.set(true);
       return;
     }
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
     const format: FileFormat = this.form.value;
     format.puid = FILE_FORMAT_EXTERNAL_PREFIX + this.form.value.puid;
 
@@ -138,7 +138,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     this.isCreationPending = true;
     this.fileFormatService.create(format).subscribe(
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true });
       },
       (error: any) => {

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, inject, input, OnInit, Output, Signal } from '@angular/core';
+import { Component, computed, EventEmitter, inject, input, OnInit, Output, Signal, signal } from '@angular/core';
 import {
   Event,
   ExternalParameters,
@@ -76,7 +76,7 @@ export class AuditPreviewComponent implements OnInit {
   audit = input.required<Event>();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  accessContractId: string;
+  accessContractId = signal<string>(undefined);
   hasReport: Signal<boolean> = computed(() => {
     const audit = this.audit();
     if (audit.type === 'EVIDENCE_AUDIT') {
@@ -125,7 +125,7 @@ export class AuditPreviewComponent implements OnInit {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
-        this.accessContractId = accessContratId;
+        this.accessContractId.set(accessContratId);
       } else {
         this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
@@ -137,7 +137,7 @@ export class AuditPreviewComponent implements OnInit {
   }
 
   downloadReport() {
-    this.auditService.download(this.audit().id, this.audit().type, this.accessContractId);
+    this.auditService.download(this.audit().id, this.audit().type, this.accessContractId());
   }
 
   private getLastStepStatus(audit: Event): string {

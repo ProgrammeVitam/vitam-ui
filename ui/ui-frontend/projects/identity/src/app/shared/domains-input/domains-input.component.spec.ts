@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { of } from 'rxjs';
@@ -82,14 +82,13 @@ describe('DomainsInputComponent', () => {
     expect(testhost).toBeTruthy();
   });
 
-  it('should have a list of domains', waitForAsync(() => {
+  it('should have a list of domains', async () => {
     testhost.domains = ['toto.titi', 'titi.tutu', 'tata.tete'];
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(testhost.component.domains).toEqual(testhost.domains);
-    });
-  }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(testhost.component.domains).toEqual(testhost.domains);
+  });
 
   it('should add one domain', () => {
     testhost.component.control.setValue('test.com');
@@ -136,27 +135,25 @@ describe('DomainsInputComponent', () => {
     expect(testhost.selected).toBe('test.com');
   });
 
-  it('should emit the selected value', waitForAsync(() => {
+  it('should emit the selected value', async () => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      const chips = fixture.nativeElement.querySelectorAll('.vitamui-chip');
-      expect(chips.length).toBe(3);
-      chips[1].click();
-      expect(testhost.selected).toBe('toto.co.uk');
-    });
-  }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const chips = fixture.nativeElement.querySelectorAll('.vitamui-chip');
+    expect(chips.length).toBe(3);
+    chips[1].click();
+    expect(testhost.selected).toBe('toto.co.uk');
+  });
 
-  it('should set the selected value', waitForAsync(() => {
+  it('should set the selected value', async () => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     testhost.selected = 'tata.fr';
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(testhost.component.selected).toBe('tata.fr');
-    });
-  }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(testhost.component.selected).toBe('tata.fr');
+  });
 
   it('should disable the add button', () => {
     const elInput = fixture.nativeElement.querySelector('input');
@@ -170,28 +167,26 @@ describe('DomainsInputComponent', () => {
     expect(elButton.attributes.disabled).toBeTruthy();
   });
 
-  it('should remove the domain', waitForAsync(() => {
+  it('should remove the domain', async () => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(testhost.component.domains).toEqual(testhost.domains);
-      testhost.component.remove('tata.fr');
-      expect(testhost.component.domains).toEqual(['test.com', 'toto.co.uk']);
-    });
-  }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(testhost.component.domains).toEqual(testhost.domains);
+    testhost.component.remove('tata.fr');
+    expect(testhost.component.domains).toEqual(['test.com', 'toto.co.uk']);
+  });
 
-  it('should unset the selected item', waitForAsync(() => {
+  it('should unset the selected item', async () => {
     testhost.domains = ['test.com', 'toto.co.uk', 'tata.fr'];
     testhost.selected = 'tata.fr';
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expect(testhost.selected).toBe('tata.fr');
-      expect(testhost.component.domains).toEqual(testhost.domains);
-      testhost.component.remove('tata.fr');
-      expect(testhost.component.domains).toEqual(['test.com', 'toto.co.uk']);
-      expect(testhost.selected).toBeFalsy();
-    });
-  }));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(testhost.selected).toBe('tata.fr');
+    expect(testhost.component.domains).toEqual(testhost.domains);
+    testhost.component.remove('tata.fr');
+    expect(testhost.component.domains).toEqual(['test.com', 'toto.co.uk']);
+    expect(testhost.selected).toBeFalsy();
+  });
 });

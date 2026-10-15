@@ -35,8 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {
+  ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   forwardRef,
@@ -48,6 +50,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DragAndDropDirective } from '../../directives/drag-and-drop/drag-and-drop.directive';
 import { TranslatePipe } from '@ngx-translate/core';
 import { I18nPluralPipe, NgTemplateOutlet } from '@angular/common';
@@ -103,6 +106,8 @@ type DirectoryValidatorFunction = (displayFile: DisplayFile) => Promise<FileVali
 })
 export class FileSelectorComponent extends AbstractFormInputDirective implements OnInit {
   private readonly bytesPipe = inject(BytesPipe);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
 
   /**
    * Allowed extensions. Ex: ['.json', '.rng']
@@ -151,6 +156,8 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
       return await this.globalErrors;
     });
     this.control.valueChanges.subscribe((files) => this.filesChanged.emit(files));
+    // Async validation (file content checks) resolves outside any template event: refresh the view (zoneless)
+    this.control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.cdr.markForCheck());
   }
 
   // This is a promise that will resolve to the global errors after custom validation is run
@@ -180,6 +187,7 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     await this.updateFiles(files);
     this.control.markAsTouched();
     this.resetInput();
+    this.cdr.markForCheck();
   }
 
   private async updateFiles(files: FileList | File[]) {
@@ -210,6 +218,8 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
       globalErrors.push(...this.computeDuplicationError());
 
       this.sortDisplayFiles();
+      // displayFiles and their errors are updated after awaits: refresh the view (zoneless)
+      this.cdr.markForCheck();
 
       resolve(this.resumeGlobalErrors(globalErrors));
     });

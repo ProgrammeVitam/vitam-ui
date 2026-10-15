@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
@@ -68,7 +68,7 @@ export class OntologyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
   form: FormGroup;
   disabled = true;
-  submitted = false;
+  submitted = signal(false);
   sizeFieldVisible = false;
   types = types;
   sizes = sizes;
@@ -151,17 +151,17 @@ export class OntologyInformationTabComponent {
   }
 
   onSubmit() {
-    this.submitted = true;
+    this.submitted.set(true);
     this.prepareSubmit().subscribe(
       () => {
         this.ontologyService.get(this._inputOntology.identifier).subscribe((response) => {
-          this.submitted = false;
+          this.submitted.set(false);
           this.inputOntology = response;
           this.ontologyService.updated.next(this.inputOntology);
         });
       },
       () => {
-        this.submitted = false;
+        this.submitted.set(false);
       },
     );
   }

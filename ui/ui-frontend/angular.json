@@ -20,9 +20,6 @@
             "index": "projects/identity/src/index.html",
             "browser": "projects/identity/src/main.ts",
             "tsConfig": "projects/identity/tsconfig.app.json",
-            "polyfills": [
-              "projects/identity/src/polyfills.ts"
-            ],
             "assets": [
               "projects/identity/src/assets",
               "projects/identity/src/favicon.ico",
@@ -137,9 +134,6 @@
             "index": "projects/portal/src/index.html",
             "browser": "projects/portal/src/main.ts",
             "tsConfig": "projects/portal/tsconfig.app.json",
-            "polyfills": [
-              "projects/portal/src/polyfills.ts"
-            ],
             "assets": [
               "projects/portal/src/assets",
               "projects/portal/src/favicon.ico",
@@ -251,9 +245,6 @@
             "outputPath": "dist/referential",
             "index": "projects/referential/src/index.html",
             "browser": "projects/referential/src/main.ts",
-            "polyfills": [
-              "projects/referential/src/polyfills.ts"
-            ],
             "tsConfig": "projects/referential/tsconfig.app.json",
             "assets": [
               "projects/referential/src/assets",
@@ -422,9 +413,6 @@
             "index": "projects/design-system/src/index.html",
             "browser": "projects/design-system/src/main.ts",
             "tsConfig": "projects/design-system/tsconfig.app.json",
-            "polyfills": [
-              "projects/design-system/src/polyfills.ts"
-            ],
             "assets": [
               "projects/design-system/src/assets",
               "projects/design-system/src/favicon.ico",
@@ -524,9 +512,6 @@
             "index": "projects/ingest/src/index.html",
             "browser": "projects/ingest/src/main.ts",
             "tsConfig": "projects/ingest/tsconfig.app.json",
-            "polyfills": [
-              "projects/ingest/src/polyfills.ts"
-            ],
             "assets": [
               "projects/ingest/src/favicon.ico",
               "projects/ingest/src/assets",
@@ -627,9 +612,6 @@
             "index": "projects/archive-search/src/index.html",
             "browser": "projects/archive-search/src/main.ts",
             "tsConfig": "projects/archive-search/tsconfig.app.json",
-            "polyfills": [
-              "projects/archive-search/src/polyfills.ts"
-            ],
             "assets": [
               "projects/archive-search/src/assets",
               "projects/archive-search/src/favicon.ico",
@@ -730,9 +712,6 @@
             "index": "projects/collect/src/index.html",
             "browser": "projects/collect/src/main.ts",
             "tsConfig": "projects/collect/tsconfig.app.json",
-            "polyfills": [
-              "projects/collect/src/polyfills.ts"
-            ],
             "assets": [
               "projects/collect/src/assets",
               "projects/collect/src/favicon.ico",
@@ -829,9 +808,6 @@
             "outputPath": "dist/pastis",
             "index": "projects/pastis/src/index.html",
             "browser": "projects/pastis/src/main.ts",
-            "polyfills": [
-              "projects/pastis/src/polyfills.ts"
-            ],
             "tsConfig": "projects/pastis/tsconfig.app.json",
             "assets": [
               "projects/pastis/src/assets",

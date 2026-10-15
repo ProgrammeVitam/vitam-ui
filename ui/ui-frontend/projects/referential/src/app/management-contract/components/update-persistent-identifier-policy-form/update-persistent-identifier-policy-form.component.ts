@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   ManagementContractValidationErrors,
@@ -105,18 +105,18 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     },
   ];
 
-  objectUsagePoliciesToggle = false;
+  objectUsagePoliciesToggle = signal(false);
   addButtonDisabled = false;
-  isExistingTypeOption = false;
+  isExistingTypeOption = signal(false);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['form']) {
       this.updateAddButtonState();
-      this.isExistingTypeOption = this.form.get('policyTypeOption').value !== '';
-      this.objectUsagePoliciesToggle = this.form.get('shouldConcernObjects').value;
+      this.isExistingTypeOption.set(this.form.get('policyTypeOption').value !== '');
+      this.objectUsagePoliciesToggle.set(this.form.get('shouldConcernObjects').value);
 
       this.form.get('shouldConcernObjects').valueChanges.subscribe((shouldConcernObjects) => {
-        this.objectUsagePoliciesToggle = shouldConcernObjects;
+        this.objectUsagePoliciesToggle.set(shouldConcernObjects);
 
         const formArray = this.form.get('objectUsagePolicies') as FormArray;
         if (!shouldConcernObjects) {
@@ -139,7 +139,7 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
       });
 
       this.form.get('policyTypeOption').valueChanges.subscribe((policyTypeOption: string) => {
-        this.isExistingTypeOption = policyTypeOption !== '';
+        this.isExistingTypeOption.set(policyTypeOption !== '');
       });
     }
   }
@@ -148,7 +148,7 @@ export class UpdatePersistentIdentifierPolicyFormComponent implements OnChanges 
     const element = $event.target as any;
 
     if (['col', 'row', 'header'].some((cssClass) => element.className.includes(cssClass))) {
-      this.objectUsagePoliciesToggle = !this.objectUsagePoliciesToggle;
+      this.objectUsagePoliciesToggle.set(!this.objectUsagePoliciesToggle());
     }
   }
 

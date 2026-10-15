@@ -34,15 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 import { AccessContract } from 'vitamui-library';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 describe('AccessContract Create Validators', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('uniqueName', () => {
-    it('uniqueName should return null', fakeAsync(() => {
+    it('uniqueName should return null', async () => {
+      vi.useFakeTimers();
       const accessContractServiceSpy = {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
@@ -51,11 +56,12 @@ describe('AccessContract Create Validators', () => {
       from(accessContractCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should return { nameExists: true }', fakeAsync(() => {
+    it('should return { nameExists: true }', async () => {
+      vi.useFakeTimers();
       const accessContractServiceSpy = {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
@@ -64,11 +70,12 @@ describe('AccessContract Create Validators', () => {
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const accessContractServiceSpy = {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
@@ -77,9 +84,9 @@ describe('AccessContract Create Validators', () => {
       from(customerCreateValidators.uniqueName()(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
-    }));
+    });
   });
 
   describe('uniqueNameWhileEdit', () => {
@@ -110,7 +117,8 @@ describe('AccessContract Create Validators', () => {
       doNotFilterFilingSchemes: false,
     });
 
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const accessContractServiceSpy = {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
@@ -119,11 +127,12 @@ describe('AccessContract Create Validators', () => {
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should return { nameExists: true }', fakeAsync(() => {
+    it('should return { nameExists: true }', async () => {
+      vi.useFakeTimers();
       const accessContractServiceSpy = {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
@@ -132,11 +141,12 @@ describe('AccessContract Create Validators', () => {
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const accessContractServiceSpy = {
         existsProperties: vi.fn().mockName('AccessContractService.existsProperties'),
       };
@@ -145,8 +155,8 @@ describe('AccessContract Create Validators', () => {
       from(customerCreateValidators.uniqueNameWhileEdit(getAccessContract)(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(accessContractServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
-    }));
+    });
   });
 });

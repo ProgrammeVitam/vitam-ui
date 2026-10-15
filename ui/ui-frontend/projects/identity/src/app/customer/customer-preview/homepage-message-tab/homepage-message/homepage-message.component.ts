@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -57,6 +57,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
+  private readonly cdr = inject(ChangeDetectorRef);
   dialogRef = inject<MatDialogRef<HomepageMessageComponent>>(MatDialogRef);
   private readonly formBuilder = inject(FormBuilder);
   private readonly startupService = inject(StartupService);
@@ -105,6 +106,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
         this.homepageMessageForm.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
           this.sendForm();
         });
+        this.cdr.markForCheck();
       });
   }
 

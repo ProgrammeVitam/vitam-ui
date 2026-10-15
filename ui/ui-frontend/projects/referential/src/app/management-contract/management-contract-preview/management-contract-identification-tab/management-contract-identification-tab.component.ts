@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, signal, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
@@ -71,7 +71,7 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   contractForm: FormGroup;
-  sending = false;
+  sending = signal(false);
 
   policyTypeOptions: Option[] = [
     { label: this.translateService.instant('CONTRACT_MANAGEMENT.FORM_UPDATE.PERMANENT_IDENTIFIER_POLICY_OPTION.NONE.LABEL'), key: '' },
@@ -100,11 +100,12 @@ export class ManagementContractIdentificationTabComponent implements OnChanges, 
   }
 
   prepareSubmit(): Observable<ManagementContract> {
-    return of((this.sending = true)).pipe(
+    this.sending.set(true);
+    return of(true).pipe(
       mergeMap(() => this.managementContractService.patch(this.getUpdatedManagementContract())),
       tap(
-        () => (this.sending = false),
-        () => (this.sending = false),
+        () => this.sending.set(false),
+        () => this.sending.set(false),
       ),
       tap(() => this.updated.emit(false)),
       tap(() => {

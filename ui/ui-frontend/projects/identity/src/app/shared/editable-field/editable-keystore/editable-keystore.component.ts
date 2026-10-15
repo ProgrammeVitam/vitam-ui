@@ -36,7 +36,7 @@
  */
 import { EditableFieldComponent, IdentityProvider, newFile } from 'vitamui-library';
 
-import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
 
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
@@ -52,6 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class EditableKeystoreComponent extends EditableFieldComponent {
   private readonly identityProviderService = inject(IdentityProviderService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() identityProvider: IdentityProvider;
 
@@ -82,9 +83,11 @@ export class EditableKeystoreComponent extends EditableFieldComponent {
       () => {
         this.originValue = this.file;
         this.cancel();
+        this.cdr.markForCheck();
       },
       () => {
         this.control.setErrors({ badPassword: true });
+        this.cdr.markForCheck();
       },
     );
   }

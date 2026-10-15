@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, resource, ViewChildren, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  resource,
+  ViewChildren,
+  inject,
+  signal,
+  afterNextRender,
+  Injector,
+} from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   CountryOption,
@@ -49,7 +61,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { extend } from 'underscore';
 import { Observable } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   imports: [
@@ -68,11 +80,15 @@ import { delay, map } from 'rxjs/operators';
 export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
   private readonly countryService = inject(CountryService);
 
-  configs: {
-    name: string;
-    multiple?: boolean;
-    entries: { type: string; states: { id: string; control: FormControl }[] }[];
-  }[];
+  private readonly injector = inject(Injector);
+
+  readonly configs = signal<
+    {
+      name: string;
+      multiple?: boolean;
+      entries: { type: string; states: { id: string; control: FormControl }[] }[];
+    }[]
+  >(undefined);
 
   enableSearch = false;
   enableSelectAll = false;
@@ -101,7 +117,7 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.multiSelectOptions$.subscribe((options) => {
       const selectedOptionValue = options.options[0].key;
-      this.configs = [
+      this.configs.set([
         {
           name: 'Simple select',
           multiple: false,
@@ -112,15 +128,18 @@ export class DesignSystemSelectComponent implements OnInit, AfterViewInit {
           multiple: true,
           entries: this.getEntries([selectedOptionValue]),
         },
-      ];
-    });
-
-    this.multiSelectOptions$.pipe(delay(1)).subscribe(() => {
-      this.components.forEach((component) => {
-        const nativeElement = component.nativeElement as HTMLElement;
-        const isActive = nativeElement.getAttribute('data-active') === 'true';
-        if (isActive) nativeElement.querySelector('mat-select').dispatchEvent(new Event('focus'));
-      });
+      ]);
+      // Focus the "Active" selects once they are rendered
+      afterNextRender(
+        () => {
+          this.components.forEach((component) => {
+            const nativeElement = component.nativeElement as HTMLElement;
+            const isActive = nativeElement.getAttribute('data-active') === 'true';
+            if (isActive) nativeElement.querySelector('mat-select').dispatchEvent(new Event('focus'));
+          });
+        },
+        { injector: this.injector },
+      );
     });
   }
 

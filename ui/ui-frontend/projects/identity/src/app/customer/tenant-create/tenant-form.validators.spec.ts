@@ -34,12 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
 import { TenantService } from '../tenant.service';
 import { TenantFormValidators } from './tenant-form.validators';
+
+beforeEach(() => {
+  vi.useFakeTimers();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('Tenant Form Validators', () => {
   const createValidators = (tenantServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
@@ -49,7 +57,7 @@ describe('Tenant Form Validators', () => {
     return TestBed.runInInjectionContext(() => new TenantFormValidators());
   };
 
-  it('should return null', fakeAsync(() => {
+  it('should return null', () => {
     const tenantServiceSpy = {
       exists: vi.fn().mockName('TenantService.exists'),
     };
@@ -58,11 +66,11 @@ describe('Tenant Form Validators', () => {
     from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toBeNull();
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(tenantServiceSpy.exists).toHaveBeenCalledWith('name');
-  }));
+  });
 
-  it('should return { uniqueName: true }', fakeAsync(() => {
+  it('should return { uniqueName: true }', () => {
     const tenantServiceSpy = {
       exists: vi.fn().mockName('TenantService.exists'),
     };
@@ -71,11 +79,11 @@ describe('Tenant Form Validators', () => {
     from(tenantFormValidators.uniqueName()(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(tenantServiceSpy.exists).toHaveBeenCalledWith('name');
-  }));
+  });
 
-  it('should not call the service', fakeAsync(() => {
+  it('should not call the service', () => {
     const tenantServiceSpy = {
       exists: vi.fn().mockName('TenantService.exists'),
     };
@@ -84,11 +92,11 @@ describe('Tenant Form Validators', () => {
     from(tenantFormValidators.uniqueName('name')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual(null);
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(tenantServiceSpy.exists).not.toHaveBeenCalled();
-  }));
+  });
 
-  it('should call the service', fakeAsync(() => {
+  it('should call the service', () => {
     const tenantServiceSpy = {
       exists: vi.fn().mockName('TenantService.exists'),
     };
@@ -97,7 +105,7 @@ describe('Tenant Form Validators', () => {
     from(tenantFormValidators.uniqueName('tenantName')(new FormControl('name'))).subscribe((result) => {
       expect(result).toEqual({ uniqueName: true });
     });
-    tick(400);
+    vi.advanceTimersByTime(400);
     expect(tenantServiceSpy.exists).toHaveBeenCalledWith('name');
-  }));
+  });
 });

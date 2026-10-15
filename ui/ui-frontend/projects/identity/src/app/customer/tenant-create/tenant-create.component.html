@@ -13,7 +13,7 @@
     ></vitamui-select>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="isLoading || form.pending || form.invalid">
+    <button type="submit" class="btn primary" [disabled]="isLoading() || form.pending || form.invalid">
       {{ 'COMMON.SUBMIT' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

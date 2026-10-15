@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -75,13 +75,13 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   @Input() probativeValue: any;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  public hasAccessContract: boolean;
+  public hasAccessContract = signal<boolean>(undefined);
 
   private accessContract: string;
 
   private readonly destroyer$ = new Subject<void>();
 
-  isLoading = false;
+  isLoading = signal(false);
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
@@ -99,7 +99,7 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
         const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
         if (accessContractId) {
           this.accessContract = accessContractId;
-          this.hasAccessContract = true;
+          this.hasAccessContract.set(true);
         } else {
           this.snackBarService.open({ message: 'ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND' });
         }
@@ -116,10 +116,10 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   }
 
   public downloadReport() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.probativeValueService
       .export(this.probativeValue.id, this.accessContract)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         error: (e) => console.error(e),
       });

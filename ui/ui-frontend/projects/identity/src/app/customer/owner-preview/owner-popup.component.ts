@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Owner, Tenant } from 'vitamui-library';
@@ -43,25 +43,25 @@ import { OwnerPreviewComponent } from './owner-preview.component';
 
 @Component({
   selector: 'app-owner-popup',
-  template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner" [tenant]="tenant" [isPopup]="true"></app-owner-preview>',
+  template: '<app-owner-preview (previewClose)="closePopup()" [owner]="owner()" [tenant]="tenant" [isPopup]="true"></app-owner-preview>',
   imports: [OwnerPreviewComponent],
 })
 export class OwnerPopupComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly ownerService = inject(OwnerService);
 
-  owner: Owner;
+  readonly owner = signal<Owner>(undefined);
   tenant: Tenant;
 
   constructor() {
     if (this.route.snapshot.data['tenant']) {
       this.tenant = this.route.snapshot.data['tenant'];
-      this.owner = this.route.snapshot.data['owner'];
-      if (!this.owner) {
-        this.ownerService.get(this.tenant.ownerId).subscribe((owner) => (this.owner = owner));
+      this.owner.set(this.route.snapshot.data['owner']);
+      if (!this.owner()) {
+        this.ownerService.get(this.tenant.ownerId).subscribe((owner) => this.owner.set(owner));
       }
     } else {
-      this.owner = this.route.snapshot.data['owner'];
+      this.owner.set(this.route.snapshot.data['owner']);
     }
   }
 

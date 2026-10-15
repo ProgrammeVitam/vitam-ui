@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import {
   AccessContract,
@@ -68,8 +68,8 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
 
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
-  hasDownloadDocumentRole = false;
-  downloadableVersionWithQualifier: VersionWithQualifierDto = null;
+  hasDownloadDocumentRole = signal(false);
+  downloadableVersionWithQualifier = signal<VersionWithQualifierDto>(null);
 
   private accessContract: AccessContract;
   private readonly subscriptions = new Subscription();
@@ -110,7 +110,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   private findDownloadableObjectWithAccessContract(): void {
-    this.downloadableVersionWithQualifier = null;
+    this.downloadableVersionWithQualifier.set(null);
     if (!this.archiveUnit || !this.accessContract) {
       return;
     }
@@ -133,17 +133,17 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       (versionWithQualifier) => versionWithQualifier.qualifier === firstQualifierDownloadable.qualifier,
     );
     // lastest version
-    this.downloadableVersionWithQualifier = downloadableQualifiers[downloadableQualifiers.length - 1];
+    this.downloadableVersionWithQualifier.set(downloadableQualifiers[downloadableQualifiers.length - 1]);
   }
 
   onDownloadObjectFromUnit() {
-    if (!this.downloadableVersionWithQualifier) {
+    if (!this.downloadableVersionWithQualifier()) {
       throw new Error('Download forbidden');
     }
     return this.archiveService.downloadObjectFromUnit(
       this.archiveUnit['#id'],
-      this.downloadableVersionWithQualifier.qualifier,
-      this.downloadableVersionWithQualifier.version,
+      this.downloadableVersionWithQualifier().qualifier,
+      this.downloadableVersionWithQualifier().version,
     );
   }
 
@@ -155,7 +155,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     this.archiveService
       .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', Number(this.tenantIdentifier))
       .subscribe((result) => {
-        this.hasDownloadDocumentRole = result;
+        this.hasDownloadDocumentRole.set(result);
       });
   }
 }

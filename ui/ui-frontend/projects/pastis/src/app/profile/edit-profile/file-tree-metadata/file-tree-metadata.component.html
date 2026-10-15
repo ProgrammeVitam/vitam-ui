@@ -16,9 +16,9 @@
             <vitamui-chip [text]="sedaVersionLabel"></vitamui-chip>
           </div>
         </div>
-        @if (breadcrumbDataMetadata) {
+        @if (breadcrumbDataMetadata()) {
           <div class="breadcrumb-container">
-            <pastis-breadcrumb (selected)="navigateMetadata($event)" [data]="breadcrumbDataMetadata"></pastis-breadcrumb>
+            <pastis-breadcrumb (selected)="navigateMetadata($event)" [data]="breadcrumbDataMetadata()"></pastis-breadcrumb>
           </div>
         }
       </div>
@@ -56,9 +56,9 @@
         [searchbarPlaceholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SEARCH_PLACEHOLDER' | translate"
       >
         <!--Button add metadata-->
-        @if (checkElementType() && resolveButtonLabel(clickedNode) !== null) {
+        @if (checkElementType() && resolveButtonLabel(clickedNode()) !== null) {
           <button (click)="onAddNode()" class="btn primary ml-5" style="text-transform: uppercase">
-            {{ resolveButtonLabel(clickedNode) }}
+            {{ resolveButtonLabel(clickedNode()) }}
           </button>
         }
       </vitamui-banner>
@@ -67,7 +67,7 @@
     <!--Metatada table container-->
     <div class="pastis-table-container">
       @if (shouldLoadMetadataTable()) {
-        <table [dataSource]="matDataSource" class="list-profile-table" mat-table>
+        <table [dataSource]="matDataSource()" class="list-profile-table" mat-table>
           <!-- Name Column -->
           <ng-container matColumnDef="nomDuChamp">
             <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
@@ -76,8 +76,8 @@
             <td *matCellDef="let element; index as j" class="pastis-metadata-table-col-large" mat-cell>
               <span
                 [ngClass]="{
-                  'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
-                  'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j]),
+                  'pastis-table-content': isSedaCardinalityConform(element.cardinalite, selectedCardinalities()[j]),
+                  'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite, selectedCardinalities()[j]),
                 }"
                 [vitamuiTooltip]="getSedaDefinition(element.nomDuChamp)"
               >
@@ -89,7 +89,7 @@
                 } @else {
                   {{ onResolveName(element.nomDuChamp) }}
                 }
-                @if (!isSedaCardinalityConform(element.cardinalite, selectedCardinalities[j])) {
+                @if (!isSedaCardinalityConform(element.cardinalite, selectedCardinalities()[j])) {
                   <mat-icon vitamuiTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1" vitamuiTooltipPosition="TOP">
                     info
                   </mat-icon>
@@ -157,7 +157,7 @@
             <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
               <mat-select
                 (ngModelChange)="setNodeChildrenCardinalities(element, $event)"
-                [ngModel]="selectedCardinalities[i]"
+                [ngModel]="selectedCardinalities()[i]"
                 class="select-border"
                 disableRipple="true"
                 panelClass="vitamui-mat-select"
@@ -279,7 +279,7 @@
                 @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
-                  element.id === clickedNode.id &&
+                  element.id === clickedNode().id &&
                   !isAppliedControl(element.id)
                 ) {
                   <mat-divider> </mat-divider>
@@ -287,7 +287,7 @@
                 @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
-                  element.id === clickedNode.id &&
+                  element.id === clickedNode().id &&
                   !isAppliedControl(element.id)
                 ) {
                   <button (click)="onControlClick(element.id)" mat-menu-item>
@@ -299,7 +299,7 @@
                 @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
-                  element.id === clickedNode.id &&
+                  element.id === clickedNode().id &&
                   isAppliedControl(element.id)
                 ) {
                   <mat-divider> </mat-divider>
@@ -307,7 +307,7 @@
                 @if (
                   profileService.profileType === 'PUA' &&
                   !isElementComplex(element.nomDuChamp) &&
-                  element.id === clickedNode.id &&
+                  element.id === clickedNode().id &&
                   isAppliedControl(element.id)
                 ) {
                   <button (click)="onEditControlClick(element.id)" mat-menu-item>
@@ -330,15 +330,15 @@
       } @else {
         <div class="complex-element-no-child">
           {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEUN' | translate }}
-          {{ clickedNode.name }} {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEDEUX' | translate }}
+          {{ clickedNode().name }} {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEDEUX' | translate }}
         </div>
       }
     </div>
 
     <!-- Metadata Control Part-->
-    @if (profileService.profileType === 'PUA' && openControls) {
+    @if (profileService.profileType === 'PUA' && openControls()) {
       <div>
-        @if (enumerationControl && clickedControl.name === clickedNode.name) {
+        @if (enumerationControl() && clickedControl()?.name === clickedNode().name) {
           <div class="pastis-panel-metadata-control">
             <div class="row">
               <div class="col">
@@ -393,7 +393,7 @@
             }
           </div>
         }
-        @if (expressionControl && clickedControl.name === clickedNode.name) {
+        @if (expressionControl() && clickedControl()?.name === clickedNode().name) {
           <div class="pastis-panel-metadata-control">
             <div class="row">
               <div class="col">
@@ -477,7 +477,7 @@
         <div class="pastis-container-button-submit-controls">
           <!--Button add metadata-->
           <div class="row mt-3">
-            @if ((enumerationControl || expressionControl) && clickedControl.name === clickedNode.name) {
+            @if ((enumerationControl() || expressionControl()) && clickedControl()?.name === clickedNode().name) {
               <button
                 [disabled]="
                   (enumsControlSelected.length <= 0 && regex === null && customRegex === null) ||
@@ -491,7 +491,9 @@
               </button>
             }
             @if (
-              (enumerationControl || expressionControl) && clickedControl.name === clickedNode.name && isAppliedControl(clickedControl.id)
+              (enumerationControl() || expressionControl()) &&
+              clickedControl()?.name === clickedNode().name &&
+              isAppliedControl(clickedControl().id)
             ) {
               <button class="btn delete ml-5" style="text-transform: uppercase" (click)="onDeleteControls()">
                 {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_DELETE_BUTTON_LABEL' | translate }}

@@ -71,7 +71,7 @@ import { GroupService } from './group.service';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import {
@@ -112,7 +112,7 @@ export class GroupComponent extends SidenavPage<Group> {
 
   public groups: Group[];
   public search: string;
-  public exportButtonDisabled = false;
+  public readonly exportButtonDisabled = signal(false);
 
   @ViewChild(GroupListComponent, { static: true }) groupListComponent: GroupListComponent;
 
@@ -137,7 +137,7 @@ export class GroupComponent extends SidenavPage<Group> {
   }
 
   public exportProfilesAsExcel() {
-    this.exportButtonDisabled = true;
+    this.exportButtonDisabled.set(true);
     this.downloadSnackBarService.openDownloadBar();
 
     const exportSub = this.groupService
@@ -145,7 +145,7 @@ export class GroupComponent extends SidenavPage<Group> {
       .pipe(
         finalize(() => {
           this.downloadSnackBarService.close();
-          this.exportButtonDisabled = false;
+          this.exportButtonDisabled.set(false);
         }),
       )
       .subscribe({
@@ -153,7 +153,7 @@ export class GroupComponent extends SidenavPage<Group> {
       });
 
     this.downloadSnackBarService.cancelDownload.subscribe(() => {
-      this.exportButtonDisabled = false;
+      this.exportButtonDisabled.set(false);
       exportSub.unsubscribe();
     });
   }

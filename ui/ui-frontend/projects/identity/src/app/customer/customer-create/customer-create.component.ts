@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, signal, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
@@ -100,6 +100,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   dialogRef = inject<MatDialogRef<CustomerCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
   private readonly formBuilder = inject(FormBuilder);
@@ -119,7 +120,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public hasError = true;
   public message: string;
-  public isLoading = false;
+  public readonly isLoading = signal(false);
   public customerInfo: any = {
     code: null,
     name: null,
@@ -204,6 +205,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.onChanges();
     this.customerService.getMyCustomer().subscribe((customerDetails) => {
       this.customer = customerDetails;
+      this.cdr.markForCheck();
     });
     this.tenantService
       .getAvailableTenants()
@@ -217,6 +219,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
           const defaultTenant = `${second ? second : first}`;
           this.tenantOptions = { options };
           this.form.patchValue({ tenantId: defaultTenant });
+          this.cdr.markForCheck();
         }),
       )
       .subscribe();
@@ -224,6 +227,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
+      this.cdr.markForCheck();
     });
   }
 
@@ -239,6 +243,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
           name: this.form.get('name').value,
           companyName: this.form.get('companyName').value,
         };
+        this.cdr.markForCheck();
       },
     );
   }
@@ -266,11 +271,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) {
       return;
     }
-    this.isLoading = true;
+    this.isLoading.set(true);
     const customer: Customer = this.getCustomerFromForm();
     this.customerService
       .create(customer, this.logos)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: () => this.dialogRef.close(true),
         error: (error) => console.error(error),
@@ -365,6 +370,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   lastStepIsInvalid(): boolean {
     const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid() || !this.fourthStepValid();
-    return this.form.pending || this.form.invalid || invalid || this.isLoading;
+    return this.form.pending || this.form.invalid || invalid || this.isLoading();
   }
 }

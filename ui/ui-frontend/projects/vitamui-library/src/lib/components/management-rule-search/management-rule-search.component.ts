@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
@@ -125,7 +125,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   finalActionTypeCheckboxes: CheckboxItem[];
 
   // Properties from previous abstract class
-  ruleOptions: VitamuiSelectOptions;
+  readonly ruleOptions = signal<VitamuiSelectOptions>(undefined);
   criteriaForm: FormGroup;
   additionalCriteria: Map<string, boolean> = new Map();
   endDateInterval = false;
@@ -338,7 +338,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
           }),
         ),
       )
-      .subscribe((options) => (this.ruleOptions = options));
+      .subscribe((options) => this.ruleOptions.set(options));
   }
 
   protected handleDateCriteria(baseKey: string, dateId: string, startDate: any, endDate: any | null = null) {

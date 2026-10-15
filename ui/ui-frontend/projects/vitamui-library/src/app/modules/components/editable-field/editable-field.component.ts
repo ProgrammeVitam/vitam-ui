@@ -37,6 +37,7 @@
 import { CdkConnectedOverlay, ConnectedPosition } from '@angular/cdk/overlay';
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   ContentChildren,
   Directive,
   ElementRef,
@@ -61,6 +62,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 })
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
   protected elementRef: ElementRef;
+  readonly #changeDetectorRef = inject(ChangeDetectorRef, { optional: true });
 
   constructor(elementRef: ElementRef = inject(ElementRef)) {
     this.elementRef = elementRef;
@@ -126,6 +128,8 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
       this.errors.forEach((error: VitamUIFieldErrorComponent) => {
         error.show = this.control.errors ? !!this.control.errors[error.errorKey] : false;
       });
+      // Status may change asynchronously (async validators): refresh spinner/confirm state (zoneless)
+      this.#changeDetectorRef?.markForCheck();
     });
   }
 

@@ -260,7 +260,7 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
     });
   });
 
-  projectUnits: Unit[];
+  readonly projectUnits = signal<Unit[]>(undefined);
 
   constructor() {
     const { childrenCountLoaded, shouldProposeExactChildrenCount, badgeMessage, parentIds, parents } = this.reclassificationDialogService;
@@ -319,7 +319,7 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
     this.reclassificationService
       .searchArchiveUnitsByCriteria(searchAllRecordsQuery, this.data.transactionId)
       .subscribe((pagedResult: PagedResult) => {
-        this.projectUnits = pagedResult.results;
+        this.projectUnits.set(pagedResult.results);
       });
   }
 

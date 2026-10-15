@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { of, skip, Subscription } from 'rxjs';
 import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
@@ -89,7 +89,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   form: FormGroup;
   groupsCount: boolean;
   previousValue: ExternalParamProfile;
-  activeAccessContractsIdentifiers: string[];
+  readonly activeAccessContractsIdentifiers = signal<string[]>(undefined);
   private isResetting = false;
 
   @Input() externalParamProfile: ExternalParamProfile;
@@ -105,7 +105,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     this.externalParamProfileService
       .getAllActiveAccessContracts(this.tenantIdentifier)
       .pipe(map((accessContracts) => accessContracts.map((accessContract) => accessContract.identifier)))
-      .subscribe((activeAccessContractsIdentifiers) => (this.activeAccessContractsIdentifiers = activeAccessContractsIdentifiers));
+      .subscribe((activeAccessContractsIdentifiers) => this.activeAccessContractsIdentifiers.set(activeAccessContractsIdentifiers));
   }
 
   ngOnDestroy() {

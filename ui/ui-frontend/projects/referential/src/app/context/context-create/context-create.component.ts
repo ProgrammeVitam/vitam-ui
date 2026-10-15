@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -90,7 +90,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   isPermissionsOnMultipleOrganisations = false;
 
   private keyPressSubscription: Subscription;
-  isDisabledButton = false;
+  isDisabledButton = signal(false);
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -161,21 +161,21 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
-      this.isDisabledButton = true;
+      this.isDisabledButton.set(true);
       return;
     }
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
     const context = this.form.value as Context;
     context.status === 'ACTIVE'
       ? (context['activationDate'] = new Date().toISOString())
       : (context['deactivationDate'] = new Date().toISOString());
     this.contextService.create(context).subscribe(
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true, action: 'none' });
       },
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
       },
     );
   }

@@ -101,11 +101,9 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.searchProject();
 
     this.projectUpdated = this.projectsService.getUpdatedProject$().subscribe((projectUpdated) => {
-      for (let i = 0; i < this.dataSource.length; i++) {
-        if (this.dataSource[i].id === projectUpdated.id) {
-          this.dataSource[i] = { ...projectUpdated };
-        }
-      }
+      this.dataSource.update((projects) =>
+        (projects ?? []).map((project) => (project.id === projectUpdated.id ? { ...projectUpdated } : project)),
+      );
     });
   }
 
@@ -123,9 +121,11 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
 
   sortTable() {
     const direction: number = this.direction === Direction.ASCENDANT ? -1 : 1;
-    this.dataSource.sort((a, b) => {
-      return a[this.column] === b[this.column] ? 0 : a[this.column] > b[this.column] ? direction : -direction;
-    });
+    this.dataSource.update((projects) =>
+      [...(projects ?? [])].sort((a, b) => {
+        return a[this.column] === b[this.column] ? 0 : a[this.column] > b[this.column] ? direction : -direction;
+      }),
+    );
   }
 
   searchProject() {

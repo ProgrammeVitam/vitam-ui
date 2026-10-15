@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { I18nPluralPipe } from '@angular/common';
@@ -61,13 +61,13 @@ export class SchemaDeleteDialogComponent {
     other: 'ONTOLOGY.SCHEMA_DELETE_DIALOG.SUBTITLE.PLURAL',
   };
 
-  deleting?: boolean;
+  deleting = signal(false);
 
   submit() {
-    this.deleting = true;
+    this.deleting.set(true);
     this.schemaService
       .deleteSchema(this.paths)
-      .pipe(finalize(() => (this.deleting = false)))
+      .pipe(finalize(() => this.deleting.set(false)))
       .subscribe((guid) => {
         this.dialogRef.close(true);
         const serviceUrl = `${this.startupService.getReferentialUrl()}/logbook-operation/tenant/${this.startupService.getTenantIdentifier()}?guid=${guid}`;

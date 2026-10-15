@@ -4,7 +4,7 @@
     <form [formGroup]="form">
       <vitamui-select
         class="d-flex my-3 mx-1"
-        [options]="searchOptions"
+        [options]="searchOptions()"
         [placeholder]="'MENU.FIND.PLACEHOLDER' | translate"
         [searchBarPlaceHolder]="'MENU.FIND.SEARCH_BAR_PLACEHOLDER' | translate"
         formControlName="search"

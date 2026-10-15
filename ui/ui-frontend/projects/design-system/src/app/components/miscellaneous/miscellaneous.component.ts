@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'vitamui-library';
@@ -51,23 +51,25 @@ const INFINITE_SCROLL_FAKE_DELAY_MS = 1500;
 })
 export class MiscellaneousComponent {
   menuColors = ['primary', 'secondary'] as const;
-  infiniteValues: number[] = [1, 2, 3, 4, 5];
-  infiniteScrollDisabled = false;
+  readonly infiniteValues = signal<number[]>([1, 2, 3, 4, 5]);
+  readonly infiniteScrollDisabled = signal(false);
   scrollLastValue = 6;
 
   constructor() {}
 
   onScroll() {
-    this.infiniteScrollDisabled = true;
+    this.infiniteScrollDisabled.set(true);
     setTimeout(() => {
-      this.infiniteScrollDisabled = false;
-      this.infiniteValues = this.infiniteValues.concat([
-        this.scrollLastValue++,
-        this.scrollLastValue++,
-        this.scrollLastValue++,
-        this.scrollLastValue++,
-        this.scrollLastValue++,
-      ]);
+      this.infiniteScrollDisabled.set(false);
+      this.infiniteValues.update((values) =>
+        values.concat([
+          this.scrollLastValue++,
+          this.scrollLastValue++,
+          this.scrollLastValue++,
+          this.scrollLastValue++,
+          this.scrollLastValue++,
+        ]),
+      );
     }, INFINITE_SCROLL_FAKE_DELAY_MS);
   }
 }

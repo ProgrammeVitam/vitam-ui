@@ -6,38 +6,38 @@
         <vitamui-select
           class="col"
           formControlName="rule"
-          [options]="ruleOptions"
+          [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
         ></vitamui-select>
       </div>
     </div>
 
-    @if (isLoading) {
+    @if (isLoading()) {
       <div class="vitamui-min-content">
         <mat-spinner class="vitamui-spinner large"></mat-spinner>
       </div>
     } @else {
-      @if (showText && itemsWithSameRule !== '0') {
+      @if (showText() && itemsWithSameRule() !== '0') {
         <div class="row message-text-ok">
           <div class="col-12 d-flex align-items-center">
             <i class="material-icons">check_circle</i
-            ><span class="p-2">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+            ><span class="p-2">{{ itemsWithSameRule() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
           </div>
         </div>
       }
-      @if (showText && itemsToNotUpdate !== '0') {
+      @if (showText() && itemsToNotUpdate() !== '0') {
         <div class="row message-text-ko">
           <div class="col-12 d-flex align-items-center">
             <i class="material-icons">error</i
-            ><span class="p-2">{{ itemsToNotUpdate }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
+            ><span class="p-2">{{ itemsToNotUpdate() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
           </div>
         </div>
       }
     }
 
     <div class="d-flex">
-      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl || !ruleDetailsForm.valid" (click)="submit()">
+      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl() || !ruleDetailsForm.valid" (click)="submit()">
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
@@ -52,20 +52,20 @@
 </ng-template>
 
 <ng-template #okTotalFound>
-  @if (showText && itemsWithSameRule !== '0') {
+  @if (showText() && itemsWithSameRule() !== '0') {
     <div class="row message-text-ok">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">check_circle</i
-        ><span class="p-2">{{ itemsWithSameRule }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
+        ><span class="p-2">{{ itemsWithSameRule() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_UPDATE' | translate }}</span>
       </div>
     </div>
   }
 
-  @if (showText && itemsToNotUpdate !== '0') {
+  @if (showText() && itemsToNotUpdate() !== '0') {
     <div class="row message-text-ko">
       <div class="col-12 d-flex align-items-center">
         <i class="material-icons">error</i
-        ><span class="p-2">{{ itemsToNotUpdate }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
+        ><span class="p-2">{{ itemsToNotUpdate() }} {{ 'RULES.APPRAISAL_RULES.UA_TO_IGNORE.' + ruleCategoryKey | translate }}</span>
       </div>
     </div>
   }

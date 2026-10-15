@@ -113,7 +113,7 @@ export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityPr
     this.securityProfileService
       .search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
       .subscribe((data: SecurityProfile[]) => {
-        this.dataSource = data;
+        this.dataSource.set(data);
       });
 
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));

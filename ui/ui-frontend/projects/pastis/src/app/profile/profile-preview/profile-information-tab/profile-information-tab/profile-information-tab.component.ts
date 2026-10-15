@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -104,10 +104,10 @@ export class ProfileInformationTabComponent {
 
   statusProfile = new FormControl();
 
-  submited = false;
+  submited = signal(false);
 
   private _inputProfile: ProfileDescription;
-  pending = false;
+  pending = signal(false);
 
   updateProfile(inputProfile: ProfileDescription): Observable<Profile | ArchivalProfileUnit | ProfileDescription> {
     const profileDescription = { ...inputProfile, ...this.form.value };
@@ -119,7 +119,7 @@ export class ProfileInformationTabComponent {
   }
 
   canSubmit() {
-    return this.form.valid && !this.submited && this.formHasChanged();
+    return this.form.valid && !this.submited() && this.formHasChanged();
   }
 
   formHasChanged() {
@@ -137,20 +137,20 @@ export class ProfileInformationTabComponent {
   }
 
   onSubmit() {
-    this.pending = !this.pending;
-    this.submited = true;
+    this.pending.update((pending) => !pending);
+    this.submited.set(true);
     this.updateProfile(this.inputProfile).subscribe(
       () => {
-        this.submited = false;
-        this.pending = !this.pending;
+        this.submited.set(false);
+        this.pending.update((pending) => !pending);
         this.inputProfile = this._inputProfile;
         this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_SUCCESS', duration: 5000 });
         this.profileService.refreshListProfiles();
         this.closed.emit(true);
       },
       () => {
-        this.submited = false;
-        this.pending = !this.pending;
+        this.submited.set(false);
+        this.pending.update((pending) => !pending);
         this.snackBarService.open({ message: 'PROFILE.LIST_PROFILE.PROFILE_PREVIEW.MODIFICATION_ERROR', duration: 5000 });
       },
     );

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -62,7 +62,7 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
-  isDisabledButton = false;
+  isDisabledButton = signal(false);
   sizeFieldVisible = false;
   types = types;
   collections = collections;
@@ -112,13 +112,13 @@ export class OntologyCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
-      this.isDisabledButton = true;
+      this.isDisabledButton.set(true);
       return;
     }
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
     this.ontologyService.create(this.form.value).subscribe(
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {

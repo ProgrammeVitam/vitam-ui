@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -199,13 +199,18 @@ describe('CreateProjectComponent', () => {
     expect(component.stepIndex).toEqual(0);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('should call close for all close dialog', () => {
     const matDialogSpyTest = TestBed.inject(MatDialogRef);
     component.onClose();
     expect(matDialogSpyTest.close).toHaveBeenCalled();
   });
 
-  it('should call "create" with project having unitUp and no automatic ingest', fakeAsync(() => {
+  it('should call "create" with project having unitUp and no automatic ingest', () => {
+    vi.useFakeTimers();
     // Given
     const form = {
       messageIdentifier: 'abcd',
@@ -233,8 +238,8 @@ describe('CreateProjectComponent', () => {
     expect(arg.unitUps).toBeUndefined();
     expect(arg.automaticIngest).toBeFalsy();
 
-    flush();
-  }));
+    vi.runOnlyPendingTimers();
+  });
 
   it('should call "create" with project having no unitUp and automatic ingest', () => {
     // Given

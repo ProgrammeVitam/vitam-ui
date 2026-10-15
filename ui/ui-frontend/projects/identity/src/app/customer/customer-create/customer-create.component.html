@@ -223,7 +223,7 @@
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isLoading">
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isLoading()">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>

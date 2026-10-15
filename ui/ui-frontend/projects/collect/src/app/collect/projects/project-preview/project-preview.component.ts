@@ -169,8 +169,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   acquisitionInformationsList: string[];
   legalStatusList: Option[] = [];
-  schemaOptions: ItemNode<SchemaElement>[];
-  units: Unit[];
+  schemaOptions = signal<ItemNode<SchemaElement>[]>(undefined);
+  units = signal<Unit[]>(undefined);
   archivalAgreementOptions$: Observable<Option[]>;
   archiveProfileOptions$: Observable<Option[]>;
   agenciesOptions$: Observable<Option[]>;
@@ -212,7 +212,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   constructor() {
     const filingPlanService = inject(FilingPlanService);
 
-    filingPlanService.loadFilingPlan().subscribe((units) => (this.units = units));
+    filingPlanService.loadFilingPlan().subscribe((units) => this.units.set(units));
     this.route.params.subscribe((params) => {
       if (params['tenantIdentifier']) {
         this.tenantId = parseInt(params['tenantIdentifier']);
@@ -333,7 +333,6 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   private initRuleParams(project: Project) {
     const keys = project.unitUps.map((units) => units.metadataKey);
     this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => {
-      this.schemaOptions = schema;
       const res = this.schemaService.getMetadataKeysByKeys(keys, schema);
       project.unitUps.forEach((metadataUnitUp) => {
         const item = res.find((sc) => sc.item.ApiField === metadataUnitUp.metadataKey).item;
@@ -366,6 +365,8 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
           }),
         );
       });
+      // Set last: the signal write refreshes the view, which also renders the FormArray rows pushed above (zoneless).
+      this.schemaOptions.set(schema);
     });
   }
 
@@ -374,7 +375,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
     if (!this.connectedToLocalEasWithCurrentTenant || !unitId) {
       return AttachmentMode.TREE;
     }
-    return this.units?.some((unit) => unit['#id'] === unitId) ? AttachmentMode.TREE : AttachmentMode.GUID;
+    return this.units()?.some((unit) => unit['#id'] === unitId) ? AttachmentMode.TREE : AttachmentMode.GUID;
   }
 
   get unitUps(): FormArray<FormGroup> {
@@ -384,7 +385,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   getName(item: SchemaElement): string {
     const path = item.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
-      children: this.schemaOptions,
+      children: this.schemaOptions(),
     } as ItemNode<SchemaElement>);
     return `${item.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }
@@ -759,7 +760,7 @@ export class ProjectPreviewComponent implements OnInit, AfterViewInit, OnDestroy
   };
 
   getUnitName(unitId: string): string {
-    const foundNode = this.units?.find((unit) => unit['#id'] === unitId);
+    const foundNode = this.units()?.find((unit) => unit['#id'] === unitId);
     return foundNode ? fetchTitle(foundNode.Title, foundNode.Title_) : '';
   }
 

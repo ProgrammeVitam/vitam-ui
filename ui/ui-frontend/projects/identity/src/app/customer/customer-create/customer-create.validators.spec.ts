@@ -34,12 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
 import { CustomerService } from '../../core/customer.service';
 import { CustomerCreateValidators } from './customer-create.validators';
+
+beforeEach(() => {
+  vi.useFakeTimers();
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('Customer Create Validators', () => {
   const createValidators = (customerServiceSpy: { exists: ReturnType<typeof vi.fn> }) => {
@@ -50,7 +58,7 @@ describe('Customer Create Validators', () => {
   };
 
   describe('uniqueCode', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', () => {
       const customerServiceSpy = {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
@@ -59,11 +67,11 @@ describe('Customer Create Validators', () => {
       from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
-      tick(400);
+      vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '123456' });
-    }));
+    });
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
+    it('should return { uniqueCode: true }', () => {
       const customerServiceSpy = {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
@@ -72,11 +80,11 @@ describe('Customer Create Validators', () => {
       from(customerCreateValidators.uniqueCode()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
-      tick(400);
+      vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '123456' });
-    }));
+    });
 
-    it('should not call the service', fakeAsync(() => {
+    it('should not call the service', () => {
       const customerServiceSpy = {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
@@ -85,11 +93,11 @@ describe('Customer Create Validators', () => {
       from(customerCreateValidators.uniqueCode('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
-      tick(400);
+      vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', () => {
       const customerServiceSpy = {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
@@ -98,13 +106,13 @@ describe('Customer Create Validators', () => {
       from(customerCreateValidators.uniqueCode('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ uniqueCode: true });
       });
-      tick(400);
+      vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '111111' });
-    }));
+    });
   });
 
   describe('uniqueDomain', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', () => {
       const customerServiceSpy = {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
@@ -113,11 +121,11 @@ describe('Customer Create Validators', () => {
       from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
-      tick(400);
+      vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ domain: 'test.com' });
-    }));
+    });
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
+    it('should return { uniqueCode: true }', () => {
       const customerServiceSpy = {
         exists: vi.fn().mockName('CustomerService.exists'),
       };
@@ -126,8 +134,8 @@ describe('Customer Create Validators', () => {
       from(customerCreateValidators.uniqueDomain(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toEqual({ uniqueDomain: true });
       });
-      tick(400);
+      vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ domain: 'test.com' });
-    }));
+    });
   });
 });

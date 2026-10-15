@@ -167,10 +167,14 @@ export class AgencyListComponent extends InfiniteScrollTable<Agency> implements 
 
   private replaceUpdatedAgency(): void {
     this.agencyService.updated.pipe(takeUntil(this.destroyer$)).subscribe((updatedAgency: Agency) => {
-      const index = this.dataSource.findIndex((item: Agency) => item.id === updatedAgency.id);
-      if (index !== -1) {
-        this.dataSource[index] = updatedAgency;
-      }
+      this.dataSource.update((agencies) => {
+        const list = [...(agencies ?? [])];
+        const index = list.findIndex((item: Agency) => item.id === updatedAgency.id);
+        if (index !== -1) {
+          list[index] = updatedAgency;
+        }
+        return list;
+      });
     });
   }
 

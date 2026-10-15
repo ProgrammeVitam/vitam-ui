@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import {
   Event,
   ExternalParameters,
@@ -81,13 +81,13 @@ export class SecurisationPreviewComponent implements OnInit {
   @Input() securisation: Event;
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
-  accessContractId: string;
+  accessContractId = signal<string>(undefined);
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
-        this.accessContractId = accessContratId;
+        this.accessContractId.set(accessContratId);
       } else {
         this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
@@ -99,6 +99,6 @@ export class SecurisationPreviewComponent implements OnInit {
   }
 
   downloadReport() {
-    this.securisationService.download(this.securisation.id, this.accessContractId);
+    this.securisationService.download(this.securisation.id, this.accessContractId());
   }
 }

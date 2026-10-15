@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -64,6 +64,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
   dialog = inject(MatDialog);
   private readonly formBuilder = inject(FormBuilder);
 
@@ -77,7 +78,10 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   private openOperationDetailAfterLoading: boolean;
 
   ngOnInit() {
-    this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
+    this.route.paramMap.subscribe((paramMap) => {
+      this.tenantIdentifier = +paramMap.get('tenantIdentifier');
+      this.cdr.markForCheck();
+    });
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
@@ -119,7 +123,7 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   }
 
   private openOperationDetail(): void {
-    this.list.eventClick.emit(this.list.dataSource[0]);
+    this.list.eventClick.emit(this.list.dataSource()[0]);
   }
 
   onFinishedLoading() {

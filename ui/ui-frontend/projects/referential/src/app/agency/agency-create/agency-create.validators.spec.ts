@@ -34,14 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 import { AgencyCreateValidators } from './agency-create.validators';
 
 describe('Agency Create Validators', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('uniqueCode', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const agencyServiceSpy = {
         existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
       };
@@ -51,12 +56,13 @@ describe('Agency Create Validators', () => {
         expect(result).toBeNull();
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalled();
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should return { nameExists: true }', fakeAsync(() => {
+    it('should return { nameExists: true }', async () => {
+      vi.useFakeTimers();
       const agencyServiceSpy = {
         existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
       };
@@ -68,12 +74,13 @@ describe('Agency Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalled();
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should return { onlyWhitespaces: true }', fakeAsync(() => {
+    it('should return { onlyWhitespaces: true }', async () => {
+      vi.useFakeTimers();
       const agencyServiceSpy = {
         existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
       };
@@ -81,9 +88,10 @@ describe('Agency Create Validators', () => {
       expect(agencyCreateValidators.onlyWhitespaces(new FormControl('   '))).toEqual({
         onlyWhitespaces: true,
       });
-    }));
+    });
 
-    it('should not call the service', fakeAsync(() => {
+    it('should not call the service', async () => {
+      vi.useFakeTimers();
       const agencyServiceSpy = {
         existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
       };
@@ -93,11 +101,12 @@ describe('Agency Create Validators', () => {
         expect(result).toBeNull();
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(agencyServiceSpy.existsProperties).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the service and return { nameExists: true }', fakeAsync(() => {
+    it('should call the service and return { nameExists: true }', async () => {
+      vi.useFakeTimers();
       const agencyServiceSpy = {
         existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
       };
@@ -109,9 +118,9 @@ describe('Agency Create Validators', () => {
         expect(result).toEqual({ nameExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalled();
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
-    }));
+    });
   });
 });

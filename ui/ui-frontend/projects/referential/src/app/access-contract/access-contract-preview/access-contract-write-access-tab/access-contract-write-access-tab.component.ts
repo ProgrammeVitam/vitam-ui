@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -89,7 +89,7 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   }
 
   public form: FormGroup;
-  public submitted = false;
+  public submitted = signal(false);
 
   private _accessContract: AccessContract;
 
@@ -141,17 +141,17 @@ export class AccessContractWriteAccessTabComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    this.submitted = true;
+    this.submitted.set(true);
 
     this.prepareSubmit().subscribe(
       () => {
         this.accessContractService.get(this._accessContract.identifier).subscribe((response) => {
-          this.submitted = false;
+          this.submitted.set(false);
           this.accessContract = response;
         });
       },
       () => {
-        this.submitted = false;
+        this.submitted.set(false);
       },
     );
   }

@@ -188,14 +188,14 @@ describe('SearchCriteriaListComponent', () => {
         },
       ];
 
-      component.searchCriteriaHistory = searchCriteriaHistory$;
+      component.searchCriteriaHistory.set(searchCriteriaHistory$);
     });
 
     describe('deleteSearchCriteriaHistory', () => {
       it('should delete searchCriteria', () => {
         component.clearElement(searchCriteriaHistory$[0].id);
-        expect(component.searchCriteriaHistory.length).toEqual(1);
-        expect(component.searchCriteriaHistory[0].name).toEqual('Second Svae');
+        expect(component.searchCriteriaHistory().length).toEqual(1);
+        expect(component.searchCriteriaHistory()[0].name).toEqual('Second Svae');
       });
     });
   });

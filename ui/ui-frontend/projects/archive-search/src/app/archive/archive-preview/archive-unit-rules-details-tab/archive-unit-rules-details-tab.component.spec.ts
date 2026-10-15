@@ -105,7 +105,7 @@ describe('ArchiveUnitRulesDetailsTabComponent', () => {
 
   it('should the archiveUnitRules exists ', () => {
     component.selectUnitWithInheritedRules(component.archiveUnit);
-    expect(component.archiveUnitRules).not.toBeNull();
+    expect(component.archiveUnitRules()).not.toBeNull();
   });
 
   it('should call selectUnitWithInheritedRules of archiveService', () => {

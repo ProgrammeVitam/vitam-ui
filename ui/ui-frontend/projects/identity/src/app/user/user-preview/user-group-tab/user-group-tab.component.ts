@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -57,6 +57,7 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
   userService = inject(UserService);
   groupService = inject(GroupService);
   authService = inject(AuthService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input()
   set user(user: User) {
@@ -120,6 +121,7 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
     if (this.userGroup) {
       this.groupService.get(this.userGroup.id).subscribe((groupRetrieved) => {
         this.groupProfiles = groupRetrieved.profiles;
+        this.cdr.markForCheck();
       });
     }
   }
@@ -177,7 +179,10 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
 
   refreshTab() {
     this.userService.get(this.user.id).subscribe(
-      (response) => (this.user = response),
+      (response) => {
+        this.user = response;
+        this.cdr.markForCheck();
+      },
       (error) => {
         console.error(error);
       },

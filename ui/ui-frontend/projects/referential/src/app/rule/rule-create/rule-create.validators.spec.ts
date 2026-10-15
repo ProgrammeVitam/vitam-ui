@@ -35,14 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 import { RuleCreateValidators } from './rule-create.validators';
 
 describe('Rule Create Validators', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('uniqueRuleId', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
@@ -51,11 +55,12 @@ describe('Rule Create Validators', () => {
       from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
-    }));
+    });
 
-    it('should return { ruleIdExists: true }', fakeAsync(() => {
+    it('should return { ruleIdExists: true }', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
@@ -64,11 +69,12 @@ describe('Rule Create Validators', () => {
       from(ruleCreateValidators.uniqueRuleId()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '123456' });
-    }));
+    });
 
-    it('should not call the service', fakeAsync(() => {
+    it('should not call the service', async () => {
+      vi.useFakeTimers();
       const ruleServiceSpy = {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
@@ -77,11 +83,12 @@ describe('Rule Create Validators', () => {
       from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ruleServiceSpy.existsProperties).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('RuleService.existsProperties'),
       };
@@ -90,8 +97,8 @@ describe('Rule Create Validators', () => {
       from(ruleCreateValidators.uniqueRuleId('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ ruleIdExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ ruleId: '111111' });
-    }));
+    });
   });
 });

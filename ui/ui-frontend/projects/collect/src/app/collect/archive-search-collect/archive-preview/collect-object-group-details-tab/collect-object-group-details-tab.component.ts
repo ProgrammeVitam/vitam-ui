@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, computed, inject, input, InputSignal, OnChanges, Signal, SimpleChanges } from '@angular/core';
+import { Component, computed, inject, input, InputSignal, OnChanges, Signal, signal, SimpleChanges } from '@angular/core';
 import {
   ApiUnitObject,
   ArchiveUnitModule,
@@ -80,11 +80,11 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
 
   archiveUnit: InputSignal<Unit> = input(null);
 
-  unitObject: ApiUnitObject;
-  versionsWithQualifiersOrdered: Array<VersionWithQualifierDto>;
-  hasDownloadDocumentRole = false;
+  unitObject = signal<ApiUnitObject>(undefined);
+  versionsWithQualifiersOrdered = signal<Array<VersionWithQualifierDto>>(undefined);
+  hasDownloadDocumentRole = signal(false);
   private readonly allowedDescriptionLevel = [DescriptionLevel.ITEM, DescriptionLevel.RECORD_GRP];
-  errorMessagesGot: Record<string, ValidationError[]>;
+  errorMessagesGot = signal<Record<string, ValidationError[]>>(undefined);
 
   technicalObjectsGroupErrors: Signal<ValidationError[]> = computed(() => {
     return getErrorOnTechnicalObjectsGroup(this.archiveUnit());
@@ -97,8 +97,8 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
     this.checkDownloadPermissions();
 
     if (changes['archiveUnit']) {
-      this.unitObject = null;
-      this.versionsWithQualifiersOrdered = null;
+      this.unitObject.set(null);
+      this.versionsWithQualifiersOrdered.set(null);
       if (this.unitHasObject()) {
         this.getObjectGroupDetailsById(this.archiveUnit());
       }
@@ -125,23 +125,26 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
 
   getObjectGroupDetailsById(archiveUnit: Unit) {
     this.archiveCollectService.getObjectGroupDetailsById(archiveUnit['#object']).subscribe((unitObject) => {
-      this.unitObject = unitObject;
-      this.versionsWithQualifiersOrdered = qualifiersToVersionsWithQualifier(this.unitObject['#qualifiers']);
-      this.errorMessagesGot = this.unitObject['#errors']?.reduce(
-        (acc, err) => {
-          const key = err.obId || 'null';
-          acc[key] = [...(acc[key] || []), err];
-          return acc;
-        },
-        {} as Record<string, ValidationError[]>,
+      this.errorMessagesGot.set(
+        unitObject['#errors']?.reduce(
+          (acc, err) => {
+            const key = err.obId || 'null';
+            acc[key] = [...(acc[key] || []), err];
+            return acc;
+          },
+          {} as Record<string, ValidationError[]>,
+        ),
       );
+      this.versionsWithQualifiersOrdered.set(qualifiersToVersionsWithQualifier(unitObject['#qualifiers']));
       this.setFirstVersionWithQualifierOpen();
+      this.unitObject.set(unitObject);
     });
   }
 
   setFirstVersionWithQualifierOpen() {
-    if (this.versionsWithQualifiersOrdered && this.versionsWithQualifiersOrdered.length > 0) {
-      this.versionsWithQualifiersOrdered[0].opened = true;
+    const versionsWithQualifiers = this.versionsWithQualifiersOrdered();
+    if (versionsWithQualifiers && versionsWithQualifiers.length > 0) {
+      versionsWithQualifiers[0].opened = true;
     }
   }
 
@@ -197,7 +200,7 @@ export class CollectObjectGroupDetailsTabComponent implements OnChanges {
     this.archiveCollectService
       .hasCollectRole('ROLE_COLLECT_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
       .subscribe((result) => {
-        this.hasDownloadDocumentRole = result;
+        this.hasDownloadDocumentRole.set(result);
       });
   }
 }

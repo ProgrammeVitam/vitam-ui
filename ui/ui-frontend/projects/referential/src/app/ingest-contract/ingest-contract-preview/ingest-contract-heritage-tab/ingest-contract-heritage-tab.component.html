@@ -3,7 +3,7 @@
     <span>{{ 'INGEST_CONTRACT.TAB.LEGACY.LEGACY_RULES' | translate }}</span>
   </vitamui-slide-toggle>
 
-  <button type="submit" class="btn primary mt-4" [disabled]="readOnly || unchanged() || submited">
+  <button type="submit" class="btn primary mt-4" [disabled]="readOnly || unchanged() || submited()">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

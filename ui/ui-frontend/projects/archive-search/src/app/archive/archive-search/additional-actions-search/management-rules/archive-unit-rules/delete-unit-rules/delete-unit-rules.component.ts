@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -103,14 +103,14 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   @Input()
   rulesList: Observable<Rule[]>;
 
-  ruleOptions: VitamuiSelectOptions;
+  ruleOptions = signal<VitamuiSelectOptions>(null);
 
-  showText = false;
-  isLoading = false;
-  disabledControl = true;
+  showText = signal(false);
+  isLoading = signal(false);
+  disabledControl = signal(true);
   lastRuleId: string;
-  itemsWithSameRule: string;
-  itemsToNotUpdate: string;
+  itemsWithSameRule = signal<string>(null);
+  itemsToNotUpdate = signal<string>(null);
   rule: Rule;
   ruleCategoryKey: String;
 
@@ -159,7 +159,7 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.ruleCategoryKey = this.archiveService.getRuleCategoryValue(this.ruleCategory);
-    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => (this.ruleOptions = options));
+    this.ruleService.getRuleOptionsList(this.rulesList, this.ruleCategory).subscribe((options) => this.ruleOptions.set(options));
   }
 
   patchForm(data: any): boolean {
@@ -173,7 +173,7 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   isEmpty(formData: any): boolean {
     if (formData) {
       if (formData.rule) {
-        this.disabledControl = false;
+        this.disabledControl.set(false);
         this.cancelStep.emit();
         return true;
       }
@@ -201,9 +201,9 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
       });
   }
   submit() {
-    this.disabledControl = true;
-    this.showText = true;
-    this.isLoading = !this.isLoading;
+    this.disabledControl.set(true);
+    this.showText.set(true);
+    this.isLoading.set(true);
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
@@ -251,7 +251,7 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
   }
 
   addRuleToQuery() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
@@ -277,23 +277,23 @@ export class DeleteUnitRulesComponent implements OnDestroy, OnInit {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList)
         .subscribe((resultsNumber) => {
-          this.itemsWithSameRule = resultsNumber.toString();
-          this.itemsToNotUpdate = (this.selectedItem - resultsNumber).toString();
-          this.isLoading = false;
+          this.itemsWithSameRule.set(resultsNumber.toString());
+          this.itemsToNotUpdate.set((this.selectedItem - resultsNumber).toString());
+          this.isLoading.set(false);
         });
     } else {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery)
         .subscribe((data) => {
-          this.itemsWithSameRule = data.totalResults.toString();
-          this.itemsToNotUpdate =
+          this.itemsWithSameRule.set(data.totalResults.toString());
+          this.itemsToNotUpdate.set(
             data.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold
               ? this.resultNumberToShow
-              : (this.itemsToNotUpdate =
-                  this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
-                    ? this.resultNumberToShow
-                    : (this.selectedItem - data.totalResults).toString());
-          this.isLoading = false;
+              : this.selectedItem === this.vitamConfigurationService.tenantConfig()?.resultThreshold
+                ? this.resultNumberToShow
+                : (this.selectedItem - data.totalResults).toString(),
+          );
+          this.isLoading.set(false);
         });
     }
   }

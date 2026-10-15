@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 @Component({
@@ -58,10 +58,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Referential App'`, waitForAsync(() => {
+  it(`should have as title 'Referential App'`, async () => {
     const fixture = TestBed.createComponent(AppComponent);
+    await fixture.whenStable();
     const app = fixture.debugElement.componentInstance;
-    console.log('Title App: ', app);
     expect(app.title).toEqual('Referential App');
-  }));
+  });
 });

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -128,7 +128,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   formatTypesOptions: VitamuiSelectOptions = { options: [] };
   managementContracts: Option[];
   archiveProfiles: Option[];
-  isDisabledButton = false;
+  isDisabledButton = signal(false);
 
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Original numérique', info: '' },
@@ -250,18 +250,18 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
     const ingestContract = this.form.value as IngestContract;
     ingestContract.status === 'ACTIVE'
       ? (ingestContract.activationDate = new Date().toISOString())
       : (ingestContract.deactivationDate = new Date().toISOString());
     this.ingestContractService.create(ingestContract).subscribe(
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close(true);
       },
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close(false);
       },
     );

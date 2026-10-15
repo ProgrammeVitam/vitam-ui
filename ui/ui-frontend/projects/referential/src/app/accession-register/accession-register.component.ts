@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
@@ -80,7 +80,7 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
   search: string;
   advancedSearchPanelOpenState$: Observable<boolean>;
   isAdvancedFormChanged$: Observable<boolean>;
-  accessContract: string;
+  accessContract = signal<string>(undefined);
 
   constructor() {
     const accessionRegistersService = inject(AccessionRegistersService);
@@ -94,7 +94,7 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
     this.advancedSearchPanelOpenState$ = this.accessionRegistersService.isOpenAdvancedSearchPanel();
     this.isAdvancedFormChanged$ = this.accessionRegistersService.isAdvancedFormChanged();
     this.fetchUserAccessContract().subscribe((accessContract) => {
-      this.accessContract = accessContract;
+      this.accessContract.set(accessContract);
     });
   }
 

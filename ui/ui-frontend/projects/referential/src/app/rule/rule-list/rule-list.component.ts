@@ -147,7 +147,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   ngOnInit() {
     this.ruleService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Rule[]) => {
-      this.dataSource = data;
+      this.dataSource.set(data);
     });
 
     const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));

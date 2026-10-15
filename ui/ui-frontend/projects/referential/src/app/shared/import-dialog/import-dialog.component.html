@@ -11,9 +11,9 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="button" class="btn primary" [disabled]="fileControl.invalid || isLoading || fileControl.pending" (click)="submitFile()">
+  <button type="button" class="btn primary" [disabled]="fileControl.invalid || isLoading() || fileControl.pending" (click)="submitFile()">
     <span>{{ 'IMPORT_DIALOG.IMPORT' | translate }}</span>
-    @if (isLoading) {
+    @if (isLoading()) {
       <mat-spinner class="vitamui-spinner small ml-3"></mat-spinner>
     }
   </button>

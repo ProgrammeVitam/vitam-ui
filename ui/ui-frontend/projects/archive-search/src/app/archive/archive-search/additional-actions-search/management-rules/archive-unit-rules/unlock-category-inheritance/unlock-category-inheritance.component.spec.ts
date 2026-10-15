@@ -286,7 +286,7 @@ describe('UnlockCategoryInheritanceComponent', () => {
     // Then
     expect(component.ruleActions).not.toBeNull();
     expect(component.ruleActions.length).toBe(5);
-    expect(component.showText).toBeTruthy();
+    expect(component.showText()).toBeTruthy();
     expect(
       component.ruleActions.find(
         (ruleAction) =>

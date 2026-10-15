@@ -34,15 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { fakeAsync, tick } from '@angular/core/testing';
+
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 
 import { OntologyCreateValidators } from './ontology-create.validators';
 
 describe('Ontology Create Validators', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('uniqueCode', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const ontologyServiceSpy = {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
@@ -52,12 +57,13 @@ describe('Ontology Create Validators', () => {
         expect(result).toBeNull();
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ontologyServiceSpy.exists).toHaveBeenCalled();
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('123456');
-    }));
+    });
 
-    it('should return { idExists: true }', fakeAsync(() => {
+    it('should return { idExists: true }', async () => {
+      vi.useFakeTimers();
       const ontologyServiceSpy = {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
@@ -69,11 +75,12 @@ describe('Ontology Create Validators', () => {
         expect(result).toEqual({ idExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('123456');
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const ontologyServiceSpy = {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
@@ -83,11 +90,12 @@ describe('Ontology Create Validators', () => {
         expect(result).toEqual({ idExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ontologyServiceSpy.exists).toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const ontologyServiceSpy = {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
@@ -99,14 +107,15 @@ describe('Ontology Create Validators', () => {
         expect(result).toEqual({ idExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ontologyServiceSpy.exists).toHaveBeenCalled();
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('111111');
-    }));
+    });
   });
 
   describe('uniqueDomain', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const ontologyServiceSpy = {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
@@ -116,12 +125,13 @@ describe('Ontology Create Validators', () => {
         expect(result).toBeNull();
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ontologyServiceSpy.exists).toHaveBeenCalled();
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
-    }));
+    });
 
-    it('should return { idExists: true }', fakeAsync(() => {
+    it('should return { idExists: true }', async () => {
+      vi.useFakeTimers();
       const ontologyServiceSpy = {
         exists: vi.fn().mockName('OntologyService.exists'),
       };
@@ -133,9 +143,9 @@ describe('Ontology Create Validators', () => {
         expect(result).toEqual({ idExists: true });
       });
 
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(ontologyServiceSpy.exists).toHaveBeenCalled();
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
-    }));
+    });
   });
 });

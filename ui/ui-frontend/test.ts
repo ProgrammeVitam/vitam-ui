@@ -40,8 +40,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import '@angular/compiler';
-import '@analogjs/vitest-angular/setup-zone';
-import 'zone.js/testing';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideRouter } from '@angular/router';

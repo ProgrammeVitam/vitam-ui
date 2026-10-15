@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   MatNestedTreeNode,
@@ -79,6 +79,7 @@ export const NODE_SELECT_VALUE_ACCESSOR: any = {
 })
 export class FilingPlanComponent extends AbstractFormInputDirective implements OnInit {
   filingPlanService = inject(FilingPlanService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() dataSource: Unit[];
   /** @deprecated should be removed - see VitamUIHttpInterceptor */
@@ -112,6 +113,8 @@ export class FilingPlanComponent extends AbstractFormInputDirective implements O
     } else {
       this.filingPlanService.loadTree(this.componentId).subscribe((nodes) => {
         this.setNodes(nodes);
+        // Tree data, selection and pending state are updated from an HTTP callback: refresh the view (zoneless)
+        this.cdr.markForCheck();
       });
     }
   }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -88,23 +88,23 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
 
   public users: User[];
   public connectedUserInfo: AdminUserProfile;
-  public customer: Customer;
+  public readonly customer = signal<Customer>(undefined);
   public search: string;
-  public groups: Group[];
-  public exportLoading = false;
+  public groups = signal<Group[]>(null);
+  public readonly exportLoading = signal(false);
 
   @ViewChild(UserListComponent, { static: true }) userListComponent: UserListComponent;
 
   ngOnInit() {
-    this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
-    this.groupService.getAll(true).subscribe((data: Group[]) => (this.groups = data));
+    this.customerService.getMyCustomer().subscribe((customer) => this.customer.set(customer));
+    this.groupService.getAll(true).subscribe((data: Group[]) => this.groups.set(data));
     this.connectedUserInfo = this.userService.getUserProfileInfo(this.authService.user);
   }
 
   openCreateUserDialog(): void {
     const dialogRef = this.dialog.open(UserCreateComponent, {
       disableClose: true,
-      data: { userInfo: this.connectedUserInfo, customer: this.customer, groups: this.groups },
+      data: { userInfo: this.connectedUserInfo, customer: this.customer(), groups: this.groups() },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -118,7 +118,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
   }
 
   public export(): void {
-    this.exportLoading = true;
+    this.exportLoading.set(true);
     this.downloadSnackBarService.openDownloadBar();
 
     const request: Subscription = this.userService
@@ -126,7 +126,7 @@ export class UserComponent extends SidenavPage<User> implements OnInit {
       .pipe(
         finalize(() => {
           this.downloadSnackBarService.close();
-          this.exportLoading = false;
+          this.exportLoading.set(false);
         }),
       )
       .subscribe({

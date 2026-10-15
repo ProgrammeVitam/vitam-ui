@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild, inject, signal } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -98,16 +98,12 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
 
   protected readonly template = agencyTemplate;
 
-  agency: Agency;
-  breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
-  editObject: EditObject;
-
-  constructor() {
-    this.agency = this.router.getCurrentNavigation()?.extras?.state?.['agency'];
-  }
+  agency = signal<Agency>(this.router.getCurrentNavigation()?.extras?.state?.['agency']);
+  breadcrumbData = signal<BreadCrumbData[]>([{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }]);
+  editObject = signal<EditObject>(undefined);
 
   ngOnInit() {
-    of(this.agency)
+    of(this.agency())
       .pipe(
         switchMap((agency: Agency) => {
           if (agency) return of(agency);
@@ -117,13 +113,13 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (agency) => {
-          this.agency = agency;
-          this.breadcrumbData.push({ label: this.agency.identifier });
+          this.agency.set(agency);
+          this.breadcrumbData.update((breadcrumbData) => [...breadcrumbData, { label: agency.identifier }]);
 
           const translatedSchema = this.translateComments(schema);
           const templateSchema = this.editObjectService.createTemplateSchema(agencyTemplate, translatedSchema);
-          const data = this.templateService.toProjected(this.agency, agencyTemplate);
-          this.editObject = this.editObjectService.editObject('', data, agencyTemplate, templateSchema);
+          const data = this.templateService.toProjected(agency, agencyTemplate);
+          this.editObject.set(this.editObjectService.editObject('', data, agencyTemplate, templateSchema));
         },
       });
   }
@@ -133,7 +129,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    const formData = this.editObject.control.value;
+    const formData = this.editObject().control.value;
     const agency = this.templateService.toOriginal(formData, agencyTemplate);
     const partialAgency: Partial<Agency> = Object.entries(agency).reduce(
       (acc, [key, value]) =>
@@ -143,7 +139,7 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
               [key]: value,
             }
           : acc,
-      { id: this.agency.id },
+      { id: this.agency().id },
     );
     this.subscriptions.add(
       of(partialAgency)
@@ -167,14 +163,14 @@ export class EditAgencyComponent implements OnInit, OnDestroy {
           }),
         )
         .subscribe((agency) => {
-          this.agency = agency;
-          this.editObject.control.markAsPristine();
+          this.agency.set(agency);
+          this.editObject().control.markAsPristine();
         }),
     );
   }
 
   cancel() {
-    if (this.editObject.control.pristine) {
+    if (this.editObject().control.pristine) {
       this.router.navigate(['/agency/tenant/', this.tenantSelectionService.getSelectedTenant().identifier]);
     } else {
       this.dialogRefToClose = this.dialog.open(this.confirmCancelDialog);

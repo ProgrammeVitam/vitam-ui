@@ -342,7 +342,7 @@
                               <vitamui-select-with-tree
                                 class="w-50"
                                 formControlName="ontologyList"
-                                [options]="schemaOptions"
+                                [options]="schemaOptions()"
                                 [getDisplayValue]="getSchemaElementDisplayValue"
                                 [placeholder]="'COLLECT.MODAL.SELECT_METADATA' | translate"
                                 [searchBarPlaceHolder]="'COLLECT.MODAL.SELECT_METADATA_SEARCH_BAR_PLACE_HOLDER' | translate"
@@ -392,7 +392,7 @@
                               @if (ruleParamForm.get('attachmentMode')?.value === FixedAttachmentMode.TREE) {
                                 <vitamui-library-filing-plan
                                   formControlName="unitUp"
-                                  [dataSource]="units"
+                                  [dataSource]="units()"
                                   [mode]="FilingPlanMode.SOLO"
                                 ></vitamui-library-filing-plan>
                               } @else {
@@ -456,7 +456,7 @@
                       @if (fixedAttachmentMode === FixedAttachmentMode.TREE) {
                         <vitamui-library-filing-plan
                           formControlName="unitUp"
-                          [dataSource]="units"
+                          [dataSource]="units()"
                           [mode]="FilingPlanMode.SOLO"
                         ></vitamui-library-filing-plan>
                       } @else {
@@ -496,7 +496,7 @@
                       <vitamui-library-filing-plan
                         formControlName="unitUp"
                         [mode]="FilingPlanMode.SOLO"
-                        [dataSource]="units"
+                        [dataSource]="units()"
                       ></vitamui-library-filing-plan>
                     } @else {
                       <vitamui-input class="w-100" [placeholder]="'COLLECT.ARCHIVAL_UNIT_IDENTIFIER' | translate" formControlName="unitUp">

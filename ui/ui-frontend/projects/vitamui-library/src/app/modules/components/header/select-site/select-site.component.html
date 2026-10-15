@@ -4,14 +4,14 @@
       {{ 'Site observé' }}
     </div>
     <div class="text normal bold">
-      {{ selectedSite ? selectedSite.name + ' - ' + selectedSite.code : '' }}
+      {{ selectedSite() ? selectedSite().name + ' - ' + selectedSite().code : '' }}
     </div>
   </div>
   <div class="ml-3">
     <i class="vitamui-icon vitamui-icon-chevron-down"></i>
   </div>
   <mat-menu #siteMenu="matMenu" [overlapTrigger]="false" xPosition="before">
-    @for (site of sites; track site) {
+    @for (site of sites(); track site) {
       <button mat-menu-item (click)="onSelectSite(site)">{{ site.code + ' - ' + site.name }}</button>
     }
   </mat-menu>

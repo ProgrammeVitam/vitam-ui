@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -87,6 +87,7 @@ const IMPORT_FILE_MODEL_NAME = 'Import_ingest_contract_template.csv';
 })
 export class IngestContractComponent extends SidenavPage<IngestContract> implements OnInit {
   dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
   private readonly applicationService = inject(ApplicationService);
   private readonly securityService = inject(SecurityService);
@@ -116,6 +117,7 @@ export class IngestContractComponent extends SidenavPage<IngestContract> impleme
     this.route.params.subscribe((params) => {
       if (params['tenantIdentifier']) {
         this.tenantId = +params['tenantIdentifier'];
+        this.cdr.markForCheck();
       }
     });
   }

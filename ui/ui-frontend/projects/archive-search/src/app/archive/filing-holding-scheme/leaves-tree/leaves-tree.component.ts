@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, signal, SimpleChanges } from '@angular/core';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNodeDef, MatTreeNodeOutlet } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import {
@@ -90,7 +90,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   @Output() addToSearchCriteria: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
   @Output() showNodeDetail: EventEmitter<string> = new EventEmitter();
 
-  virtualPathLimitReached = false;
+  virtualPathLimitReached = signal(false);
   unitId: string = '';
   allunitups: string[] = [];
   allNonOrphanNodes: FilingHoldingSchemeNode[] = [];
@@ -108,7 +108,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     this.leavesTreeService = new LeavesTreeService(this.archiveService, this.configurationsService);
     this.subscriptions.add(
       this.leavesTreeService.virtualPathSearchLimitReached.pipe(first((status) => status === true)).subscribe(() => {
-        this.virtualPathLimitReached = true;
+        this.virtualPathLimitReached.set(true);
       }),
     );
   }
@@ -122,7 +122,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['searchRequestResultFacets']) {
       this.leavesTreeService.setSearchRequestResultFacets(this['searchRequestResultFacets']);
-      this.virtualPathLimitReached = this['searchRequestResultFacets']?.length >= FACETS_DEFAULT_SIZE;
+      this.virtualPathLimitReached.set(this['searchRequestResultFacets']?.length >= FACETS_DEFAULT_SIZE);
     } else if (changes['nestedDataSourceLeaves']) {
       this.nestedTreeControlLeaves.dataNodes = this['nestedDataSourceLeaves'].data;
     }

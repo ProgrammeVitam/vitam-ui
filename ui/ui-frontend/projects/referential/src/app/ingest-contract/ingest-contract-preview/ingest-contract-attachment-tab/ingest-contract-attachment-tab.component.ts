@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   ExternalParameters,
@@ -56,6 +56,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class IngestContractAttachmentTabComponent {
   private readonly unitService = inject(SearchUnitApiService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBarService = inject(SnackBarService);
@@ -87,6 +88,7 @@ export class IngestContractAttachmentTabComponent {
       if (accessContractId && accessContractId.length > 0) {
         this.accessContractId = accessContractId;
         this.initTitles();
+        this.cdr.markForCheck();
       } else {
         this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
       }
@@ -109,6 +111,7 @@ export class IngestContractAttachmentTabComponent {
           }
         });
         this.checkParentIdTitles.sort();
+        this.cdr.markForCheck();
       }
     });
   }
@@ -157,6 +160,7 @@ export class IngestContractAttachmentTabComponent {
       .subscribe((updatedIngestContract: IngestContract) => {
         if (updatedIngestContract) {
           this.ingestContract = updatedIngestContract;
+          this.cdr.markForCheck();
         }
       });
   }

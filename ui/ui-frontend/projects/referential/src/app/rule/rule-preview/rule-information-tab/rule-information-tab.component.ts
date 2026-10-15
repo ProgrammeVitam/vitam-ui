@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -63,7 +63,7 @@ export class RuleInformationTabComponent implements OnInit {
 
   form: FormGroup;
 
-  submited = false;
+  submited = signal(false);
 
   ruleFilter = new FormControl();
 
@@ -152,7 +152,7 @@ export class RuleInformationTabComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submited.set(true);
     if (this.isInvalid()) {
       return;
     }
@@ -160,12 +160,12 @@ export class RuleInformationTabComponent implements OnInit {
     this.prepareSubmit().subscribe(
       () => {
         this.ruleService.get(this.oldRule.ruleId).subscribe((response) => {
-          this.submited = false;
+          this.submited.set(false);
           this.rule = response;
         });
       },
       () => {
-        this.submited = false;
+        this.submited.set(false);
       },
     );
   }

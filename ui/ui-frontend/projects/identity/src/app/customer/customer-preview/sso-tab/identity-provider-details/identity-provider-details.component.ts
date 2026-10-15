@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
@@ -104,6 +104,7 @@ export class IdentityProviderDetailsComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly identityProviderService = inject(IdentityProviderService);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input()
   set identityProvider(identityProvider: IdentityProvider) {
@@ -369,5 +370,7 @@ export class IdentityProviderDetailsComponent {
       this.snackBarService.open({ message: 'SHARED.SNACKBAR.SAML_UPDATE_ERROR' });
     }
     this.displayOIDCSAMLBLOCKS = true;
+    // manageForm may be triggered from form valueChanges subscriptions: the view must be refreshed (zoneless)
+    this.cdr.markForCheck();
   }
 }

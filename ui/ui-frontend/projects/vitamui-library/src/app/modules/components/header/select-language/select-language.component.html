@@ -8,7 +8,7 @@
         { label: 'SELECT_LANGUAGE.ENGLISH' | translate, value: 'en' },
       ]"
       [selectedItem]="
-        currentLang === 'fr'
+        currentLang() === 'fr'
           ? { label: 'SELECT_LANGUAGE.FRENCH' | translate, value: 'fr' }
           : { label: 'SELECT_LANGUAGE.ENGLISH' | translate, value: 'en' }
       "
@@ -19,7 +19,7 @@
   </div>
 } @else {
   <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" aria-label="flag">
-    <img [src]="'assets/country/' + currentLang + '.svg'" />
+    <img [src]="'assets/country/' + currentLang() + '.svg'" />
   </button>
   <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
     <span mat-menu-item (click)="use(minLangString.FR)"> FR<img src="assets/country/fr.svg" /> </span>

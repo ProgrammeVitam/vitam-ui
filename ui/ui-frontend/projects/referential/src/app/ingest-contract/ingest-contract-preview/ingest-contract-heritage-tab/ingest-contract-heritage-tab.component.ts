@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -57,7 +57,7 @@ export class IngestContractHeritageTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  submited = false;
+  submited = signal(false);
   private _ingestContract: IngestContract;
 
   @Input() set readOnly(readOnly: boolean) {
@@ -97,16 +97,16 @@ export class IngestContractHeritageTabComponent {
   }
 
   onSubmit() {
-    this.submited = true;
+    this.submited.set(true);
     this.prepareSubmit().subscribe(
       () => {
         this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
-          this.submited = false;
+          this.submited.set(false);
           this.ingestContract = response;
         });
       },
       () => {
-        this.submited = false;
+        this.submited.set(false);
       },
     );
   }

@@ -37,12 +37,13 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import {
   AfterContentInit,
+  afterNextRender,
   Component,
   ContentChildren,
   EventEmitter,
   HostListener,
+  Injector,
   Input,
-  NgZone,
   OnDestroy,
   OnInit,
   Output,
@@ -50,7 +51,7 @@ import {
   inject,
 } from '@angular/core';
 import { defer, merge, Observable, Subject } from 'rxjs';
-import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
 
@@ -63,7 +64,7 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
 })
 export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy {
-  private readonly ngZone = inject(NgZone);
+  private readonly injector = inject(Injector);
 
   @Input()
   set filter(values: any[]) {
@@ -92,10 +93,17 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
       );
     }
 
-    return this.ngZone.onStable.asObservable().pipe(
-      take(1),
-      switchMap(() => this.optionSelectionChanges),
-    );
+    // NgZone.onStable never emits in zoneless mode: wait for the next render instead
+    return new Observable<void>((subscriber) => {
+      const ref = afterNextRender(
+        () => {
+          subscriber.next();
+          subscriber.complete();
+        },
+        { injector: this.injector },
+      );
+      return () => ref.destroy();
+    }).pipe(switchMap(() => this.optionSelectionChanges));
   }) as Observable<TableFilterOptionComponent>;
 
   private readonly destroy = new Subject<void>();

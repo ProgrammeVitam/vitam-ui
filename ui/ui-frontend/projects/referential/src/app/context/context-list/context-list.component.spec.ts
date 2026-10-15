@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -46,6 +46,10 @@ import { ContextService } from '../context.service';
 import { ContextListComponent } from './context-list.component';
 
 describe('ContextListComponent', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   let component: ContextListComponent;
   let fixture: ComponentFixture<ContextListComponent>;
 
@@ -98,7 +102,8 @@ describe('ContextListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Search criteria should exists when we have some status as criteria', fakeAsync(() => {
+  it('Search criteria should exists when we have some status as criteria', async () => {
+    vi.useFakeTimers();
     // Given
     const filterMap: {
       [key: string]: any[];
@@ -111,12 +116,12 @@ describe('ContextListComponent', () => {
     component.filterMap = filterMap;
     component.searchText = searchText;
     let criteria = component.buildContextCriteriaFromSearch();
-    tick(400);
+    await vi.advanceTimersByTimeAsync(400);
 
     // Then
     expect(criteria).not.toBeNull();
     expect(criteria.Name).toEqual(searchText);
     expect(criteria.Identifier).toEqual(searchText);
     expect(criteria.Status).toEqual(['ACTIVE', 'INACTIVE']);
-  }));
+  });
 });

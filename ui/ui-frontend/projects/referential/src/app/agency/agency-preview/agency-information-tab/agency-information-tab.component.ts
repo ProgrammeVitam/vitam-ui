@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
@@ -61,7 +61,7 @@ export class AgencyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   tenantIdentifier: number;
-  isLoading = false;
+  isLoading = signal(false);
   checkUpdateRole = new Observable<boolean>();
 
   private _agency: Agency;
@@ -138,14 +138,14 @@ export class AgencyInformationTabComponent {
   }
 
   onSubmit() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     if (this.isInvalid()) {
       return;
     }
     this.prepareSubmit()
       .pipe(
         switchMap(() => this.agencyService.get(this._agency.identifier)),
-        finalize(() => (this.isLoading = false)),
+        finalize(() => this.isLoading.set(false)),
       )
       .subscribe({
         next: (agency) => {

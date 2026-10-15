@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
   ApiEvent,
   ApplicationId,
@@ -59,6 +59,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SecurisationCheckTabComponent implements OnChanges, OnInit {
   private readonly securingService = inject(SecurisationService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
 
@@ -74,6 +75,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       this.accessContractId = accessContractId;
+      this.cdr.markForCheck();
     });
   }
 
@@ -100,6 +102,7 @@ export class SecurisationCheckTabComponent implements OnChanges, OnInit {
 
           this.events = response.$results.map(LogbookApiService.toEvent)[0].events;
           this.display = true;
+          this.cdr.markForCheck();
         },
         () => {
           this.snackBarService.open({ message: 'SNACKBAR.TRACEABILITY_OPERATION_FAILED' });

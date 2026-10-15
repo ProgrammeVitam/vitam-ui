@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonProgressBarComponent } from 'vitamui-library';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -45,14 +45,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class LoadersSteppersComponent {
   nbSteps = [2, 3, 4, 5];
-  step = 0;
-  percent = 0;
+  readonly step = signal(0);
+  readonly percent = signal(0);
 
   constructor() {
-    setInterval(() => this.step++, 1000);
+    setInterval(() => this.step.update((step) => step + 1), 1000);
     setInterval(() => {
-      this.percent += Math.round(Math.random() * 10);
-      if (this.percent > 100) this.percent = 0;
+      this.percent.update((percent) => {
+        const newPercent = percent + Math.round(Math.random() * 10);
+        return newPercent > 100 ? 0 : newPercent;
+      });
     }, 400);
   }
 }

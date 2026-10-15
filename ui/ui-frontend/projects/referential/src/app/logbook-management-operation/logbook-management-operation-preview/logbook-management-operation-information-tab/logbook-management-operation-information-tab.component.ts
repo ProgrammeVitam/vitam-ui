@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, signal, SimpleChanges } from '@angular/core';
 import { EventTypeLabelComponent, IEvent, LogbookService, PipesModule } from 'vitamui-library';
 import type { OperationDetails } from '../../../models/operation-response.interface';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -51,7 +51,7 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
   @Input() operation: OperationDetails;
   @Input() tenantIdentifier: number;
   @Input() tenant: any;
-  event: IEvent;
+  event = signal<IEvent>(null);
 
   ngOnInit(): void {
     this.getLogbookOperationDetails(this.operation);
@@ -63,7 +63,7 @@ export class LogbookManagementOperationInformationTabComponent implements OnInit
       this.logbookService
         .getOperationById(operation.operationId, this.tenantIdentifier, accessContractLogbookIdentifier)
         .subscribe((event) => {
-          this.event = event;
+          this.event.set(event);
         });
     }
   }

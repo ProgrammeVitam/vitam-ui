@@ -1,21 +1,21 @@
 <div class="row">
   <div class="col-11">
     <h5 class="mt-0 mb-4">
-      {{ 'INGEST_TRACKING.TITLE' | translate }} <span>({{ ingestList.wipNumber }})</span>
+      {{ 'INGEST_TRACKING.TITLE' | translate }} <span>({{ ingestList().wipNumber }})</span>
     </h5>
   </div>
   <div class="col-1">
     <button class="btn-circle" (click)="toggleTracking()">
-      <i class="material-icons rotate" [class.collapsed]="!displayTracking" [class.expanded]="displayTracking">keyboard_arrow_down</i>
+      <i class="material-icons rotate" [class.collapsed]="!displayTracking()" [class.expanded]="displayTracking()">keyboard_arrow_down</i>
     </button>
   </div>
 </div>
-@if (displayTracking) {
+@if (displayTracking()) {
   <div>
-    @if (ingestList.wipNumber === 0) {
+    @if (ingestList().wipNumber === 0) {
       <span>{{ 'INGEST_TRACKING.MESSAGE' | translate }}</span>
     }
-    @if (ingestList.wipNumber > 0) {
+    @if (ingestList().wipNumber > 0) {
       <table class="vitamui-table">
         <thead>
           <tr>
@@ -25,7 +25,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (ingestInfo of ingestList.ingests | keyvalue; track ingestInfo) {
+          @for (ingestInfo of ingestList().ingests | keyvalue; track ingestInfo) {
             <tr class="vitamui-table-row">
               <td>{{ ingestInfo.value.name }}</td>
               <td>{{ ingestInfo.value.size | fileSize }}</td>

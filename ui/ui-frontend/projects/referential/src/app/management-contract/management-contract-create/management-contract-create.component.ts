@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { type AbstractControl, FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -107,7 +107,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
 
-  isDisabledButton = false;
+  isDisabledButton = signal(false);
   isSlaveMode: boolean;
 
   keyPressSubscription: Subscription;
@@ -190,15 +190,15 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.isDisabledButton) return;
-    this.isDisabledButton = true;
+    if (this.isDisabledButton()) return;
+    this.isDisabledButton.set(true);
     this.apiSubscriptions = this.managementContractService.create(this.generateManagementContract()).subscribe(
       () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: false, action: 'none' });
         this.logger.error(error);
       },

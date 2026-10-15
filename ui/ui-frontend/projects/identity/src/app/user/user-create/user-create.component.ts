@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
@@ -96,6 +96,7 @@ const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
   ],
 })
 export class UserCreateComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   dialogRef = inject<MatDialogRef<UserCreateComponent>>(MatDialogRef);
   data = inject<{
     userInfo: AdminUserProfile;
@@ -120,7 +121,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   public fullGroup: Group[];
   public groupName: string;
   public connectedUserInfo: AdminUserProfile;
-  public creating = false;
+  public readonly creating = signal(false);
   private keyPressSubscription: Subscription;
   public countries: Option[];
 
@@ -232,6 +233,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
+      this.cdr.markForCheck();
     });
   }
 
@@ -272,7 +274,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     if (this.form.invalid) {
       return;
     }
-    this.creating = true;
+    this.creating.set(true);
     let status = '';
     this.form.get('enabled').value ? (status = 'ENABLED') : (status = 'DISABLED');
     this.form.get('status').setValue(status);
@@ -285,13 +287,13 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         this.userService.create({ ...formData, centerCodes }).subscribe(
           () => this.dialogRef.close(true),
           (error) => {
-            this.creating = false;
+            this.creating.set(false);
             this.loggerService.error(error);
           },
         );
       },
       (error) => {
-        this.creating = false;
+        this.creating.set(false);
         this.loggerService.error(error);
       },
     );

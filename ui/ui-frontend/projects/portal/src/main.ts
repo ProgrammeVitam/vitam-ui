@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, importProvidersFrom, LOCALE_ID, TransferState, provideZoneChangeDetection } from '@angular/core';
+import { enableProdMode, importProvidersFrom, LOCALE_ID, TransferState, provideZonelessChangeDetection } from '@angular/core';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { ApplicationSvgLoaderFactory } from './app/app.module';
@@ -65,7 +65,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),
+    provideZonelessChangeDetection(),
     importProvidersFrom(
       AuthenticationModule.forRoot(),
       BrowserModule,

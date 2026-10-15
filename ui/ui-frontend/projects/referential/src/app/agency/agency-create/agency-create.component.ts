@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Agency, AgencyService, ConfirmDialogService, DialogHeaderComponent, InputComponent } from 'vitamui-library';
@@ -65,7 +65,7 @@ export class AgencyCreateComponent implements OnInit {
   private readonly agencyCreateValidators = inject(AgencyCreateValidators);
 
   form: FormGroup;
-  isLoading = false;
+  isLoading = signal(false);
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -92,13 +92,13 @@ export class AgencyCreateComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.agencyService.create(this.form.value).subscribe(
       () => {
         this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         console.error(error);
       },
     );
@@ -111,13 +111,13 @@ export class AgencyCreateComponent implements OnInit {
       description: this.form.controls['description'].value,
     };
 
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.agencyService.create(agency as Agency).subscribe({
       next: () => {
         this.dialogRef.close({ success: true, action: 'edit', agency });
       },
       error: (error: any) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         console.error(error);
       },
     });

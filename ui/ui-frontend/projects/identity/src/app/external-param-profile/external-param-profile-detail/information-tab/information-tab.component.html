@@ -47,7 +47,7 @@
     <vitamui-select
       formControlName="accessContract"
       [placeholder]="'EXTERNAL_PARAM_PROFILE.SELECT_ACCESSCONTRACT' | translate"
-      [options]="activeAccessContractsIdentifiers"
+      [options]="activeAccessContractsIdentifiers()"
       [multiple]="false"
       [enableSearch]="false"
     ></vitamui-select>

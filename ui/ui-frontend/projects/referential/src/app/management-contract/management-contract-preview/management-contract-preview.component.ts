@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {
+  ChangeDetectorRef,
   AfterViewInit,
   Component,
   EventEmitter,
@@ -89,6 +90,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ManagementContractPreviewComponent implements OnChanges, AfterViewInit {
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() inputManagementContract: ManagementContract;
@@ -116,6 +118,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
       this.inputManagementContract = changes['inputManagementContract'].previousValue;
       this.checkBeforeExit().then(() => {
         this.inputManagementContract = changes['inputManagementContract'].currentValue;
+        this.cdr.markForCheck();
       });
     }
   }
@@ -145,6 +148,7 @@ export class ManagementContractPreviewComponent implements OnChanges, AfterViewI
         .pipe(
           tap((managementContract) => {
             this.inputManagementContract = managementContract;
+            this.cdr.markForCheck();
           }),
         )
         .subscribe(() => subscription.unsubscribe());

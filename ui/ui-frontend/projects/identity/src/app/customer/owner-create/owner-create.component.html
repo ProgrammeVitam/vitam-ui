@@ -14,10 +14,10 @@
         <app-owner-form formControlName="owner" [customerId]="data?.customer?.id"></app-owner-form>
       </mat-dialog-content>
       <mat-dialog-actions>
-        <button type="button" class="btn primary" cdkStepperNext [disabled]="isLoading || ownerForm.pending || ownerForm.invalid">
+        <button type="button" class="btn primary" cdkStepperNext [disabled]="isLoading() || ownerForm.pending || ownerForm.invalid">
           {{ 'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate }}
         </button>
-        <button type="submit" class="btn primary" [disabled]="isLoading || ownerForm.pending || ownerForm.invalid">
+        <button type="submit" class="btn primary" [disabled]="isLoading() || ownerForm.pending || ownerForm.invalid">
           {{ 'COMMON.SUBMIT' | translate }}
         </button>
         <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
@@ -44,7 +44,7 @@
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="isLoading || tenantForm.pending || tenantForm.invalid">
+          <button type="submit" class="btn primary" [disabled]="isLoading() || tenantForm.pending || tenantForm.invalid">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

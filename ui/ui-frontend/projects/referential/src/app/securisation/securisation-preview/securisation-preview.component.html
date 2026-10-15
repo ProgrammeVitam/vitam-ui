@@ -8,7 +8,7 @@
   [actionsBelowTitle]="true"
 >
   @if (securisation.events[securisation.events.length - 1].outcome !== 'WARNING') {
-    <button class="btn primary" (click)="downloadReport()" [disabled]="!accessContractId">
+    <button class="btn primary" (click)="downloadReport()" [disabled]="!accessContractId()">
       {{ 'SECURE.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
     </button>
   }

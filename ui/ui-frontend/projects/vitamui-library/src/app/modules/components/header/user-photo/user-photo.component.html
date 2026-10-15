@@ -2,7 +2,7 @@
   @if (photo) {
     <img class="user-photo" [src]="photo" [style.width.px]="size" alt="user photo" />
   } @else {
-    <img class="user-photo" [src]="userDefaultLogoUrl" [style.width.px]="size" alt="user photo" />
+    <img class="user-photo" [src]="userDefaultLogoUrl()" [style.width.px]="size" alt="user photo" />
   }
   @if (hasStatus) {
     <span [ngClass]="statusCondition ? 'status-badge-green' : 'status-badge-grey'"></span>

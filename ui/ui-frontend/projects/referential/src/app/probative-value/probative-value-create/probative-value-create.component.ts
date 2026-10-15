@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
@@ -86,7 +86,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   private readonly snackBarService = inject(SnackBarService);
 
   public form: FormGroup;
-  public isDisabledButton = false;
+  public isDisabledButton = signal(false);
 
   public usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
@@ -97,7 +97,7 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   ];
 
   private accessContractId: string;
-  showWarningMessage = false;
+  showWarningMessage = signal(false);
 
   private readonly destroyer$ = new Subject<void>();
 
@@ -145,16 +145,16 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
-      this.isDisabledButton = true;
+      this.isDisabledButton.set(true);
       return;
     }
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
 
     this.probativeValueService
       .create(this.createDsl(this.form.value), new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
       .subscribe(
         () => {
-          this.isDisabledButton = false;
+          this.isDisabledButton.set(false);
 
           this.dialogRef.close({ success: true, action: 'none' });
         },
@@ -193,9 +193,10 @@ export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
         if (!unitIdStatus.$results[0]) {
           this.snackBarService.open({ message: 'EXCEPTIONS.HTTP_INTERCEPTOR.HTTP_STATUS_CODE_NOT_FOUND' });
         } else {
-          this.showWarningMessage =
+          this.showWarningMessage.set(
             !unitIdStatus.$results[0].SigningInformation ||
-            !unitIdStatus.$results[0].SigningInformation.SigningRole.includes(SigningRoleType.SIGNED_DOCUMENT);
+              !unitIdStatus.$results[0].SigningInformation.SigningRole.includes(SigningRoleType.SIGNED_DOCUMENT),
+          );
         }
       });
     }

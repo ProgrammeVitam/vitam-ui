@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -96,6 +107,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   private readonly startupService = inject(StartupService);
   groupService = inject(GroupService);
   private readonly userInfoService = inject(UserInfoService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() isPopup: boolean;
 
@@ -121,12 +133,15 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
           map.set(this.userInfo.id, 'userinfos');
           this.collectionsMap = map;
           this.identifiers = ids;
+          this.cdr.markForCheck();
         });
       } else {
         this.collectionsMap = map;
         this.identifiers = ids;
       }
     }
+    // the user may be set from async callbacks (dialog close, patch, userUpdated): refresh the view (zoneless)
+    this.cdr.markForCheck();
   }
   @Input() customer: Customer;
 

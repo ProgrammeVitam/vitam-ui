@@ -1,10 +1,10 @@
 <div class="vitamui-sidepanel-header">
   <app-classification-tree
-    [hasMatchesInSearch]="hasMatchesInSearch"
-    [loadingHolding]="loadingHolding"
+    [hasMatchesInSearch]="hasMatchesInSearch()"
+    [loadingHolding]="loadingHolding()"
     [nestedDataSourceFull]="nestedDataSourceFull"
     [nestedTreeControlFull]="nestedTreeControlFull"
-    [showEveryNodes]="showEveryNodes"
+    [showEveryNodes]="showEveryNodes()"
     [loadingNodeUnit]="loadingArchiveUnit['TREE']"
     (closePanel)="emitClose()"
     (addToSearchCriteria)="addToSearchCriteria($event)"
@@ -14,11 +14,11 @@
   </app-classification-tree>
 </div>
 
-@if (hasMatchesInSearch) {
+@if (hasMatchesInSearch()) {
   <div vitamuiVerticalResizeSidebar="top"></div>
 }
 
-@if (hasMatchesInSearch) {
+@if (hasMatchesInSearch()) {
   <div class="vitamui-sidepanel-header flex-column">
     <app-leaves-tree
       [nestedDataSourceLeaves]="nestedDataSourceLeaves"

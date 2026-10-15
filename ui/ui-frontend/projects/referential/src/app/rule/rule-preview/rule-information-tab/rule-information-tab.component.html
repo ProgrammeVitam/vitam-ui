@@ -37,7 +37,7 @@
     </vitamui-input>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited || (hasUpdateRuleRole$ | async) !== true">
+  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submited() || (hasUpdateRuleRole$ | async) !== true">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

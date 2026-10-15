@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, AfterViewInit, Component, EventEmitter, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader, MatTabsModule } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -73,6 +73,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AgencyPreviewComponent implements AfterViewInit {
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly agencyService = inject(AgencyService);
 
   @Input() agency: Agency;
@@ -114,6 +115,7 @@ export class AgencyPreviewComponent implements AfterViewInit {
       submitAgencyUpdate.subscribe(() => {
         this.agencyService.get(this.agency['identifier']).subscribe((response) => {
           this.agency = response;
+          this.cdr.markForCheck();
         });
       });
     } else {

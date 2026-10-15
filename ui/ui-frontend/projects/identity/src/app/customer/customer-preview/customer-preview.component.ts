@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import type { Customer } from 'vitamui-library';
@@ -70,6 +70,7 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class CustomerPreviewComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly customerService = inject(CustomerService);
 
   @Input() customer: Customer;
@@ -83,6 +84,7 @@ export class CustomerPreviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.customerUpdatedSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {
       this.customer = updatedCustomer;
+      this.cdr.markForCheck();
     });
   }
 

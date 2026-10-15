@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, inject, Input, OnChanges, OnDestroy, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog, MatDialogActions, MatDialogClose, MatDialogConfig } from '@angular/material/dialog';
 import { of, Subscription } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
@@ -80,6 +91,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
   private readonly favoriteEntryService = inject(FavoriteEntryService);
   private readonly typeService = inject(TypeService);
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() editObject: EditObject;
 
@@ -105,6 +117,8 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
           this.computeLayout();
           this.computeActions();
           this.isEmptyObject(editObject.currentValue);
+          // Children may change from outside a template event (e.g. after a dialog is closed): refresh the view (zoneless)
+          this.cdr.markForCheck();
         });
       }
 
@@ -114,6 +128,7 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
 
   ngAfterViewInit(): void {
     this.computeActions();
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {
@@ -169,7 +184,11 @@ export class GroupEditorComponent implements OnChanges, AfterViewInit, OnDestroy
             filter((value) => value),
             switchMap(() => of(handler())),
           )
-          .subscribe(() => subscription.unsubscribe());
+          .subscribe(() => {
+            // The handler runs after the dialog is closed, outside a template event: refresh this view and its ancestors (zoneless)
+            this.cdr.markForCheck();
+            subscription.unsubscribe();
+          });
       },
     };
   }

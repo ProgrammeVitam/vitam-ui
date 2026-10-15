@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {
+  ChangeDetectorRef,
   AfterViewInit,
   Component,
   EventEmitter,
@@ -88,6 +89,7 @@ import { CommonModule } from '@angular/common';
 })
 export class IngestContractPreviewComponent implements OnChanges, AfterViewInit {
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly ingestContractService = inject(IngestContractService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
@@ -169,6 +171,7 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
       submitAccessContractUpdate.subscribe(() => {
         this.ingestContractService.get(this.ingestContract.identifier).subscribe((response) => {
           this.ingestContract = response;
+          this.cdr.markForCheck();
         });
       });
     } else {

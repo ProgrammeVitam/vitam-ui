@@ -71,7 +71,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, QueryList, signal, ViewChildren } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -169,7 +170,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   private readonly sedaLanguageService = inject(PastisPopupMetadataLanguageService);
   private readonly translateService = inject(TranslateService);
   private readonly logger = inject(Logger);
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly snackBarService = inject(SnackBarService);
 
   static archiveUnits: FileNode;
@@ -185,17 +185,19 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   @Input() rootTabMetadataName: string;
   @Input() activeTabIndex: number;
 
+  @ViewChildren(MatNestedTreeNode) private nestedTreeNodes: QueryList<MatNestedTreeNode<FileNode>>;
+
   isStandalone: boolean = environment.standalone;
 
   dataSource = new MatTreeNestedDataSource<FileNode>();
   treeControl = new NestedTreeControl<FileNode>((node) => node.children);
-  updating = false;
+  updating = signal(false);
 
   data: FileNode;
   parentNodeMap = new Map<FileNode, FileNode>();
   dataChange = new BehaviorSubject<FileNode>(null);
-  selectedNode: FileNode;
-  sedaLanguage: boolean;
+  selectedNode = signal<FileNode>(null);
+  sedaLanguage = toSignal(this.sedaLanguageService.sedaLanguage, { initialValue: true });
   viewChild: FileNode[] = [];
 
   notificationRemoveSuccessOne: string;
@@ -265,16 +267,6 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.popupDuplicateTitreTwo = 'son contenu et son paramétrage (cardinalités et commentaire)';
     }
     this.subscriptions.add(
-      this.sedaLanguageService.sedaLanguage.subscribe({
-        next: (value: boolean) => {
-          this.sedaLanguage = value;
-        },
-        error: (error) => {
-          this.logger.error(this, error);
-        },
-      }),
-    );
-    this.subscriptions.add(
       this.sedaService.sedaRules$.subscribe((value) => {
         this.sedaService.selectedSedaNode.next(value);
         this.sedaService.selectedSedaNodeParent.next(value);
@@ -289,18 +281,17 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       this.fileTreeService.data$
         .pipe(
           filter((data: FileNode[]) => Boolean(data.length)),
-          tap(() => (this.updating = true)),
+          tap(() => this.updating.set(true)),
           tap((data: FileNode[]) => {
             this.dataSource.data = data;
-            this.cdr.detectChanges();
+            this.updating.set(false);
           }),
-          tap(() => (this.updating = false)),
         )
         .subscribe(),
     );
     this.subscriptions.add(
       this.fileTreeService.selectedNode$.subscribe((selectedNode) => {
-        this.selectedNode = selectedNode;
+        this.selectedNode.set(selectedNode);
       }),
     );
   }
@@ -536,8 +527,31 @@ export class FileTreeComponent implements OnInit, OnDestroy {
       ? this.fileService.getFileNodeById(root, nodeIdToExpand)
       : this.fileService.getFileNodeByName(root, this.rootTabMetadataName);
     if (data) {
+      // Always republish so service-level data stays in sync; the data$
+      // subscription also flips the updating signal for zoneless change detection.
       this.fileTreeService.setNestedDataSourceData([data]);
       this.fileTreeService.nestedTreeControl.expand(node);
+      // In-place children mutations (push/splice) are invisible to the data source
+      // differ (same root reference): re-run the mutated parent's own differ so
+      // added/removed rows render immediately.
+      this.refreshRenderedChildren(node);
+    }
+  }
+
+  // Re-run the rendered nested node's own children differ. MatTree only emits
+  // the top-level data array on dataSource change; nested children rendered once
+  // never refresh on in-place mutation without this call.
+  private refreshRenderedChildren(parent: FileNode): void {
+    const nestedNode = this.nestedTreeNodes?.find((nested) => nested.data === parent);
+    if (nestedNode) {
+      // updateChildrenNodes is protected on CdkNestedTreeNode: accessed through a
+      // minimal structural interface to avoid `any`.
+      (nestedNode as unknown as { updateChildrenNodes(children?: FileNode[]): void }).updateChildrenNodes();
+    } else {
+      // Parent not currently rendered: force a full tree rebuild on next microtask
+      // (destroy + recreate from current data) so the mutation is never invisible.
+      this.updating.set(true);
+      queueMicrotask(() => this.updating.set(false));
     }
   }
 
@@ -571,7 +585,7 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   onResolveName(node: FileNode) {
-    if (!this.sedaLanguage && node.sedaData?.nameFr) {
+    if (!this.sedaLanguage() && node.sedaData?.nameFr) {
       return node.sedaData.nameFr;
     }
     return node.name;
@@ -788,9 +802,9 @@ export class FileTreeComponent implements OnInit, OnDestroy {
   }
 
   selectedItem(node: FileNode): boolean {
-    if (!this.selectedNode) return false;
+    if (!this.selectedNode()) return false;
 
-    return this.selectedNode.id === node.id;
+    return this.selectedNode().id === node.id;
   }
 
   expandChildren(node: FileNode) {

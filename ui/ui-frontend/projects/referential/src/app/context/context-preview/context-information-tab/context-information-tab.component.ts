@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -62,7 +62,7 @@ export class ContextInformationTabComponent {
 
   form: FormGroup;
 
-  submitted = false;
+  submitted = signal(false);
 
   statusControl = new FormControl();
 
@@ -159,7 +159,7 @@ export class ContextInformationTabComponent {
   }
 
   onSubmit() {
-    this.submitted = true;
+    this.submitted.set(true);
     if (this.isInvalid()) {
       return;
     }
@@ -169,12 +169,12 @@ export class ContextInformationTabComponent {
           .get(this._context.identifier)
           .pipe(tap((response) => this.contextService.updated.next(response)))
           .subscribe((response) => {
-            this.submitted = false;
+            this.submitted.set(false);
             this.context = response;
           });
       },
       () => {
-        this.submitted = false;
+        this.submitted.set(false);
       },
     );
   }

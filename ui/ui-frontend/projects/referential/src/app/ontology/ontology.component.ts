@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
@@ -85,6 +85,7 @@ import { OntologyGroupComponent } from './ontology-group/ontology-group.componen
 })
 export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
   private readonly translateService = inject(TranslateService);
   private readonly securityService = inject(SecurityService);
@@ -121,6 +122,7 @@ export class OntologyComponent extends SidenavPage<Ontology | SchemaElement> imp
     this.route.params.subscribe((params) => {
       this.tenantId = +params['tenantIdentifier'];
       this.initializePermissions();
+      this.cdr.markForCheck();
     });
   }
 

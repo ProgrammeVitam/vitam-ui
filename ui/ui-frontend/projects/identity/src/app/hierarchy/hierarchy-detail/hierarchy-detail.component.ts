@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import type { Profile } from 'vitamui-library';
@@ -64,12 +64,16 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class HierarchyDetailComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly hierarchyService = inject(HierarchyService);
   private readonly authService = inject(AuthService);
 
   @Input()
   set id(id: string) {
-    this.hierarchyService.get(id).subscribe((profile) => (this.profile = profile));
+    this.hierarchyService.get(id).subscribe((profile) => {
+      this.profile = profile;
+      this.cdr.markForCheck();
+    });
   }
   @Input() profile: Profile;
   @Input() isPopup: boolean;
@@ -82,6 +86,7 @@ export class HierarchyDetailComponent implements OnInit, OnDestroy {
     this.profileUpdateSub = this.hierarchyService.updated.subscribe((updatedProfile) => {
       if (updatedProfile) {
         this.profile = updatedProfile;
+        this.cdr.markForCheck();
       }
     });
   }

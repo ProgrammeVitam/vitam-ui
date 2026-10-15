@@ -105,22 +105,26 @@ export class ExternalParamProfileListComponent extends InfiniteScrollTable<Exter
 
   private subscribeOnExteralParamProfilePatchOperation() {
     this.updatedProfileSub = this.externalParamProfileServiceService.updated.subscribe((externalParamProfile: ExternalParamProfile) => {
-      const extParamProfileIndex = this.dataSource.findIndex((extParamProfile) => extParamProfile.id === externalParamProfile.id);
-      if (extParamProfileIndex > -1) {
-        this.dataSource[extParamProfileIndex] = {
-          id: externalParamProfile.id,
-          enabled: externalParamProfile.enabled,
-          name: externalParamProfile.name,
-          description: externalParamProfile.description,
-          accessContract: externalParamProfile.accessContract,
-          externalParamIdentifier: externalParamProfile.externalParamIdentifier,
-          profileIdentifier: externalParamProfile.profileIdentifier,
-          idExternalParam: externalParamProfile.idExternalParam,
-          idProfile: externalParamProfile.idProfile,
-          bulkOperationsThreshold: externalParamProfile.bulkOperationsThreshold,
-          usePlatformThreshold: externalParamProfile.usePlatformThreshold,
-        };
-      }
+      this.dataSource.update((profiles) => {
+        const list = [...(profiles ?? [])];
+        const extParamProfileIndex = list.findIndex((extParamProfile) => extParamProfile.id === externalParamProfile.id);
+        if (extParamProfileIndex > -1) {
+          list[extParamProfileIndex] = {
+            id: externalParamProfile.id,
+            enabled: externalParamProfile.enabled,
+            name: externalParamProfile.name,
+            description: externalParamProfile.description,
+            accessContract: externalParamProfile.accessContract,
+            externalParamIdentifier: externalParamProfile.externalParamIdentifier,
+            profileIdentifier: externalParamProfile.profileIdentifier,
+            idExternalParam: externalParamProfile.idExternalParam,
+            idProfile: externalParamProfile.idProfile,
+            bulkOperationsThreshold: externalParamProfile.bulkOperationsThreshold,
+            usePlatformThreshold: externalParamProfile.usePlatformThreshold,
+          };
+        }
+        return list;
+      });
     });
   }
 

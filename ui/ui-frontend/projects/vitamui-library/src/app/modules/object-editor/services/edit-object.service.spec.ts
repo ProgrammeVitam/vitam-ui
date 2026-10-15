@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { from, mergeMap, toArray } from 'rxjs';
 import { LoggerModule } from '../../logger/logger.module';
@@ -80,116 +80,113 @@ describe('EditObjectService', () => {
   });
 
   describe('EditObject', () => {
-    it('should create simple editObject', waitForAsync(
-      inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
-          const path = '';
-          const data = { Title: 'Hello' };
-          const template: DisplayRule[] = [{ Path: 'Title', ui: { Path: 'Title', component: 'textfield' } }];
-          const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-          const editObject = service.editObject(path, data, template, subschema);
+    it('should create simple editObject', inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
+        const path = '';
+        const data = { Title: 'Hello' };
+        const template: DisplayRule[] = [{ Path: 'Title', ui: { Path: 'Title', component: 'textfield' } }];
+        const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
+        const editObject = service.editObject(path, data, template, subschema);
 
-          expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(51);
-          expect(editObject.children).toEqual(
-            expect.arrayContaining(
-              [
-                'Addressee',
-                'Agent',
-                'AuthorizedAgent',
-                'Coverage',
-                'DescriptionLevel',
-                'Event',
-                'Gps',
-                'Recipient',
-                'Sender',
-                'Signature',
-                'SigningInformation',
-                'Title',
-                'Transmitter',
-                'Writer',
-                '#originating_agency',
-                '#originating_agencies',
-              ].map((path) => expect.objectContaining({ path })),
-            ),
-          );
-          expect(editObject.children).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                displayRule: expect.objectContaining({
-                  Path: 'Title',
+        expect(editObject).toBeTruthy();
+        expect(editObject.children.length).toEqual(51);
+        expect(editObject.children).toEqual(
+          expect.arrayContaining(
+            [
+              'Addressee',
+              'Agent',
+              'AuthorizedAgent',
+              'Coverage',
+              'DescriptionLevel',
+              'Event',
+              'Gps',
+              'Recipient',
+              'Sender',
+              'Signature',
+              'SigningInformation',
+              'Title',
+              'Transmitter',
+              'Writer',
+              '#originating_agency',
+              '#originating_agencies',
+            ].map((path) => expect.objectContaining({ path })),
+          ),
+        );
+        expect(editObject.children).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              displayRule: expect.objectContaining({
+                Path: 'Title',
+              }),
+            }),
+          ]),
+        );
+      });
+    }));
+
+    it('should create nested editObject', inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
+        const path = '';
+        const data = {
+          Title: 'Hello',
+          Addressee: [
+            {
+              BirthDate: '01/01/2000',
+            },
+          ],
+        };
+        const template: DisplayRule[] = [
+          { Path: 'Title', ui: { Path: 'Title', component: 'textfield' } },
+          { Path: 'Addressee', ui: { Path: 'Addressee', component: 'group' } },
+        ];
+        const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
+        const editObject = service.editObject(path, data, template, subschema);
+
+        expect(editObject).toBeTruthy();
+        expect(editObject.children.length).toEqual(51);
+        expect(editObject.children).toEqual(
+          expect.arrayContaining(
+            [
+              'Addressee',
+              'Agent',
+              'AuthorizedAgent',
+              'Coverage',
+              'DescriptionLevel',
+              'Event',
+              'Gps',
+              'Recipient',
+              'Sender',
+              'Signature',
+              'SigningInformation',
+              'Title',
+              'Transmitter',
+              'Writer',
+              '#originating_agency',
+              '#originating_agencies',
+            ].map((path) => expect.objectContaining({ path })),
+          ),
+        );
+        expect(editObject.children).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              path: 'Addressee',
+              displayRule: expect.objectContaining({
+                Path: 'Addressee',
+                ui: expect.objectContaining({
+                  component: 'group',
                 }),
               }),
-            ]),
-          );
-        });
-      }),
-    ));
+            }),
+          ]),
+        );
 
-    it('should create nested editObject', waitForAsync(
-      inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
-          const path = '';
-          const data = {
-            Title: 'Hello',
-            Addressee: [
-              {
-                BirthDate: '01/01/2000',
-              },
-            ],
-          };
-          const template: DisplayRule[] = [
-            { Path: 'Title', ui: { Path: 'Title', component: 'textfield' } },
-            { Path: 'Addressee', ui: { Path: 'Addressee', component: 'group' } },
-          ];
-          const subschema = schema.filter((element) => element.Category === 'DESCRIPTION');
-          const editObject = service.editObject(path, data, template, subschema);
+        expect(editObject.children.find((node) => node.path === 'Addressee').children.length).toBeGreaterThan(0);
+      });
+    }));
 
-          expect(editObject).toBeTruthy();
-          expect(editObject.children.length).toEqual(51);
-          expect(editObject.children).toEqual(
-            expect.arrayContaining(
-              [
-                'Addressee',
-                'Agent',
-                'AuthorizedAgent',
-                'Coverage',
-                'DescriptionLevel',
-                'Event',
-                'Gps',
-                'Recipient',
-                'Sender',
-                'Signature',
-                'SigningInformation',
-                'Title',
-                'Transmitter',
-                'Writer',
-                '#originating_agency',
-                '#originating_agencies',
-              ].map((path) => expect.objectContaining({ path })),
-            ),
-          );
-          expect(editObject.children).toEqual(
-            expect.arrayContaining([
-              expect.objectContaining({
-                path: 'Addressee',
-                displayRule: expect.objectContaining({
-                  Path: 'Addressee',
-                  ui: expect.objectContaining({
-                    component: 'group',
-                  }),
-                }),
-              }),
-            ]),
-          );
-
-          expect(editObject.children.find((node) => node.path === 'Addressee').children.length).toBeGreaterThan(0);
-        });
-      }),
-    ));
-
-    it('should create projected nested object', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+    it('should create projected nested object', inject(
+      [MockSchemaService, TemplateService, SchemaService],
+      (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -249,11 +246,12 @@ describe('EditObjectService', () => {
             ]),
           );
         });
-      }),
+      },
     ));
 
-    it('should create projected nested object and add new items', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+    it('should create projected nested object and add new items', inject(
+      [MockSchemaService, TemplateService, SchemaService],
+      (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -321,11 +319,12 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject.children.length).toEqual(2);
         });
-      }),
+      },
     ));
 
-    it('should create projected nested object and remove an item', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+    it('should create projected nested object and remove an item', inject(
+      [MockSchemaService, TemplateService, SchemaService],
+      (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -393,11 +392,12 @@ describe('EditObjectService', () => {
 
           expect(addresseesEditObject.children.length).toEqual(0);
         });
-      }),
+      },
     ));
 
-    it('should create projected nested object and do complex operations on arrays', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+    it('should create projected nested object and do complex operations on arrays', inject(
+      [MockSchemaService, TemplateService, SchemaService],
+      (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {
@@ -478,11 +478,12 @@ describe('EditObjectService', () => {
             ]),
           );
         });
-      }),
+      },
     ));
 
-    it('should create with empty data', waitForAsync(
-      inject([MockSchemaService, TemplateService, SchemaService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+    it('should create with empty data', inject(
+      [MockSchemaService, TemplateService, SchemaService],
+      (schemaService: MockSchemaService, templateService: TemplateService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const originalData = {};
@@ -525,181 +526,179 @@ describe('EditObjectService', () => {
             ]),
           );
         });
-      }),
+      },
     ));
 
-    it('should create with nested arrays', waitForAsync(
-      inject([TemplateService, SchemaService], () => {
-        const schema: Schema = [
+    it('should create with nested arrays', inject([TemplateService, SchemaService], () => {
+      const schema: Schema = [
+        {
+          Path: 'Invoice',
+          Cardinality: 'MANY',
+          FieldName: 'Invoice',
+          ShortName: 'Facture',
+          Description: 'Informations de facturation',
+          Type: 'OBJECT',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice',
+          DataType: 'OBJECT',
+          ApiField: 'Invoice',
+          SedaVersions: [],
+        },
+        {
+          Path: 'Invoice.Provider',
+          Cardinality: 'MANY',
+          FieldName: 'Provider',
+          ShortName: 'Provider',
+          Description: 'Émetteur de la facture',
+          Type: 'OBJECT',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice.Provider',
+          DataType: 'OBJECT',
+          ApiField: 'Provider',
+          SedaVersions: [],
+        },
+        {
+          Path: 'Invoice.Provider.MyKeyword',
+          StringSize: 'MEDIUM',
+          Cardinality: 'ONE_REQUIRED',
+          FieldName: 'MyKeyword',
+          ShortName: 'My keyword',
+          Description: 'Extension au SEDA. Elément de type mot clé',
+          Type: 'KEYWORD',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice.Provider.MyKeyword',
+          DataType: 'STRING',
+          ApiField: 'MyKeyword',
+          SedaVersions: [],
+        },
+        {
+          Path: 'Invoice.Provider.MyText',
+          StringSize: 'MEDIUM',
+          Cardinality: 'ONE',
+          FieldName: 'MyText',
+          ShortName: 'My text',
+          Description: 'Extension au SEDA. Elément de type texte',
+          Type: 'TEXT',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice.Provider.MyText',
+          DataType: 'STRING',
+          ApiField: 'MyText',
+          SedaVersions: [],
+        },
+        {
+          Path: 'Invoice.Provider.MyDate',
+          Cardinality: 'MANY',
+          FieldName: 'MyDate',
+          ShortName: 'My date',
+          Description: 'Extension au SEDA. Elément de type date',
+          Type: 'DATE',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice.Provider.MyDate',
+          DataType: 'DATETIME',
+          ApiField: 'MyDate',
+          SedaVersions: [],
+        },
+        {
+          Path: 'Invoice.Provider.MyDouble',
+          Cardinality: 'ONE',
+          FieldName: 'MyDouble',
+          ShortName: 'My double',
+          Description: 'Extension au SEDA. Elément de type décimal',
+          Type: 'DOUBLE',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice.Provider.MyDouble',
+          DataType: 'DOUBLE',
+          ApiField: 'MyDouble',
+          SedaVersions: [],
+        },
+        {
+          Path: 'Invoice.Provider.MyEnum',
+          Cardinality: 'ONE',
+          FieldName: 'MyEnum',
+          ShortName: 'My enum',
+          Description: 'Extension au SEDA. Elément de type énumératif',
+          Type: 'ENUM',
+          Origin: 'EXTERNAL',
+          Collection: Collection.ARCHIVE_UNIT,
+          Category: 'DESCRIPTION',
+          ApiPath: 'Invoice.Provider.MyEnum',
+          DataType: 'STRING',
+          ApiField: 'MyEnum',
+          SedaVersions: [],
+        },
+      ];
+      const path = '';
+      const originalData = {
+        Invoice: [
           {
-            Path: 'Invoice',
-            Cardinality: 'MANY',
-            FieldName: 'Invoice',
-            ShortName: 'Facture',
-            Description: 'Informations de facturation',
-            Type: 'OBJECT',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice',
-            DataType: 'OBJECT',
-            ApiField: 'Invoice',
-            SedaVersions: [],
+            Provider: [
+              {
+                MyText: 'Hello',
+              },
+            ],
           },
-          {
-            Path: 'Invoice.Provider',
-            Cardinality: 'MANY',
-            FieldName: 'Provider',
-            ShortName: 'Provider',
-            Description: 'Émetteur de la facture',
-            Type: 'OBJECT',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice.Provider',
-            DataType: 'OBJECT',
-            ApiField: 'Provider',
-            SedaVersions: [],
-          },
-          {
-            Path: 'Invoice.Provider.MyKeyword',
-            StringSize: 'MEDIUM',
-            Cardinality: 'ONE_REQUIRED',
-            FieldName: 'MyKeyword',
-            ShortName: 'My keyword',
-            Description: 'Extension au SEDA. Elément de type mot clé',
-            Type: 'KEYWORD',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice.Provider.MyKeyword',
-            DataType: 'STRING',
-            ApiField: 'MyKeyword',
-            SedaVersions: [],
-          },
-          {
-            Path: 'Invoice.Provider.MyText',
-            StringSize: 'MEDIUM',
-            Cardinality: 'ONE',
-            FieldName: 'MyText',
-            ShortName: 'My text',
-            Description: 'Extension au SEDA. Elément de type texte',
-            Type: 'TEXT',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice.Provider.MyText',
-            DataType: 'STRING',
-            ApiField: 'MyText',
-            SedaVersions: [],
-          },
-          {
-            Path: 'Invoice.Provider.MyDate',
-            Cardinality: 'MANY',
-            FieldName: 'MyDate',
-            ShortName: 'My date',
-            Description: 'Extension au SEDA. Elément de type date',
-            Type: 'DATE',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice.Provider.MyDate',
-            DataType: 'DATETIME',
-            ApiField: 'MyDate',
-            SedaVersions: [],
-          },
-          {
-            Path: 'Invoice.Provider.MyDouble',
-            Cardinality: 'ONE',
-            FieldName: 'MyDouble',
-            ShortName: 'My double',
-            Description: 'Extension au SEDA. Elément de type décimal',
-            Type: 'DOUBLE',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice.Provider.MyDouble',
-            DataType: 'DOUBLE',
-            ApiField: 'MyDouble',
-            SedaVersions: [],
-          },
-          {
-            Path: 'Invoice.Provider.MyEnum',
-            Cardinality: 'ONE',
-            FieldName: 'MyEnum',
-            ShortName: 'My enum',
-            Description: 'Extension au SEDA. Elément de type énumératif',
-            Type: 'ENUM',
-            Origin: 'EXTERNAL',
-            Collection: Collection.ARCHIVE_UNIT,
-            Category: 'DESCRIPTION',
-            ApiPath: 'Invoice.Provider.MyEnum',
-            DataType: 'STRING',
-            ApiField: 'MyEnum',
-            SedaVersions: [],
-          },
-        ];
-        const path = '';
-        const originalData = {
-          Invoice: [
-            {
-              Provider: [
-                {
-                  MyText: 'Hello',
-                },
-              ],
-            },
-          ],
-        };
-        const template: DisplayRule[] = [];
-        const templatedSchema = service.createTemplateSchema(template, schema);
-        const editObject: EditObject = service.editObject(path, originalData, template, templatedSchema);
+        ],
+      };
+      const template: DisplayRule[] = [];
+      const templatedSchema = service.createTemplateSchema(template, schema);
+      const editObject: EditObject = service.editObject(path, originalData, template, templatedSchema);
 
-        expect(editObject).toBeTruthy();
-        expect(editObject.children.length).toEqual(1);
-        expect(editObject.children).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              path: 'Invoice',
-              kind: 'object-array',
-            }),
-          ]),
-        );
-        expect(editObject.children[0].children).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              path: 'Invoice[0]',
-              kind: 'object',
-            }),
-          ]),
-        );
-        expect(editObject.children[0].children[0].children).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              path: 'Invoice[0].Provider',
-              kind: 'object-array',
-            }),
-          ]),
-        );
-        expect(editObject.children[0].children[0].children[0].children).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              path: 'Invoice[0].Provider[0]',
-              kind: 'object',
-            }),
-          ]),
-        );
-        expect(editObject.children[0].children[0].children[0].children[0].children).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              path: 'Invoice[0].Provider[0].MyText',
-              kind: 'primitive',
-              value: 'Hello',
-            }),
-          ]),
-        );
-      }),
-    ));
+      expect(editObject).toBeTruthy();
+      expect(editObject.children.length).toEqual(1);
+      expect(editObject.children).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: 'Invoice',
+            kind: 'object-array',
+          }),
+        ]),
+      );
+      expect(editObject.children[0].children).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: 'Invoice[0]',
+            kind: 'object',
+          }),
+        ]),
+      );
+      expect(editObject.children[0].children[0].children).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: 'Invoice[0].Provider',
+            kind: 'object-array',
+          }),
+        ]),
+      );
+      expect(editObject.children[0].children[0].children[0].children).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: 'Invoice[0].Provider[0]',
+            kind: 'object',
+          }),
+        ]),
+      );
+      expect(editObject.children[0].children[0].children[0].children[0].children).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: 'Invoice[0].Provider[0].MyText',
+            kind: 'primitive',
+            value: 'Hello',
+          }),
+        ]),
+      );
+    }));
   });
 
   describe('Kind', () => {
@@ -795,8 +794,9 @@ describe('EditObjectService', () => {
 
   describe('Controls and cardinality modifiers', () => {
     describe('Required', () => {
-      it('should primitive be required when its schema has one required cardinality modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive be required when its schema has one required cardinality modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Description';
           const kind = 'primitive';
           const cardinality: Cardinality = 'ONE';
@@ -835,11 +835,12 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
 
-      it('should primitive-array be required when its schema has one required cardinality modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive-array be required when its schema has one required cardinality modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Tag';
           const kind = 'primitive-array';
           const cardinality: Cardinality = 'MANY';
@@ -878,11 +879,12 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
 
-      it('should primitive-array be required when its schema has many required cardinality modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive-array be required when its schema has many required cardinality modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Tag';
           const kind = 'primitive-array';
           const cardinality: Cardinality = 'MANY';
@@ -921,11 +923,12 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
 
-      it('should object-array be required when its schema has one required cardinality modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should object-array be required when its schema has one required cardinality modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Writer';
           const kind = 'object-array';
           const cardinality: Cardinality = 'MANY';
@@ -964,11 +967,12 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
 
-      it('should object-array be required when its schema has many required cardinality modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should object-array be required when its schema has many required cardinality modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Writer';
           const kind = 'object-array';
           const cardinality: Cardinality = 'MANY';
@@ -1007,13 +1011,14 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
     });
 
     describe('Pattern', () => {
-      it('should primitive have pattern when its schema has set regex control modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive have pattern when its schema has set regex control modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Title';
           const kind = 'primitive';
           const cardinality: Cardinality = 'ONE';
@@ -1051,11 +1056,12 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
 
-      it('should primitive-array have pattern when its schema has set regex control modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive-array have pattern when its schema has set regex control modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Tag';
           const kind = 'primitive-array';
           const cardinality: Cardinality = 'MANY';
@@ -1093,13 +1099,14 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
     });
 
     describe('Options', () => {
-      it('should primitive have options when its schema has set select control modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive have options when its schema has set select control modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Title';
           const kind = 'primitive';
           const cardinality: Cardinality = 'ONE';
@@ -1137,11 +1144,12 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
 
-      it('should primitive-array have options when its schema has set select control modifier', waitForAsync(
-        inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      it('should primitive-array have options when its schema has set select control modifier', inject(
+        [MockSchemaService],
+        (schemaService: MockSchemaService) => {
           const path = 'Tag';
           const kind = 'primitive-array';
           const cardinality: Cardinality = 'MANY';
@@ -1179,13 +1187,14 @@ describe('EditObjectService', () => {
                 );
               },
             });
-        }),
+        },
       ));
     });
 
     describe('Cardinality zero', () => {
-      it('should not render parent group when all its children have zero cardinality', waitForAsync(
-        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+      it('should not render parent group when all its children have zero cardinality', inject(
+        [MockSchemaService, TemplateService],
+        (schemaService: MockSchemaService, templateService: TemplateService) => {
           const path = 'Addressee';
           const cardinality: Cardinality = 'MANY';
           const effectiveCardinality = 'ZERO';
@@ -1238,11 +1247,12 @@ describe('EditObjectService', () => {
                 expect(editObject.children.filter((editObject) => editObject.key === 'Actors')[0].cardinality).toEqual('ZERO');
               },
             });
-        }),
+        },
       ));
 
-      it('should primitive have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
-        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+      it('should primitive have inconsistent value when its schema has zero cardinality modifier', inject(
+        [MockSchemaService, TemplateService],
+        (schemaService: MockSchemaService, templateService: TemplateService) => {
           const path = 'Description';
           const kind = 'primitive';
           const cardinality: Cardinality = 'ONE';
@@ -1282,10 +1292,11 @@ describe('EditObjectService', () => {
                 editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toBeNull());
               },
             });
-        }),
+        },
       ));
-      it('should primitive have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
-        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService) => {
+      it('should primitive have inconsistent value when its schema has zero cardinality modifier', inject(
+        [MockSchemaService, TemplateService],
+        (schemaService: MockSchemaService) => {
           const path = 'Addressee';
           const cardinality: Cardinality = 'MANY';
           const effectiveCardinality = 'ZERO';
@@ -1333,11 +1344,12 @@ describe('EditObjectService', () => {
                 expect(editObject.children.filter((eo) => eo.path === path)[0].cardinality).toEqual('ZERO');
               },
             });
-        }),
+        },
       ));
 
-      it('should primitive-array have inconsistent value when its schema has zero cardinality modifier', waitForAsync(
-        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+      it('should primitive-array have inconsistent value when its schema has zero cardinality modifier', inject(
+        [MockSchemaService, TemplateService],
+        (schemaService: MockSchemaService, templateService: TemplateService) => {
           const path = 'Tag';
           const kind = 'primitive-array';
           const cardinality: Cardinality = 'MANY';
@@ -1377,11 +1389,12 @@ describe('EditObjectService', () => {
                 editObject.children.filter((eo) => eo.path === path).forEach((eo) => expect(eo.control.value).toEqual([]));
               },
             });
-        }),
+        },
       ));
 
-      it('should object-array have inconsistent value when its schema has one cardinality modifier', waitForAsync(
-        inject([MockSchemaService, TemplateService], (schemaService: MockSchemaService, templateService: TemplateService) => {
+      it('should object-array have inconsistent value when its schema has one cardinality modifier', inject(
+        [MockSchemaService, TemplateService],
+        (schemaService: MockSchemaService, templateService: TemplateService) => {
           const path = 'Writer';
           const cardinality: Cardinality = 'MANY';
           const effectiveCardinality = 'ONE';
@@ -1417,13 +1430,14 @@ describe('EditObjectService', () => {
                 expect(editObject.children.length).toEqual(1);
               },
             });
-        }),
+        },
       ));
     });
   });
 
-  it('should template schema be same as schema when template does not move data', waitForAsync(
-    inject([MockSchemaService], (schemaService: MockSchemaService) => {
+  it('should template schema be same as schema when template does not move data', inject(
+    [MockSchemaService],
+    (schemaService: MockSchemaService) => {
       schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
         const template: DisplayRule[] = [{ Path: 'Title', ui: { Path: 'Title', component: 'textfield' } }];
         const subschema = schema
@@ -1445,11 +1459,12 @@ describe('EditObjectService', () => {
         expect(templatedSchema.length).toEqual(subschema.length);
         expect(templatedSchema).toEqual(subschema);
       });
-    }),
+    },
   ));
 
-  it('should template schema add only one node when moves a primitive from schema into a group a root level', waitForAsync(
-    inject([MockSchemaService], (schemaService: MockSchemaService) => {
+  it('should template schema add only one node when moves a primitive from schema into a group a root level', inject(
+    [MockSchemaService],
+    (schemaService: MockSchemaService) => {
       schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
         const template: DisplayRule[] = [
           { Path: null, ui: { Path: 'Generalities', component: 'group' } },
@@ -1467,11 +1482,12 @@ describe('EditObjectService', () => {
           ]),
         );
       });
-    }),
+    },
   ));
 
-  it('should template schema add only concerned nodes when moves an object array from schema into a group a root level', waitForAsync(
-    inject([MockSchemaService], (schemaService: MockSchemaService) => {
+  it('should template schema add only concerned nodes when moves an object array from schema into a group a root level', inject(
+    [MockSchemaService],
+    (schemaService: MockSchemaService) => {
       schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
         const template: DisplayRule[] = [
           { Path: null, ui: { Path: 'Generalities', component: 'group' } },
@@ -1497,7 +1513,7 @@ describe('EditObjectService', () => {
           ]),
         );
       });
-    }),
+    },
   ));
 });
 

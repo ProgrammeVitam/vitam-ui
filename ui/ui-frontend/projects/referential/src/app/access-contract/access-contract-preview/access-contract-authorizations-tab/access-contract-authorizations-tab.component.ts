@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   AccessContract,
@@ -59,6 +59,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AccessContractAuthorizationsTabComponent implements OnInit {
   private readonly agencyService = inject(AgencyService);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialog = inject(MatDialog);
 
   AccessRightType = AccessRightType;
@@ -96,6 +97,7 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
       this._accessContract.originatingAgenciesLabels = this._accessContract.originatingAgencies
         ?.map((agency) => this.originatingAgencyName(agency))
         .sort();
+      this.cdr.markForCheck();
     });
   }
 
@@ -109,6 +111,7 @@ export class AccessContractAuthorizationsTabComponent implements OnInit {
     dialogRef.afterClosed().subscribe((accessContract: any) => {
       if (accessContract) {
         this.accessContract = accessContract;
+        this.cdr.markForCheck();
       }
     });
   }

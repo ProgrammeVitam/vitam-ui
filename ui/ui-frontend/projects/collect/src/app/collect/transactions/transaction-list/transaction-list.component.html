@@ -10,8 +10,8 @@
       <vitamui-sup-header>
         <ng-container title>
           {{
-            (dataSource?.length <= 1 ? 'COLLECT.SINGLE_TRANSACTION' : 'COLLECT.NB_ENTRIES_TRANSACTIONS')
-              | translate: { nb: dataSource?.length }
+            (dataSource()?.length <= 1 ? 'COLLECT.SINGLE_TRANSACTION' : 'COLLECT.NB_ENTRIES_TRANSACTIONS')
+              | translate: { nb: dataSource()?.length }
           }}
         </ng-container>
       </vitamui-sup-header>
@@ -56,7 +56,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (transaction of dataSource; track transaction) {
+          @for (transaction of dataSource(); track transaction) {
             <tr class="vitamui-table-rows">
               <td>
                 <i class="vitamui-icon vitamui-icon-flux-manuel-refus">
@@ -83,7 +83,7 @@
                     <button
                       mat-icon-button
                       class="action-icon-btn btn btn-circle outline outline-primary"
-                      [disabled]="!hasDownloadTransactionRole"
+                      [disabled]="!hasDownloadTransactionRole()"
                       (click)="downloadSipTransaction(transaction)"
                     >
                       <i class="vitamui-icon vitamui-icon-download"></i>
@@ -95,7 +95,7 @@
                     </button>
                     <button
                       mat-menu-item
-                      [disabled]="!transactionIsValidatable(transaction) || !hasCloseTransactionRole"
+                      [disabled]="!transactionIsValidatable(transaction) || !hasCloseTransactionRole()"
                       (click)="validateTransaction(transaction)"
                     >
                       {{ 'COLLECT.VALIDATE_ACTION' | translate }}
@@ -105,14 +105,14 @@
                     </button>
                     <button
                       mat-menu-item
-                      [disabled]="!transactionIsEditable(transaction) || !hasEditTransactionRole"
+                      [disabled]="!transactionIsEditable(transaction) || !hasEditTransactionRole()"
                       (click)="editTransaction(transaction)"
                     >
                       {{ 'COLLECT.EDIT_ACTION' | translate }}
                     </button>
                     <button
                       mat-menu-item
-                      [disabled]="!transactionIsAbortable(transaction) || !hasAbortTransactionRole"
+                      [disabled]="!transactionIsAbortable(transaction) || !hasAbortTransactionRole()"
                       (click)="abortTransaction(transaction)"
                     >
                       {{ 'COLLECT.ABORT_ACTION' | translate }}

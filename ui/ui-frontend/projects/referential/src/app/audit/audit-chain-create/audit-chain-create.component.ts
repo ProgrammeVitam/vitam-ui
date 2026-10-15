@@ -36,7 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -90,7 +90,7 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
 
   public form: FormGroup;
   public versionControl = new FormControl({ value: CURRENT_VERSION_KEY, disabled: true });
-  public isDisabledButton = false;
+  public isDisabledButton = signal(false);
   public accessContractId: string = null;
 
   public chainTypeOptions: Option[];
@@ -165,7 +165,7 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
     if (this.form.invalid || !this.canSubmit()) {
       return;
     }
-    this.isDisabledButton = true;
+    this.isDisabledButton.set(true);
 
     const request: TraceabilityChainAuditRequest = {
       chainType: this.form.value.chainType,
@@ -178,11 +178,11 @@ export class AuditChainCreateComponent implements OnInit, OnDestroy {
 
     this.auditService.createChainAudit(request, headers).subscribe({
       next: () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: true });
       },
       error: () => {
-        this.isDisabledButton = false;
+        this.isDisabledButton.set(false);
         this.dialogRef.close({ success: false });
       },
     });

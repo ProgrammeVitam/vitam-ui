@@ -34,7 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { enableProdMode, importProvidersFrom, inject, LOCALE_ID, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
+import {
+  enableProdMode,
+  importProvidersFrom,
+  inject,
+  LOCALE_ID,
+  provideAppInitializer,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 
 import { PastisConfigurationFactory } from './app/app.module';
@@ -78,7 +85,7 @@ if (environment.standalone) {
 }
 bootstrapApplication(AppComponent, {
   providers: [
-    provideZoneChangeDetection(),
+    provideZonelessChangeDetection(),
     importProvidersFrom(
       authenticationModuleClass,
       InjectorModule,

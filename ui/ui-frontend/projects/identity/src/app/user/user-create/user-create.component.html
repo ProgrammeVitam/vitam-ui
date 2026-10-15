@@ -174,7 +174,7 @@
 
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="formInvalid() || creating">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="submit" class="btn primary" [disabled]="formInvalid() || creating()">{{ 'COMMON.SUBMIT' | translate }}</button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
         <vitamui-previous-step></vitamui-previous-step>

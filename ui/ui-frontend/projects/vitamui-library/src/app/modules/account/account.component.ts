@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, switchMap } from 'rxjs/operators';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
@@ -53,29 +54,17 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./account.component.scss'],
   imports: [VitamuiTitleBreadcrumbComponent, UserPhotoComponent, MatTabGroup, MatTab, AccountInformationTabComponent, TranslatePipe],
 })
-export class AccountComponent implements OnInit, OnDestroy {
+export class AccountComponent {
   private readonly accountService = inject(AccountService);
   private readonly userInfoApiService = inject(BaseUserInfoApiService);
 
   public displayAppTab = false;
-  public displayEditionAndAdminContact = false;
-  public account: Account;
-  public dataBreadcrumb: BreadCrumbData[];
+  public dataBreadcrumb: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
 
-  private sub: Subscription;
-
-  ngOnInit() {
-    this.sub = this.accountService.getMyAccount().subscribe((account) => {
-      this.userInfoApiService.getMyUserInfo().subscribe((userInfo) => {
-        const accountWithUserInfos = account;
-        accountWithUserInfos.userInfo = userInfo;
-        this.account = accountWithUserInfos;
-      });
-    });
-    this.dataBreadcrumb = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.ACCOUNTS_APP }];
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+  public account = toSignal(
+    this.accountService
+      .getMyAccount()
+      .pipe(switchMap((account) => this.userInfoApiService.getMyUserInfo().pipe(map((userInfo) => ({ ...account, userInfo }) as Account)))),
+    { initialValue: null as Account | null },
+  );
 }

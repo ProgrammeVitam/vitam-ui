@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { concatMap, finalize, Observable, Subscription } from 'rxjs';
@@ -77,6 +77,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class OwnerCreateComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   dialogRef = inject<MatDialogRef<OwnerCreateComponent>>(MatDialogRef);
   data = inject<{
     customer: Customer;
@@ -92,7 +93,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];
-  isLoading = false;
+  readonly isLoading = signal(false);
 
   ngOnInit() {
     this.ownerForm = this.formBuilder.group({
@@ -114,6 +115,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
         // To select as default tenant the first one other than 0
         this.tenantForm.patchValue({ tenantId: tenantIdToSelect });
       }
+      this.cdr.markForCheck();
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -135,9 +137,9 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
     if (this.ownerForm.pending || this.ownerForm.invalid) {
       return;
     }
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.ownerCreation()
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (newOwner: Owner) => this.dialogRef.close({ owner: newOwner }),
         error: (error) => {
@@ -155,7 +157,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
     if (this.ownerForm.pending || this.ownerForm.invalid || this.tenantForm.pending || this.tenantForm.invalid) {
       return;
     }
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.ownerCreation()
       .pipe(
         tap((newOwner: Owner) => this.tenantForm.get('ownerId').setValue(newOwner.id)),
@@ -166,7 +168,7 @@ export class OwnerCreateComponent implements OnInit, OnDestroy {
             }),
           ),
         ),
-        finalize(() => (this.isLoading = false)),
+        finalize(() => this.isLoading.set(false)),
       )
       .subscribe({
         next: (ownerAndTenant) => {

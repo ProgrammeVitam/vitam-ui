@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ProfileService } from '../../core/services/profile.service';
@@ -64,16 +64,18 @@ export class SelectNoticeComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
   private readonly profilService = inject(ProfileService);
 
-  profileOptions: Option[];
+  profileOptions = signal<Option[]>(undefined);
   selectedProfile: ProfileDescription;
   userValidation = false;
 
   ngOnInit(): void {
     const mapProfileDescriptionsToOptions = (profileListPUA: ProfileDescription[]) =>
-      (this.profileOptions = profileListPUA.map((profile: ProfileDescription) => ({
-        key: profile,
-        label: `${profile.identifier} - ${profile.name}`,
-      })));
+      this.profileOptions.set(
+        profileListPUA.map((profile: ProfileDescription) => ({
+          key: profile,
+          label: `${profile.identifier} - ${profile.name}`,
+        })),
+      );
     if (this.data.profileType === ProfileType.PUA) {
       this.profilService.getAllProfilesPUA(this.data.profileVersion).subscribe(mapProfileDescriptionsToOptions);
     } else if (this.data.profileType === ProfileType.PA) {
