@@ -43,15 +43,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import {
-  BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   InjectorModule,
   LoggerModule,
   StartupService,
+  TenantSelectionService,
   Unit,
   UnitType,
   WINDOW_LOCATION,
@@ -64,20 +63,14 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class MockTruncatePipe implements PipeTransform {
     transform(value: number): number {
       return value;
     }
   }
 
-  @Pipe({
-    name: 'unitI18n',
-    standalone: false,
-  })
+  @Pipe({ name: 'unitI18n' })
   class MockUnitI18nPipe implements PipeTransform {
     transform(value: number): number {
       return value;
@@ -89,6 +82,7 @@ describe('ArchivePreviewComponent', () => {
       getBaseUrl: () => '/fake-api',
       buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
       receiveDownloadProgressSubject: () => of(true),
+      hasCollectRole: () => of(true),
     };
 
     await TestBed.configureTestingModule({
@@ -100,20 +94,27 @@ describe('ArchivePreviewComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
         MatIconModule,
-        BrowserAnimationsModule,
+        ArchivePreviewComponent,
+        MockTruncatePipe,
+        MockUnitI18nPipe,
       ],
-      declarations: [ArchivePreviewComponent, MockTruncatePipe, MockUnitI18nPipe],
       providers: [
-        { provide: ArchiveCollectService, useValue: archiveServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(ArchiveCollectService, { useValue: archiveServiceMock })
+      .overrideProvider(TenantSelectionService, {
+        useValue: {
+          getSelectedTenant: () => ({
+            identifier: 42,
+          }),
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -128,6 +129,7 @@ describe('ArchivePreviewComponent', () => {
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
       Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+      DescriptionLevel: DescriptionLevel.OTHER_LEVEL,
     };
     fixture.detectChanges();
   });

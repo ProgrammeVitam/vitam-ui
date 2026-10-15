@@ -41,4 +41,5 @@
 
 export const environment = {
   production: false,
+  configUrls: ['./assets/config-dev.json'],
 };

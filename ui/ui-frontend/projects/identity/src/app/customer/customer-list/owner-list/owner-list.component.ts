@@ -34,23 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import type { Customer, Owner, Tenant } from 'vitamui-library';
+import { Customer, EllipsisDirective, Owner, Tenant, TooltipDirective } from 'vitamui-library';
 import { CustomerDataService } from '../../customer.data.service';
 import { OwnerCreateComponent } from '../../owner-create/owner-create.component';
 import { OwnerService } from '../../owner.service';
 import { TenantCreateComponent } from '../../tenant-create/tenant-create.component';
 import { TenantService } from '../../tenant.service';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-owner-list',
   templateUrl: './owner-list.component.html',
   styleUrls: ['./owner-list.component.scss'],
-  standalone: false,
+  imports: [TooltipDirective, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class OwnerListComponent implements OnDestroy, OnInit {
   private dialog = inject(MatDialog);

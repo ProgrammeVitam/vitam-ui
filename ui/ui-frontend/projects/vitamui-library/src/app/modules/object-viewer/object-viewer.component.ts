@@ -40,12 +40,16 @@ import { DisplayObjectService } from './models/display-object-service';
 import { DisplayRule } from './models/display-rule.model';
 import { Mode } from './models/display-object.enum';
 import { AUMode } from '../archive-unit/components/archive-unit-viewer/archive-unit-viewer.service';
+import { GroupComponent } from './components/group/group.component';
+import { ListComponent } from './components/list/list.component';
+import { PrimitiveComponent } from './components/primitive/primitive.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'vitamui-common-object-viewer',
   templateUrl: './object-viewer.component.html',
   styleUrls: ['./object-viewer.component.scss'],
-  standalone: false,
+  imports: [GroupComponent, ListComponent, PrimitiveComponent, AsyncPipe],
 })
 export class ObjectViewerComponent implements OnInit, OnChanges {
   private logger = inject(Logger);

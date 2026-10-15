@@ -38,7 +38,6 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output, inject } fro
 
 @Directive({
   selector: '[vitamuiClickOutside]',
-  standalone: true,
 })
 export class ClickOutsideDirective {
   private elementRef = inject(ElementRef);

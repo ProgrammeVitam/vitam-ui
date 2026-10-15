@@ -35,11 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
+import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer-alerting',
   templateUrl: './customer-alerting.component.html',
   styleUrls: ['./customer-alerting.component.scss'],
-  standalone: false,
+  imports: [MatDialogContent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class CustomerAlertingComponent {}

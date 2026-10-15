@@ -35,30 +35,45 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   ConfirmDialogService,
+  DialogHeaderComponent,
   ExternalParameters,
   ExternalParametersService,
+  InputComponent,
   Option,
   SearchResponse,
   SearchUnitApiService,
+  SelectComponent,
   SigningRoleType,
   SnackBarService,
   VitamuiHttpHeaders,
 } from 'vitamui-library';
 import { ProbativeValueService } from '../probative-value.service';
 import { sizes } from '../../ontology/ontology-form-options';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-probative-value-create',
   templateUrl: './probative-value-create.component.html',
   styleUrls: ['./probative-value-create.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    ReactiveFormsModule,
+    MatDialogContent,
+    InputComponent,
+    SelectComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatDialogActions,
+    TranslatePipe,
+  ],
 })
 export class ProbativeValueCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProbativeValueCreateComponent>>(MatDialogRef);

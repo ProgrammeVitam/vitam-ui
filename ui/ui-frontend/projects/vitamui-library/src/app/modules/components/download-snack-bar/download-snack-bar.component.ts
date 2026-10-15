@@ -34,16 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { I18nPluralPipe, PercentPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-download-snack-bar',
   templateUrl: './download-snack-bar.component.html',
   styleUrls: ['./download-snack-bar.component.scss'],
-  standalone: false,
+  imports: [MatProgressBar, MatDialogContent, MatDialogActions, MatDialogClose, PercentPipe, I18nPluralPipe, TranslatePipe],
 })
 export class DownloadSnackBarComponent {
   private matDialog = inject(MatDialog);

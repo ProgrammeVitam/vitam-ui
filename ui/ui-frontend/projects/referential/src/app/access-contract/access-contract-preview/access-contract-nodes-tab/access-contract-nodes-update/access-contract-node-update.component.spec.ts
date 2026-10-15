@@ -34,25 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {
-  AccessContractService,
-  BASE_URL,
-  Customer,
-  ENVIRONMENT,
-  InjectorModule,
-  LoggerModule,
-  OtpState,
-  SnackBarService,
-} from 'vitamui-library';
+import { AccessContractService, Customer, ENVIRONMENT, InjectorModule, LoggerModule, OtpState, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../../../../environments/environment';
 
 import { AccessContractNodeUpdateComponent } from './access-contract-node-update.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedCustomer: Customer = {
   id: 'idCustomer',
@@ -119,17 +108,13 @@ describe.skip('AccessContractNodeUpdateComponent', () => {
       open: vi.fn().mockName('SnackBarService.open'),
     };
     await TestBed.configureTestingModule({
-      declarations: [AccessContractNodeUpdateComponent],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), AccessContractNodeUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: AccessContractService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -34,20 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { merge, Observable, Subscription } from 'rxjs';
 import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
-import type { ArchiveUnit, EditObject, JsonPatch } from 'vitamui-library';
-import { ArchiveUnitEditorComponent, SnackBarService, SpinnerOverlayService } from 'vitamui-library';
+import {
+  ArchiveUnit,
+  ArchiveUnitEditorComponent,
+  ArchiveUnitModule,
+  DialogHeaderComponent,
+  EditObject,
+  JsonPatch,
+  SnackBarService,
+  SpinnerOverlayService,
+} from 'vitamui-library';
 import { ArchiveUnitService } from './archive-unit.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-archive-unit-description-tab',
   templateUrl: './archive-unit-description-tab.component.html',
   styleUrls: ['./archive-unit-description-tab.component.scss'],
-  standalone: false,
+  imports: [ArchiveUnitModule, NgClass, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class ArchiveUnitDescriptionTabComponent implements OnChanges, OnDestroy {
   private dialog = inject(MatDialog);

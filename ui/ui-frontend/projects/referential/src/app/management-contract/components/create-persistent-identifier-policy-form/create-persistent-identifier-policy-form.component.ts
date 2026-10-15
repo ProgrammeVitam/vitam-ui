@@ -34,17 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Option, PersistentIdentifierPolicyTypeEnum } from 'vitamui-library';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputComponent, Option, PersistentIdentifierPolicyTypeEnum, SelectComponent, TooltipDirective } from 'vitamui-library';
 import { ManagementContractValidationErrors, ManagementContractValidators } from '../../validators/management-contract-validators';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { NgClass, NgStyle } from '@angular/common';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
   selector: 'app-create-persistent-identifier-policy-form',
   templateUrl: './create-persistent-identifier-policy-form.component.html',
   styleUrls: ['./create-persistent-identifier-policy-form.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    InputComponent,
+    MatCheckbox,
+    NgClass,
+    NgStyle,
+    MatRadioGroup,
+    MatRadioButton,
+    TooltipDirective,
+    TranslatePipe,
+  ],
 })
 export class CreatePersistentIdentifierPolicyFormComponent implements OnChanges {
   private formBuilder = inject(FormBuilder);

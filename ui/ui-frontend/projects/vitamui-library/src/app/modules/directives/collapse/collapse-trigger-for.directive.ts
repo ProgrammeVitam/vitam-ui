@@ -38,10 +38,7 @@ import { Directive, HostBinding, HostListener, Input } from '@angular/core';
 
 import { CollapseDirective } from './collapse.directive';
 
-@Directive({
-  selector: '[vitamuiCommonCollapseTriggerFor]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonCollapseTriggerFor]' })
 export class CollapseTriggerForDirective {
   @Input() vitamuiCommonCollapseTriggerFor: CollapseDirective;
 

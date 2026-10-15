@@ -35,56 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { of } from 'rxjs';
-import { AuthService, StartupService } from 'vitamui-library';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
-
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'router-outlet',
-  template: '',
-})
-class RouterOutletStubComponent {}
-
-@Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'vitamui-common-subrogation-banner',
-  template: '',
-})
-class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
   beforeEach(async () => {
-    const startupServiceStub = {
-      configurationLoaded: () => true,
-      printConfiguration: () => {},
-    };
     await TestBed.configureTestingModule({
-      imports: [MatSidenavModule, NoopAnimationsModule, SubrogationBannerStubComponent, RouterOutletStubComponent],
-      declarations: [AppComponent],
+      imports: [AppComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: StartupService, useValue: startupServiceStub },
-        { provide: AuthService, useValue: { userLoaded: of(null) } },
-        {
-          provide: Router,
-          useValue: {
-            navigate: () => {},
-          },
-        },
-      ],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
   it('should create the app', waitForAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    console.log('Create App: ', app);
     expect(app).toBeTruthy();
   }));
 });

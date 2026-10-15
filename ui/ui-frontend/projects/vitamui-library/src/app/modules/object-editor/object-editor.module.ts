@@ -73,7 +73,6 @@ import { MatMenuItem } from '@angular/material/menu';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
   providers: [
     { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
     EditObjectService,
@@ -109,6 +108,10 @@ import { TranslatePipe } from '@ngx-translate/core';
     DialogHeaderComponent,
     MatMenuItem,
     TranslatePipe,
+    ObjectEditorComponent,
+    GroupEditorComponent,
+    ListEditorComponent,
+    PrimitiveEditorComponent,
   ],
   exports: [ObjectEditorComponent, GroupEditorComponent, ListEditorComponent, PrimitiveEditorComponent],
 })

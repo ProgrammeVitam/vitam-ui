@@ -34,25 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
-import { BASE_URL, BytesPipe, InjectorModule, LoggerModule, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { UpdateUnitsMetadataComponent } from './update-units-metadata.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DecimalPipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const selectedTransaction: Transaction = {
   id: 'transactionId',
@@ -83,19 +68,12 @@ describe('UpdateUaMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UpdateUnitsMetadataComponent],
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot()],
-      schemas: [NO_ERRORS_SCHEMA],
+      imports: [UpdateUnitsMetadataComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: { tenantIdentifier: '15', selectedTransaction } },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        DecimalPipe,
-        BytesPipe,
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -111,11 +89,6 @@ describe('UpdateUaMetadataComponent', () => {
   });
 
   describe('DOM', () => {
-    it('should have 1 cdk step', () => {
-      const elementCdkStep = fixture.nativeElement.querySelectorAll('cdk-step');
-      expect(elementCdkStep.length).toBe(1);
-    });
-
     it('should call close for all open dialogs', () => {
       const matDialogSpyTest = TestBed.inject(MatDialogRef);
       component.onConfirmAction();

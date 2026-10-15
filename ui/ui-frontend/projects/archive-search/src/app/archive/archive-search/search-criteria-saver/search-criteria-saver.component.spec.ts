@@ -41,9 +41,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -59,21 +57,10 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
-  }
-}
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
   }
 }
 
@@ -99,8 +86,7 @@ describe('SearchCriteriaSaverComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
-      declarations: [SearchCriteriaSaverComponent, MockTruncatePipe],
+      imports: [InjectorModule, LoggerModule.forRoot(), SearchCriteriaSaverComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
         ArchiveSharedDataService,
@@ -111,7 +97,11 @@ describe('SearchCriteriaSaverComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: {} },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+            snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
         { provide: SnackBarService, useValue: {} },

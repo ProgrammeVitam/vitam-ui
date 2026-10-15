@@ -34,21 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import type { AccessContract } from 'vitamui-library';
-import { AccessContractService, ConfirmActionComponent } from 'vitamui-library';
+import {
+  AccessContract,
+  AccessContractService,
+  ConfirmActionComponent,
+  OperationHistoryTabComponent,
+  VitamuiSidenavHeaderComponent,
+} from 'vitamui-library';
 import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
 import { AccessContractAuthorizationsTabComponent } from './access-contract-authorizations-tab/access-contract-authorizations-tab.component';
 import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
+import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
+
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-access-contract-preview',
   templateUrl: './access-contract-preview.component.html',
   styleUrls: ['./access-contract-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    AccessContractInformationTabComponent,
+    AccessContractAuthorizationsTabComponent,
+    AccessContractWriteAccessTabComponent,
+    AccessContractNodesTabComponent,
+    OperationHistoryTabComponent,
+    forwardRef(() => AccessContractPreviewComponent),
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class AccessContractPreviewComponent implements AfterViewInit {
   private matDialog = inject(MatDialog);

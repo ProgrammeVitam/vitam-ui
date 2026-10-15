@@ -46,8 +46,7 @@ describe('ClosePopupDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule],
-      declarations: [ClosePopupDialogComponent],
+      imports: [VitamUICommonTestModule, ClosePopupDialogComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{ provide: MAT_DIALOG_DATA, useValue: {} }],
     }).compileComponents();

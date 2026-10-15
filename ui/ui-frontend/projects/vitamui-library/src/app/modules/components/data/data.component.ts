@@ -34,18 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ContentChild, Input, TemplateRef, inject } from '@angular/core';
+import { Component, ContentChild, inject, Input, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PipesModule } from '../../pipes/pipes.module';
-import { CommonTooltipModule } from '../common-tooltip/common-tooltip.module';
+
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TranslatePipe } from '@ngx-translate/core';
+import { TooltipDirective } from '../common-tooltip/tooltip.directive';
 
 @Component({
   selector: 'vitamui-common-data',
   templateUrl: './data.component.html',
   styleUrls: ['./data.component.scss'],
-  imports: [CommonModule, PipesModule, CommonTooltipModule, TranslatePipe],
+  imports: [CommonModule, PipesModule, TooltipDirective, TranslatePipe],
+  hostDirectives: [{ directive: TooltipDirective, inputs: ['vitamuiTooltipShowDelay'] }],
 })
 export class DataComponent {
   private clipboard = inject(Clipboard);

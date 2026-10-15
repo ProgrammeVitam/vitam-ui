@@ -44,21 +44,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import {
-  AccessContractService,
-  AgencyService,
-  BASE_URL,
-  ConfirmDialogService,
-  ExternalParametersService,
-  LoggerModule,
-} from 'vitamui-library';
+import { AccessContractService, AgencyService, ConfirmDialogService, ExternalParametersService, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AccessContractCreateComponent } from './access-contract-create.component';
 import { AccessContractCreateValidators } from './access-contract-create.validators';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedAccessContract = {
   identifier: 'AC_ID',
@@ -131,22 +121,18 @@ describe('AccessContractCreateComponent', () => {
         MatSelectModule,
         MatButtonToggleModule,
         MatProgressBarModule,
-        NoopAnimationsModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
         LoggerModule.forRoot(),
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: AgencyService, useValue: agencyServiceSpy },
         { provide: AccessContractService, useValue: accessContractServiceSpy },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: AccessContractCreateValidators, useValue: accessContractCreateValidatorsSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

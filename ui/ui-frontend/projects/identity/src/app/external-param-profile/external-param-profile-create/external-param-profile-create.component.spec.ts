@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,13 +43,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EMPTY, of } from 'rxjs';
-import { CollapseModule, ConfirmDialogService } from 'vitamui-library';
+import { CollapseComponent, ConfirmDialogService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileService } from '../external-param-profile.service';
 import { ExternalParamProfileValidators } from '../external-param-profile.validators';
 import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
-import { DecimalPipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { CommonModule, DecimalPipe } from '@angular/common';
 
 describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
@@ -78,17 +76,18 @@ describe('ExternalParamProfileCreateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExternalParamProfileCreateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        CollapseModule,
         FormsModule,
         MatButtonToggleModule,
         MatProgressBarModule,
         MatSelectModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
+        ExternalParamProfileCreateComponent,
+        CollapseComponent,
+        CommonModule,
       ],
       providers: [
         DecimalPipe,
@@ -102,8 +101,6 @@ describe('ExternalParamProfileCreateComponent', () => {
         },
         { provide: ExternalParamProfileValidators, useValue: externalParamProfileValidators },
         { provide: ExternalParamProfileService, useValue: externalParamProfileService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(ExternalParamProfileCreateComponent, {

@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, of, throwError } from 'rxjs';
 import type { Mock, MockInstance } from 'vitest';
-import { BASE_URL, Griffin, GriffinsService, LoggerModule, SnackBarService, StartupService, TenantSelectionService } from 'vitamui-library';
+import { Griffin, GriffinsService, LoggerModule, SnackBarService, StartupService, TenantSelectionService } from 'vitamui-library';
 
 import { GriffinListComponent } from './griffin-list.component';
 
@@ -106,9 +105,6 @@ describe('GriffinListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GriffinListComponent, LoggerModule.forRoot()],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: GriffinsService, useValue: griffinsService },
         { provide: SnackBarService, useValue: snackBarService },
         { provide: StartupService, useValue: startupService },

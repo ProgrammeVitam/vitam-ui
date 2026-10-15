@@ -34,21 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { Direction, SearchCriteriaHistory, SnackBarService } from 'vitamui-library';
+import { Direction, PipesModule, SearchCriteriaHistory, SnackBarService, TooltipDirective } from 'vitamui-library';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ConfirmActionComponent } from './confirm-action/confirm-action.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
+import { MatMenuItem } from '@angular/material/menu';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-search-criteria-list',
   templateUrl: './search-criteria-list.component.html',
   styleUrls: ['./search-criteria-list.component.css'],
-  standalone: false,
+  imports: [MatMenuItem, TooltipDirective, MatProgressSpinner, PipesModule, TranslatePipe],
 })
 export class SearchCriteriaListComponent implements OnInit, OnDestroy {
   private searchCriteriaListService = inject(SearchCriteriaListService);

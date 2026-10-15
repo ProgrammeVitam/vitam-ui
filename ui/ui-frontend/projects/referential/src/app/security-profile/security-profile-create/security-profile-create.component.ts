@@ -47,7 +47,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { SecurityProfileEditPermissionModule } from './security-profile-edit-permission/security-profile-edit-permission.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -62,7 +62,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressBarModule,
     MatSelectModule,
     ReactiveFormsModule,
-    SecurityProfileEditPermissionModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

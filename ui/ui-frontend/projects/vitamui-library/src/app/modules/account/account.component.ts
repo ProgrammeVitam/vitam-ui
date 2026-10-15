@@ -34,26 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
-import { AppRootComponent } from '../app-root-component.class';
 import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
+import { VitamuiTitleBreadcrumbComponent } from '../components/vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
+import { UserPhotoComponent } from '../components/header/user-photo/user-photo.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { AccountInformationTabComponent } from './account-information-tab/account-information-tab.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
-  standalone: false,
+  imports: [VitamuiTitleBreadcrumbComponent, UserPhotoComponent, MatTabGroup, MatTab, AccountInformationTabComponent, TranslatePipe],
 })
-export class AccountComponent extends AppRootComponent implements OnInit, OnDestroy {
-  private accountService = inject(AccountService);
-  private userInfoApiService = inject(BaseUserInfoApiService);
-  route: ActivatedRoute;
+export class AccountComponent implements OnInit, OnDestroy {
+  private readonly accountService = inject(AccountService);
+  private readonly userInfoApiService = inject(BaseUserInfoApiService);
 
   public displayAppTab = false;
   public displayEditionAndAdminContact = false;
@@ -61,14 +63,6 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
   public dataBreadcrumb: BreadCrumbData[];
 
   private sub: Subscription;
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-
-    super(route);
-
-    this.route = route;
-  }
 
   ngOnInit() {
     this.sub = this.accountService.getMyAccount().subscribe((account) => {

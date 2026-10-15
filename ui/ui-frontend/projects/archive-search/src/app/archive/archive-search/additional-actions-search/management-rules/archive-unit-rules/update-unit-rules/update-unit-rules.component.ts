@@ -34,24 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { finalize, merge, Observable, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
+  DatepickerComponent,
+  DialogHeaderComponent,
   diff,
   ManagementRuleValidators,
   Rule,
   RuleService,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
-  VitamuiSelectOptions,
+  SelectComponent,
+  SlideToggleComponent,
   VitamTenantConfigService,
+  VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../../../archive.service';
@@ -59,6 +63,9 @@ import { UpdateUnitManagementRuleService } from '../../../../../common-services/
 import { ArchiveSearchConstsEnum } from '../../../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from '../../../../../validators/management-rules-validator.service';
+import { MatMiniFabButton } from '@angular/material/button';
+import { NgStyle } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
@@ -85,7 +92,19 @@ const LocalValidators = {
   selector: 'app-update-unit-rules',
   templateUrl: './update-unit-rules.component.html',
   styleUrls: ['./update-unit-rules.component.css'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    SlideToggleComponent,
+    DatepickerComponent,
+    MatMiniFabButton,
+    NgStyle,
+    MatProgressSpinner,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
   private archiveService = inject(ArchiveService);
@@ -113,8 +132,6 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
 
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
-  isStartDateDisabled = true;
-  isNewRuleDisabled = true;
   showText = false;
   isLoading = false;
   ruleTypeDUA: RuleCategoryAction;
@@ -162,8 +179,12 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
             this.managementRulesValidatorService.checkRuleIdExistence(),
           ],
         ],
-        newRule: [null, [ManagementRuleValidators.ruleIdPattern], [this.managementRulesValidatorService.checkRuleIdExistence()]],
-        startDate: [null],
+        newRule: [
+          { value: null, disabled: true },
+          [ManagementRuleValidators.ruleIdPattern],
+          [this.managementRulesValidatorService.checkRuleIdExistence()],
+        ],
+        startDate: [{ value: null, disabled: true }],
         endDate: [{ value: null, disabled: true }],
         ruleUpdated: [{ value: false, disabled: true }],
         startDateUpdated: [{ value: false, disabled: true }],
@@ -174,7 +195,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     );
 
     this.ruleDetailsForm.get('ruleUpdated').valueChanges.subscribe((value) => {
-      this.isNewRuleDisabled = !value;
+      const newRuleControl = this.ruleDetailsForm.get('newRule');
+      !!value ? newRuleControl.enable() : newRuleControl.disable();
       if (!value) {
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ newRule: null });
@@ -185,7 +207,8 @@ export class UpdateUnitRulesComponent implements OnDestroy, OnInit {
     });
 
     this.ruleDetailsForm.get('startDateUpdated').valueChanges.subscribe((value) => {
-      this.isStartDateDisabled = !value;
+      const startDateControl = this.ruleDetailsForm.get('startDate');
+      !!value ? startDateControl.enable() : startDateControl.disable();
       if (!value) {
         this.cancelStep.emit();
         this.ruleDetailsForm.patchValue({ startDate: null });

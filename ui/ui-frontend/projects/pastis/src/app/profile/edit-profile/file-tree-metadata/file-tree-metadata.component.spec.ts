@@ -35,19 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { APP_BASE_HREF } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
-import { BASE_URL, LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
+import { LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
 import { PastisApiService } from '../../../core/api/api.pastis.service';
 import { PastisConfiguration } from '../../../core/classes/pastis-configuration';
 import { FileService } from '../../../core/services/file.service';
 import { MetadataHeaders } from '../../../models/models';
 import { FileTreeMetadataComponent } from './file-tree-metadata.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FileTreeMetadataComponent', () => {
   let component: FileTreeMetadataComponent;
@@ -85,8 +83,7 @@ describe('FileTreeMetadataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [FileTreeMetadataComponent],
-      imports: [RouterModule.forRoot([], {}), LoggerModule.forRoot()],
+      imports: [RouterModule.forRoot([], {}), LoggerModule.forRoot(), FileTreeMetadataComponent],
       providers: [
         FileTreeMetadataService,
         FileService,
@@ -96,11 +93,8 @@ describe('FileTreeMetadataComponent', () => {
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: APP_BASE_HREF, useValue: '/' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideTemplate(FileTreeMetadataComponent, '<div></div>')

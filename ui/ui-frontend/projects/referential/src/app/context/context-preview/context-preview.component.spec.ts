@@ -40,6 +40,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ContextService } from '../context.service';
 import { ContextPreviewComponent } from './context-preview.component';
+import { Context } from 'vitamui-library';
+import { of } from 'rxjs';
 
 describe('ContextPreviewComponent', () => {
   let component: ContextPreviewComponent;
@@ -47,19 +49,30 @@ describe('ContextPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [ContextPreviewComponent],
-      providers: [
-        { provide: MatDialog, useValue: {} },
-        { provide: ContextService, useValue: {} },
-      ],
+      imports: [ContextPreviewComponent],
+      providers: [{ provide: MatDialog, useValue: {} }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(ContextService, { useValue: { updated: of() } })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ContextPreviewComponent);
     component = fixture.componentInstance;
+    component.context = {
+      id: 'aegqaaaaaahbzl4naaovqamcuzgxyjyaaaaq',
+      name: 'admin-context',
+      identifier: 'CT-000001',
+      status: 'ACTIVE',
+      creationDate: '2022-08-16T10:57:52.168',
+      lastUpdate: '2022-08-16T13:12:53.416',
+      enableControl: 'false',
+      securityProfile: 'admin-security-profile',
+      permissions: [],
+      activationDate: 'activationDate',
+      deactivationDate: 'deactivationDate',
+    } satisfies Context;
     fixture.detectChanges();
   });
 

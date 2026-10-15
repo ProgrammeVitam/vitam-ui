@@ -39,17 +39,28 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
   AuthService,
+  EventTypeLabelComponent,
   ExternalParameters,
   ExternalParametersService,
+  HistoryEventsComponent,
   IEvent,
   IngestStatus,
   LogbookOperationReportState,
   LogbookOperationTypeProc,
   LogbookService,
+  PipesModule,
   SnackBarService,
+  VitamuiSidenavHeaderComponent,
 } from 'vitamui-library';
 import { LogbookDownloadService } from '../logbook-download.service';
 import { LogbookOperation } from '../logbook-operation.enum';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { LastEventPipe } from '../../shared/pipes/last-event.pipe';
+import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const msgForDownload: { [key: string]: string } = {
   EXPORT_DIP: 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_DIP',
@@ -62,7 +73,20 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    EventTypeLabelComponent,
+    HistoryEventsComponent,
+    PipesModule,
+    LastEventPipe,
+    EventTypeBadgeColorPipe,
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   private logbookService = inject(LogbookService);
@@ -104,6 +128,10 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
     if (accessContratId && accessContratId.length > 0) {
       this.accessContractId = accessContratId;
       this.hasAccessContractId = true;
+      // Recompute the download button in case the operation already arrived
+      if (this.event) {
+        this.updateDownloadButton();
+      }
     } else {
       this.snackBarService.open({ message: 'SNACKBAR.NO_ACCESS_CONTRACT_LINKED' });
     }

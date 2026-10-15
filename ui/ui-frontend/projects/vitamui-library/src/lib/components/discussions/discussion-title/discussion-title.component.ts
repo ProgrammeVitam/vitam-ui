@@ -36,7 +36,7 @@
  */
 import { Component, inject, input, output } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-import { VitamUICommonModule } from '../../../../app/modules/vitamui-common.module';
+import { TooltipDirective } from '../../../../app/modules/components/common-tooltip/tooltip.directive';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CdkDragMove, DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMenuItem, MatMenuModule } from '@angular/material/menu';
@@ -51,7 +51,7 @@ import { DiscussionIconComponent } from '../discussion-icon/discussion-icon.comp
     VitamuiMenuButtonComponent,
     TranslatePipe,
     NgTemplateOutlet,
-    VitamUICommonModule,
+    TooltipDirective,
     DragDropModule,
     MatMenuModule,
     MatMenuItem,
