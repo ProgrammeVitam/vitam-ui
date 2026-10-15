@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "vitam-ui": {
+      "type": "http",
+      "url": "http://localhost:8811/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MCP_GATEWAY_AUTH_TOKEN}"
+      }
+    }
+  }
+}

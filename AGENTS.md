@@ -185,6 +185,13 @@ npm run test:identity -- --watch
 - `sonar` - Generate SonarQube reports
 - `swagger` - Generate Swagger JSON files
 
+## MCP Servers
+
+`.mcp.json` declares a single MCP server, `vitam-ui`: a Docker MCP gateway shared by all Claude Code sessions, which runs the `sonarcloud` (SonarCloud, read-only) and `angular-cli` servers in a container for each tool call. Setup, limits and troubleshooting: [`tools/docker/mcp/README.md`](tools/docker/mcp/README.md).
+
+- Start Claude Code from the repository root: project MCP servers are only loaded from the `.mcp.json` of the directory where it is started.
+- If `vitam-ui` fails to connect, the gateway is probably not running or not configured: point the user to `tools/docker/mcp/README.md` (`./start.sh`, `SONARQUBE_TOKEN` and `MCP_GATEWAY_AUTH_TOKEN` in the `env` block of `.claude/settings.local.json`).
+
 ## Important Notes
 
 - Frontend apps run on HTTPS with self-signed certs in dev. Browser must trust certs from `dev-deployment/environments/certs/`.
