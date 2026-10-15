@@ -55,9 +55,9 @@ export const OWNER_CITY_MAX_LENGTH = 100;
   providedIn: 'root',
 })
 export class OwnerFormValidators {
-  private ownerService = inject(OwnerService);
+  private readonly ownerService = inject(OwnerService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

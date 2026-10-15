@@ -46,9 +46,9 @@ import { ReclassificationService } from '../../../app/modules/services/reclassif
   providedIn: 'root',
 })
 export class ReclassificationValidatorService {
-  private reclassificationService = inject(ReclassificationService);
+  private readonly reclassificationService = inject(ReclassificationService);
 
-  private auTitleSubject = new BehaviorSubject<string>('');
+  private readonly auTitleSubject = new BehaviorSubject<string>('');
   debounceTime = 400;
 
   emitArchiveUnitTitle(auTitle: string) {

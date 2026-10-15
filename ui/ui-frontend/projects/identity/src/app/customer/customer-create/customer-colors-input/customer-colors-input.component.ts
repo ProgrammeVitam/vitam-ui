@@ -48,8 +48,8 @@ import { InputColorComponent } from './input-color/input-color.component';
   imports: [ReactiveFormsModule, InputColorComponent, SelectComponent, FormsModule, TranslatePipe],
 })
 export class CustomerColorsInputComponent implements OnInit {
-  private themeService = inject(ThemeService);
-  private translateService = inject(TranslateService);
+  private readonly themeService = inject(ThemeService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() formGroup: FormGroup;
 

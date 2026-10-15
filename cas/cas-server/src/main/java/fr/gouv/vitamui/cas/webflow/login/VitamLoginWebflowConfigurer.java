@@ -89,6 +89,8 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     public static final String PASSWORD = "password";
     public static final String CUSTOMER_ID = "customerId";
 
+    private static final String REQUIRED = "required";
+
     public VitamLoginWebflowConfigurer(
         final FlowBuilderServices flowBuilderServices,
         final FlowDefinitionRegistry flowDefinitionRegistry,
@@ -163,7 +165,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
 
     @Override
     protected void createLoginFormView(final Flow flow) {
-        val propertiesToBind = Map.of(USERNAME, Map.of("required", "true"));
+        val propertiesToBind = Map.of(USERNAME, Map.of(REQUIRED, "true"));
         val binder = createStateBinderConfiguration(propertiesToBind);
 
         val state = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM, TEMPLATE_EMAIL_FORM, binder);
@@ -202,7 +204,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     protected void createPwdFormView(final Flow flow) {
         val propertiesToBind = Map.of(
             USERNAME,
-            Map.of("required", "true"),
+            Map.of(REQUIRED, "true"),
             PASSWORD,
             Map.of("converter", StringToCharArrayConverter.ID)
         );
@@ -242,7 +244,7 @@ public class VitamLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer {
     }
 
     protected void createLoginCustomerFormView(final Flow flow) {
-        val propertiesToBind = Map.of(CUSTOMER_ID, Map.of("required", "true"));
+        val propertiesToBind = Map.of(CUSTOMER_ID, Map.of(REQUIRED, "true"));
         val binder = createStateBinderConfiguration(propertiesToBind);
         val state = createViewState(flow, VIEW_STATE_LOGIN_CUSTOMER_FORM, TEMPLATE_CUSTOMER_FORM, binder);
         val transition = createTransitionForState(

@@ -106,7 +106,7 @@ export interface CreateProfileFormResult {
   ],
 })
 export class CreateProfileComponent implements OnInit {
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
   dialogRef = inject<MatDialogRef<CreateProfileComponent>>(MatDialogRef);
   data = inject<PastisDialogData>(MAT_DIALOG_DATA);
 

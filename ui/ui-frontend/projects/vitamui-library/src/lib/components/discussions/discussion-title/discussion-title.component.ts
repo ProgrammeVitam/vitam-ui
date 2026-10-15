@@ -61,8 +61,8 @@ import { DiscussionIconComponent } from '../discussion-icon/discussion-icon.comp
   styleUrl: './discussion-title.component.scss',
 })
 export class DiscussionTitleComponent {
-  private discussionService = inject(DiscussionService);
-  private discussionPanelService = inject(DiscussionPanelService);
+  private readonly discussionService = inject(DiscussionService);
+  private readonly discussionPanelService = inject(DiscussionPanelService);
   componentState = this.discussionPanelService.componentState;
   opened = this.discussionPanelService.opened;
   expanded = this.discussionPanelService.expanded;

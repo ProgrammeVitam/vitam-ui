@@ -50,7 +50,7 @@ import { VitamuiHttpHeaders } from '../vitamui-http-headers.enum';
   providedIn: 'root',
 })
 export class ProfileService {
-  private profileApi = inject(ProfileApiService);
+  private readonly profileApi = inject(ProfileApiService);
 
   list(level?: string, tenantIdentifier?: number, applicationNameExclude?: string[]): Observable<Profile[]> {
     let httpHeaders = new HttpHeaders();

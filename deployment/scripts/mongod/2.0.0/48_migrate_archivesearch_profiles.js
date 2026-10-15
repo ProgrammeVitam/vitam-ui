@@ -26,7 +26,7 @@ dbIam.groups.aggregate([
             print("Group: " + fullGroup.name);
             print("Migrate profileId: " + profileToReplace._id + " to " + newProfile._id);
 
-            var bulk = dbIam.groups.initializeOrderedBulkOp();
+            const bulk = dbIam.groups.initializeOrderedBulkOp();
             bulk.find({ "_id": fullGroup._id }).updateOne({ "$addToSet": { "profileIds": newProfile._id } });
             bulk.find({ "_id": fullGroup._id }).updateOne({ "$pull": { "profileIds": profileToReplace._id } });
             bulk.execute();

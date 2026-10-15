@@ -49,7 +49,7 @@ import { delay } from 'rxjs/operators';
   providers: [{ provide: SchemaService, useClass: MockSchemaService }],
 })
 export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewInit {
-  private schemaService = inject(SchemaService);
+  private readonly schemaService = inject(SchemaService);
 
   configs: {
     name: string;

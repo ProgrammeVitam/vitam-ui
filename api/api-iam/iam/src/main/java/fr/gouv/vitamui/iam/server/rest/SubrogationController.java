@@ -89,6 +89,8 @@ public class SubrogationController implements CrudController<SubrogationDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SubrogationController.class);
 
+    private static final String IDENTIFIER_IS_MANDATORY = "Identifier is mandatory: ";
+
     private final SubrogationService subrogationService;
 
     @Autowired
@@ -117,7 +119,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
     public SubrogationDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get {}", id);
         return subrogationService.getOne(id);
@@ -164,7 +166,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     @Secured(ServicesData.ROLE_GET_GROUPS_SUBROGATIONS)
     public GroupDto getGroupById(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get group {}", id);
         return subrogationService.getGroupById(id, Optional.of(EmbeddedOptions.ALL.toString()));
@@ -179,7 +181,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     @PatchMapping("/surrogate/accept/{id}")
     public SubrogationDto accept(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Accepte subrogation id : {}", id);
         return subrogationService.accept(id);
@@ -189,7 +191,7 @@ public class SubrogationController implements CrudController<SubrogationDto> {
     @DeleteMapping("/surrogate/decline/{id}")
     public void decline(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Decline subrogation id : {}", id);
         subrogationService.decline(id);

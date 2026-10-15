@@ -36,7 +36,7 @@ jobs:
         working-directory: ui/ui-frontend
         run: npm run build:design-system -- --base-href=/vitam-ui/${{ github.ref_name }}/ --deploy-url=/vitam-ui/${{ github.ref_name }}/
       - name: Publish design system to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ui/ui-frontend/dist/design-system/browser

@@ -1,4 +1,4 @@
-var lastIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+let lastIdProfile = dbIam.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
 dbIam.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
 

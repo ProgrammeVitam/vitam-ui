@@ -44,7 +44,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class AuthGuard {
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return !!this.authService.user;

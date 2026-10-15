@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [TooltipDirective, TitleCasePipe, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class GroupDetailComponent implements OnInit {
-  private groupService = inject(GroupService);
+  private readonly groupService = inject(GroupService);
 
   @Input() group: Pick<Group, 'id' | 'description' | 'level'>;
 

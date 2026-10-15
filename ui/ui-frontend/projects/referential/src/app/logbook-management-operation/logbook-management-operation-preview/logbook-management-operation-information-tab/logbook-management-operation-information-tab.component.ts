@@ -46,7 +46,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [EventTypeLabelComponent, PipesModule, TranslatePipe],
 })
 export class LogbookManagementOperationInformationTabComponent implements OnInit, OnChanges {
-  private logbookService = inject(LogbookService);
+  private readonly logbookService = inject(LogbookService);
 
   @Input() operation: OperationDetails;
   @Input() tenantIdentifier: number;

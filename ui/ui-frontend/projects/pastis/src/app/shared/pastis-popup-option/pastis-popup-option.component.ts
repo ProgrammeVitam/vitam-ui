@@ -78,13 +78,13 @@ function constantToTranslate(edit: boolean) {
   imports: [MatMenuItem, MatDivider, TranslatePipe],
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
-  private router = inject(Router);
+  private readonly router = inject(Router);
   dialog = inject(MatDialog);
-  private profileService = inject(ProfileService);
-  private noticeService = inject(NoticeService);
-  private translateService = inject(TranslateService);
-  private route = inject(ActivatedRoute);
-  private snackBarService = inject(SnackBarService);
+  private readonly profileService = inject(ProfileService);
+  private readonly noticeService = inject(NoticeService);
+  private readonly translateService = inject(TranslateService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly snackBarService = inject(SnackBarService);
 
   popupSaveCancelLabel: string;
   popupSaveTitleDialog: string;

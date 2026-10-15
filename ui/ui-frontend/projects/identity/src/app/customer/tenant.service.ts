@@ -47,8 +47,8 @@ import { TenantApiService } from './tenant-api.service';
   providedIn: 'root',
 })
 export class TenantService {
-  private tenantApi = inject(TenantApiService);
-  private snackBarService = inject(SnackBarService);
+  private readonly tenantApi = inject(TenantApiService);
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Tenant>();
 

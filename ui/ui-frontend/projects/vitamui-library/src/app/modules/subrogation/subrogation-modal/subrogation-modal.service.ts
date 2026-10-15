@@ -43,7 +43,7 @@ import { SubrogationModalComponent } from './subrogation-modal.component';
   providedIn: 'root',
 })
 export class SubrogationModalService {
-  private dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
 
   open(domains: string[], customerId: string, subrogateUser?: { email: string; firstname?: string; lastname?: string }) {
     this.dialog.open(SubrogationModalComponent, {

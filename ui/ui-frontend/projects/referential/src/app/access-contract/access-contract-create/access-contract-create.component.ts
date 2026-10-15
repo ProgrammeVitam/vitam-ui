@@ -99,11 +99,11 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     tenantIdentifier: number;
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private formBuilder = inject(FormBuilder);
-  private accessContractCreateValidators = inject(AccessContractCreateValidators);
-  private accessContractService = inject(AccessContractService);
-  private agencyService = inject(AgencyService);
-  private confirmDialogService = inject(ConfirmDialogService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accessContractCreateValidators = inject(AccessContractCreateValidators);
+  private readonly accessContractService = inject(AccessContractService);
+  private readonly agencyService = inject(AgencyService);
+  private readonly confirmDialogService = inject(ConfirmDialogService);
 
   protected readonly FILLING_PLAN_MODE = FilingPlanMode;
   protected readonly tenantIdentifier: number;
@@ -111,7 +111,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
 
-  private unsubscribe = new Subject<void>();
+  private readonly unsubscribe = new Subject<void>();
 
   allNodes = new FormControl(false);
   ruleFilter = new FormControl(false);

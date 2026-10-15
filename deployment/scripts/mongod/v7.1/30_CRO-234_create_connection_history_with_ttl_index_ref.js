@@ -1,4 +1,4 @@
-var collectionExists = dbIam.getCollectionNames().indexOf('connectionHistory') > -1;
+const collectionExists = dbIam.getCollectionNames().indexOf('connectionHistory') > -1;
 
 if (!collectionExists) {
     dbIam.createCollection("connectionHistory");

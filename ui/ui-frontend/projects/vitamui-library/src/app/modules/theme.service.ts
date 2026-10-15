@@ -60,7 +60,7 @@ const DEFAULT_PRIMARY = '#9C31B5';
   providedIn: 'root',
 })
 export class ThemeService {
-  private domSanitizer = inject(DomSanitizer);
+  private readonly domSanitizer = inject(DomSanitizer);
 
   private luminosityStep = 10;
   public get defaultTheme(): Theme {
@@ -71,7 +71,7 @@ export class ThemeService {
     this._defaultTheme.next(theme);
   }
 
-  private baseColors: { [colorId in ThemeColorType]?: string } = {
+  private readonly baseColors: { [colorId in ThemeColorType]?: string } = {
     [ThemeColorType.VITAMUI_PRIMARY]: 'COLOR.PRIMARY',
     [ThemeColorType.VITAMUI_SECONDARY]: 'COLOR.SECONDARY',
     [ThemeColorType.VITAMUI_TERTIARY]: 'COLOR.TERTIARY',
@@ -79,7 +79,7 @@ export class ThemeService {
     [ThemeColorType.VITAMUI_BACKGROUND]: 'COLOR.BACKGROUND',
   };
 
-  private _defaultTheme = new BehaviorSubject<Theme>(null);
+  private readonly _defaultTheme = new BehaviorSubject<Theme>(null);
 
   // Default theme
   defaultMap: { [colordId in ThemeColorType]: string } = {
@@ -100,7 +100,7 @@ export class ThemeService {
   // Theme for current app configuration
   applicationColorMap: { [colorId: string]: string };
 
-  private _backgroundChoice: Color[] = [
+  private readonly _backgroundChoice: Color[] = [
     { class: 'Foncé', value: '#0F0D2D' },
     { class: 'Blanc', value: '#FFFFFF' },
     { class: 'Clair', value: '#F5F5F5' },

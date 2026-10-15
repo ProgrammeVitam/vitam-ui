@@ -31,118 +31,82 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private static final String SEDA_NAMESPACE = "fr:gouv:culture:archivesdefrance:seda:v2.1";
+    private static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
+
     private static final QName _ObjectGroupExtenstionAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ObjectGroupExtenstionAbstract"
     );
-    private static final QName _OtherDimensionsAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "OtherDimensionsAbstract"
-    );
+    private static final QName _OtherDimensionsAbstract_QNAME = new QName(SEDA_NAMESPACE, "OtherDimensionsAbstract");
     private static final QName _OtherCoreTechnicalMetadataAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "OtherCoreTechnicalMetadataAbstract"
     );
     private static final QName _ArchiveUnitReferenceAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveUnitReferenceAbstract"
     );
-    private static final QName _OtherManagementAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "OtherManagementAbstract"
-    );
-    private static final QName _OtherCodeListAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "OtherCodeListAbstract"
-    );
-    private static final QName _AgentAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "AgentAbstract"
-    );
-    private static final QName _EventAbstract_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "EventAbstract"
-    );
-    private static final QName _Acknowledgement_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "Acknowledgement"
-    );
-    private static final QName _ArchiveDeliveryRequest_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "ArchiveDeliveryRequest"
-    );
+    private static final QName _OtherManagementAbstract_QNAME = new QName(SEDA_NAMESPACE, "OtherManagementAbstract");
+    private static final QName _OtherCodeListAbstract_QNAME = new QName(SEDA_NAMESPACE, "OtherCodeListAbstract");
+    private static final QName _AgentAbstract_QNAME = new QName(SEDA_NAMESPACE, "AgentAbstract");
+    private static final QName _EventAbstract_QNAME = new QName(SEDA_NAMESPACE, "EventAbstract");
+    private static final QName _Acknowledgement_QNAME = new QName(SEDA_NAMESPACE, "Acknowledgement");
+    private static final QName _ArchiveDeliveryRequest_QNAME = new QName(SEDA_NAMESPACE, "ArchiveDeliveryRequest");
     private static final QName _ArchiveRestitutionRequest_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveRestitutionRequest"
     );
-    private static final QName _ArchiveTransfer_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "ArchiveTransfer"
-    );
-    private static final QName _ArchiveTransferRequest_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "ArchiveTransferRequest"
-    );
+    private static final QName _ArchiveTransfer_QNAME = new QName(SEDA_NAMESPACE, "ArchiveTransfer");
+    private static final QName _ArchiveTransferRequest_QNAME = new QName(SEDA_NAMESPACE, "ArchiveTransferRequest");
     private static final QName _AuthorizationControlAuthorityRequest_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "AuthorizationControlAuthorityRequest"
     );
     private static final QName _AuthorizationOriginatingAgencyRequest_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "AuthorizationOriginatingAgencyRequest"
     );
     private static final QName _ArchiveDeliveryRequestReply_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveDeliveryRequestReply"
     );
     private static final QName _ArchiveRestitutionRequestReply_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveRestitutionRequestReply"
     );
-    private static final QName _ArchiveTransferReply_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "ArchiveTransferReply"
-    );
+    private static final QName _ArchiveTransferReply_QNAME = new QName(SEDA_NAMESPACE, "ArchiveTransferReply");
     private static final QName _ArchiveTransferRequestReply_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveTransferRequestReply"
     );
     private static final QName _AuthorizationControlAuthorityRequestReply_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "AuthorizationControlAuthorityRequestReply"
     );
     private static final QName _AuthorizationOriginatingAgencyRequestReply_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "AuthorizationOriginatingAgencyRequestReply"
     );
     private static final QName _ArchiveDestructionNotification_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveDestructionNotification"
     );
     private static final QName _ArchiveModificationNotification_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "ArchiveModificationNotification"
     );
-    private static final QName _Title_QNAME = new QName("http://www.w3.org/1999/xlink", "title");
-    private static final QName _Resource_QNAME = new QName("http://www.w3.org/1999/xlink", "resource");
-    private static final QName _Locator_QNAME = new QName("http://www.w3.org/1999/xlink", "locator");
-    private static final QName _Arc_QNAME = new QName("http://www.w3.org/1999/xlink", "arc");
-    private static final QName _ArchiveUnitTypeArchiveUnit_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "ArchiveUnit"
-    );
+    private static final QName _Title_QNAME = new QName(XLINK_NAMESPACE, "title");
+    private static final QName _Resource_QNAME = new QName(XLINK_NAMESPACE, "resource");
+    private static final QName _Locator_QNAME = new QName(XLINK_NAMESPACE, "locator");
+    private static final QName _Arc_QNAME = new QName(XLINK_NAMESPACE, "arc");
+    private static final QName _ArchiveUnitTypeArchiveUnit_QNAME = new QName(SEDA_NAMESPACE, "ArchiveUnit");
     private static final QName _ArchiveUnitTypeDataObjectReference_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
+        SEDA_NAMESPACE,
         "DataObjectReference"
     );
-    private static final QName _ArchiveUnitTypeDataObjectGroup_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "DataObjectGroup"
-    );
-    private static final QName _ToDeleteTypeArchiveUnitRefId_QNAME = new QName(
-        "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        "ArchiveUnitRefId"
-    );
+    private static final QName _ArchiveUnitTypeDataObjectGroup_QNAME = new QName(SEDA_NAMESPACE, "DataObjectGroup");
+    private static final QName _ToDeleteTypeArchiveUnitRefId_QNAME = new QName(SEDA_NAMESPACE, "ArchiveUnitRefId");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: fr.gouv.vitamui.commons.vitam.seda
@@ -862,7 +826,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link Object }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ObjectGroupExtenstionAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ObjectGroupExtenstionAbstract")
     public JAXBElement<Object> createObjectGroupExtenstionAbstract(Object value) {
         return new JAXBElement<Object>(_ObjectGroupExtenstionAbstract_QNAME, Object.class, null, value);
     }
@@ -875,7 +839,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link Object }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "OtherDimensionsAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "OtherDimensionsAbstract")
     public JAXBElement<Object> createOtherDimensionsAbstract(Object value) {
         return new JAXBElement<Object>(_OtherDimensionsAbstract_QNAME, Object.class, null, value);
     }
@@ -888,10 +852,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link OpenType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "OtherCoreTechnicalMetadataAbstract"
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "OtherCoreTechnicalMetadataAbstract")
     public JAXBElement<OpenType> createOtherCoreTechnicalMetadataAbstract(OpenType value) {
         return new JAXBElement<OpenType>(_OtherCoreTechnicalMetadataAbstract_QNAME, OpenType.class, null, value);
     }
@@ -904,7 +865,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link Object }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveUnitReferenceAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveUnitReferenceAbstract")
     public JAXBElement<Object> createArchiveUnitReferenceAbstract(Object value) {
         return new JAXBElement<Object>(_ArchiveUnitReferenceAbstract_QNAME, Object.class, null, value);
     }
@@ -917,7 +878,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link Object }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "OtherManagementAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "OtherManagementAbstract")
     public JAXBElement<Object> createOtherManagementAbstract(Object value) {
         return new JAXBElement<Object>(_OtherManagementAbstract_QNAME, Object.class, null, value);
     }
@@ -930,7 +891,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link CodeType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "OtherCodeListAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "OtherCodeListAbstract")
     public JAXBElement<CodeType> createOtherCodeListAbstract(CodeType value) {
         return new JAXBElement<CodeType>(_OtherCodeListAbstract_QNAME, CodeType.class, null, value);
     }
@@ -943,7 +904,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link AgentType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "AgentAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "AgentAbstract")
     public JAXBElement<AgentType> createAgentAbstract(AgentType value) {
         return new JAXBElement<AgentType>(_AgentAbstract_QNAME, AgentType.class, null, value);
     }
@@ -956,7 +917,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link Object }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "EventAbstract")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "EventAbstract")
     public JAXBElement<Object> createEventAbstract(Object value) {
         return new JAXBElement<Object>(_EventAbstract_QNAME, Object.class, null, value);
     }
@@ -969,7 +930,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link AcknowledgementType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "Acknowledgement")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "Acknowledgement")
     public JAXBElement<AcknowledgementType> createAcknowledgement(AcknowledgementType value) {
         return new JAXBElement<AcknowledgementType>(_Acknowledgement_QNAME, AcknowledgementType.class, null, value);
     }
@@ -982,7 +943,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveDeliveryRequestType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveDeliveryRequest")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveDeliveryRequest")
     public JAXBElement<ArchiveDeliveryRequestType> createArchiveDeliveryRequest(ArchiveDeliveryRequestType value) {
         return new JAXBElement<ArchiveDeliveryRequestType>(
             _ArchiveDeliveryRequest_QNAME,
@@ -1000,7 +961,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveRestitutionRequestType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveRestitutionRequest")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveRestitutionRequest")
     public JAXBElement<ArchiveRestitutionRequestType> createArchiveRestitutionRequest(
         ArchiveRestitutionRequestType value
     ) {
@@ -1020,7 +981,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveTransferType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveTransfer")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveTransfer")
     public JAXBElement<ArchiveTransferType> createArchiveTransfer(ArchiveTransferType value) {
         return new JAXBElement<ArchiveTransferType>(_ArchiveTransfer_QNAME, ArchiveTransferType.class, null, value);
     }
@@ -1033,7 +994,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveTransferRequestType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveTransferRequest")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveTransferRequest")
     public JAXBElement<ArchiveTransferRequestType> createArchiveTransferRequest(ArchiveTransferRequestType value) {
         return new JAXBElement<ArchiveTransferRequestType>(
             _ArchiveTransferRequest_QNAME,
@@ -1051,10 +1012,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link AuthorizationControlAuthorityRequestType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "AuthorizationControlAuthorityRequest"
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "AuthorizationControlAuthorityRequest")
     public JAXBElement<AuthorizationControlAuthorityRequestType> createAuthorizationControlAuthorityRequest(
         AuthorizationControlAuthorityRequestType value
     ) {
@@ -1074,10 +1032,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link AuthorizationOriginatingAgencyRequestType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "AuthorizationOriginatingAgencyRequest"
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "AuthorizationOriginatingAgencyRequest")
     public JAXBElement<AuthorizationOriginatingAgencyRequestType> createAuthorizationOriginatingAgencyRequest(
         AuthorizationOriginatingAgencyRequestType value
     ) {
@@ -1097,7 +1052,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveDeliveryRequestReplyType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveDeliveryRequestReply")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveDeliveryRequestReply")
     public JAXBElement<ArchiveDeliveryRequestReplyType> createArchiveDeliveryRequestReply(
         ArchiveDeliveryRequestReplyType value
     ) {
@@ -1117,7 +1072,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveRestitutionRequestReplyType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveRestitutionRequestReply")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveRestitutionRequestReply")
     public JAXBElement<ArchiveRestitutionRequestReplyType> createArchiveRestitutionRequestReply(
         ArchiveRestitutionRequestReplyType value
     ) {
@@ -1137,7 +1092,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveTransferReplyType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveTransferReply")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveTransferReply")
     public JAXBElement<ArchiveTransferReplyType> createArchiveTransferReply(ArchiveTransferReplyType value) {
         return new JAXBElement<ArchiveTransferReplyType>(
             _ArchiveTransferReply_QNAME,
@@ -1155,7 +1110,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveTransferRequestReplyType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveTransferRequestReply")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveTransferRequestReply")
     public JAXBElement<ArchiveTransferRequestReplyType> createArchiveTransferRequestReply(
         ArchiveTransferRequestReplyType value
     ) {
@@ -1175,10 +1130,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link AuthorizationControlAuthorityRequestReplyType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "AuthorizationControlAuthorityRequestReply"
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "AuthorizationControlAuthorityRequestReply")
     public JAXBElement<AuthorizationControlAuthorityRequestReplyType> createAuthorizationControlAuthorityRequestReply(
         AuthorizationControlAuthorityRequestReplyType value
     ) {
@@ -1198,10 +1150,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link AuthorizationOriginatingAgencyRequestReplyType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "AuthorizationOriginatingAgencyRequestReply"
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "AuthorizationOriginatingAgencyRequestReply")
     public JAXBElement<AuthorizationOriginatingAgencyRequestReplyType> createAuthorizationOriginatingAgencyRequestReply(
         AuthorizationOriginatingAgencyRequestReplyType value
     ) {
@@ -1221,7 +1170,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveDestructionNotificationType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveDestructionNotification")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveDestructionNotification")
     public JAXBElement<ArchiveDestructionNotificationType> createArchiveDestructionNotification(
         ArchiveDestructionNotificationType value
     ) {
@@ -1241,7 +1190,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveModificationNotificationType }{@code >}
      */
-    @XmlElementDecl(namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1", name = "ArchiveModificationNotification")
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveModificationNotification")
     public JAXBElement<ArchiveModificationNotificationType> createArchiveModificationNotification(
         ArchiveModificationNotificationType value
     ) {
@@ -1261,7 +1210,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link TitleEltType }{@code >}
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/1999/xlink", name = "title")
+    @XmlElementDecl(namespace = XLINK_NAMESPACE, name = "title")
     public JAXBElement<TitleEltType> createTitle(TitleEltType value) {
         return new JAXBElement<TitleEltType>(_Title_QNAME, TitleEltType.class, null, value);
     }
@@ -1274,7 +1223,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ResourceType }{@code >}
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/1999/xlink", name = "resource")
+    @XmlElementDecl(namespace = XLINK_NAMESPACE, name = "resource")
     public JAXBElement<ResourceType> createResource(ResourceType value) {
         return new JAXBElement<ResourceType>(_Resource_QNAME, ResourceType.class, null, value);
     }
@@ -1287,7 +1236,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link LocatorType }{@code >}
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/1999/xlink", name = "locator")
+    @XmlElementDecl(namespace = XLINK_NAMESPACE, name = "locator")
     public JAXBElement<LocatorType> createLocator(LocatorType value) {
         return new JAXBElement<LocatorType>(_Locator_QNAME, LocatorType.class, null, value);
     }
@@ -1300,7 +1249,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArcType }{@code >}
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/1999/xlink", name = "arc")
+    @XmlElementDecl(namespace = XLINK_NAMESPACE, name = "arc")
     public JAXBElement<ArcType> createArc(ArcType value) {
         return new JAXBElement<ArcType>(_Arc_QNAME, ArcType.class, null, value);
     }
@@ -1313,11 +1262,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ArchiveUnitType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "ArchiveUnit",
-        scope = ArchiveUnitType.class
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveUnit", scope = ArchiveUnitType.class)
     public JAXBElement<ArchiveUnitType> createArchiveUnitTypeArchiveUnit(ArchiveUnitType value) {
         return new JAXBElement<ArchiveUnitType>(
             _ArchiveUnitTypeArchiveUnit_QNAME,
@@ -1335,11 +1280,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link DataObjectRefType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "DataObjectReference",
-        scope = ArchiveUnitType.class
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "DataObjectReference", scope = ArchiveUnitType.class)
     public JAXBElement<DataObjectRefType> createArchiveUnitTypeDataObjectReference(DataObjectRefType value) {
         return new JAXBElement<DataObjectRefType>(
             _ArchiveUnitTypeDataObjectReference_QNAME,
@@ -1357,11 +1298,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ObjectGroupRefType }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "DataObjectGroup",
-        scope = ArchiveUnitType.class
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "DataObjectGroup", scope = ArchiveUnitType.class)
     public JAXBElement<ObjectGroupRefType> createArchiveUnitTypeDataObjectGroup(ObjectGroupRefType value) {
         return new JAXBElement<ObjectGroupRefType>(
             _ArchiveUnitTypeDataObjectGroup_QNAME,
@@ -1379,11 +1316,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link Object }{@code >}
      */
-    @XmlElementDecl(
-        namespace = "fr:gouv:culture:archivesdefrance:seda:v2.1",
-        name = "ArchiveUnitRefId",
-        scope = ToDeleteType.class
-    )
+    @XmlElementDecl(namespace = SEDA_NAMESPACE, name = "ArchiveUnitRefId", scope = ToDeleteType.class)
     @XmlIDREF
     public JAXBElement<Object> createToDeleteTypeArchiveUnitRefId(Object value) {
         return new JAXBElement<Object>(_ToDeleteTypeArchiveUnitRefId_QNAME, Object.class, ToDeleteType.class, value);

@@ -72,8 +72,8 @@ const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
   ],
 })
 export class TitleAndDescriptionCriteriaSearchCollectComponent {
-  private formBuilder = inject(FormBuilder);
-  private archiveExchangeDataService = inject(ArchiveSharedDataService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
   dialog = inject(MatDialog);
 
   quickSearchCriteriaForm: FormGroup;

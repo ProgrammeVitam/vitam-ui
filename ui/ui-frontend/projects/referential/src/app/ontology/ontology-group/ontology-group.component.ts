@@ -54,10 +54,10 @@ import { OntologyService } from '../ontology.service';
   styleUrls: ['./ontology-group.component.scss'],
 })
 export class OntologyGroupComponent {
-  private activatedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
-  private schemaService = inject(SchemaService);
-  private ontologyService = inject(OntologyService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly schemaService = inject(SchemaService);
+  private readonly ontologyService = inject(OntologyService);
 
   @Input() searchText: string;
   @Output() selectElement = new EventEmitter<Ontology | SchemaElement>();

@@ -73,7 +73,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class ListEditorComponent implements OnChanges {
-  private favoriteEntryService = inject(FavoriteEntryService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
 
   @Input() editObject: EditObject;
 

@@ -106,6 +106,15 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileService.class);
 
+    private static final String APPLICATION_NAME_KEY = "applicationName";
+    private static final String CUSTOMER_ID = "customerId";
+    private static final String IDENTIFIER_KEY = "identifier";
+    private static final String READONLY_KEY = "readonly";
+    private static final String TENANT_IDENTIFIER = "tenantIdentifier";
+    private static final String LEVEL = "level";
+    private static final String ENABLED_KEY = "enabled";
+    private static final String IS_NOT_ALLOWED_SUFFIX = " is not allowed";
+
     private final ProfileRepository profileRepository;
     private final CustomerRepository customerRepository;
     private final GroupRepository groupRepository;
@@ -219,27 +228,27 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         Assert.isTrue(
             !checkMapContainsOnlyFieldsUnmodifiable(
                 partialDto,
-                Arrays.asList("id", "readonly", "identifier", "customerId", "applicationName", "tenantIdentifier")
+                Arrays.asList("id", READONLY_KEY, IDENTIFIER_KEY, CUSTOMER_ID, APPLICATION_NAME_KEY, TENANT_IDENTIFIER)
             ),
             message
         );
 
         final ProfileDto profileDto = getOne(id, Optional.empty(), Optional.empty());
-        final String customerId = CastUtils.toString(partialDto.get("customerId"));
-        final Integer tenantIdentifier = CastUtils.toInteger(partialDto.get("tenantIdentifier"));
+        final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_ID));
+        final Integer tenantIdentifier = CastUtils.toInteger(partialDto.get(TENANT_IDENTIFIER));
         final Profile profile = find(id, customerId, tenantIdentifier, message);
 
         checkCustomer(profile.getCustomerId(), message);
         checkLevel(profile.getLevel(), message);
         checkIsReadonly(profile.isReadonly(), message);
 
-        String level = CastUtils.toString(partialDto.get("level"));
+        String level = CastUtils.toString(partialDto.get(LEVEL));
         if (level != null) {
             checkLevel(level, message);
             checkModifyLevel(profile, level, message);
         }
 
-        final Boolean readonly = CastUtils.toBoolean(partialDto.get("readonly"));
+        final Boolean readonly = CastUtils.toBoolean(partialDto.get(READONLY_KEY));
         if (readonly != null) {
             checkSetReadonly(readonly, message);
         }
@@ -258,7 +267,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             checkName(name, profile.getTenantIdentifier(), level, profile.getApplicationName(), message);
         }
 
-        final Boolean enabled = CastUtils.toBoolean(partialDto.get("enabled"));
+        final Boolean enabled = CastUtils.toBoolean(partialDto.get(ENABLED_KEY));
         if (enabled != null) {
             checkEnabled(profile.getId(), enabled, message);
         }
@@ -275,11 +284,11 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id":
-                case "customerId":
-                case "readonly":
-                case "applicationName":
-                case "tenantIdentifier":
-                case "identifier":
+                case CUSTOMER_ID:
+                case READONLY_KEY:
+                case APPLICATION_NAME_KEY:
+                case TENANT_IDENTIFIER:
+                case IDENTIFIER_KEY:
                     break;
                 case "name":
                     logbooks.add(new EventDiffDto(ProfileConverter.NAME_KEY, profile.getName(), entry.getValue()));
@@ -291,11 +300,11 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
                     );
                     profile.setDescription(CastUtils.toString(entry.getValue()));
                     break;
-                case "enabled":
+                case ENABLED_KEY:
                     logbooks.add(new EventDiffDto(ProfileConverter.ENABLED_KEY, profile.isEnabled(), entry.getValue()));
                     profile.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
-                case "level":
+                case LEVEL:
                     logbooks.add(
                         new EventDiffDto(ProfileConverter.LEVEL_KEY, profile.getDescription(), entry.getValue())
                     );
@@ -318,7 +327,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Unable to patch profile " + profile.getId() + ": key " + entry.getKey() + " is not allowed"
+                        "Unable to patch profile " + profile.getId() + ": key " + entry.getKey() + IS_NOT_ALLOWED_SUFFIX
                     );
             }
         }
@@ -357,7 +366,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         Assert.isTrue(tenantIdentifier != null, message + ": no tenant Identifier");
         Assert.isTrue(
             StringUtils.equals(customerId, getSecurityService().getCustomerId()),
-            message + ": customerId " + customerId + " is not allowed"
+            message + ": customerId " + customerId + IS_NOT_ALLOWED_SUFFIX
         );
 
         return getRepository()
@@ -395,7 +404,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
             Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level),
             "level : " + level + " format is not allowed"
         );
-        Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
+        Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + IS_NOT_ALLOWED_SUFFIX);
     }
 
     private void checkSetReadonly(final boolean readonly, final String message) {
@@ -409,7 +418,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
     private void checkCustomer(final String customerId, final String message) {
         Assert.isTrue(
             StringUtils.equals(customerId, getSecurityService().getCustomerId()),
-            message + ": customerId " + customerId + " is not allowed"
+            message + ": customerId " + customerId + IS_NOT_ALLOWED_SUFFIX
         );
 
         final Optional<Customer> customer = customerRepository.findById(customerId);
@@ -427,11 +436,11 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
     ) {
         LOGGER.debug("name : {} , level : {}", name, level);
         final Criteria criteria = MongoUtils.buildCriteriaEquals("name", name, true)
-            .and("level")
+            .and(LEVEL)
             .is(level)
-            .and("applicationName")
+            .and(APPLICATION_NAME_KEY)
             .is(appName)
-            .and("tenantIdentifier")
+            .and(TENANT_IDENTIFIER)
             .is(tenantIdentifier);
         Assert.isTrue(!getRepository().exists(criteria), message + ": profile already exists");
     }
@@ -465,7 +474,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
                 subRoles.contains(role) ||
                 (securityService.userIsRootLevel() && !adminVitamUIRoles.contains(role));
 
-            Assert.isTrue(allow, message + ": role " + role + " is not allowed");
+            Assert.isTrue(allow, message + ": role " + role + IS_NOT_ALLOWED_SUFFIX);
         }
     }
 
@@ -481,10 +490,10 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
         Assert.isTrue(tenantIdentifier != null, "Unable to getSubRoles: tenantIdentifier must be not null");
 
         final ArrayList<CriteriaDefinition> criterias = new ArrayList<>();
-        criterias.add(Criteria.where("tenantIdentifier").is(tenantIdentifier));
-        criterias.add(Criteria.where("enabled").is(true));
+        criterias.add(Criteria.where(TENANT_IDENTIFIER).is(tenantIdentifier));
+        criterias.add(Criteria.where(ENABLED_KEY).is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where(LEVEL).regex("^" + level + "\\..+$"));
         }
         return getRepository()
             .findAll(criterias)
@@ -495,10 +504,10 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
 
     public List<String> getSubLevels(final String level, final String customerId) {
         final ArrayList<CriteriaDefinition> criterias = new ArrayList<>();
-        criterias.add(Criteria.where("customerId").in(customerId));
-        criterias.add(Criteria.where("enabled").is(true));
+        criterias.add(Criteria.where(CUSTOMER_ID).in(customerId));
+        criterias.add(Criteria.where(ENABLED_KEY).is(true));
         if (!level.isEmpty()) {
-            criterias.add(Criteria.where("level").regex("^" + level + "\\..+$"));
+            criterias.add(Criteria.where(LEVEL).regex("^" + level + "\\..+$"));
         }
         return getRepository().findAll(criterias).stream().map(Profile::getLevel).collect(Collectors.toList());
     }
@@ -570,14 +579,14 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
     protected Collection<String> getAllowedKeys() {
         return List.of(
             "id",
-            "applicationName",
+            APPLICATION_NAME_KEY,
             "name",
-            "enabled",
+            ENABLED_KEY,
             "description",
             LEVEL_KEY,
             TENANT_IDENTIFIER_KEY,
             CUSTOMER_ID_KEY,
-            "identifier",
+            IDENTIFIER_KEY,
             EXTERNAL_PARAM_ID_KEY
         );
     }
@@ -616,7 +625,7 @@ public class ProfileService extends AbstractResourceClientService<ProfileDto, Pr
     private void addLevelRestriction(final QueryDto query) {
         final QueryDto levelQuery = new QueryDto();
         levelQuery.setQueryOperator(QueryOperator.OR);
-        levelQuery.addCriterion("level", securityService.getLevel() + ".", CriterionOperator.STARTWITH);
+        levelQuery.addCriterion(LEVEL, securityService.getLevel() + ".", CriterionOperator.STARTWITH);
         levelQuery.addCriterion(
             "id",
             securityService.getUser().getProfileGroup().getProfileIds(),

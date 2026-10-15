@@ -50,11 +50,11 @@ export type SchemaDeleteDialogComponentData = string[];
 })
 export class SchemaDeleteDialogComponent {
   paths = inject<SchemaDeleteDialogComponentData>(MAT_DIALOG_DATA);
-  private dialogRef = inject<MatDialogRef<SchemaDeleteDialogComponent>>(MatDialogRef);
-  private schemaService = inject(SchemaService);
-  private snackBarService = inject(SnackBarService);
-  private startupService = inject(StartupService);
-  private translateService = inject(TranslateService);
+  private readonly dialogRef = inject<MatDialogRef<SchemaDeleteDialogComponent>>(MatDialogRef);
+  private readonly schemaService = inject(SchemaService);
+  private readonly snackBarService = inject(SnackBarService);
+  private readonly startupService = inject(StartupService);
+  private readonly translateService = inject(TranslateService);
 
   subtitle: { [k: string]: string } = {
     '=1': 'ONTOLOGY.SCHEMA_DELETE_DIALOG.SUBTITLE.SINGULAR',

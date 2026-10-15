@@ -66,7 +66,7 @@ import {
   ],
 })
 export class SampleDialogComponent {
-  private dialogRef = inject<MatDialogRef<SampleDialogComponent>>(MatDialogRef);
+  private readonly dialogRef = inject<MatDialogRef<SampleDialogComponent>>(MatDialogRef);
   isSmall = inject(MAT_DIALOG_DATA);
 
   showSteps = true;

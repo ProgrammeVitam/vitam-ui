@@ -82,7 +82,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   ],
 })
 export class LogbookManagementOperationPreviewComponent implements OnInit, OnDestroy {
-  private matDialog = inject(MatDialog);
+  private readonly matDialog = inject(MatDialog);
   logbookManagementOperationService = inject(LogbookManagementOperationService);
 
   @Input() operation: OperationDetails;

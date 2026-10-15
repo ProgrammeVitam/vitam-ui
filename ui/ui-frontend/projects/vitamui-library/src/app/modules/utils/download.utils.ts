@@ -37,7 +37,7 @@
 import { HttpResponse } from '@angular/common/http';
 
 export class DownloadUtils {
-  private static DOUBLE_QUOTES = '"';
+  private static readonly DOUBLE_QUOTES = '"';
 
   static loadFromBlob(resp: HttpResponse<Blob>, mimeType: string, newFilename?: string) {
     // It is necessary to create a new blob object with mime-type explicitly set

@@ -46,7 +46,7 @@ import { CustomerPreviewComponent } from './customer-preview.component';
   imports: [CustomerPreviewComponent],
 })
 export class CustomerPopupComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   customer: Customer;
 

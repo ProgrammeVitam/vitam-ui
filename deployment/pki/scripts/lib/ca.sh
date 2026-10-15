@@ -28,7 +28,7 @@ function generate_ca_root {
     pki_logger "OPENSSL_CA_DIR : ${OPENSSL_CA_DIR}"
 
     local CA_DIR=${CA_DIR}/${OPENSSL_CA_DIR}
-    if [ ! -d ${CA_DIR} ]; then
+    if [[ ! -d ${CA_DIR} ]]; then
         pki_logger "Creating directory ${CA_DIR}"
         mkdir -p ${CA_DIR};
     fi
@@ -72,7 +72,7 @@ function generate_ca_intermediate {
     pki_logger "OPENSSL_CA_DIR : ${OPENSSL_CA_DIR}"
 
     local CA_DIR=${CA_DIR}/${OPENSSL_CA_DIR}
-    if [ ! -d ${CA_DIR} ]; then
+    if [[ ! -d ${CA_DIR} ]]; then
         pki_logger "Creating directory ${OPENSSL_CA_DIR}"
         mkdir -p ${CA_DIR};
     fi
@@ -121,8 +121,8 @@ function main() {
 
     ERASE="false"
 
-    if [ "$#" -gt 0 ]; then
-        if [ "${1,,}" == "true" ]; then
+    if [[ "$#" -gt 0 ]]; then
+        if [[ "${1,,}" == "true" ]]; then
             ERASE="true"
         fi
     fi
@@ -133,12 +133,12 @@ function main() {
     # Cleaning or creating vault file for CA
     initVault   ca    ${ERASE}
 
-    if [ "${ERASE}" == "true" ]; then
-        if [ -d ${CA_DIR} ]; then
+    if [[ "${ERASE}" == "true" ]]; then
+        if [[ -d ${CA_DIR} ]]; then
             # We remove all generated CA
             find "${CA_DIR:?}/" -mindepth 1 -maxdepth 1 -type d -exec rm -vRf {} \;
         fi
-        if [ -d ${CONFIG_DIR} ]; then
+        if [[ -d ${CONFIG_DIR} ]]; then
             # We remove all configurations linked to CA (except main config files)
             find "${CONFIG_DIR:?}/" -mindepth 1 -maxdepth 1 -type d -exec rm -vRf {} \;
         fi
@@ -146,11 +146,11 @@ function main() {
 
     pki_logger "Starting CA creation process"
     pki_logger "=============================================="
-    if [ ! -d ${CA_DIR} ]; then
+    if [[ ! -d ${CA_DIR} ]]; then
         pki_logger "Directory ${CA_DIR} does not exist, creating it..."
         mkdir -p ${CA_DIR};
     fi
-    if [ ! -d ${TEMP_CERTS} ]; then
+    if [[ ! -d ${TEMP_CERTS} ]]; then
         pki_logger "Directory ${TEMP_CERTS} does not exist, creating it..."
         mkdir -p ${TEMP_CERTS}
     fi
@@ -160,13 +160,13 @@ function main() {
         mkdir -p ${CA_DIR}/${AUTHORITY_NAME}
         init_config_ca ${AUTHORITY_NAME}
 
-        if [ ! -f ${CA_DIR}/${AUTHORITY_NAME}/ca-root.crt ]; then
+        if [[ ! -f ${CA_DIR}/${AUTHORITY_NAME}/ca-root.crt ]]; then
             # Generate ca-root for authority & store passphrase in the vault-ca
             generate_ca_root ${AUTHORITY_NAME}
         else
             pki_logger "CA-root for authority ${AUTHORITY_NAME} already exists, it will not be recreated..."
         fi
-        if [ ! -f ${CA_DIR}/${AUTHORITY_NAME}/ca-intermediate.crt ]; then
+        if [[ ! -f ${CA_DIR}/${AUTHORITY_NAME}/ca-intermediate.crt ]]; then
             # Generate ca-intermediate for authority & store passphrase in the vault-ca
             generate_ca_intermediate ${AUTHORITY_NAME}
             purge_directory "${CONFIG_DIR}/${AUTHORITY_NAME}"
@@ -176,7 +176,7 @@ function main() {
         fi
         pki_logger "----------------------------------------------"
     done
-    if [ -d ${TEMP_CERTS} ]; then
+    if [[ -d ${TEMP_CERTS} ]]; then
         pki_logger "=============================================="
         pki_logger "Cleaning of temporary tempcerts directories"
         rm -vRf ${TEMP_CERTS:?}

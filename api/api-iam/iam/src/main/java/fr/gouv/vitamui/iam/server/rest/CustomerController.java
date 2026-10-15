@@ -110,6 +110,8 @@ public class CustomerController implements CrudController<CustomerDto> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 
+    private static final String IDENTIFIER_IS_MANDATORY = "Identifier is mandatory: ";
+
     private final CustomerService customerService;
 
     @Autowired
@@ -151,7 +153,7 @@ public class CustomerController implements CrudController<CustomerDto> {
     public CustomerDto getOne(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
         SanityChecker.checkSecureParameter(id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         LOGGER.debug("Get {}", id);
         return customerService.getOne(id);
     }
@@ -210,7 +212,7 @@ public class CustomerController implements CrudController<CustomerDto> {
     @PutMapping(CommonConstants.PATH_ID)
     public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Update {} with {}", id, dto);
@@ -228,7 +230,7 @@ public class CustomerController implements CrudController<CustomerDto> {
         final @PathVariable("id") String id,
         @ModelAttribute final CustomerPatchFormData customerData
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(customerData.getPartialCustomerDto());
         Assert.isTrue(
@@ -268,7 +270,7 @@ public class CustomerController implements CrudController<CustomerDto> {
         final @PathVariable String id,
         final @RequestParam(value = "type") AttachmentType type
     ) throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logo for customer with id :{}, type : {}", id, type);
         final ResponseEntity<Resource> response = customerService.getLogo(id, type);

@@ -49,7 +49,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatProgressBar, MatDialogContent, MatDialogActions, MatDialogClose, PercentPipe, I18nPluralPipe, TranslatePipe],
 })
 export class DownloadSnackBarComponent {
-  private matDialog = inject(MatDialog);
+  private readonly matDialog = inject(MatDialog);
 
   @ViewChild('confirmDialog', { static: true }) confirmDialog: TemplateRef<DownloadSnackBarComponent>;
 

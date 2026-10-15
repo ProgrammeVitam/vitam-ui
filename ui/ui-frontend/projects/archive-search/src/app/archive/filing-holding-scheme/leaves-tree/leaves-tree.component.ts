@@ -78,9 +78,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
-  private archiveService = inject(ArchiveService);
-  private configurationsService = inject(ConfigurationsApiService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly configurationsService = inject(ConfigurationsApiService);
 
   @Input() loadingNodeUnit: boolean;
   // Already a graph
@@ -101,7 +101,7 @@ export class LeavesTreeComponent implements OnInit, OnChanges, OnDestroy {
     (node) => node.children,
   );
   showEveryNodes = false;
-  private subscriptions: Subscription = new Subscription();
+  private readonly subscriptions: Subscription = new Subscription();
   leavesTreeService: LeavesTreeService;
 
   constructor() {

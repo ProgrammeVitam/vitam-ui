@@ -85,7 +85,7 @@ import { MatButtonModule } from '@angular/material/button';
   ],
 })
 export class AppComponent {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   title = 'Design system App';
 

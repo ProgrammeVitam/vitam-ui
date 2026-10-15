@@ -52,9 +52,9 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class UpdateUnitManagementRuleService {
-  private archiveService = inject(ArchiveService);
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private translateService = inject(TranslateService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
   goToUpdateManagementRule(

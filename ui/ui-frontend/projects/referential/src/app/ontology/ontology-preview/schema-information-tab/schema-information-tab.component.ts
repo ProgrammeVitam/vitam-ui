@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class SchemaInformationTabComponent {
-  private formBuilder = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   schemaService = inject(SchemaService);
 
   form: FormGroup;

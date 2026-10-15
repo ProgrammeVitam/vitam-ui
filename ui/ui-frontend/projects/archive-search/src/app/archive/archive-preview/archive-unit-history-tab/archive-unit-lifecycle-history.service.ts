@@ -47,7 +47,7 @@ import { ConsolidatedLifecycleEvent, LifecycleOrigin, OperationLifecycleGroup } 
   providedIn: 'root',
 })
 export class ArchiveUnitLifecycleHistoryService {
-  private archiveApiService = inject(ArchiveApiService);
+  private readonly archiveApiService = inject(ArchiveApiService);
 
   getConsolidatedHistory(
     unitId: string,

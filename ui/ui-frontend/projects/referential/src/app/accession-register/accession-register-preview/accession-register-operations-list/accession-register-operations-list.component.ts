@@ -54,7 +54,7 @@ import { DatePipe } from '@angular/common';
   imports: [TableFilterDirective, TableFilterComponent, TableFilterOptionComponent, OrderByButtonComponent, DatePipe, TranslatePipe],
 })
 export class AccessionRegisterOperationsListComponent implements OnChanges {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   @Input() operationsIds: string[];
   @Input() operations: RegisterValueEventModel[];

@@ -50,8 +50,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [CommonModule, TranslatePipe],
 })
 export class VitamuiBreadcrumbComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private applicationService = inject(ApplicationService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly applicationService = inject(ApplicationService);
 
   @Input()
   public data: BreadCrumbData[];

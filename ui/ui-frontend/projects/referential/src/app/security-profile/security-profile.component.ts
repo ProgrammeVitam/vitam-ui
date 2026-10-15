@@ -62,7 +62,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
   dialog = inject(MatDialog);
-  private applicationService = inject(ApplicationService);
+  private readonly applicationService = inject(ApplicationService);
 
   search = '';
 

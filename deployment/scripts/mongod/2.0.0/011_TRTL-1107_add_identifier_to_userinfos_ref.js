@@ -6,7 +6,7 @@ dbIam.sequences.insertOne(
     }
 );
 
-var maxIdentifier = dbIam.getCollection('sequences').findOne({ '_id': 'user_infos_identifier' }).sequence;
+let maxIdentifier = dbIam.getCollection('sequences').findOne({ '_id': 'user_infos_identifier' }).sequence;
 
 dbIam.userInfos.find({ identifier: { $eq: null } }).forEach(userInfos => {
 

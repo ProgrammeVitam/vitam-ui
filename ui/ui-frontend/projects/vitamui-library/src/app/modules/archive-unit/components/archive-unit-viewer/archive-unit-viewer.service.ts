@@ -53,19 +53,19 @@ export enum AUMode {
 
 @Injectable()
 export class ArchiveUnitViewerService implements DisplayObjectService<AUMode> {
-  private logger = inject(Logger);
-  private schemaService = inject(SchemaService);
-  private archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
-  private archiveUnitEditObjectService = inject(ArchiveUnitEditObjectService);
-  private editObjectService = inject(EditObjectService);
+  private readonly logger = inject(Logger);
+  private readonly schemaService = inject(SchemaService);
+  private readonly archiveUnitTemplateService = inject(ArchiveUnitTemplateService);
+  private readonly archiveUnitEditObjectService = inject(ArchiveUnitEditObjectService);
+  private readonly editObjectService = inject(EditObjectService);
 
-  private displayObject = new BehaviorSubject<DisplayObject>(null);
-  private data = new BehaviorSubject<any>(null);
-  private customTemplate = new BehaviorSubject<DisplayRule[]>([]);
-  private mode = new BehaviorSubject<AUMode>(AUMode.DEFAULT);
+  private readonly displayObject = new BehaviorSubject<DisplayObject>(null);
+  private readonly data = new BehaviorSubject<any>(null);
+  private readonly customTemplate = new BehaviorSubject<DisplayRule[]>([]);
+  private readonly mode = new BehaviorSubject<AUMode>(AUMode.DEFAULT);
 
-  private template = new BehaviorSubject<DisplayRule[]>([]);
-  private schema = new BehaviorSubject<Schema>([]);
+  private readonly template = new BehaviorSubject<DisplayRule[]>([]);
+  private readonly schema = new BehaviorSubject<Schema>([]);
 
   displayObject$: Observable<DisplayObject> = this.displayObject.asObservable();
 

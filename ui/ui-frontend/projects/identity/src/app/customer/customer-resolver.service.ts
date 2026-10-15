@@ -46,8 +46,8 @@ import { CustomerService } from '../core/customer.service';
   providedIn: 'root',
 })
 export class CustomerResolver {
-  private customerService = inject(CustomerService);
-  private router = inject(Router);
+  private readonly customerService = inject(CustomerService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Customer> {
     const id = route.paramMap.get('id');

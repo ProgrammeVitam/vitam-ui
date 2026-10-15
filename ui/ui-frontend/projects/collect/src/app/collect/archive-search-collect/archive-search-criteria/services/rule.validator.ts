@@ -46,10 +46,10 @@ import { ManagementRulesSharedDataService } from './management-rules-shared-data
   providedIn: 'root',
 })
 export class RuleValidator {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
   ruleCategorySelected: string;
 
   uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {

@@ -58,7 +58,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, NgClass, MatNestedTreeNode, MatTreeNodeOutlet, TranslatePipe],
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
-  private eventDisplayHelper = inject(EventDisplayHelperService);
+  private readonly eventDisplayHelper = inject(EventDisplayHelperService);
 
   @Input() ingest: LogbookOperation;
 

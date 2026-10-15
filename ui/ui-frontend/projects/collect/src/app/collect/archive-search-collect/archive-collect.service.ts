@@ -73,15 +73,15 @@ const PAGE_SIZE = 10;
   providedIn: 'root',
 })
 export class ArchiveCollectService extends SearchService<any> implements SearchArchiveUnitsInterface {
-  private projectsApiService: ProjectsApiService;
-  private transactionApiService = inject(TransactionApiService);
-  private translateService = inject(TranslateService);
-  private searchUnitApiService = inject(SearchUnitApiService);
-  private locale = inject(LOCALE_ID);
-  private accessContractApiService = inject(AccessContractApiService);
-  private securityService = inject(SecurityService);
+  private readonly projectsApiService: ProjectsApiService;
+  private readonly transactionApiService = inject(TransactionApiService);
+  private readonly translateService = inject(TranslateService);
+  private readonly searchUnitApiService = inject(SearchUnitApiService);
+  private readonly locale = inject(LOCALE_ID);
+  private readonly accessContractApiService = inject(AccessContractApiService);
+  private readonly securityService = inject(SecurityService);
   dialog = inject(MatDialog);
-  private snackBarService = inject(SnackBarService);
+  private readonly snackBarService = inject(SnackBarService);
 
   constructor() {
     const projectsApiService = inject(ProjectsApiService);

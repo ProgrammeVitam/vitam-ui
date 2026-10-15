@@ -66,8 +66,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class AccessContractWriteAccessTabComponent implements OnInit {
-  private formBuilder = inject(FormBuilder);
-  private accessContractService = inject(AccessContractService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly accessContractService = inject(AccessContractService);
 
   public usages: Option[] = [
     { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },

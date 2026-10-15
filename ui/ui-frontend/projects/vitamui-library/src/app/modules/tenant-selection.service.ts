@@ -49,8 +49,8 @@ export const TENANT_SELECTION_URL_CONDITION = '/tenant/';
   providedIn: 'root',
 })
 export class TenantSelectionService {
-  private authService = inject(AuthService);
-  private userApiService = inject(UserApiService);
+  private readonly authService = inject(AuthService);
+  private readonly userApiService = inject(UserApiService);
 
   public currentAppId$ = new BehaviorSubject(null);
 
@@ -58,13 +58,13 @@ export class TenantSelectionService {
   private selectedTenant: Tenant;
 
   /** Provide selected tenant subscriptions */
-  private selectedTenant$ = new BehaviorSubject(null);
+  private readonly selectedTenant$ = new BehaviorSubject(null);
 
   /** Contain the last persisted tenant identifier in DB */
   private lastTenantIdentifier: number;
 
   /** Provide last tenant identifier subscriptions */
-  private lastTenantIdentifier$ = new Subject();
+  private readonly lastTenantIdentifier$ = new Subject();
 
   /** Contain a list of all existing tenant for the current logged in user */
   private tenants: Tenant[];

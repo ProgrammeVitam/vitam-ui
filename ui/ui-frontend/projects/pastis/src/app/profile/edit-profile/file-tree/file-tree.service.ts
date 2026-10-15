@@ -82,17 +82,17 @@ import { Logger } from 'vitamui-library';
   providedIn: 'root',
 })
 export class FileTreeService {
-  private logger = inject(Logger);
+  private readonly logger = inject(Logger);
 
-  private nestedDataSource = new MatTreeNestedDataSource<FileNode>();
+  private readonly nestedDataSource = new MatTreeNestedDataSource<FileNode>();
 
   updateMetadataTable = new Subject<FileNode>();
   nestedTreeControl = new NestedTreeControl<FileNode>((dataNode) => dataNode.children);
 
-  private data = new BehaviorSubject<FileNode[]>([]);
+  private readonly data = new BehaviorSubject<FileNode[]>([]);
   data$ = this.data.asObservable();
 
-  private selectedNode = new BehaviorSubject<FileNode>(null);
+  private readonly selectedNode = new BehaviorSubject<FileNode>(null);
   selectedNode$ = this.selectedNode.asObservable();
 
   public setNestedDataSourceData(nodes: FileNode[]) {

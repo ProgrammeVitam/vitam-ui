@@ -48,11 +48,11 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class ActiveTenantGuard {
-  private authService = inject(AuthService);
-  private startupService = inject(StartupService);
-  private tenantSelectionService = inject(TenantSelectionService);
-  private globalEventService = inject(GlobalEventService);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly startupService = inject(StartupService);
+  private readonly tenantSelectionService = inject(TenantSelectionService);
+  private readonly globalEventService = inject(GlobalEventService);
+  private readonly router = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> | boolean {
     return this.checkTenants(route);

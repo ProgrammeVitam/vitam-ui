@@ -78,12 +78,12 @@ import { map } from 'rxjs/operators';
 })
 export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
   dialog = inject(MatDialog);
-  private route = inject(ActivatedRoute);
-  private securityService = inject(SecurityService);
-  private agencyService = inject(AgencyService);
-  private translateService = inject(TranslateService);
-  private router = inject(Router);
-  private queryParamsService = inject(QueryParamsService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly securityService = inject(SecurityService);
+  private readonly agencyService = inject(AgencyService);
+  private readonly translateService = inject(TranslateService);
+  private readonly router = inject(Router);
+  private readonly queryParamsService = inject(QueryParamsService);
 
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
 

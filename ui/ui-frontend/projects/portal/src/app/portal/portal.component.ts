@@ -74,14 +74,14 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   imports: [MatMenuModule, ReactiveFormsModule, RouterModule, WelcomeMessageComponent, ContentListComponent, MatProgressSpinnerModule],
 })
 export class PortalComponent implements OnInit, OnDestroy {
-  private translateService = inject(TranslateService);
-  private applicationService = inject(ApplicationService);
-  private startupService = inject(StartupService);
-  private authService = inject(AuthService);
-  private themeService = inject(ThemeService);
-  private languageService = inject(LanguageService);
-  private titleService = inject(Title);
-  private globalEventService = inject(GlobalEventService);
+  private readonly translateService = inject(TranslateService);
+  private readonly applicationService = inject(ApplicationService);
+  private readonly startupService = inject(StartupService);
+  private readonly authService = inject(AuthService);
+  private readonly themeService = inject(ThemeService);
+  private readonly languageService = inject(LanguageService);
+  private readonly titleService = inject(Title);
+  private readonly globalEventService = inject(GlobalEventService);
 
   public content: Map<Category, Content> = new Map();
   public welcomeTitle: string;
@@ -89,7 +89,7 @@ export class PortalComponent implements OnInit, OnDestroy {
   public portalLogoUrl: SafeResourceUrl;
   public loading = true;
 
-  private destroyer$ = new Subject<void>();
+  private readonly destroyer$ = new Subject<void>();
 
   ngOnInit() {
     this.applicationService

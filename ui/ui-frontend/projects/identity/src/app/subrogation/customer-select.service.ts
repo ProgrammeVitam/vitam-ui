@@ -47,7 +47,7 @@ import { CustomerApiService } from '../core/api/customer-api.service';
   providedIn: 'root',
 })
 export class CustomerSelectService {
-  private customerApi = inject(CustomerApiService);
+  private readonly customerApi = inject(CustomerApiService);
 
   private customers: Customer[];
 

@@ -46,8 +46,8 @@ import { RuleCategoryAction } from '../models/ruleAction.interface';
   providedIn: 'root',
 })
 export class ManagementRulesValidatorService {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private ruleService = inject(RuleService);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly ruleService = inject(RuleService);
 
   debounceTime = 400;
   ruleCategorySelected: string;

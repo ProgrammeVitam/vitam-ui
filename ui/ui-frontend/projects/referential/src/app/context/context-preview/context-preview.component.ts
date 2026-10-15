@@ -67,8 +67,8 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class ContextPreviewComponent implements AfterViewInit {
-  private matDialog = inject(MatDialog);
-  private contextService = inject(ContextService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly contextService = inject(ContextService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() context: Context;

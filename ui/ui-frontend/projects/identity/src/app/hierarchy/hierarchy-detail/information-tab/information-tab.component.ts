@@ -91,10 +91,10 @@ const DEBOUNCE_TIME = 400;
   ],
 })
 export class InformationTabComponent implements OnDestroy, OnChanges {
-  private formBuilder = inject(FormBuilder);
-  private hierarchyService = inject(HierarchyService);
-  private profileValidators = inject(ProfileValidators);
-  private authService = inject(AuthService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly hierarchyService = inject(HierarchyService);
+  private readonly profileValidators = inject(ProfileValidators);
+  private readonly authService = inject(AuthService);
 
   form: FormGroup;
   userLevel: string;

@@ -46,7 +46,7 @@ import { ItemNode } from '../components/autocomplete/utils/item-node.interface';
 
 @Injectable()
 export class MockSchemaService {
-  private schema: ProfiledSchemaElement[] = [
+  private readonly schema: ProfiledSchemaElement[] = [
     {
       id: null,
       Path: 'AcquiredDate',
@@ -13581,7 +13581,7 @@ export class MockSchemaService {
     return of(archiveUnitProfileSchema);
   }
 
-  private applyConstraints = (schema: Schema, path: string, control: Control, cardinality?: EffectiveCardinality) => {
+  private readonly applyConstraints = (schema: Schema, path: string, control: Control, cardinality?: EffectiveCardinality) => {
     const index = schema.findIndex((e) => e.Path === path);
 
     if (index < 0) return schema;
@@ -13597,7 +13597,7 @@ export class MockSchemaService {
   };
 
   // C1 - https://assistance.programmevitam.fr/plugins/tracker/?aid=13004
-  private requiredConstraints = (schema: Schema): Schema => {
+  private readonly requiredConstraints = (schema: Schema): Schema => {
     schema = this.applyConstraints(schema, 'Addressee', null, 'ONE_REQUIRED');
     schema = this.applyConstraints(schema, 'Addressee.BirthPlace', null, 'ONE_REQUIRED');
     schema = this.applyConstraints(schema, 'Addressee.FirstName', null, 'ONE_REQUIRED');

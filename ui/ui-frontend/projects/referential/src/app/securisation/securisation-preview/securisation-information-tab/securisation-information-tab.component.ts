@@ -46,7 +46,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [PipesModule, TranslatePipe],
 })
 export class SecurisationInformationTabComponent implements OnInit {
-  private securisationService = inject(SecurisationService);
+  private readonly securisationService = inject(SecurisationService);
 
   @Input()
   securisation: Event;

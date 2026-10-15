@@ -93,6 +93,7 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
     private static final String IS_PROOF_TENANT_KEY = "proof";
 
     private static final String CUSTOMER_KEY = "customerId";
+    private static final String READONLY_KEY = "readonly";
 
     private final OwnerRepository ownerRepository;
 
@@ -176,17 +177,17 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
         Assert.isTrue(
             !checkMapContainsOnlyFieldsUnmodifiable(
                 partialDto,
-                Arrays.asList("id", "readonly", "identifier", "customerId")
+                Arrays.asList("id", READONLY_KEY, "identifier", CUSTOMER_KEY)
             ),
             message
         );
 
-        final String customerId = CastUtils.toString(partialDto.get("customerId"));
+        final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_KEY));
         if (customerId != null) {
             checkCustomer(customerId, message);
         }
 
-        final Boolean readonly = CastUtils.toBoolean(partialDto.get("readonly"));
+        final Boolean readonly = CastUtils.toBoolean(partialDto.get(READONLY_KEY));
         if (readonly != null) {
             checkSetReadonly(readonly, message);
         }
@@ -215,8 +216,8 @@ public class OwnerService extends AbstractResourceClientService<OwnerDto, Owner>
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id":
-                case "readonly":
-                case "customerId":
+                case READONLY_KEY:
+                case CUSTOMER_KEY:
                 case "identifier":
                     break;
                 case "name":

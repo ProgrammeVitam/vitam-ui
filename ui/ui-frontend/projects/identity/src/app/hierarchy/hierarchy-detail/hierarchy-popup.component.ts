@@ -46,7 +46,7 @@ import { HierarchyDetailComponent } from './hierarchy-detail.component';
   imports: [HierarchyDetailComponent],
 })
 export class HierarchyPopupComponent {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   profile: Profile;
 

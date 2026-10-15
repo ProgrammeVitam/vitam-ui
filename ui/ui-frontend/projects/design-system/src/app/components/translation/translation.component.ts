@@ -49,7 +49,7 @@ const TRANSLATE_GET_PATH = 'TRANSLATION.TRANSLATE_GET';
   imports: [InputComponent, ReactiveFormsModule, I18nPluralPipe, TranslatePipe],
 })
 export class TranslationComponent implements OnInit {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   public nbApplesTextMap: { [k: string]: string } = {
     '=': 'TRANSLATION.TRANSLATE_NUMBER.ZERO', // In case of no value

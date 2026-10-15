@@ -47,7 +47,7 @@ import { PastisBreadcrumbComponent } from '../pastis-breadcrumb/pastis-breadcrum
   imports: [PastisBreadcrumbComponent],
 })
 export class PastisTitleBreadcrumbComponent {
-  private location = inject(Location);
+  private readonly location = inject(Location);
 
   @Input()
   public data?: Array<any>;

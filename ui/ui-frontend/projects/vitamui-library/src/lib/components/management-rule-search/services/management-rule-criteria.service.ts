@@ -65,9 +65,9 @@ import { ManagementRuleSearchHelper } from '../utils/management-rule-search.help
  */
 @Injectable()
 export class ManagementRuleCriteriaService {
-  private sharedDataService = inject<ManagementRuleSharedDataService>(MANAGEMENT_RULE_SHARED_DATA_SERVICE);
-  private searchCriteriaService = inject(SearchCriteriaService);
-  private queryParamsService = inject(QueryParamsService);
+  private readonly sharedDataService = inject<ManagementRuleSharedDataService>(MANAGEMENT_RULE_SHARED_DATA_SERVICE);
+  private readonly searchCriteriaService = inject(SearchCriteriaService);
+  private readonly queryParamsService = inject(QueryParamsService);
 
   /**
    * Initializes criteria from existing search criteria observable.

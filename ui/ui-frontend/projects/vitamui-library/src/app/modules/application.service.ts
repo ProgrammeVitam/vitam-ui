@@ -53,11 +53,11 @@ import { TenantSelectionService } from './tenant-selection.service';
   providedIn: 'root',
 })
 export class ApplicationService {
-  private applicationApi = inject(ApplicationApiService);
-  private authService = inject(AuthService);
-  private tenantService = inject(TenantSelectionService);
-  private globalEventService = inject(GlobalEventService);
-  private configService = inject(ConfigService);
+  private readonly applicationApi = inject(ApplicationApiService);
+  private readonly authService = inject(AuthService);
+  private readonly tenantService = inject(TenantSelectionService);
+  private readonly globalEventService = inject(GlobalEventService);
+  private readonly configService = inject(ConfigService);
 
   set applications(apps: Application[]) {
     this._applications = apps;
@@ -82,9 +82,9 @@ export class ApplicationService {
 
   private _categories: Category[];
   private _applications: Application[];
-  private _applications$ = new BehaviorSubject<Application[]>(null);
+  private readonly _applications$ = new BehaviorSubject<Application[]>(null);
   private _applicationsAnalytics: ApplicationAnalytics[];
-  private appMap$ = new BehaviorSubject(null);
+  private readonly appMap$ = new BehaviorSubject(null);
 
   /**
    * Get and init applications list for the current auth user.

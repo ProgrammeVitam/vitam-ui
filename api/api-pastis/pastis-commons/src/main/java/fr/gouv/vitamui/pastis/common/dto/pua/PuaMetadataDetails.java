@@ -52,6 +52,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PuaMetadataDetails {
 
+    private static final String PATTERN = "pattern";
+
     String type;
     String description;
     Integer minItems;
@@ -82,8 +84,8 @@ public class PuaMetadataDetails {
                 jsonObject.remove("enum");
             }
             if (pattern != null) {
-                items.put("pattern", jsonObject.getString("pattern"));
-                jsonObject.remove("pattern");
+                items.put(PATTERN, jsonObject.getString(PATTERN));
+                jsonObject.remove(PATTERN);
             }
             result = jsonObject.toString();
         }

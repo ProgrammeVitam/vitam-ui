@@ -44,13 +44,13 @@ import { AccessContract, AccessContractService } from 'vitamui-library';
   providedIn: 'root',
 })
 export class AccessContractCreateValidators {
-  private accessContractService: AccessContractService;
+  private readonly accessContractService: AccessContractService;
 
   constructor(accessContractService: AccessContractService = inject(AccessContractService)) {
     this.accessContractService = accessContractService;
   }
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);

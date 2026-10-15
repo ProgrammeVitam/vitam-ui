@@ -89,8 +89,8 @@ import {
   providedIn: 'root',
 })
 export class HierarchyService extends SearchService<Profile> {
-  private profileApi: ProfileApiService;
-  private snackBarService = inject(SnackBarService);
+  private readonly profileApi: ProfileApiService;
+  private readonly snackBarService = inject(SnackBarService);
 
   updated = new Subject<Profile>();
 

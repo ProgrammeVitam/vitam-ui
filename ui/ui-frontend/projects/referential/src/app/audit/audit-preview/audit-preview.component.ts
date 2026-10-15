@@ -69,9 +69,9 @@ import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-col
   ],
 })
 export class AuditPreviewComponent implements OnInit {
-  private auditService = inject(AuditService);
-  private externalParameterService = inject(ExternalParametersService);
-  private snackBarService = inject(SnackBarService);
+  private readonly auditService = inject(AuditService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly snackBarService = inject(SnackBarService);
 
   audit = input.required<Event>();
   @Output() previewClose: EventEmitter<any> = new EventEmitter();

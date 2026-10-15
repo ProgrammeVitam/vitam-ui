@@ -64,6 +64,8 @@ public class ServicesData {
 
     protected ServicesData() {}
 
+    private static final String ALL_CUSTOMERS_SUFFIX = "_ALL_CUSTOMERS";
+
     //------------------------------------INTERNAL-----------------------------------------
     // Role for internal-only APIs (otherwise, the API would be publicly open)
     public static final String ROLE_INTERNAL = ROLE_PREFIX + "INTERNAL";
@@ -75,7 +77,7 @@ public class ServicesData {
 
     public static final String ROLE_GET_USERS = GET_ROLE_PREFIX + SERVICE_USERS;
 
-    public static final String ROLE_GET_USERS_ALL_CUSTOMERS = ROLE_GET_USERS + "_ALL_CUSTOMERS";
+    public static final String ROLE_GET_USERS_ALL_CUSTOMERS = ROLE_GET_USERS + ALL_CUSTOMERS_SUFFIX;
 
     public static final String ROLE_CREATE_USERS = CREATE_ROLE_PREFIX + SERVICE_USERS;
 
@@ -141,11 +143,11 @@ public class ServicesData {
 
     public static final String ROLE_CREATE_TENANTS = CREATE_ROLE_PREFIX + SERVICE_TENANTS;
 
-    public static final String ROLE_CREATE_TENANTS_ALL_CUSTOMERS = ROLE_CREATE_TENANTS + "_ALL_CUSTOMERS";
+    public static final String ROLE_CREATE_TENANTS_ALL_CUSTOMERS = ROLE_CREATE_TENANTS + ALL_CUSTOMERS_SUFFIX;
 
     public static final String ROLE_UPDATE_TENANTS = UPDATE_ROLE_PREFIX + SERVICE_TENANTS;
 
-    public static final String ROLE_UPDATE_TENANTS_ALL_CUSTOMERS = ROLE_UPDATE_TENANTS + "_ALL_CUSTOMERS";
+    public static final String ROLE_UPDATE_TENANTS_ALL_CUSTOMERS = ROLE_UPDATE_TENANTS + ALL_CUSTOMERS_SUFFIX;
 
     //------------------------------------ PROVIDERS -------------------------------------------
 

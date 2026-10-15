@@ -51,8 +51,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [GroupComponent, PrimitiveComponent, DataComponent, TranslatePipe],
 })
 export class ListComponent implements OnChanges {
-  private typeService = inject(TypeService);
-  private favoriteEntryService = inject(FavoriteEntryService);
+  private readonly typeService = inject(TypeService);
+  private readonly favoriteEntryService = inject(FavoriteEntryService);
 
   @Input() displayObject: DisplayObject;
 

@@ -45,9 +45,9 @@ import { ExternalParamProfileService } from './external-param-profile.service';
   providedIn: 'root',
 })
 export class ExternalParamProfileValidators {
-  private externalParamProfileService = inject(ExternalParamProfileService);
+  private readonly externalParamProfileService = inject(ExternalParamProfileService);
 
-  private debounceTime = 400;
+  private readonly debounceTime = 400;
 
   nameExists = (tenantIdentifier: number, nameToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {

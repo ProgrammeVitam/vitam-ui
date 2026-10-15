@@ -43,7 +43,7 @@ import { Tenant } from 'vitamui-library';
   providedIn: 'root',
 })
 export class CustomerDataService {
-  private tenantsUpdatedSource = new BehaviorSubject<Tenant[]>([]);
+  private readonly tenantsUpdatedSource = new BehaviorSubject<Tenant[]>([]);
 
   private _tenants: Tenant[] = [];
 

@@ -89,12 +89,12 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   ],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
-  private logbookService = inject(LogbookService);
-  private authService = inject(AuthService);
-  private route = inject(ActivatedRoute);
-  private logbookDownloadService = inject(LogbookDownloadService);
-  private externalParameterService = inject(ExternalParametersService);
-  private snackBarService = inject(SnackBarService);
+  private readonly logbookService = inject(LogbookService);
+  private readonly authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly logbookDownloadService = inject(LogbookDownloadService);
+  private readonly externalParameterService = inject(ExternalParametersService);
+  private readonly snackBarService = inject(SnackBarService);
 
   @Input() eventId: string;
   @Input() tenantIdentifier: number;
@@ -112,7 +112,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   public showDownloadButton = false;
   public disableDownloadButton = true;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));

@@ -52,8 +52,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [SelectComponent, ReactiveFormsModule, FormsModule, DialogHeaderComponent, MatDialogActions, MatDialogClose, TranslatePipe],
 })
 export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private dialog = inject(MatDialog);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly dialog = inject(MatDialog);
 
   @Input()
   ruleCategory: string;

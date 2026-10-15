@@ -59,6 +59,8 @@ public class JsonFromPUA {
     private static final String ITEMS = "items";
     private static final String PATTERN_PROPERTIES = "patternProperties";
     private static final String ADDITIONAL_PROPERTIES = "additionalProperties";
+    private static final String MANAGEMENT_CONTROL = "#management";
+    private static final String MANAGEMENT = "Management";
 
     /**
      * Generates a Profile from a PUA file
@@ -144,8 +146,8 @@ public class JsonFromPUA {
     private String sanitizeNodeName(String name) {
         String realName = name.replace("_", "");
         switch (realName) {
-            case "#management":
-                realName = "Management";
+            case MANAGEMENT_CONTROL:
+                realName = MANAGEMENT;
                 break;
             case "evId":
                 realName = "EventIdentifier";
@@ -201,8 +203,8 @@ public class JsonFromPUA {
         }
         if (jsonPUA.has(PATTERN_PROPERTIES)) {
             JSONObject patternProperties = jsonPUA.getJSONObject(PATTERN_PROPERTIES);
-            if (patternProperties.has("#management")) {
-                JSONObject management = patternProperties.getJSONObject("#management");
+            if (patternProperties.has(MANAGEMENT_CONTROL)) {
+                JSONObject management = patternProperties.getJSONObject(MANAGEMENT_CONTROL);
                 boolean additionalProperties = false;
                 if (management.has(ADDITIONAL_PROPERTIES)) {
                     additionalProperties = management.getBoolean(ADDITIONAL_PROPERTIES);
@@ -210,10 +212,10 @@ public class JsonFromPUA {
                 SedaNode managementSeda = sedaNode
                     .getChildren()
                     .stream()
-                    .filter(e -> e.getName().equals("Management"))
+                    .filter(e -> e.getName().equals(MANAGEMENT))
                     .findAny()
                     .get();
-                ElementProperties managementProperties = createChildren(parent, "Management");
+                ElementProperties managementProperties = createChildren(parent, MANAGEMENT);
                 managementProperties.setCardinality(managementSeda.getCardinality());
                 PuaData managementData = new PuaData();
                 managementData.setAdditionalProperties(additionalProperties);

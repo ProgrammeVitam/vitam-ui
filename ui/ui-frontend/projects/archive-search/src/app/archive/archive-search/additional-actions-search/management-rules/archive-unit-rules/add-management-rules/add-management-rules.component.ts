@@ -90,15 +90,15 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
   ],
 })
 export class AddManagementRulesComponent implements OnDestroy, OnInit {
-  private managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
-  private archiveService = inject(ArchiveService);
-  private formBuilder = inject(FormBuilder);
+  private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
+  private readonly archiveService = inject(ArchiveService);
+  private readonly formBuilder = inject(FormBuilder);
   dialog = inject(MatDialog);
   ruleService = inject(RuleService);
-  private managementRulesValidatorService = inject(ManagementRulesValidatorService);
-  private translateService = inject(TranslateService);
-  private updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
-  private vitamConfigurationService = inject(VitamTenantConfigService);
+  private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
+  private readonly translateService = inject(TranslateService);
+  private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
+  private readonly vitamConfigurationService = inject(VitamTenantConfigService);
 
   @Output() delete = new EventEmitter<any>();
   @Output() confirmStep = new EventEmitter<any>();

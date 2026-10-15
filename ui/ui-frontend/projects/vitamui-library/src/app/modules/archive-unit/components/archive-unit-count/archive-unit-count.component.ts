@@ -51,7 +51,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [MatProgressSpinner, TooltipDirective, PluralPipe, TranslatePipe],
 })
 export class ArchiveUnitCountComponent implements OnChanges {
-  private logger = inject(Logger);
+  private readonly logger = inject(Logger);
 
   @Input() search: Observable<number>;
   @Input() archiveUnitCount = 0;
@@ -67,7 +67,7 @@ export class ArchiveUnitCountComponent implements OnChanges {
   exactCountLoaded = false;
   displaySelectedArchiveUnitCount = true;
 
-  private subscriptions = new Subscription();
+  private readonly subscriptions = new Subscription();
 
   ngOnChanges(changes: SimpleChanges): void {
     const { selectedArchiveUnitCount, archiveUnitCount, threshold, search } = changes;

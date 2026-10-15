@@ -157,6 +157,13 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
 
     private static final String TYPE_KEY = "type";
     private static final String LEVEL_KEY = "level";
+    private static final String EMAIL_KEY = "email";
+    private static final String CUSTOMER_ID = "customerId";
+    private static final String STATUS_KEY = "status";
+    private static final String GROUP_ID_KEY = "groupId";
+    private static final String PHONE_KEY = "phone";
+    private static final String MOBILE_KEY = "mobile";
+    private static final String FORMAT_NOT_ALLOWED_SUFFIX = " format is not allowed";
     public static final int MAX_OLD_PASSWORDS = 12;
     private final String ADMIN_EMAIL_PATTERN = "admin@";
     private final String PORTAL_APP_IDENTIFIER = "PORTAL_APP";
@@ -557,9 +564,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
 
         // replacing the email with the lowercase version during update
-        final String email = CastUtils.toString(partialDto.get("email"));
+        final String email = CastUtils.toString(partialDto.get(EMAIL_KEY));
         if (email != null) {
-            partialDto.put("email", email.toLowerCase());
+            partialDto.put(EMAIL_KEY, email.toLowerCase());
         }
         final User entity = beforePatch(partialDto);
         final UserStatusEnum existingStatus = entity.getStatus();
@@ -593,18 +600,18 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     protected User beforePatch(final Map<String, Object> partialDto) {
         final String id = CastUtils.toString(partialDto.get("id"));
         final String message = "Unable to patch user " + id;
-        final String customerId = CastUtils.toString(partialDto.get("customerId"));
+        final String customerId = CastUtils.toString(partialDto.get(CUSTOMER_ID));
         final User user = find(id, customerId, message);
 
         Assert.isTrue(!partialDto.containsKey("password"), message + user.getId() + " : cannot patch password");
         Assert.isTrue(!partialDto.containsKey("identifier"), message + user.getId() + " cannot patch identifier");
         Assert.isTrue(!partialDto.containsKey("readonly"), message + user.getId() + " cannot patch readonly");
-        Assert.isTrue(!partialDto.containsKey("level"), message + user.getId() + " cannot patch level");
+        Assert.isTrue(!partialDto.containsKey(LEVEL_KEY), message + user.getId() + " cannot patch level");
         Assert.isTrue(
-            !UserStatusEnum.BLOCKED.toString().equals(partialDto.get("status")),
+            !UserStatusEnum.BLOCKED.toString().equals(partialDto.get(STATUS_KEY)),
             "User can't be blocked by API, this action need a special workflow for be realised"
         );
-        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "customerId")), message);
+        Assert.isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", CUSTOMER_ID)), message);
 
         checkLevel(user.getLevel(), message);
         checkIsReadonly(user.isReadonly(), message);
@@ -613,23 +620,23 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             checkOtp(user, userHasOtp);
         }
 
-        final String email = CastUtils.toString(partialDto.get("email"));
+        final String email = CastUtils.toString(partialDto.get(EMAIL_KEY));
         if (email != null) {
             checkEmail(email, user.getCustomerId(), message);
         }
 
-        final String groupId = CastUtils.toString(partialDto.get("groupId"));
+        final String groupId = CastUtils.toString(partialDto.get(GROUP_ID_KEY));
         if (!StringUtils.isEmpty(groupId)) {
             final GroupDto groupDto = getGroupDtoById(groupId, message);
             checkGroup(groupDto, customerId, message);
             if (!StringUtils.equals(user.getLevel(), groupDto.getLevel())) {
                 checkLevel(groupDto.getLevel(), message);
-                partialDto.put("level", groupDto.getLevel());
+                partialDto.put(LEVEL_KEY, groupDto.getLevel());
             }
         }
 
-        final String phone = CastUtils.toString(partialDto.get("phone"));
-        final String mobile = CastUtils.toString(partialDto.get("mobile"));
+        final String phone = CastUtils.toString(partialDto.get(PHONE_KEY));
+        final String mobile = CastUtils.toString(partialDto.get(MOBILE_KEY));
         if (phone != null && !StringUtils.equalsIgnoreCase(user.getPhone(), phone)) {
             checkPhoneNumber(phone);
         }
@@ -647,9 +654,9 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         for (final Entry<String, Object> entry : partialDto.entrySet()) {
             switch (entry.getKey()) {
                 case "id":
-                case "customerId":
+                case CUSTOMER_ID:
                     break;
-                case "email":
+                case EMAIL_KEY:
                     logbooks.add(new EventDiffDto(UserConverter.EMAIL_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setEmail(CastUtils.toString(entry.getValue()));
                     break;
@@ -670,19 +677,19 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
                     logbooks.add(new EventDiffDto(UserConverter.TYPE_KEY, user.getType(), typeAsString));
                     user.setType(EnumUtils.stringToEnum(UserTypeEnum.class, typeAsString));
                     break;
-                case "level":
+                case LEVEL_KEY:
                     logbooks.add(new EventDiffDto(UserConverter.LEVEL_KEY, user.getLevel(), entry.getValue()));
                     user.setLevel(CastUtils.toString(entry.getValue()));
                     break;
-                case "mobile":
+                case MOBILE_KEY:
                     logbooks.add(new EventDiffDto(UserConverter.MOBILE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setMobile(CastUtils.toString(entry.getValue()));
                     break;
-                case "phone":
+                case PHONE_KEY:
                     logbooks.add(new EventDiffDto(UserConverter.PHONE_KEY, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE));
                     user.setPhone(CastUtils.toString(entry.getValue()));
                     break;
-                case "groupId":
+                case GROUP_ID_KEY:
                     final GroupDto oldGroup = groupService.getOne(
                         user.getGroupId(),
                         Optional.empty(),
@@ -713,7 +720,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
                         user.setGroupId(CastUtils.toString(entry.getValue()));
                     }
                     break;
-                case "status":
+                case STATUS_KEY:
                     final String status = CastUtils.toString(entry.getValue());
                     logbooks.add(new EventDiffDto(UserConverter.STATUS_KEY, user.getStatus(), status));
                     user.setStatus(EnumUtils.stringToEnum(UserStatusEnum.class, status));
@@ -794,7 +801,7 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     public void updateOtpForUsersByCustomerId(final boolean otp, final String id) {
-        final Query query = new Query(Criteria.where("customerId").is(id));
+        final Query query = new Query(Criteria.where(CUSTOMER_ID).is(id));
         final List<User> users = userRepository.findAll(query);
         for (final User u : users) {
             final EventDiffDto evData = new EventDiffDto(UserConverter.OTP_KEY, u.isOtp(), otp);
@@ -847,10 +854,10 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     }
 
     private void checkEmail(final String email, final String customerId, final String message) {
-        Assert.notNull(email, "email : " + email + " format is not allowed");
+        Assert.notNull(email, "email : " + email + FORMAT_NOT_ALLOWED_SUFFIX);
         Assert.isTrue(
             Pattern.matches(IamUtils.EMAIL_VALID_REGEXP, email),
-            "email : " + email + " format is not allowed"
+            "email : " + email + FORMAT_NOT_ALLOWED_SUFFIX
         );
         Assert.isNull(
             getRepository().findByEmailIgnoreCaseAndCustomerId(email, customerId),
@@ -858,8 +865,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
         );
         if (email.matches(ADMIN_EMAIL_PATTERN + ".*")) {
             final Query query = new Query();
-            query.addCriteria(Criteria.where("email").regex("^" + ADMIN_EMAIL_PATTERN));
-            query.addCriteria(Criteria.where("customerId").is(customerId));
+            query.addCriteria(Criteria.where(EMAIL_KEY).regex("^" + ADMIN_EMAIL_PATTERN));
+            query.addCriteria(Criteria.where(CUSTOMER_ID).is(customerId));
             final Optional<User> adminUser = getRepository().findOne(query);
             Assert.isTrue(adminUser.isEmpty(), message + ": admin user already exists");
         }
@@ -868,14 +875,14 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
     private void checkPhoneNumber(final String phoneNumber) {
         Assert.isTrue(
             Pattern.matches(ApiIamConstants.PHONE_NUMBER_VALID_REGEXP, phoneNumber),
-            "Phone Number : " + phoneNumber + " format is not allowed"
+            "Phone Number : " + phoneNumber + FORMAT_NOT_ALLOWED_SUFFIX
         );
     }
 
     private void checkLevel(final String level, final String message) {
         Assert.isTrue(
             Pattern.matches(ApiIamConstants.LEVEL_VALID_REGEXP, level),
-            "level : " + level + " format is not allowed"
+            "level : " + level + FORMAT_NOT_ALLOWED_SUFFIX
         );
         Assert.isTrue(securityService.isLevelAllowed(level), message + ": level " + level + " is not allowed");
     }
@@ -963,8 +970,8 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             customer.get().getDefaultEmailDomain().replace(".*", "");
 
         final ArrayList<CriteriaDefinition> criteria = new ArrayList<>();
-        criteria.add(Criteria.where("customerId").in(customerId));
-        criteria.add(Criteria.where("email").is(email));
+        criteria.add(Criteria.where(CUSTOMER_ID).in(customerId));
+        criteria.add(Criteria.where(EMAIL_KEY).is(email));
 
         final List<User> users = getRepository().findAll(criteria);
         if (users.isEmpty()) {
@@ -1285,15 +1292,15 @@ public class UserService extends AbstractResourceClientService<UserDto, User> {
             "lastname",
             "firstname",
             "identifier",
-            "groupId",
+            GROUP_ID_KEY,
             "language",
-            "email",
+            EMAIL_KEY,
             "otp",
             "subrogeable",
-            "phone",
-            "mobile",
+            PHONE_KEY,
+            MOBILE_KEY,
             "lastConnection",
-            "status",
+            STATUS_KEY,
             LEVEL_KEY,
             TYPE_KEY,
             CUSTOMER_ID_KEY,

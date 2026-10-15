@@ -81,7 +81,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class PastisApiService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   baseUrl: string;
 

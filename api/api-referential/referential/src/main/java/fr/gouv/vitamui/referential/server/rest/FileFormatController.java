@@ -92,6 +92,8 @@ public class FileFormatController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileFormatController.class);
 
+    private static final String IDENTIFIER_IS_MANDATORY = "Identifier is mandatory: ";
+
     @Autowired
     private FileFormatService fileFormatService;
 
@@ -140,7 +142,7 @@ public class FileFormatController {
 
     private FileFormatDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get file format identifier={}");
-        ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, identifier);
         return fileFormatService.getOne(identifier);
     }
 
@@ -186,7 +188,7 @@ public class FileFormatController {
     private List<HistoryEventDto> findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         return fileFormatService.findHistoryById(id);
     }
 
@@ -194,7 +196,7 @@ public class FileFormatController {
     @DeleteMapping(CommonConstants.PATH_ID)
     public void delete(final @PathVariable("id") String id)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        ParameterChecker.checkParameter(IDENTIFIER_IS_MANDATORY, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete fileFormat with id :{}", id);
         fileFormatService.delete(id);

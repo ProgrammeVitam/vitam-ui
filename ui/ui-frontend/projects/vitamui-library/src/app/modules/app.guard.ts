@@ -51,12 +51,12 @@ const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
   providedIn: 'root',
 })
 export class AppGuard {
-  private authService = inject(AuthService);
-  private startupService = inject(StartupService);
-  private titleService = inject(Title);
-  private globalEventService = inject(GlobalEventService);
-  private location = inject(WINDOW_LOCATION);
-  private translateService = inject(TranslateService);
+  private readonly authService = inject(AuthService);
+  private readonly startupService = inject(StartupService);
+  private readonly titleService = inject(Title);
+  private readonly globalEventService = inject(GlobalEventService);
+  private readonly location = inject(WINDOW_LOCATION);
+  private readonly translateService = inject(TranslateService);
 
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!next.data.hasOwnProperty('appId')) {
