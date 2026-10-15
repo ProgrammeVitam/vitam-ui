@@ -15,7 +15,6 @@
 
     <properties>
         <rpm.skip>true</rpm.skip>
-        <sonar.sources>src/main/java</sonar.sources>
         <swagger.dir>ui</swagger.dir>
         <swagger.skip>false</swagger.skip>
         <webpack.skip>false</webpack.skip>

@@ -9,7 +9,6 @@ pipeline {
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DdeployAtEnd=true "
         M2_REPO = "${HOME}/.m2"
         CI = credentials("app-jenkins")
-        SERVICE_SONAR_URL = credentials("service-sonar-java11-url")
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_DOCKER_PULL_URL=credentials("SERVICE_DOCKER_PULL_URL")
