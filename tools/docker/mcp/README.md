@@ -1,4 +1,4 @@
-# MCP gateway for Claude Code
+# MCP servers for Claude Code
 
 A single [Docker MCP gateway](https://github.com/docker/mcp-gateway) (`vitamui-mcp-gateway` container, about 10 MB of RAM) is shared by all Claude Code sessions, declared as the `vitam-ui` server in the `.mcp.json` of the repository root. It exposes the tools of:
 
@@ -6,6 +6,10 @@ A single [Docker MCP gateway](https://github.com/docker/mcp-gateway) (`vitamui-m
 - `angular-cli`: Angular CLI MCP server of `ui/ui-frontend` (version of the workspace `node_modules`, run in a `node:22-slim` container).
 
 The servers are not running between calls: the gateway starts a container for each tool call and removes it afterwards (about 1 s for `angular-cli`, 8 to 15 s for `sonarcloud`). It also starts each server once when it starts itself, to list their tools.
+
+The servers that keep a state between calls or work with the host are declared directly in `.mcp.json` and started by each Claude Code session, outside the gateway (Node.js must be in the `PATH` of Claude Code):
+
+- `chrome-devtools`: drives a Chrome browser to debug the apps run in dev mode (see [Chrome DevTools](#chrome-devtools)).
 
 ## Setup
 
@@ -18,14 +22,26 @@ The servers are not running between calls: the gateway starts a container for ea
        "SONARQUBE_TOKEN": "<SonarCloud token>",
        "MCP_GATEWAY_AUTH_TOKEN": "<random value>"
      },
-     "enabledMcpjsonServers": ["vitam-ui"]
+     "enabledMcpjsonServers": ["vitam-ui", "chrome-devtools"]
    }
    ```
 
 3. Run `./start.sh`.
-4. Start Claude Code from the repository root and check that `vitam-ui` is connected with `/mcp`.
+4. Start Claude Code from the repository root and check that the servers are connected with `/mcp`.
 
 The gateway restarts with Docker (`--restart unless-stopped`). Stop it with `./stop.sh`. Run `./start.sh` again after changing the secrets or `catalog.yaml`, or after moving the repository.
+
+## Chrome DevTools
+
+[`chrome-devtools-mcp`](https://github.com/ChromeDevTools/chrome-devtools-mcp) lets Claude Code navigate, click, fill forms, take screenshots, read the console and the network requests, evaluate JavaScript and record performance traces in Chrome.
+
+On its first tool call, it opens a Chrome window with a dedicated profile (`~/.cache/chrome-devtools-mcp/chrome-profile`), kept between sessions:
+
+1. Start the backend and the app to debug (`npm run start:<app>`).
+2. Ask Claude Code to open the app, e.g. `https://dev.vitamui.com:4200`.
+3. Log in through CAS in this window the first time: the session cookies are kept in the profile. On Linux, the certificates of `dev-deployment/environments/certs/` installed in the NSS database (`~/.pki/nssdb`) are trusted by this profile too.
+
+The window is closed with the Claude Code session. Only one session at a time can use the profile. Usage statistics and the sending of URLs to the Chrome UX Report API are disabled.
 
 ## Files
 
@@ -43,3 +59,4 @@ The gateway restarts with Docker (`--restart unless-stopped`). Stop it with `./s
 
 - `vitam-ui` fails to connect in `/mcp`: the gateway is not running (`docker ps`, then `./start.sh`) or `MCP_GATEWAY_AUTH_TOKEN` is missing from `.claude/settings.local.json` (Claude Code must be restarted after changing it).
 - A server or a tool is missing, or a tool call fails: see the gateway logs, `docker logs vitamui-mcp-gateway` (a `Can't start …` line gives the reason why a server is unavailable).
+- `chrome-devtools` or `mongodb` fails to connect with `Executable not found in $PATH: "npx"`: Claude Code was started by an application launched outside your shell (e.g. IntelliJ started from the desktop), so a Node.js installed with nvm is not in its `PATH`. Start the application from a shell where Node.js is available, or make `npx` available outside the shell, e.g. with an `npx` script in `~/.local/bin` that loads nvm.
