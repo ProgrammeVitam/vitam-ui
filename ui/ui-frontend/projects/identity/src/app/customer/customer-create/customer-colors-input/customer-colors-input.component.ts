@@ -34,17 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Color, Option, ThemeColorType, ThemeService } from 'vitamui-library';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Color, Option, SelectComponent, ThemeColorType, ThemeService } from 'vitamui-library';
 import { Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { InputColorComponent } from './input-color/input-color.component';
 
 @Component({
   selector: 'app-customer-colors-input',
   templateUrl: './customer-colors-input.component.html',
   styleUrls: ['./customer-colors-input.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, InputColorComponent, SelectComponent, FormsModule, TranslatePipe],
 })
 export class CustomerColorsInputComponent implements OnInit {
   private themeService = inject(ThemeService);

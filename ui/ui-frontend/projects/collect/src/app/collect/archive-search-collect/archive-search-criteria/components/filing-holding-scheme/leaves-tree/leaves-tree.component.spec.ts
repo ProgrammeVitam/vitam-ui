@@ -51,7 +51,6 @@ import { ArchiveCollectService } from '../../../../archive-collect.service';
 import { ArchiveFacetsService } from '../../../services/archive-facets.service';
 import { ArchiveSharedDataService } from '../../../../../core/archive-shared-data.service';
 import { LeavesTreeComponent } from './leaves-tree.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 export function newNode(
   currentId: string,
@@ -106,15 +105,13 @@ describe('LeavesTreeComponent', () => {
     (archiveSharedDataServiceStub as any).selectedUnit$ = of();
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule],
-      declarations: [LeavesTreeComponent],
+      imports: [BrowserAnimationsModule, LeavesTreeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         { provide: ArchiveCollectService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveSharedDataServiceStub },
         { provide: ArchiveFacetsService, useValue: archiveFacetsServicStube },
         { provide: ConfigurationsApiService, useValue: configurationsApiServiceStube },
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

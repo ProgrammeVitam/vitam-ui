@@ -56,13 +56,12 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
     };
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
-      declarations: [TitleAndDescriptionCriteriaSearchComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
       ],
-      imports: [InjectorModule],
+      imports: [InjectorModule, TitleAndDescriptionCriteriaSearchComponent],
     }).compileComponents();
   });
 

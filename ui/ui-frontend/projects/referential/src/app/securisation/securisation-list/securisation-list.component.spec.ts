@@ -58,8 +58,7 @@ describe('SecurisationListComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [VitamUICommonTestModule, ReactiveFormsModule],
-      declarations: [SecurisationListComponent],
+      imports: [VitamUICommonTestModule, ReactiveFormsModule, SecurisationListComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: SecurisationService, useValue: securisationServiceMock },

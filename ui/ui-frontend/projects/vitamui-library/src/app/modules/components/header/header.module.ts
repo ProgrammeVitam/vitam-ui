@@ -41,27 +41,21 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header.component';
-import { ItemSelectModule } from './item-select/item-select.module';
+
 import { MenuModule } from './menu/menu.module';
-import { SelectLanguageModule } from './select-language/select-language.module';
-import { SelectSiteModule } from './select-site/select-site.module';
-import { UserPhotoModule } from './user-photo/user-photo.module';
+
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [HeaderComponent],
   imports: [
     CommonModule,
     RouterModule,
     MatMenuModule,
     MatToolbarModule,
     MatButtonModule,
-    ItemSelectModule,
-    UserPhotoModule,
     MenuModule.forRoot(),
-    SelectLanguageModule,
-    SelectSiteModule,
     TranslatePipe,
+    HeaderComponent,
   ],
   exports: [HeaderComponent],
 })

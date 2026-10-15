@@ -75,7 +75,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { CoreModule } from './../core/core.module';
 import { FileTreeModule } from './../profile/edit-profile/file-tree/file-tree.module';
-import { SharedModule } from './../shared/shared.module';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -83,14 +82,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
-import { PastisMaterialModule } from '../material.module';
+
 import { UserActionsModule } from '../user-actions/user-actions.module';
 import { CreateProfileComponent } from './create-profile/create-profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ListProfileComponent } from './list-profile/list-profile.component';
 import { FilterByStringNamePipe } from './list-profile/pipes/filterByStringName.pipe';
 import { FilterByTypePipe } from './list-profile/pipes/filterByType.pipe';
-import { ProfilePreviewModule } from './profile-preview/profile-preview.module';
+
 import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/pastis-generic-popup.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -103,17 +102,18 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatIconModule,
     MatSlideToggleModule,
     MatTabsModule,
-    PastisMaterialModule,
-    ProfilePreviewModule,
     ReactiveFormsModule,
-    SharedModule,
     UserActionsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     PastisGenericPopupComponent,
     TranslatePipe,
+    CreateProfileComponent,
+    EditProfileComponent,
+    ListProfileComponent,
+    FilterByStringNamePipe,
+    FilterByTypePipe,
   ],
   exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
-  declarations: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
 })
 export class ProfileModule {}

@@ -34,14 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, inject } from '@angular/core';
-import { Logger, StartupService } from 'vitamui-library';
+import { Component, inject, OnInit } from '@angular/core';
+import { FooterComponent, HeaderModule, Logger, StartupService, SubrogationModule, VitamuiBodyComponent } from 'vitamui-library';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  standalone: false,
+  imports: [HeaderModule, VitamuiBodyComponent, RouterOutlet, FooterComponent, SubrogationModule],
 })
 export class AppComponent implements OnInit {
   private startupService = inject(StartupService);

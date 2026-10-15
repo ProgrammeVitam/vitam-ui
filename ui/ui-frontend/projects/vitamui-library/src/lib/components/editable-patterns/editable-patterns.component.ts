@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, Input, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, Input, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { EditableFieldComponent } from '../../../app/modules/components/editable-field/editable-field.component';
 import { PatternComponent } from '../pattern/pattern.component';
 
@@ -54,8 +54,7 @@ export const EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR: any = {
   selector: 'vitamui-editable-patterns',
   templateUrl: './editable-patterns.component.html',
   providers: [EDITABLE_PATTERNS_INPUT_VALUE_ACCESSOR],
-  standalone: true,
-  imports: [ReactiveFormsModule, OverlayModule, MatProgressSpinnerModule, PatternComponent],
+  imports: [CdkOverlayOrigin, PatternComponent, ReactiveFormsModule, MatProgressSpinner, CdkConnectedOverlay],
 })
 export class EditablePatternsComponent extends EditableFieldComponent {
   private document = inject<Document>(DOCUMENT);

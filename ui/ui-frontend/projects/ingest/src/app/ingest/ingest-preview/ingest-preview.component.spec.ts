@@ -37,19 +37,13 @@
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of } from 'rxjs';
-import { BASE_URL, LogbookService } from 'vitamui-library';
+import { LogbookService } from 'vitamui-library';
 import { LogbookOperation } from '../../models/logbook-event.interface';
 import { IngestService } from '../ingest.service';
 import { IngestPreviewComponent } from './ingest-preview.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: string): string {
     return value;
@@ -59,13 +53,18 @@ class MockTruncatePipe implements PipeTransform {
 describe('IngestPreviewComponent test:', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
-  const logbookOperation: LogbookOperation = { id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq', agIdExt: {}, events: [{}] };
+  const logbookOperation: LogbookOperation = {
+    id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
+    agIdExt: {},
+    events: [
+      { id: 'ev1', evParentId: null, evType: 'INGEST', evDateTime: '2020-01-01T00:00:00', evDetData: null, outcome: 'OK', outMessg: '' },
+    ],
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IngestPreviewComponent, MockTruncatePipe],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatMenuModule],
+      imports: [MatMenuModule, IngestPreviewComponent, MockTruncatePipe],
       providers: [
         { provide: LogbookService, useValue: {} },
         {
@@ -75,9 +74,6 @@ describe('IngestPreviewComponent test:', () => {
             logbookOperationsReloaded: of([logbookOperation]),
           },
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

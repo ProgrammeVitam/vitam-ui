@@ -34,29 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, Rule, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, Rule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { BlockRulesInheritanceComponent } from './block-rules-inheritance.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleCategoryAction: RuleCategoryAction = {
   rules: [],
@@ -156,19 +145,15 @@ describe('BlockRulesInheritanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BlockRulesInheritanceComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, BlockRulesInheritanceComponent],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -197,7 +182,7 @@ describe('BlockRulesInheritanceComponent', () => {
 
   describe('DOM', () => {
     it('should have 1 title ', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('form > div > label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(1);

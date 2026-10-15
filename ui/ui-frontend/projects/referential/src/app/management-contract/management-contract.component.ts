@@ -34,24 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { ApplicationService, GlobalEventService, ManagementContract, SidenavPage } from 'vitamui-library';
+import {
+  ApplicationService,
+  ManagementContract,
+  SidenavPage,
+  TooltipDirective,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
+} from 'vitamui-library';
 import { ManagementContractCreateComponent } from './management-contract-create/management-contract-create.component';
 import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
 import { shareReplay } from 'rxjs/operators';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { ManagementContractPreviewComponent } from './management-contract-preview/management-contract-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-management-contract',
   templateUrl: './management-contract.component.html',
   styleUrls: ['./management-contract.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    ManagementContractPreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    TooltipDirective,
+    ManagementContractListComponent,
+    TranslatePipe,
+  ],
 })
 export class ManagementContractComponent extends SidenavPage<ManagementContract> {
   dialog = inject(MatDialog);
-  private route: ActivatedRoute;
+  private route = inject(ActivatedRoute);
   private applicationService = inject(ApplicationService);
 
   @ViewChild(ManagementContractListComponent, { static: true }) managementContractListComponent: ManagementContractListComponent;
@@ -63,13 +83,9 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('MANAGEMENT_CONTRACT').pipe(shareReplay(1));
 
   constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
+    super();
 
-    super(route, globalEventService);
-    this.route = route;
-
-    globalEventService.tenantEvent.subscribe(() => {
+    this.globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });
 

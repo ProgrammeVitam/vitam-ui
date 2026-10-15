@@ -35,17 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { vi } from 'vitest';
-const createSpyObj = (name: string, methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 import { Clipboard } from '@angular/cdk/clipboard';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
 import {
   ApiUnitObject,
-  BASE_URL,
   DescriptionLevel,
   ENVIRONMENT,
   FileInfoDto,
@@ -61,7 +57,8 @@ import {
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
 import { CollectObjectGroupDetailsTabComponent } from './collect-object-group-details-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
+const createSpyObj = (name: string, methods: string[]): any => Object.fromEntries(methods.map((m) => [m, vi.fn()]));
 
 describe('CollectObjectGroupDetailsTabComponent', () => {
   let component: CollectObjectGroupDetailsTabComponent;
@@ -121,17 +118,19 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CollectObjectGroupDetailsTabComponent],
-      imports: [BrowserAnimationsModule, InjectorModule, LoggerModule.forRoot(), RouterTestingModule, BrowserAnimationsModule],
+      imports: [
+        BrowserAnimationsModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        BrowserAnimationsModule,
+        CollectObjectGroupDetailsTabComponent,
+      ],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveCollectService, useValue: archiveCollectServiceSpy },
         { provide: Clipboard, useValue: clipboardSpy },
         { provide: TenantSelectionService, useValue: tenantSelectionServiceSpy },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
 

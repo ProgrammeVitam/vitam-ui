@@ -74,8 +74,7 @@ describe('IngestContractPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [],
-      declarations: [IngestContractPreviewComponent],
+      imports: [IngestContractPreviewComponent],
       providers: [
         { provide: MatDialog, useValue: {} },
         { provide: IngestContractService, useValue: {} },

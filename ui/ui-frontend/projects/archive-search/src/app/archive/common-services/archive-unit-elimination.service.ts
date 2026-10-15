@@ -38,7 +38,7 @@ import { inject, Injectable, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-import { ApplicationId, VitamTenantConfigService, SearchCriteriaEltDto, SnackBarService } from 'vitamui-library';
+import { ApplicationId, SearchCriteriaEltDto, SnackBarService, VitamTenantConfigService } from 'vitamui-library';
 import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
 import { ArchiveService } from '../archive.service';
 

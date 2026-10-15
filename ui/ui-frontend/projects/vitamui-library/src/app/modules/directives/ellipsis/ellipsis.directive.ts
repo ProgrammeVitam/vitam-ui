@@ -59,10 +59,7 @@ const ELLIPSIS_TOOLTIP_POSITION: ConnectedPosition = {
   overlayY: 'top',
 };
 
-@Directive({
-  selector: '[vitamuiCommonEllipsis]',
-  standalone: false,
-})
+@Directive({ selector: '[vitamuiCommonEllipsis]' })
 export class EllipsisDirective implements OnInit, AfterViewInit, OnDestroy {
   private renderer = inject(Renderer2);
   private elementRef = inject(ElementRef);

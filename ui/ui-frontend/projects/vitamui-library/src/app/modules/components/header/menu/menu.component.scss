@@ -74,6 +74,13 @@
     outline-width: 0;
   }
 
+  .menu-container {
+    animation: menuFadeIn 500ms cubic-bezier(0, 0, 0.2, 1);
+    &.menu-closing {
+      animation: menuFadeOut 500ms cubic-bezier(0, 0, 0.2, 1) forwards;
+    }
+  }
+
   .container {
     background: var(--vitamui-white);
     width: var(--width);

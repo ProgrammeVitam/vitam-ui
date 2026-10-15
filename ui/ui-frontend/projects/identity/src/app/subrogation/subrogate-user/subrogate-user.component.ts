@@ -34,49 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import {
-  AppRootComponent,
   Customer,
   CustomerSelectionService,
   GlobalEventService,
   MenuOption,
   SubrogationModalService,
+  VitamuiBannerComponent,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { CustomerSelectService } from '../customer-select.service';
+import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { SubrogateUserListComponent } from './subrogate-user-list/subrogate-user-list.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-subrogate-user',
   templateUrl: './subrogate-user.component.html',
   styleUrls: ['./subrogate-user.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    SubrogateUserListComponent,
+    TranslatePipe,
+  ],
 })
-export class SubrogateUserComponent extends AppRootComponent implements OnInit, OnDestroy {
+export class SubrogateUserComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   globalEventService = inject(GlobalEventService);
-  private router = inject(Router);
-  private route: ActivatedRoute;
-  private subrogationModalService = inject(SubrogationModalService);
-  private customerSelectService = inject(CustomerSelectService);
-  private customerSelectionService = inject(CustomerSelectionService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly subrogationModalService = inject(SubrogationModalService);
+  private readonly customerSelectService = inject(CustomerSelectService);
+  private readonly customerSelectionService = inject(CustomerSelectionService);
 
   public customer: Customer;
   public customers: MenuOption[];
   public search: string;
 
   private destroyer$ = new Subject<void>();
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-
-    super(route);
-
-    this.route = route;
-  }
 
   ngOnInit() {
     this.customerSelectService

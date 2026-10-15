@@ -47,8 +47,7 @@ describe('GroupEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GroupEditorComponent],
-      imports: [LoggerModule.forRoot(), PipesModule, MatDialogModule],
+      imports: [LoggerModule.forRoot(), PipesModule, MatDialogModule, GroupEditorComponent],
     }).compileComponents();
   });
 

@@ -34,20 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { ApplicationService, GlobalEventService, SecurityProfile, SidenavPage } from 'vitamui-library';
+import { ApplicationService, SecurityProfile, SidenavPage, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
 import { SecurityProfileCreateComponent } from './security-profile-create/security-profile-create.component';
 import { SecurityProfileListComponent } from './security-profile-list/security-profile-list.component';
 import { shareReplay } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { SecurityProfilePreviewComponent } from './security-profile-preview/security-profile-preview.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-security-profile',
   templateUrl: './security-profile.component.html',
   styleUrls: ['./security-profile.component.scss'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    SecurityProfilePreviewComponent,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    VitamuiBannerComponent,
+    SecurityProfileListComponent,
+    TranslatePipe,
+  ],
 })
 export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
   dialog = inject(MatDialog);
@@ -58,13 +69,6 @@ export class SecurityProfileComponent extends SidenavPage<SecurityProfile> {
   @ViewChild(SecurityProfileListComponent, { static: true }) contextListComponent: SecurityProfileListComponent;
 
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('SECURITY_PROFILE').pipe(shareReplay(1));
-
-  constructor() {
-    const route = inject(ActivatedRoute);
-    const globalEventService = inject(GlobalEventService);
-
-    super(route, globalEventService);
-  }
 
   async openCreateSecurityProfileDialog() {
     const isSlaveMode = await firstValueFrom(this.#isSlaveMode$);

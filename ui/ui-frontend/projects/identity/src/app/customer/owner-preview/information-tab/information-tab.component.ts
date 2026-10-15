@@ -34,18 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, Input, OnChanges, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import type { CountryOption, Owner, Tenant } from 'vitamui-library';
-import { CountryService, diff, Option, StartupService } from 'vitamui-library';
+import {
+  CountryOption,
+  CountryService,
+  diff,
+  EditableInputComponent,
+  FormFieldValueWrapperComponent,
+  Option,
+  Owner,
+  SelectComponent,
+  StartupService,
+  Tenant,
+  VitamUIFieldErrorComponent,
+} from 'vitamui-library';
 
 import { ALPHA_NUMERIC_REGEX, OWNER_CODE_MAX_LENGTH, OwnerFormValidators } from '../../owner-form/owner-form.validators';
 import { OwnerService } from '../../owner.service';
 import { TenantFormValidators } from '../../tenant-create/tenant-form.validators';
 import { TenantService } from '../../tenant.service';
+import { MatDivider } from '@angular/material/divider';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -53,7 +74,24 @@ const UPDATE_DEBOUNCE_TIME = 200;
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
-  standalone: false,
+  imports: [
+    ReactiveFormsModule,
+    VitamUIFieldErrorComponent,
+    FormFieldValueWrapperComponent,
+    SelectComponent,
+    MatDivider,
+    TranslatePipe,
+    CommonModule,
+    EditableInputComponent,
+    FormsModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    OverlayModule,
+  ],
 })
 export class InformationTabComponent implements OnChanges, OnInit {
   private formBuilder = inject(FormBuilder);

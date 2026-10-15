@@ -34,19 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { LangChangeEvent, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../../../auth.service';
 import { FullLangString, LanguageService, MinLangString } from '../../../language.service';
 import { BaseUserInfoApiService } from './../../../api/base-user-info-api.service';
+import { ItemSelectComponent } from '../item-select/item-select.component';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'vitamui-common-select-language',
   templateUrl: './select-language.component.html',
   styleUrls: ['./select-language.component.scss'],
-  standalone: false,
+  imports: [ItemSelectComponent, MatMiniFabButton, MatMenuTrigger, MatMenu, MatMenuItem, TranslatePipe],
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
   private translateService = inject(TranslateService);

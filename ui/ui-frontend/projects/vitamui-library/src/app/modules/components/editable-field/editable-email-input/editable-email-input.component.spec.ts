@@ -34,38 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-// import { EditableEmailInputComponent } from './editable-email-input.component';
-
-// describe('EditableEmailInputComponent', () => {
-//   let component: EditableEmailInputComponent;
-//   let fixture: ComponentFixture<EditableEmailInputComponent>;
-
-//   beforeEach(async(() => {
-//     await TestBed.configureTestingModule({
-//       declarations: [ EditableEmailInputComponent ]
-//     })
-//     .compileComponents();
-//   }));
-
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(EditableEmailInputComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
-
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
 import { OverlayModule } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EditableEmailInputComponent } from './editable-email-input.component';
 
@@ -75,8 +49,7 @@ describe('EditableEmailInputComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditableEmailInputComponent],
-      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, NoopAnimationsModule],
+      imports: [OverlayModule, ReactiveFormsModule, MatSelectModule, EditableEmailInputComponent],
       providers: [{ provide: DOCUMENT, useValue: document }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

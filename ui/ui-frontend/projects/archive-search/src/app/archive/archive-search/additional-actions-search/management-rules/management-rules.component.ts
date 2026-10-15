@@ -34,15 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 import {
   ApplicationId,
   BreadCrumbData,
+  DialogHeaderComponent,
   Logger,
   Option,
   Rule,
@@ -52,6 +53,7 @@ import {
   SelectComponent,
   SnackBarService,
   VitamTenantConfigService,
+  VitamuiTitleBreadcrumbComponent,
 } from 'vitamui-library';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
@@ -64,6 +66,10 @@ import {
   RuleSearchCriteriaDto,
 } from '../../../models/ruleAction.interface';
 import { Location } from '@angular/common';
+import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { MatRadioButton } from '@angular/material/radio';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { ArchiveUnitRulesComponent } from './archive-unit-rules/archive-unit-rules.component';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 
@@ -71,7 +77,20 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
   styleUrls: ['./management-rules.component.css'],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenavContent,
+    VitamuiTitleBreadcrumbComponent,
+    MatRadioButton,
+    SelectComponent,
+    MatTabGroup,
+    MatTab,
+    ArchiveUnitRulesComponent,
+    DialogHeaderComponent,
+    MatDialogActions,
+    MatDialogClose,
+    TranslatePipe,
+  ],
 })
 export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   private archiveService = inject(ArchiveService);

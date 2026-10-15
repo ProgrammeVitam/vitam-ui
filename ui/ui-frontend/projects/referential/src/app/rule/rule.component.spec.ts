@@ -35,8 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
@@ -45,30 +43,36 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EMPTY, of } from 'rxjs';
-import type { Rule } from 'vitamui-library';
 import {
   AuthService,
-  BASE_URL,
   ENVIRONMENT,
   GlobalEventService,
   InjectorModule,
   LoggerModule,
+  Rule,
   SecurityService,
   SnackBarService,
 } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from '../../environments/environment';
 import { RuleComponent } from './rule.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-rule-preview',
   template: '',
-  standalone: false,
+  imports: [
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
 })
 class RulePreviewStubComponent {
   @Input()
@@ -78,7 +82,17 @@ class RulePreviewStubComponent {
 @Component({
   selector: 'app-rule-list',
   template: '',
-  standalone: false,
+  imports: [
+    VitamUICommonTestModule,
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatDialogModule,
+    InjectorModule,
+  ],
 })
 class RuleListStubComponent {
   @Input()
@@ -113,6 +127,7 @@ describe('RuleComponent', () => {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'RULE_APP' }),
       paramMap: EMPTY,
+      snapshot: { data: { appId: 'RULE_APP' } },
     };
 
     const securityServiceMock = {
@@ -120,10 +135,7 @@ describe('RuleComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [RuleComponent, RuleListStubComponent, RulePreviewStubComponent],
       imports: [
-        NoopAnimationsModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
         ReactiveFormsModule,
         MatMenuModule,
@@ -134,6 +146,9 @@ describe('RuleComponent', () => {
         MatDialogModule,
         InjectorModule,
         LoggerModule.forRoot(),
+        RuleComponent,
+        RuleListStubComponent,
+        RulePreviewStubComponent,
       ],
       providers: [
         GlobalEventService,
@@ -143,9 +158,6 @@ describe('RuleComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: ENVIRONMENT, useValue: environment },
         { provide: SecurityService, useValue: securityServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -56,7 +56,7 @@ describe('EditAgencyGuard', () => {
       getSelectedTenant: vi.fn().mockReturnValue({ identifier: 1 }),
     };
     mockRouter = {
-      navigateByUrl: vi.fn(),
+      navigateByUrl: vi.fn().mockReturnValue(Promise.resolve()),
     };
 
     // Configuration du TestBed

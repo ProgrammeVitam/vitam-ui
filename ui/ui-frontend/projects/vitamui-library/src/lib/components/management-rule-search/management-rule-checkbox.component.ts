@@ -51,7 +51,6 @@ import { TranslatePipe } from '@ngx-translate/core';
       {{ label | translate }}
     </mat-checkbox>
   `,
-  standalone: true,
   imports: [MatCheckboxModule, TranslatePipe],
 })
 export class ManagementRuleCheckboxComponent {

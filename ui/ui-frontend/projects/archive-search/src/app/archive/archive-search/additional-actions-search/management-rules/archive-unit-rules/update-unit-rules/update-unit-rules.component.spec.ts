@@ -34,18 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { Observable, of } from 'rxjs';
 import {
-  BASE_URL,
   CriteriaDataType,
   CriteriaOperator,
   InjectorModule,
@@ -58,16 +54,8 @@ import {
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../../../../models/ruleAction.interface';
 import { UpdateUnitRulesComponent } from './update-unit-rules.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-const translations: any = { TEST: 'Mock translate test' };
 const accessContract = 'AccessContract';
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 const ruleCategoryAction: RuleCategoryAction = {
   rules: [],
@@ -215,11 +203,9 @@ describe('UpdateUnitRulesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UpdateUnitRulesComponent],
-      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, RouterTestingModule],
+      imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, UpdateUnitRulesComponent],
       providers: [
         FormBuilder,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -227,8 +213,6 @@ describe('UpdateUnitRulesComponent', () => {
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
         { provide: UpdateUnitManagementRuleService, useValue: updateUnitManagementRuleServiceMock },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -266,7 +250,7 @@ describe('UpdateUnitRulesComponent', () => {
 
   describe('DOM', () => {
     it('should have 3 titles ', () => {
-      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('label');
+      const formTitlesHtmlElements = fixture.nativeElement.querySelectorAll('form > div > label');
 
       expect(formTitlesHtmlElements).toBeTruthy();
       expect(formTitlesHtmlElements.length).toBe(3);

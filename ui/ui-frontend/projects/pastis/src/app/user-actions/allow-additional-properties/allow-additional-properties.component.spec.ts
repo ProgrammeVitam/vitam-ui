@@ -46,8 +46,7 @@ describe('AllowAdditionalPropertiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AllowAdditionalPropertiesComponent],
-      imports: [FormsModule, SlideToggleComponent],
+      imports: [FormsModule, SlideToggleComponent, AllowAdditionalPropertiesComponent],
     }).compileComponents();
   });
 

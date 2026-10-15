@@ -79,8 +79,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { VitamUILibraryModule } from 'vitamui-library';
 import { CoreModule } from '../core/core.module';
-import { PastisMaterialModule } from '../material.module';
-import { SharedModule } from '../shared/shared.module';
+
 import { FilterByNamePipe } from './add-metadata/add-metadata.component';
 import { UserActionAddPuaControlComponent } from './add-pua-control/add-pua-control.component';
 import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
@@ -92,15 +91,6 @@ import { PastisGenericPopupComponent } from '../shared/pastis-generic-popup/past
 import { TranslatePipe } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    AllowAdditionalPropertiesComponent,
-    DuplicateMetadataComponent,
-    FilterByNamePipe,
-    SelectNoticeComponent,
-    UserActionAddPuaControlComponent,
-    UserActionSaveProfileComponent,
-    UserActionsDownloadDocComponent,
-  ],
   imports: [
     CommonModule,
     CoreModule,
@@ -108,12 +98,17 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    PastisMaterialModule,
     ReactiveFormsModule,
-    SharedModule,
     VitamUILibraryModule,
     PastisGenericPopupComponent,
     TranslatePipe,
+    AllowAdditionalPropertiesComponent,
+    DuplicateMetadataComponent,
+    FilterByNamePipe,
+    SelectNoticeComponent,
+    UserActionAddPuaControlComponent,
+    UserActionSaveProfileComponent,
+    UserActionsDownloadDocComponent,
   ],
   exports: [
     UserActionSaveProfileComponent,

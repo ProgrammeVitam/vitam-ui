@@ -39,7 +39,6 @@ import { Directive, EventEmitter, Input } from '@angular/core';
 @Directive({
   selector: '[vitamuiCommonCollapse]',
   exportAs: 'vitamuiCommonCollapse',
-  standalone: false,
 })
 export class CollapseDirective {
   @Input() vitamuiCommonCollapse: any;

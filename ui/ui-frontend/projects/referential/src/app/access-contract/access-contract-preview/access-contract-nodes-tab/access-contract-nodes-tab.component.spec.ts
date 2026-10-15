@@ -35,22 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import {
-  AccessContract,
-  BASE_URL,
-  ExternalParameters,
-  ExternalParametersService,
-  LoggerModule,
-  SearchUnitApiService,
-  Status,
-} from 'vitamui-library';
+import { AccessContract, ExternalParameters, ExternalParametersService, LoggerModule, SearchUnitApiService, Status } from 'vitamui-library';
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
@@ -95,16 +84,12 @@ describe('AccessContractNodesTabComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [AccessContractNodesTabComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), AccessContractNodesTabComponent],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SearchUnitApiService, useValue: unitValueMock },
         { provide: MatDialog, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

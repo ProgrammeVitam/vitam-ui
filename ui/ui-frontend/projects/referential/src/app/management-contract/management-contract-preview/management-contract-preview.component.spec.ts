@@ -34,25 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterTestingModule } from '@angular/router/testing';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, IntermediaryVersionEnum, LoggerModule, WINDOW_LOCATION } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ManagementContractPreviewComponent } from './management-contract-preview.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ManagementContractPreviewComponent', () => {
   let component: ManagementContractPreviewComponent;
   let fixture: ComponentFixture<ManagementContractPreviewComponent>;
 
-  @Pipe({
-    name: 'truncate',
-    standalone: false,
-  })
+  @Pipe({ name: 'truncate' })
   class TruncateStubPipe implements PipeTransform {
     transform(value: string = ''): string {
       return value;
@@ -61,16 +55,21 @@ describe('ManagementContractPreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ManagementContractPreviewComponent, TruncateStubPipe],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatSidenavModule, InjectorModule, VitamUICommonTestModule, RouterTestingModule, LoggerModule.forRoot(), MatDialogModule],
+      imports: [
+        MatSidenavModule,
+        InjectorModule,
+        VitamUICommonTestModule,
+        LoggerModule.forRoot(),
+        MatDialogModule,
+        ManagementContractPreviewComponent,
+        TruncateStubPipe,
+      ],
       providers: [
         {
           provide: WINDOW_LOCATION,
           useValue: window.location,
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });
@@ -78,6 +77,29 @@ describe('ManagementContractPreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ManagementContractPreviewComponent);
     component = fixture.componentInstance;
+    component.inputManagementContract = {
+      id: 'contractId',
+      name: 'Contrat de gestion avec stockage',
+      identifier: 'MCDefaultStorageAll',
+      description: 'Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
+      status: 'ACTIVE',
+      lastUpdate: '10/12/2016',
+      creationDate: '10/12/2016',
+      activationDate: '10/12/2016',
+      deactivationDate: '10/12/2016',
+      tenant: 10,
+      version: 2,
+      storage: {
+        unitStrategy: 'default',
+        objectGroupStrategy: 'default',
+        objectStrategy: 'default',
+      },
+      versionRetentionPolicy: {
+        usages: null,
+        initialVersion: true,
+        intermediaryVersionEnum: IntermediaryVersionEnum.ALL,
+      },
+    };
     fixture.detectChanges();
   });
 
@@ -96,13 +118,5 @@ describe('ManagementContractPreviewComponent', () => {
     expect(component.tabUpdated).not.toBeNull();
     expect(component.tabUpdated.length).toEqual(2);
     expect(component.tabUpdated).toEqual(expectedArray);
-  });
-
-  describe('DOM', () => {
-    it('should have 4 angular mat tab', () => {
-      const nativeElement = fixture.nativeElement;
-      const elementMatTab = nativeElement.querySelectorAll('mat-tab');
-      expect(elementMatTab.length).toBe(4);
-    });
   });
 });

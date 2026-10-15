@@ -36,12 +36,14 @@
  */
 import { Component, computed, input, signal } from '@angular/core';
 import type { ConsolidatedLifecycleEvent } from '../archive-unit-lifecycle-history.model';
+import { EventTypeLabelComponent, DateTimePipe } from 'vitamui-library';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-lifecycle-event-node',
   templateUrl: './lifecycle-event-node.component.html',
   styleUrls: ['./lifecycle-event-node.component.scss'],
-  standalone: false,
+  imports: [EventTypeLabelComponent, DateTimePipe, TranslatePipe],
 })
 export class LifecycleEventNodeComponent {
   event = input<ConsolidatedLifecycleEvent>();

@@ -38,10 +38,7 @@ import { IEvent } from 'vitamui-library';
 
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'lastEvent',
-  standalone: false,
-})
+@Pipe({ name: 'lastEvent' })
 export class LastEventPipe implements PipeTransform {
   transform(event: IEvent): IEvent {
     return event?.events?.length > 0 ? event.events[event.events.length - 1] : null;

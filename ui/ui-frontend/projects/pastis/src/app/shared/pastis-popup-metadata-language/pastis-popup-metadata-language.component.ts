@@ -72,15 +72,17 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PastisPopupMetadataLanguageService } from './pastis-popup-metadata-language.service';
+import { NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-popup-metadata-language',
   templateUrl: './pastis-popup-metadata-language.component.html',
   styleUrls: ['./pastis-popup-metadata-language.component.scss'],
-  standalone: false,
+  imports: [NgClass, TranslatePipe],
 })
 export class PastisPopupMetadataLanguageComponent implements OnInit {
   private metadataLanguageService = inject(PastisPopupMetadataLanguageService);

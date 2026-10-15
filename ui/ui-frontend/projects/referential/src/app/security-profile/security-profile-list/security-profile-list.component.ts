@@ -34,12 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { merge, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import type { AdminUserProfile, SecurityProfile } from 'vitamui-library';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'vitamui-library';
+import {
+  AdminUserProfile,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OrderByButtonComponent,
+  PageRequest,
+  SecurityProfile,
+} from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -47,7 +58,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-security-profile-list',
   templateUrl: './security-profile-list.component.html',
   styleUrls: ['./security-profile-list.component.scss'],
-  standalone: false,
+  imports: [OrderByButtonComponent, MatProgressSpinner, TranslatePipe, CommonModule, InfiniteScrollDirective],
 })
 export class SecurityProfileListComponent extends InfiniteScrollTable<SecurityProfile> implements OnDestroy, OnInit {
   securityProfileService: SecurityProfileService;

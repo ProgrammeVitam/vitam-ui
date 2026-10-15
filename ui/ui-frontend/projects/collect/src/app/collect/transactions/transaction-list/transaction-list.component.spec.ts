@@ -37,20 +37,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatePipe } from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
+import { InjectorModule, LoggerModule, StartupService, Transaction, TransactionStatus, WINDOW_LOCATION } from 'vitamui-library';
 import { environment } from '../../../../environments/environment';
 import { TransactionResolver } from '../transaction-resolver.service';
 import { TransactionsService } from '../transactions.service';
 import { TransactionListComponent } from './transaction-list.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('TransactionListComponent', () => {
   let component: TransactionListComponent;
@@ -111,9 +108,8 @@ describe('TransactionListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionListComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [InjectorModule, MatSidenavModule, BrowserAnimationsModule, LoggerModule.forRoot(), RouterTestingModule],
+      imports: [InjectorModule, MatSidenavModule, BrowserAnimationsModule, LoggerModule.forRoot(), TransactionListComponent],
       providers: [
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -127,17 +123,15 @@ describe('TransactionListComponent', () => {
             params: of({ tenantIdentifier: 1 }),
             data: of({ appId: 'COLLECT_APP' }),
             snapshot: {
+              data: { appId: 'COLLECT_APP' },
               queryParamMap: {
                 get: () => 'project messageIdentifier',
               },
             },
           },
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: environment, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, Option } from 'vitamui-library';
-import type { IngestContract } from 'vitamui-library';
+import { diff, IngestContract, Option, SelectComponent, SlideToggleComponent } from 'vitamui-library';
 
 import { IngestContractService } from '../../ingest-contract.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ingest-contract-object-tab',
   templateUrl: './ingest-contract-object-tab.component.html',
   styleUrls: ['./ingest-contract-object-tab.component.scss'],
-  standalone: false,
+  imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
 export class IngestContractObjectTabComponent {
   private formBuilder = inject(FormBuilder);

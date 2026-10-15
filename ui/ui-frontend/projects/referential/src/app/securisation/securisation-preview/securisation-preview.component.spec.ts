@@ -43,10 +43,7 @@ import { SecurisationService } from '../securisation.service';
 import { SecurisationPreviewComponent } from './securisation-preview.component';
 import { EventTypeBadgeColorPipe } from '../../shared/pipes/event-type-badge-color.pipe';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
@@ -116,15 +113,15 @@ describe('SecurisationPreviewComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, EventTypeBadgeColorPipe],
-      declarations: [SecurisationPreviewComponent, MockTruncatePipe],
+      imports: [BrowserAnimationsModule, EventTypeBadgeColorPipe, SecurisationPreviewComponent, MockTruncatePipe],
       providers: [
-        { provide: SecurisationService, useValue: {} },
         { provide: ExternalParametersService, useValue: externalParametersServiceMock },
         { provide: SnackBarService, useValue: snackBarSpy },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideProvider(SecurisationService, { useValue: { getInfoFromTimestamp: () => of({}) } })
+      .compileComponents();
   });
 
   beforeEach(() => {

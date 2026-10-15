@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -42,9 +41,8 @@ import { VitamUICommonTestModule } from '../../../../../testing/src/vitamui-comm
 
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
-import { BASE_URL, WINDOW_LOCATION } from '../../injection-tokens';
+import { WINDOW_LOCATION } from '../../injection-tokens';
 import { SubrogationSnackBarComponent } from './subrogation-snack-bar.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SubrogationSnackBarComponent', () => {
   let component: SubrogationSnackBarComponent;
@@ -52,11 +50,9 @@ describe('SubrogationSnackBarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SubrogationSnackBarComponent],
-      imports: [VitamUICommonTestModule],
+      imports: [VitamUICommonTestModule, SubrogationSnackBarComponent],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },
-        { provide: BASE_URL, useValue: '/fakeapi' },
         {
           provide: MatSnackBarRef,
           useValue: {
@@ -74,8 +70,6 @@ describe('SubrogationSnackBarComponent', () => {
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: SubrogationApiService, useValue: {} },
         { provide: SnackBarService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

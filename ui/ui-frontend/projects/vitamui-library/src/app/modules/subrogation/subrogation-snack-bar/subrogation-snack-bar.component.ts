@@ -38,10 +38,11 @@ import { Component, inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { SubrogationApiService } from '../../api/subrogation-api.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './subrogation-snack-bar.component.html',
-  standalone: false,
+  imports: [TranslatePipe],
 })
 export class SubrogationSnackBarComponent {
   data = inject(MAT_SNACK_BAR_DATA);

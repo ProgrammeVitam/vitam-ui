@@ -35,14 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateLoader } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { customTemplate } from '../archive-unit/archive-unit-template';
-import { BASE_URL } from '../injection-tokens';
 import { LoggerModule } from '../logger/logger.module';
 import { EmptyPipe } from '../pipes/empty.pipe';
 import { GroupComponent } from './components/group/group.component';
@@ -91,9 +88,8 @@ describe('ObjectViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent, EmptyPipe],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [LoggerModule.forRoot()],
+      imports: [LoggerModule.forRoot(), ObjectViewerComponent, GroupComponent, ListComponent, PrimitiveComponent, EmptyPipe],
       providers: [
         DataStructureService,
         TypeService,
@@ -104,10 +100,7 @@ describe('ObjectViewerComponent', () => {
         LayoutService,
         FavoriteEntryService,
         DatePipe,
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: DisplayObjectService, useClass: PathStrategyDisplayObjectService },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     })
       .overrideComponent(ObjectViewerComponent, {

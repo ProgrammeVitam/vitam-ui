@@ -43,7 +43,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ApplicationService, InputComponent, SelectComponent, SlideToggleComponent } from 'vitamui-library';
 import { ProfileService } from '../../core/services/profile.service';
 import { ProfileType } from '../../models/profile-type.enum';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { IdentifierExistsValidator } from '../../validators/IdentifierExistsValidator';
 import { BehaviorSubject, of } from 'rxjs';
 
@@ -90,15 +89,7 @@ describe('SaveProfilePopupComponent', () => {
 
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(externalIdSubject.asObservable());
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        MatRadioModule,
-        InputComponent,
-        SelectComponent,
-        SlideToggleComponent,
-        NoopAnimationsModule,
-        SaveProfilePopupComponent,
-      ],
+      imports: [ReactiveFormsModule, MatRadioModule, InputComponent, SelectComponent, SlideToggleComponent, SaveProfilePopupComponent],
       providers: [
         FormBuilder,
         IdentifierExistsValidator,

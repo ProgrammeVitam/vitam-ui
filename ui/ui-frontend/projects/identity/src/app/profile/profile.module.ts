@@ -36,19 +36,14 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { LevelInputModule, VitamUICommonModule } from 'vitamui-library';
+import { LevelInputComponent, VitamUICommonModule } from 'vitamui-library';
 
-import { SharedModule } from '../shared/shared.module';
-import { GroupAttributionModule } from '../user/group-attribution/group-attribution.module';
-import { ProfileCreateModule } from './profile-create/profile-create.module';
-import { ProfileDetailModule } from './profile-detail/profile-detail.module';
-import { ProfileListModule } from './profile-list/profile-list.module';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileComponent } from './profile.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -57,20 +52,16 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     CommonModule,
     VitamUICommonModule,
-    SharedModule,
     MatButtonToggleModule,
     MatMenuModule,
-    ProfileListModule,
-    ProfileDetailModule,
     MatProgressBarModule,
     ReactiveFormsModule,
-    ProfileCreateModule,
-    GroupAttributionModule,
-    LevelInputModule,
     MatSidenavModule,
     ProfileRoutingModule,
     TranslatePipe,
+    ProfileComponent,
+    FormsModule,
+    LevelInputComponent,
   ],
-  declarations: [ProfileComponent],
 })
 export class ProfileModule {}

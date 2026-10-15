@@ -38,19 +38,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateLoader } from '@ngx-translate/core';
-import { EMPTY, Observable, of } from 'rxjs';
-import { AuthService, BASE_URL, Ontology, TenantSelectionService } from 'vitamui-library';
+import { EMPTY, of } from 'rxjs';
+import { AuthService, Ontology, TenantSelectionService } from 'vitamui-library';
 import { OntologyListComponent } from './ontology-list.component';
 import { OntologyService } from '../../ontology.service';
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
-  }
-}
 
 describe('OntologyListComponent', () => {
   let component: OntologyListComponent;
@@ -73,7 +64,6 @@ describe('OntologyListComponent', () => {
       declarations: [],
       imports: [OntologyListComponent],
       providers: [
-        { provide: BASE_URL, useValue: '' },
         { provide: MatDialog, useValue: {} },
         { provide: OntologyService, useValue: ontologyServiceMock },
         { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },

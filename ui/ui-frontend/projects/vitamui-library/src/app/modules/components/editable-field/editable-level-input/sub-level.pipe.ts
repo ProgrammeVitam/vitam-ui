@@ -37,10 +37,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { extractSubLevel } from '../../../utils/level.util';
 
-@Pipe({
-  name: 'subLevel',
-  standalone: false,
-})
+@Pipe({ name: 'subLevel' })
 export class SubLevelPipe implements PipeTransform {
   transform(level: any, userLevel: string): any {
     return extractSubLevel(userLevel, level);
