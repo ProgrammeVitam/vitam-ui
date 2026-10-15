@@ -35,20 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { BASE_URL, ConfirmDialogService } from 'vitamui-library';
-
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ConfirmDialogService } from 'vitamui-library';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { GroupService } from '../../../group.service';
 import { ProfilesEditComponent } from './profiles-edit.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-profiles-form',
@@ -60,7 +56,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
       multi: true,
     },
   ],
-  standalone: false,
+  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
 })
 class ProfilesFormStubComponent {
   @Input()
@@ -83,17 +79,13 @@ describe('ProfilesEditComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [ProfilesEditComponent, ProfilesFormStubComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule],
+      imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, ProfilesEditComponent, ProfilesFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', profileIds: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: GroupService, useValue: { patch: () => of({ result: 'test' }) } },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

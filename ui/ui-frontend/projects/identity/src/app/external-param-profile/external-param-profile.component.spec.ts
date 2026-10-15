@@ -35,16 +35,38 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of, Subject } from 'rxjs';
 import { InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { ExternalParamProfileComponent } from './external-param-profile.component';
 import { ExternalParamProfileService } from './external-param-profile.service';
+import { SharedService } from './shared.service';
+import { ExternalParamProfileDetailComponent } from './external-param-profile-detail/external-param-profile-detail.component';
+import { ExternalParamProfileListComponent } from './external-param-profile-list/external-param-profile-list.component';
+
+@Component({
+  selector: 'app-external-param-profile-detail',
+  template: '',
+})
+class ExternalParamProfileDetailStubComponent {
+  @Input() externalParamProfile: any;
+  @Input() readOnly: boolean;
+  @Input() tenantIdentifier: string;
+}
+
+@Component({
+  selector: 'app-external-param-profile-list',
+  template: '',
+})
+class ExternalParamProfileListStubComponent {
+  @Input() searchText: string;
+}
 
 describe('ExternalParamProfileComponent', () => {
   let component: ExternalParamProfileComponent;
@@ -52,20 +74,43 @@ describe('ExternalParamProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExternalParamProfileComponent],
       imports: [
         VitamUICommonTestModule,
-        RouterTestingModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        NoopAnimationsModule,
         MatSidenavModule,
         MatDialogModule,
         MatMenuModule,
+        ExternalParamProfileComponent,
+        ExternalParamProfileDetailStubComponent,
+        ExternalParamProfileListStubComponent,
       ],
-      providers: [{ provide: ExternalParamProfileService, useValue: {} }],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            data: of({ appId: 'EXTERNAL_PARAM_PROFILE_APP' }),
+            params: of({}),
+            snapshot: { data: { appId: 'EXTERNAL_PARAM_PROFILE_APP' } },
+          },
+        },
+        {
+          provide: ExternalParamProfileService,
+          useValue: { updated: new Subject(), getOne: () => of(null), search: () => of([]), loadMore: () => of([]) },
+        },
+        { provide: SharedService, useValue: { getReadOnly: () => of(false) } },
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+      .overrideComponent(ExternalParamProfileComponent, {
+        remove: {
+          imports: [ExternalParamProfileDetailComponent, ExternalParamProfileListComponent],
+        },
+        add: {
+          imports: [ExternalParamProfileDetailStubComponent, ExternalParamProfileListStubComponent],
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {

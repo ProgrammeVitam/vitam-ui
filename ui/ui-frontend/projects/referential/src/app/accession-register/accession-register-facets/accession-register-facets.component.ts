@@ -34,16 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FacetDetails } from 'vitamui-library';
+import { FacetDetails, LogbookOperationFacetComponent, VitamUICommonModule } from 'vitamui-library';
 import { AccessionRegistersService } from '../accession-register.service';
+import { AsyncPipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-accession-register-facets',
   templateUrl: './accession-register-facets.component.html',
   styleUrls: ['./accession-register-facets.component.scss'],
-  standalone: false,
+  imports: [VitamUICommonModule, LogbookOperationFacetComponent, AsyncPipe, TranslatePipe],
 })
 export class AccessionRegisterFacetsComponent implements OnInit {
   accessionRegistersService = inject(AccessionRegistersService);

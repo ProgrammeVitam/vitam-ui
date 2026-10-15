@@ -34,23 +34,29 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, EventEmitter, input, InputSignal, OnChanges, Output, Signal, SimpleChanges, inject } from '@angular/core';
+import { Component, computed, EventEmitter, inject, input, InputSignal, OnChanges, Output, Signal, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  DataComponent,
+  getErrorOnObjectsGroup,
+  getErrorOnTechnicalObjectsGroup,
+  getErrorsOnArchiveUnit,
+  InformationBlocComponent,
+  InformationDetailComponent,
+  PipesModule,
   TenantSelectionService,
   Unit,
-  getErrorsOnArchiveUnit,
-  getErrorOnTechnicalObjectsGroup,
-  getErrorOnObjectsGroup,
   ValidationError,
 } from 'vitamui-library';
 import { ArchiveCollectService } from '../../archive-collect.service';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
-  standalone: false,
+  imports: [DataComponent, InformationBlocComponent, InformationDetailComponent, AsyncPipe, UpperCasePipe, PipesModule, TranslatePipe],
 })
 export class ArchiveUnitInformationTabComponent implements OnChanges {
   private archiveService = inject(ArchiveCollectService);

@@ -34,7 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -43,7 +42,6 @@ import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { StartupService } from './startup.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const expectedApp = [
   {
@@ -91,8 +89,6 @@ describe('AppGuard', () => {
         },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
         { provide: WINDOW_LOCATION, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     });
   });

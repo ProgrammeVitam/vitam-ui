@@ -38,8 +38,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -57,7 +56,15 @@ import { HoldingFillingSchemeComponent } from './holding-filling-scheme.componen
 @Component({
   selector: 'app-ingest-list',
   template: '',
-  standalone: false,
+  imports: [
+    MatDatepickerModule,
+    MatMenuModule,
+    MatSidenavModule,
+    InjectorModule,
+    VitamUICommonTestModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+  ],
 })
 class IngestListStubComponent {}
 
@@ -81,23 +88,25 @@ describe('HoldingFilingSchemeComponent', () => {
         MatMenuModule,
         MatSidenavModule,
         InjectorModule,
-        RouterTestingModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
-        RouterTestingModule,
-        NoopAnimationsModule,
         SearchBarComponent,
         MatDialogModule,
+        HoldingFillingSchemeComponent,
+        IngestListStubComponent,
       ],
-      declarations: [HoldingFillingSchemeComponent, IngestListStubComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: IngestService, useValue: ingestServiceMock },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }),
+            snapshot: { data: { appId: 'HOLDING_FILLING_SCHEME_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
       ],

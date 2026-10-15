@@ -71,19 +71,20 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { AuthService, ConfirmDialogService, Group, LevelInputModule, ProfileService } from 'vitamui-library';
+import { AuthService, ConfirmDialogService, Group, LevelInputComponent, ProfileService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { GroupService } from '../group.service';
 import { GroupValidators } from '../group.validators';
 import { GroupCreateComponent } from './group-create.component';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profiles-form',
@@ -95,7 +96,6 @@ import { GroupCreateComponent } from './group-create.component';
       multi: true,
     },
   ],
-  standalone: false,
 })
 class ProfilesFormStubComponent implements ControlValueAccessor {
   @Input()
@@ -115,7 +115,6 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
       multi: true,
     },
   ],
-  standalone: false,
 })
 class UnitsFormStubComponent implements ControlValueAccessor {
   writeValue() {}
@@ -167,8 +166,16 @@ describe('GroupCreateComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressBarModule, ReactiveFormsModule, NoopAnimationsModule, VitamUICommonTestModule, LevelInputModule],
-      declarations: [ProfilesFormStubComponent, UnitsFormStubComponent, GroupCreateComponent],
+      imports: [
+        MatProgressBarModule,
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        CommonModule,
+        FormsModule,
+        LevelInputComponent,
+        TranslatePipe,
+        GroupCreateComponent,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

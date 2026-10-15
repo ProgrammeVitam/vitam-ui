@@ -34,23 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { Subject, merge } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { merge, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
-import type { AdminUserProfile, FileFormat, User } from 'vitamui-library';
 import {
+  AdminUserProfile,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
   FILE_FORMAT_EXTERNAL_PREFIX,
+  FileFormat,
+  HasRoleDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   PageRequest,
-  StartupService,
+  PipesModule,
   SnackBarService,
+  StartupService,
+  User,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -58,7 +67,16 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-file-format-list',
   templateUrl: './file-format-list.component.html',
   styleUrls: ['./file-format-list.component.scss'],
-  standalone: false,
+  imports: [
+    OrderByButtonComponent,
+    MatProgressSpinner,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class FileFormatListComponent extends InfiniteScrollTable<FileFormat> implements OnDestroy, OnInit {
   fileFormatService: FileFormatService;

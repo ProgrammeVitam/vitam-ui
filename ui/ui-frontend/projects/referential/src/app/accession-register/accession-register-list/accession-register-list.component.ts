@@ -34,18 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, LOCALE_ID, OnDestroy, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
-import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'vitamui-library';
+import {
+  AccessionRegisterDetail,
+  DEFAULT_PAGE_SIZE,
+  Direction,
+  InfiniteScrollDirective,
+  InfiniteScrollTable,
+  OjectUtils,
+  OrderByButtonComponent,
+  PageRequest,
+  PipesModule,
+  TableFilterDirective,
+  TableFilterSearchComponent,
+  TooltipDirective,
+} from 'vitamui-library';
 import { AccessionRegisterSearchDto } from '../../models/accession-register-export-csv.interface';
 import { AccessionRegistersService } from '../accession-register.service';
+import { AsyncPipe, CommonModule, NgClass } from '@angular/common';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-accession-register-list',
   templateUrl: './accession-register-list.component.html',
   styleUrls: ['./accession-register-list.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+    OrderByButtonComponent,
+    TableFilterDirective,
+    TableFilterSearchComponent,
+    TooltipDirective,
+    MatProgressSpinner,
+    AsyncPipe,
+    PipesModule,
+    TranslatePipe,
+    CommonModule,
+    InfiniteScrollDirective,
+  ],
 })
 export class AccessionRegisterListComponent extends InfiniteScrollTable<AccessionRegisterDetail> implements OnDestroy, OnInit {
   accessionRegistersService: AccessionRegistersService;

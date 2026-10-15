@@ -40,7 +40,6 @@ import { Component, Input } from '@angular/core';
   selector: 'vitamui-chip',
   template: ` {{ text }} `,
   styleUrls: ['chip.component.scss'],
-  standalone: true,
 })
 export class ChipComponent {
   @Input() text = '';

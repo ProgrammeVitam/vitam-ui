@@ -34,21 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
-import type { SecurityProfile } from 'vitamui-library';
-import { ConfirmActionComponent } from 'vitamui-library';
+import { ConfirmActionComponent, OperationHistoryTabComponent, SecurityProfile, VitamuiSidenavHeaderComponent } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
 import { SecurityProfileInformationTabComponent } from './security-profile-information-tab/security-profile-information-tab.component';
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
+
+import { TranslatePipe } from '@ngx-translate/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-security-profile-preview',
   templateUrl: './security-profile-preview.component.html',
   styleUrls: ['./security-profile-preview.component.scss'],
-  standalone: false,
+  imports: [
+    MatTabGroup,
+    MatTab,
+    SecurityProfileInformationTabComponent,
+    SecurityProfilePermissionsTabComponent,
+    OperationHistoryTabComponent,
+    forwardRef(() => SecurityProfilePreviewComponent),
+    TranslatePipe,
+    CommonModule,
+    MatProgressSpinnerModule,
+    ReactiveFormsModule,
+    VitamuiSidenavHeaderComponent,
+  ],
 })
 export class SecurityProfilePreviewComponent implements AfterViewInit {
   private matDialog = inject(MatDialog);

@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { HttpErrorResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { EMPTY, of, throwError } from 'rxjs';
 import type { Mock, MockInstance } from 'vitest';
-import { BASE_URL, LoggerModule, PreservationScenario, PreservationScenariosService, SnackBarService } from 'vitamui-library';
+import { LoggerModule, PreservationScenario, PreservationScenariosService, SnackBarService } from 'vitamui-library';
 
 import { PreservationScenarioListComponent } from './preservation-scenario-list.component';
 
@@ -84,9 +83,6 @@ describe('PreservationScenarioListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PreservationScenarioListComponent, LoggerModule.forRoot()],
       providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
         { provide: PreservationScenariosService, useValue: preservationScenariosService },
         { provide: SnackBarService, useValue: snackBarService },
       ],

@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, of } from 'rxjs';
 import {
   AgenciesModule,
-  BASE_URL,
   InjectorModule,
   ItemNode,
   LoggerModule,
@@ -55,7 +53,6 @@ import { ManagementRulesSharedDataService } from '../../../core/management-rules
 import { SimpleCriteriaSearchComponent } from './simple-criteria-search.component';
 import { ArchiveService } from '../../archive.service';
 import { ActivatedRoute } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SimpleCriteriaSearchComponent', () => {
   let component: SimpleCriteriaSearchComponent;
@@ -92,8 +89,7 @@ describe('SimpleCriteriaSearchComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [SimpleCriteriaSearchComponent],
-      imports: [InjectorModule, AgenciesModule, LoggerModule.forRoot()],
+      imports: [InjectorModule, AgenciesModule, LoggerModule.forRoot(), SimpleCriteriaSearchComponent],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },
@@ -101,7 +97,6 @@ describe('SimpleCriteriaSearchComponent', () => {
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: SchemaService, useValue: schemaServiceMock },
-        { provide: BASE_URL, useValue: '/fake-api' },
         SnackBarService,
         {
           provide: ActivatedRoute,
@@ -109,8 +104,6 @@ describe('SimpleCriteriaSearchComponent', () => {
             queryParamMap: of(),
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

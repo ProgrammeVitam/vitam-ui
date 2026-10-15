@@ -93,8 +93,7 @@ describe('HierarchyListComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [MatProgressSpinnerModule, VitamUICommonTestModule],
-      declarations: [HierarchyListComponent],
+      imports: [MatProgressSpinnerModule, VitamUICommonTestModule, HierarchyListComponent],
       providers: [
         { provide: HierarchyService, useValue: hierarchyListServiceSpy },
         { provide: Router, useValue: routerSpy },

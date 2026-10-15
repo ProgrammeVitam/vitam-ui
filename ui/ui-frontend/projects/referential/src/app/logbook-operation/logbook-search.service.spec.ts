@@ -40,18 +40,12 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { LogbookSearchService } from './logbook-search.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LogbookSearchService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        { provide: LogbookService, useValue: {} },
-        { provide: LogbookApiService, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [{ provide: LogbookService, useValue: {} }, { provide: LogbookApiService, useValue: {} }, provideHttpClientTesting()],
     }),
   );
 

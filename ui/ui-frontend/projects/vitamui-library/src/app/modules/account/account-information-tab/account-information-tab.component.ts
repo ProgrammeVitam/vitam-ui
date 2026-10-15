@@ -34,16 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, Input } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import type { Account } from '../../models/account/account.interface';
+import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
   styleUrls: ['./account-information-tab.component.scss'],
-  standalone: false,
+  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, TranslatePipe],
 })
 export class AccountInformationTabComponent {
   private formBuilder = inject(FormBuilder);

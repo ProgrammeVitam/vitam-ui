@@ -41,14 +41,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { BASE_URL, DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
+import { DatepickerComponent, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { ProbativeValueComponent } from './probative-value.component';
-import { PipesModule } from '../shared/pipes/pipes.module';
 import { DatePipe } from '@angular/common';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -60,6 +58,7 @@ describe('ProbativeValueComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'PROBATIVE_VALUE_APP' }),
+      snapshot: { data: { appId: 'PROBATIVE_VALUE_APP' } },
     };
     await TestBed.configureTestingModule({
       imports: [
@@ -69,15 +68,12 @@ describe('ProbativeValueComponent', () => {
         MatSelectModule,
         MatSidenavModule,
         DatepickerComponent,
-        NoopAnimationsModule,
-        PipesModule,
         ReactiveFormsModule,
         VitamUICommonTestModule,
+        ProbativeValueComponent,
       ],
-      declarations: [ProbativeValueComponent],
       providers: [
         provideNativeDateAdapter(),
-        { provide: BASE_URL, useValue: '/pastis-api' },
         DatePipe,
         FormBuilder,
         { provide: MatDialog, useValue: {} },

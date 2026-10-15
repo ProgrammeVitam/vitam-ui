@@ -35,18 +35,37 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
 import { Subrogation } from '../../models/subrogation/subrogation.interface';
 import { SubrogationService } from '../subrogation.service';
+import { DialogHeaderComponent } from '../../../../lib/components/dialog/dialog-header/dialog-header.component';
+import { StepperComponent } from '../../components/stepper/stepper.component';
+import { CdkStep } from '@angular/cdk/stepper';
+import { InputComponent } from '../../../../lib/components/input/input.component';
+import { SelectComponent } from '../../../../lib/components/select/select.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-common-subrogation-modal',
   templateUrl: './subrogation-modal.component.html',
   styleUrls: ['./subrogation-modal.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperComponent,
+    CdkStep,
+    MatDialogContent,
+    FormsModule,
+    ReactiveFormsModule,
+    InputComponent,
+    SelectComponent,
+    MatDialogActions,
+    MatProgressSpinner,
+    TranslatePipe,
+  ],
 })
 export class SubrogationModalComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SubrogationModalComponent>>(MatDialogRef);

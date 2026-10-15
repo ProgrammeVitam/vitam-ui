@@ -34,14 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule } from 'vitamui-library';
@@ -49,7 +47,6 @@ import { DatepickerComponent, GlobalEventService, InjectorModule, LoggerModule }
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { SecurisationComponent } from './securisation.component';
 import { DatePipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 describe('SecurisationComponent', () => {
@@ -60,10 +57,10 @@ describe('SecurisationComponent', () => {
     const activatedRouteMock = {
       params: of({ tenantIdentifier: 1 }),
       data: of({ appId: 'SECURISATION_APP' }),
+      snapshot: { data: { appId: 'SECURISATION_APP' } },
     };
 
     await TestBed.configureTestingModule({
-      declarations: [SecurisationComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         InjectorModule,
@@ -71,8 +68,8 @@ describe('SecurisationComponent', () => {
         MatDatepickerModule,
         MatSidenavModule,
         DatepickerComponent,
-        NoopAnimationsModule,
         VitamUICommonTestModule,
+        SecurisationComponent,
       ],
       providers: [
         provideNativeDateAdapter(),
@@ -87,8 +84,6 @@ describe('SecurisationComponent', () => {
             navigate: () => {},
           },
         },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

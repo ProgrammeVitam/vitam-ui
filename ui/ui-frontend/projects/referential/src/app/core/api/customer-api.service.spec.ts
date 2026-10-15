@@ -36,7 +36,7 @@
  */
 import { TestBed } from '@angular/core/testing';
 
-import { BASE_URL, LoggerModule } from 'vitamui-library';
+import { LoggerModule } from 'vitamui-library';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CustomerApiService } from './customer-api.service';
@@ -46,14 +46,7 @@ describe('CustomerApiService', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [
-        {
-          provide: BASE_URL,
-          useValue: '',
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     }).compileComponents();
   });
 

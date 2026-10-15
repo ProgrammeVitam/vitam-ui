@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit, inject } from '@angular/core';
-import type { Group, Profile } from 'vitamui-library';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { EllipsisDirective, Group, Profile, TooltipDirective } from 'vitamui-library';
 import { GroupService } from '../../../group/group.service';
+import { CommonModule, TitleCasePipe } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss'],
-  standalone: false,
+  imports: [TooltipDirective, TitleCasePipe, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class GroupDetailComponent implements OnInit {
   private groupService = inject(GroupService);

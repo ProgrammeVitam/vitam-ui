@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService } from 'vitamui-library';
+import { Component, inject, Input, OnChanges } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Colors, FacetDetails, RuleFacets, VitamTenantConfigService, VitamuiFacetComponent } from 'vitamui-library';
 import { ArchiveFacetsService } from '../../../common-services/archive-facets.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 
@@ -45,7 +45,7 @@ import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-e
   selector: 'app-search-dissemination-rules-facets',
   templateUrl: './search-dissemination-rules-facets.component.html',
   styleUrls: ['./search-dissemination-rules-facets.component.scss'],
-  standalone: false,
+  imports: [VitamuiFacetComponent, TranslatePipe],
 })
 export class SearchDisseminationRulesFacetsComponent implements OnChanges {
   private facetsService = inject(ArchiveFacetsService);

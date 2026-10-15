@@ -34,17 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BASE_URL, ENVIRONMENT, FilingPlanModule, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
+import { ENVIRONMENT, FilingPlanComponent, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { IngestContractNodeUpdateComponent } from './ingest-contract-node-update.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+import { MatTreeModule } from '@angular/material/tree';
 
 // TODO fix tests
 
@@ -66,20 +69,29 @@ describe.skip('IngestContractNodeUpdateComponent', () => {
       open: vi.fn().mockName('SnackBarService.open'),
     };
     await TestBed.configureTestingModule({
-      declarations: [IngestContractNodeUpdateComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, FilingPlanModule, InjectorModule, LoggerModule.forRoot()],
+      imports: [
+        ReactiveFormsModule,
+        VitamUICommonTestModule,
+        InjectorModule,
+        LoggerModule.forRoot(),
+        IngestContractNodeUpdateComponent,
+        CommonModule,
+        FilingPlanComponent,
+        FormsModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatProgressSpinnerModule,
+        MatTreeModule,
+      ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         {
           provide: MAT_DIALOG_DATA,
           useValue: { data: { ingestContract: 'IC-000001', accessContractId: 'AC-000001', tenantIdentifier: 1 } },
         },
-        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: SnackBarService, useValue: snackBarSpy },
         { provide: ENVIRONMENT, useValue: environment },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

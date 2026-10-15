@@ -40,7 +40,6 @@ import { GriffinsApiService } from './griffins-api.service';
 import { of } from 'rxjs';
 import { CreateGriffin, Griffin } from './griffin.type';
 import { vi } from 'vitest';
-import { BASE_URL } from '../../injection-tokens';
 import { LoggerModule } from '../../logger/logger.module';
 
 describe('GriffinsService', () => {
@@ -71,7 +70,7 @@ describe('GriffinsService', () => {
 
     TestBed.configureTestingModule({
       imports: [LoggerModule.forRoot()],
-      providers: [GriffinsService, { provide: GriffinsApiService, useValue: spy }, { provide: BASE_URL, useValue: '/fake-api' }],
+      providers: [GriffinsService, { provide: GriffinsApiService, useValue: spy }],
     });
 
     service = TestBed.inject(GriffinsService);

@@ -34,31 +34,56 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
   ApplicationId,
   ConfirmDialogService,
+  DialogHeaderComponent,
+  InputComponent,
   Logger,
+  NextStepComponent,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
+  PreviousStepComponent,
   SearchCriteriaEltDto,
+  SelectComponent,
+  SnackBarService,
+  StepperComponent,
   UsageVersionEnum,
   VitamuiSelectOptions,
-  SnackBarService,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
 import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { CdkStep } from '@angular/cdk/stepper';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
   selector: 'app-transfer-request-modal',
   templateUrl: './transfer-request-modal.component.html',
   styleUrls: ['./transfer-request-modal.component.scss'],
-  standalone: false,
+  imports: [
+    DialogHeaderComponent,
+    StepperComponent,
+    CdkStep,
+    ReactiveFormsModule,
+    MatDialogContent,
+    InputComponent,
+    MatDialogActions,
+    NextStepComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    SelectComponent,
+    MatRadioGroup,
+    MatRadioButton,
+    PreviousStepComponent,
+    TranslatePipe,
+  ],
 })
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);

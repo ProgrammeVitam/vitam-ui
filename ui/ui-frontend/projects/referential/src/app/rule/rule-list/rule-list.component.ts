@@ -34,25 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { Subject, merge } from 'rxjs';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { merge, Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import type { AdminUserProfile, Rule } from 'vitamui-library';
 import {
+  AdminUserProfile,
   ApplicationId,
   AuthService,
   ConfirmActionComponent,
   DEFAULT_PAGE_SIZE,
   Direction,
+  EllipsisDirective,
+  HasRoleDirective,
+  InfiniteScrollDirective,
   InfiniteScrollTable,
+  OrderByButtonComponent,
   PageRequest,
   Role,
+  Rule,
   RuleService,
   SnackBarService,
+  TableFilterComponent,
+  TableFilterDirective,
+  TableFilterOptionComponent,
 } from 'vitamui-library';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -60,7 +70,18 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   selector: 'app-rule-list',
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss'],
-  standalone: false,
+  imports: [
+    OrderByButtonComponent,
+    TableFilterDirective,
+    MatProgressSpinner,
+    TableFilterComponent,
+    TableFilterOptionComponent,
+    TranslatePipe,
+    CommonModule,
+    EllipsisDirective,
+    HasRoleDirective,
+    InfiniteScrollDirective,
+  ],
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   ruleService: RuleService;

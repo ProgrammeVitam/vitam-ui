@@ -36,11 +36,9 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 import { VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
-import { EditableFieldModule } from '../../components/editable-field/editable-field.module';
 import { WINDOW_LOCATION } from '../../injection-tokens';
 import { AccountService } from '../account.service';
 import { AccountInformationTabComponent } from './account-information-tab.component';
@@ -56,8 +54,7 @@ describe('AccountInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, EditableFieldModule, SlideToggleComponent, NoopAnimationsModule],
-      declarations: [AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
+      imports: [ReactiveFormsModule, SlideToggleComponent, AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AccountService, useValue: accountServiceSpy },

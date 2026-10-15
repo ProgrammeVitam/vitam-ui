@@ -39,9 +39,7 @@ import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TranslateLoader } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   CriteriaDataType,
   CriteriaOperator,
@@ -56,21 +54,10 @@ import { ArchiveSharedDataService } from '../../../core/archive-shared-data.serv
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
 
-@Pipe({
-  name: 'truncate',
-  standalone: false,
-})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
-  }
-}
-
-const translations: any = { TEST: 'Mock translate test' };
-
-class FakeLoader implements TranslateLoader {
-  getTranslation(): Observable<any> {
-    return of(translations);
   }
 }
 
@@ -95,8 +82,7 @@ describe('SearchCriteriaListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InjectorModule, LoggerModule.forRoot(), RouterTestingModule],
-      declarations: [SearchCriteriaListComponent, MockTruncatePipe],
+      imports: [InjectorModule, LoggerModule.forRoot(), SearchCriteriaListComponent, MockTruncatePipe],
       providers: [
         ArchiveSharedDataService,
         DatePipe,
@@ -105,7 +91,11 @@ describe('SearchCriteriaListComponent', () => {
         { provide: SearchCriteriaListService, useValue: SearchCriteriaListServiceStub },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+          useValue: {
+            params: of({ tenantIdentifier: 1 }),
+            data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+            snapshot: { data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' } },
+          },
         },
         { provide: environment, useValue: environment },
         { provide: SnackBarService, useValue: {} },
