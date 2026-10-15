@@ -28,7 +28,7 @@
         <esapi.version>2.7.0.0</esapi.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
         <fop.version>2.4</fop.version>
-        <freemarker.version>2.3.34</freemarker.version>
+        <freemarker.version>2.3.35</freemarker.version>
         <glassfish.jaxb.version>4.0.9</glassfish.jaxb.version>
         <gson.version>2.14.0</gson.version>
         <hibernate.validatior.version>8.0.3.Final</hibernate.validatior.version>
@@ -69,7 +69,7 @@
         <archunit.version>1.4.2</archunit.version>
         <thaiopensource.jing.version>20220510</thaiopensource.jing.version>
         <vitam.version>10.0.0-SNAPSHOT</vitam.version>
-        <xdocreport.version>2.2.0</xdocreport.version>
+        <openhtmltopdf.version>1.1.97</openhtmltopdf.version>
         <xerces.version>2.12.2</xerces.version>
         <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
         <xml-resolver.version>1.2</xml-resolver.version>
@@ -809,12 +809,6 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.apache.pdfbox</groupId>
-                <artifactId>pdfbox</artifactId>
-                <version>${apache.pdfbox.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers</artifactId>
                 <version>${testcontainers.version}</version>
@@ -883,37 +877,15 @@
                 <scope>test</scope>
             </dependency>
 
-            <!-- XDocReport convert ODT to PDF -->
             <dependency>
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
                 <version>${xerces.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.odfdom.converter.core</artifactId>
-                <version>${xdocreport.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.xdocreport.converter.odt.odfdom</artifactId>
-                <version>${xdocreport.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.xdocreport.document.odt</artifactId>
-                <version>${xdocreport.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.xdocreport.template.freemarker</artifactId>
-                <version>${xdocreport.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>fr.opensagres.xdocreport</groupId>
-                <artifactId>fr.opensagres.xdocreport.template.velocity</artifactId>
-                <version>${xdocreport.version}</version>
+                <groupId>io.github.openhtmltopdf</groupId>
+                <artifactId>openhtmltopdf-pdfbox</artifactId>
+                <version>${openhtmltopdf.version}</version>
             </dependency>
 
             <dependency>
