@@ -36,8 +36,10 @@
  */
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   forwardRef,
   HostListener,
@@ -47,6 +49,7 @@ import {
 } from '@angular/core';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedPosition } from '@angular/cdk/overlay';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractFormInputDirective } from '../abstract-form-input.directive';
 
 export const FORM_FIELD_VALUE_WRAPPER_VALUE_ACCESSOR: any = {
@@ -67,6 +70,8 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
   private innerControl: FormControl;
 
   #cancelTimeout: number;
+  readonly #cdr = inject(ChangeDetectorRef);
+  readonly #destroyRef = inject(DestroyRef);
   readonly #componentRef: Element;
 
   get canConfirm(): boolean {
@@ -108,7 +113,11 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
     if (this.isInside(htmlTarget, this.#componentRef) || this.isInside(htmlTarget, overlayRef.hostElement)) {
       return;
     }
-    this.#cancelTimeout = window.setTimeout(() => this.cancel(), 100);
+    this.#cancelTimeout = window.setTimeout(() => {
+      this.cancel();
+      // Runs outside change detection: refresh the view (zoneless)
+      this.#cdr.markForCheck();
+    }, 100);
   }
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -132,6 +141,8 @@ export class FormFieldValueWrapperComponent extends AbstractFormInputDirective i
 
   ngAfterContentInit() {
     this.innerControl = this.ref?.setControl(this.control);
+    // canConfirm depends on the inner control status, which may change asynchronously (async validators): refresh the view (zoneless)
+    this.innerControl?.statusChanges.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe(() => this.#cdr.markForCheck());
   }
 
   override writeValue(value: any) {

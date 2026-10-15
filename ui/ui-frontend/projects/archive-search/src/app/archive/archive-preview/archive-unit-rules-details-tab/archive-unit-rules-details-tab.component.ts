@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, signal, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CriteriaDataType, CriteriaOperator, SearchCriteriaEltDto, SearchCriteriaTypeEnum, Unit } from 'vitamui-library';
@@ -55,7 +55,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy
   private readonly translateService = inject(TranslateService);
 
   @Input() archiveUnit: Unit;
-  archiveUnitRules: Unit;
+  archiveUnitRules = signal<Unit>(undefined);
   selectUnitWithInheritedRulesSubscription: Subscription;
 
   listOfCriteriaSearch: SearchCriteriaEltDto[] = [];
@@ -87,7 +87,7 @@ export class ArchiveUnitRulesDetailsTabComponent implements OnChanges, OnDestroy
     this.selectUnitWithInheritedRulesSubscription = this.archiveSearchService
       .selectUnitWithInheritedRules(inheritedRulesCriteriaSearch)
       .subscribe((response) => {
-        this.archiveUnitRules = response;
+        this.archiveUnitRules.set(response);
         this.listOfCriteriaSearch = [];
       });
   }

@@ -4,10 +4,10 @@
 ></vitamui-dialog-header>
 
 <mat-dialog-actions>
-  <button type="button" class="btn primary" (click)="submit()" [disabled]="deleting">
+  <button type="button" class="btn primary" (click)="submit()" [disabled]="deleting()">
     {{ 'COMMON.CONFIRM' | translate }}
   </button>
-  <button [matDialogClose]="false" class="btn link cancel" [disabled]="deleting">
+  <button [matDialogClose]="false" class="btn link cancel" [disabled]="deleting()">
     {{ 'COMMON.UNDO' | translate }}
   </button>
 </mat-dialog-actions>

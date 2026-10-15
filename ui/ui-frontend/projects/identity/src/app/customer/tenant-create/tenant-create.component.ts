@@ -36,7 +36,7 @@
  */
 import { ConfirmDialogService, DialogHeaderComponent, InputComponent, Owner, SelectComponent, Tenant } from 'vitamui-library';
 
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
@@ -52,6 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
+  private readonly cdr = inject(ChangeDetectorRef);
   dialogRef = inject<MatDialogRef<TenantCreateComponent>>(MatDialogRef);
   data = inject<{
     owner: Owner;
@@ -65,7 +66,7 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];
-  isLoading = false;
+  readonly isLoading = signal(false);
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -83,6 +84,7 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
         // To select as default tenant the first one other than 0
         this.form.patchValue({ tenantId: tenantIdToSelect });
       }
+      this.cdr.markForCheck();
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -103,10 +105,10 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
     if (this.form.pending || this.form.invalid) {
       return;
     }
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.tenantService
       .create(this.form.value, this.data.owner.name)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (newTenant: Tenant) => {
           this.dialogRef.close(newTenant);

@@ -7,7 +7,7 @@
         <vitamui-select
           class="col w-50"
           formControlName="rule"
-          [options]="ruleOptions"
+          [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
         ></vitamui-select>
@@ -43,7 +43,7 @@
         <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>
       </div>
 
-      @if (isLoading) {
+      @if (isLoading()) {
         <div class="vitamui-min-content">
           <mat-spinner class="vitamui-spinner large"></mat-spinner>
         </div>
@@ -81,7 +81,7 @@
       }
 
       <div class="d-flex">
-        <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled" (click)="submit()">
+        <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled()" (click)="submit()">
           {{ 'RULES.COMMON.CONTROL' | translate }}
         </button>
         <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>

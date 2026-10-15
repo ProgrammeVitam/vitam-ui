@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -69,6 +69,7 @@ import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/mat
 })
 export class AdminDslComponent {
   private readonly route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly adminDslService = inject(AdminDslService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly accessContractService = inject(AccessContractService);
@@ -93,6 +94,7 @@ export class AdminDslComponent {
             key: accessContract.identifier,
             label: accessContract.name,
           }));
+          this.cdr.markForCheck();
         });
       }
     });

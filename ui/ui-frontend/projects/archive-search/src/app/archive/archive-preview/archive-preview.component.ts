@@ -36,6 +36,7 @@
  */
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   HostListener,
@@ -102,6 +103,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
   private readonly translateService = inject(TranslateService);
   private readonly accessContractService = inject(AccessContractService);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() archiveUnit: Unit;
   @Input() isPopup: boolean;
@@ -142,6 +144,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
     this.archiveSharedDataService.emitSelectedUnit(null);
+    this.cdr.markForCheck();
   }
 
   async checkBeforeExit() {
@@ -166,6 +169,7 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
       await this.checkBeforeExit();
     }
     this.updateStarted = false;
+    this.cdr.markForCheck();
     return MatTabGroup.prototype._handleClick.apply(this.tabs, [tab, tabHeader, idx]);
   }
 
@@ -190,12 +194,15 @@ export class ArchivePreviewComponent implements OnChanges, OnInit, AfterViewInit
         });
       }
       this.showNormalPanel();
+      // May run after an awaited dialog: request a refresh explicitly (zoneless).
+      this.cdr.markForCheck();
     }
   }
 
   async ngOnInit() {
     this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
       this.accessContractAllowUpdating = ac.writingPermission;
+      this.cdr.markForCheck();
     });
   }
 

@@ -44,7 +44,6 @@ import { ObjectViewerModule } from '../object-viewer/object-viewer.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { ArchiveUnitCountComponent } from './components/archive-unit-count/archive-unit-count.component';
 import { ArchiveUnitEditorComponent } from './components/archive-unit-editor/archive-unit-editor.component';
-import { ArchiveUnitEditorService } from './components/archive-unit-editor/archive-unit-editor.service';
 import { EditorBannerComponent } from './components/archive-unit-editor/components/editor-banner/editor-banner.component';
 import { ArchiveUnitViewerComponent } from './components/archive-unit-viewer/archive-unit-viewer.component';
 import { PhysicalArchiveViewerComponent } from './components/physical-archive-viewer/physical-archive-viewer.component';
@@ -67,7 +66,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     ArchiveUnitEditorComponent,
     EditorBannerComponent,
   ],
-  providers: [ArchiveUnitEditorService],
   exports: [
     PhysicalArchiveViewerComponent,
     ArchiveUnitCountComponent,

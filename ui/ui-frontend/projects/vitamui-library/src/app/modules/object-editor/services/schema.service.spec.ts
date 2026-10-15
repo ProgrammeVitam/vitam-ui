@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import { LoggerModule } from '../../logger/logger.module';
 import { Collection } from '../../models/schema/collection.enum';
 import { Schema } from '../../models/schema/schema.interface';
@@ -58,36 +58,33 @@ describe('SchemaService', () => {
   });
 
   describe('Subschema', () => {
-    it('should get archive unit schema subschema', waitForAsync(
-      inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
-          const subschema = service.subschema(schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
+    it('should get archive unit schema subschema', inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
+        const subschema = service.subschema(schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
 
-          expect(subschema.every((element) => element.SedaVersions.includes('2.1'))).toBeTruthy();
-          expect(subschema.every((element) => element.Collection === Collection.ARCHIVE_UNIT)).toBeTruthy();
-        });
-      }),
-    ));
+        expect(subschema.every((element) => element.SedaVersions.includes('2.1'))).toBeTruthy();
+        expect(subschema.every((element) => element.Collection === Collection.ARCHIVE_UNIT)).toBeTruthy();
+      });
+    }));
   });
 
   describe('Data', () => {
-    it('should create simple data according schema', waitForAsync(
-      inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
-          const path = '';
-          const data = service.data(path, schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
+    it('should create simple data according schema', inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
+        const path = '';
+        const data = service.data(path, schema, { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' });
 
-          expect(data).toEqual(
-            expect.objectContaining({
-              Title: null,
-            }),
-          );
-        });
-      }),
-    ));
+        expect(data).toEqual(
+          expect.objectContaining({
+            Title: null,
+          }),
+        );
+      });
+    }));
 
-    it('should create data with all root level keys according schema', waitForAsync(
-      inject([MockSchemaService, PathService], (schemaService: MockSchemaService, pathService: PathService) => {
+    it('should create data with all root level keys according schema', inject(
+      [MockSchemaService, PathService],
+      (schemaService: MockSchemaService, pathService: PathService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = '';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
@@ -99,11 +96,12 @@ describe('SchemaService', () => {
           expect(children.length).toEqual(keys.length);
           expect(children).toEqual(keys);
         });
-      }),
+      },
     ));
 
-    it('should create archive unit addressee block according schema', waitForAsync(
-      inject([MockSchemaService, PathService], (schemaService: MockSchemaService, pathService: PathService) => {
+    it('should create archive unit addressee block according schema', inject(
+      [MockSchemaService, PathService],
+      (schemaService: MockSchemaService, pathService: PathService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = 'Addressee';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
@@ -120,11 +118,12 @@ describe('SchemaService', () => {
             }),
           );
         });
-      }),
+      },
     ));
 
-    it('should create archive unit addressee birth place block according schema', waitForAsync(
-      inject([MockSchemaService, PathService], (schemaService: MockSchemaService, pathService: PathService) => {
+    it('should create archive unit addressee birth place block according schema', inject(
+      [MockSchemaService, PathService],
+      (schemaService: MockSchemaService, pathService: PathService) => {
         schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
           const path = 'Addressee.BirthPlace';
           const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
@@ -144,36 +143,32 @@ describe('SchemaService', () => {
             }),
           );
         });
-      }),
+      },
     ));
 
-    it('should work when a primitive node is provided', waitForAsync(
-      inject([MockSchemaService, PathService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
-          const path = 'AcquiredDate';
-          const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
-          const subschema = service.subschema(schema, options);
-          const data = service.data(path, subschema, options);
+    it('should work when a primitive node is provided', inject([MockSchemaService, PathService], (schemaService: MockSchemaService) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
+        const path = 'AcquiredDate';
+        const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
+        const subschema = service.subschema(schema, options);
+        const data = service.data(path, subschema, options);
 
-          expect(data).toBeFalsy();
-          expect(data).toBeNull();
-        });
-      }),
-    ));
+        expect(data).toBeFalsy();
+        expect(data).toBeNull();
+      });
+    }));
 
-    it('should work when a primitive array node is provided', waitForAsync(
-      inject([MockSchemaService], (schemaService: MockSchemaService) => {
-        schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
-          const path = 'Tag';
-          const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
-          const subschema = service.subschema(schema, options);
-          const data = service.data(path, subschema, options);
+    it('should work when a primitive array node is provided', inject([MockSchemaService], (schemaService: MockSchemaService) => {
+      schemaService.getSchema(Collection.ARCHIVE_UNIT).subscribe((schema) => {
+        const path = 'Tag';
+        const options: SchemaOptions = { collection: Collection.ARCHIVE_UNIT, versions: ['2.1'], pathKey: 'ApiPath' };
+        const subschema = service.subschema(schema, options);
+        const data = service.data(path, subschema, options);
 
-          expect(data).toBeTruthy();
-          expect(data).toEqual([]);
-        });
-      }),
-    ));
+        expect(data).toBeTruthy();
+        expect(data).toEqual([]);
+      });
+    }));
   });
 
   describe('Validate', () => {

@@ -35,14 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
 describe('SecurityProfile Create Validators', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('uniqueCode', () => {
-    it('should return null', fakeAsync(() => {
+    it('should return null', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
@@ -51,11 +55,12 @@ describe('SecurityProfile Create Validators', () => {
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
+    it('should return { uniqueCode: true }', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
@@ -64,11 +69,12 @@ describe('SecurityProfile Create Validators', () => {
       from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
-    }));
+    });
 
-    it('should not call the service', fakeAsync(() => {
+    it('should not call the service', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
@@ -77,11 +83,12 @@ describe('SecurityProfile Create Validators', () => {
       from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should call the service', fakeAsync(() => {
+    it('should call the service', async () => {
+      vi.useFakeTimers();
       const customerServiceSpy = {
         existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
       };
@@ -90,8 +97,8 @@ describe('SecurityProfile Create Validators', () => {
       from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
         expect(result).toEqual({ nameExists: true });
       });
-      tick(400);
+      await vi.advanceTimersByTimeAsync(400);
       expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
-    }));
+    });
   });
 });

@@ -26,13 +26,13 @@
   -->
 
 <div class="vitamui-heading">
-  <vitamui-title-breadcrumb [data]="breadcrumbData">
+  <vitamui-title-breadcrumb [data]="breadcrumbData()">
     <h5>{{ 'AGENCY.HOME.TITLE' | translate }}</h5>
-    @if (agency) {
+    @if (agency(); as agency) {
       <span class="sub-title">{{ agency.identifier }} - {{ agency.name }}</span>
     }
   </vitamui-title-breadcrumb>
-  @if (editObject) {
+  @if (editObject(); as editObject) {
     <vitamui-common-object-editor [editObject]="editObject"></vitamui-common-object-editor>
     <vitamui-common-editor-banner class="mt-5">
       <button (click)="save()" [disabled]="editObject.control.pristine" class="btn contrast contrast-primary">

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Logger } from '../../../logger/logger';
@@ -52,6 +52,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class ArchiveUnitCountComponent implements OnChanges {
   private readonly logger = inject(Logger);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() search: Observable<number>;
   @Input() archiveUnitCount = 0;
@@ -100,6 +101,8 @@ export class ArchiveUnitCountComponent implements OnChanges {
         this.selectedArchiveUnitCountChange.emit(exactCount);
       }
     }
+    // Called from the search subscription: refresh the view (zoneless)
+    this.cdr.markForCheck();
   }
 
   private update(): void {
@@ -111,6 +114,7 @@ export class ArchiveUnitCountComponent implements OnChanges {
     const updatePending = (value: boolean) => {
       this.pending = value;
       this.pendingChange.emit(this.pending);
+      this.cdr.markForCheck();
     };
     const notPending = () => {
       updatePending(false);

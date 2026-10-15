@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ResourceRef } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ResourceRef } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -106,6 +106,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     selectedItemCountKnown?: boolean;
   }>(MAT_DIALOG_DATA);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   formGroups: FormGroup[];
   isLoading = false;
@@ -265,7 +266,12 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     };
     this.archiveService
       .exportDIPService(exportDIPRequestDto)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        }),
+      )
       .subscribe({
         next: (response) => {
           this.dialogRef.close(true);

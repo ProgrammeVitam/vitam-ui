@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
@@ -87,6 +87,7 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
   data = inject(MAT_DIALOG_DATA);
 
   logger = inject(Logger);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   tenantIdentifier: string;
 
@@ -184,6 +185,7 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
         },
         (error: any) => {
           this.isSubmitBtnDisabled = false;
+          this.cdr.markForCheck();
           this.logger.error('Error message :', error);
         },
       );

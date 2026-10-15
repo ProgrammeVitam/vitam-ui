@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -117,7 +117,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
   ruleFilter = new FormControl(false);
   selectNodesControl = new FormControl({ included: [], excluded: [] });
 
-  isLoading = false;
+  isLoading = signal(false);
 
   originatingAgenciesOptions: VitamuiSelectOptions = { options: [] };
   // FIXME: Get list from common var ?
@@ -216,7 +216,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     if (this.lastStepInvalid()) {
       return;
     }
-    this.isLoading = true;
+    this.isLoading.set(true);
     const accessContract: AccessContract = this.mapToAccessContract(this.form);
     accessContract.status === 'ACTIVE'
       ? (accessContract.activationDate = new Date().toISOString())
@@ -224,7 +224,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
     this.accessContractService
       .create(accessContract)
-      .pipe(finalize(() => (this.isLoading = false)))
+      .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (_accessContract) => this.dialogRef.close(true),
         error: (e) => console.error(e),

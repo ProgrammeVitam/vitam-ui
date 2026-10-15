@@ -4,7 +4,7 @@
   </button>
 }
 
-@for (profile of profilesDisplay; track profile) {
+@for (profile of profilesDisplay(); track profile) {
   <div class="d-flex justify-content-between align-items-center p-3 mb-2 vitamui-profile-list">
     <div>
       <div class="text caption light mb-1">{{ 'APPLICATION.' + profile.appId + '.NAME' | translate }}</div>

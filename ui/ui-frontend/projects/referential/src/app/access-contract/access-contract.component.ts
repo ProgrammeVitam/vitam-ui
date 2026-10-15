@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -84,6 +84,7 @@ const IMPORT_FILE_MODEL_NAME = 'Import_access_contrat_template.csv';
 })
 export class AccessContractComponent extends SidenavPage<AccessContract> implements OnInit, OnDestroy {
   private readonly dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly route = inject(ActivatedRoute);
   private readonly accessContractService = inject(AccessContractService);
   private readonly applicationService = inject(ApplicationService);
@@ -99,7 +100,10 @@ export class AccessContractComponent extends SidenavPage<AccessContract> impleme
   #isSlaveMode$ = this.applicationService.isApplicationExternalIdentifierEnabled('ACCESS_CONTRACT').pipe(shareReplay(1));
 
   ngOnInit() {
-    this.route.params.subscribe((params) => (this.tenantIdentifier = params['tenantIdentifier']));
+    this.route.params.subscribe((params) => {
+      this.tenantIdentifier = params['tenantIdentifier'];
+      this.cdr.markForCheck();
+    });
     this.globalEventService.tenantEvent.subscribe(() => this.refreshList());
   }
 

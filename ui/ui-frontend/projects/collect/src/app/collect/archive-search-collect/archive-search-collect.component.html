@@ -1,11 +1,11 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  @if (foundAccessContract) {
-    <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" vitamuiCommonResizeSidebar="left">
+  @if (foundAccessContract()) {
+    <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show()" vitamuiCommonResizeSidebar="left">
       <app-filing-holding-scheme
         [transactionId]="transaction?.id"
         (showArchiveUnitDetails)="showPreviewArchiveUnit($event)"
         [searchHasMatches]="searchHasResults"
-        [searchRequestTotalResults]="totalResults"
+        [searchRequestTotalResults]="totalResults()"
       >
       </app-filing-holding-scheme>
     </mat-sidenav>
@@ -33,9 +33,9 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-title-breadcrumb [data]="breadcrumbData">
+      <vitamui-title-breadcrumb [data]="breadcrumbData()">
         <h5>
-          {{ 'APPLICATION.COLLECT_APP.NAME' | translate }} : {{ projectName }}
+          {{ 'APPLICATION.COLLECT_APP.NAME' | translate }} : {{ projectName() }}
           @if (discussionEntities?.length) {
             <button class="btn large secondary btn-circle" (click)="discussionPanel.opened.set(true); discussionPanel.expanded.set(true)">
               <vitamui-discussion-icon
@@ -50,15 +50,15 @@
         </h5>
       </vitamui-title-breadcrumb>
     </div>
-    @if (foundAccessContract) {
+    @if (foundAccessContract()) {
       <div class="vitamui-content">
         <div class="row row justify-content-around">
           <div class="col-12">
-            @if (!show) {
+            @if (!show()) {
               <button
                 type="button"
                 class="btn secondary right-arround left-not-arround"
-                (click)="hiddenTreeBlock(show)"
+                (click)="hiddenTreeBlock(show())"
                 [vitamuiTooltip]="'COLLECT.SHOW_TREES_PLANS' | translate"
                 [vitamuiTooltipShowDelay]="300"
               >
@@ -74,7 +74,7 @@
           </div>
 
           <div class="col-3 form-control text-right">
-            <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys?.length" (click)="submit(true)">
+            <button type="button" class="btn primary" [disabled]="!searchCriteriaKeys()?.length" (click)="submit(true)">
               {{ 'COLLECT.LAUNCH_SEARCH_ACTION' | translate }}
             </button>
           </div>
@@ -108,7 +108,7 @@
         <div class="row justify-content-around">
           <div class="col-11">
             <div class="area-criteria">
-              @for (criteriaKey of searchCriteriaKeys; track criteriaKey) {
+              @for (criteriaKey of searchCriteriaKeys(); track criteriaKey) {
                 @if (searchCriterias.get(criteriaKey); as criteriaVal) {
                   <app-criteria-search
                     [criteriaKey]="criteriaKey"
@@ -146,14 +146,14 @@
             </div>
           </div>
         </div>
-        @if (pendingComputeFacets) {
+        @if (pendingComputeFacets()) {
           <div class="row">
             <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
           </div>
         }
-        @if (!pendingComputeFacets && submited && rulesFacetsComputed && showingFacets) {
+        @if (!pendingComputeFacets() && submited() && rulesFacetsComputed() && showingFacets()) {
           <div class="card-criteria">
-            @if (!pendingComputeFacets && showingFacets && submited) {
+            @if (!pendingComputeFacets() && showingFacets() && submited()) {
               <i
                 id="show-hide-facet-button"
                 (click)="showHideFacets(false)"
@@ -164,31 +164,31 @@
             <app-archive-search-rules-facets
               class="facet-div"
               [exactCount]="!waitingToGetFixedCount"
-              [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
-              [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
-              [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
-              [reuseRuleFacets]="archiveSearchResultFacets?.reuseRuleFacets"
-              [disseminationRuleFacets]="archiveSearchResultFacets?.disseminationRuleFacets"
-              [holdRuleFacets]="archiveSearchResultFacets?.holdRuleFacets"
-              [classificationRuleFacets]="archiveSearchResultFacets?.classificationRuleFacets"
+              [appraisalRuleFacets]="archiveSearchResultFacets()?.appraisalRuleFacets"
+              [accessRuleFacets]="archiveSearchResultFacets()?.accessRuleFacets"
+              [storageRuleFacets]="archiveSearchResultFacets()?.storageRuleFacets"
+              [reuseRuleFacets]="archiveSearchResultFacets()?.reuseRuleFacets"
+              [disseminationRuleFacets]="archiveSearchResultFacets()?.disseminationRuleFacets"
+              [holdRuleFacets]="archiveSearchResultFacets()?.holdRuleFacets"
+              [classificationRuleFacets]="archiveSearchResultFacets()?.classificationRuleFacets"
               [tenantIdentifier]="tenantIdentifier"
-              [totalResults]="totalResults"
-              [defaultFacetTabIndex]="defaultFacetTabIndex"
+              [totalResults]="totalResults()"
+              [defaultFacetTabIndex]="defaultFacetTabIndex()"
             >
             </app-archive-search-rules-facets>
           </div>
         }
-        @if (!pending) {
+        @if (!pending()) {
           <div class="row">
-            @if (!showCriteriaPanel) {
+            @if (!showCriteriaPanel()) {
               <a class="hide-ink text uppercase" (click)="showHidePanel(true)">{{ 'COLLECT.SHOW_SEARCH_CRITERIA' | translate }}</a>
             }
-            @if (!pendingComputeFacets && !showingFacets && submited) {
+            @if (!pendingComputeFacets() && !showingFacets() && submited()) {
               <a class="hide-ink" (click)="showHideFacets(true)">{{ 'COLLECT.COMPUTE_RULES_FACETS' | translate }}</a>
             }
           </div>
         }
-        <div [hidden]="!showCriteriaPanel">
+        <div [hidden]="!showCriteriaPanel()">
           <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
             <mat-tab label="{{ 'COLLECT.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
               <div class="card-criteria">
@@ -285,7 +285,7 @@
             </mat-menu>
           </mat-tab-group>
         </div>
-        @if (showCriteriaPanel) {
+        @if (showCriteriaPanel()) {
           <div class="row justify-content-end text-on-right-side">
             <a class="hide-ink text uppercase" (click)="showHidePanel(false)">{{ 'COLLECT.HIDE_SEARCH_CRITERIA' | translate }}</a>
           </div>
@@ -296,11 +296,12 @@
             <ng-container title>
               <vitamui-common-archive-unit-count
                 [search]="search$"
-                [archiveUnitCount]="totalResults"
+                [archiveUnitCount]="totalResults()"
                 (archiveUnitCountChange)="onArchiveUnitCountChange($event)"
                 [(selectedArchiveUnitCount)]="itemSelected"
                 [threshold]="10000"
-                [(pending)]="pending"
+                [pending]="pending()"
+                (pendingChange)="pending.set($event)"
                 [allChecked]="isAllChecked"
                 class="col-8"
               />
@@ -308,7 +309,7 @@
             <ng-container buttons>
               <button
                 class="btn btn-circle large tertiary"
-                [disabled]="!(criteriaSearchList !== null && criteriaSearchList.length > 0 && totalResults > 0 && itemSelected > 0)"
+                [disabled]="!(criteriaSearchList !== null && criteriaSearchList.length > 0 && totalResults() > 0 && itemSelected > 0)"
               >
                 <i class="vitamui-icon vitamui-icon-import-csv" (click)="exportArchiveUnitsToCsvFile()"></i>
               </button>
@@ -427,15 +428,15 @@
             ></tr>
           </table>
           <div class="vitamui-table-footer">
-            @if (pending) {
+            @if (pending()) {
               <mat-spinner diameter="50" color="accent"></mat-spinner>
             }
-            @if (!pending && canLoadMore) {
+            @if (!pending() && canLoadMore) {
               <button (click)="loadMore()" class="btn">
                 {{ 'COLLECT.SHOW_MORE_RESULTS' | translate }}
               </button>
             }
-            @if (!pending && !canLoadMore) {
+            @if (!pending() && !canLoadMore) {
               <span>{{ 'COLLECT.NO_MORE_RESULTS' | translate }}</span>
             }
           </div>

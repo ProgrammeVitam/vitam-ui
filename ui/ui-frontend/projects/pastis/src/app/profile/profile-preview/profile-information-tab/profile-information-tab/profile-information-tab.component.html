@@ -51,7 +51,7 @@
   <div class="form-group bottom">
     <button type="submit" class="btn secondary" [disabled]="!canSubmit()">
       {{ 'PROFILE_PREVIEW.INFORMATION_TAB.ENREGISTRER' | translate }}
-      @if (pending) {
+      @if (pending()) {
         <mat-spinner style="float: right" diameter="30" color="accent"></mat-spinner>
       }
     </button>

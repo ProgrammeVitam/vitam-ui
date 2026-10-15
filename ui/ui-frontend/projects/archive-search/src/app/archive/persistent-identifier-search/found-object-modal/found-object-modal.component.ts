@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { NavigationExtras, Router } from '@angular/router';
 import {
@@ -63,6 +63,7 @@ export class FoundObjectModalComponent {
   private readonly tenantSelectionService = inject(TenantSelectionService);
   private readonly archiveService = inject(ArchiveService);
   private readonly accessContractService = inject(AccessContractService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   ark: string;
   usageVersion: string;
@@ -91,9 +92,10 @@ export class FoundObjectModalComponent {
       this.qualifier = fragments[0];
       this.qualifierVersion = Number.parseInt(fragments[1]);
       this.isPhysicalMaster = this.qualifier === ObjectQualifierType.PHYSICALMASTER;
-      this.accessContractService.currentAccessContract$.subscribe(
-        (accessContract: AccessContract) => (this.versionWithQualifier.downloadAllowed = this.accessContractAllowDownload(accessContract)),
-      );
+      this.accessContractService.currentAccessContract$.subscribe((accessContract: AccessContract) => {
+        this.versionWithQualifier.downloadAllowed = this.accessContractAllowDownload(accessContract);
+        this.cdr.markForCheck();
+      });
     }
   }
 
@@ -120,9 +122,10 @@ export class FoundObjectModalComponent {
   async downloadObject() {
     this.downloading = true;
 
-    return this.archiveService
-      .downloadObjectFromUnit(this.unitId, this.qualifier, this.qualifierVersion)
-      .add(() => (this.downloading = false));
+    return this.archiveService.downloadObjectFromUnit(this.unitId, this.qualifier, this.qualifierVersion).add(() => {
+      this.downloading = false;
+      this.cdr.markForCheck();
+    });
   }
 
   closeDialog() {

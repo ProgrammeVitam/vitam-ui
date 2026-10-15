@@ -36,9 +36,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import {
-  AfterContentChecked,
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   inject,
@@ -46,6 +44,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -219,7 +218,7 @@ const NON_TREE_UNIT_TYPES = [ARCHIVE_UNIT_FILING_UNIT, ARCHIVE_UNIT_WITH_OBJECTS
     InfiniteScrollDirective,
   ],
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked, AfterViewInit {
+export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   archiveService = inject(ArchiveService);
   private readonly archiveFacetsService = inject(ArchiveFacetsService);
   private readonly translateService = inject(TranslateService);
@@ -235,7 +234,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private readonly computeInheritedRulesService = inject(ComputeInheritedRulesService);
   private readonly archiveUnitDipService = inject(ArchiveUnitDipService);
   private readonly accessContractService = inject(AccessContractService);
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly queryParamsService = inject(QueryParamsService);
   private readonly searchCriteriaService = inject(SearchCriteriaService);
   private readonly ruleService = inject(RuleService);
@@ -255,8 +253,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   direction = Direction.ASCENDANT;
   accessContractId: string;
-  accessContractAllowUpdating: boolean;
-  accessContractUpdatingRestrictedDesc: boolean;
+  accessContractAllowUpdating = signal(false);
+  accessContractUpdatingRestrictedDesc = signal(false);
   @Output() archiveUnitClick = new EventEmitter<any>();
 
   tenantIdentifier: number;
@@ -269,26 +267,26 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   isAllChecked: boolean;
   hasResults = false;
 
-  hasReassignmentRole = false;
-  hasDipExportRole = false;
-  hasTransferRequestRole = false;
-  hasUpdateManagementRuleRole = false;
-  hasEliminationAnalysisOrActionRole = false;
-  hasComputedInheritedRulesRole = false;
-  hasReclassificationRole = false;
-  hasPreservationRole = false;
+  hasReassignmentRole = signal(false);
+  hasDipExportRole = signal(false);
+  hasTransferRequestRole = signal(false);
+  hasUpdateManagementRuleRole = signal(false);
+  hasEliminationAnalysisOrActionRole = signal(false);
+  hasComputedInheritedRulesRole = signal(false);
+  hasReclassificationRole = signal(false);
+  hasPreservationRole = signal(false);
   waitingToGetFixedCount = false;
   showDuaEndDate = false;
-  pending = false;
-  pendingComputeFacets = false;
-  submitted = false;
+  pending = signal(false);
+  pendingComputeFacets = signal(false);
+  submitted = signal(false);
   pendingGetFixedCount = false;
   submitedGetFixedCount = false;
   included = false;
   canLoadMore = false;
   // Starts visible: no search runs on portal landing, the user starts it explicitly.
   // submit() collapses the panel once a search is launched.
-  showCriteriaPanel = true;
+  showCriteriaPanel = signal(true);
   /**
    * True when the page is opened with query params already present (reload or deep link
    * with search criteria): the search runs automatically once criteria are ready.
@@ -296,10 +294,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
    * Captured from the arrival snapshot in ngOnInit, before default params are injected.
    */
   private shouldAutoSearchOnInit = false;
-  defaultFacetTabIndex = 1;
+  defaultFacetTabIndex = signal(1);
   currentPage = 0;
   pageNumbers = 0;
-  totalResults = 0;
+  totalResults = signal(0);
   selectedItemCount = 0;
   selectedHoldingUnitItemCount = 0;
   itemNotSelected = 0;
@@ -314,7 +312,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   searchCriteriaHistory: SearchCriteriaHistory[] = [];
   criteriaSearchList: SearchCriteriaEltDto[] = [];
   listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
-  searchCriteriaKeys: string[];
+  searchCriteriaKeys = signal<string[]>([]);
   additionalSearchCriteriaCategories: SearchCriteriaCategory[];
 
   subscriptions: Subscription = new Subscription();
@@ -322,13 +320,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   actionsWithThresholdReachedAlerteMessageDialogSubscription: Subscription;
 
   rulesFacetsCanBeComputed = false;
-  rulesFacetsComputed = false;
-  showingFacets = false;
+  rulesFacetsComputed = signal(false);
+  showingFacets = signal(false);
 
   archiveUnitAllunitup: string[];
   hasAccessContractManagementPermissionsMessage = '';
   bulkOperationsThreshold = -1;
-  hasTransferAcknowledgmentRole = false;
+  hasTransferAcknowledgmentRole = signal(false);
 
   selectedArchive$: Observable<Unit>;
   rulesToExport$: Observable<Rule[]>;
@@ -344,7 +342,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('launchSelectionContainsHoldingUnitAlertMessageDialog', { static: true })
   launchSelectionContainsHoldingUnitAlertMessageDialog: TemplateRef<ArchiveSearchComponent>;
-  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+  archiveSearchResultFacets = signal<ArchiveSearchResultFacets>(new ArchiveSearchResultFacets());
   @ViewChild('confirmImportantAllowedBulkOperationsDialog', { static: true })
   confirmImportantAllowedBulkOperationsDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('actionsWithThresholdReachedAlerteMessageDialog', { static: true })
@@ -530,8 +528,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
     this.accessContractService.currentAccessContract$.subscribe((ac: AccessContract) => {
       this.accessContractId = ac.identifier;
-      this.accessContractAllowUpdating = ac.writingPermission;
-      this.accessContractUpdatingRestrictedDesc = ac.writingRestrictedDesc;
+      this.accessContractAllowUpdating.set(ac.writingPermission);
+      this.accessContractUpdatingRestrictedDesc.set(ac.writingRestrictedDesc);
     });
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
@@ -541,7 +539,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     });
     this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
     this.searchCriterias = new Map();
-    this.searchCriteriaKeys = [];
+    this.searchCriteriaKeys.set([]);
 
     if (!this.route.snapshot.queryParamMap.keys.length) {
       this.queryParamsService
@@ -609,10 +607,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     }
   }
 
-  ngAfterContentChecked(): void {
-    this.cdr.detectChanges();
-  }
-
   toManagementRuleType = toManagementRuleType;
 
   toUpdateOn(category: SearchCriteriaCategory) {
@@ -628,13 +622,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   showHidePanel(show: boolean) {
-    this.showCriteriaPanel = show;
+    this.showCriteriaPanel.set(show);
   }
 
   showStoredSearchCriteria(event: SearchCriteriaHistory) {
     if (this.searchCriterias.size > 0) {
       this.searchCriterias = new Map();
-      this.searchCriteriaKeys = [];
+      this.searchCriteriaKeys.set([]);
       this.included = false;
     }
     this.clearCriteria();
@@ -658,10 +652,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
-    this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys, this.searchCriterias, this.nbQueryCriteria);
+    this.archiveHelperService.removeCriteria(keyElt, valueElt, emit, this.searchCriteriaKeys(), this.searchCriterias, this.nbQueryCriteria);
+    // The helper mutates the keys array in place: publish a new reference so zoneless change detection re-renders the chips.
+    this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
     if (this.searchCriterias && this.searchCriterias.size === 0) {
-      this.submitted = false;
-      this.showCriteriaPanel = true;
+      this.submitted.set(false);
+      this.showCriteriaPanel.set(true);
       this.archiveUnits = [];
       this.archiveSharedDataService.emitNodeTarget(null);
     }
@@ -725,10 +721,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     }
     if (this.hasSearchCriteria()) {
       this.search$ = this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList);
-      this.rulesFacetsComputed = false;
+      this.rulesFacetsComputed.set(false);
       this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
       this.callVitamApiService(this.rulesFacetsCanBeComputed);
-      this.showingFacets = this.rulesFacetsCanBeComputed;
+      this.showingFacets.set(this.rulesFacetsCanBeComputed);
       if (refreshArchiveUnitsWithoutAttachment) this.existsArchiveUnitWithoutAttachment();
     }
   }
@@ -751,7 +747,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   private launchComputingManagementRulesFacets() {
-    this.pendingComputeFacets = true;
+    this.pendingComputeFacets.set(true);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     let facets: TermsFacet[] = [];
     facets.push(ALL_DESCENDANTS_FACET);
@@ -762,22 +758,22 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       pageNumber: 0,
       size: 1,
       sortingCriteria,
-      trackTotalHits: this.totalResults >= 10000,
+      trackTotalHits: this.totalResults() >= 10000,
       computeMgtRulesFacets: true,
       facets: facets,
     };
 
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria).subscribe(
       (pagedResult: PagedResult) => {
-        this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
+        this.archiveSearchResultFacets.set(this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets));
 
-        this.pendingComputeFacets = false;
-        this.rulesFacetsComputed = true;
-        this.showingFacets = true;
-        this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+        this.pendingComputeFacets.set(false);
+        this.rulesFacetsComputed.set(true);
+        this.showingFacets.set(true);
+        this.defaultFacetTabIndex.set(this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias));
       },
       (error: HttpErrorResponse) => {
-        this.pendingComputeFacets = false;
+        this.pendingComputeFacets.set(false);
         this.logger.error('Error message :', error.message);
       },
     );
@@ -785,10 +781,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   private callVitamApiService(includeFacets: boolean) {
     if (includeFacets) {
-      this.pendingComputeFacets = true;
-      this.showingFacets = false;
+      this.pendingComputeFacets.set(true);
+      this.showingFacets.set(false);
     }
-    this.pending = true;
+    this.pending.set(true);
     let facets: TermsFacet[] = [];
     facets.push(ALL_DESCENDANTS_FACET);
     if (includeFacets) {
@@ -808,26 +804,26 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveService.searchArchiveUnitsByCriteria(searchCriterias).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
-          this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);
-          this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
-          this.pendingComputeFacets = false;
-          this.rulesFacetsComputed = true;
+          this.archiveSearchResultFacets.set(this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets));
+          this.defaultFacetTabIndex.set(this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias));
+          this.pendingComputeFacets.set(false);
+          this.rulesFacetsComputed.set(true);
         }
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
-          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-          this.archiveSharedDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.archiveSearchResultFacets().nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveSharedDataService.emitFacets(this.archiveSearchResultFacets().nodesFacets);
           this.hasResults = true;
-          this.totalResults = pagedResult.totalResults;
-          this.archiveSharedDataService.emitTotalResults(this.totalResults);
+          this.totalResults.set(pagedResult.totalResults);
+          this.archiveSharedDataService.emitTotalResults(this.totalResults());
         } else if (pagedResult.results) {
           this.hasResults = true;
           this.archiveUnits = [...this.archiveUnits, ...pagedResult.results];
         }
         this.pageNumbers = pagedResult.pageNumbers;
-        this.waitingToGetFixedCount = this.totalResults === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
+        this.waitingToGetFixedCount = this.totalResults() === this.vitamConfigurationService.tenantConfig()?.resultThreshold;
         if (this.isAllChecked) {
-          this.selectedItemCount = this.totalResults - this.itemNotSelected;
+          this.selectedItemCount = this.totalResults() - this.itemNotSelected;
         }
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
         this.archiveHelperService.updateCriteriaStatus(
@@ -835,14 +831,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           SearchCriteriaStatusEnum.IN_PROGRESS,
           SearchCriteriaStatusEnum.INCLUDED,
         );
-        this.pending = false;
+        this.pending.set(false);
         this.included = true;
       },
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
-        this.pending = false;
+        this.pending.set(false);
         if (includeFacets) {
-          this.pendingComputeFacets = false;
+          this.pendingComputeFacets.set(false);
           this.archiveSharedDataService.emitFacets([]);
         }
         this.logger.error('Error message :', error.message);
@@ -857,7 +853,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   onArchiveUnitCountChange(resultCount: number) {
-    this.totalResults = resultCount;
+    this.totalResults.set(resultCount);
     this.archiveSharedDataService.emitTotalResults(resultCount);
   }
 
@@ -1002,9 +998,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
           this.nodeArray,
           nodeId.value,
           this.searchCriterias,
-          this.searchCriteriaKeys,
+          this.searchCriteriaKeys(),
           this.nbQueryCriteria,
         );
+        this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
       });
       this.nodeArray = null;
       this.archiveSharedDataService.emitToggle(true);
@@ -1012,14 +1009,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   loadMore() {
-    if (this.pending) {
+    if (this.pending()) {
       return;
     }
     this.canLoadMore = this.currentPage < this.pageNumbers - 1;
     if (!this.canLoadMore) {
       return;
     }
-    this.submitted = true;
+    this.submitted.set(true);
     this.currentPage = this.currentPage + 1;
     if (!this.hasSearchCriteria()) {
       return;
@@ -1032,7 +1029,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   async launchFacetsComputing() {
-    if (this.pendingComputeFacets || !this.hasSearchCriteria()) {
+    if (this.pendingComputeFacets() || !this.hasSearchCriteria()) {
       return;
     }
 
@@ -1042,7 +1039,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
-          this.totalResults = exactCountResults;
+          this.totalResults.set(exactCountResults);
           this.waitingToGetFixedCount = false;
           this.managementRulesSharedDataService.emitHasExactCount(true);
           this.launchComputingManagementRulesFacets();
@@ -1057,13 +1054,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
 
   showHideFacets(show: boolean) {
     if (show === true) {
-      if (this.rulesFacetsComputed === true) {
-        this.showingFacets = true;
+      if (this.rulesFacetsComputed() === true) {
+        this.showingFacets.set(true);
       } else {
         this.launchFacetsComputing();
       }
     } else {
-      this.showingFacets = false;
+      this.showingFacets.set(false);
     }
   }
 
@@ -1093,7 +1090,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   clearCriteria() {
-    const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys);
+    const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys());
     searchCriteriaKeysCloned.forEach((criteriaKey) => {
       if (this.searchCriterias.has(criteriaKey)) {
         const criteria = this.searchCriterias.get(criteriaKey);
@@ -1107,11 +1104,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       this.removeCriteriaCategory(category);
     });
     this.searchCriterias = new Map();
-    this.searchCriteriaKeys = [];
+    this.searchCriteriaKeys.set([]);
     this.included = false;
     this.nbQueryCriteria = 0;
     this.pageNumbers = 0;
-    this.totalResults = 0;
+    this.totalResults.set(0);
     this.selectedItemCount = 0;
     this.isAllChecked = false;
     this.isIndeterminate = false;
@@ -1128,7 +1125,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     const { checked } = event;
 
     this.isAllChecked = checked;
-    this.selectedItemCount = checked ? this.totalResults : 0;
+    this.selectedItemCount = checked ? this.totalResults() : 0;
     this.selectedHoldingUnitItemCount = 0;
     if (!checked) {
       this.isIndeterminate = false;
@@ -1164,7 +1161,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         }
         this.listOfUACriteriaSearch = [];
         this.selectedItemCount++;
-        if (this.selectedItemCount === this.totalResults) {
+        if (this.selectedItemCount === this.totalResults()) {
           this.isIndeterminate = false;
         }
         if (this.isAllChecked) {
@@ -1186,9 +1183,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   }
 
   private initializeSelectionParams() {
-    this.pending = true;
-    this.submitted = true;
-    this.showCriteriaPanel = false;
+    this.pending.set(true);
+    this.submitted.set(true);
+    this.showCriteriaPanel.set(false);
     this.currentPage = 0;
     this.archiveUnits = [];
     this.criteriaSearchList = [];
@@ -1203,28 +1200,28 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
     this.archiveService.hasArchiveSearchRole(role, tenantIdentifier).subscribe((result) => {
       switch (role) {
         case VitamuiRoles.ROLE_EXPORT_DIP:
-          this.hasDipExportRole = result;
+          this.hasDipExportRole.set(result);
           break;
         case VitamuiRoles.ROLE_TRANSFER_REQUEST:
-          this.hasTransferRequestRole = result;
+          this.hasTransferRequestRole.set(result);
           break;
         case VitamuiRoles.ROLE_ELIMINATION:
-          this.hasEliminationAnalysisOrActionRole = result;
+          this.hasEliminationAnalysisOrActionRole.set(result);
           break;
         case VitamuiRoles.ROLE_ARCHIVE_SEARCH_UPDATE_ARCHIVE_UNIT:
-          this.hasUpdateManagementRuleRole = result;
+          this.hasUpdateManagementRuleRole.set(result);
           break;
         case VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES:
-          this.hasComputedInheritedRulesRole = result;
+          this.hasComputedInheritedRulesRole.set(result);
           break;
         case VitamuiRoles.ROLE_RECLASSIFICATION:
-          this.hasReclassificationRole = result;
+          this.hasReclassificationRole.set(result);
           break;
         case VitamuiRoles.ROLE_LAUNCH_PRESERVATION:
-          this.hasPreservationRole = result;
+          this.hasPreservationRole.set(result);
           break;
         case VitamuiRoles.ROLE_TRANSFER_ACKNOWLEDGMENT:
-          this.hasTransferAcknowledgmentRole = result;
+          this.hasTransferAcknowledgmentRole.set(result);
           break;
         default:
           break;
@@ -1302,9 +1299,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
         this.submitedGetFixedCount = true;
         const exactCountResults: number = await this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList).toPromise();
         if (exactCountResults !== -1) {
-          this.totalResults = exactCountResults;
+          this.totalResults.set(exactCountResults);
           if (this.isAllChecked) {
-            this.selectedItemCount = this.totalResults - this.itemNotSelected;
+            this.selectedItemCount = this.totalResults() - this.itemNotSelected;
           }
           this.waitingToGetFixedCount = false;
           this.managementRulesSharedDataService.emitHasExactCount(true);
@@ -1356,7 +1353,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   private hasRole(role: string): void {
     const appId = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
     this.securityService.hasRole$(appId, role, this.tenantIdentifier).subscribe((result) => {
-      return (this.hasReassignmentRole = result);
+      return this.hasReassignmentRole.set(result);
     });
   }
 
@@ -1604,7 +1601,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
   ) {
     this.archiveHelperService.addCriteria(
       this.searchCriterias,
-      this.searchCriteriaKeys,
+      this.searchCriteriaKeys(),
       this.nbQueryCriteria,
       keyElt,
       valueElt,
@@ -1616,6 +1613,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, Aft
       dataType,
       emit,
     );
+    // The helper mutates the keys array in place: publish a new reference so zoneless change detection re-renders the chips.
+    this.searchCriteriaKeys.set([...this.searchCriteriaKeys()]);
   }
 
   trackBy(_: number, unit: Unit) {

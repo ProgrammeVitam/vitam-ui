@@ -36,7 +36,7 @@
  */
 import { Clipboard } from '@angular/cdk/clipboard';
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import {
   AccessContract,
   AccessContractService,
@@ -68,6 +68,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
   private readonly tenantSelectionService = inject(TenantSelectionService);
   private readonly accessContractService = inject(AccessContractService);
   private readonly archiveSharedDataService = inject(ArchiveSharedDataService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() archiveUnit: Unit;
 
@@ -138,6 +139,8 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
         this.archiveSharedDataService.unitUpdatedWithComputedObjectGroup.next(this.archiveUnit);
         this.setDownloadableOnVersionsWithQualifiers();
         this.setFirstVersionWithQualifierOpen();
+        // archiveUnit is an input mutated in place: request a refresh explicitly (zoneless).
+        this.cdr.markForCheck();
       },
       error: (e) => console.error(e),
     });
@@ -177,6 +180,7 @@ export class ArchiveUnitObjectsDetailsTabComponent implements OnChanges, OnInit,
       .hasArchiveSearchRole('ROLE_ARCHIVE_SEARCH_GET_ARCHIVE_BINARY', this.tenantSelectionService.getSelectedTenant().identifier)
       .subscribe((result) => {
         this.hasDownloadDocumentRole = result;
+        this.cdr.markForCheck();
       });
   }
 }

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -55,6 +55,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   private readonly customerService = inject(CustomerService);
   private readonly dialog = inject(MatDialog);
   private readonly themeService = inject(ThemeService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input()
   set customer(customer: Customer) {
@@ -124,6 +125,7 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
           this.theme.portalUrl = this.customerLogos.portalUrl;
         }
         this.isLoading = false;
+        this.cdr.markForCheck();
       });
     this.themeService.overloadLocalTheme(this.theme.colors, 'div.vitamui-sidepanel');
   }

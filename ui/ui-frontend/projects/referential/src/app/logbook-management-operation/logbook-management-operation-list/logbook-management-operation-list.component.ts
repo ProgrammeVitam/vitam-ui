@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import {
@@ -76,6 +76,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 export class LogbookManagementOperationListComponent implements OnInit {
   logbookManagementOperationService = inject(LogbookManagementOperationService);
   private readonly translate = inject(TranslateService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   elementInPage: number;
   filter = false;
@@ -124,6 +125,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
       this.results = this.operationsList.results.slice(0, this.elementInPage);
       this.totalResults = this.operationsList.hits.total;
       this.show = this.totalResults < 20 ? true : false;
+      this.cdr.markForCheck();
     });
   }
 
@@ -191,7 +193,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
         if (operationIndex > -1) {
           this.logbookManagementOperationService.listOperationsDetails({ id: operationUpdated.operationId }).subscribe((results) => {
             if (results.results) {
-              this.results[operationIndex] = results.results[0];
+              this.results = this.results.map((operation, index) => (index === operationIndex ? results.results[0] : operation));
+              this.cdr.markForCheck();
             }
           });
         }

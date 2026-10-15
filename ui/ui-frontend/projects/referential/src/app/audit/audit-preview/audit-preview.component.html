@@ -8,7 +8,7 @@
   [actionsBelowTitle]="true"
 >
   @if (hasReport()) {
-    <button class="btn primary ml-1" (click)="downloadReport()" [disabled]="!(isAuditCompleted() && hasReport() && accessContractId)">
+    <button class="btn primary ml-1" (click)="downloadReport()" [disabled]="!(isAuditCompleted() && hasReport() && accessContractId())">
       {{ 'AUDIT.TAB.INFORMATIONS.DOWNLOAD_REPORT' | translate }}
     </button>
   }

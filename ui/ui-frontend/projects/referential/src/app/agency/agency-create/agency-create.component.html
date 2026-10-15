@@ -5,7 +5,7 @@
 
 <mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial class="gap-3 align-items-stretch">
-    @if (!isLoading) {
+    @if (!isLoading()) {
       <vitamui-input
         formControlName="identifier"
         [placeholder]="'AGENCY.CREATE_DIALOG.IDENTIFIER' | translate"
@@ -28,7 +28,7 @@
       </vitamui-input>
     } @else {
       <div class="loader">
-        @if (isLoading) {
+        @if (isLoading()) {
           <mat-spinner class="vitamui-spinner medium"></mat-spinner>
         }
       </div>
@@ -37,14 +37,14 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="submit" (click)="onSubmit()" class="btn primary" [disabled]="form.invalid || form.pending || isLoading">
+  <button type="submit" (click)="onSubmit()" class="btn primary" [disabled]="form.invalid || form.pending || isLoading()">
     <span>{{ 'COMMON.TERMINATE' | translate }}</span>
   </button>
 
   <button
     type="button"
     class="btn outline outline-primary"
-    [disabled]="form.invalid || form.pending || isLoading"
+    [disabled]="form.invalid || form.pending || isLoading()"
     (click)="submitAndEdit()"
   >
     <span>{{ 'AGENCY.CREATE_DIALOG.VALIDATE_AND_EDIT' | translate }}</span>

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { Event, PipesModule } from 'vitamui-library';
 import { SecurisationService } from '../../securisation.service';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -50,12 +50,12 @@ export class SecurisationInformationTabComponent implements OnInit {
 
   @Input()
   securisation: Event;
-  timestamp: { signerCertIssuer: string; genTime: Date };
+  timestamp = signal<{ signerCertIssuer: string; genTime: Date }>(undefined);
 
   ngOnInit() {
     if (this.securisation['parsedData']) {
       this.securisationService.getInfoFromTimestamp(this.securisation['parsedData']['TimeStampToken']).subscribe((response) => {
-        this.timestamp = response;
+        this.timestamp.set(response);
       });
     }
   }

@@ -36,7 +36,7 @@
  */
 import { vi } from 'vitest';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'projects/collect/src/environments/environment';
 import { of } from 'rxjs';
@@ -171,9 +171,8 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(clipboardSpy.copy).toHaveBeenCalledWith('à copié');
   });
 
-  it('onClickDownloadObject', fakeAsync(() => {
-    TestBed.tick();
-    tick();
+  it('onClickDownloadObject', async () => {
+    await fixture.whenStable();
 
     fixture.componentRef.setInput('archiveUnit', archiveUnit);
 
@@ -189,7 +188,7 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       1,
     );
     expect(preventDefaultSpy).toHaveBeenCalled();
-  }));
+  });
 
   it('Should return null', () => {
     expect(component.getFileName(null)).toBeNull();
@@ -209,15 +208,14 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
       qualifier: ObjectQualifierType.BINARYMASTER,
     } as VersionWithQualifierDto;
     expect(component).toBeTruthy();
-    component.versionsWithQualifiersOrdered = [];
-    component.versionsWithQualifiersOrdered.push(versionWithQualifier);
+    component.versionsWithQualifiersOrdered.set([versionWithQualifier]);
 
     // When
     component.setFirstVersionWithQualifierOpen();
 
     // Then
-    expect(component.versionsWithQualifiersOrdered[0]).not.toBeNull();
-    expect(component.versionsWithQualifiersOrdered[0].opened).toBeTruthy();
+    expect(component.versionsWithQualifiersOrdered()[0]).not.toBeNull();
+    expect(component.versionsWithQualifiersOrdered()[0].opened).toBeTruthy();
   });
 
   it('should return true', () => {
@@ -336,11 +334,11 @@ describe('CollectObjectGroupDetailsTabComponent', () => {
     expect(encoding).toEqual('Encoding');
   });
 
-  it('Should return the CreatingOs value', fakeAsync(() => {
+  it('Should return the CreatingOs value', () => {
     const response = component.getCreatingOs(fileInfo);
     expect(response).not.toBeNull();
     expect(response).toEqual('CreatingOs');
-  }));
+  });
 
   it('Should return the FormatLitteral value', () => {
     const formatLitteral = component.getFormatLitteral(formatIdentificationDto);

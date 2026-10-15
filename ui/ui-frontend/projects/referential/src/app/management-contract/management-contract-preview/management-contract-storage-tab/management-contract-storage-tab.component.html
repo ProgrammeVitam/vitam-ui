@@ -23,13 +23,13 @@
     >
     </vitamui-input>
 
-    @if (showSpinner) {
+    @if (showSpinner()) {
       <div class="vitamui-min-content">
         <mat-spinner class="vitamui-spinner medium"></mat-spinner>
       </div>
     } @else {
       <div class="form-group bottom">
-        <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submited">
+        <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submited()">
           {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
         </button>
       </div>

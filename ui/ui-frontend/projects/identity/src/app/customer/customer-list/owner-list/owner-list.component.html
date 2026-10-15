@@ -9,7 +9,7 @@
 
   <div class="vitamui-table-body">
     <div class="vitamui-table-rows">
-      @for (tenant of myTenants; track tenant) {
+      @for (tenant of myTenants(); track tenant) {
         <div
           class="vitamui-row d-flex align-items-center clickable"
           (click)="($event.stopPropagation); clickTenant(tenant, getOwner(tenant?.ownerId))"
@@ -33,7 +33,7 @@
     </div>
 
     <div class="vitamui-table-rows">
-      @for (owner of ownersWithoutTenant; track owner) {
+      @for (owner of ownersWithoutTenant(); track owner) {
         <div class="vitamui-row d-flex align-items-center clickable" (click)="($event.stopPropagation); ownerClick.emit(owner)">
           <div class="col-3 d-flex justify-content-center align-items-end">
             <i class="vitamui-icon vitamui-icon-key" [style.fontSize.px]="25"></i>

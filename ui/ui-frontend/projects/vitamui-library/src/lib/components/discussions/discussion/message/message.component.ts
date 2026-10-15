@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, computed, HostBinding, HostListener, inject, input, output } from '@angular/core';
+import { Component, computed, HostBinding, HostListener, inject, input, output, signal } from '@angular/core';
 import { AuthService } from '../../../../../app/modules/auth.service';
 import { VitamUICommonModule } from '../../../../../app/modules/vitamui-common.module';
 import { Discussion, DiscussionService, Message } from '../../discussion.service';
@@ -65,7 +65,7 @@ export class MessageComponent {
   lastReadAt = input<Date>();
   markUnread = output<Message>();
 
-  updateMode = false;
+  updateMode = signal(false);
 
   control = computed(() => new FormControl(this.message().text));
 
@@ -84,7 +84,7 @@ export class MessageComponent {
     if (!this.isControlValid()) return;
     this.control().markAsPending();
     await this.discussionService.updateMessage(this.discussion(), { ...this.message(), text: this.control().value });
-    this.updateMode = false;
+    this.updateMode.set(false);
   }
 
   async deleteMessage() {

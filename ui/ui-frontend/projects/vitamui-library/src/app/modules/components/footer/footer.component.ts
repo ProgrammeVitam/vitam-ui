@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../auth.service';
 import { ThemeDataType } from '../../models/customer/theme/themeDataType.enum';
@@ -52,7 +52,7 @@ export class FooterComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly themeService = inject(ThemeService);
 
-  public footerLogoUrl: SafeResourceUrl;
+  public footerLogoUrl = signal<SafeResourceUrl>(undefined);
   public version: string;
 
   ngOnInit() {
@@ -62,7 +62,7 @@ export class FooterComponent implements OnInit {
     }
 
     this.themeService.getData$(this.authService.user, ThemeDataType.FOOTER_LOGO).subscribe((footerLogoUrl: SafeResourceUrl) => {
-      this.footerLogoUrl = footerLogoUrl;
+      this.footerLogoUrl.set(footerLogoUrl);
     });
   }
 }

@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import type { Group } from 'vitamui-library';
 import { AuthService, isLevelAllowed, OperationHistoryTabComponent, VitamuiSidenavHeaderComponent } from 'vitamui-library';
@@ -68,6 +79,7 @@ import { CommonModule } from '@angular/common';
 export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
   private readonly groupService = inject(GroupService);
   private readonly authService = inject(AuthService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() isPopup: boolean;
 
@@ -82,6 +94,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
     if (this.group) {
       this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
         this.group = groupRetrieved;
+        this.cdr.markForCheck();
         this.groupService.updated.next(groupRetrieved);
       });
     }
@@ -89,6 +102,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
     this.groupUpdateSub = this.groupService.updated.subscribe((updatedGroup) => {
       if (updatedGroup) {
         this.group = updatedGroup;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -98,6 +112,7 @@ export class GroupPreviewComponent implements OnInit, OnDestroy, OnChanges {
       if (this.group) {
         this.groupService.get(this.group.id).subscribe((groupRetrieved) => {
           this.group = groupRetrieved;
+          this.cdr.markForCheck();
           this.groupService.updated.next(groupRetrieved);
         });
       }

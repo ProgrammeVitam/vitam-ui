@@ -1,6 +1,6 @@
-@if (show) {
-  @if (hidden) {
-    <div class="hidden-banner-div" (click)="hidden = false">
+@if (show()) {
+  @if (hidden()) {
+    <div class="hidden-banner-div" (click)="hidden.set(false)">
       <i class="vitamui-icon vitamui-icon-chevron-up"></i>
     </div>
   } @else {
@@ -11,10 +11,10 @@
           'SUBROGATION.BANNER.MESSAGE'
             | translate
               : {
-                  email: authService?.user?.email,
-                  surrogateCustomerName: surrogateCustomerName,
-                  surrogateCustomerCode: surrogateCustomerCode,
-                  endDate: endDate | date: 'HH:mm:ss',
+                  email: userEmail(),
+                  surrogateCustomerName: surrogateCustomerName(),
+                  surrogateCustomerCode: surrogateCustomerCode(),
+                  endDate: endDate() | date: 'HH:mm:ss',
                 }
         }}</span>
         <button class="btn contrast contrast-primary ml-4" (click)="onStopSubrogation()">
@@ -22,7 +22,7 @@
         </button>
       </div>
 
-      <div (click)="hidden = true">
+      <div (click)="hidden.set(true)">
         <i class="vitamui-icon vitamui-icon-close clickable"></i>
       </div>
     </div>

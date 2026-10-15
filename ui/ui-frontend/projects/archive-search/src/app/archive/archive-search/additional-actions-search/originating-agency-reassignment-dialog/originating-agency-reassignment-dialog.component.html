@@ -34,7 +34,7 @@
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ORIGINATING_AGENCY' | translate"
       formControlName="sourceOriginatingAgency"
-      [options]="originatingAgenciesOptions"
+      [options]="originatingAgenciesOptions()"
     ></vitamui-select>
 
     <p class="text bold primary m-0 mt-1">
@@ -46,7 +46,7 @@
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.ORIGINATING_AGENCY_REASSIGNMENT.ORIGINATING_AGENCY' | translate"
       formControlName="targetOriginatingAgency"
-      [options]="originatingAgenciesOptions"
+      [options]="originatingAgenciesOptions()"
     ></vitamui-select>
 
     @if (reassignmentMode === ReassignmentMode.BY_ID) {

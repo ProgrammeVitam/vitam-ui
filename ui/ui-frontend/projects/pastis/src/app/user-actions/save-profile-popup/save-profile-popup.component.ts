@@ -74,7 +74,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly identifierValidator = inject(IdentifierExistsValidator);
 
-  profileOptions: Option[];
+  profileOptions = signal<Option[]>(undefined);
   notice: Notice;
   selectedProfile: ProfileDescription;
   statusOptions: Option[];
@@ -86,7 +86,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
   firstChoiceGestionNotice: string;
   secondChoiceGestionNotice: string;
   titleGestionNotice: string;
-  externalIdentifierEnabled: boolean;
+  externalIdentifierEnabled = signal(false);
 
   okLabel: string;
   editProfile: boolean;
@@ -161,7 +161,7 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
 
     const action = this.gestionNotice() ? 'creation' : 'rattachement';
     if (this.gestionNotice()) {
-      if (!this.externalIdentifierEnabled && !this.editProfile) {
+      if (!this.externalIdentifierEnabled() && !this.editProfile) {
         this.noticeForm.controls['identifier'].setValue(this.noticeForm.controls['name'].value);
       }
       if (this.noticeForm.invalid) {
@@ -234,10 +234,12 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
 
   private getProfileOptions() {
     const mapProfileDescriptionsToOptions = (profileListPUA: ProfileDescription[]) =>
-      (this.profileOptions = profileListPUA.map((profile: ProfileDescription) => ({
-        key: profile,
-        label: `${profile.identifier} - ${profile.name}`,
-      })));
+      this.profileOptions.set(
+        profileListPUA.map((profile: ProfileDescription) => ({
+          key: profile,
+          label: `${profile.identifier} - ${profile.name}`,
+        })),
+      );
     if (this.profileService.profileType === ProfileType.PUA) {
       this.profileService.getAllProfilesPUA(this.profileService.profileVersion).subscribe(mapProfileDescriptionsToOptions);
     } else if (this.profileService.profileType === ProfileType.PA) {
@@ -251,9 +253,9 @@ export class SaveProfilePopupComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         const identifierCtrl = this.noticeForm.controls['identifier'];
 
-        this.externalIdentifierEnabled = value;
+        this.externalIdentifierEnabled.set(value);
 
-        if (!this.externalIdentifierEnabled || this.editProfile) {
+        if (!this.externalIdentifierEnabled() || this.editProfile) {
           identifierCtrl.clearValidators();
         } else {
           identifierCtrl.setValidators([

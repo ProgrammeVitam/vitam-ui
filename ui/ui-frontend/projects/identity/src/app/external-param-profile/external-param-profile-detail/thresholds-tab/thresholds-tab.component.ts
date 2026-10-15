@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { extend, isEmpty } from 'underscore';
@@ -63,7 +63,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
       threshold: this.decimalPipe.transform(thresholdValue),
     }),
   }));
-  isUpdated: boolean;
+  readonly isUpdated = signal(false);
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -81,11 +81,11 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
 
   ngOnInit() {
     this.initForm();
-    this.isUpdated = false;
+    this.isUpdated.set(false);
 
     this.updateFormSub = this.form.valueChanges.subscribe(() => {
       const updatedModel: any = diff(this.form.value, this.previousValue);
-      this.isUpdated = !isEmpty(updatedModel);
+      this.isUpdated.set(!isEmpty(updatedModel));
     });
   }
 
@@ -129,7 +129,7 @@ export class ThresholdsTabComponent implements OnDestroy, OnInit, OnChanges {
 
       this.externalParamProfileService.patch(updated).subscribe((externalParamProfile: ExternalParamProfile) => {
         this.resetForm(this.form, externalParamProfile, this.readOnly);
-        this.isUpdated = false;
+        this.isUpdated.set(false);
       });
     }
   }

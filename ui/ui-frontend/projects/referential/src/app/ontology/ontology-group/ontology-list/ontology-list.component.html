@@ -48,7 +48,7 @@
     </thead>
 
     <tbody>
-      @for (ontology of dataSource; track ontology) {
+      @for (ontology of dataSource(); track ontology) {
         <tr class="clickable" [class.selected]="(ontologyService.selectedId$ | async) === ontology.id" (click)="selectLine(ontology)">
           <!-- COL 1: NOM -->
           <td>{{ ontology.shortName }}</td>
@@ -74,13 +74,13 @@
       }
     </tbody>
   </table>
-  @if (!dataSource || pending) {
+  @if (!dataSource() || pending()) {
     <ng-container *ngTemplateOutlet="loadingSpinner"></ng-container>
   }
-  @if (!pending && dataSource?.length === 0) {
+  @if (!pending() && dataSource()?.length === 0) {
     <ng-container *ngTemplateOutlet="noResults"></ng-container>
   }
-  @if (infiniteScrollDisabled && ontologyService.canLoadMore && !pending) {
+  @if (infiniteScrollDisabled() && ontologyService.canLoadMore && !pending()) {
     <ng-container *ngTemplateOutlet="loadMore"></ng-container>
   }
 </div>
