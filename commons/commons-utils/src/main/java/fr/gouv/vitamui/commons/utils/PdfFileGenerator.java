@@ -41,6 +41,7 @@ import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
+import org.apache.commons.io.input.CloseShieldInputStream;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -49,14 +50,18 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/** Converts UTF-8 FreeMarker HTML templates to self-contained PDF documents. */
 public class PdfFileGenerator {
 
     private static final Configuration FREEMARKER_CONFIGURATION = createFreemarkerConfiguration();
 
+    /** Prevents instantiation of this stateless utility. */
     private PdfFileGenerator() {}
 
     /**
-     * Renders an HTML/FreeMarker template to PDF.
+     * Renders a UTF-8 HTML/FreeMarker template to PDF using square-bracket directives.
+     * Template values are HTML-escaped. External resources, including images and stylesheets,
+     * are not resolved, so templates must contain their own styles.
      *
      * @param htmlTemplateInputStream the template to render; the caller is responsible for closing the stream
      * @param pdfOutputStream the generated PDF; the caller is responsible for closing the stream
@@ -70,7 +75,7 @@ public class PdfFileGenerator {
     ) throws Exception {
         final Template template = new Template(
             "probativevaluereport.ftlh",
-            new InputStreamReader(htmlTemplateInputStream, StandardCharsets.UTF_8),
+            new InputStreamReader(CloseShieldInputStream.wrap(htmlTemplateInputStream), StandardCharsets.UTF_8),
             FREEMARKER_CONFIGURATION
         );
 
@@ -85,6 +90,7 @@ public class PdfFileGenerator {
             .run();
     }
 
+    /** Creates the shared configuration with HTML escaping and explicit template error propagation. */
     private static Configuration createFreemarkerConfiguration() {
         final Configuration configuration = new Configuration(Configuration.VERSION_2_3_35);
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
