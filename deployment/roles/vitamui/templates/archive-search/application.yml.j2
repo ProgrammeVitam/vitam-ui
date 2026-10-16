@@ -18,7 +18,7 @@ spring:
         instanceId: ${spring.application.name}-${spring.cloud.client.hostname}-${server.port}
 
   mongodb:
-    uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
+    uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}&appName=vitamui-archive-search
 
 cas.tenant.identifier: {{ vitamui_platform_informations.cas_tenant }}
 

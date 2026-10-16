@@ -34,19 +34,21 @@
   tags: update_mongodb_configuration
 
 # Restart the mongo instances (to enable auth)
-- name: Restart vitamui-mongod service
-  service:
-    name: vitamui-mongod
-    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
-    state: restarted
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['hosts_vitamui_mongod'] }}"
-  tags: update_mongodb_configuration
-
-# Make sure the service is open (mongod listening on 27017)
-- name: "Wait for the service port {{ mongodb.mongod_port }} to be open"
-  wait_for:
-    host: "{{ ip_service }}"
-    port: "{{ mongodb.mongod_port }}"
-    timeout: "{{ vitamui_defaults.services.start_timeout }}"
+# Driven from a single host, one member at a time: the previous delegate_to loop
+# had every host restart every member, so each member was restarted as many
+# times as there are members, all of them concurrently, and the only wait came
+# after the whole loop.
+- name: Restart vitamui-mongod service, one replica set member at a time
+  include_tasks:
+    file: restart_member.yml
+    # Without apply, the tag below only gates the include itself: the tasks it
+    # brings in carry no tag of their own and a run limited to
+    # --tags update_mongodb_configuration would skip every restart and every
+    # wait, leaving the configuration it just wrote inactive.
+    apply:
+      tags: update_mongodb_configuration
+  loop: "{{ groups['hosts_vitamui_mongod'] }}"
+  loop_control:
+    loop_var: mongod_member
+  run_once: true
   tags: update_mongodb_configuration
