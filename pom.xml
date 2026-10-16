@@ -76,6 +76,8 @@
         <vitam.version>10.0.0-SNAPSHOT</vitam.version>
 
         <!--Spring dependencies version override-->
+        <!-- Keep the runtime version aligned with commons-utils PdfFileGenerator -->
+        <freemarker.version>2.3.35</freemarker.version>
         <!-- override it to fix CVE-2025-48924 -->
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <!-- override it to fix CVE-2026-19880 -->
