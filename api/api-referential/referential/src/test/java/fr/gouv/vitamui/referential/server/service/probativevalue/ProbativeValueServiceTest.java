@@ -50,6 +50,10 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportCommonService;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.pdfbox.text.TextPosition;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,6 +71,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -126,6 +131,7 @@ class ProbativeValueServiceTest {
         assertTrue(json.exists());
         File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
         assertTrue(pdf.exists());
+        assertPdfContent(pdf, "WARNING", "Pereire.txt", "Détail du rapport numéro 1", "Source comparable");
     }
 
     @Test
@@ -169,6 +175,7 @@ class ProbativeValueServiceTest {
         assertTrue(json.exists());
         File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
         assertTrue(pdf.exists());
+        assertPdfContent(pdf, "WARNING", "Détail du rapport numéro 4", "Source comparable");
     }
 
     @Test
@@ -203,6 +210,34 @@ class ProbativeValueServiceTest {
         assertTrue(json.exists());
         File pdf = new File(workspace.getAbsolutePath(), operationId + ".pdf");
         assertTrue(pdf.exists());
+        assertPdfContent(pdf, "KO", "Détail du rapport numéro 1");
+    }
+
+    /** Checks the rendered report content and catches text overflowing the printable page width. */
+    private void assertPdfContent(File pdf, String... expectedValues) throws IOException {
+        try (PDDocument document = Loader.loadPDF(pdf)) {
+            assertTrue(document.getNumberOfPages() > 0);
+            assertEquals("openhtmltopdf.com", document.getDocumentInformation().getProducer());
+            PDFTextStripper stripper = new PDFTextStripper() {
+                @Override
+                protected void processTextPosition(TextPosition position) {
+                    float rightMargin = document.getPage(getCurrentPageNo() - 1).getMediaBox().getWidth() - 30;
+                    assertTrue(position.getXDirAdj() >= 30, "Text crosses the left page margin");
+                    assertTrue(
+                        position.getXDirAdj() + position.getWidthDirAdj() <= rightMargin,
+                        "Text crosses the right page margin"
+                    );
+                    super.processTextPosition(position);
+                }
+            };
+            String text = stripper.getText(document);
+            assertTrue(text.contains("Relevé de valeur probante"));
+            assertTrue(text.contains("Résumé de l'opération"));
+            assertTrue(text.contains("Requête effectuée"));
+            for (String expected : expectedValues) {
+                assertTrue(text.contains(expected), "Missing PDF content: " + expected);
+            }
+        }
     }
 
     private InputStream buildVitamProbativeReport(String filename)

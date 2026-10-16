@@ -92,6 +92,7 @@ public class ProbativeValueService {
 
     private final UnitCommonService unitCommonService;
 
+    /** Creates a report exporter using VITAM reports and archive metadata for display labels. */
     ProbativeValueService(
         VitamBatchReportCommonService vitamBatchReportCommonService,
         UnitCommonService unitCommonService
@@ -140,6 +141,7 @@ public class ProbativeValueService {
         }
     }
 
+    /** Enriches the downloaded JSON report with archive labels and renders the bundled HTML template to PDF. */
     private void generatePDF(
         final VitamContext vitamContext,
         final String operationId,

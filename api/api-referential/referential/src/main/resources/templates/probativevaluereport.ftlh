@@ -12,6 +12,7 @@
             color: #222222;
             font-family: sans-serif;
             font-size: 9pt;
+            word-wrap: break-word;
         }
 
         h1 {
@@ -41,6 +42,7 @@
         table {
             border-collapse: collapse;
             margin-bottom: 10pt;
+            table-layout: fixed;
             width: 100%;
         }
 
@@ -54,6 +56,7 @@
 
         th {
             background-color: #eeeeee;
+            width: 28%;
         }
 
         tr {
@@ -67,6 +70,7 @@
 
         pre {
             white-space: pre-wrap;
+            word-wrap: break-word;
         }
     </style>
 </head>
