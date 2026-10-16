@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -64,7 +64,7 @@ const defaultDownloadButtonLabel = 'LOGBOOK_OPERATION_DETAIL.DOWNLOAD_REPORT';
   styleUrls: ['./logbook-operation-detail.component.scss'],
   standalone: false,
 })
-export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
+export class LogbookOperationDetailComponent implements OnInit, OnChanges, OnDestroy {
   private logbookService = inject(LogbookService);
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
@@ -93,6 +93,13 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => this.setAccessContractId(parameters));
     this.refreshLogbookOperation();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Only reload when another operation is selected: reacting to tenant changes would reintroduce bug #16920
+    if (changes['eventId'] && !changes['eventId'].firstChange) {
+      this.refreshLogbookOperation();
+    }
   }
 
   ngOnDestroy() {
@@ -149,14 +156,12 @@ export class LogbookOperationDetailComponent implements OnInit, OnDestroy {
   }
 
   private setAccessContractLogbookIdentifier() {
-    if (this.accessContractLogbookIdentifier || this.doesNotHaveTenant()) {
+    if (this.doesNotHaveTenant()) {
       return;
     }
+    // Recomputed on every refresh (cheap in-memory lookup) so a tenant switch never keeps a stale access contract
     const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
-    if (!tenant) {
-      return;
-    }
-    this.accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
+    this.accessContractLogbookIdentifier = tenant?.accessContractLogbookIdentifier || '';
   }
 
   private refreshLogbookOperation() {
