@@ -204,11 +204,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.opengis.cite.xerces</groupId>
-            <artifactId>xercesImpl-xsd11</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>xml-resolver</groupId>
             <artifactId>xml-resolver</artifactId>
         </dependency>
