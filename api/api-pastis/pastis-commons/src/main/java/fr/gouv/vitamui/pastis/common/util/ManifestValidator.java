@@ -38,12 +38,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.util;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.apache.xerces.util.XMLCatalogResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
+import javax.xml.catalog.CatalogFeatures;
+import javax.xml.catalog.CatalogManager;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -51,19 +52,18 @@ import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class ManifestValidator {
 
     public static final String RNG_FACTORY = "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory";
     public static final String RNG_PROPERTY_KEY = "javax.xml.validation.SchemaFactory:" + XMLConstants.RELAXNG_NS_URI;
-    public static final String HTTP_WWW_W3_ORG_XML_XML_SCHEMA_V1_1 = "http://www.w3.org/XML/XMLSchema/v1.1";
     /**
      * Filename of the catalog file ; should be found in the classpath.
      */
     public static final String CATALOG_FILENAME = "xsd_validation/catalog.xml";
     private static final Logger LOGGER = LoggerFactory.getLogger(ManifestValidator.class);
-    private static final String RNG_SUFFIX = ".rng";
 
     /**
      * @param manifestFile
@@ -91,17 +91,19 @@ public class ManifestValidator {
     }
 
     private Schema getSchema(File file) throws SAXException {
-        SchemaFactory factory;
-        if (file.getName().endsWith(RNG_SUFFIX)) {
-            System.setProperty(RNG_PROPERTY_KEY, RNG_FACTORY);
-            factory = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI);
-        } else {
-            factory = SchemaFactory.newInstance(HTTP_WWW_W3_ORG_XML_XML_SCHEMA_V1_1);
-        }
+        System.setProperty(RNG_PROPERTY_KEY, RNG_FACTORY);
+        final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI);
 
         // Load catalog to resolve external schemas even offline.
         final URL catalogUrl = ManifestValidator.class.getClassLoader().getResource(CATALOG_FILENAME);
-        factory.setResourceResolver(new XMLCatalogResolver(new String[] { catalogUrl.toString() }, false));
+        try {
+            final CatalogFeatures features = CatalogFeatures.builder()
+                .with(CatalogFeatures.Feature.RESOLVE, "continue")
+                .build();
+            factory.setResourceResolver(CatalogManager.catalogResolver(features, catalogUrl.toURI()));
+        } catch (URISyntaxException e) {
+            throw new SAXException("Invalid catalog URL: " + catalogUrl, e);
+        }
 
         return factory.newSchema(file);
     }

@@ -71,7 +71,6 @@
         <vitam.version>10.0.0-SNAPSHOT</vitam.version>
         <xdocreport.version>2.2.0</xdocreport.version>
         <xerces.version>2.12.2</xerces.version>
-        <xercesImpl-xsd11.version>2.12-beta-r1667115</xercesImpl-xsd11.version>
         <xml-resolver.version>1.2</xml-resolver.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
@@ -248,12 +247,6 @@
                 <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>pastis</artifactId>
                 <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.opengis.cite.xerces</groupId>
-                <artifactId>xercesImpl-xsd11</artifactId>
-                <version>${xercesImpl-xsd11.version}</version>
             </dependency>
 
             <dependency>
