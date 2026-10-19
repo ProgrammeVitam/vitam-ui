@@ -109,13 +109,13 @@
   <div
     vitamuiCommonInfiniteScroll
     [vitamuiCommonInfiniteScrollThreshold]="0.5"
-    [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+    [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled()"
     (vitamuiScroll)="onScroll()"
   >
-    @for (value of infiniteValues; track value) {
+    @for (value of infiniteValues(); track value) {
       <div>value {{ value }}</div>
     }
-    @if (infiniteScrollDisabled) {
+    @if (infiniteScrollDisabled()) {
       <mat-spinner class="vitamui-spinner medium"></mat-spinner>
     }
   </div>

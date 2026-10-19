@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { finalize, from, Observable, of, switchMap } from 'rxjs';
 import {
@@ -127,14 +127,14 @@ export class AddUnitsComponent implements OnInit {
   protected readonly FilingPlanMode = FilingPlanMode;
   protected readonly uploadMaxSizeInBytes = Math.pow(1024, 3); // 1 Gb
 
-  isLoading = false;
+  isLoading = signal(false);
   stepIndex = 0;
 
   importTypeControl: FormControl<string | null> = new FormControl(null);
   filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
   zipFileStatus$: Observable<ZipFileStatus>;
   linkParentIdControl = new FormControl({ included: [], excluded: [] });
-  projectUnits: Unit[];
+  projectUnits = signal<Unit[]>(undefined);
 
   @ViewChild('confirmCancelDialog', { static: true }) confirmCancelDialogTemplate: TemplateRef<AddUnitsComponent>;
   private confirmCancelDialog: MatDialogRef<AddUnitsComponent>;
@@ -175,7 +175,7 @@ export class AddUnitsComponent implements OnInit {
     this.archiveCollectService
       .searchArchiveUnitsByCriteria(searchCriteria, this.data.transaction.id)
       .subscribe((pagedResult: PagedResult) => {
-        this.projectUnits = pagedResult.results;
+        this.projectUnits.set(pagedResult.results);
       });
   }
 
@@ -197,7 +197,7 @@ export class AddUnitsComponent implements OnInit {
   }
 
   validateAndUpload() {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.stepIndex++;
     const zipFile = new ZipFile(this.data.transaction.id);
     this.zipFileStatus$ = zipFile.zipFileStatus$;
@@ -233,7 +233,7 @@ export class AddUnitsComponent implements OnInit {
             }
           }
         }),
-        finalize(() => (this.isLoading = false)),
+        finalize(() => this.isLoading.set(false)),
       )
       .subscribe({
         error: (error: HttpErrorResponse) => {

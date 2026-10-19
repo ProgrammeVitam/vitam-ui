@@ -62,12 +62,21 @@ export class UploadService {
   addNewUploadFile(requestId: string, ingest: IngestInfo): void {
     const map: IngestList = this.uploadStatus.getValue();
     map.add(requestId, ingest);
-    this.uploadStatus.next(map);
+    this.emitUploadStatus(map);
   }
 
   updateFileStatus(requestId: string, sizeUploaded: number, status?: IngestUploadStatus): void {
     const map: IngestList = this.uploadStatus.getValue();
     map.update(requestId, sizeUploaded, status);
+    this.emitUploadStatus(map);
+  }
+
+  /** Emits a new IngestList reference so that consumers (signals, OnPush views) detect the change. */
+  private emitUploadStatus(map: IngestList): void {
+    const copy = new IngestList();
+    copy.ingests = { ...map.ingests };
+    copy.wipNumber = map.wipNumber;
+    this.uploadStatus.next(copy);
   }
 
   public uploadIngest(
@@ -95,7 +104,7 @@ export class UploadService {
         }
       },
       (error) => {
-        this.updateFileStatus(fileName, IngestUploadStatus.ERROR);
+        this.updateFileStatus(fileName, 0, IngestUploadStatus.ERROR);
         console.log('ERROR: ', error);
       },
     );

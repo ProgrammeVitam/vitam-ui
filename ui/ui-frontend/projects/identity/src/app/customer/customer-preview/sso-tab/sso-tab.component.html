@@ -8,7 +8,7 @@
           </div>
         </button>
       }
-      @for (provider of providers; track provider) {
+      @for (provider of providers(); track provider) {
         <div class="provider-list d-flex align-items-center mb-2">
           <div class="provider-item-content d-flex py-3 px-1" (click)="selectIdentityProvider(provider)">
             <div class="col-3">
@@ -73,7 +73,7 @@
         </button>
         <app-identity-provider-details
           [identityProvider]="selectedIdentityProvider"
-          [domains]="domains"
+          [domains]="domains()"
           [readOnly]="readOnly || selectedIdentityProvider.readonly"
         ></app-identity-provider-details>
       </div>

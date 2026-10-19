@@ -154,6 +154,7 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
         if (tenant) {
           this.selectedTenant = { value: tenant, label: tenant.name };
           this.updateApps(this.selectedTenant);
+          this.cdrRef.markForCheck();
         } else {
           this.tenantSelectionService
             .getLastTenantIdentifier$()
@@ -252,7 +253,12 @@ export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   public updateApps(tenant: MenuOption): void {
     if (tenant) {
       this.selectedTenant = tenant;
-      this.applicationService.getTenantAppMap(tenant.value).subscribe((map: Map<Category, Application[]>) => (this.appMap = map));
+      this.cdrRef.markForCheck();
+      this.applicationService.getTenantAppMap(tenant.value).subscribe((map: Map<Category, Application[]>) => {
+        this.appMap = map;
+        // Set from an HTTP callback: refresh the view (zoneless)
+        this.cdrRef.markForCheck();
+      });
     }
   }
 

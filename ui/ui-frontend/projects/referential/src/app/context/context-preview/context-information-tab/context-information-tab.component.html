@@ -43,7 +43,7 @@
     </vitamui-datepicker>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submitted">
+  <button type="submit" class="btn primary" [disabled]="isInvalid() || unchanged() || submitted()">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

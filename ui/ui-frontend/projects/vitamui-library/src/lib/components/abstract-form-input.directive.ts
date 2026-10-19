@@ -34,7 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, EventEmitter, Injector, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  EventEmitter,
+  Injector,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
 import {
   AsyncValidatorFn,
   ControlContainer,
@@ -55,6 +67,7 @@ import { MiscValidators } from '../validators/misc.validators';
 @Directive()
 export class AbstractFormInputDirective implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   private readonly injector: Injector;
+  readonly #changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(injector: Injector = inject(Injector)) {
     this.injector = injector;
@@ -159,6 +172,8 @@ export class AbstractFormInputDirective implements ControlValueAccessor, OnInit,
     setTimeout(() => {
       if (this.disabled) this.control.disable();
       else if (this.disabled === false) this.control.enable();
+      // Runs outside change detection: refresh the view (zoneless)
+      this.#changeDetectorRef.markForCheck();
     });
   }
 }

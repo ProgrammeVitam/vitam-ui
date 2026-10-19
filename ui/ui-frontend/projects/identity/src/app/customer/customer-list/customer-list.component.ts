@@ -107,7 +107,7 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
     });
 
     this.updatedData.subscribe(() => {
-      const customerIds = this.dataSource
+      const customerIds = (this.dataSource() ?? [])
         .filter((customer: Customer) => {
           const existingTenant = this.tenants.find((tenant) => tenant.customerId === customer.id);
           if (!existingTenant) {
@@ -122,19 +122,23 @@ export class CustomerListComponent extends InfiniteScrollTable<Customer> impleme
         this.tenantService.getTenantsByCustomerIds(customerIds).subscribe((results) => {
           this.customerDataService.addTenants(results);
           this.loaded = true;
-          this.pending = false;
+          this.pending.set(false);
         });
       } else {
         this.loaded = true;
-        this.pending = false;
+        this.pending.set(false);
       }
     });
 
     this.updatedCustomerSub = this.customerService.updated.subscribe((updatedCustomer: Customer) => {
-      const customerIndex = this.dataSource.findIndex((customer) => updatedCustomer.id === customer.id);
-      if (customerIndex > -1) {
-        this.dataSource[customerIndex] = updatedCustomer;
-      }
+      this.dataSource.update((customers) => {
+        const list = [...(customers ?? [])];
+        const customerIndex = list.findIndex((customer) => updatedCustomer.id === customer.id);
+        if (customerIndex > -1) {
+          list[customerIndex] = updatedCustomer;
+        }
+        return list;
+      });
     });
   }
 

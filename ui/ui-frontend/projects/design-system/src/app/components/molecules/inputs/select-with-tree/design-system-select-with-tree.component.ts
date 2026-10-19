@@ -34,13 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, ElementRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  signal,
+  afterNextRender,
+  Injector,
+} from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ItemNode, MockSchemaService, SchemaElement, SchemaService, SelectWithTreeComponent, VitamUICommonModule } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { delay } from 'rxjs/operators';
 
 @Component({
   imports: [ReactiveFormsModule, TranslatePipe, AsyncPipe, SelectWithTreeComponent, FormsModule, VitamUICommonModule],
@@ -51,11 +61,15 @@ import { delay } from 'rxjs/operators';
 export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewInit {
   private readonly schemaService = inject(SchemaService);
 
-  configs: {
-    name: string;
-    multiple?: boolean;
-    entries: { type: string; states: { id: string; control: FormControl }[] }[];
-  }[];
+  private readonly injector = inject(Injector);
+
+  readonly configs = signal<
+    {
+      name: string;
+      multiple?: boolean;
+      entries: { type: string; states: { id: string; control: FormControl }[] }[];
+    }[]
+  >(undefined);
 
   enableSearch = true;
   enableDisplaySelected = true;
@@ -71,7 +85,7 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
     this.schemaOptions$.subscribe((options) => {
       const selectedOptionValue = options[1].item;
-      this.configs = [
+      this.configs.set([
         {
           name: 'Simple select',
           multiple: false,
@@ -82,15 +96,18 @@ export class DesignSystemSelectWithTreeComponent implements OnInit, AfterViewIni
           multiple: true,
           entries: this.getEntries([selectedOptionValue]),
         },
-      ];
-    });
-
-    this.schemaOptions$.pipe(delay(0)).subscribe(() => {
-      this.components.forEach((component) => {
-        const nativeElement = component.nativeElement as HTMLElement;
-        const isActive = nativeElement.getAttribute('data-active') === 'true';
-        if (isActive) nativeElement.querySelector('mat-select').dispatchEvent(new Event('focus'));
-      });
+      ]);
+      // Focus the "Active" selects once they are rendered
+      afterNextRender(
+        () => {
+          this.components.forEach((component) => {
+            const nativeElement = component.nativeElement as HTMLElement;
+            const isActive = nativeElement.getAttribute('data-active') === 'true';
+            if (isActive) nativeElement.querySelector('mat-select').dispatchEvent(new Event('focus'));
+          });
+        },
+        { injector: this.injector },
+      );
     });
   }
 

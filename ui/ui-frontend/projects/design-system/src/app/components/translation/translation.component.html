@@ -47,7 +47,7 @@
 
   <div class="text medium mb-3">{{ getMyInstantTrad() }}</div>
 
-  @for (text of myGetTexts; track text) {
+  @for (text of myGetTexts(); track text) {
     <div class="text medium mb-1">{{ text }}</div>
   }
 </div>

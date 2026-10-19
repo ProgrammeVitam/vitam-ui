@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { signal } from '@angular/core';
 import { finalize, Subject } from 'rxjs';
 import { Direction } from './direction.enum';
 import { DEFAULT_PAGE_SIZE, PageRequest } from './page-request.model';
@@ -42,9 +43,9 @@ import { SearchService } from './search.service';
 export const INFINITE_SCROLL_MAX_ITEMS = 100;
 
 export class InfiniteScrollTable<T> {
-  infiniteScrollDisabled = false;
-  pending = false;
-  dataSource: T[];
+  infiniteScrollDisabled = signal(false);
+  pending = signal(false);
+  dataSource = signal<T[]>(undefined);
   // with this information, the caller can be able to set himself the end of the change
   overridePendingChange = false;
 
@@ -56,38 +57,38 @@ export class InfiniteScrollTable<T> {
 
   loadMore() {
     // get more elements if there isn't a pending operation
-    if (!this.pending) {
-      this.pending = true;
+    if (!this.pending()) {
+      this.pending.set(true);
       this.searchService.loadMore().subscribe(
         (data: T[]) => {
-          this.dataSource = data;
+          this.dataSource.set(data);
           if (!this.overridePendingChange) {
-            this.pending = false;
+            this.pending.set(false);
           }
-          if (this.dataSource.length >= INFINITE_SCROLL_MAX_ITEMS) {
-            this.infiniteScrollDisabled = true;
+          if (data.length >= INFINITE_SCROLL_MAX_ITEMS) {
+            this.infiniteScrollDisabled.set(true);
           }
           this.updatedData.next();
         },
-        () => (this.pending = false),
+        () => this.pending.set(false),
       );
     }
   }
 
   search(pageRequest: PageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, 'name', Direction.ASCENDANT)) {
     // launch the search if there isn't a pending operation
-    if (!this.pending) {
-      this.pending = true;
-      this.dataSource = [];
+    if (!this.pending()) {
+      this.pending.set(true);
+      this.dataSource.set([]);
       this.updatedData.next();
       this.searchService
         .search(pageRequest)
-        .pipe(finalize(() => (this.pending = false)))
+        .pipe(finalize(() => this.pending.set(false)))
         .subscribe({
           next: (data: T[]) => {
-            this.dataSource = data;
+            this.dataSource.set(data);
             if (!this.overridePendingChange) {
-              this.pending = false;
+              this.pending.set(false);
             }
             this.updatedData.next();
           },

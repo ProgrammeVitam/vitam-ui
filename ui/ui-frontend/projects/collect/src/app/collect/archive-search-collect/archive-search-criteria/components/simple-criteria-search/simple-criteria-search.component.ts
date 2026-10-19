@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -132,6 +132,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly searchCriteriaService = inject(SearchCriteriaService);
   private readonly archiveHelperService = inject(ArchiveSearchHelperService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   form: FormGroup;
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
@@ -142,14 +143,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     [ARCHIVE_UNIT_WITH_ERRORS, false],
   ]);
 
-  otherCriteriaOptions: ItemNode<SchemaElement>[];
+  otherCriteriaOptions = signal<ItemNode<SchemaElement>[]>(undefined);
   getOtherCriteriaDisplayValue = (element: SchemaElement) =>
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
-  selectOptions = {
+  selectOptions = signal({
     agency: { options: [] as Option[] },
     archiveUnitProfile: { options: [] as Option[] },
-  } satisfies { [key: string]: VitamuiSelectOptions };
+  } satisfies { [key: string]: VitamuiSelectOptions });
   private readonly offlineServices$: Observable<SearchProvider[]>;
 
   constructor() {
@@ -175,7 +176,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           }),
         ),
       )
-      .subscribe((options) => (this.selectOptions.agency = options));
+      .subscribe((options) => {
+        this.selectOptions.update((selectOptions) => ({ ...selectOptions, agency: options }));
+      });
 
     archiveUnitProfilesService
       .getAll()
@@ -189,10 +192,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           }),
         ),
       )
-      .subscribe((options) => (this.selectOptions.archiveUnitProfile = options));
+      .subscribe((options) => {
+        this.selectOptions.update((selectOptions) => ({ ...selectOptions, archiveUnitProfile: options }));
+      });
 
     const descriptiveSchemaTree$ = schemaService.getDescriptiveSchemaTree().pipe(share());
-    descriptiveSchemaTree$.subscribe((schema) => (this.otherCriteriaOptions = schema));
+    descriptiveSchemaTree$.subscribe((schema) => {
+      this.otherCriteriaOptions.set(schema);
+    });
 
     const otherCriteriaListControl = this.formBuilder.control<SchemaElement[]>([]);
     const otherCriteriaControl = this.formBuilder.group({});
@@ -224,6 +231,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       this.archiveUnitTypesCriteria.forEach((_, key) => {
         this.archiveUnitTypesCriteria.set(key, searchCriteriasValues.includes(key));
       });
+      // The map is mutated in place: request a refresh explicitly (zoneless).
+      this.cdr.markForCheck();
     });
 
     this.offlineServices$.subscribe((offlineServices) => {
@@ -311,7 +320,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   getCriteriaName(criteria: SchemaElement) {
     const path = criteria.Path.split('.').slice(0, -1);
     const parent = path.reduce((acc, p) => acc.children.find((o) => o.item.FieldName === p), {
-      children: this.otherCriteriaOptions,
+      children: this.otherCriteriaOptions(),
     } as ItemNode<SchemaElement>);
     return `${criteria.ShortName}${parent?.item ? ` (${parent.item.ShortName})` : ''}`;
   }

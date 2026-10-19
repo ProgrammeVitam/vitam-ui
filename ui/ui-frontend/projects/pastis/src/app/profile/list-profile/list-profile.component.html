@@ -1,4 +1,4 @@
-@if (pending) {
+@if (pending()) {
   <div class="steackhouse">
     <mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>
   </div>
@@ -58,41 +58,41 @@
       <div
         (click)="changeType('ALL')"
         [ngClass]="{
-          'pa-pua-card': filterType === 'PA' || filterType === 'PUA',
-          'total-profile-card': filterType === 'ALL' || (filterType !== 'PUA' && filterType !== 'PA'),
+          'pa-pua-card': filterType() === 'PA' || filterType() === 'PUA',
+          'total-profile-card': filterType() === 'ALL' || (filterType() !== 'PUA' && filterType() !== 'PA'),
         }"
       >
         <p
           [ngClass]="{
-            'pa-pua-label': filterType === 'PA' || filterType === 'PUA',
-            'total-profile-label': filterType === 'ALL' || (filterType !== 'PUA' && filterType !== 'PA'),
+            'pa-pua-label': filterType() === 'PA' || filterType() === 'PUA',
+            'total-profile-label': filterType() === 'ALL' || (filterType() !== 'PUA' && filterType() !== 'PA'),
           }"
         >
           {{ 'PROFILE.LIST_PROFILE.TOUS_LES_PROFILS' | translate }}
         </p>
         <p
           [ngClass]="{
-            'pa-pua-num-label': filterType === 'PA' || filterType === 'PUA' || !filterType,
-            'total-profilenum-label': filterType === 'ALL' || (filterType !== 'PUA' && filterType !== 'PA'),
+            'pa-pua-num-label': filterType() === 'PA' || filterType() === 'PUA' || !filterType(),
+            'total-profilenum-label': filterType() === 'ALL' || (filterType() !== 'PUA' && filterType() !== 'PA'),
           }"
         >
-          {{ totalProfileNum }}
+          {{ totalProfileNum() }}
         </p>
       </div>
 
-      <div (click)="changeType('PA')" [ngClass]="{ 'pa-pua-card': filterType !== 'PA', 'total-profile-card': filterType === 'PA' }">
-        <p [ngClass]="{ 'pa-pua-label': filterType !== 'PA', 'total-profile-label': filterType === 'PA' }">PA</p>
-        <p [ngClass]="{ 'pa-pua-num-label': filterType !== 'PA', 'total-profilenum-label': filterType === 'PA' }">{{ numPA }}</p>
+      <div (click)="changeType('PA')" [ngClass]="{ 'pa-pua-card': filterType() !== 'PA', 'total-profile-card': filterType() === 'PA' }">
+        <p [ngClass]="{ 'pa-pua-label': filterType() !== 'PA', 'total-profile-label': filterType() === 'PA' }">PA</p>
+        <p [ngClass]="{ 'pa-pua-num-label': filterType() !== 'PA', 'total-profilenum-label': filterType() === 'PA' }">{{ numPA() }}</p>
       </div>
-      <div (click)="changeType('PUA')" [ngClass]="{ 'pa-pua-card': filterType !== 'PUA', 'total-profile-card': filterType === 'PUA' }">
-        <p [ngClass]="{ 'pa-pua-label': filterType !== 'PUA', 'total-profile-label': filterType === 'PUA' }">PUA</p>
-        <p [ngClass]="{ 'pa-pua-num-label': filterType !== 'PUA', 'total-profilenum-label': filterType === 'PUA' }">
-          {{ numPUA }}
+      <div (click)="changeType('PUA')" [ngClass]="{ 'pa-pua-card': filterType() !== 'PUA', 'total-profile-card': filterType() === 'PUA' }">
+        <p [ngClass]="{ 'pa-pua-label': filterType() !== 'PUA', 'total-profile-label': filterType() === 'PUA' }">PUA</p>
+        <p [ngClass]="{ 'pa-pua-num-label': filterType() !== 'PUA', 'total-profilenum-label': filterType() === 'PUA' }">
+          {{ numPUA() }}
         </p>
       </div>
       <div class="test" id="test"></div>
 
-      @if (profilesChargees) {
+      @if (profilesChargees()) {
         <div class="vitamui-table-body profile-table-loader-container" style="margin-top: 30px">
           <div>
             <div class="vitamui-table">
@@ -126,8 +126,12 @@
               </div>
             </div>
             <div class="vitamui-table-body">
-              @for (element of retrievedProfiles | filterByType: filterType | filterByStringName: search; track element; let i = $index) {
-                <div (mouseleave)="expanded = undefined" class="vitamui-table-rows">
+              @for (
+                element of retrievedProfiles() | filterByType: filterType() | filterByStringName: search();
+                track element;
+                let i = $index
+              ) {
+                <div (mouseleave)="expanded.set(undefined)" class="vitamui-table-rows">
                   <div class="vitamui-row d-flex align-items-center">
                     <div (click)="showProfile(element)" class="col-2 clickable">
                       {{ element.type }}
@@ -164,11 +168,14 @@
                           ></i>
                         </button>
                         @if (!isStandalone) {
-                          <button (click)="expanded = expanded === i ? undefined : i" class="btn btn-circle outlin outline-primary mr-3">
+                          <button
+                            (click)="expanded.set(expanded() === i ? undefined : i)"
+                            class="btn btn-circle outlin outline-primary mr-3"
+                          >
                             <i [style.fontSize.px]="25" class="vitamui-icon vitamui-icon-more-horiz"></i>
                           </button>
                         }
-                        @if (expanded === i) {
+                        @if (expanded() === i) {
                           <div class="pastis-vitamui-option-container">
                             <button mat-menu-item (click)="updateProfileNotice(element)">
                               <i class="vitamui-icon vitamui-icon-download"></i>

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
@@ -57,6 +57,10 @@ import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
 
 describe('ManagementContractCreateComponent', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   let managementContractToFormGroupConverterService: ManagementContractToFormGroupConverterService;
   let component: ManagementContractCreateComponent;
   let fixture: ComponentFixture<ManagementContractCreateComponent>;
@@ -132,7 +136,8 @@ describe('ManagementContractCreateComponent', () => {
       expect(component.form.get('identifier')).toBeTruthy();
     });
 
-    it('isDisabledButton should be true then false after calling create service', fakeAsync(() => {
+    it('isDisabledButton should be true then false after calling create service', async () => {
+      vi.useFakeTimers();
       const managementContractForm: any = {
         identifier: 'contract_id',
         name: 'Contract name',
@@ -147,12 +152,13 @@ describe('ManagementContractCreateComponent', () => {
       const formGroup = managementContractToFormGroupConverterService.convert(managementContractForm as ManagementContract);
       component.form.patchValue({ ...managementContractForm, ...formGroup.value });
       component.onSubmit();
-      expect(component.isDisabledButton).toBeTruthy(); // Button disabled while waiting for creation
-      tick(500);
-      expect(component.isDisabledButton).toBeFalsy(); // Button enabled after creation
-    }));
+      expect(component.isDisabledButton()).toBeTruthy(); // Button disabled while waiting for creation
+      await vi.advanceTimersByTimeAsync(500);
+      expect(component.isDisabledButton()).toBeFalsy(); // Button enabled after creation
+    });
 
-    it('first step should be valid after async validation', fakeAsync(() => {
+    it('first step should be valid after async validation', async () => {
+      vi.useFakeTimers();
       vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(false));
 
       const managementContractForm: any = {
@@ -165,11 +171,12 @@ describe('ManagementContractCreateComponent', () => {
       component.form.patchValue(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
-      tick(1000); // We "wait" for async validation
+      await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
       expect(component.firstStepInvalid()).toBeFalsy(); // Finally, the form is valid
-    }));
+    });
 
-    it('first step should be invalid after async validation if properties already exist', fakeAsync(() => {
+    it('first step should be invalid after async validation if properties already exist', async () => {
+      vi.useFakeTimers();
       vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(true));
 
       const managementContractForm: any = {
@@ -182,9 +189,9 @@ describe('ManagementContractCreateComponent', () => {
       component.form.patchValue(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
-      tick(1000); // We "wait" for async validation
+      await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is still invalid as async validation is KO
-    }));
+    });
 
     it('second step should be valid only if every field is filled', () => {
       expect(component.secondStepInvalid()).toBeFalsy(); // Step is valid by default as fields have default values that are valid
@@ -252,7 +259,8 @@ describe('ManagementContractCreateComponent', () => {
       expect(component.form.get('identifier')).toBeFalsy();
     });
 
-    it('first step should be valid after async validation', fakeAsync(() => {
+    it('first step should be valid after async validation', async () => {
+      vi.useFakeTimers();
       vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(false));
 
       const managementContractForm: any = {
@@ -265,11 +273,12 @@ describe('ManagementContractCreateComponent', () => {
       component.form.patchValue(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
-      tick(1000); // We "wait" for async validation
+      await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
       expect(component.firstStepInvalid()).toBeFalsy(); // Finally, the form is valid
-    }));
+    });
 
-    it('first step should be invalid after async validation if properties already exist', fakeAsync(() => {
+    it('first step should be invalid after async validation if properties already exist', async () => {
+      vi.useFakeTimers();
       vi.spyOn(managementContractServiceMock, 'existsProperties').mockReturnValue(of(true));
 
       const managementContractForm: any = {
@@ -282,8 +291,8 @@ describe('ManagementContractCreateComponent', () => {
       component.form.patchValue(managementContractForm);
 
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is invalid first while waiting for async validation
-      tick(1000); // We "wait" for async validation
+      await vi.advanceTimersByTimeAsync(1000); // We "wait" for async validation
       expect(component.firstStepInvalid()).toBeTruthy(); // Form is still invalid as async validation is KO
-    }));
+    });
   });
 });

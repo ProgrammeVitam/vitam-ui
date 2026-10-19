@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
@@ -58,11 +58,11 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   private readonly providerApi = inject(ProviderApiService);
   private readonly snackBarService = inject(SnackBarService);
 
-  providers: IdentityProvider[];
+  readonly providers = signal<IdentityProvider[]>(undefined);
   panel1Position = 'current';
   panel2Position = 'next';
   selectedIdentityProvider: IdentityProvider;
-  domains: Array<{ value: string; disabled: boolean }> = [];
+  readonly domains = signal<Array<{ value: string; disabled: boolean }>>([]);
 
   @Input()
   set customer(customer: Customer) {
@@ -72,7 +72,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
       return;
     }
     this.identityProviderService.getAll(this.customer.id).subscribe((providers: IdentityProvider[]) => {
-      this.providers = providers;
+      this.providers.set(providers);
     });
     this.refreshAvailableDomains();
   }
@@ -87,10 +87,9 @@ export class SsoTabComponent implements OnDestroy, OnInit {
 
   ngOnInit() {
     this.updatedProviderSub = this.identityProviderService.updated.subscribe((updatedProvider: IdentityProvider) => {
-      const providerIndex = this.providers.findIndex((provider) => updatedProvider.id === provider.id);
-      if (providerIndex > -1) {
-        this.providers[providerIndex] = updatedProvider;
-      }
+      this.providers.update((providers) =>
+        (providers || []).map((provider) => (updatedProvider.id === provider.id ? updatedProvider : provider)),
+      );
       this.refreshAvailableDomains();
     });
   }
@@ -103,13 +102,13 @@ export class SsoTabComponent implements OnDestroy, OnInit {
     const dialogRef = this.dialog.open(IdentityProviderCreateComponent, {
       data: {
         customer: this.customer,
-        domains: this.domains,
+        domains: this.domains(),
       },
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result: IdentityProvider) => {
       if (result) {
-        this.providers.push(result);
+        this.providers.update((providers) => [...(providers || []), result]);
         this.refreshAvailableDomains();
       }
     });
@@ -120,7 +119,7 @@ export class SsoTabComponent implements OnDestroy, OnInit {
   }
 
   get domainsAvailable(): boolean {
-    return this.domains.filter((domain) => !domain.disabled).length > 0;
+    return this.domains().filter((domain) => !domain.disabled).length > 0;
   }
 
   canDownloadIdpMetadata(provider: IdentityProvider): boolean {
@@ -140,9 +139,11 @@ export class SsoTabComponent implements OnDestroy, OnInit {
 
   private refreshAvailableDomains() {
     this.identityProviderService.getDomainByCustomerId(this.customer.id).subscribe((domains) => {
-      this.domains = this.customer.emailDomains.map((domain) => {
-        return { value: domain, disabled: domains.includes(domain) };
-      });
+      this.domains.set(
+        this.customer.emailDomains.map((domain) => {
+          return { value: domain, disabled: domains.includes(domain) };
+        }),
+      );
     });
   }
 }

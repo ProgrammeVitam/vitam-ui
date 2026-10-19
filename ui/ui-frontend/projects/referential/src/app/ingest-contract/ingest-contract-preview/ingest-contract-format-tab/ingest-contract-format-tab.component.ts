@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -86,7 +86,7 @@ export class IngestContractFormatTabComponent implements OnInit {
   @Output() isFormValid: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
-  submitted = false;
+  submitted = signal(false);
   formatOptions: VitamuiSelectOptions;
 
   private _ingestContract: IngestContract;
@@ -170,16 +170,16 @@ export class IngestContractFormatTabComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
+    this.submitted.set(true);
     this.prepareSubmit().subscribe(
       () => {
         this.ingestContractService.get(this._ingestContract.identifier).subscribe((response) => {
-          this.submitted = false;
+          this.submitted.set(false);
           this.ingestContract = response;
         });
       },
       () => {
-        this.submitted = false;
+        this.submitted.set(false);
       },
     );
   }

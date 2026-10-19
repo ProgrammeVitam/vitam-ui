@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -75,8 +75,8 @@ export class OwnerListComponent implements OnDestroy, OnInit {
   private updatedOwnerSub: Subscription;
   private updatedTenantSub: Subscription;
 
-  ownersWithoutTenant: Owner[];
-  myTenants: Tenant[];
+  readonly ownersWithoutTenant = signal<Owner[]>(undefined);
+  readonly myTenants = signal<Tenant[]>(undefined);
 
   ngOnInit() {
     this.filteredData(this.customerDataService.tenants);
@@ -90,7 +90,7 @@ export class OwnerListComponent implements OnDestroy, OnInit {
       if (ownerIndex > -1) {
         this.customer.owners[ownerIndex] = updatedOwner;
       }
-      this.filteredData(this.myTenants);
+      this.filteredData(this.myTenants());
     });
 
     this.updatedTenantSub = this.tenantService.updated.subscribe((updatedTenant: Tenant) => {
@@ -116,7 +116,7 @@ export class OwnerListComponent implements OnDestroy, OnInit {
       .subscribe((result: { owner?: Owner; tenant?: Tenant }) => {
         if (result.owner) {
           this.customer.owners = this.customer.owners.concat([result.owner]);
-          this.filteredData(this.myTenants);
+          this.filteredData(this.myTenants());
         }
         if (result.tenant) {
           this.customerDataService.addTenants([result.tenant]);
@@ -126,13 +126,14 @@ export class OwnerListComponent implements OnDestroy, OnInit {
 
   filteredData(tenants: Tenant[]) {
     if (tenants) {
-      this.myTenants = tenants
+      const myTenants = tenants
         .sort((a, b) => a.identifier - b.identifier)
         .filter((tenant: Tenant) => tenant.customerId === this.customer.id);
+      this.myTenants.set(myTenants);
 
-      const ownersIds: string[] = this.myTenants.map((tenant: Tenant) => tenant.ownerId);
+      const ownersIds: string[] = myTenants.map((tenant: Tenant) => tenant.ownerId);
 
-      this.ownersWithoutTenant = this.customer.owners.filter((owner) => !ownersIds.includes(owner.id));
+      this.ownersWithoutTenant.set(this.customer.owners.filter((owner) => !ownersIds.includes(owner.id)));
     }
   }
 

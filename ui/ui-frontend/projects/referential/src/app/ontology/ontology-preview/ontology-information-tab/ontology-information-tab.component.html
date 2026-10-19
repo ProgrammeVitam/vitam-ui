@@ -53,7 +53,7 @@
     </vitamui-input>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="unchanged() || form.invalid || submitted">
+  <button type="submit" class="btn primary" [disabled]="unchanged() || form.invalid || submitted()">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

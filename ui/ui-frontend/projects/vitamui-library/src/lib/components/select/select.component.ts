@@ -42,6 +42,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  DestroyRef,
   effect,
   forwardRef,
   HostListener,
@@ -127,6 +128,7 @@ export interface VitamuiSelectOptions {
 })
 export class SelectComponent extends AbstractFormInputDirective implements AfterViewInit, AfterViewChecked {
   private readonly cd = inject(ChangeDetectorRef);
+  private destroyed = false;
   readonly sd = inject(ScrollDispatcher);
 
   @Input() placeholder: string;
@@ -209,6 +211,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     // Force display update after options are loaded
     if (this.control?.value && this.allOptions.length > 0) {
       Promise.resolve().then(() => {
+        if (this.destroyed) return;
         this.updateMatSelectTriggerContent();
         this.cd.detectChanges();
       });
@@ -265,6 +268,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     const injector = inject(Injector);
 
     super(injector);
+    inject(DestroyRef).onDestroy(() => (this.destroyed = true));
 
     effect(() => {
       if (this.optionsResource) {
@@ -300,6 +304,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     // Force value display after complete initialization
     if (this.control?.value) {
       Promise.resolve().then(() => {
+        if (this.destroyed) return;
         this.synchronizeSelectedOptions();
         this.updateMatSelectTriggerContent();
         this.syncRenderedOptionsSelection();
@@ -590,8 +595,9 @@ export class SelectComponent extends AbstractFormInputDirective implements After
         this.matSelect._elementRef.nativeElement.focus();
       }
       if (['Enter'].includes(event.code)) {
-        // Trigger search
+        // Trigger search (native listener: refresh the view, zoneless)
         this.onSearch(this.searchBar.searchValue);
+        this.cd.markForCheck();
       }
       if (!['ArrowDown', 'ArrowUp', 'Escape'].includes(event.code)) {
         // Prevent most keyboard keypress to be interpreted by the mat-select, otherwise it would "search" in options or open/close toggles
@@ -661,6 +667,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     if (!this.matSelect || !this.control?.value) return;
 
     setTimeout(() => {
+      if (this.destroyed) return;
       this.updateMatSelectTriggerContent();
       if (this.multiple && Array.isArray(this.control.value)) {
         this.selectedOptions = this.allOptions.filter((option) => this.control.value.includes(option.key));

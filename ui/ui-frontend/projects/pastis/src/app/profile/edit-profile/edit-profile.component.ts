@@ -173,6 +173,11 @@ export class EditProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this._fileServiceCurrentTreeSubscription = this.fileService.currentTree
       .pipe(filter((nodes) => nodes?.length > 0 && nodes.every((node) => Boolean(node))))
       .subscribe((data) => {
+        // Refresh profile-dependent fields set asynchronously by FileService.updateTreeWithProfile.
+        // The currentTreeLoaded signal change triggers the zoneless change detection that renders them.
+        this.sedaVersionLabel = this.profileService.getSedaVersionLabel();
+        this.isAUP = this.profileService.isMode(ProfileType.PUA);
+        this.selectedIndex = this.profileService.isMode(ProfileType.PA) ? 0 : 2;
         const [tree] = data;
         const nodeName = this.profileService.isMode(ProfileType.PA) ? this.rootTabMetadataName : tree.name;
         const node = this.fileService.getTree(nodeName);

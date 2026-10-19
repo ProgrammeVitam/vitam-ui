@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputComponent } from 'vitamui-library';
@@ -63,14 +63,14 @@ export class TranslationComponent implements OnInit {
   public nbApples = new FormControl('0', [Validators.maxLength(3), Validators.required]);
 
   public myInstantText: string;
-  public myGetTexts: string[];
+  public readonly myGetTexts = signal<string[]>(undefined);
 
   ngOnInit(): void {
     // Will not work because it is too early in ngOnInit
     this.myInstantText = this.translateService.instant('TRANSLATION.TRANSLATE_INSTANT');
 
     this.translateService.get(TRANSLATE_GET_PATH).subscribe((translatedTexts: { [key: string]: string }) => {
-      this.myGetTexts = [translatedTexts['TRANSLATE_GET_1'], translatedTexts['TRANSLATE_GET_2']];
+      this.myGetTexts.set([translatedTexts['TRANSLATE_GET_1'], translatedTexts['TRANSLATE_GET_2']]);
     });
   }
 

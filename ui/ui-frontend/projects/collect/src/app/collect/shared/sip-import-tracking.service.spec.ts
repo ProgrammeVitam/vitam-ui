@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { defer, of, throwError } from 'rxjs';
 import { LoggerModule } from 'vitamui-library';
 
@@ -54,11 +54,16 @@ describe('SipImportTrackingService', () => {
     service = TestBed.inject(SipImportTrackingService);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should report the SIP import as in progress until the operation is completed', fakeAsync(() => {
+  it('should report the SIP import as in progress until the operation is completed', () => {
+    vi.useFakeTimers();
     const statuses: OperationStatus[] = [
       { globalState: OperationState.RUNNING, globalStatus: 'STARTED' },
       { globalState: OperationState.COMPLETED, globalStatus: 'OK' },
@@ -70,18 +75,19 @@ describe('SipImportTrackingService', () => {
     service.trackSipImport('transactionId', 'operationId');
     expect(service.isSipImportInProgress('transactionId')).toBe(true);
 
-    tick(5_000);
+    vi.advanceTimersByTime(5_000);
     expect(service.isSipImportInProgress('transactionId')).toBe(false);
-  }));
+  });
 
-  it('should stop blocking the transaction when the status polling fails', fakeAsync(() => {
+  it('should stop blocking the transaction when the status polling fails', () => {
+    vi.useFakeTimers();
     transactionApiService.getOperationStatus.mockReturnValue(throwError(() => new Error('network error')));
 
     service.trackSipImport('transactionId', 'operationId');
 
-    tick(5_000);
+    vi.advanceTimersByTime(5_000);
     expect(service.isSipImportInProgress('transactionId')).toBe(false);
-  }));
+  });
 
   it('should not track anything without an operation id', () => {
     service.trackSipImport('transactionId', null);

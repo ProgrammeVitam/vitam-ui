@@ -17,7 +17,7 @@ configured:
 </div>
 
 @if (schemaOptions$ | async; as schemaOptions) {
-  @for (config of configs; track config.name) {
+  @for (config of configs(); track config.name) {
     <h3>{{ config.name }}</h3>
     @for (entry of config.entries; track entry.type) {
       <div class="container-fluid p-0">

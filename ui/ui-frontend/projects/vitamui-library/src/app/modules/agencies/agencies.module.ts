@@ -35,10 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { AgencyApiService } from './agency-api.service';
-import { AgencyService } from './agency.service';
 
-@NgModule({
-  providers: [AgencyApiService, AgencyService],
-})
+/**
+ * AgencyApiService and AgencyService are providedIn: 'root'.
+ * This module is kept for backward compatibility and must not re-provide them (it would create non-root instances).
+ */
+@NgModule({})
 export class AgenciesModule {}

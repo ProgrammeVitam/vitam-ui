@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
@@ -90,6 +90,7 @@ interface OperationSearch {
 })
 export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly queryParamsService = inject(QueryParamsService);
@@ -115,7 +116,10 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
 
   constructor() {
     if (this.route && this.route.paramMap) {
-      this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
+      this.route.paramMap.subscribe((paramMap) => {
+        this.tenantIdentifier = +paramMap.get('tenantIdentifier');
+        this.cdr.markForCheck();
+      });
       this.tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data['appId'], this.tenantIdentifier);
     }
   }

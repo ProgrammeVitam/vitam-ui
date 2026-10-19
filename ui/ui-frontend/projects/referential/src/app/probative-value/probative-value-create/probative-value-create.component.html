@@ -31,13 +31,13 @@
         <mat-button-toggle [value]="true" (click)="complianceCheck()">
           {{ 'COMMON.COMMON_YES' | translate }}
         </mat-button-toggle>
-        <mat-button-toggle [value]="false" (click)="showWarningMessage = false">
+        <mat-button-toggle [value]="false" (click)="showWarningMessage.set(false)">
           {{ 'COMMON.COMMON_NO' | translate }}
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
 
-    @if (showWarningMessage) {
+    @if (showWarningMessage()) {
       <div>
         <p [innerText]="'PROBATIVE_VALUE.HOME.WARNING_ELECTRONICALLY_SIGNED_DOCUMENT' | translate" class="text bold warningRow"></p>
       </div>
@@ -45,7 +45,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="form.invalid || isDisabledButton">
+    <button type="submit" class="btn primary" [disabled]="form.invalid || isDisabledButton()">
       {{ 'PROBATIVE_VALUE.CREATE_DIALOG.SUBMIT' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

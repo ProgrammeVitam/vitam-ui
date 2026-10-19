@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject, signal } from '@angular/core';
 import type { HistoryEvent } from 'vitamui-library';
 import { AuthService, LogbookService, HistoryEventsComponent, CollapseComponent } from 'vitamui-library';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -56,8 +56,8 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
   @Input() identifier: string;
   @Input() externalParamId: string;
 
-  events: HistoryEvent[] = [];
-  loading = false;
+  readonly events = signal<HistoryEvent[]>([]);
+  readonly loading = signal(false);
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('id') || changes.hasOwnProperty('externalParamId')) {
@@ -68,17 +68,17 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
   }
 
   initEvent() {
-    this.loading = true;
-    this.events = [];
+    this.loading.set(true);
+    this.events.set([]);
 
     const tenantIdentifier = Number(this.authService.user.proofTenantIdentifier);
 
     this.logbookService.listHistoryForOwner(this.id, this.identifier, this.externalParamId, tenantIdentifier).subscribe(
       (results) => {
-        this.loading = false;
-        this.events = results.slice(0, EVENT_LIMIT);
+        this.loading.set(false);
+        this.events.set(results.slice(0, EVENT_LIMIT));
       },
-      () => (this.loading = false),
+      () => this.loading.set(false),
     );
   }
 }

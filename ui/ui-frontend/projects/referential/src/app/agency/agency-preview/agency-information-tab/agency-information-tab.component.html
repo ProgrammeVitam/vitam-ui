@@ -24,7 +24,7 @@
     <button
       type="submit"
       class="btn primary mt-3"
-      [disabled]="isInvalid() || unchanged() || isLoading || (checkUpdateRole | async) !== true"
+      [disabled]="isInvalid() || unchanged() || isLoading() || (checkUpdateRole | async) !== true"
     >
       <span>{{ 'COMMON.SAVE' | translate }} </span>
     </button>

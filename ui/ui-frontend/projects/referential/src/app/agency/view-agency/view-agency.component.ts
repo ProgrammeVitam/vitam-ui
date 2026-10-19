@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
@@ -63,15 +63,11 @@ export class ViewAgencyComponent implements OnInit {
   private readonly agencyService = inject(AgencyService);
 
   readonly agencyTemplate = agencyTemplate;
-  breadcrumbData: BreadCrumbData[] = [{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }];
-  agency: Agency;
-
-  constructor() {
-    this.agency = this.router.getCurrentNavigation()?.extras?.state?.['agency'];
-  }
+  breadcrumbData = signal<BreadCrumbData[]>([{ identifier: ApplicationId.PORTAL_APP }, { identifier: ApplicationId.AGENCIES_APP }]);
+  agency = signal<Agency>(this.router.getCurrentNavigation()?.extras?.state?.['agency']);
 
   ngOnInit() {
-    of(this.agency)
+    of(this.agency())
       .pipe(
         switchMap((agency: Agency) => {
           if (agency) return of(agency);
@@ -81,8 +77,8 @@ export class ViewAgencyComponent implements OnInit {
       )
       .subscribe({
         next: (agency: Agency) => {
-          this.agency = agency;
-          this.breadcrumbData.push({ label: this.agency.identifier });
+          this.agency.set(agency);
+          this.breadcrumbData.update((breadcrumbData) => [...breadcrumbData, { label: agency.identifier }]);
         },
       });
   }

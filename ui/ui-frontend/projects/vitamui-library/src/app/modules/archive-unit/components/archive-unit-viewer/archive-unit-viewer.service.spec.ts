@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoggerModule } from '../../../logger/logger.module';
 import { DisplayObject } from '../../../object-viewer/models/display-object.model';
@@ -77,7 +77,7 @@ describe('ArchiveUnitViewerService', () => {
   });
 
   describe('Default mode', () => {
-    it('should update data and compute display object when data is a schema element', waitForAsync(() => {
+    it('should update data and compute display object when data is a schema element', () => {
       const data = { Title: 'La ville de Paris' };
 
       service.setData(data);
@@ -99,9 +99,9 @@ describe('ArchiveUnitViewerService', () => {
           ]),
         );
       });
-    }));
+    });
 
-    it('should update data and compute display object when data is in custom template', waitForAsync(() => {
+    it('should update data and compute display object when data is in custom template', () => {
       const data = { notOntologicKey: 'La ville de Paris' };
       const customTemplate: DisplayRule[] = [
         {
@@ -133,6 +133,6 @@ describe('ArchiveUnitViewerService', () => {
           ]),
         );
       });
-    }));
+    });
   });
 });

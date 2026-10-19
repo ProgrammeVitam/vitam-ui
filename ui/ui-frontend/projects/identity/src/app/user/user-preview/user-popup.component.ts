@@ -36,7 +36,7 @@
  */
 import { Customer, User } from 'vitamui-library';
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { CustomerService } from '../../core/customer.service';
@@ -44,7 +44,7 @@ import { UserPreviewComponent } from './user-preview.component';
 
 @Component({
   selector: 'app-profile-group-popup',
-  template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer" [isPopup]="true"></app-user-preview>',
+  template: '<app-user-preview (previewClose)="closePopup()" [user]="user" [customer]="customer()" [isPopup]="true"></app-user-preview>',
   imports: [UserPreviewComponent],
 })
 export class UserPopupComponent {
@@ -52,10 +52,10 @@ export class UserPopupComponent {
   private readonly customerService = inject(CustomerService);
 
   user: User;
-  customer: Customer;
+  readonly customer = signal<Customer>(undefined);
 
   constructor() {
-    this.customerService.getMyCustomer().subscribe((customer) => (this.customer = customer));
+    this.customerService.getMyCustomer().subscribe((customer) => this.customer.set(customer));
     this.user = this.route.snapshot.data['user'];
   }
 

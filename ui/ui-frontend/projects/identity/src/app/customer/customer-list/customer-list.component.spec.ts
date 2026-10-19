@@ -101,7 +101,7 @@ class Page {
   }
   get loadMoreButton() {
     const buttons = fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message');
-    return buttons.length || !component.infiniteScrollDisabled ? buttons : [{ click: () => component.customerListService.loadMore() }];
+    return buttons.length || !component.infiniteScrollDisabled() ? buttons : [{ click: () => component.customerListService.loadMore() }];
   }
   get infiniteScroll() {
     return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective));
@@ -361,7 +361,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should have a button to load more customers', () => {
-    component.infiniteScrollDisabled = true;
+    component.infiniteScrollDisabled.set(true);
     fixture.detectChanges(false);
     expect(page.loadMoreButton).toBeTruthy();
   });
@@ -375,7 +375,7 @@ describe('CustomerListComponent', () => {
 
   it('should call loadMore()', () => {
     const customerListService = TestBed.inject(CustomerListService);
-    component.infiniteScrollDisabled = true;
+    component.infiniteScrollDisabled.set(true);
     fixture.detectChanges(false);
     page.loadMoreButton[0].click();
     expect(customerListService.loadMore).toHaveBeenCalled();
@@ -450,7 +450,7 @@ describe('CustomerListComponent', () => {
       gdprAlert: false,
       gdprAlertDelay: 0,
     });
-    expect(component.dataSource[1].name).toBe('Updated customer');
+    expect(component.dataSource()[1].name).toBe('Updated customer');
   });
 
   function testRow(index: number) {

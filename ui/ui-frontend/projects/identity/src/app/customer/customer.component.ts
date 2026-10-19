@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Customer, Owner, SidenavPage, Tenant, VitamuiBannerComponent, VitamuiTitleBreadcrumbComponent } from 'vitamui-library';
@@ -63,6 +63,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   ],
 })
 export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> implements OnInit {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly dialog = inject(MatDialog);
   customerService = inject(CustomerService);
 
@@ -76,6 +77,7 @@ export class CustomerComponent extends SidenavPage<Customer | Owner | Tenant> im
   ngOnInit() {
     this.customerService.getGdprReadOnlySettingStatus().subscribe((settingStatus) => {
       this.gdprReadOnlySettingStatus = settingStatus;
+      this.cdr.markForCheck();
     });
   }
 

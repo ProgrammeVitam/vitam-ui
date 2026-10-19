@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, forwardRef, inject, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { shareReplay } from 'rxjs/operators';
 import {
@@ -66,6 +77,7 @@ export const PROFILES_FORM_VALUE_ACCESSOR: any = {
   imports: [MatProgressSpinner, SelectComponent, ReactiveFormsModule, NgClass, TranslatePipe, CommonModule, EllipsisDirective],
 })
 export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnChanges {
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly rngProfileService = inject(ProfileService);
   private readonly appApiService = inject(ApplicationApiService);
 
@@ -95,7 +107,10 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   private applicationsDetails$ = this.appApiService.listNames().pipe(shareReplay(1));
 
   ngOnInit(): void {
-    this.applicationsDetails$.subscribe((applicationsDetails) => (this.applicationsDetails = applicationsDetails));
+    this.applicationsDetails$.subscribe((applicationsDetails) => {
+      this.applicationsDetails = applicationsDetails;
+      this.cdr.markForCheck();
+    });
 
     this.appSelect.valueChanges.subscribe(() => {
       this.filterTenants();
@@ -138,6 +153,7 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
       this.profileIds = this.profileIds.sort(byApplicationName(this.profiles, applicationsDetails));
       this.updateApplicationTree();
       this.loading = false;
+      this.cdr.markForCheck();
     });
   }
 
@@ -147,6 +163,8 @@ export class ProfilesFormComponent implements ControlValueAccessor, OnInit, OnCh
   writeValue(value: string[]) {
     this.profileIds = value || [];
     this.updateApplicationTree();
+    // writeValue may be called asynchronously by the parent form (zoneless)
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: any): void {

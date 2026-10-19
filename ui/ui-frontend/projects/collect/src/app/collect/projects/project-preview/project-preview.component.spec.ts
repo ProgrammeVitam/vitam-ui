@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { ProjectsService } from '../projects.service';
 
@@ -196,42 +196,39 @@ describe('ProjectPreviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get project', waitForAsync(() => {
-    fixture.whenStable().then(() => {
-      // Make assertions about the component
-      expect(component.project()).toEqual(project);
-    });
-  }));
+  it('should get project', async () => {
+    await fixture.whenStable();
+    // Make assertions about the component
+    expect(component.project()).toEqual(project);
+  });
 
-  it('should get project when update', waitForAsync(() => {
+  it('should get project when update', async () => {
     component.showEdit(component.tabs.get(0));
-    fixture.whenStable().then(() => {
-      expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
-      expect(component.form.value.legalStatus).toEqual(project.legalStatus);
-      expect(component.form.value.archivalAgreement).toEqual(project.archivalAgreement);
-      expect(component.form.value.acquisitionInformation).toEqual(project.acquisitionInformation);
-      expect(component.form.value.submissionAgencyIdentifier).toEqual(project.submissionAgencyIdentifier);
-      expect(component.form.value.originatingAgencyIdentifier).toEqual(project.originatingAgencyIdentifier);
-    });
-  }));
+    await fixture.whenStable();
+    expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
+    expect(component.form.value.legalStatus).toEqual(project.legalStatus);
+    expect(component.form.value.archivalAgreement).toEqual(project.archivalAgreement);
+    expect(component.form.value.acquisitionInformation).toEqual(project.acquisitionInformation);
+    expect(component.form.value.submissionAgencyIdentifier).toEqual(project.submissionAgencyIdentifier);
+    expect(component.form.value.originatingAgencyIdentifier).toEqual(project.originatingAgencyIdentifier);
+  });
 
-  it('should update project without transactions', waitForAsync(() => {
+  it('should update project without transactions', async () => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(false);
-    fixture.whenStable().then(() => {
-      expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
-    });
-  }));
+    await fixture.whenStable();
+    expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
+  });
 
-  it('should update project with transactions', waitForAsync(() => {
+  it('should update project with transactions', async () => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs.get(0));
     component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(true);
     expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();
-  }));
+  });
 });

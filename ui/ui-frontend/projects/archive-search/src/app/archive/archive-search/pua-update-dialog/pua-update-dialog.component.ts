@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -83,6 +83,7 @@ export class PuaUpdateDialogComponent {
   private readonly translate = inject(TranslateService);
   private readonly logger = inject(Logger);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   form: FormGroup;
   puas$: Observable<VitamuiSelectOptions>;
@@ -147,7 +148,12 @@ export class PuaUpdateDialogComponent {
       this.updating = true;
       this.archiveService
         .updateUnitsRules(ruleSearchCriteriaDto)
-        .pipe(finalize(() => (this.updating = false)))
+        .pipe(
+          finalize(() => {
+            this.updating = false;
+            this.cdr.markForCheck();
+          }),
+        )
         .subscribe({
           next: (response) => {
             this.dialogRef.close();

@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -56,8 +56,8 @@ export class SelectSiteComponent implements OnInit {
   private readonly authStorage = inject(OAuthStorage);
   private readonly siteApiService = inject(SiteApiService);
 
-  public selectedSite: any;
-  public sites: any[];
+  public selectedSite = signal<any>(undefined);
+  public sites = signal<any[]>(undefined);
   private sessionExpireAt: any;
   private defaultSiteCode: string;
   private siteSession: { code: string; sessionExpireAt: string };
@@ -87,8 +87,8 @@ export class SelectSiteComponent implements OnInit {
         }),
       )
       .subscribe((result) => {
-        this.sites = result;
-        this.selectedSite = this.sites.find((site) => site.code === this.defaultSiteCode);
+        this.sites.set(result);
+        this.selectedSite.set(result.find((site: any) => site.code === this.defaultSiteCode));
       });
   }
 
@@ -121,7 +121,7 @@ export class SelectSiteComponent implements OnInit {
    * @param site The selected site
    */
   async onSelectSite(site: any) {
-    this.selectedSite = site;
+    this.selectedSite.set(site);
     this.siteSession = {
       code: site.code,
       sessionExpireAt: this.sessionExpireAt,

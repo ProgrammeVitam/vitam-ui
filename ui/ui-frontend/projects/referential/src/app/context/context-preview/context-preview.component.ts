@@ -34,7 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, inject, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  forwardRef,
+  HostListener,
+  inject,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { Observable } from 'rxjs';
@@ -68,6 +79,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ContextPreviewComponent implements AfterViewInit {
   private readonly matDialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly contextService = inject(ContextService);
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
@@ -105,6 +117,7 @@ export class ContextPreviewComponent implements AfterViewInit {
       submitAccessContractUpdate.subscribe(() => {
         this.contextService.get(this.context.identifier).subscribe((response) => {
           this.context = response;
+          this.cdr.markForCheck();
         });
       });
     } else {
