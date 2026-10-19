@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { IngestContract } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -79,8 +78,8 @@ describe('IngestContractObjectTabComponent', () => {
     TestBed.overrideComponent(IngestContractObjectTabComponent, { set: { template: '' } });
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, FormsModule, VitamUICommonTestModule, MatSelectModule, IngestContractObjectTabComponent],
-      providers: [FormBuilder, { provide: IngestContractService, useValue: {} }],
+      imports: [VitamUICommonTestModule, MatSelectModule, IngestContractObjectTabComponent],
+      providers: [{ provide: IngestContractService, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

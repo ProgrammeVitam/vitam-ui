@@ -16,7 +16,7 @@
       </div>
 
       <vitamui-file-selector
-        [formControl]="atrControl"
+        [formField]="atrForm"
         [maxSizeInBytes]="FILE_MAX_SIZE"
         [extensions]="[ATR_EXTENSION]"
         [fileValidators]="atrContentValidator"
@@ -28,7 +28,7 @@
     </mat-dialog-content>
 
     <mat-dialog-actions>
-      <vitamui-next-step [disabled]="atrControl.invalid || atrControl.pending" />
+      <vitamui-next-step [disabled]="atrForm().invalid() || atrForm().pending()" />
       <button (click)="onClose()" class="btn cancel link" type="button">
         {{ 'COMMON.UNDO' | translate }}
       </button>

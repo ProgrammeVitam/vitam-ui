@@ -34,37 +34,93 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, output, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, inject, linkedSignal, model, OnChanges, output, signal, SimpleChanges } from '@angular/core';
+import { disabled, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { AccessContract, AccessContractService, diff, InputComponent, Option, PipesModule, SlideToggleComponent } from 'vitamui-library';
+import { AccessContract, AccessContractService, DateTimePipe, diff, InputComponent, Option, SlideToggleComponent } from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { AccessContractCreateValidators } from '../../access-contract-create/access-contract-create.validators';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface AccessContractInformationForm {
+  status: string;
+  name: string;
+  description: string;
+  accessLog: string;
+  ruleCategoryToFilter: string[];
+  creationDate: string;
+}
+
+const FORM_KEYS: (keyof AccessContractInformationForm)[] = [
+  'status',
+  'name',
+  'description',
+  'accessLog',
+  'ruleCategoryToFilter',
+  'creationDate',
+];
 
 @Component({
   selector: 'app-access-contract-information-tab',
   templateUrl: './access-contract-information-tab.component.html',
   styleUrls: ['./access-contract-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, FormsModule, PipesModule, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, InputComponent, TranslatePipe],
+  providers: [DatePipe],
 })
 export class AccessContractInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly accessContractService = inject(AccessContractService);
   private readonly accessContractCreateValidators = inject(AccessContractCreateValidators);
+  private readonly dateTimePipe = new DateTimePipe(inject(DatePipe));
 
   readonly accessContract = model<AccessContract>(undefined);
 
   readonly updatedAccessContract = output<AccessContract>();
 
-  public form: FormGroup;
+  readonly form = form(
+    signal<AccessContractInformationForm>({
+      status: 'ACTIVE',
+      name: '',
+      description: null,
+      accessLog: 'ACTIVE',
+      ruleCategoryToFilter: [],
+      creationDate: null,
+    }),
+    (path) => {
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.accessContractCreateValidators.uniqueNameWhileEdit(path.name, () => (this.accessContract() ? this.previousValue() : undefined));
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+
+  // Read-only dates, displayed in disabled inputs
+  readonly datesForm = form(
+    linkedSignal(() => {
+      const accessContract = this.accessContract();
+      return {
+        creationDate: this.formatDate(accessContract?.creationDate),
+        lastUpdate: this.formatDate(accessContract?.lastUpdate),
+        activationDate:
+          accessContract?.status === 'ACTIVE' && accessContract?.activationDate ? this.formatDate(accessContract.activationDate) : '-',
+        deactivationDate: accessContract?.deactivationDate ? this.formatDate(accessContract.deactivationDate) : '-',
+      };
+    }),
+    (path) => disabled(path),
+  );
+
   public submitted = false;
-  public statusControl = new FormControl();
-  public accessLogControl = new FormControl();
   public rules: Option[] = RULE_TYPES;
-  public ruleFilter = new FormControl(false);
 
   previousValue = (): any => {
     return {
@@ -95,7 +151,6 @@ export class AccessContractInformationTabComponent implements OnChanges {
           this.submitted = false;
           this.setAccessContract(response);
           this.resetForm(this.accessContract());
-          this.resetForm(this.accessContract());
           this.updatedAccessContract.emit(response);
         });
       },
@@ -106,29 +161,22 @@ export class AccessContractInformationTabComponent implements OnChanges {
   }
 
   public get unChanged(): boolean {
+    const { status, accessLog } = this.form().value();
     return (
-      JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}' &&
-      (this.statusControl.value ? 'ACTIVE' : 'INACTIVE') === this.previousValue().status &&
-      (this.accessLogControl.value ? 'ACTIVE' : 'INACTIVE') === this.previousValue().accessLog
+      JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}' &&
+      (status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE') === this.previousValue().status &&
+      (accessLog === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE') === this.previousValue().accessLog
     );
   }
 
   public isInvalid(): boolean {
-    return (
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('description').invalid ||
-      this.form.get('description').pending ||
-      this.form.get('status').invalid ||
-      this.form.get('status').pending ||
-      this.form.get('accessLog').invalid ||
-      this.form.get('accessLog').pending ||
-      (this.ruleFilter.value === false && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending))
+    return [this.form.name, this.form.description, this.form.status, this.form.accessLog].some(
+      (field) => field().invalid() || field().pending(),
     );
   }
 
   prepareSubmit(): Observable<AccessContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.accessContract().id, identifier: this.accessContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
@@ -145,45 +193,25 @@ export class AccessContractInformationTabComponent implements OnChanges {
     );
   }
 
-  private initForm(): void {
-    this.form = this.formBuilder.group({
-      status: ['ACTIVE'],
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.accessContractCreateValidators.uniqueNameWhileEdit(this.previousValue),
-      ],
-      description: [null],
-      accessLog: ['ACTIVE'],
-      ruleCategoryToFilter: [new Array<string>()],
-      creationDate: [null],
-    });
-
-    this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
-
-    this.accessLogControl.valueChanges.subscribe((value) => {
-      this.form.controls['accessLog'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
-
-    this.ruleFilter.valueChanges.subscribe((val) => {
-      if (val === true) {
-        this.form.controls['ruleCategoryToFilter'].setValue(this.accessContract().ruleCategoryToFilter);
-      } else {
-        this.form.controls['ruleCategoryToFilter'].setValue([]);
-      }
-    });
+  resetForm(accessContract: AccessContract) {
+    this.form().reset(
+      FORM_KEYS.reduce((acc: any, key) => {
+        acc[key] = (accessContract as any)[key] ?? null;
+        return acc;
+      }, {}) as AccessContractInformationForm,
+    );
   }
 
-  resetForm(accessContract: AccessContract) {
-    if (!this.form) {
-      this.initForm();
-    }
+  onStatusChange(active: boolean) {
+    this.form.status().value.set(active ? 'ACTIVE' : 'INACTIVE');
+  }
 
-    this.statusControl.setValue(accessContract.status === 'ACTIVE');
-    this.accessLogControl.setValue(accessContract.accessLog === 'ACTIVE');
-    this.form.reset(accessContract, { emitEvent: false });
+  onAccessLogChange(active: boolean) {
+    this.form.accessLog().value.set(active ? 'ACTIVE' : 'INACTIVE');
+  }
+
+  private formatDate(date: string): string {
+    return this.dateTimePipe.transform(date, 'dd/MM/yyyy');
   }
 
   private setAccessContract(accessContract: AccessContract): void {
@@ -192,8 +220,6 @@ export class AccessContractInformationTabComponent implements OnChanges {
     if (!this.accessContract().ruleCategoryToFilter) {
       this.accessContract().ruleCategoryToFilter = [];
     }
-
-    this.ruleFilter.setValue(this.accessContract().ruleCategoryToFilter?.length > 0);
 
     if (!this.accessContract().description) {
       this.accessContract().description = '';

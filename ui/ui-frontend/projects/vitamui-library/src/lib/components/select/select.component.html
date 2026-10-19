@@ -29,14 +29,14 @@
     </mat-select-trigger>
 
     @if (showOnlySelectedOption) {
-      <button (click)="toggleShowOnlySelectedOption()" class="btn link small d-flex ml-auto mr-2">
+      <button type="button" (click)="toggleShowOnlySelectedOption()" class="btn link small d-flex ml-auto mr-2">
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
         <span>
           {{ 'SELECT.COMPLETE_SELECTION' | translate }}
         </span>
       </button>
 
-      <button (click)="clearAllSelectedOptions()" class="btn link small ml-2">
+      <button type="button" (click)="clearAllSelectedOptions()" class="btn link small ml-2">
         <i class="vitamui-icon vitamui-icon-delete"></i>
         <span>
           {{ 'SELECT.EMPTY_SELECTION' | translate }}
@@ -55,11 +55,7 @@
                 [disabled]="option.disabled"
                 [vitamuiTooltip]="option.info"
               >
-                <span
-                  [innerHTML]="option.label | highlight: searchTextControl.value"
-                  vitamuiCommonEllipsis
-                  [isToolTipOnMouseEnter]="true"
-                ></span>
+                <span [innerHTML]="option.label | highlight: searchText()" vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true"></span>
               </mat-option>
               @if (!last) {
                 <mat-divider></mat-divider>
@@ -71,6 +67,7 @@
     } @else {
       @if (enableDisplaySelected() && multiple()) {
         <button
+          type="button"
           (click)="toggleShowOnlySelectedOption()"
           [disabled]="getSelectedOptionsCount() === 0"
           class="btn link small d-flex ml-auto mr-2"
@@ -122,11 +119,7 @@
                   [disabled]="option.disabled"
                   [vitamuiTooltip]="option.info"
                 >
-                  <span
-                    [innerHTML]="option.label | highlight: searchTextControl.value"
-                    vitamuiCommonEllipsis
-                    [isToolTipOnMouseEnter]="true"
-                  ></span>
+                  <span [innerHTML]="option.label | highlight: searchText()" vitamuiCommonEllipsis [isToolTipOnMouseEnter]="true"></span>
                 </mat-option>
                 @if (!last) {
                   <mat-divider></mat-divider>

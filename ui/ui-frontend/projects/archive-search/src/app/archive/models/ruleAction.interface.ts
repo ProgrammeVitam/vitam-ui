@@ -57,7 +57,8 @@ export interface RuleSearchCriteriaDto {
 export interface RuleAction {
   rule: string;
   name?: string;
-  startDate?: string;
+  // Date selected with a datepicker
+  startDate?: string | Date;
   endDate?: string;
   oldRule?: string;
   deleteStartDate?: boolean;

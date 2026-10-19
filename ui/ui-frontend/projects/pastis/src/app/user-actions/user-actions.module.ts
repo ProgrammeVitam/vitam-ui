@@ -73,7 +73,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -94,11 +93,9 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     CommonModule,
     CoreModule,
-    FormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    ReactiveFormsModule,
     VitamUILibraryModule,
     PastisGenericPopupComponent,
     TranslatePipe,

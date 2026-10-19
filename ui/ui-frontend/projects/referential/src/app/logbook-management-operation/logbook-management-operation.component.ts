@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, inject, Injector, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -51,7 +52,7 @@ import {
 } from 'vitamui-library';
 import { OperationDetails } from '../models/operation-response.interface';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
-import { tap } from 'rxjs/operators';
+import { skip, tap } from 'rxjs/operators';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
 import { NgStyle } from '@angular/common';
@@ -61,6 +62,11 @@ interface FormData {
   startDateMin?: Date;
   startDateMax?: Date;
   search?: string;
+}
+
+interface DateRangeFilterForm {
+  startDateMin: Date;
+  startDateMax: Date;
 }
 
 interface OperationSearch {
@@ -81,7 +87,7 @@ interface OperationSearch {
     VitamuiTitleBreadcrumbComponent,
     VitamuiBannerComponent,
     TooltipDirective,
-    ReactiveFormsModule,
+    FormField,
     NgStyle,
     DatepickerComponent,
     LogbookManagementOperationListComponent,
@@ -91,16 +97,17 @@ interface OperationSearch {
 export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly queryParamsService = inject(QueryParamsService);
   private readonly dateService = inject(DateService);
+  private readonly injector = inject(Injector);
 
   tenantIdentifier: number;
-  dateRangeFilterForm = this.formBuilder.group<FormData>({
+  private readonly dateRangeFilterModel = signal<DateRangeFilterForm>({
     startDateMin: null,
     startDateMax: null,
   });
+  readonly dateRangeFilterForm = form(this.dateRangeFilterModel);
   searchValue: string = null;
   showStartDateMax = false;
   searchCriteria: BehaviorSubject<OperationSearch> = new BehaviorSubject({});
@@ -125,10 +132,12 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(
-      ...['startDateMin', 'startDateMax'].map((field) => {
-        return this.dateRangeFilterForm
-          .get(field)
-          .valueChanges.pipe(tap((value: string) => this.updateDateSearchCriteria(value as FrenchDate, field)))
+      ...(['startDateMin', 'startDateMax'] as const).map((field) => {
+        return toObservable(this.dateRangeFilterForm[field]().value, { injector: this.injector })
+          .pipe(
+            skip(1),
+            tap((value) => this.updateDateSearchCriteria(value as unknown as FrenchDate, field)),
+          )
           .subscribe();
       }),
     );
@@ -138,10 +147,9 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
         .getQueryParams()
         .pipe(
           tap((queryParams) => {
-            const hasChanged =
-              Object.entries(this.dateRangeFilterForm.value).filter(([key, value]) => queryParams[key] !== value).length > 0;
+            const hasChanged = Object.entries(this.dateRangeFilterModel()).filter(([key, value]) => queryParams[key] !== value).length > 0;
             if (hasChanged) {
-              this.dateRangeFilterForm.setValue({
+              this.dateRangeFilterModel.set({
                 startDateMin: queryParams?.['startDateMin'] ? new Date(queryParams['startDateMin']) : null,
                 startDateMax: queryParams?.['startDateMax'] ? new Date(queryParams['startDateMax']) : null,
               });
@@ -176,7 +184,7 @@ export class LogbookManagementOperationComponent implements OnInit, OnDestroy {
   }
 
   clearDate(date: 'startDateMin' | 'startDateMax') {
-    this.dateRangeFilterForm.get(date).setValue(null, { onlySelf: false, emitEvent: true });
+    this.dateRangeFilterForm[date]().value.set(null);
   }
 
   search() {

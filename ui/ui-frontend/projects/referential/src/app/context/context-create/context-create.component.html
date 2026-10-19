@@ -4,16 +4,16 @@
   [title]="['CONTEXTS_APP.CREATE_DIALOG.INFORMATION.SUBTITLE' | translate, 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.TITLE' | translate]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle [formControl]="statusControl" [checked]="form.controls['status'].value === 'ACTIVE'">
+        <vitamui-slide-toggle [checked]="form.status().value() === 'ACTIVE'" (checkedChange)="onStatusChange($event)">
           {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.STATUS' | translate }}
         </vitamui-slide-toggle>
 
         <vitamui-input
-          formControlName="name"
+          [formField]="form.name"
           class="w-100"
           [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.NAME' | translate"
           [errorMessageMap]="{
@@ -25,7 +25,7 @@
 
         @if (isSlaveMode) {
           <vitamui-input
-            formControlName="identifier"
+            [formField]="form.identifier"
             [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER' | translate"
             [errorMessageMap]="{
               identifierExists: 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER_ALREADY_EXISTS' | translate,
@@ -36,7 +36,7 @@
         }
 
         <vitamui-select
-          formControlName="securityProfile"
+          [formField]="form.securityProfile"
           [placeholder]="'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.SECURITY_PROFILE' | translate"
           [options]="securityProfiles"
           [multiple]="false"
@@ -44,17 +44,17 @@
         ></vitamui-select>
 
         <div>
-          <vitamui-slide-toggle formControlName="enableControl">
+          <vitamui-slide-toggle [formField]="form.enableControl">
             {{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE' | translate }}
           </vitamui-slide-toggle>
-          @if (form?.controls['enableControl']?.value === false) {
+          @if (form.enableControl().value() === false) {
             <i
               class="vitamui-icon vitamui-icon-info primary ml-3"
               vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_FALSE' | translate }}"
             >
             </i>
           }
-          @if (form?.controls['enableControl']?.value === true) {
+          @if (form.enableControl().value() === true) {
             <i
               class="vitamui-icon vitamui-icon-info primary ml-3"
               vitamuiTooltip="{{ 'CONTEXTS_APP.CREATE_DIALOG.INFORMATION.TENANT_TOGGLE_TOOLTIP_TRUE' | translate }}"
@@ -73,7 +73,7 @@
     <cdk-step>
       <mat-dialog-content>
         <div class="pb-4">
-          <app-context-edit-permission formControlName="permissions" (changeOrganisations)="onChangeOrganisations($event)">
+          <app-context-edit-permission [formField]="form.permissions" (changeOrganisations)="onChangeOrganisations($event)">
           </app-context-edit-permission>
           @if (isPermissionsOnMultipleOrganisations) {
             <div>
@@ -83,12 +83,12 @@
             </div>
           }
           <ng-container>
-            @if (!!form.get('permissions')?.errors?.['permissionsTenant']) {
+            @if (hasPermissionsError('permissionsTenant')) {
               <span class="text danger">
                 {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.TENANT_ERROR' | translate }}
               </span>
             }
-            @if (!!form.get('permissions')?.errors?.['noPermissions']) {
+            @if (hasPermissionsError('noPermissions')) {
               <span class="text danger">
                 {{ 'CONTEXTS_APP.CREATE_DIALOG.PERMISSION.PERMISSION_ERROR' | translate }}
               </span>

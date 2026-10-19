@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -68,14 +67,12 @@ describe('ProbativeValueComponent', () => {
         MatSelectModule,
         MatSidenavModule,
         DatepickerComponent,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         ProbativeValueComponent,
       ],
       providers: [
         provideNativeDateAdapter(),
         DatePipe,
-        FormBuilder,
         { provide: MatDialog, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Router, useValue: { navigate: () => {} } },

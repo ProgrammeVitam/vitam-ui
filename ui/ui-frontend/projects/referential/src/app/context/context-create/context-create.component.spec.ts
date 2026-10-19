@@ -37,7 +37,7 @@
 
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -62,7 +62,6 @@ import { ContextCreateValidators } from './context-create.validators';
     },
   ],
   imports: [
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonToggleModule,
@@ -153,7 +152,6 @@ describe.skip('ContextCreateComponent', () => {
     };
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatButtonToggleModule,
@@ -204,7 +202,7 @@ describe.skip('ContextCreateComponent', () => {
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedContext);
+      component.form().value.set(expectedContext as any);
       fixture.detectChanges();
       expect(page.submit.attributes.disabled).toBeFalsy();
     });
@@ -212,12 +210,12 @@ describe.skip('ContextCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue(expectedContext);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedContext as any);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
@@ -264,11 +262,11 @@ describe.skip('ContextCreateComponent', () => {
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: string, value: any) {
+        const field = name.split('.').reduce((fieldTree: any, key) => fieldTree[key], component.form);
+        field().value.set(value);
 
-        return control;
+        return { valid: field().valid(), invalid: field().invalid() };
       }
     });
   });
@@ -289,7 +287,7 @@ describe.skip('ContextCreateComponent', () => {
     it('should call create()', () => {
       const contextService = TestBed.inject(ContextService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedContext);
+      component.form().value.set(expectedContext as any);
       component.onSubmit();
       expect(contextService.create).toHaveBeenCalledTimes(1);
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);

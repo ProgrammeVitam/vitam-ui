@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
@@ -179,22 +178,9 @@ const updateUnitManagementRuleServiceMock = {
 };
 
 const managementRulesValidatorServiceMock = {
-  uniquePreventRuleId: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.uniquePreventRuleId')
-    .mockReturnValue(() => of({})),
-  uniqueRuleId: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.uniqueRuleId')
-    .mockReturnValue(() => of({})),
-  ruleIdPattern: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.ruleIdPattern')
-    .mockReturnValue(() => of({})),
-  checkRuleIdExistence: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.checkRuleIdExistence')
-    .mockReturnValue(() => of({})),
+  uniquePreventRuleId: vi.fn().mockName('ManagementRulesValidatorService.uniquePreventRuleId'),
+  uniqueRuleId: vi.fn().mockName('ManagementRulesValidatorService.uniqueRuleId'),
+  checkRuleIdExistence: vi.fn().mockName('ManagementRulesValidatorService.checkRuleIdExistence'),
 };
 
 describe('AddManagementRulesComponent', () => {
@@ -205,7 +191,6 @@ describe('AddManagementRulesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, AddManagementRulesComponent],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },

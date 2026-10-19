@@ -41,7 +41,6 @@ import { Observable } from 'rxjs';
 import { Agency, AgencyService, ConfirmActionComponent, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { AgencyInformationTabComponent } from './agency-information-tab/agency-information-tab.component';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatOptionModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -56,7 +55,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./agency-preview.component.scss'],
   imports: [
     AgencyInformationTabComponent,
-    FormsModule,
     MatDialogModule,
     MatMenuModule,
     MatOptionModule,
@@ -64,7 +62,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatSelectModule,
     MatSidenavModule,
     MatTabsModule,
-    ReactiveFormsModule,
     RouterModule,
     TranslatePipe,
     VitamUICommonModule,

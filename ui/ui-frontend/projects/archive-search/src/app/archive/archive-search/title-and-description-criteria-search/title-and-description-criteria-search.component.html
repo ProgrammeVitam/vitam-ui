@@ -1,8 +1,7 @@
-<form [formGroup]="quickSearchCriteriaForm">
+<div>
   <vitamui-common-editable-input
-    formControlName="archiveCriteria"
-    [validator]="quickSearchCriteriaForm?.get('archiveCriteria')?.validator"
+    [formField]="quickSearchCriteriaForm.archiveCriteria"
     label="{{ 'ARCHIVE_SEARCH.TITLE_SEARCH_AREA' | translate }}"
   >
   </vitamui-common-editable-input>
-</form>
+</div>

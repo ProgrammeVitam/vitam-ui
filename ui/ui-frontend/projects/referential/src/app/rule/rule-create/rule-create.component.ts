@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, FormRoot, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   ConfirmDialogService,
   DialogHeaderComponent,
   InputComponent,
-  ManagementRuleValidators,
+  ruleIdPattern,
   Rule,
   RuleService,
   SelectComponent,
@@ -53,13 +53,23 @@ import { RuleCreateValidators } from './rule-create.validators';
 import { sizes } from '../../ontology/ontology-form-options';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface RuleCreateForm {
+  ruleId: string;
+  ruleType: string;
+  ruleValue: string;
+  ruleDescription: string;
+  ruleDuration: string;
+  ruleMeasurement: string;
+}
+
 @Component({
   selector: 'app-rule-create',
   templateUrl: './rule-create.component.html',
   styleUrls: ['./rule-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     MatDialogContent,
     InputComponent,
     TooltipDirective,
@@ -71,12 +81,44 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class RuleCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<RuleCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly ruleService = inject(RuleService);
   private readonly ruleCreateValidator = inject(RuleCreateValidators);
 
-  form: FormGroup;
+  readonly form = form(
+    signal<RuleCreateForm>({
+      ruleId: null,
+      ruleType: null,
+      ruleValue: null,
+      ruleDescription: null,
+      ruleDuration: null,
+      ruleMeasurement: null,
+    }),
+    (path) => {
+      required(path.ruleId);
+      minLength(path.ruleId, 2);
+      maxLength(path.ruleId, 100);
+      ruleIdPattern(path.ruleId);
+      this.ruleCreateValidator.uniqueRuleId(path.ruleId);
+      required(path.ruleType);
+      required(path.ruleValue);
+      minLength(path.ruleValue, 2);
+      maxLength(path.ruleValue, 100);
+      required(path.ruleDescription);
+      required(path.ruleDuration);
+      maxLength(path.ruleDuration, 3);
+      pattern(path.ruleDuration, /^[0-9]*$/);
+      required(path.ruleMeasurement);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -91,19 +133,6 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
   tenantIdentifier: number;
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      ruleId: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), ManagementRuleValidators.ruleIdPattern],
-        this.ruleCreateValidator.uniqueRuleId(),
-      ],
-      ruleType: [null, Validators.required],
-      ruleValue: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      ruleDescription: [null, Validators.required],
-      ruleDuration: [null, [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
-      ruleMeasurement: [null, Validators.required],
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -112,7 +141,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -120,12 +149,12 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton.set(true);
       return;
     }
 
-    const format: Rule = this.form.value;
+    const format = this.form().value() as Rule;
     this.isDisabledButton.set(true);
 
     this.ruleService.create(format).subscribe(

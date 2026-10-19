@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnInit, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { merge, of } from 'rxjs';
+import { Component, computed, inject, OnChanges, OnInit, input, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import {
@@ -70,12 +72,74 @@ import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
+interface OwnerInformationModel {
+  id: string;
+  identifier: string;
+  customerId: string;
+  code: string;
+  name: string;
+  companyName: string;
+  address: {
+    street: string;
+    zipCode: string;
+    city: string;
+    country: string;
+  };
+  internalCode: string;
+}
+
+interface TenantInformationModel {
+  id: string;
+  identifier: number;
+  customerId: string;
+  ownerId: string;
+  name: string;
+  enabled: boolean;
+  ingestContractHoldingIdentifier: string;
+  itemIngestContractIdentifier: string;
+  accessContractHoldingIdentifier: string;
+  accessContractLogbookIdentifier: string;
+}
+
+function toOwnerInformationModel(owner: Owner): OwnerInformationModel {
+  return {
+    id: owner?.id ?? null,
+    identifier: owner?.identifier ?? null,
+    customerId: owner?.customerId ?? null,
+    code: owner?.code ?? null,
+    name: owner?.name ?? null,
+    companyName: owner?.companyName ?? null,
+    address: {
+      street: owner?.address?.street ?? null,
+      zipCode: owner?.address?.zipCode ?? null,
+      city: owner?.address?.city ?? null,
+      country: owner?.address?.country ?? null,
+    },
+    internalCode: owner?.internalCode ?? null,
+  };
+}
+
+function toTenantInformationModel(tenant: Tenant): TenantInformationModel {
+  return {
+    id: tenant?.id ?? null,
+    identifier: tenant?.identifier ?? null,
+    customerId: tenant?.customerId ?? null,
+    ownerId: tenant?.ownerId ?? null,
+    name: tenant?.name ?? null,
+    enabled: tenant?.enabled ?? null,
+    ingestContractHoldingIdentifier: tenant?.ingestContractHoldingIdentifier ?? null,
+    itemIngestContractIdentifier: tenant?.itemIngestContractIdentifier ?? null,
+    accessContractHoldingIdentifier: tenant?.accessContractHoldingIdentifier ?? null,
+    accessContractLogbookIdentifier: tenant?.accessContractLogbookIdentifier ?? null,
+  };
+}
+
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     VitamUIFieldErrorComponent,
     FormFieldValueWrapperComponent,
     SelectComponent,
@@ -83,7 +147,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
     TranslatePipe,
     CommonModule,
     EditableInputComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -94,7 +157,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
   ],
 })
 export class InformationTabComponent implements OnChanges, OnInit {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ownerFormValidators = inject(OwnerFormValidators);
   private readonly ownerService = inject(OwnerService);
   private readonly tenantService = inject(TenantService);
@@ -107,120 +169,76 @@ export class InformationTabComponent implements OnChanges, OnInit {
   readonly readOnly = input<boolean>(undefined);
 
   public ownerCodeMaxLength = OWNER_CODE_MAX_LENGTH;
-  public maxStreetLength: number;
-  public ownerForm: FormGroup;
-  public tenantForm: FormGroup;
+  public maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
   public countries: Option[];
-  public previousOwner: {
-    id: string;
-    identifier: string;
-    customerId: string;
-    code: string;
-    name: string;
-    companyName: string;
-    address: {
-      street: string;
-      zipCode: string;
-      city: string;
-      country: 'FR';
-    };
-    internalCode: string;
-  };
-  public previousTenant: {
-    id: string;
-    identifier: string;
-    customerId: string;
-    proof: boolean;
-    ownerId: string;
-    name: string;
-    enabled: boolean;
-    ingestContractHoldingIdentifier: string;
-    itemIngestContractIdentifier: string;
-    accessContractHoldingIdentifier: string;
-    accessContractLogbookIdentifier: string;
-  };
+  public previousOwner: OwnerInformationModel;
+  public previousTenant: TenantInformationModel;
+
+  private readonly ownerModel = signal<OwnerInformationModel>(toOwnerInformationModel(null));
+  // Values set by the reset methods: like a reset with emitEvent: false, they must not trigger an update
+  private ownerResetValue = this.ownerModel();
+  public readonly ownerForm = form(this.ownerModel, (path) => {
+    disabled(path, () => !!this.readOnly());
+    // The identifier is never editable
+    disabled(path.identifier);
+  });
+
+  private readonly tenantModel = signal<TenantInformationModel>(toTenantInformationModel(null));
+  private tenantResetValue = this.tenantModel();
+  public readonly tenantForm = form(this.tenantModel, (path) => {
+    disabled(path, () => !!this.readOnly());
+  });
+
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  private readonly ownerCode = signal<string>(undefined);
+  private readonly tenantName = signal<string>(undefined);
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly ownerCodeValidator: ValidatorFn = Validators.compose([
+    Validators.required,
+    Validators.pattern(ALPHA_NUMERIC_REGEX),
+    Validators.maxLength(OWNER_CODE_MAX_LENGTH),
+  ]);
+  readonly ownerCodeAsyncValidator = computed<AsyncValidatorFn>(() => this.ownerFormValidators.uniqueCode(this.ownerCode()));
+  readonly tenantNameAsyncValidator = computed<AsyncValidatorFn>(() => this.tenantFormValidators.uniqueName(this.tenantName()));
 
   constructor() {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
-    this.ownerForm = this.formBuilder.group({
-      id: [null, Validators.required],
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      customerId: [null, Validators.required],
-      code: [
-        null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(OWNER_CODE_MAX_LENGTH)],
-        this.ownerFormValidators.uniqueCode(),
-      ],
-      name: [null, Validators.required],
-      companyName: [null, Validators.required],
-      address: this.formBuilder.group({
-        street: [null, Validators.maxLength(this.maxStreetLength)],
-        zipCode: null,
-        city: null,
-        country: 'FR',
-      }),
-      internalCode: [null],
-    });
-
-    this.tenantForm = this.formBuilder.group({
-      id: [null, Validators.required],
-      identifier: [null, Validators.required],
-      customerId: [null, Validators.required],
-      ownerId: [null, Validators.required],
-      name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
-      enabled: [true, Validators.required],
-      ingestContractHoldingIdentifier: [null],
-      itemIngestContractIdentifier: [null],
-      accessContractHoldingIdentifier: [null],
-      accessContractLogbookIdentifier: [null],
-    });
-  }
-
-  ngOnInit() {
-    merge(this.ownerForm.valueChanges, this.ownerForm.statusChanges)
+    toObservable(this.ownerModel)
       .pipe(
+        filter((value) => value !== this.ownerResetValue),
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.ownerForm.value, this.previousOwner)),
+        map(() => diff(this.ownerModel(), this.previousOwner)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.owner().id }, formData)),
         switchMap((formData) => this.ownerService.patch(formData).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
       )
       .subscribe((owner: Owner) => this.resetOwnerForm(owner));
 
-    merge(this.tenantForm.valueChanges, this.tenantForm.statusChanges)
+    toObservable(this.tenantModel)
       .pipe(
+        filter((value) => value !== this.tenantResetValue),
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.tenantForm.value, this.previousTenant)),
+        map(() => diff(this.tenantModel(), this.previousTenant)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.tenant().id }, formData)),
-        switchMap((formData) => this.tenantService.patch(formData, this.ownerForm.value.name).pipe(catchError(() => of(null)))),
+        switchMap((formData) => this.tenantService.patch(formData, this.ownerModel().name).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
       )
       .subscribe((tenant: Tenant) => {
         this.resetTenantForm(tenant);
       });
+  }
 
+  ngOnInit() {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
     });
   }
 
   ngOnChanges() {
-    const readOnly = this.readOnly();
-    if (readOnly) {
-      this.ownerForm.disable({ emitEvent: false });
-    } else if (this.ownerForm.disabled) {
-      this.ownerForm.enable({ emitEvent: false });
-    }
-    if (readOnly) {
-      this.tenantForm.disable({ emitEvent: false });
-    } else if (this.tenantForm.disabled) {
-      this.tenantForm.enable({ emitEvent: false });
-    }
     const tenant = this.tenant();
     if (tenant) {
-      this.tenantForm.reset(tenant, { emitEvent: false });
-      this.tenantForm.get('name').setAsyncValidators(this.tenantFormValidators.uniqueName(tenant.name));
-      this.previousTenant = this.tenantForm.value;
+      this.setTenantFormValue(tenant);
     }
     const owner = this.owner();
     if (owner) {
@@ -229,18 +247,25 @@ export class InformationTabComponent implements OnChanges, OnInit {
   }
 
   private resetOwnerForm(owner: Owner) {
-    this.ownerForm.reset(owner, { emitEvent: false });
-    this.ownerForm.get('code').setAsyncValidators(this.ownerFormValidators.uniqueCode(owner.code));
-    this.ownerForm.get('identifier').disable({ emitEvent: false });
+    this.ownerResetValue = toOwnerInformationModel(owner);
+    this.ownerModel.set(this.ownerResetValue);
+    this.ownerForm().reset();
+    this.ownerCode.set(owner.code);
 
-    this.previousOwner = this.ownerForm.value;
+    this.previousOwner = this.ownerResetValue;
   }
 
   private resetTenantForm(tenant: Tenant) {
     this.tenant().name = tenant.name;
-    this.tenantForm.reset(tenant, { emitEvent: false });
-    this.tenantForm.get('name').setAsyncValidators(this.tenantFormValidators.uniqueName(tenant.name));
+    this.setTenantFormValue(tenant);
+  }
 
-    this.previousTenant = this.tenantForm.value;
+  private setTenantFormValue(tenant: Tenant) {
+    this.tenantResetValue = toTenantInformationModel(tenant);
+    this.tenantModel.set(this.tenantResetValue);
+    this.tenantForm().reset();
+    this.tenantName.set(tenant.name);
+
+    this.previousTenant = this.tenantResetValue;
   }
 }

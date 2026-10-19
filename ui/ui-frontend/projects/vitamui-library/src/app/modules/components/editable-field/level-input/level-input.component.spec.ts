@@ -34,7 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { form, FormField } from '@angular/forms/signals';
+import { provideTranslateService } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { WINDOW_LOCATION } from '../../../injection-tokens';
 import { LevelInputComponent } from './level-input.component';
@@ -63,5 +66,28 @@ describe('LevelInputComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('signal forms', () => {
+    @Component({
+      template: `<vitamui-common-level-input [formField]="testForm.level" prefix="ROOT"></vitamui-common-level-input>`,
+      imports: [LevelInputComponent, FormField],
+    })
+    class SignalFormHostComponent {
+      readonly testForm = form(signal({ level: 'ROOT.SUB' }));
+    }
+
+    it('should display the sub level of the initial value, using the prefix', async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [SignalFormHostComponent],
+        providers: [provideTranslateService()],
+      }).compileComponents();
+      const hostFixture = TestBed.createComponent(SignalFormHostComponent);
+      await hostFixture.whenStable();
+      await hostFixture.whenStable();
+
+      expect(hostFixture.nativeElement.querySelector('input').value).toEqual('SUB');
+    });
   });
 });

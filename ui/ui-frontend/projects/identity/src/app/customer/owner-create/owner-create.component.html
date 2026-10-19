@@ -3,21 +3,21 @@
   [title]="
     stepper.selectedIndex === 0
       ? ('CUSTOMER.OWNER.CREATE.TITLE' | translate: { name: data?.customer?.name })
-      : ('CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate: { name: ownerForm?.value?.owner?.name })
+      : ('CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate: { name: ownerForm.owner().value()?.name })
   "
 ></vitamui-dialog-header>
 
 <vitamui-stepper #stepper>
   <cdk-step>
-    <form [formGroup]="ownerForm" (ngSubmit)="onOwnerSubmit()">
+    <form [formRoot]="ownerForm">
       <mat-dialog-content>
-        <app-owner-form formControlName="owner" [customerId]="data?.customer?.id"></app-owner-form>
+        <app-owner-form [formField]="ownerForm.owner" [customerId]="data?.customer?.id"></app-owner-form>
       </mat-dialog-content>
       <mat-dialog-actions>
-        <button type="button" class="btn primary" cdkStepperNext [disabled]="isLoading() || ownerForm.pending || ownerForm.invalid">
+        <button type="button" class="btn primary" cdkStepperNext [disabled]="isLoading() || ownerForm().pending() || ownerForm().invalid()">
           {{ 'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate }}
         </button>
-        <button type="submit" class="btn primary" [disabled]="isLoading() || ownerForm.pending || ownerForm.invalid">
+        <button type="submit" class="btn primary" [disabled]="isLoading() || ownerForm().pending() || ownerForm().invalid()">
           {{ 'COMMON.SUBMIT' | translate }}
         </button>
         <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
@@ -26,16 +26,16 @@
   </cdk-step>
 
   <cdk-step>
-    <form [formGroup]="tenantForm" (ngSubmit)="onTenantSubmit()">
+    <form [formRoot]="tenantForm">
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-input
-          formControlName="name"
+          [formField]="tenantForm.name"
           [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate"
           [errorMessageMap]="{ uniqueName: 'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate }"
         >
         </vitamui-input>
         <vitamui-select
-          formControlName="identifier"
+          [formField]="tenantForm.identifier"
           [placeholder]="'CUSTOMER.OWNER.TENANT_ID' | translate"
           [options]="availableTenants"
           [multiple]="false"
@@ -44,7 +44,7 @@
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="isLoading() || tenantForm.pending || tenantForm.invalid">
+          <button type="submit" class="btn primary" [disabled]="isLoading() || tenantForm().pending() || tenantForm().invalid()">
             {{ 'COMMON.SUBMIT' | translate }}
           </button>
           <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

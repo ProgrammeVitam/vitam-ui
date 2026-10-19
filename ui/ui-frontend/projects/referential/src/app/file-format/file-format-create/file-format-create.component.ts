@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -49,27 +49,65 @@ import {
   SelectComponent,
   StartupService,
   VitamuiSelectOptions,
+  requiredValue,
 } from 'vitamui-library';
 import { FileFormatService } from '../file-format.service';
 import { FileFormatCreateValidators } from './file-format-create.validators';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface FileFormatCreateForm {
+  name: string;
+  puid: string;
+  version: string;
+  mimeType: string;
+  extensions: string[];
+  hasPriorityOverFileFormatIDs: string[];
+}
+
 @Component({
   selector: 'app-file-format-create',
   templateUrl: './file-format-create.component.html',
   styleUrls: ['./file-format-create.component.scss'],
-  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, FormRoot, FormField, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<FileFormatCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly startupService = inject(StartupService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly fileFormatService = inject(FileFormatService);
   private readonly fileFormatCreateValidators = inject(FileFormatCreateValidators);
 
-  form: FormGroup;
+  readonly form = form(
+    signal<FileFormatCreateForm>({
+      name: null,
+      puid: null,
+      version: null,
+      mimeType: null,
+      extensions: null,
+      hasPriorityOverFileFormatIDs: null,
+    }),
+    (path) => {
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.fileFormatCreateValidators.uniqueName(path.name);
+      required(path.puid);
+      minLength(path.puid, 2);
+      maxLength(path.puid, 100);
+      this.fileFormatCreateValidators.uniquePuid(path.puid);
+      required(path.version);
+      requiredValue(path.extensions);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   tenantIdentifier: string;
   hasPriorityOverFileFormatIDsOptions: VitamuiSelectOptions;
   hasCustomGraphicIdentity = false;
@@ -87,15 +125,6 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)], this.fileFormatCreateValidators.uniqueName()],
-      puid: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)], this.fileFormatCreateValidators.uniquePuid()],
-      version: [null, Validators.required],
-      mimeType: [null],
-      extensions: [null, Validators.required],
-      hasPriorityOverFileFormatIDs: [null],
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
 
     this.fileFormatService
@@ -118,7 +147,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -126,13 +155,13 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton.set(true);
       return;
     }
     this.isDisabledButton.set(true);
-    const format: FileFormat = this.form.value;
-    format.puid = FILE_FORMAT_EXTERNAL_PREFIX + this.form.value.puid;
+    const value = this.form().value();
+    const format = { ...value, puid: FILE_FORMAT_EXTERNAL_PREFIX + value.puid } as FileFormat;
 
     // Disable the submit button to prevent double submit
     this.isCreationPending = true;

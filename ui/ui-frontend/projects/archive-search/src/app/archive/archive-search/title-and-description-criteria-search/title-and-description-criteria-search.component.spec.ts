@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { CriteriaOperator, CriteriaValue, InjectorModule } from 'vitamui-library';
@@ -57,7 +56,6 @@ describe('TitleAndDescriptionCriteriaSearchComponent', () => {
     matDialogSpy.open.mockReturnValue({ afterClosed: () => of(true) });
     await TestBed.configureTestingModule({
       providers: [
-        FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
       ],

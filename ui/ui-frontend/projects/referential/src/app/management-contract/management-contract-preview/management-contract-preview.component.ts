@@ -63,7 +63,6 @@ import { ManagementContractInformationTabComponent } from './management-contract
 import { ManagementContractStorageTabComponent } from './management-contract-storage-tab/management-contract-storage-tab.component';
 
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -83,7 +82,6 @@ import { CommonModule } from '@angular/common';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })

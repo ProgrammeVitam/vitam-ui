@@ -1,8 +1,8 @@
 <vitamui-dialog-header
-  [stepper]="!form.value.fullAccess ? stepper : undefined"
+  [stepper]="!form.fullAccess().value() ? stepper : undefined"
   [subhead]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.TITLE' | translate"
   [title]="
-    form.value.fullAccess
+    form.fullAccess().value()
       ? ('SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.SUBTITLE' | translate)
       : [
           'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.SUBTITLE' | translate,
@@ -11,13 +11,13 @@
   "
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
         <vitamui-input
           class="w-100"
-          formControlName="name"
+          [formField]="form.name"
           [placeholder]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.NAME' | translate"
           [errorMessageMap]="{ nameExists: 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.NAME_ALREADY_EXISTS' | translate }"
         >
@@ -25,7 +25,7 @@
 
         @if (isSlaveMode) {
           <vitamui-input
-            formControlName="identifier"
+            [formField]="form.identifier"
             class="w-100"
             [placeholder]="'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER' | translate"
             [errorMessageMap]="{ identifierExists: 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.IDENTIFIER_ALREADY_EXISTS' | translate }"
@@ -34,7 +34,7 @@
         }
 
         <div>
-          <vitamui-slide-toggle formControlName="fullAccess">
+          <vitamui-slide-toggle [formField]="form.fullAccess">
             {{ 'SECURITY_PROFILE_APP.CREATE_DIALOG.INFORMATION.ACCESS' | translate }}
           </vitamui-slide-toggle>
           <i
@@ -46,15 +46,15 @@
       </mat-dialog-content>
 
       <mat-dialog-actions>
-        @if (!form.value.fullAccess) {
+        @if (!form.fullAccess().value()) {
           <vitamui-next-step [disabled]="firstStepInvalid() || isDisabledButton()"></vitamui-next-step>
         }
-        @if (form.value.fullAccess) {
+        @if (form.fullAccess().value()) {
           <button
             type="button"
             class="btn primary"
             cdkStepperNext
-            [disabled]="form.pending || form.invalid || isDisabledButton()"
+            [disabled]="form().pending() || form().invalid() || isDisabledButton()"
             (click)="finishAfterFirstStep()"
           >
             {{ 'COMMON.TERMINATE' | translate }}
@@ -64,14 +64,14 @@
       </mat-dialog-actions>
     </cdk-step>
 
-    @if (!form.value.fullAccess) {
+    @if (!form.fullAccess().value()) {
       <cdk-step>
         <mat-dialog-content>
-          <app-security-profile-edit-permission formControlName="permissions"></app-security-profile-edit-permission>
+          <app-security-profile-edit-permission [formField]="form.permissions"></app-security-profile-edit-permission>
         </mat-dialog-content>
         <mat-dialog-actions>
           <div>
-            <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton()">
+            <button type="submit" class="btn primary" [disabled]="form().pending() || form().invalid() || isDisabledButton()">
               {{ 'COMMON.TERMINATE' | translate }}
             </button>
             <button type="button" class="btn cancel link" (click)="onCancel()">

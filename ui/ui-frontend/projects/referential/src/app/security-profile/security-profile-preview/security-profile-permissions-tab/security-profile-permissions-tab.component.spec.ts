@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 import { SecurityProfile } from 'vitamui-library';
 import { SecurityProfileService } from '../../security-profile.service';
@@ -66,7 +65,7 @@ describe('SecurityProfilePermissionsTabComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SecurityProfilePermissionsTabComponent],
-      providers: [FormBuilder, { provide: SecurityProfileService, useValue: securityProfileServiceMock }],
+      providers: [{ provide: SecurityProfileService, useValue: securityProfileServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -74,7 +73,7 @@ describe('SecurityProfilePermissionsTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SecurityProfilePermissionsTabComponent);
     component = fixture.componentInstance;
-    component.form.setValue(securityProfileValue);
+    component.form().value.set(securityProfileValue);
     component.previousValue = (): SecurityProfile => previousValue;
     fixture.detectChanges();
   });

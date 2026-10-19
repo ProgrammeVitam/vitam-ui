@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ChangeDetectorRef, Component, inject, OnChanges, OnDestroy, input, model, computed } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
@@ -67,7 +66,6 @@ export class UserGroupTabComponent implements OnChanges, OnDestroy {
 
   readonly groups = input<Group[]>();
 
-  form: FormGroup;
   activeGroups: GroupSelection[];
   userGroup: Group;
   readonly showUpdateButton = computed(() => !this.readOnly());

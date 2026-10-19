@@ -35,70 +35,82 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { FormControl } from '@angular/forms';
-import { from, of } from 'rxjs';
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form, ValidationError } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
 describe('SecurityProfile Create Validators', () => {
+  let injector: Injector;
+  let securityProfileServiceSpy: { existsProperties: ReturnType<typeof vi.fn> };
+
+  function errorKinds(field: () => { errors: () => readonly ValidationError[] }): string[] {
+    return field()
+      .errors()
+      .map((error) => error.kind);
+  }
+
+  function createNameForm(name: string, nameToIgnore?: string) {
+    const securityProfileCreateValidators = new SecurityProfileCreateValidators(securityProfileServiceSpy as any);
+    return form(
+      signal({ name }),
+      (path) => securityProfileCreateValidators.uniqueName(path.name, nameToIgnore === undefined ? undefined : () => nameToIgnore),
+      { injector },
+    );
+  }
+
+  beforeEach(() => {
+    injector = TestBed.inject(Injector);
+    vi.useFakeTimers();
+    securityProfileServiceSpy = {
+      existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
+    };
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  describe('uniqueCode', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(false));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
+  describe('uniqueName', () => {
+    it('should return no error', async () => {
+      securityProfileServiceSpy.existsProperties.mockReturnValue(of(false));
+      const nameForm = createNameForm('123456');
+
+      TestBed.tick();
       await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+      expect(securityProfileServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+      expect(errorKinds(nameForm.name)).toEqual([]);
     });
 
-    it('should return { uniqueCode: true }', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ nameExists: true });
-      });
+    it('should return a nameExists error', async () => {
+      securityProfileServiceSpy.existsProperties.mockReturnValue(of(true));
+      const nameForm = createNameForm('123456');
+
+      TestBed.tick();
       await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+      expect(securityProfileServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
+      expect(errorKinds(nameForm.name)).toEqual(['nameExists']);
     });
 
     it('should not call the service', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
+      securityProfileServiceSpy.existsProperties.mockReturnValue(of(true));
+      const nameForm = createNameForm('123456', '123456');
+
+      TestBed.tick();
       await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).not.toHaveBeenCalled();
+      expect(securityProfileServiceSpy.existsProperties).not.toHaveBeenCalled();
+      expect(errorKinds(nameForm.name)).toEqual([]);
     });
 
     it('should call the service', async () => {
-      vi.useFakeTimers();
-      const customerServiceSpy = {
-        existsProperties: vi.fn().mockName('SecurityProfileService.existsProperties'),
-      };
-      customerServiceSpy.existsProperties.mockReturnValue(of(true));
-      const customerCreateValidators = new SecurityProfileCreateValidators(customerServiceSpy as any);
-      from(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({ nameExists: true });
-      });
+      securityProfileServiceSpy.existsProperties.mockReturnValue(of(true));
+      const nameForm = createNameForm('111111', '123456');
+
+      TestBed.tick();
       await vi.advanceTimersByTimeAsync(400);
-      expect(customerServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
+      expect(securityProfileServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
+      expect(errorKinds(nameForm.name)).toEqual(['nameExists']);
     });
   });
 });

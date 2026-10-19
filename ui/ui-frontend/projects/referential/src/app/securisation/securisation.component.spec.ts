@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -74,7 +73,6 @@ describe('SecurisationComponent', () => {
       providers: [
         provideNativeDateAdapter(),
         DatePipe,
-        FormBuilder,
         GlobalEventService,
         { provide: MatDialog, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

@@ -34,10 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnDestroy, SimpleChanges, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, OnChanges, SimpleChanges, input, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { merge, of, Subscription } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
@@ -68,12 +70,32 @@ import { CommonModule } from '@angular/common';
 
 const DEBOUNCE_TIME = 200;
 
+interface GroupInformationModel {
+  id: string;
+  identifier: string;
+  enabled: boolean;
+  name: string;
+  description: string;
+  level: string;
+}
+
+function toGroupInformationModel(group: Group): GroupInformationModel {
+  return {
+    id: group?.id ?? null,
+    identifier: group?.identifier ?? null,
+    enabled: group?.enabled ?? null,
+    name: group?.name ?? null,
+    description: group?.description ?? null,
+    level: group?.level ?? null,
+  };
+}
+
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SlideToggleComponent,
     TooltipDirective,
     VitamUIFieldErrorComponent,
@@ -82,7 +104,6 @@ const DEBOUNCE_TIME = 200;
     EditableInputComponent,
     EditableLevelInputComponent,
     EditableTextareaComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -92,91 +113,71 @@ const DEBOUNCE_TIME = 200;
     OverlayModule,
   ],
 })
-export class InformationTabComponent implements OnDestroy, OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
+export class InformationTabComponent implements OnChanges {
   private readonly groupService = inject(GroupService);
   private readonly groupValidators = inject(GroupValidators);
   authService = inject(AuthService);
   private readonly dialog = inject(MatDialog);
 
-  form: FormGroup;
   groupsCount: number;
-  previousValue: {
-    id: string;
-    enabled: boolean;
-    name: string;
-    level: string;
-    description: string;
-  };
-
-  private readonly updateSub: Subscription;
+  previousValue: GroupInformationModel;
 
   readonly group = input<Group>(undefined);
 
   readonly readOnly = input<boolean>(undefined);
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      id: [null, Validators.required],
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      enabled: [false],
-      name: [null, Validators.required],
-      description: [null, Validators.required],
-      level: [null, buildValidators(this.authService.user)],
-    });
+  private readonly model = signal<GroupInformationModel>(toGroupInformationModel(null));
+  // Value set by resetForm: like a reset with emitEvent: false, it must not trigger an update
+  private resetValue = this.model();
+  // Group used to compute the activation state of the fields, updated by resetForm
+  private readonly displayedGroup = signal<Group>(undefined);
+  readonly form = form(this.model, (path) => {
+    disabled(path, () => !!this.readOnly());
+    // The identifier is never editable
+    disabled(path.identifier);
+    disabled(path.enabled, () => !!this.displayedGroup()?.usersCount);
+    disabled(path.level, () => !!this.displayedGroup()?.profileIds?.length);
+  });
 
-    this.updateSub = merge(this.form.valueChanges, this.form.statusChanges)
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly nameValidator: ValidatorFn = Validators.compose([Validators.required, Validators.minLength(2)]);
+  readonly nameAsyncValidator = computed<AsyncValidatorFn>(() => {
+    const group = this.displayedGroup();
+    return group ? this.groupValidators.nameExists(group.customerId, group.name) : null;
+  });
+  readonly descriptionValidator: ValidatorFn = Validators.compose([Validators.required, Validators.minLength(4)]);
+  readonly levelValidator: ValidatorFn = Validators.compose([...buildValidators(this.authService.user), Validators.maxLength(250)]);
+
+  constructor() {
+    toObservable(computed(() => ({ value: this.model(), valid: this.form().valid() })))
       .pipe(
+        filter(({ value }) => value !== this.resetValue),
         debounceTime(DEBOUNCE_TIME),
-        map(() => diff(this.form.value, this.previousValue)),
+        map(() => diff(this.model(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.group().id }, formData)),
         switchMap((formData) => this.groupService.patch(formData).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
       )
-      .subscribe(() => (this.previousValue = this.form.value));
+      .subscribe(() => (this.previousValue = this.model()));
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('group') || changes.hasOwnProperty('readOnly')) {
       const group = this.group();
       if (group) {
-        this.resetForm(this.form, group, this.readOnly());
-        this.previousValue = this.form.value;
+        this.resetForm(group);
+        this.previousValue = this.model();
       }
     }
   }
 
-  private resetForm(form: FormGroup, group: Group, readOnly: boolean) {
-    form.reset(group, { emitEvent: false });
-    this.initFormValidators(form, group);
-    this.initFormActivationState(form, group, readOnly);
-    form.updateValueAndValidity({ emitEvent: false });
-  }
-
-  private initFormValidators(form: FormGroup, group: Group) {
-    form.get('name').setAsyncValidators(this.groupValidators.nameExists(group.customerId, group.name));
-  }
-
-  private initFormActivationState(form: FormGroup, group: Group, readOnly: boolean) {
-    if (readOnly) {
-      form.disable({ emitEvent: false });
-
-      return;
-    }
-
-    form.enable({ emitEvent: false });
-    form.get('identifier').disable({ emitEvent: false });
-
-    if (group.usersCount) {
-      this.form.get('enabled').disable({ emitEvent: false });
-    }
-    if (group.profileIds && group.profileIds.length) {
-      this.form.get('level').disable({ emitEvent: false });
-    }
-  }
-
-  ngOnDestroy() {
-    this.updateSub.unsubscribe();
+  private resetForm(group: Group) {
+    this.resetValue = toGroupInformationModel(group);
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.displayedGroup.set(group);
   }
 
   openEditUnitsDialog() {

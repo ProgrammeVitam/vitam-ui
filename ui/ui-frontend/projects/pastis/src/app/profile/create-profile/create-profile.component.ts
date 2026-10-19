@@ -71,12 +71,12 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { ProfileType } from '../../models/profile-type.enum';
 import { ProfileVersion, ProfileVersionOptions } from '../../models/profile-version.enum';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, required } from '@angular/forms/signals';
 import { DialogHeaderComponent, TooltipDirective } from 'vitamui-library';
 import { PastisGenericPopupComponent } from '../../shared/pastis-generic-popup/pastis-generic-popup.component';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
@@ -87,6 +87,11 @@ export interface CreateProfileFormResult {
   profileVersion: ProfileVersion;
 }
 
+interface CreateProfileForm {
+  profileType: ProfileType;
+  profileVersion: ProfileVersion | null;
+}
+
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'pastis-create-profile',
@@ -95,8 +100,7 @@ export interface CreateProfileFormResult {
   imports: [
     DialogHeaderComponent,
     MatDialogContent,
-    FormsModule,
-    ReactiveFormsModule,
+    FormField,
     PastisGenericPopupComponent,
     TooltipDirective,
     MatRadioGroup,
@@ -105,27 +109,26 @@ export interface CreateProfileFormResult {
     TranslatePipe,
   ],
 })
-export class CreateProfileComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
+export class CreateProfileComponent {
   dialogRef = inject<MatDialogRef<CreateProfileComponent>>(MatDialogRef);
   data = inject<PastisDialogData>(MAT_DIALOG_DATA);
 
   readonly ProfileType = ProfileType;
   readonly ProfileVersionOptions = ProfileVersionOptions;
 
-  form: FormGroup;
+  readonly form = form(signal<CreateProfileForm>({ profileType: ProfileType.PA, profileVersion: null }), (path) => {
+    required(path.profileType);
+    required(path.profileVersion);
+  });
 
-  ngOnInit() {
-    this.form = this.fb.group({
-      profileType: [ProfileType.PA, Validators.required],
-      profileVersion: [null, Validators.required],
-    });
+  setProfileType(profileType: string) {
+    this.form.profileType().value.set(profileType as ProfileType);
   }
 
   submit() {
     const result: CreateProfileFormResult = {
-      profileType: this.form.controls['profileType'].value,
-      profileVersion: this.form.controls['profileVersion'].value,
+      profileType: this.form.profileType().value(),
+      profileVersion: this.form.profileVersion().value(),
     };
     this.dialogRef.close(result);
   }

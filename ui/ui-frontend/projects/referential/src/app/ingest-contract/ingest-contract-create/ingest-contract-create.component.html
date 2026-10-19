@@ -14,18 +14,18 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content class="gap-3 align-items-stretch">
-        <vitamui-slide-toggle [formControl]="statusControl"
+        <vitamui-slide-toggle [checked]="form.status().value() === 'ACTIVE'" (checkedChange)="onStatusChange($event)"
           >{{ 'INGEST_CONTRACT.CREATE_DIALOG.INGEST_CONTRACT_ACTIVE' | translate }}
         </vitamui-slide-toggle>
 
         @if (isSlaveMode) {
           <div class="d-flex">
             <vitamui-input
-              formControlName="identifier"
+              [formField]="form.identifier"
               [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.IDENTIFIER' | translate"
               class="w-100"
               [errorMessageMap]="{ identifierExists: 'INGEST_CONTRACT.CREATE_DIALOG.IDENTIFIER_ALREADY_EXIST' | translate }"
@@ -36,7 +36,7 @@
 
         <div class="d-flex">
           <vitamui-input
-            formControlName="name"
+            [formField]="form.name"
             [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.NAME' | translate"
             class="w-100"
             [errorMessageMap]="{ nameExists: 'INGEST_CONTRACT.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }"
@@ -44,7 +44,7 @@
           </vitamui-input>
         </div>
 
-        <vitamui-input [textarea]="true" formControlName="description" placeholder="Description"> </vitamui-input>
+        <vitamui-input [textarea]="true" [formField]="form.description" placeholder="Description"> </vitamui-input>
       </mat-dialog-content>
 
       <mat-dialog-actions>
@@ -57,7 +57,7 @@
       <mat-dialog-content>
         <vitamui-select
           class="d-block mb-3"
-          formControlName="archiveProfiles"
+          [formField]="form.archiveProfiles"
           [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.ARCHIVE_PROFILE' | translate"
           [options]="archiveProfiles"
           [multiple]="true"
@@ -65,7 +65,7 @@
         ></vitamui-select>
 
         <vitamui-select
-          formControlName="managementContractId"
+          [formField]="form.managementContractId"
           [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.MANAGEMENT_CONTRACT' | translate"
           [options]="managementContracts"
           [multiple]="false"
@@ -84,7 +84,7 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-slide-toggle class="d-block" formControlName="everyFormatType">
+        <vitamui-slide-toggle class="d-block" [formField]="form.everyFormatType">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.EVERY_FORMAT_TYPES' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
@@ -93,16 +93,15 @@
           ></i>
         </vitamui-slide-toggle>
 
-        @if (form?.controls['everyFormatType']?.value === false) {
+        @if (form.everyFormatType().value() === false) {
           <div class="d-flex mb-5">
             <vitamui-select
               [multiple]="true"
               class="col-8"
-              formControlName="formatType"
+              [formField]="form.formatType"
               [options]="formatTypesOptions"
               [placeholder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SELECT' | translate"
               [searchBarPlaceHolder]="'INGEST_CONTRACT.CREATE_DIALOG.FILES_FORMAT_SEARCH' | translate"
-              [required]="true"
             ></vitamui-select>
             <div class="mt-4">
               <i
@@ -113,7 +112,7 @@
           </div>
         }
 
-        <vitamui-slide-toggle formControlName="formatUnidentifiedAuthorized">
+        <vitamui-slide-toggle [formField]="form.formatUnidentifiedAuthorized">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALLOW_UNIDENTIFIED_FORMATS' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
@@ -133,7 +132,7 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-slide-toggle class="d-block" formControlName="binaryObjectMandatory">
+        <vitamui-slide-toggle class="d-block" [formField]="form.binaryObjectMandatory">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.BINARY_OBJECT_MANDATORY' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
@@ -141,7 +140,7 @@
           ></i>
         </vitamui-slide-toggle>
 
-        <vitamui-slide-toggle class="d-block" formControlName="everyDataObjectVersion">
+        <vitamui-slide-toggle class="d-block" [formField]="form.everyDataObjectVersion">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.ALL_USAGES_ALLOWED' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
@@ -149,10 +148,10 @@
           ></i>
         </vitamui-slide-toggle>
 
-        @if (form?.controls['everyDataObjectVersion']?.value === false) {
+        @if (form.everyDataObjectVersion().value() === false) {
           <div class="d-flex">
             <vitamui-select
-              formControlName="dataObjectVersion"
+              [formField]="form.dataObjectVersion"
               placeholder="{{ 'INGEST_CONTRACT.CREATE_DIALOG.SELECT_USAGES' | translate }}"
               [options]="usages"
               [multiple]="true"
@@ -177,7 +176,7 @@
 
     <cdk-step>
       <mat-dialog-content>
-        <vitamui-slide-toggle class="d-block" formControlName="computeInheritedRulesAtIngest">
+        <vitamui-slide-toggle class="d-block" [formField]="form.computeInheritedRulesAtIngest">
           {{ 'INGEST_CONTRACT.CREATE_DIALOG.COMPUTING_INHERITED_RULES' | translate }}
           <i
             class="vitamui-icon vitamui-icon-info align-middle primary"
@@ -206,7 +205,7 @@
       </div>
       <mat-dialog-content>
         <vitamui-library-filing-plan
-          [formControl]="linkParentIdControl"
+          [formField]="filingPlanForm.linkParentId"
           [tenantIdentifier]="tenantIdentifier"
           [mode]="FilingPlanMode.SOLO"
         ></vitamui-library-filing-plan>
@@ -230,7 +229,7 @@
         ></i>
       </div>
       <mat-dialog-content>
-        <vitamui-radio-group formControlName="checkParentLink" primary="true">
+        <vitamui-radio-group [formField]="form.checkParentLink" primary="true">
           <vitamui-radio
             vitamuiTooltip="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_ALLOW_TOOLTIP' | translate }}"
             label="{{ 'INGEST_CONTRACT.CREATE_DIALOG.ATTACHEMENT_CONTROL_ALLOW' | translate }}"
@@ -275,10 +274,9 @@
       </div>
       <mat-dialog-content>
         <vitamui-library-filing-plan
-          [formControl]="checkParentIdControl"
+          [formField]="filingPlanForm.checkParentId"
           [tenantIdentifier]="tenantIdentifier"
           [mode]="FilingPlanMode.INCLUDE_ONLY"
-          [required]="checkParentIdControl.value === 'REQUIRED'"
         ></vitamui-library-filing-plan>
       </mat-dialog-content>
       <mat-dialog-actions>
@@ -293,8 +291,12 @@
     <!-- STEP 9 - Versement de documents signés -->
     <cdk-step>
       <mat-dialog-content>
-        <div class="main-content gap-5" formGroupName="signaturePolicy">
-          <mat-button-toggle-group formControlName="signedDocument" #group="matButtonToggleGroup" class="vitamui-button-toggle-group">
+        <div class="main-content gap-5">
+          <mat-button-toggle-group
+            [formField]="form.signaturePolicy.signedDocument"
+            #group="matButtonToggleGroup"
+            class="vitamui-button-toggle-group"
+          >
             <mat-button-toggle
               value="{{ SignedDocumentPolicyEnum.ALLOWED }}"
               (click)="changeSignedDocumentPolicy(SignedDocumentPolicyEnum.ALLOWED)"
@@ -317,13 +319,13 @@
           <div class="gap-3">
             <div class="text medium bold primary">{{ 'INGEST_CONTRACT.MODAL_CREATE.SIGNING_POLICY.ELEMENTS_TO_CHECK' | translate }}</div>
             <div class="gap-2 ml-4">
-              <mat-checkbox formControlName="declaredSignature">
+              <mat-checkbox [formField]="form.signaturePolicy.declaredSignature">
                 {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.SIGNATURE' | translate }}
               </mat-checkbox>
-              <mat-checkbox formControlName="declaredTimestamp">
+              <mat-checkbox [formField]="form.signaturePolicy.declaredTimestamp">
                 {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.TIMESTAMP' | translate }}
               </mat-checkbox>
-              <mat-checkbox formControlName="declaredAdditionalProof">
+              <mat-checkbox [formField]="form.signaturePolicy.declaredAdditionalProof">
                 {{ 'INGEST_CONTRACT.ELEMENT_TO_CHECK.ADDITIONAL_EVIDENCES' | translate }}
               </mat-checkbox>
             </div>

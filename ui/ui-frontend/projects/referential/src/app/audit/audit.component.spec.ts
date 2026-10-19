@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -78,14 +77,12 @@ describe('AuditComponent', () => {
         MatSelectModule,
         MatSidenavModule,
         DatepickerComponent,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         AuditComponent,
       ],
       providers: [
         provideNativeDateAdapter(),
         DatePipe,
-        FormBuilder,
         GlobalEventService,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: {} },

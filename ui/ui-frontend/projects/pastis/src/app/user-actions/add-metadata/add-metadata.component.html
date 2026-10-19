@@ -38,7 +38,7 @@
       </span>
       <i class="vita"></i>
       <mat-divider class="pastis-popup-separator"></mat-divider>
-      <mat-selection-list (ngModelChange)="selectSedaElement($event)" [disableRipple]="true" [ngModel]="addedItems" class="list-box">
+      <mat-selection-list [disableRipple]="true" class="list-box">
         @for (element of allowedChildren | filterByName: filterName : sedaLanguage; track element) {
           <mat-list class="list-item">
             <span class="list-box-content">

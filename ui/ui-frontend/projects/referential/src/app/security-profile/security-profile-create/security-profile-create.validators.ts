@@ -35,43 +35,48 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { PathKind, SchemaPath, SchemaPathRules } from '@angular/forms/signals';
+import { of } from 'rxjs';
+import { validateObservable } from 'vitamui-library';
 import { SecurityProfileService } from '../security-profile.service';
+
+type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
 @Injectable({
   providedIn: 'root',
 })
 export class SecurityProfileCreateValidators {
-  private readonly contextService: SecurityProfileService;
+  private readonly securityProfileService: SecurityProfileService;
 
-  constructor(contextService: SecurityProfileService = inject(SecurityProfileService)) {
-    this.contextService = contextService;
+  constructor(securityProfileService: SecurityProfileService = inject(SecurityProfileService)) {
+    this.securityProfileService = securityProfileService;
   }
 
-  private readonly debounceTime = 400;
+  /**
+   * Checks that no other security profile has the same name.
+   * @param nameToIgnore returns the name that is not checked (e.g. the current name of the edited security profile)
+   */
+  uniqueName<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>, nameToIgnore?: () => string): void {
+    this.uniqueField(path, 'name', 'nameExists', nameToIgnore);
+  }
 
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  };
+  uniqueIdentifier<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    identifierToIgnore?: () => string,
+  ): void {
+    this.uniqueField(path, 'identifier', 'identifierExists', identifierToIgnore);
+  }
 
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  };
-
-  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value?.trim();
-      const existField: any = {};
-      existField[existTag] = true;
-
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.contextService.existsProperties(properties) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? existField : null)),
-      );
-    };
+  private uniqueField<TPathKind extends PathKind>(
+    path: FieldPath<string, TPathKind>,
+    field: string,
+    errorKind: string,
+    valueToIgnore?: () => string,
+  ): void {
+    validateObservable(path, {
+      stream: (value: string) =>
+        value !== valueToIgnore?.() ? this.securityProfileService.existsProperties({ [field]: value?.trim() }) : of(false),
+      onSuccess: (exists: boolean) => (exists ? { kind: errorKind } : undefined),
+    });
   }
 }

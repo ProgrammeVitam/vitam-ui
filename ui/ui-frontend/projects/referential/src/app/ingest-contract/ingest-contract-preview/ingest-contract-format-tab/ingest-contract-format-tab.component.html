@@ -1,13 +1,18 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <vitamui-slide-toggle formControlName="everyFormatType" class="w-100 p-0">
+<form [formRoot]="form">
+  <vitamui-slide-toggle
+    [checked]="form.everyFormatType().value()"
+    [disabled]="form.everyFormatType().disabled()"
+    (checkedChange)="onEveryFormatTypeChange($event)"
+    class="w-100 p-0"
+  >
     <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALL_FORMAT' | translate }}</span>
   </vitamui-slide-toggle>
 
-  @if (!form?.get('everyFormatType')?.value && formatOptions) {
+  @if (!form.everyFormatType().value() && formatOptions) {
     <div class="py-3">
       <vitamui-select
         [multiple]="true"
-        formControlName="formatType"
+        [formField]="form.formatType"
         class="mb-3"
         [placeholder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT' | translate"
         [searchBarPlaceHolder]="'INGEST_CONTRACT.TAB.FORMAT.SELECT_FORMAT_SEARCH' | translate"
@@ -18,7 +23,7 @@
     </div>
   }
 
-  <vitamui-slide-toggle formControlName="formatUnidentifiedAuthorized" class="w-100 p-0">
+  <vitamui-slide-toggle [formField]="form.formatUnidentifiedAuthorized" class="w-100 p-0">
     <span>{{ 'INGEST_CONTRACT.TAB.FORMAT.ALLOW_FORMAT' | translate }}</span>
   </vitamui-slide-toggle>
 

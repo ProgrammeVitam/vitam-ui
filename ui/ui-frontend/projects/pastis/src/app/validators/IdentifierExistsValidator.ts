@@ -35,11 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { PathKind, SchemaPath, SchemaPathRules, validateAsync } from '@angular/forms/signals';
+import { catchError, map, of, switchMap, take, timer } from 'rxjs';
 import { ProfileService } from '../core/services/profile.service';
 import { ArchivalProfileUnit } from '../models/archival-profile-unit';
 import { Profile } from '../models/profile';
-import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, switchMap, take } from 'rxjs';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+
+export const IDENTIFIER_EXIST_ERROR_KEY = 'identifierExist';
 
 @Injectable({
   providedIn: 'root',
@@ -47,29 +50,35 @@ import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 export class IdentifierExistsValidator {
   private readonly profileService = inject(ProfileService);
 
-  checkIdentifierExists(modePua: boolean | (() => boolean)): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<{ identifierExist: boolean } | null> => {
-      const mode = typeof modePua === 'function' ? modePua() : modePua;
-      return of(control.value).pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((identifier: string) => this.checkIdentifier(identifier, mode)),
-      );
-    };
+  /**
+   * Adds an async validator checking that the identifier is not already used by a PA (or PUA, according to `modePua`) profile.
+   * The validation is run again when the value or the mode changes, and is skipped for an empty identifier.
+   */
+  identifierExists<TPathKind extends PathKind = PathKind.Root>(
+    path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
+    modePua: boolean | (() => boolean),
+  ): void {
+    validateAsync(path, {
+      params: ({ value }) => (value() ? { identifier: value(), modePua: typeof modePua === 'function' ? modePua() : modePua } : undefined),
+      factory: (params) =>
+        rxResource({
+          params,
+          stream: ({ params: { identifier, modePua } }) => timer(300).pipe(switchMap(() => this.checkIdentifier(identifier, modePua))),
+        }),
+      onSuccess: (exists) => (exists ? { kind: IDENTIFIER_EXIST_ERROR_KEY } : undefined),
+      onError: () => undefined,
+    });
   }
 
   private checkIdentifier(identifier: string, modePua: boolean) {
-    if (identifier.length === 0) {
-      return of(null);
-    }
     const validationObservable = modePua
       ? this.profileService.checkPuaProfile({ identifier } as ArchivalProfileUnit)
       : this.profileService.checkPaProfile({ identifier } as Profile);
 
     return validationObservable.pipe(
       take(1),
-      map((response) => (response ? { identifierExist: true } : null)),
-      catchError(() => of(null)),
+      map((response) => !!response),
+      catchError(() => of(false)),
     );
   }
 }

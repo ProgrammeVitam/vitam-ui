@@ -36,9 +36,12 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { PathKind } from '@angular/forms/signals';
+import { validateObservable } from 'vitamui-library';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
+import { FieldPath } from '../../shared/signal-forms/signal-form-validators';
 import { TenantService } from '../tenant.service';
 
 @Injectable({
@@ -58,4 +61,16 @@ export class TenantFormValidators {
       );
     };
   };
+
+  /** Signal forms version of `uniqueName`: `nameToIgnore` is read each time the check runs. */
+  uniqueNameRule<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    nameToIgnore: () => string = () => undefined,
+  ) {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (name: string) => (name !== nameToIgnore() ? this.tenantService.exists(name) : of(false)),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'uniqueName' } : undefined),
+    });
+  }
 }

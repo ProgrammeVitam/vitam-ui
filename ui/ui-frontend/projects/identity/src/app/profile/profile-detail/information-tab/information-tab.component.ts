@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnDestroy, OnInit, SimpleChanges, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { of, Subscription } from 'rxjs';
+import { Component, computed, inject, OnChanges, OnInit, SimpleChanges, input, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
@@ -67,12 +69,32 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 
+interface ProfileInformationModel {
+  name: string;
+  identifier: string;
+  description: string;
+  enabled: boolean;
+  level: string;
+  roles: any[];
+}
+
+function toProfileInformationModel(profile: Profile): ProfileInformationModel {
+  return {
+    name: profile?.name ?? null,
+    identifier: profile?.identifier ?? null,
+    description: profile?.description ?? null,
+    enabled: profile?.enabled ?? null,
+    level: profile?.level ?? null,
+    roles: profile?.roles ?? null,
+  };
+}
+
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SlideToggleComponent,
     TooltipDirective,
     VitamUIFieldErrorComponent,
@@ -80,7 +102,6 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     EditableInputComponent,
     EditableLevelInputComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -92,23 +113,14 @@ import { CommonModule } from '@angular/common';
     RoleToggleComponent,
   ],
 })
-export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
+export class InformationTabComponent implements OnInit, OnChanges {
   private readonly rngProfileService = inject(ProfileService);
   private readonly profileValidators = inject(ProfileValidators);
   private readonly authService = inject(AuthService);
 
-  form: FormGroup;
-  permissionForm: FormGroup;
   groupsCount: boolean;
   userLevel: string;
-  previousValue: {
-    name: string;
-    level: string;
-    description: string;
-    enabled: boolean;
-    roles: any[];
-  };
+  previousValue: ProfileInformationModel;
 
   roleEnum = Role;
 
@@ -116,21 +128,34 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   readonly readOnly = input<boolean>(undefined);
 
-  private updateFormSub: Subscription;
+  private readonly model = signal<ProfileInformationModel>({ ...toProfileInformationModel(null), enabled: false });
+  // Value set by resetForm: like a reset with emitEvent: false, it must not trigger an update
+  private resetValue = this.model();
+  // Profile used to compute the activation state of the fields, updated by resetForm
+  private readonly formProfile = signal<Profile>(undefined);
+  readonly form = form(this.model, (path) => {
+    disabled(path, () => !!this.readOnly());
+    // The identifier is never editable
+    disabled(path.identifier);
+    disabled(path.enabled, () => this.formProfile()?.groupsCount > 0);
+    disabled(path.level, () => this.formProfile()?.groupsCount > 0);
+  });
+
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly nameAsyncValidator = computed<AsyncValidatorFn>(() => {
+    const profile = this.formProfile();
+    return profile
+      ? this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name)
+      : null;
+  });
+  readonly levelValidator: ValidatorFn = Validators.compose([...buildValidators(this.authService.user), Validators.maxLength(250)]);
 
   constructor() {
-    this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      description: [null, Validators.required],
-      enabled: false,
-      level: [null, buildValidators(this.authService.user)],
-      roles: [],
-    });
-
-    this.updateFormSub = this.form.valueChanges
+    toObservable(this.model)
       .pipe(
-        map(() => diff(this.form.value, this.previousValue)),
+        filter((value) => value !== this.resetValue),
+        map(() => diff(this.model(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => this.completeRoles(formData)),
         map((formData) =>
@@ -140,9 +165,10 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
           ),
         ),
         switchMap((formData) => this.rngProfileService.patch(formData).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
       )
       .subscribe((profile) => {
-        this.resetForm(this.form, profile, this.readOnly());
+        this.resetForm(profile);
       });
   }
 
@@ -205,52 +231,20 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
     return data;
   }
 
-  ngOnDestroy() {
-    this.updateFormSub.unsubscribe();
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('profile') || changes.hasOwnProperty('readOnly')) {
       const profile = this.profile();
       if (profile) {
-        this.resetForm(this.form, profile, this.readOnly());
-        this.previousValue = this.form.value;
+        this.resetForm(profile);
+        this.previousValue = this.model();
       }
     }
   }
 
-  private resetForm(form: FormGroup, profile: Profile, readOnly: boolean) {
-    form.reset(profile, { emitEvent: false });
-    this.initFormValidators(form, profile);
-    this.initCustomFormActivationState(form, profile, readOnly);
-    form.updateValueAndValidity({ emitEvent: false });
-  }
-
-  private initFormValidators(form: FormGroup, profile: Profile) {
-    form
-      .get('name')
-      .setAsyncValidators(
-        this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name),
-      );
-  }
-
-  private initCustomFormActivationState(form: FormGroup, profile: Profile, readOnly: boolean) {
-    this.initFormActivationState(form, readOnly);
-
-    form.get('identifier').disable({ emitEvent: false });
-
-    if (profile.groupsCount && profile.groupsCount > 0) {
-      this.form.get('enabled').disable({ emitEvent: false });
-      this.form.get('level').disable({ emitEvent: false });
-    }
-  }
-
-  private initFormActivationState(form: FormGroup, readOnly: boolean) {
-    if (readOnly) {
-      form.disable({ emitEvent: false });
-      return;
-    }
-
-    form.enable({ emitEvent: false });
+  private resetForm(profile: Profile) {
+    this.resetValue = toProfileInformationModel(profile);
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.formProfile.set(profile);
   }
 }

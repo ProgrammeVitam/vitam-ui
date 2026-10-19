@@ -36,9 +36,11 @@
  */
 import { Component, input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { FieldTree } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControlWarn } from './form-control-warn';
 import { FormErrorComponent } from './form-error/form-error.component';
+import { toValidationErrors } from '../../signal-forms/signal-form-errors';
 
 @Component({
   selector: 'vitamui-form-errors',
@@ -47,7 +49,9 @@ import { FormErrorComponent } from './form-error/form-error.component';
   styleUrl: './form-errors.component.scss',
 })
 export class FormErrorsComponent {
-  readonly control = input.required<AbstractControl>();
+  readonly control = input<AbstractControl>(undefined);
+  /** Signal forms field, to use instead of `control` */
+  readonly field = input<FieldTree<unknown>>(undefined);
   /**
    * By default, the i18n key for the error message is computed as `ERRORS.[errorKey]`.
    * To use a specific i18n key instead (to override the default value or for special validators), provide an object in this errorMessageMap whit errorKey as key and i18n message key as value: `{"required": "MY.ERROR.REQUIRED"}`.
@@ -56,7 +60,16 @@ export class FormErrorsComponent {
     [key: string]: string;
   }>({});
 
+  get touched(): boolean {
+    const field = this.field();
+    return field ? field().touched() : !!this.control()?.touched;
+  }
+
   get errors() {
+    const field = this.field();
+    if (field) {
+      return toValidationErrors(field().errors()) ?? {};
+    }
     return { ...(this.control() as FormControlWarn).warnings, ...this.control().errors };
   }
 

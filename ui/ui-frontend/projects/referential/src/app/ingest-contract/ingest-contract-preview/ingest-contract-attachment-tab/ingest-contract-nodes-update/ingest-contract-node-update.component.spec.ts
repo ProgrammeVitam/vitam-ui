@@ -36,7 +36,6 @@
  */
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ENVIRONMENT, FilingPlanComponent, InjectorModule, LoggerModule, SnackBarService } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -71,14 +70,12 @@ describe.skip('IngestContractNodeUpdateComponent', () => {
     await TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         InjectorModule,
         LoggerModule.forRoot(),
         IngestContractNodeUpdateComponent,
         CommonModule,
         FilingPlanComponent,
-        FormsModule,
         MatButtonModule,
         MatCheckboxModule,
         MatProgressSpinnerModule,

@@ -36,7 +36,6 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -55,7 +54,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     AdminDslRoutingModule,
     CommonModule,
-    FormsModule,
     MatDatepickerModule,
     MatDialogModule,
     MatInputModule,
@@ -63,7 +61,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
-    ReactiveFormsModule,
     RouterModule,
     VitamUICommonModule,
     VitamUILibraryModule,

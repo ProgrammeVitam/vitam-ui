@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, signal, viewChild } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import {
   AccessContract,
@@ -53,13 +53,19 @@ import { MatTreeModule } from '@angular/material/tree';
 import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
+interface SelectedNodes {
+  included: string[];
+  excluded: string[];
+}
+
 @Component({
   selector: 'app-access-contract-node-update',
   templateUrl: './access-contract-node-update.component.html',
   styleUrls: ['./access-contract-node-update.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     MatDialogContent,
     SlideToggleComponent,
     TooltipDirective,
@@ -67,28 +73,37 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     TranslatePipe,
     CommonModule,
     FilingPlanComponent,
-    FormsModule,
     MatButtonModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatTreeModule,
   ],
 })
-export class AccessContractNodeUpdateComponent implements OnInit {
+export class AccessContractNodeUpdateComponent {
   dialogRef = inject<MatDialogRef<AccessContractNodeUpdateComponent>>(MatDialogRef);
   data = inject<{
     accessContract: AccessContract;
     searchAccessContractId: string;
     tenantIdentifier: number;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly accessContractService = inject(AccessContractService);
 
   accessContract: AccessContract;
   tenantIdentifier: number;
-  selectNodesForm: FormGroup;
-  selectedRootsControl = new FormControl();
-  allRootUnitsControl = new FormControl(false);
+  readonly selectNodesForm = form(
+    signal<{ allRootUnits: boolean; selectedRoots: SelectedNodes }>({
+      allRootUnits: false,
+      selectedRoots: { included: [], excluded: [] },
+    }),
+    {
+      submission: {
+        action: async () => {
+          this.updateAccessContractNodes();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   hasError = true;
   message: string;
@@ -100,24 +115,11 @@ export class AccessContractNodeUpdateComponent implements OnInit {
   constructor() {
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.accessContract = this.data.accessContract;
-    this.selectNodesForm = this.formBuilder.group({
-      rootUnits: null,
-      excludedRootUnits: null,
-    });
-  }
 
-  ngOnInit() {
     const rootUnits: string[] = this.accessContract.rootUnits || [];
-    this.allRootUnitsControl.setValue(rootUnits.length === 0);
-
-    this.selectedRootsControl.valueChanges.subscribe((value) => {
-      this.selectNodesForm.get('rootUnits').setValue(value.included);
-      this.selectNodesForm.get('excludedRootUnits').setValue(value.excluded);
-    });
-
-    this.selectedRootsControl.setValue({
-      included: rootUnits,
-      excluded: this.accessContract.excludedRootUnits || [],
+    this.selectNodesForm().value.set({
+      allRootUnits: rootUnits.length === 0,
+      selectedRoots: { included: rootUnits, excluded: this.accessContract.excludedRootUnits || [] },
     });
   }
 
@@ -126,15 +128,14 @@ export class AccessContractNodeUpdateComponent implements OnInit {
   }
 
   isInvalid(): boolean {
-    return (
-      this.allRootUnitsControl.value === false &&
-      (!this.selectNodesForm.get('rootUnits').value || this.selectNodesForm.get('rootUnits').value.length === 0)
-    );
+    const { allRootUnits, selectedRoots } = this.selectNodesForm().value();
+    return allRootUnits === false && (!selectedRoots?.included || selectedRoots.included.length === 0);
   }
 
   updateAccessContractNodes() {
-    const rootUnits: string[] = this.allRootUnitsControl.value ? [] : this.selectNodesForm.get('rootUnits').value;
-    const excludedRootUnits: string[] = this.allRootUnitsControl.value ? [] : this.selectNodesForm.get('excludedRootUnits').value;
+    const { allRootUnits, selectedRoots } = this.selectNodesForm().value();
+    const rootUnits: string[] = allRootUnits ? [] : selectedRoots?.included;
+    const excludedRootUnits: string[] = allRootUnits ? [] : selectedRoots?.excluded;
 
     const formData = {
       id: this.accessContract.id,

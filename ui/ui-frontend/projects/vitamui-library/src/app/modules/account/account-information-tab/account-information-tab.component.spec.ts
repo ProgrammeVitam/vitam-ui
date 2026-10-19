@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { VitamUIFieldErrorStubComponent } from '../../../../../testing/src/public_api';
@@ -54,7 +53,7 @@ describe('AccountInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, SlideToggleComponent, AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
+      imports: [SlideToggleComponent, AccountInformationTabComponent, VitamUIFieldErrorStubComponent],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: AccountService, useValue: accountServiceSpy },

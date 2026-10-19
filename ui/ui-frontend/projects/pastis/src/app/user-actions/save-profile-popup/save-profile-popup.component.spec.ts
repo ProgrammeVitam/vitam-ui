@@ -38,7 +38,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SaveProfilePopupComponent } from './save-profile-popup.component';
 import { MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { ApplicationService, InputComponent, SelectComponent, SlideToggleComponent } from 'vitamui-library';
 import { ProfileService } from '../../core/services/profile.service';
@@ -64,7 +63,14 @@ describe('SaveProfilePopupComponent', () => {
   let mockTranslateService: any;
   let externalIdSubject: BehaviorSubject<boolean>;
 
+  const setIdentifier = async (identifier: string) => {
+    component.noticeForm.identifier().value.set(identifier);
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(300);
+  };
+
   beforeEach(() => {
+    vi.useFakeTimers();
     mockDialogRef = {
       close: vi.fn().mockName('MatDialogRef.close'),
     };
@@ -89,9 +95,8 @@ describe('SaveProfilePopupComponent', () => {
 
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(externalIdSubject.asObservable());
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, MatRadioModule, InputComponent, SelectComponent, SlideToggleComponent, SaveProfilePopupComponent],
+      imports: [MatRadioModule, InputComponent, SelectComponent, SlideToggleComponent, SaveProfilePopupComponent],
       providers: [
-        FormBuilder,
         IdentifierExistsValidator,
         { provide: MatDialogRef, useValue: mockDialogRef },
         {
@@ -104,6 +109,10 @@ describe('SaveProfilePopupComponent', () => {
 
     fixture = TestBed.createComponent(SaveProfilePopupComponent);
     component = fixture.componentInstance;
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('should close dialog with action "local" when valueSelected is false', () => {
@@ -120,8 +129,8 @@ describe('SaveProfilePopupComponent', () => {
     component.gestionNotice.set(true);
     component.externalIdentifierEnabled.set(false);
 
-    component.noticeForm.controls['name'].setValue('test-name');
-    component.noticeForm.controls['identifier'].setValue('test-id');
+    component.noticeForm.name().value.set('test-name');
+    component.noticeForm.identifier().value.set('test-id');
 
     vi.spyOn(component as any, 'updateControlSchema');
 
@@ -129,7 +138,7 @@ describe('SaveProfilePopupComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalledWith({
       success: true,
       action: 'creation',
-      data: component.noticeForm.getRawValue(),
+      data: { identifier: 'test-name', name: 'test-name', status: 'ACTIVE', description: '', additionalProperties: undefined },
     });
   });
 
@@ -138,14 +147,15 @@ describe('SaveProfilePopupComponent', () => {
 
     component.valueSelected.set(true);
     component.gestionNotice.set(false);
-    component.selectedProfile = { identifier: 'id', name: 'name' } as any;
+    const selectedProfile = { identifier: 'id', name: 'name' } as any;
+    component.profileSelection().value.set(selectedProfile);
 
     component.validate();
 
     expect(mockDialogRef.close).toHaveBeenCalledWith({
       success: true,
       action: 'rattachement',
-      data: component.selectedProfile,
+      data: selectedProfile,
     });
   });
 
@@ -155,9 +165,9 @@ describe('SaveProfilePopupComponent', () => {
     mockProfileService.profileType = ProfileType.PA;
     mockProfileService.checkPaProfile.mockReturnValue(of(false));
 
-    component.noticeForm.controls['identifier'].setValue('UNIQUE_PA');
+    await setIdentifier('UNIQUE_PA');
     expect(mockProfileService.checkPaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'UNIQUE_PA' }));
-    expect(component.noticeForm.controls['identifier'].invalid).toBe(false);
+    expect(component.noticeForm.identifier().invalid()).toBe(false);
   });
 
   it('should check PUA and alert if identifier is duplicated', async () => {
@@ -170,9 +180,15 @@ describe('SaveProfilePopupComponent', () => {
     mockProfileService.getAllProfilesPUA.mockReturnValue(of(MOCK_PROFILE_DESCRIPTIONS));
     fixture.detectChanges();
 
-    component.noticeForm.controls['identifier'].setValue('DUPLICATE_PUA');
+    await setIdentifier('DUPLICATE_PUA');
     expect(mockProfileService.checkPuaProfile).toHaveBeenCalledWith(expect.objectContaining({ identifier: 'DUPLICATE_PUA' }));
-    expect(component.noticeForm.controls['identifier'].invalid).toBe(true);
+    expect(component.noticeForm.identifier().invalid()).toBe(true);
+    expect(
+      component.noticeForm
+        .identifier()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['identifierExist']);
   });
 
   it('should set validators on identifier when external ID is enabled', async () => {
@@ -181,13 +197,13 @@ describe('SaveProfilePopupComponent', () => {
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(true));
     mockProfileService.profileType = ProfileType.PA;
 
-    component.noticeForm.controls['identifier'].setValue('');
+    component.noticeForm.identifier().value.set('');
     component['setUpIdentifierValidator']();
 
-    const ctrl = component.noticeForm.controls['identifier'];
+    const identifierField = component.noticeForm.identifier;
 
-    expect(ctrl?.hasValidator(Validators.required)).toBe(true);
-    expect(ctrl.valid).toBe(false);
+    expect(identifierField().required()).toBe(true);
+    expect(identifierField().valid()).toBe(false);
   });
 
   it('should clear validators on identifier when external ID is disabled', async () => {
@@ -196,12 +212,11 @@ describe('SaveProfilePopupComponent', () => {
     mockAppService.isApplicationExternalIdentifierEnabled.mockReturnValue(of(false));
     mockProfileService.profileType = ProfileType.PUA;
 
-    component.noticeForm.controls['identifier'].setValidators([Validators.required]);
-    component.noticeForm.controls['identifier'].setValue('');
+    component.noticeForm.identifier().value.set('');
     component['setUpIdentifierValidator']();
 
-    const ctrl = component.noticeForm.controls['identifier'];
-    expect(ctrl.validator).toBeNull();
-    expect(ctrl.valid).toBe(true);
+    const identifierField = component.noticeForm.identifier;
+    expect(identifierField().required()).toBe(false);
+    expect(identifierField().valid()).toBe(true);
   });
 });

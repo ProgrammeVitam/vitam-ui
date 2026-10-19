@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, input, OnChanges, SimpleChanges, viewChild } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { Component, forwardRef, inject, input, OnChanges, signal, SimpleChanges, viewChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { MatSelectModule } from '@angular/material/select';
@@ -54,7 +55,7 @@ export const PATTERN_VALUE_ACCESSOR: any = {
   selector: 'app-pattern',
   templateUrl: './pattern.component.html',
   styleUrls: ['./pattern.component.scss'],
-  imports: [ReactiveFormsModule, MatSelectModule, TranslatePipe, SelectComponent],
+  imports: [FormField, MatSelectModule, TranslatePipe, SelectComponent],
   providers: [PATTERN_VALUE_ACCESSOR],
 })
 export class PatternComponent implements ControlValueAccessor, OnChanges {
@@ -68,7 +69,11 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
   readonly select = viewChild<SelectComponent>('select');
 
   patterns: string[];
-  control = new FormControl();
+  // Pattern selected in the select, before being added
+  private readonly selectedPattern = signal<string | null>(null);
+  // The select is disabled when all the options have been added
+  private readonly allOptionsAdded = signal(false);
+  readonly selectedPatternField = form(this.selectedPattern, (path) => disabled(path, () => this.allOptionsAdded()));
 
   onChange: (_: any) => void;
   onTouched: () => void;
@@ -101,11 +106,12 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
     if (!this.controlValueValid()) {
       return;
     }
-    this.patterns.push(this.control.value);
-    this.availableOptions.find((o) => o.key === this.control.value).disabled = true;
-    this.onChange(this.patterns);
-    if (this.enabledOptions().length <= 0 && this.control.enabled) {
-      this.control.disable();
+    this.patterns.push(this.selectedPattern());
+    this.availableOptions.find((o) => o.key === this.selectedPattern()).disabled = true;
+    // A new array, so that signal forms detect the change
+    this.onChange([...this.patterns]);
+    if (this.enabledOptions().length <= 0) {
+      this.allOptionsAdded.set(true);
     }
   }
 
@@ -116,8 +122,8 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
       option.disabled = false;
     }
     this.onChange(this.patterns);
-    if (this.enabledOptions().length > 0 && this.control.disabled) {
-      this.control.enable();
+    if (this.enabledOptions().length > 0) {
+      this.allOptionsAdded.set(false);
     }
   }
 
@@ -126,7 +132,7 @@ export class PatternComponent implements ControlValueAccessor, OnChanges {
   }
 
   controlValueValid(): boolean {
-    return !(this.patterns || []).includes(this.control.value) && !!this.control.value;
+    return !(this.patterns || []).includes(this.selectedPattern()) && !!this.selectedPattern();
   }
 
   isAvailable(value: string): boolean {

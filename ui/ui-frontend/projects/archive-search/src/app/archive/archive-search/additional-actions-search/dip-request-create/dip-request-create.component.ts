@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ResourceRef } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, computed, inject, OnDestroy, OnInit, ResourceRef, signal } from '@angular/core';
+import { applyEach, disabled, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, Subscription } from 'rxjs';
@@ -48,6 +48,7 @@ import {
   InputComponent,
   Logger,
   NextStepComponent,
+  ObjectQualifierType,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
   PreviousStepComponent,
@@ -60,12 +61,40 @@ import {
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
-import { ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { DIPSedaVersion, ExportDIPRequestDto, QualifierVersion } from '../../../models/dip.interface';
+import { map } from 'rxjs/operators';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CdkStep } from '@angular/cdk/stepper';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+
+interface DipRequestParametersForm {
+  messageRequestIdentifier: string;
+  requesterIdentifier: string;
+  archivalAgencyIdentifier: string;
+  authorizationRequestReplyIdentifier: string;
+  submissionAgencyIdentifier: string;
+  comment: string;
+  archivalAgreement: string;
+}
+
+interface UsageForm {
+  usage: ObjectQualifierTypeType | null;
+  version: QualifierVersion;
+}
+
+interface DipExportParametersForm {
+  includeLifeCycleLogs: boolean;
+  sedaVersion: DIPSedaVersion;
+  exportWithTree: boolean;
+  includeObjects: UsageVersionEnum;
+  usages: UsageForm[];
+}
+
+/** Optional text fields are sent as null when they are empty */
+function emptyToNull<T extends object>(value: T): T {
+  return Object.fromEntries(Object.entries(value).map(([key, fieldValue]) => [key, fieldValue === '' ? null : fieldValue])) as T;
+}
 
 @Component({
   selector: 'app-dip-request-create',
@@ -75,7 +104,8 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
     DialogHeaderComponent,
     StepperComponent,
     CdkStep,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     MatDialogContent,
     InputComponent,
     SelectComponent,
@@ -93,7 +123,6 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 export class DipRequestCreateComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   dialogRef = inject<MatDialogRef<DipRequestCreateComponent>>(MatDialogRef);
-  private readonly fb = inject(FormBuilder);
   private readonly archiveService = inject(ArchiveService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly logger = inject(Logger);
@@ -108,9 +137,77 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   private readonly snackBarService = inject(SnackBarService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  formGroups: FormGroup[];
+  readonly step1Form = form(
+    signal<DipRequestParametersForm>({
+      messageRequestIdentifier: uuid.v4(),
+      requesterIdentifier: '',
+      archivalAgencyIdentifier: '',
+      authorizationRequestReplyIdentifier: '',
+      submissionAgencyIdentifier: '',
+      comment: '',
+      archivalAgreement: this.data.accessContract,
+    }),
+    (path) => {
+      disabled(path.messageRequestIdentifier);
+      required(path.messageRequestIdentifier);
+      minLength(path.messageRequestIdentifier, 2);
+      maxLength(path.messageRequestIdentifier, 100);
+      required(path.requesterIdentifier);
+      minLength(path.requesterIdentifier, 2);
+      maxLength(path.requesterIdentifier, 100);
+      required(path.archivalAgencyIdentifier);
+      minLength(path.archivalAgencyIdentifier, 2);
+      maxLength(path.archivalAgencyIdentifier, 300);
+      maxLength(path.authorizationRequestReplyIdentifier, 300);
+      maxLength(path.submissionAgencyIdentifier, 100);
+      maxLength(path.comment, 300);
+    },
+  );
+  readonly step2Form = form(
+    signal<DipExportParametersForm>({
+      includeLifeCycleLogs: false,
+      sedaVersion: '2.3',
+      exportWithTree: false,
+      includeObjects: UsageVersionEnum.ALL,
+      usages: [{ usage: ObjectQualifierType.BINARYMASTER, version: 'FIRST' }],
+    }),
+    (path) => {
+      applyEach(path.usages, (usage) => required(usage.usage));
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   isLoading = false;
-  usageOptions: VitamuiSelectOptions[] = [];
+  private readonly selectedUsages = computed(
+    (): string[] =>
+      this.step2Form
+        .usages()
+        .value()
+        .map((usage) => usage.usage),
+    {
+      equal: (u1, u2) => u1.length === u2.length && u1.every((v, i) => u2[i] === v),
+    },
+  );
+  // An usage can only be selected once
+  readonly usageOptions = computed<VitamuiSelectOptions[]>(() => {
+    const selectedUsages = this.selectedUsages();
+    return selectedUsages.map((_, i) => {
+      const otherUsages = selectedUsages.filter((_, index) => i !== index);
+      return {
+        options: this.dataObjectVersions.map((usage) => ({
+          key: usage,
+          label: this.translate.instant(`ARCHIVE_SEARCH.DIP.USAGES.${usage}`),
+          disabled: otherUsages.includes(usage),
+        })),
+      };
+    });
+  });
   readonly agencyOptionsResource: ResourceRef<VitamuiSelectOptions>;
 
   constructor() {
@@ -140,91 +237,15 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
     this.selectedItemCountKnown = this.data.selectedItemCountKnown;
-    this.initForms();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
-  private initForms() {
-    const messageRequestIdentifier = uuid.v4();
-    this.formGroups = [
-      this.fb.group({
-        messageRequestIdentifier: [
-          { value: messageRequestIdentifier, disabled: true },
-          [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        ],
-        requesterIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-        archivalAgencyIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(300)]],
-        authorizationRequestReplyIdentifier: [null, [Validators.maxLength(300)]],
-        submissionAgencyIdentifier: [null, [Validators.maxLength(100)]],
-        comment: [null, [Validators.maxLength(300)]],
-        archivalAgreement: [this.data.accessContract],
-      }),
-      this.fb.group({
-        includeLifeCycleLogs: [false],
-        sedaVersion: ['2.3'],
-        exportWithTree: false,
-        includeObjects: [UsageVersionEnum.ALL],
-        usages: this.fb.array([
-          this.fb.group({
-            usage: ['BinaryMaster', Validators.required],
-            version: ['FIRST'],
-          }),
-        ]),
-      }),
-    ];
-
-    this.computeUsageOptions();
-    this.formGroups[1]
-      .get('usages')
-      .valueChanges.pipe(
-        map((usages) => usages.map((usage: any) => usage.usage)),
-        distinctUntilChanged((u1: string[], u2: string[]) => u1.length === u2.length && u1.every((v, i) => u2[i] === v)),
-      )
-      .subscribe(() => this.computeUsageOptions());
-  }
-
-  get messageRequestIdentifier(): FormControl {
-    return this.formGroups[0].get('messageRequestIdentifier') as FormControl;
-  }
-
-  get requesterIdentifier(): FormControl {
-    return this.formGroups[0].get('requesterIdentifier') as FormControl;
-  }
-
-  get archivalAgencyIdentifier(): FormControl {
-    return this.formGroups[0].get('archivalAgencyIdentifier') as FormControl;
-  }
-
-  get usages(): FormArray {
-    return this.formGroups[1].get('usages') as FormArray;
-  }
-
-  private computeUsageOptions() {
-    this.usages.controls.forEach((_, i) => {
-      if (!this.usageOptions[i]) {
-        this.usageOptions[i] = {
-          options: this.dataObjectVersions.map((usage) => ({
-            key: usage,
-            label: this.translate.instant(`ARCHIVE_SEARCH.DIP.USAGES.${usage}`),
-          })),
-        };
-      }
-      const otherUsages = (this.usages.value as any[]).filter((_, index) => i !== index).map((v: { usage: string }) => v.usage);
-      this.usageOptions[i].options.forEach((option) => (option.disabled = otherUsages.includes(option.key)));
-    });
-  }
-
   addUsage() {
-    this.usages.push(
-      this.fb.group({
-        usage: [null, Validators.required],
-        version: ['FIRST'],
-      }),
-    );
+    this.step2Form.usages().value.update((usages) => [...usages, { usage: null, version: 'FIRST' }]);
   }
 
   removeUsage(i: number) {
-    this.usages.removeAt(i);
+    this.step2Form.usages().value.update((usages) => usages.filter((_, index) => index !== i));
   }
 
   ngOnDestroy() {
@@ -232,7 +253,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.formGroups.some((fg) => fg.dirty)) {
+    if (this.step1Form().dirty() || this.step2Form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -240,15 +261,14 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.formGroups.some((fg) => fg.invalid)) {
+    if (this.step1Form().invalid() || this.step2Form().invalid()) {
       return;
     }
     this.isLoading = true;
 
-    const step1Values = this.formGroups[0].getRawValue();
-    const step2Values = this.formGroups[1].getRawValue();
-    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] =
-      step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
+    const step1Values = emptyToNull(this.step1Form().value());
+    const step2Values = this.step2Form().value();
+    const usages: UsageForm[] = step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
     const exportDIPRequestDto: ExportDIPRequestDto = {
       dipRequestParameters: step1Values,
       exportDIPSearchCriteria: this.data.exportDIPSearchCriteria,

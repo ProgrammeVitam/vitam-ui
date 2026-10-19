@@ -36,7 +36,7 @@
  */
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EMPTY, of } from 'rxjs';
@@ -81,10 +81,8 @@ describe('HierarchyCreateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         MatProgressBarModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         CommonModule,
-        FormsModule,
         LevelInputComponent,
         TranslatePipe,
         HierarchyCreateComponent,
@@ -102,11 +100,9 @@ describe('HierarchyCreateComponent', () => {
       .overrideComponent(HierarchyCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-              <input formControlName="enabled" />
-              <input formControlName="level" />
-              <input formControlName="profileIds" />
-              <input formControlName="customerId" />
+            <form [formRoot]="form">
+              <input [formField]="form.level" />
+              <input [formField]="form.customerId" />
             </form>
           `,
         },

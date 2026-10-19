@@ -1,18 +1,18 @@
-<form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
+<form [formRoot]="form" class="gap-5">
   <div class="gap-3 w-100">
     <vitamui-select
       class="w-100"
-      formControlName="ruleType"
+      [formField]="form.ruleType"
       [placeholder]="'RULES_APP.TAB.INFORMATION.TYPE' | translate"
       [options]="ruleTypes"
       [enableSearch]="false"
     ></vitamui-select>
 
-    <vitamui-input class="w-100" formControlName="ruleValue" [placeholder]="'RULES_APP.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
+    <vitamui-input class="w-100" [formField]="form.ruleValue" [placeholder]="'RULES_APP.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
     <vitamui-input
       class="w-100"
-      formControlName="ruleDuration"
+      [formField]="form.ruleDuration"
       [placeholder]="'RULES_APP.TAB.INFORMATION.PERIOD' | translate"
       [errorMessageMap]="{
         pattern: 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate,
@@ -22,7 +22,7 @@
 
     <vitamui-select
       class="w-100"
-      formControlName="ruleMeasurement"
+      [formField]="form.ruleMeasurement"
       [placeholder]="'RULES_APP.TAB.INFORMATION.UNIT_MEASURE' | translate"
       [options]="ruleMeasurements"
       [enableSearch]="false"
@@ -31,7 +31,7 @@
     <vitamui-input
       [textarea]="true"
       class="w-100"
-      formControlName="ruleDescription"
+      [formField]="form.ruleDescription"
       [placeholder]="'RULES_APP.TAB.INFORMATION.DESCRIPTION' | translate"
     >
     </vitamui-input>

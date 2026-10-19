@@ -1,41 +1,42 @@
 <vitamui-dialog-header [title]="'USER_PROFILE.INFORMATIONS.MODAL.TITLE' | translate"></vitamui-dialog-header>
 
-<form [formGroup]="adminProfileForm" (ngSubmit)="onSubmit()">
+<form [formRoot]="adminProfileForm">
   <mat-dialog-content class="gap-3 align-items-stretch">
-    <vitamui-slide-toggle formControlName="enabled">
-      @if (!adminProfileForm?.get('enabled').value) {
+    <vitamui-slide-toggle [formField]="adminProfileForm.enabled">
+      @if (!adminProfileForm.enabled().value()) {
         <span>{{ 'USER_PROFILE.INFORMATIONS.INACTIVE_SWITCH' | translate }}</span>
       }
-      @if (adminProfileForm?.get('enabled').value) {
+      @if (adminProfileForm.enabled().value()) {
         <span>{{ 'USER_PROFILE.INFORMATIONS.ACTIVE_SWITCH' | translate }}</span>
       }
     </vitamui-slide-toggle>
 
     <vitamui-input
-      formControlName="name"
+      [formField]="adminProfileForm.name"
       [placeholder]="'USER_PROFILE.HOME.TITLE_PLACEHOLDER' | translate"
       [errorMessageMap]="{ nameExists: 'USER_PROFILE.INFORMATIONS.MODAL.EXISTING_NAME' | translate }"
     >
     </vitamui-input>
 
-    <vitamui-input formControlName="description" [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate"> </vitamui-input>
+    <vitamui-input [formField]="adminProfileForm.description" [placeholder]="'USER_PROFILE.INFORMATIONS.DESCRIPTION' | translate">
+    </vitamui-input>
 
     <div class="d-flex">
       <div class="mr-4 p-2">
         <div class="text normal light">{{ 'USER_PROFILE.INFORMATIONS.LEVEL' | translate }}</div>
         <div class="text medium bold">{{ authService.user.level }}</div>
       </div>
-      <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
-        @if (adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')) {
+      <vitamui-common-level-input [prefix]="authService.user.level" [formField]="adminProfileForm.level">
+        @if (adminProfileForm.level().touched() && hasError(adminProfileForm.level, 'required')) {
           <div>{{ 'COMMON.ERROR.REQUIRED' | translate }}</div>
         }
-        @if (adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('pattern')) {
+        @if (adminProfileForm.level().touched() && hasError(adminProfileForm.level, 'pattern')) {
           <div>{{ 'USER_PROFILE.INFORMATIONS.MODAL.WRONG_FORMAT' | translate }}</div>
         }
       </vitamui-common-level-input>
     </div>
 
-    <vitamui-common-role-toggle class="d-flex flex-column" formControlName="roles">
+    <vitamui-common-role-toggle class="d-flex flex-column" [formField]="adminProfileForm.roles">
       <vitamui-common-role [name]="roleEnum.ROLE_MFA_USERS">{{
         'USER_PROFILE.INFORMATIONS.STRONG_AUTHENT' | translate
       }}</vitamui-common-role>

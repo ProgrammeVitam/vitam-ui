@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { DatePipe } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -63,12 +63,11 @@ import { SearchCriteriaSaverService } from './search-criteria-saver.service';
   templateUrl: './search-criteria-saver.component.html',
   styleUrls: ['./search-criteria-saver.component.css'],
   providers: [TranslatePipe],
-  imports: [ChipComponent, TooltipDirective, ReactiveFormsModule, InputComponent, ElementsComponent, PipesModule, TranslatePipe],
+  imports: [ChipComponent, TooltipDirective, FormRoot, FormField, InputComponent, ElementsComponent, PipesModule, TranslatePipe],
 })
-export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
+export class SearchCriteriaSaverComponent implements OnDestroy {
   data = inject(MAT_DIALOG_DATA);
   dialogRef = inject<MatDialogRef<SearchCriteriaSaverComponent>>(MatDialogRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly searchCriteriaSaverService = inject(SearchCriteriaSaverService);
   private readonly archiveExchangeDataService = inject(ArchiveSharedDataService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
@@ -76,12 +75,25 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
   private readonly translatePipe = inject(TranslatePipe);
   private readonly snackBarService = inject(SnackBarService);
 
-  searchCriteriaForm: FormGroup;
+  readonly searchCriteriaForm = form(
+    signal({ name: '' }),
+    (path) => {
+      required(path.name);
+      maxLength(path.name, 150);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   criteria: string;
   searchCriteriaHistory: SearchCriteriaHistory;
   searchCriterias: Map<string, CriteriaSearchCriteria>;
   nbCriterias = 0;
-  nameControl: string;
   ToUpdate = true;
   updateConfirm = false;
   subscriptionAllSearchCriteriaHistory: Subscription;
@@ -95,11 +107,6 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
 
   constructor() {
     const data = this.data;
-
-    this.searchCriteriaForm = this.formBuilder.group({
-      searchCriteriaForm: null,
-      name: [null, [Validators.required, Validators.maxLength(150)]],
-    });
 
     this.criteria = data.criteria;
     this.searchCriteriaHistory = data.searchCriteriaHistory;
@@ -119,16 +126,12 @@ export class SearchCriteriaSaverComponent implements OnInit, OnDestroy {
     this.saveSearchCriteriaHistorySubscription?.unsubscribe();
   }
 
-  ngOnInit(): void {
-    this.nameControl = '';
-  }
-
   onCancel() {
-    this.searchCriteriaForm.dirty ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
+    this.searchCriteriaForm().dirty() ? this.confirmDialogService.confirmBeforeClosing(this.dialogRef) : this.dialogRef.close();
   }
 
   onSubmit() {
-    this.searchCriteriaHistory.name = this.searchCriteriaForm.value.name;
+    this.searchCriteriaHistory.name = this.searchCriteriaForm.name().value();
     this.modifyCriteriaForWaitingRecalculate(this.searchCriteriaHistory);
     this.saveSearchCriteriaHistorySubscription = this.searchCriteriaSaverService
       .saveSearchCriteriaHistory(this.searchCriteriaHistory)

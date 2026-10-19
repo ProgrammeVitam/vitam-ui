@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { AfterViewChecked, ChangeDetectorRef, Component, inject, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { applyEach, form, FormField, required, validate } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize, forkJoin, Observable, of, throwError } from 'rxjs';
@@ -63,13 +63,13 @@ import {
   Logger,
   MetadataUnitUp,
   NextStepComponent,
-  oneIncludedNodeRequired,
   Option,
   PipesModule,
   PreviousStepComponent,
   Project,
   ProjectStatus,
   readFileContent,
+  requiredValue,
   SchemaElement,
   SchemaService,
   SelectComponent,
@@ -112,14 +112,56 @@ export const LOCAL_ARCHIVING_SYSTEM_ID = 'local';
 
 const HTTP_STATUS_INSUFFICIENT_STORAGE = 507;
 
+export interface AttachmentNodes {
+  included: string[];
+  excluded: string[];
+}
+
+export interface RuleParamForm {
+  ontologyList: SchemaElement | null;
+  metadataValue: unknown;
+  // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
+  attachmentMode: AttachmentMode;
+  // When not connected to local EAS (different tenant or SAE), unitUp is a simple string
+  unitUp: AttachmentNodes | string;
+}
+
+export interface CreateProjectForm {
+  automaticIngest: boolean;
+  referentialCheckup: boolean;
+  connectedToArchivingSystem: boolean;
+  archivingSystem: string | null;
+  archivalAgreement: string | null;
+  messageIdentifier: string | null;
+  archivalAgencyIdentifier: string | null;
+  transferringAgencyIdentifier: string | null;
+  originatingAgencyIdentifier: string | null;
+  submissionAgencyIdentifier: string | null;
+  archiveProfile: string | null;
+  acquisitionInformation: string | null;
+  legalStatus: string | null;
+  // for unitUp :
+  linkParentId: AttachmentNodes;
+  // toggle for the default fixed attachment position (key/value rules flow)
+  defaultAttachmentEnabled: boolean;
+  // for unitUps :
+  rulesParams: RuleParamForm[];
+  comment: string | null;
+  status: string | null;
+  transformationRules: string | null;
+  unitUp: string | null;
+  importType: string | null;
+}
+
+const emptyAttachmentNodes = (): AttachmentNodes => ({ included: [], excluded: [] });
+
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
   imports: [
     DialogHeaderComponent,
-    FormsModule,
-    ReactiveFormsModule,
+    FormField,
     StepperComponent,
     CdkStep,
     MatDialogContent,
@@ -150,7 +192,6 @@ const HTTP_STATUS_INSUFFICIENT_STORAGE = 507;
   ],
 })
 export class CreateProjectComponent implements OnInit, AfterViewChecked {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly dialogRef = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
   private dialogRefToClose = inject<MatDialogRef<CreateProjectComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
@@ -181,13 +222,65 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   fixedAttachmentMode: AttachmentMode = AttachmentMode.TREE;
   stepIndex = 0;
 
-  projectForm: FormGroup;
+  private readonly projectModel = signal<CreateProjectForm>({
+    automaticIngest: true,
+    referentialCheckup: false,
+    connectedToArchivingSystem: false,
+    archivingSystem: null,
+    archivalAgreement: null,
+    messageIdentifier: null,
+    archivalAgencyIdentifier: null,
+    transferringAgencyIdentifier: null,
+    originatingAgencyIdentifier: null,
+    submissionAgencyIdentifier: null,
+    archiveProfile: null,
+    acquisitionInformation: null,
+    legalStatus: null,
+    linkParentId: emptyAttachmentNodes(),
+    defaultAttachmentEnabled: false,
+    rulesParams: [],
+    comment: null,
+    status: null,
+    transformationRules: null,
+    unitUp: null,
+    importType: null,
+  });
+  readonly projectForm = form(this.projectModel, (path) => {
+    // The EAS select is only displayed when there are several EAS
+    required(path.archivingSystem, {
+      when: ({ valueOf }) => valueOf(path.connectedToArchivingSystem) && this.easOptions().length > 1,
+    });
+    required(path.messageIdentifier);
+    required(path.originatingAgencyIdentifier);
+    required(path.submissionAgencyIdentifier);
+    required(path.archivalAgencyIdentifier);
+    required(path.transferringAgencyIdentifier);
+    required(path.archivalAgreement);
+    required(path.importType);
+    requiredValue(path.rulesParams);
+    applyEach(path.rulesParams, (ruleParam) => {
+      requiredValue(ruleParam.ontologyList);
+      requiredValue(ruleParam.metadataValue);
+      validate(ruleParam.unitUp, ({ value, valueOf }) => {
+        const unitUp = value();
+        if (typeof unitUp !== 'string') {
+          // Same errors as oneIncludedNodeRequired()
+          if (!unitUp) return { kind: 'missingNodes' };
+          return unitUp.included?.length ? undefined : { kind: 'missingIncludedNodes' };
+        }
+        // A free GUID is required once the GUID mode has been selected
+        return valueOf(ruleParam.attachmentMode) === AttachmentMode.GUID && !unitUp ? { kind: 'required' } : undefined;
+      });
+    });
+  });
 
   hasError = false;
   errorMessage: string;
   schemaOptions = signal<ItemNode<SchemaElement>[]>(undefined);
-  filesToUploadControl: FormControl<File[]> = new FormControl([], [Validators.required]);
-  jsltFileControl: FormControl<File[]> = new FormControl([]);
+  readonly filesToUploadForm = form(signal<File[]>([]), (path) => {
+    requiredValue(path);
+  });
+  readonly jsltFileForm = form(signal<File[]>([]));
   zipFileStatus$: Observable<ZipFileStatus>;
   units = signal<Unit[]>(undefined);
   compressedZip: Blob;
@@ -230,17 +323,12 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     filingPlanService.loadFilingPlan().subscribe((units) => this.units.set(units));
   }
 
-  get linkParentIdControl() {
-    return this.projectForm.controls['linkParentIdControl'] as FormControl;
-  }
-
   ngOnInit(): void {
-    this.initForm();
     this.schemaService.getDescriptiveSchemaTree().subscribe((schema) => this.schemaOptions.set(schema));
 
     this.externalReferentialService.getElectronicArchivingSystemOptions$().subscribe((easOptions) => {
       this.easOptions.set(easOptions);
-      this.projectForm.get('connectedToArchivingSystem')?.setValue(true);
+      this.projectForm.connectedToArchivingSystem().value.set(true);
       this.setDefaultArchivingSystemValue();
       this.onArchivingSystemChangeValue();
     });
@@ -253,7 +341,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   onConnectedToArchivingSystemChangeValue(): void {
     this.resetExternalReferentialIdentifiers();
     if (!this.connectedToArchivingSystem) {
-      this.projectForm.get('archivingSystem')?.setValue(null);
+      this.projectForm.archivingSystem().value.set(null);
     } else if (this.easOptions().length < 2) {
       // has single Option
       this.setDefaultArchivingSystemValue();
@@ -261,18 +349,21 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   resetExternalReferentialIdentifiers(): void {
-    this.projectForm.get('submissionAgencyIdentifier')?.setValue(null);
-    this.projectForm.get('originatingAgencyIdentifier')?.setValue(null);
-    this.projectForm.get('archivalAgencyIdentifier')?.setValue(null);
-    this.projectForm.get('transferringAgencyIdentifier')?.setValue(null);
-    this.projectForm.get('archivalAgreement')?.setValue(null);
-    this.projectForm.get('archiveProfile')?.setValue(null);
+    this.projectModel.update((project) => ({
+      ...project,
+      submissionAgencyIdentifier: null,
+      originatingAgencyIdentifier: null,
+      archivalAgencyIdentifier: null,
+      transferringAgencyIdentifier: null,
+      archivalAgreement: null,
+      archiveProfile: null,
+    }));
   }
 
   onArchivingSystemChangeValue(): void {
     this.resetExternalReferentialIdentifiers();
 
-    const input: string = this.projectForm.get('archivingSystem')?.value;
+    const input: string = this.projectForm.archivingSystem().value();
     if (!input) return;
 
     const [archivingSystemId, tenantStr] = input.split(TENANT_SEPARATOR);
@@ -315,9 +406,9 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     this.fixedAttachmentMode = value;
     // Reset the unused control to keep only one source of attachment position
     if (value === AttachmentMode.TREE) {
-      this.projectForm.get('unitUp')?.setValue(null);
+      this.projectForm.unitUp().value.set(null);
     } else {
-      this.linkParentIdControl.setValue({ included: [], excluded: [] });
+      this.projectForm.linkParentId().value.set(emptyAttachmentNodes());
     }
   }
 
@@ -325,7 +416,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     `${element.Origin === 'EXTERNAL' ? 'EXT-' : ''}${element.ShortName} - ${element.FieldName}`;
 
   prepareRulesAndMoveToNextStep() {
-    if (this.selectedFlowType === FlowType.RULES && this.rulesParams.length === 0) {
+    if (this.selectedFlowType === FlowType.RULES && this.projectForm.rulesParams().value().length === 0) {
       this.addRuleParam();
     }
     this.moveToNextStep();
@@ -344,56 +435,55 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     if (jsltFile) {
       try {
         const content: string = await readFileContent(jsltFile);
-        this.projectForm.get('transformationRules').setValue(content);
+        this.projectForm.transformationRules().value.set(content);
       } catch (error) {
         this.logger.error('Error reading JSLT file:', error);
         this.isLoading = false;
       }
     } else {
-      this.projectForm.get('transformationRules').setValue(null);
+      this.projectForm.transformationRules().value.set(null);
     }
   }
 
   /*** Form validator Step : /*** Form validator Step : Description du versement ***/
   stepConnectingToRefEASIsInvalid() {
-    return this.connectedToArchivingSystem && this.projectForm.controls['archivingSystem'].invalid;
+    return this.connectedToArchivingSystem && this.projectForm.archivingSystem().invalid();
   }
 
   importTypeIsInvalid() {
-    return this.projectForm.controls['importType'].invalid;
+    return this.projectForm.importType().invalid();
   }
 
   /*** Form validator Step : Description du versement ***/
   stepDescriptionIsInvalid() {
     return (
-      this.projectForm.controls['originatingAgencyIdentifier'].invalid ||
-      this.projectForm.controls['messageIdentifier'].invalid ||
-      this.projectForm.controls['submissionAgencyIdentifier'].invalid
+      this.projectForm.originatingAgencyIdentifier().invalid() ||
+      this.projectForm.messageIdentifier().invalid() ||
+      this.projectForm.submissionAgencyIdentifier().invalid()
     );
   }
 
   /*** Form validator Step : Contexte du versement ***/
   stepContextIsInvalid() {
     return (
-      this.projectForm.controls['archivalAgencyIdentifier'].invalid ||
-      this.projectForm.controls['transferringAgencyIdentifier'].invalid ||
-      this.projectForm.controls['archivalAgreement'].invalid
+      this.projectForm.archivalAgencyIdentifier().invalid() ||
+      this.projectForm.transferringAgencyIdentifier().invalid() ||
+      this.projectForm.archivalAgreement().invalid()
     );
   }
 
   /*** Form validator Step : Parametrer les regles de rattachement ***/
   stepRulesParamsIsInvalid() {
-    return this.projectForm.controls['rulesParams'].invalid;
+    return this.projectForm.rulesParams().invalid();
   }
 
   get defaultAttachmentEnabled(): boolean {
-    return this.projectForm.get('defaultAttachmentEnabled')?.value === true;
+    return this.projectForm.defaultAttachmentEnabled().value() === true;
   }
 
   onDefaultAttachmentToggle(): void {
     if (!this.defaultAttachmentEnabled) {
-      this.linkParentIdControl.setValue({ included: [], excluded: [] });
-      this.projectForm.get('unitUp')?.setValue(null);
+      this.projectModel.update((project) => ({ ...project, linkParentId: emptyAttachmentNodes(), unitUp: null }));
     }
   }
 
@@ -403,61 +493,31 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   /*** All Steps ***/
-  private initForm() {
-    this.projectForm = this.formBuilder.group({
-      automaticIngest: [true],
-      referentialCheckup: [false],
-      connectedToArchivingSystem: [false],
-      archivingSystem: [null],
-      archivalAgreement: [null],
-      messageIdentifier: [null],
-      archivalAgencyIdentifier: [null],
-      transferringAgencyIdentifier: [null],
-      originatingAgencyIdentifier: [null],
-      submissionAgencyIdentifier: [null],
-      // add archivalProfile ?
-      archiveProfile: [null],
-      acquisitionInformation: [null],
-      legalStatus: [null],
-      // for unitUp :
-      linkParentIdControl: [{ included: [], excluded: [] }],
-      // toggle for the default fixed attachment position (key/value rules flow)
-      defaultAttachmentEnabled: [false],
-      // for unitUps :
-      rulesParams: this.formBuilder.array([], Validators.required),
-      comment: [null],
-      status: [null],
-      transformationRules: [null],
-      unitUp: [null],
-      importType: [null],
-    });
-  }
-
   private formToProject(): Project {
-    const archivingSystemIdAndTenant: string = this.projectForm.get('archivingSystem')?.value;
+    const projectFormValue = this.projectModel();
+    const archivingSystemIdAndTenant: string = projectFormValue.archivingSystem;
 
     const [archivingSystemId, tenantStr] = archivingSystemIdAndTenant ? archivingSystemIdAndTenant.split(TENANT_SEPARATOR) : [null, null];
     const archivingSystemTenant = tenantStr ? Number(tenantStr) : null;
 
     const project: Project = {
-      name: this.projectForm.value.messageIdentifier,
-      archivalAgreement: this.projectForm.value.archivalAgreement,
-      messageIdentifier: this.projectForm.value.messageIdentifier,
-      archivalAgencyIdentifier: this.projectForm.value.archivalAgencyIdentifier,
-      transferringAgencyIdentifier: this.projectForm.value.transferringAgencyIdentifier,
-      originatingAgencyIdentifier: this.projectForm.value.originatingAgencyIdentifier,
-      submissionAgencyIdentifier: this.projectForm.value.submissionAgencyIdentifier,
-      archivalProfile: this.projectForm.value.archivalProfile,
-      archiveProfile: this.projectForm.value.archiveProfile,
-      acquisitionInformation: this.projectForm.value.acquisitionInformation,
-      legalStatus: this.projectForm.value.legalStatus,
-      comment: this.projectForm.value.comment,
-      connectedToArchivingSystem: this.projectForm.value.connectedToArchivingSystem,
+      name: projectFormValue.messageIdentifier,
+      archivalAgreement: projectFormValue.archivalAgreement,
+      messageIdentifier: projectFormValue.messageIdentifier,
+      archivalAgencyIdentifier: projectFormValue.archivalAgencyIdentifier,
+      transferringAgencyIdentifier: projectFormValue.transferringAgencyIdentifier,
+      originatingAgencyIdentifier: projectFormValue.originatingAgencyIdentifier,
+      submissionAgencyIdentifier: projectFormValue.submissionAgencyIdentifier,
+      archiveProfile: projectFormValue.archiveProfile,
+      acquisitionInformation: projectFormValue.acquisitionInformation,
+      legalStatus: projectFormValue.legalStatus,
+      comment: projectFormValue.comment,
+      connectedToArchivingSystem: projectFormValue.connectedToArchivingSystem,
       archivingSystemId: archivingSystemId,
       archivingSystemTenant: archivingSystemTenant,
       status: ProjectStatus.OPEN,
-      transformationRules: this.projectForm.value.transformationRules,
-      automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : this.projectForm.value.automaticIngest === true,
+      transformationRules: projectFormValue.transformationRules,
+      automaticIngest: this.selectedWorkflow === Workflow.MANUAL ? null : projectFormValue.automaticIngest === true,
     } as Project;
     if (this.selectedWorkflow === Workflow.MANUAL || this.selectedFlowType === FlowType.FIX) {
       project.unitUp = this.resolveFixedUnitUp();
@@ -473,76 +533,67 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
 
   private resolveFixedUnitUp(): string {
     return this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant && this.fixedAttachmentMode === AttachmentMode.TREE
-      ? this.linkParentIdControl.value.included[0]
-      : this.projectForm.value.unitUp;
+      ? this.projectForm.linkParentId().value().included[0]
+      : this.projectForm.unitUp().value();
   }
 
   private convertRuleParamsToMetadata(): Array<MetadataUnitUp> {
     return (
-      this.rulesParams.controls
+      Array.from(this.projectForm.rulesParams)
         // Only keep fully filled rules (incomplete ones are allowed when a default attachment is set)
-        .filter((ruleParamControl: FormGroup) => ruleParamControl.valid && ruleParamControl.value.ontologyList)
-        .map((ruleParamControl: FormGroup) => {
-          const ruleParam = ruleParamControl.value;
+        .filter((ruleParamField) => ruleParamField().valid() && ruleParamField().value().ontologyList)
+        .map((ruleParamField) => {
+          const ruleParam = ruleParamField().value();
           const metadataKey = ruleParam.ontologyList.ApiField;
           const metadataValue = ruleParam.metadataValue;
           return {
             metadataKey: metadataKey,
-            metadataValue: metadataValue,
+            metadataValue: metadataValue as string,
             unitUp:
               this.connectedToArchivingSystem &&
               this.connectedToLocalEasWithCurrentTenant &&
               ruleParam.attachmentMode === AttachmentMode.TREE
-                ? ruleParam.unitUp.included[0]
-                : ruleParam.unitUp,
+                ? (ruleParam.unitUp as AttachmentNodes).included[0]
+                : (ruleParam.unitUp as string),
           };
         })
     );
   }
 
-  get rulesParams(): FormArray<FormGroup> {
-    return this.projectForm.controls['rulesParams'] as FormArray<FormGroup>;
-  }
-
   addRuleParam() {
-    const ontologyListControl = this.formBuilder.control<SchemaElement>(undefined, Validators.required);
-    const metadataValueControl = this.formBuilder.control(undefined, Validators.required);
-    ontologyListControl.valueChanges.subscribe(() => {
-      metadataValueControl.setValidators(Validators.required); // To override Validators that may be added by datepicker if changing from datepicker to input
-      metadataValueControl.markAsTouched(); // To make sure error messages appear after changing the ontology
-    });
-
-    // rulesParams interface:
-    const newRuleParamForm = this.formBuilder.group({
-      ontologyList: ontologyListControl,
-      metadataValue: metadataValueControl,
-      // Per-rule attachment position mode: tree (Arbres & Plans) or free GUID input
-      attachmentMode: [AttachmentMode.TREE],
-      // When not connected to local EAS (different tenant or SAE), unitUp is a simple string
-      unitUp:
-        this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant
-          ? [{ included: [], excluded: [] }, oneIncludedNodeRequired()]
-          : [''],
-    });
-
-    this.rulesParams.push(newRuleParamForm);
+    const newRuleParam: RuleParamForm = {
+      ontologyList: null,
+      metadataValue: null,
+      attachmentMode: AttachmentMode.TREE,
+      unitUp: this.connectedToArchivingSystem && this.connectedToLocalEasWithCurrentTenant ? emptyAttachmentNodes() : '',
+    };
+    this.projectForm.rulesParams().value.update((rulesParams) => [...rulesParams, newRuleParam]);
   }
 
-  setRuleAttachmentMode(ruleParamForm: FormGroup, mode: AttachmentMode) {
-    ruleParamForm.get('attachmentMode')?.setValue(mode);
-    const unitUpControl = ruleParamForm.get('unitUp');
-    if (mode === AttachmentMode.TREE) {
-      unitUpControl?.setValue({ included: [], excluded: [] });
-      unitUpControl?.setValidators(oneIncludedNodeRequired());
-    } else {
-      unitUpControl?.setValue('');
-      unitUpControl?.setValidators(Validators.required);
-    }
-    unitUpControl?.updateValueAndValidity();
+  onOntologyChange(index: number) {
+    // To make sure error messages appear after changing the ontology
+    this.projectForm.rulesParams[index].metadataValue().markAsTouched();
+  }
+
+  setRuleAttachmentMode(index: number, mode: AttachmentMode) {
+    this.updateRuleParam(index, {
+      attachmentMode: mode,
+      unitUp: mode === AttachmentMode.TREE ? emptyAttachmentNodes() : '',
+    });
   }
 
   deleteRuleParam(index: number) {
-    this.rulesParams.removeAt(index);
+    this.projectForm.rulesParams().value.update((rulesParams) => rulesParams.filter((_, i) => i !== index));
+  }
+
+  clearRulesParams() {
+    this.projectForm.rulesParams().value.set([]);
+  }
+
+  private updateRuleParam(index: number, changes: Partial<RuleParamForm>) {
+    this.projectForm
+      .rulesParams()
+      .value.update((rulesParams) => rulesParams.map((ruleParam, i) => (i === index ? { ...ruleParam, ...changes } : ruleParam)));
   }
 
   validateAndCreateProject() {
@@ -591,7 +642,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
     const zipFile = new ZipFile();
     this.zipFileStatus$ = zipFile.zipFileStatus$;
     if ([ImportType.COMPRESSED, ImportType.SIP].includes(this.importType as ImportType)) {
-      this.compressedZip = new Blob(this.filesToUploadControl.value, { type: 'application/zip' });
+      this.compressedZip = new Blob(this.filesToUploadForm().value(), { type: 'application/zip' });
     }
     this.projectsService
       .create(project)
@@ -608,7 +659,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         tap((createdTransactionResponse) => {
           transactionId = createdTransactionResponse.id;
           if (this.importType === ImportType.SIP) {
-            zipFile.setZipName(this.filesToUploadControl.value[0].name + '.zip');
+            zipFile.setZipName(this.filesToUploadForm().value()[0].name + '.zip');
           } else {
             zipFile.setZipName(transactionId + '.zip');
           }
@@ -619,7 +670,7 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
         }),
         switchMap(() =>
           this.importType === ImportType.DIRECTORIES_FILES
-            ? zipFile.addFiles(this.filesToUploadControl.value).generateZip()
+            ? zipFile.addFiles(this.filesToUploadForm().value()).generateZip()
             : of(this.compressedZip).toPromise(),
         ),
         switchMap((content) =>
@@ -699,13 +750,13 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   get connectedToArchivingSystem(): boolean {
-    return this.projectForm.get('connectedToArchivingSystem')?.value === true;
+    return this.projectForm.connectedToArchivingSystem().value() === true;
   }
 
   get connectedToLocalEasWithCurrentTenant(): boolean {
     const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
     const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
-    const archivingSystemValue = this.projectForm.get('archivingSystem')?.value;
+    const archivingSystemValue = this.projectForm.archivingSystem().value();
     return archivingSystemValue === defaultKey;
   }
 
@@ -717,21 +768,17 @@ export class CreateProjectComponent implements OnInit, AfterViewChecked {
   }
 
   resetFilesToImportList() {
-    this.filesToUploadControl.setValue([]);
-    this.filesToUploadControl.clearValidators();
-    this.filesToUploadControl.setValidators([Validators.required]);
-    this.filesToUploadControl.updateValueAndValidity();
-    this.filesToUploadControl.markAsUntouched();
+    this.filesToUploadForm().reset([]);
   }
 
   private setDefaultArchivingSystemValue() {
     const currentTenantId = this.tenantSelectionService.getSelectedTenant().identifier;
     const defaultKey = `${LOCAL_ARCHIVING_SYSTEM_ID}${TENANT_SEPARATOR}${currentTenantId}`;
-    this.projectForm.get('archivingSystem')?.setValue(defaultKey);
+    this.projectForm.archivingSystem().value.set(defaultKey);
   }
 
   get importType(): string {
-    return this.projectForm.get('importType')?.value;
+    return this.projectForm.importType().value();
   }
 
   protected ImportType = ImportType;

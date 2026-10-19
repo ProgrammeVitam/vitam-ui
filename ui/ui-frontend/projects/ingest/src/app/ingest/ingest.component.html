@@ -40,24 +40,24 @@
       </vitamui-banner>
 
       <div class="actions">
-        <form [formGroup]="dateRangeFilterForm">
+        <div>
           <div class="hgap-4">
             <vitamui-datepicker
               [label]="'INGEST_ACTION.START_DATE' | translate"
-              formControlName="startDate"
-              [max]="dateRangeFilterForm.controls.endDate.value"
+              [formField]="dateRangeFilterForm.startDate"
+              [max]="dateRangeFilterForm.endDate().value()"
               outputType="Date"
               format="dd/MM/yyyy"
             ></vitamui-datepicker>
             <vitamui-datepicker
               [label]="'INGEST_ACTION.END_DATE' | translate"
-              formControlName="endDate"
-              [min]="dateRangeFilterForm.controls.startDate.value"
+              [formField]="dateRangeFilterForm.endDate"
+              [min]="dateRangeFilterForm.startDate().value()"
               outputType="Date"
               format="dd/MM/yyyy"
             ></vitamui-datepicker>
           </div>
-        </form>
+        </div>
       </div>
     </div>
     <div class="vitamui-content">

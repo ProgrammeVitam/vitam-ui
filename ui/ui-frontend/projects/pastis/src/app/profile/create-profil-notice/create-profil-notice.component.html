@@ -7,7 +7,7 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="noticeForm">
+<form [formRoot]="noticeForm">
   <vitamui-stepper #stepper [(selectedIndex)]="stepIndex">
     <cdk-step>
       <mat-dialog-content>
@@ -16,7 +16,7 @@
             [firstChoice]="ProfileType.PA"
             [secondChoice]="ProfileType.PUA"
             [title]="'PROFILE.POP_UP_CREATION.CHOICE.TITLE' | translate"
-            (changeStatusEvent)="noticeForm.controls['profileType'].setValue($event)"
+            (changeStatusEvent)="setProfileType($event)"
           >
             <i
               class="vitamui-icon vitamui-icon-info vitamui-grey-700 clickable"
@@ -32,7 +32,7 @@
           </app-pastis-generic-popup>
           <div>
             <div class="text bold caption primary">{{ 'PROFILE.CREATE_PROFILE.INFORMATION.SEDA_VERSION' | translate }}</div>
-            <mat-radio-group class="hgap-2" formControlName="profileVersion">
+            <mat-radio-group class="hgap-2" [formField]="noticeForm.profileVersion">
               @for (profileVersionOption of ProfileVersionOptions; track profileVersionOption.version) {
                 <mat-radio-button [value]="profileVersionOption.version">{{ profileVersionOption.label }}</mat-radio-button>
               }
@@ -56,7 +56,7 @@
                 <vitamui-input
                   class="col-9 px-0"
                   [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.IDENTIFIER' | translate"
-                  formControlName="identifier"
+                  [formField]="noticeForm.identifier"
                   [errorMessageMap]="{
                     identifierExist: 'ERROR_IDENTIFIER.IDENTIFIER_ALREADY_EXISTS' | translate,
                   }"
@@ -68,7 +68,11 @@
 
           <div class="row">
             <div class="col-10 form-control">
-              <vitamui-input class="col-9 px-0" formControlName="name" [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate">
+              <vitamui-input
+                class="col-9 px-0"
+                [formField]="noticeForm.name"
+                [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.NAME' | translate"
+              >
               </vitamui-input>
             </div>
           </div>
@@ -77,7 +81,7 @@
             <div class="col-10 form-control">
               <vitamui-input
                 [textarea]="true"
-                formControlName="description"
+                [formField]="noticeForm.description"
                 [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.DESCRIPTION' | translate"
                 class="w-100"
               >
@@ -88,7 +92,7 @@
             <div class="row">
               <div class="col-10 form-control">
                 <div class="d-flex justify-content-between align-items-center py-1 px-2 mb-2">
-                  <vitamui-slide-toggle formControlName="additionalProperties">
+                  <vitamui-slide-toggle [formField]="noticeForm.additionalProperties">
                     {{ 'PROFILE.POP_UP_CREATION_NOTICE.ALLOW_METADATA' | translate }}
                   </vitamui-slide-toggle>
                 </div>
@@ -97,7 +101,7 @@
           }
           <vitamui-select
             class="d-block"
-            formControlName="status"
+            [formField]="noticeForm.status"
             [placeholder]="'PROFILE.POP_UP_CREATION_NOTICE.SAVE_AS_ACTIVE_OR_INACTIVE' | translate"
             [options]="statusOptions"
             [enableSearch]="false"
@@ -106,7 +110,7 @@
       </mat-dialog-content>
       <mat-dialog-actions>
         <div>
-          <button type="submit" (click)="validate()" [disabled]="!isFormValid()" class="btn primary">
+          <button type="submit" [disabled]="!isFormValid()" class="btn primary">
             {{ 'PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_OK_LABEL' | translate }}
           </button>
           <button (click)="onClose()" class="btn cancel link" type="button">

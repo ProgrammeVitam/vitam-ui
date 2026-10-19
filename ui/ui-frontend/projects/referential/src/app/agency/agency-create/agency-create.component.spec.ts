@@ -37,7 +37,7 @@
 
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input, output } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -61,7 +61,6 @@ import { AgencyCreateValidators } from './agency-create.validators';
     },
   ],
   imports: [
-    ReactiveFormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatButtonToggleModule,
@@ -97,7 +96,7 @@ class Page {
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.nativeElement.querySelector('[data-field=' + name + ']');
   }
 }
 
@@ -113,22 +112,12 @@ describe('AgencyCreateComponent', () => {
       create: vi.fn().mockName('AgencyService.create').mockReturnValue(of({})),
     };
     const agencyValidatorSpy = {
-      uniqueIdentifier: vi
-        .fn()
-        .mockName('AgencyCreateValidators.uniqueIdentifier')
-        .mockReturnValue(() => of(null)),
-      uniqueName: vi
-        .fn()
-        .mockName('AgencyCreateValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
-      onlyWhitespaces: vi
-        .fn()
-        .mockName('AgencyCreateValidators.onlyWhitespaces')
-        .mockReturnValue(() => {}),
+      uniqueIdentifier: vi.fn().mockName('AgencyCreateValidators.uniqueIdentifier'),
+      uniqueName: vi.fn().mockName('AgencyCreateValidators.uniqueName'),
+      onlyWhitespaces: vi.fn().mockName('AgencyCreateValidators.onlyWhitespaces'),
     };
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatButtonToggleModule,
@@ -150,11 +139,11 @@ describe('AgencyCreateComponent', () => {
       .overrideComponent(AgencyCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form">
-              <input formControlName="name" />
-              <input formControlName="identifier" />
-              <input formControlName="description" />
-              <button type="submit" [disabled]="form.invalid"></button>
+            <form [formRoot]="form">
+              <input data-field="name" [formField]="form.name" />
+              <input data-field="identifier" [formField]="form.identifier" />
+              <input data-field="description" [formField]="form.description" />
+              <button type="submit" [disabled]="form().invalid()"></button>
             </form>
           `,
         },
@@ -183,7 +172,7 @@ describe('AgencyCreateComponent', () => {
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedAgency);
+      component.form().value.set(expectedAgency);
       fixture.detectChanges();
       expect(page.submit.attributes.disabled).toBeFalsy();
     });
@@ -191,30 +180,30 @@ describe('AgencyCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue(expectedAgency);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedAgency);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy();
-          expect(setControlValue('name', 'name').valid).toBeTruthy();
+          expect(setFieldValue('name', '').invalid()).toBeTruthy();
+          expect(setFieldValue('name', 'name').valid()).toBeTruthy();
 
-          expect(setControlValue('identifier', '').invalid).toBeTruthy();
-          expect(setControlValue('identifier', 'identifier').valid).toBeTruthy();
+          expect(setFieldValue('identifier', '').invalid()).toBeTruthy();
+          expect(setFieldValue('identifier', 'identifier').valid()).toBeTruthy();
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setFieldValue(name: 'name' | 'identifier' | 'description', value: string) {
+        const field = component.form[name]();
+        field.value.set(value);
 
-        return control;
+        return field;
       }
     });
   });
@@ -235,7 +224,7 @@ describe('AgencyCreateComponent', () => {
     it('should call create()', () => {
       const agencyService = TestBed.inject(AgencyService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedAgency);
+      component.form().value.set(expectedAgency);
       component.onSubmit();
       expect(agencyService.create).toHaveBeenCalledTimes(1);
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);

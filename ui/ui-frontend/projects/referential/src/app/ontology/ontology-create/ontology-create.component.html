@@ -3,12 +3,12 @@
   [title]="'ONTOLOGY.CREATE_DIALOG.SUBTITLE' | translate"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
+<form [formRoot]="form" cdkFocusInitial>
   <mat-dialog-content class="gap-3">
     <div class="w-100 d-flex align-items-center">
       <vitamui-input
         class="w-100"
-        formControlName="identifier"
+        [formField]="form.identifier"
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.IDENTIFIER' | translate"
         [errorMessageMap]="{
           idExists: 'ONTOLOGY.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate,
@@ -25,7 +25,7 @@
     <div class="w-100 d-flex align-items-center">
       <vitamui-input
         class="w-100"
-        formControlName="shortName"
+        [formField]="form.shortName"
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.NAME' | translate"
         [errorMessageMap]="{
           nameExists: 'ONTOLOGY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate,
@@ -41,7 +41,7 @@
     <div class="w-100 d-flex align-items-center">
       <vitamui-select
         class="w-100"
-        formControlName="type"
+        [formField]="form.type"
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.INDEXING_MODE' | translate"
         [options]="types"
         [multiple]="false"
@@ -54,11 +54,11 @@
       </i>
     </div>
 
-    @if (sizeFieldVisible) {
+    @if (sizeFieldVisible()) {
       <div class="w-100 d-flex align-items-center">
         <vitamui-select
           class="w-100"
-          formControlName="stringSize"
+          [formField]="form.stringSize"
           [placeholder]="'ONTOLOGY.CREATE_DIALOG.FIELD_SIZE' | translate"
           [options]="sizes"
           [multiple]="false"
@@ -74,7 +74,7 @@
     <div class="w-100 d-flex align-items-center">
       <vitamui-select
         class="w-100"
-        formControlName="collections"
+        [formField]="form.collections"
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.COLLECTION' | translate"
         [options]="collections"
         [multiple]="true"
@@ -92,7 +92,7 @@
     <div class="w-100 d-flex">
       <vitamui-input
         [textarea]="true"
-        formControlName="description"
+        [formField]="form.description"
         class="w-100"
         [placeholder]="'ONTOLOGY.CREATE_DIALOG.DESCRIPTION' | translate"
       >
@@ -101,7 +101,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton()">
+    <button type="submit" class="btn primary" [disabled]="form().pending() || form().invalid() || isDisabledButton()">
       {{ 'COMMON.TERMINATE' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">

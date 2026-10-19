@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { inject, Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { PathKind, SchemaPath, SchemaPathRules } from '@angular/forms/signals';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { CriteriaDataType, CriteriaOperator } from '../../../app/modules/models/criteria/criteria.enums';
 import { SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../../app/modules/models/criteria/search-criteria.interface';
 import { ReclassificationService } from '../../../app/modules/services/reclassification.service';
+import { validateObservable } from '../../signal-forms/signal-form-validators';
+
+type FieldPath<TPathKind extends PathKind> = SchemaPath<string | null, SchemaPathRules.Supported, TPathKind>;
 
 @Injectable({
   providedIn: 'root',
@@ -59,65 +61,57 @@ export class ReclassificationValidatorService {
     return this.auTitleSubject.asObservable();
   }
 
-  alreadyExistParents(codeToIgnore?: string, archiveUnitAllunitup?: string[]): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      return timer(this.debounceTime).pipe(
-        switchMap(() =>
-          control.value !== codeToIgnore ? of(this.isAlreadyExistingParentValue(control.value, archiveUnitAllunitup)) : of(false),
-        ),
-        take(1),
-        map((exists: boolean) => (exists ? { alreadyExistParents: true } : null)),
-      );
-    };
+  /** Signal forms rule: the field value must not be one of the current parents (`alreadyExistParents` error). */
+  alreadyExistParents<TPathKind extends PathKind>(path: FieldPath<TPathKind>, archiveUnitAllunitup: string[], codeToIgnore?: string): void {
+    validateObservable(path, {
+      stream: (value) => of(value !== codeToIgnore && this.isAlreadyExistingParentValue(value, archiveUnitAllunitup)),
+      onSuccess: (exists) => (exists ? { kind: 'alreadyExistParents' } : undefined),
+      debounceTime: this.debounceTime,
+    });
   }
 
   isAlreadyExistingParentValue(parentId: string, archiveUnitAllunitup: string[]): boolean {
     return true ? archiveUnitAllunitup.filter((p) => p === parentId).length > 0 : false;
   }
 
-  existArchiveUnit(criteriaDto: SearchCriteriaDto): AsyncValidatorFn {
-    return this.unitExists('targetGuid', criteriaDto);
+  /** Signal forms rule: the field value must be the GUID of an existing archive unit (`targetGuid` error). Emits the archive unit title. */
+  existArchiveUnit<TPathKind extends PathKind>(path: FieldPath<TPathKind>, criteriaDto: () => SearchCriteriaDto): void {
+    validateObservable(path, {
+      stream: (value) => this.unitDoesNotExist(value, criteriaDto()),
+      onSuccess: (doesNotExist) => (doesNotExist ? { kind: 'targetGuid' } : undefined),
+      debounceTime: this.debounceTime,
+    });
   }
 
-  private unitExists(existTag: string, criteriaDto: SearchCriteriaDto) {
-    return (control: AbstractControl) => {
-      const auditExists: any = {};
-      auditExists[existTag] = true;
-      const searchCriteria: SearchCriteriaDto = {
-        pageNumber: criteriaDto.pageNumber,
-        size: criteriaDto.size,
-        criteriaList: [
-          {
-            criteria: 'GUID',
-            operator: CriteriaOperator.EQ,
-            category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-            dataType: CriteriaDataType.STRING,
-            values: [{ value: control.value, id: control.value }],
-          },
-        ],
-      };
-      const result = timer(this.debounceTime).pipe(
-        switchMap(() =>
-          control.value !== null
-            ? this.reclassificationService
-                .searchArchiveUnitsByCriteria(searchCriteria)
-                .toPromise()
-                .then((data) => {
-                  if (data.totalResults === 1) {
-                    this.emitArchiveUnitTitle(ReclassificationService.fetchAuTitle(data.results[0]));
-                    return false;
-                  } else {
-                    this.emitArchiveUnitTitle(null);
-                    return true;
-                  }
-                })
-            : of(false),
-        ),
-        take(1),
-        map((exists: boolean) => (exists ? auditExists : null)),
-      );
+  private unitDoesNotExist(value: string | null, criteriaDto: SearchCriteriaDto): Observable<boolean> {
+    if (value === null) return of(false);
 
-      return result;
+    const searchCriteria: SearchCriteriaDto = {
+      pageNumber: criteriaDto.pageNumber,
+      size: criteriaDto.size,
+      criteriaList: [
+        {
+          criteria: 'GUID',
+          operator: CriteriaOperator.EQ,
+          category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+          dataType: CriteriaDataType.STRING,
+          values: [{ value, id: value }],
+        },
+      ],
     };
+    return from(
+      this.reclassificationService
+        .searchArchiveUnitsByCriteria(searchCriteria)
+        .toPromise()
+        .then((data) => {
+          if (data.totalResults === 1) {
+            this.emitArchiveUnitTitle(ReclassificationService.fetchAuTitle(data.results[0]));
+            return false;
+          } else {
+            this.emitArchiveUnitTitle(null);
+            return true;
+          }
+        }),
+    );
   }
 }

@@ -35,23 +35,36 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit, signal, input, output, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { diff, FileFormat, IngestContract, SelectComponent, SlideToggleComponent, VitamuiSelectOptions } from 'vitamui-library';
+import {
+  diff,
+  FileFormat,
+  IngestContract,
+  requiredValue,
+  SelectComponent,
+  SlideToggleComponent,
+  VitamuiSelectOptions,
+} from 'vitamui-library';
 import { FileFormatService } from '../../../file-format/file-format.service';
 import { IngestContractService } from '../../ingest-contract.service';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface IngestContractFormatForm {
+  everyFormatType: boolean;
+  formatType: string[] | null;
+  formatUnidentifiedAuthorized: boolean;
+}
 
 @Component({
   selector: 'app-ingest-contract-format-tab',
   templateUrl: './ingest-contract-format-tab.component.html',
   styleUrls: ['./ingest-contract-format-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, SelectComponent, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, SelectComponent, TranslatePipe],
 })
 export class IngestContractFormatTabComponent implements OnChanges, OnInit {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
   private readonly fileFormatService = inject(FileFormatService);
 
@@ -66,7 +79,23 @@ export class IngestContractFormatTabComponent implements OnChanges, OnInit {
   readonly updated = output<boolean>();
   readonly isFormValid = output<boolean>();
 
-  form: FormGroup;
+  readonly form = form(
+    signal<IngestContractFormatForm>({ everyFormatType: true, formatType: null, formatUnidentifiedAuthorized: false }),
+    (path) => {
+      requiredValue(path.everyFormatType);
+      requiredValue(path.formatType, { when: ({ valueOf }) => !valueOf(path.everyFormatType) });
+      requiredValue(path.formatUnidentifiedAuthorized);
+      disabled(path, () => !!this.readOnly());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   submitted = signal(false);
   formatOptions: VitamuiSelectOptions;
 
@@ -78,14 +107,6 @@ export class IngestContractFormatTabComponent implements OnChanges, OnInit {
     };
   };
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      everyFormatType: [true, Validators.required],
-      formatType: [null],
-      formatUnidentifiedAuthorized: [false, Validators.required],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['ingestContract']) {
       this.setIngestContract(this.ingestContract());
@@ -93,14 +114,6 @@ export class IngestContractFormatTabComponent implements OnChanges, OnInit {
     if (changes['isTabActive']) {
       if (this.isTabActive()) {
         this.resetForm(this.ingestContract());
-      }
-    }
-    if (changes['readOnly']) {
-      if (this.readOnly() && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
       }
     }
   }
@@ -120,38 +133,31 @@ export class IngestContractFormatTabComponent implements OnChanges, OnInit {
         ),
       )
       .subscribe((options) => (this.formatOptions = { options }));
+  }
 
-    if (!this.ingestContract().everyFormatType) {
-      this.form.controls['formatType'].setValidators(Validators.required);
+  onEveryFormatTypeChange(everyFormatType: boolean) {
+    this.form.everyFormatType().value.set(everyFormatType);
+    this.form.formatType().value.set(null);
+    if (!everyFormatType) {
+      this.form.formatType().markAsTouched();
     }
-
-    this.form.controls['everyFormatType'].valueChanges.subscribe((value: boolean) => {
-      this.form.controls['formatType'].setValue(null);
-      if (value) {
-        this.form.controls['formatType'].setValidators([]);
-      } else {
-        this.form.controls['formatType'].setValidators(Validators.required);
-        this.form.controls['formatType'].markAllAsTouched();
-      }
-      this.form.controls['formatType'].updateValueAndValidity();
-    });
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   isInvalid(): boolean {
     const isInvalid =
-      this.form.get('everyFormatType').value === false && (this.form.get('formatType').invalid || this.form.get('formatType').pending);
+      this.form.everyFormatType().value() === false && (this.form.formatType().invalid() || this.form.formatType().pending());
     this.isFormValid.emit(!isInvalid);
     return isInvalid;
   }
 
   prepareSubmit(): Observable<IngestContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => {
         // prevent having error from backend
@@ -189,6 +195,10 @@ export class IngestContractFormatTabComponent implements OnChanges, OnInit {
   }
 
   resetForm(ingestContract: IngestContract) {
-    this.form.reset(ingestContract, { emitEvent: false });
+    this.form().reset({
+      everyFormatType: ingestContract.everyFormatType ?? null,
+      formatType: ingestContract.formatType ?? null,
+      formatUnidentifiedAuthorized: ingestContract.formatUnidentifiedAuthorized ?? null,
+    } as IngestContractFormatForm);
   }
 }

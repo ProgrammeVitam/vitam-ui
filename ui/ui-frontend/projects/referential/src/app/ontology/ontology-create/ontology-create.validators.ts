@@ -35,9 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Observable, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { SchemaPath, validate } from '@angular/forms/signals';
+import { validateObservable } from 'vitamui-library';
 
 import { OntologyService } from '../ontology.service';
 
@@ -51,22 +50,16 @@ export class OntologyCreateValidators {
     this.ontologyService = ontologyService;
   }
 
-  private readonly debounceTime = 400;
-
-  uniqueID = (): AsyncValidatorFn => {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      return timer(this.debounceTime).pipe(
-        switchMap(() => this.ontologyService.exists(control.value)),
-        take(1),
-        map((exists: boolean) => (exists ? { idExists: true } : null)),
-      );
-    };
+  /** Adds an `idExists` error when an ontology with the same identifier already exists. */
+  uniqueID = (path: SchemaPath<string>): void => {
+    validateObservable(path, {
+      stream: (value: string) => this.ontologyService.exists(value),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'idExists' } : undefined),
+    });
   };
 
-  patternID = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const regexp = /^[_#\s]|\s/;
-      return regexp.test(control.value) ? { idPattern: true } : null;
-    };
+  /** Adds an `idPattern` error when the identifier starts with `_`, `#` or contains a whitespace. */
+  patternID = (path: SchemaPath<string>): void => {
+    validate(path, ({ value }) => (/^[_#\s]|\s/.test(value()) ? { kind: 'idPattern' } : undefined));
   };
 }

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { applyEach, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -46,6 +46,7 @@ import {
   InputComponent,
   Logger,
   NextStepComponent,
+  ObjectQualifierType,
   ObjectQualifierTypeList,
   ObjectQualifierTypeType,
   PreviousStepComponent,
@@ -57,11 +58,38 @@ import {
   VitamuiSelectOptions,
 } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
-import { QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
-import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { DIPSedaVersion, QualifierVersion, TransferRequestDto } from '../../../models/dip.interface';
 import { CdkStep } from '@angular/cdk/stepper';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+
+interface TransferRequestParametersForm {
+  archivalAgreement: string;
+  originatingAgencyIdentifier: string;
+  archivalAgencyIdentifier: string;
+  transferringAgency: string;
+  submissionAgencyIdentifier: string;
+  relatedTransferReference: string;
+  transferRequestReplyIdentifier: string;
+  comment: string;
+}
+
+interface UsageForm {
+  usage: ObjectQualifierTypeType | null;
+  version: QualifierVersion;
+}
+
+interface TransferExportParametersForm {
+  includeLifeCycleLogs: boolean;
+  sedaVersion: DIPSedaVersion;
+  includeObjects: UsageVersionEnum;
+  usages: UsageForm[];
+}
+
+/** Optional text fields are sent as null when they are empty */
+function emptyToNull<T extends object>(value: T): T {
+  return Object.fromEntries(Object.entries(value).map(([key, fieldValue]) => [key, fieldValue === '' ? null : fieldValue])) as T;
+}
 
 @Component({
   selector: 'app-transfer-request-modal',
@@ -71,7 +99,8 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
     DialogHeaderComponent,
     StepperComponent,
     CdkStep,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     MatDialogContent,
     InputComponent,
     MatDialogActions,
@@ -88,7 +117,6 @@ import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 export class TransferRequestModalComponent implements OnInit, OnDestroy {
   private readonly translate = inject(TranslateService);
   dialogRef = inject<MatDialogRef<TransferRequestModalComponent>>(MatDialogRef);
-  private readonly fb = inject(FormBuilder);
   private readonly archiveService = inject(ArchiveService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly logger = inject(Logger);
@@ -100,104 +128,96 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     selectedItemCountKnown?: boolean;
   }>(MAT_DIALOG_DATA);
   private readonly snackBarService = inject(SnackBarService);
-  private readonly cdr = inject(ChangeDetectorRef);
 
-  formGroups: FormGroup[];
+  readonly step1Form = form(
+    signal<TransferRequestParametersForm>({
+      archivalAgreement: '',
+      originatingAgencyIdentifier: '',
+      archivalAgencyIdentifier: '',
+      transferringAgency: '',
+      submissionAgencyIdentifier: '',
+      relatedTransferReference: '',
+      transferRequestReplyIdentifier: '',
+      comment: '',
+    }),
+    (path) => {
+      required(path.archivalAgreement);
+      minLength(path.archivalAgreement, 2);
+      maxLength(path.archivalAgreement, 100);
+      required(path.originatingAgencyIdentifier);
+      minLength(path.originatingAgencyIdentifier, 2);
+      maxLength(path.originatingAgencyIdentifier, 100);
+      required(path.archivalAgencyIdentifier);
+      minLength(path.archivalAgencyIdentifier, 2);
+      maxLength(path.archivalAgencyIdentifier, 100);
+      maxLength(path.transferringAgency, 100);
+      maxLength(path.submissionAgencyIdentifier, 100);
+      maxLength(path.relatedTransferReference, 100);
+      maxLength(path.transferRequestReplyIdentifier, 100);
+      maxLength(path.comment, 300);
+    },
+  );
+  readonly step2Form = form(
+    signal<TransferExportParametersForm>({
+      includeLifeCycleLogs: true,
+      sedaVersion: '2.3',
+      includeObjects: UsageVersionEnum.ALL,
+      usages: [{ usage: ObjectQualifierType.BINARYMASTER, version: 'FIRST' }],
+    }),
+    (path) => {
+      applyEach(path.usages, (usage) => required(usage.usage));
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   itemSelected: number;
   selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
   dataObjectVersions = ObjectQualifierTypeList;
   UsageVersionEnum = UsageVersionEnum;
-  usageOptions: VitamuiSelectOptions[] = [];
+  private readonly selectedUsages = computed(
+    (): string[] =>
+      this.step2Form
+        .usages()
+        .value()
+        .map((usage) => usage.usage),
+    {
+      equal: (u1, u2) => u1.length === u2.length && u1.every((v, i) => u2[i] === v),
+    },
+  );
+  // An usage can only be selected once
+  readonly usageOptions = computed<VitamuiSelectOptions[]>(() => {
+    const selectedUsages = this.selectedUsages();
+    return selectedUsages.map((_, i) => {
+      const otherUsages = selectedUsages.filter((_, index) => i !== index);
+      return {
+        options: this.dataObjectVersions.map((usage) => ({
+          key: usage,
+          label: this.translate.instant(`ARCHIVE_SEARCH.DIP.USAGES.${usage}`),
+          disabled: otherUsages.includes(usage),
+        })),
+      };
+    });
+  });
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
     this.selectedItemCountKnown = this.data.selectedItemCountKnown;
-    this.initForms();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
-  private initForms() {
-    this.formGroups = [
-      this.fb.group({
-        archivalAgreement: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-        originatingAgencyIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-        archivalAgencyIdentifier: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-        transferringAgency: [null, [Validators.maxLength(100)]],
-        submissionAgencyIdentifier: [null, [Validators.maxLength(100)]],
-        relatedTransferReference: [null, [Validators.maxLength(100)]],
-        transferRequestReplyIdentifier: [null, [Validators.maxLength(100)]],
-        comment: [null, [Validators.maxLength(300)]],
-      }),
-      this.fb.group({
-        includeLifeCycleLogs: [true],
-        sedaVersion: ['2.3'],
-        includeObjects: [UsageVersionEnum.ALL],
-        usages: this.fb.array([
-          this.fb.group({
-            usage: ['BinaryMaster', Validators.required],
-            version: ['FIRST'],
-          }),
-        ]),
-      }),
-    ];
-
-    this.computeUsageOptions();
-    this.formGroups[1]
-      .get('usages')
-      .valueChanges.pipe(
-        map((usages) => usages.map((usage: any) => usage.usage)),
-        distinctUntilChanged((u1: string[], u2: string[]) => u1.length === u2.length && u1.every((v, i) => u2[i] === v)),
-        delay(0),
-      )
-      .subscribe(() => {
-        this.computeUsageOptions();
-        this.cdr.markForCheck();
-      });
-  }
-
-  get archivalAgreement(): FormControl {
-    return this.formGroups[0].get('archivalAgreement') as FormControl;
-  }
-
-  get originatingAgencyIdentifier(): FormControl {
-    return this.formGroups[0].get('originatingAgencyIdentifier') as FormControl;
-  }
-
-  get archivalAgencyIdentifier(): FormControl {
-    return this.formGroups[0].get('archivalAgencyIdentifier') as FormControl;
-  }
-
-  get usages(): FormArray {
-    return this.formGroups[1].get('usages') as FormArray;
-  }
-
-  private computeUsageOptions() {
-    this.usages.controls.forEach((_, i) => {
-      if (!this.usageOptions[i]) {
-        this.usageOptions[i] = {
-          options: this.dataObjectVersions.map((usage) => ({
-            key: usage,
-            label: this.translate.instant(`ARCHIVE_SEARCH.DIP.USAGES.${usage}`),
-          })),
-        };
-      }
-      const otherUsages = (this.usages.value as any[]).filter((_, index) => i !== index).map((v: { usage: string }) => v.usage);
-      this.usageOptions[i].options.forEach((option) => (option.disabled = otherUsages.includes(option.key)));
-    });
-  }
-
   addUsage() {
-    this.usages.push(
-      this.fb.group({
-        usage: [null, Validators.required],
-        version: ['FIRST'],
-      }),
-    );
+    this.step2Form.usages().value.update((usages) => [...usages, { usage: null, version: 'FIRST' }]);
   }
 
   removeUsage(i: number) {
-    this.usages.removeAt(i);
+    this.step2Form.usages().value.update((usages) => usages.filter((_, index) => index !== i));
   }
 
   ngOnDestroy() {
@@ -205,7 +225,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.formGroups.some((fg) => fg.dirty)) {
+    if (this.step1Form().dirty() || this.step2Form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -213,7 +233,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   }
 
   hasBinaryMasterSelected() {
-    const usagesArray = this.formGroups[1].getRawValue().usages;
+    const usagesArray = this.step2Form.usages().value();
     for (const usage of usagesArray) {
       if (usage.usage === 'BinaryMaster') {
         return true; // Si un usage de BinaryMaster est trouvé, retourne vrai
@@ -223,19 +243,18 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
   }
 
   showWarning(): boolean {
-    const step2Values = this.formGroups[1].getRawValue(); // Récupère les valeurs du deuxième formGroup
+    const step2Values = this.step2Form().value(); // Récupère les valeurs du deuxième formulaire
     return step2Values.includeObjects === UsageVersionEnum.NONE || !this.hasBinaryMasterSelected();
   }
 
   onSubmit() {
-    if (this.formGroups.some((fg) => fg.invalid)) {
+    if (this.step1Form().invalid() || this.step2Form().invalid()) {
       return;
     }
 
-    const step1Values = this.formGroups[0].getRawValue();
-    const step2Values = this.formGroups[1].getRawValue();
-    const usages: { usage: ObjectQualifierTypeType; version: QualifierVersion }[] =
-      step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
+    const step1Values = emptyToNull(this.step1Form().value());
+    const step2Values = this.step2Form().value();
+    const usages: UsageForm[] = step2Values.includeObjects === UsageVersionEnum.SELECTION ? step2Values.usages : [];
     const transferRequestParameters = {
       ...step1Values,
       relatedTransferReference: step1Values.relatedTransferReference ? [step1Values.relatedTransferReference] : [],
@@ -269,7 +288,8 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
           ],
           duration: 100_000,
         });
-        this.formGroups.forEach((fg) => fg.reset());
+        this.step1Form().reset();
+        this.step2Form().reset();
       },
       (error: any) => {
         this.logger.error('Error message:', error);

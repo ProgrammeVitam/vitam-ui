@@ -1,13 +1,13 @@
-<form [formGroup]="form" class="gap-5" (ngSubmit)="onSubmit()">
+<form [formRoot]="form" class="gap-5">
   <div class="gap-3 w-100">
-    <vitamui-input class="w-100" formControlName="identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate">
+    <vitamui-input class="w-100" [formField]="form.identifier" [placeholder]="'ONTOLOGY.TAB.INFORMATION.IDENTIFIER' | translate">
     </vitamui-input>
 
-    <vitamui-input class="w-100" formControlName="shortName" [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
+    <vitamui-input class="w-100" [formField]="form.shortName" [placeholder]="'ONTOLOGY.TAB.INFORMATION.NAME' | translate"> </vitamui-input>
 
     <vitamui-select
       class="w-100"
-      formControlName="type"
+      [formField]="form.type"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.TYPE' | translate"
       [options]="types"
       [multiple]="false"
@@ -15,9 +15,9 @@
     ></vitamui-select>
 
     <vitamui-select
-      [hidden]="!sizeFieldVisible"
+      [hidden]="!sizeFieldVisible()"
       class="w-100"
-      formControlName="stringSize"
+      [formField]="form.stringSize"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.FIELD_SIZE' | translate"
       [options]="sizes"
       [multiple]="false"
@@ -26,7 +26,7 @@
 
     <vitamui-select
       class="w-100"
-      formControlName="collections"
+      [formField]="form.collections"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.COLLECTION' | translate"
       [options]="collections"
       [multiple]="true"
@@ -38,22 +38,16 @@
     <vitamui-input
       [textarea]="true"
       class="w-100"
-      formControlName="description"
+      [formField]="form.description"
       [placeholder]="'ONTOLOGY.TAB.INFORMATION.DESCRIPTION' | translate"
     >
     </vitamui-input>
 
-    <vitamui-input
-      class="w-100"
-      [ngModel]="form.get('creationDate').value | dateTime: 'dd/MM/yyyy'"
-      [ngModelOptions]="{ standalone: true }"
-      [placeholder]="'ONTOLOGY.TAB.INFORMATION.CREATION_DATE' | translate"
-      [disabled]="true"
-    >
+    <vitamui-input class="w-100" [formField]="creationDateForm" [placeholder]="'ONTOLOGY.TAB.INFORMATION.CREATION_DATE' | translate">
     </vitamui-input>
   </div>
 
-  <button type="submit" class="btn primary" [disabled]="unchanged() || form.invalid || submitted()">
+  <button type="submit" class="btn primary" [disabled]="unchanged() || form().invalid() || submitted()">
     {{ 'COMMON.SAVE' | translate }}
   </button>
 </form>

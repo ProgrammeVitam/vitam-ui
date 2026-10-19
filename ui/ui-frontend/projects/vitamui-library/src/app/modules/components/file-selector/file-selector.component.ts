@@ -154,19 +154,35 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
     });
     this.control.valueChanges.subscribe((files) => this.filesChanged.emit(files));
     // Async validation (file content checks) resolves outside any template event: refresh the view (zoneless)
-    this.control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.cdr.markForCheck());
+    this.control.statusChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.cdr.markForCheck();
+      this.reportFileErrors();
+    });
   }
 
   // This is a promise that will resolve to the global errors after custom validation is run
   private globalErrors: Promise<ValidationErrors>;
+  // The global errors, once resolved
+  private resolvedGlobalErrors: ValidationErrors = {};
+
+  /** With [formField], reports the errors computed by the component to the field, so that the field (and its form) is invalid */
+  private reportFileErrors() {
+    const errors = {
+      ...this.maxSizeInBytesValidator(this.control),
+      ...this.maxFilesValidator(this.control),
+      ...this.resolvedGlobalErrors,
+    };
+    this.reportErrors(Object.keys(errors).length ? errors : null);
+  }
 
   private isInitialization = true;
 
-  override writeValue(): void {
+  override writeValue(value?: CustomFile[]): void {
     // Only add files to init the component from the form control value, otherwise it would be triggered after calling control.setValue
     if (this.isInitialization) {
       this.isInitialization = false;
-      this.addDisplayFiles(this.control.value);
+      // With [formField], writeValue is called before ngOnInit (when the control is not set yet)
+      this.addDisplayFiles(this.control ? this.control.value : value);
       return;
     }
   }
@@ -218,7 +234,8 @@ export class FileSelectorComponent extends AbstractFormInputDirective implements
       // displayFiles and their errors are updated after awaits: refresh the view (zoneless)
       this.cdr.markForCheck();
 
-      resolve(this.resumeGlobalErrors(globalErrors));
+      this.resolvedGlobalErrors = this.resumeGlobalErrors(globalErrors);
+      resolve(this.resolvedGlobalErrors);
     });
 
     return this.globalErrors;

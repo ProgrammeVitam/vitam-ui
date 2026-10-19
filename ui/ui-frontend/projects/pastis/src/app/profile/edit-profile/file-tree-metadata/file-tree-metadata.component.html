@@ -119,7 +119,7 @@
                 @case ('enumeration') {
                   @if (profileService.profileType === 'PA') {
                     <mat-select
-                      [ngModel]="element.valeurFixe"
+                      [value]="element.valeurFixe"
                       class="mat-select-valeur-fixe"
                       placeholder="Choisissez une valeur"
                       (selectionChange)="onChangeSelected(element, $event.value)"
@@ -156,8 +156,8 @@
             </th>
             <td *matCellDef="let element; index as i" class="pastis-metadata-table-col-small" mat-cell>
               <mat-select
-                (ngModelChange)="setNodeChildrenCardinalities(element, $event)"
-                [ngModel]="selectedCardinalities()[i]"
+                (valueChange)="setNodeChildrenCardinalities(element, $event)"
+                [value]="selectedCardinalities()[i]"
                 class="select-border"
                 disableRipple="true"
                 panelClass="vitamui-mat-select"
@@ -369,7 +369,7 @@
                 <div class="col-8">
                   <p class="pastis-indication">
                     {{ 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMAT_ENUMERATION_AUTORISES' | translate }}:
-                    @for (regex of availableRegex; track regex) {
+                    @for (regex of availableRegex(); track regex) {
                       <span>{{ regex.label }}, </span>
                     }
                   </p>
@@ -415,7 +415,7 @@
                 </button>
               </div>
             </div>
-            <mat-radio-group [(ngModel)]="radioExpressionReguliere">
+            <mat-radio-group [formField]="regexControlForm.mode">
               <div class="container">
                 <div class="row">
                   <div class="col-auto">
@@ -426,10 +426,9 @@
                   <div class="row col">
                     <div class="col-auto">
                       <vitamui-select
-                        [disabled]="availableRegex?.length <= 1"
-                        [(ngModel)]="regex"
-                        (change)="radioExpressionReguliere = 'select'"
-                        [options]="availableRegex"
+                        [formField]="regexControlForm.regex"
+                        (change)="setRegexControlMode('select')"
+                        [options]="availableRegex()"
                         [enableSearch]="false"
                       ></vitamui-select>
                     </div>
@@ -446,12 +445,9 @@
                       <vitamui-input
                         [textarea]="true"
                         class="w-100"
-                        [disabled]="isNotRegexCustomisable()"
                         [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' | translate"
-                        [(ngModel)]="customRegex"
-                        (ngModelChange)="radioExpressionReguliere = 'input'"
-                        [required]="radioExpressionReguliere === 'input'"
-                        [maxlength]="115"
+                        [formField]="regexControlForm.customRegex"
+                        (change)="setRegexControlMode('input')"
                       >
                       </vitamui-input>
                     </div>
@@ -459,12 +455,9 @@
                       <vitamui-input
                         [textarea]="true"
                         class="w-100"
-                        [disabled]="isNotRegexCustomisable()"
                         [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PATTERN_COMMENT' | translate"
-                        [(ngModel)]="commentaire"
-                        (ngModelChange)="radioExpressionReguliere = 'input'"
-                        [required]="radioExpressionReguliere === 'input'"
-                        [maxlength]="115"
+                        [formField]="regexControlForm.commentaire"
+                        (change)="setRegexControlMode('input')"
                       >
                       </vitamui-input>
                     </div>
@@ -479,10 +472,7 @@
           <div class="row mt-3">
             @if ((enumerationControl() || expressionControl()) && clickedControl()?.name === clickedNode().name) {
               <button
-                [disabled]="
-                  (enumsControlSelected.length <= 0 && regex === null && customRegex === null) ||
-                  (radioExpressionReguliere === 'input' && (!customRegex || !commentaire))
-                "
+                [disabled]="isSubmitControlsDisabled()"
                 class="btn primary ml-5"
                 style="text-transform: uppercase"
                 (click)="onSubmitControls()"

@@ -36,11 +36,14 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { PathKind } from '@angular/forms/signals';
+import { validateObservable } from 'vitamui-library';
 
 import { Observable, of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 
 import { CustomerService } from '../../core/customer.service';
+import { FieldPath } from '../../shared/signal-forms/signal-form-validators';
 
 export const CUSTOMER_CODE_MAX_LENGTH = 15;
 export const ALPHA_NUMERIC_REGEX = /^[a-zA-Z0-9]*$/;
@@ -62,6 +65,18 @@ export class CustomerCreateValidators {
       );
     };
   };
+
+  /** Signal forms version of `uniqueCode`: `codeToIgnore` is read each time the check runs. */
+  uniqueCodeRule<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    codeToIgnore: () => string = () => undefined,
+  ) {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (code: string) => (code !== codeToIgnore() ? this.customerService.exists({ code }) : of(false)),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'uniqueCode' } : undefined),
+    });
+  }
 
   uniqueDomain = (control: AbstractControl): Observable<ValidationErrors | null> => {
     return timer(this.debounceTime).pipe(

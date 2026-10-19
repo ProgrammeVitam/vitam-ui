@@ -3,12 +3,12 @@
   [title]="'RULES_APP.CREATE_DIALOG.SUBTITLE' | translate"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" cdkFocusInitial>
+<form [formRoot]="form" cdkFocusInitial>
   <mat-dialog-content class="gap-4">
     <div class="w-100 d-flex align-items-center">
       <vitamui-input
         class="w-100"
-        formControlName="ruleId"
+        [formField]="form.ruleId"
         [placeholder]="'RULES_APP.CREATE_DIALOG.IDENTIFIER' | translate"
         [errorMessageMap]="{
           ruleIdExists: 'RULES_APP.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate,
@@ -23,7 +23,7 @@
     <div class="w-100 d-flex align-items-center">
       <vitamui-select
         class="d-block w-100"
-        formControlName="ruleType"
+        [formField]="form.ruleType"
         [placeholder]="'RULES_APP.CREATE_DIALOG.TYPE' | translate"
         [options]="ruleTypes"
         [multiple]="false"
@@ -32,11 +32,11 @@
       <i class="vitamui-icon primary vitamui-icon-info ml-3" vitamuiTooltip="{{ 'RULES_APP.CREATE_DIALOG.TYPE_TOOLTIP' | translate }}"> </i>
     </div>
 
-    <vitamui-input class="w-100" formControlName="ruleValue" [placeholder]="'RULES_APP.CREATE_DIALOG.NAME' | translate"> </vitamui-input>
+    <vitamui-input class="w-100" [formField]="form.ruleValue" [placeholder]="'RULES_APP.CREATE_DIALOG.NAME' | translate"> </vitamui-input>
 
     <vitamui-input
       [textarea]="true"
-      formControlName="ruleDescription"
+      [formField]="form.ruleDescription"
       class="w-100"
       [placeholder]="'RULES_APP.CREATE_DIALOG.DESCRIPTION' | translate"
     >
@@ -45,7 +45,7 @@
     <div class="w-100 hgap-2 align-items-start">
       <vitamui-input
         class="w-50"
-        formControlName="ruleDuration"
+        [formField]="form.ruleDuration"
         [placeholder]="'RULES_APP.CREATE_DIALOG.PERIOD' | translate"
         [errorMessageMap]="{
           pattern: 'RULES_APP.TAB.ERROR.INTEGER_REQUIRED' | translate,
@@ -55,7 +55,7 @@
 
       <vitamui-select
         class="w-50"
-        formControlName="ruleMeasurement"
+        [formField]="form.ruleMeasurement"
         [placeholder]="'RULES_APP.CREATE_DIALOG.UNIT_MEASURE' | translate"
         [options]="ruleMeasurements"
         [multiple]="false"
@@ -65,7 +65,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton()">
+    <button type="submit" class="btn primary" [disabled]="form().pending() || form().invalid() || isDisabledButton()">
       {{ 'COMMON.TERMINATE' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">

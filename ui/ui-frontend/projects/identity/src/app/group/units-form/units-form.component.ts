@@ -34,15 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, OnInit, input } from '@angular/core';
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  ValidationErrors,
-} from '@angular/forms';
+import { Component, forwardRef, inject, input, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { form, FormField, validate } from '@angular/forms/signals';
 import { GroupValidators } from '../group.validators';
 import { EllipsisDirective, InputComponent } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -62,24 +56,31 @@ export const UNITS_FORM_VALUE_ACCESSOR: any = {
   templateUrl: './units-form.component.html',
   styleUrls: ['./units-form.component.scss'],
   providers: [UNITS_FORM_VALUE_ACCESSOR],
-  imports: [InputComponent, ReactiveFormsModule, TranslatePipe, CommonModule, EllipsisDirective],
+  imports: [InputComponent, FormField, TranslatePipe, CommonModule, EllipsisDirective],
 })
-export class UnitsFormComponent implements ControlValueAccessor, OnInit {
+export class UnitsFormComponent implements ControlValueAccessor {
   private readonly groupValidators = inject(GroupValidators);
 
-  units: string[] = [];
+  readonly units = signal<string[]>([]);
 
   removedUnits: string[] = [];
 
-  unitControl: FormControl;
-
   readonly customer = input<string>(undefined);
+
+  readonly unitForm = form(signal({ unit: '' }), (path) => {
+    validate(path.unit, ({ value }) => (this.unitAlreadyAdd(value()) ? { kind: 'unitAlreadyAdd' } : undefined));
+    this.groupValidators.unitExistsRule(
+      path.unit,
+      () => this.customer(),
+      () => this.removedUnits,
+    );
+  });
 
   onChange = (_: any) => {};
   onTouched = () => {};
 
   writeValue(value: string[]) {
-    this.units = value || [];
+    this.units.set(value || []);
   }
 
   registerOnChange(fn: any): void {
@@ -90,31 +91,24 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit {
     this.onTouched = fn;
   }
 
-  ngOnInit(): void {
-    this.unitControl = new FormControl(
-      '',
-      [this.unitAlreadyAdd.bind(this)],
-      this.groupValidators.unitExists(this.customer(), this.removedUnits),
-    );
-  }
-
   /**
    * Add units
    */
   add() {
-    let val = this.unitControl.value;
-    if (!val || this.unitControl.pending || this.unitControl.invalid) {
+    const unitField = this.unitForm.unit();
+    let val = unitField.value();
+    if (!val || unitField.pending() || unitField.invalid()) {
       return;
     }
-    this.unitControl.reset();
+    this.unitForm().reset({ unit: '' });
     val = val.trim();
     const elementToRemoveIndex = this.removedUnits.indexOf(val);
     if (elementToRemoveIndex > -1) {
       this.removedUnits.splice(elementToRemoveIndex, 1);
     }
-    this.units.push(val);
-    this.sortUnits();
-    this.onChange(this.units);
+    // A new array is emitted so that signal forms detect the change
+    this.units.set(this.sortUnits([...this.units(), val]));
+    this.onChange(this.units());
   }
 
   /**
@@ -122,25 +116,23 @@ export class UnitsFormComponent implements ControlValueAccessor, OnInit {
    */
   remove(unitToRemove: string) {
     this.removedUnits.push(unitToRemove);
-    this.units = this.units.filter((unit) => unit !== unitToRemove);
-    this.onChange(this.units);
+    this.units.set(this.units().filter((unit) => unit !== unitToRemove));
+    this.onChange(this.units());
   }
 
   /**
    * Sort by alphebatic order
    */
-  sortUnits() {
-    this.units.sort((a: any, b: any) => a.localeCompare(b));
+  sortUnits(units: string[]): string[] {
+    return units.sort((a: any, b: any) => a.localeCompare(b));
   }
 
-  unitAlreadyAdd(control: AbstractControl): ValidationErrors {
-    const unit: string = control.value;
-    if (unit && this.units.map((u) => u.toLocaleLowerCase()).includes(unit.trim().toLocaleLowerCase())) {
-      return {
-        unitAlreadyAdd: true,
-      };
-    }
-
-    return null;
+  unitAlreadyAdd(unit: string): boolean {
+    return (
+      !!unit &&
+      this.units()
+        .map((u) => u.toLocaleLowerCase())
+        .includes(unit.trim().toLocaleLowerCase())
+    );
   }
 }

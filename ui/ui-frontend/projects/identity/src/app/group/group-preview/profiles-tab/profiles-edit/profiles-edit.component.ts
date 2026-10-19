@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, DialogHeaderComponent, Group } from 'vitamui-library';
+import { ConfirmDialogService, DialogHeaderComponent, Group, requiredValue } from 'vitamui-library';
 import { GroupService } from '../../../group.service';
 import { ProfilesFormComponent } from '../../../../shared/profiles-form/profiles-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-profiles-edit',
   templateUrl: './profiles-edit.component.html',
   styleUrls: ['./profiles-edit.component.scss'],
-  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, ProfilesFormComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, FormField, FormRoot, MatDialogContent, ProfilesFormComponent, MatDialogActions, TranslatePipe],
 })
 export class ProfilesEditComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ProfilesEditComponent>>(MatDialogRef);
@@ -57,17 +57,13 @@ export class ProfilesEditComponent implements OnInit, OnDestroy {
   private readonly groupService = inject(GroupService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  form: FormGroup;
+  readonly form = form(
+    signal<{ profileIds: string[] }>({ profileIds: this.data.group.profileIds }),
+    (path) => requiredValue(path.profileIds),
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
 
   private keyPressSubscription: Subscription;
-
-  constructor() {
-    const formBuilder = inject(FormBuilder);
-
-    this.form = formBuilder.group({
-      profileIds: [this.data.group.profileIds, Validators.required],
-    });
-  }
 
   ngOnInit() {
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -78,10 +74,10 @@ export class ProfilesEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.pristine || this.form.invalid) {
+    if (!this.form().dirty() || this.form().invalid()) {
       return;
     }
-    this.groupService.patch({ id: this.data.group.id, profileIds: this.form.value.profileIds }).subscribe(
+    this.groupService.patch({ id: this.data.group.id, profileIds: this.form.profileIds().value() }).subscribe(
       (response) => this.dialogRef.close(response),
       (error) => {
         console.error(error);
@@ -90,7 +86,7 @@ export class ProfilesEditComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, computed, HostListener, inject, input } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, HostListener, inject, input, linkedSignal } from '@angular/core';
+import { form, FormField, required } from '@angular/forms/signals';
 import { InputComponent } from '../../../../lib/components/input/input.component';
 
 import { Discussion, DiscussionService } from '../discussion.service';
@@ -44,7 +44,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'vitamui-discussion-rename',
-  imports: [InputComponent, ReactiveFormsModule, TranslatePipe],
+  imports: [InputComponent, FormField, TranslatePipe],
   templateUrl: './discussion-rename.component.html',
   styleUrl: './discussion-rename.component.scss',
 })
@@ -54,17 +54,19 @@ export class DiscussionRenameComponent {
 
   discussion = input.required<Discussion>();
 
-  title = computed(() => new FormControl(this.discussion().title, Validators.required));
+  // Reset when the discussion changes
+  readonly title = linkedSignal(() => this.discussion().title);
+  readonly titleForm = form(this.title, (path) => required(path));
 
   isControlValid() {
-    return this.title().valid && this.title().value !== this.discussion().title;
+    return this.titleForm().valid() && this.title() !== this.discussion().title;
   }
 
   @HostListener('keydown.control.enter')
   @HostListener('keydown.meta.enter')
   async rename() {
     if (!this.isControlValid()) return;
-    await this.discussionService.renameDiscussion(this.discussion(), this.title().value);
+    await this.discussionService.renameDiscussion(this.discussion(), this.title());
     this.discussionPanelService.componentState.set('DISCUSSION');
   }
 }

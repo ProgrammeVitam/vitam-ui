@@ -34,8 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { applyEach, disabled, form, FormField, maxLength, required } from '@angular/forms/signals';
+import { provideTranslateService } from '@ngx-translate/core';
 
 import { input } from '../../../../testing/src/helpers';
 import { TooltipDirective } from '../../../app/modules/components/common-tooltip/tooltip.directive';
@@ -167,6 +170,130 @@ describe('VitamuiInputComponent', () => {
       expect(getInputs().length).toBe(1);
 
       expect(onChangeSpy).toHaveBeenCalledWith([initialValues[0]]);
+    });
+  });
+
+  describe('signal forms', () => {
+    @Component({
+      template: `<vitamui-input [formField]="testForm.name" placeholder="Name"></vitamui-input>`,
+      imports: [InputComponent, FormField],
+    })
+    class SignalFormHostComponent {
+      readonly locked = signal(false);
+      readonly testForm = form(signal({ name: '' }), (path) => {
+        required(path.name);
+        maxLength(path.name, 3);
+        disabled(path.name, () => this.locked());
+      });
+    }
+
+    let hostFixture: ComponentFixture<SignalFormHostComponent>;
+    let host: SignalFormHostComponent;
+
+    beforeEach(async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [SignalFormHostComponent],
+        providers: [provideTranslateService()],
+      }).compileComponents();
+      hostFixture = TestBed.createComponent(SignalFormHostComponent);
+      host = hostFixture.componentInstance;
+      await hostFixture.whenStable();
+    });
+
+    it('should display the required marker', () => {
+      expect(hostFixture.nativeElement.querySelector('.required-marker')).toBeTruthy();
+    });
+
+    it('should update the field value on input', () => {
+      input(hostFixture.nativeElement.querySelector('input'), 'ab');
+      expect(host.testForm.name().value()).toEqual('ab');
+    });
+
+    it('should display the field errors once touched', async () => {
+      input(hostFixture.nativeElement.querySelector('input'), 'abcd');
+      hostFixture.nativeElement.querySelector('input').dispatchEvent(new Event('blur'));
+      await hostFixture.whenStable();
+
+      expect(host.testForm.name().touched()).toBe(true);
+      expect(hostFixture.nativeElement.querySelectorAll('vitamui-form-error').length).toEqual(1);
+    });
+
+    it('should display the value set on the field', async () => {
+      host.testForm.name().value.set('xyz');
+      await hostFixture.whenStable();
+      expect(hostFixture.nativeElement.querySelector('input').value).toEqual('xyz');
+    });
+
+    it('should disable the input when the field is disabled', async () => {
+      host.locked.set(true);
+      await hostFixture.whenStable();
+
+      expect(hostFixture.nativeElement.querySelector('input').disabled).toBe(true);
+    });
+  });
+
+  describe('signal forms array', () => {
+    @Component({
+      template: `
+        @for (item of testForm.items; track $index) {
+          <vitamui-input [formField]="item.name" placeholder="Name"></vitamui-input>
+        }
+      `,
+      imports: [InputComponent, FormField],
+    })
+    class SignalFormArrayHostComponent {
+      readonly model = signal({ items: [{ name: 'a' }, { name: 'b' }, { name: 'c' }] });
+      readonly testForm = form(this.model, (path) => {
+        applyEach(path.items, (item) => required(item.name));
+      });
+    }
+
+    let hostFixture: ComponentFixture<SignalFormArrayHostComponent>;
+    let host: SignalFormArrayHostComponent;
+
+    const inputValues = () =>
+      Array.from(hostFixture.nativeElement.querySelectorAll('input') as NodeListOf<HTMLInputElement>).map((element) => element.value);
+
+    beforeEach(async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({
+        imports: [SignalFormArrayHostComponent],
+        providers: [provideTranslateService()],
+      }).compileComponents();
+      hostFixture = TestBed.createComponent(SignalFormArrayHostComponent);
+      host = hostFixture.componentInstance;
+      await hostFixture.whenStable();
+    });
+
+    it('should support removing an item of the array', async () => {
+      host.model.update(({ items }) => ({ items: items.filter((_, index) => index !== 0) }));
+      await hostFixture.whenStable();
+      // Let the pending timeouts (updateDisabled) run on the remaining and destroyed inputs
+      await new Promise((resolve) => setTimeout(resolve));
+      await hostFixture.whenStable();
+
+      expect(inputValues()).toEqual(['b', 'c']);
+    });
+
+    it('should support replacing an item of the array', async () => {
+      host.model.update(({ items }) => ({ items: [{ name: 'x' }, ...items.slice(1)] }));
+      await hostFixture.whenStable();
+      await new Promise((resolve) => setTimeout(resolve));
+      await hostFixture.whenStable();
+
+      expect(inputValues()).toEqual(['x', 'b', 'c']);
+    });
+
+    it('should support items added and removed in the same change detection', async () => {
+      host.model.update(({ items }) => ({ items: [{ name: 'y' }] }));
+      host.model.update(({ items }) => ({ items: [...items, { name: 'z' }] }));
+      await new Promise((resolve) => setTimeout(resolve));
+      await hostFixture.whenStable();
+      await new Promise((resolve) => setTimeout(resolve));
+
+      expect(inputValues()).toEqual(['y', 'z']);
+      expect(host.testForm().valid()).toBe(true);
     });
   });
 });

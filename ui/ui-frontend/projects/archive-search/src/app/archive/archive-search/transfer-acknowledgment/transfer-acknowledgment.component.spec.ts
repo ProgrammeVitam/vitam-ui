@@ -36,9 +36,10 @@
  */
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { of } from 'rxjs';
-import { BytesPipe, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
+import { BytesPipe, FileSelectorComponent, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { TransferAcknowledgmentComponent } from './transfer-acknowledgment.component';
 import { DecimalPipe } from '@angular/common';
@@ -113,7 +114,7 @@ describe('TransferAcknowledgmentComponent', () => {
     const matDialogRef = TestBed.inject(MatDialogRef);
 
     const file = new File([''], '');
-    component.atrControl.setValue([file]);
+    component.atrForm().value.set([file]);
     component.data.tenantIdentifier = '42';
 
     component.applyTransferAcknowledgment();
@@ -171,6 +172,43 @@ describe('TransferAcknowledgmentComponent', () => {
     expect(errors).toBeTruthy();
     expect(errors.fileErrors['fileBadFormat']).toBeTruthy();
     expect(errors.controlErrors['invalidFiles']).toBeTruthy();
+  });
+
+  describe('ATR file selection', () => {
+    const selectFile = async (file: File) => {
+      const fileSelector: FileSelectorComponent = fixture.debugElement.query(By.directive(FileSelectorComponent)).componentInstance;
+      await fileSelector.handleFilesSelection([file]);
+      await fixture.whenStable();
+    };
+    const nextStepButton = (): HTMLButtonElement => fixture.nativeElement.querySelector('vitamui-next-step button');
+
+    it('should disable the next step button when no file is selected', async () => {
+      await fixture.whenStable();
+
+      expect(component.atrForm().invalid()).toBe(true);
+      expect(nextStepButton().disabled).toBe(true);
+    });
+
+    it('should enable the next step button when a valid ATR is selected', async () => {
+      await selectFile(new File(['<ArchiveTransferReply><MessageIdentifier>id</MessageIdentifier></ArchiveTransferReply>'], 'atr.xml'));
+
+      expect(component.atrForm().valid()).toBe(true);
+      expect(nextStepButton().disabled).toBe(false);
+    });
+
+    it('should keep the next step button disabled when the file has an invalid extension', async () => {
+      await selectFile(new File(['content'], 'atr.txt'));
+
+      expect(component.atrForm().invalid()).toBe(true);
+      expect(nextStepButton().disabled).toBe(true);
+    });
+
+    it('should keep the next step button disabled when the file is not an ATR', async () => {
+      await selectFile(new File(['<NotAnATR></NotAnATR>'], 'atr.xml'));
+
+      expect(component.atrForm().invalid()).toBe(true);
+      expect(nextStepButton().disabled).toBe(true);
+    });
   });
 
   describe('DOM', () => {

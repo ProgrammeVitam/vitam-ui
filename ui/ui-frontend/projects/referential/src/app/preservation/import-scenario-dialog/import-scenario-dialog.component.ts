@@ -34,40 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import {
   DialogHeaderComponent,
   FileSelectorComponent,
   FileSelectorValidators,
   PreservationScenariosService,
   readFileContent,
+  requiredValue,
   SnackBarService,
 } from 'vitamui-library';
 import { MatDialogActions, MatDialogClose, MatDialogContent } from '@angular/material/dialog';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './import-scenario-dialog.component.html',
-  imports: [
-    DialogHeaderComponent,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    FileSelectorComponent,
-    ReactiveFormsModule,
-    TranslatePipe,
-  ],
+  imports: [DialogHeaderComponent, MatDialogContent, MatDialogActions, MatDialogClose, FileSelectorComponent, FormField, TranslatePipe],
 })
 export class ImportScenarioDialogComponent {
-  protected files = new FormControl([], Validators.required);
+  protected readonly uploadForm = form(signal<{ files: File[] }>({ files: [] }), (path) => requiredValue(path.files));
 
   private readonly preservationScenariosService = inject(PreservationScenariosService);
   private readonly snackBarService = inject(SnackBarService);
 
   protected async import() {
-    const preservationScenarios = JSON.parse(await readFileContent(this.files.value[0]));
+    const preservationScenarios = JSON.parse(await readFileContent(this.uploadForm.files().value()[0]));
     this.preservationScenariosService.put(preservationScenarios).subscribe({
       next: (operationId) => {
         this.snackBarService.open(

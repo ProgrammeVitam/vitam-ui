@@ -1,21 +1,28 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
+<form [formRoot]="form" class="gap-5">
   <div class="gap-3 align-items-stretch w-100">
-    <vitamui-slide-toggle [formControl]="statusControl" class="w-100">
-      <span>{{ 'INGEST_CONTRACT.TAB.INFORMATION.' + (statusControl.value ? 'ACTIVE_CONTRACT' : 'INACTIVE_CONTRACT') | translate }}</span>
+    <vitamui-slide-toggle
+      [checked]="form.status().value() === 'ACTIVE'"
+      [disabled]="!!readOnly()"
+      (checkedChange)="onStatusChange($event)"
+      class="w-100"
+    >
+      <span>{{
+        'INGEST_CONTRACT.TAB.INFORMATION.' + (form.status().value() === 'ACTIVE' ? 'ACTIVE_CONTRACT' : 'INACTIVE_CONTRACT') | translate
+      }}</span>
     </vitamui-slide-toggle>
 
     <vitamui-input
-      formControlName="name"
+      [formField]="form.name"
       [placeholder]="'COMMON.NAME' | translate"
       class="w-100"
       [errorMessageMap]="{ nameExists: 'COMMON.NAME_ALREADY_EXISTS' | translate }"
     >
     </vitamui-input>
 
-    <vitamui-input [textarea]="true" formControlName="description" [placeholder]="'COMMON.DESCRIPTION' | translate"> </vitamui-input>
+    <vitamui-input [textarea]="true" [formField]="form.description" [placeholder]="'COMMON.DESCRIPTION' | translate"> </vitamui-input>
 
     <vitamui-select
-      formControlName="archiveProfiles"
+      [formField]="form.archiveProfiles"
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.ARCHIVE_PROFILE' | translate"
       [options]="archiveProfiles"
       [multiple]="true"
@@ -26,7 +33,7 @@
     </vitamui-select>
 
     <vitamui-select
-      formControlName="managementContractId"
+      [formField]="form.managementContractId"
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.MANAGEMENT_CONTRACT' | translate"
       [options]="managementContracts"
       [multiple]="false"
@@ -38,34 +45,22 @@
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.CREATION_DATE' | translate"
-      [ngModel]="ingestContract().creationDate ? (ingestContract().creationDate | dateTime: 'dd/MM/yyyy') : '-'"
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.creationDate"
     ></vitamui-input>
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.LAST_MODIFICATION_DATE' | translate"
-      [ngModel]="ingestContract().lastUpdate ? (ingestContract().lastUpdate | dateTime: 'dd/MM/yyyy') : '-'"
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.lastUpdate"
     ></vitamui-input>
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.ACTIVATION_DATE' | translate"
-      [ngModel]="
-        ingestContract()?.status === 'ACTIVE' && ingestContract()?.activationDate
-          ? (ingestContract().activationDate | dateTime: 'dd/MM/yyyy')
-          : '-'
-      "
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.activationDate"
     ></vitamui-input>
 
     <vitamui-input
       [placeholder]="'INGEST_CONTRACT.TAB.INFORMATION.DEACTIVATION_DATE' | translate"
-      [ngModel]="ingestContract()?.deactivationDate ? (ingestContract().deactivationDate | dateTime: 'dd/MM/yyyy') : '-'"
-      [ngModelOptions]="{ standalone: true }"
-      disabled
+      [formField]="datesForm.deactivationDate"
     ></vitamui-input>
   </div>
 

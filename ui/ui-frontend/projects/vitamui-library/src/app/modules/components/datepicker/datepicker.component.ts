@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {
+  ChangeDetectorRef,
   Component,
   computed,
   ElementRef,
@@ -62,6 +63,10 @@ import { FormErrorsComponent } from '../../../../lib/components/form-errors/form
 import { DateTime } from 'luxon';
 import { TranslatePipe } from '@ngx-translate/core';
 
+function toDate(value: Date | number | null | undefined): Date | null {
+  return typeof value === 'number' ? new Date(value) : (value ?? null);
+}
+
 export const DATEPICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DatepickerComponent),
@@ -86,6 +91,7 @@ export const DATEPICKER_VALUE_ACCESSOR: any = {
 })
 export class DatepickerComponent extends AbstractFormInputDirective implements OnInit {
   private readonly datePipe = inject(DatePipe);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   readonly pickerType = input<PickerType>('day');
   // May be yyyy-MM-dd, dd/MM/yyyy, yyyy or any other date format
@@ -93,14 +99,16 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   readonly startView = model<MatDatepicker<Date>['startView']>(undefined);
   readonly label = input('DATE.DATE');
   readonly hint = input<string>(undefined);
-  readonly min = input<Date>(undefined);
-  readonly max = input<Date>(undefined);
+  // Also accept a timestamp (number), as set by [formField] from the field min/max metadata
+  readonly min = input<Date | number | null>(undefined);
+  readonly max = input<Date | number | null>(undefined);
+  protected readonly minDate = computed(() => toDate(this.min()));
+  protected readonly maxDate = computed(() => toDate(this.max()));
   readonly outputType = input<'String' | 'Date'>('String');
 
   // We store a value specific for the datepicker to store a Date object and not a String for datepicker to keep the currently selected value
   datePickerValue: Date;
   displayedValue = '';
-  selectedFormat: Signal<string>;
 
   @HostBinding('class.vitamui-float')
   get labelFloat(): boolean {
@@ -130,6 +138,9 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
     ['year', 'yyyy'],
   ]);
 
+  // Declared as a field (and not in ngOnInit) because writeValue can be called before ngOnInit (e.g. with [formField])
+  readonly selectedFormat: Signal<string> = computed(() => this.format() || this.defaultFormatMapping.get(this.pickerType()));
+
   constructor() {
     const injector = inject(Injector);
 
@@ -138,8 +149,6 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
 
   override ngOnInit() {
     super.ngOnInit();
-
-    this.selectedFormat = computed(() => this.format() || this.defaultFormatMapping.get(this.pickerType()));
 
     if (!this.startView()) this.startView.set(this.startViewMapping.get(this.pickerType()));
     this.control.addValidators((control: AbstractControl<Date | string>) => {
@@ -151,6 +160,8 @@ export class DatepickerComponent extends AbstractFormInputDirective implements O
   override writeValue(value: string | Date) {
     this.displayedValue = this.formatDateToString(value);
     this.datePickerValue = value ? (value instanceof Date ? value : DateTime.fromFormat(value, this.selectedFormat()).toJSDate()) : null;
+    // writeValue may be called outside of change detection (zoneless)
+    this.cdr.markForCheck();
   }
 
   onFocus() {

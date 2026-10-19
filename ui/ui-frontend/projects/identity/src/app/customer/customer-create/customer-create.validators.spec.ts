@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
@@ -137,5 +139,41 @@ describe('Customer Create Validators', () => {
       vi.advanceTimersByTime(400);
       expect(customerServiceSpy.exists).toHaveBeenCalledWith({ domain: 'test.com' });
     });
+  });
+});
+
+describe('Customer Create Validators (signal forms)', () => {
+  const createForm = (exists: boolean, codeToIgnore?: string) => {
+    const customerServiceSpy = { exists: vi.fn().mockName('CustomerService.exists').mockReturnValue(of(exists)) };
+    TestBed.configureTestingModule({ providers: [{ provide: CustomerService, useValue: customerServiceSpy }] });
+    const validators = TestBed.inject(CustomerCreateValidators);
+    const codeForm = TestBed.runInInjectionContext(() =>
+      form(signal({ code: '' }), (path) => validators.uniqueCodeRule(path.code, () => codeToIgnore)),
+    );
+    return { codeForm, customerServiceSpy };
+  };
+
+  it('should set the uniqueCode error', async () => {
+    const { codeForm, customerServiceSpy } = createForm(true);
+    codeForm.code().value.set('123456');
+    TestBed.tick();
+    expect(codeForm.code().pending()).toBe(true);
+    await vi.advanceTimersByTimeAsync(400);
+    expect(customerServiceSpy.exists).toHaveBeenCalledWith({ code: '123456' });
+    expect(
+      codeForm
+        .code()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['uniqueCode']);
+  });
+
+  it('should not call the service for the code to ignore', async () => {
+    const { codeForm, customerServiceSpy } = createForm(true, '123456');
+    codeForm.code().value.set('123456');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(customerServiceSpy.exists).not.toHaveBeenCalled();
+    expect(codeForm.code().valid()).toBe(true);
   });
 });

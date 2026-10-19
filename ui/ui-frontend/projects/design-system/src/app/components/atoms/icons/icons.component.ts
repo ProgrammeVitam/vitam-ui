@@ -34,22 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-
-import { FormsModule } from '@angular/forms';
+import { Component, signal } from '@angular/core';
+import { form, FormField } from '@angular/forms/signals';
 import { SelectComponent } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss'],
-  imports: [TranslatePipe, FormsModule, SelectComponent],
+  imports: [TranslatePipe, FormField, SelectComponent],
 })
 export class IconsComponent {
   icons: string[];
   coloredIcons: { [key: string]: string[] };
   colors = ['primary', 'secondary', 'danger', 'success', 'warning', 'light'] as const;
-  selectedColor: string = '';
+  readonly colorForm = form(signal<{ selectedColor: string }>({ selectedColor: '' }));
 
   colorOptions = { options: this.colors.map((color) => ({ key: color, label: color })) };
 

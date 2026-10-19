@@ -36,7 +36,6 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, of } from 'rxjs';
@@ -55,15 +54,8 @@ describe('IngestContractCreateComponent', () => {
 
   beforeEach(async () => {
     const ingestContractCreateValidatorsSpy = {
-      uniqueName: vi
-        .fn()
-        .mockName('IngestContractCreateValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
-      uniqueIdentifier: vi
-        .fn()
-        .mockName('IngestContractCreateValidators.uniqueIdentifier')
-        .mockReturnValue(() => of(null)),
-      identifierToIgnore: vi.fn().mockName('IngestContractCreateValidators.identifierToIgnore').mockReturnValue(''),
+      uniqueName: vi.fn().mockName('IngestContractCreateValidators.uniqueName'),
+      uniqueIdentifier: vi.fn().mockName('IngestContractCreateValidators.uniqueIdentifier'),
     };
 
     const accessContractServiceMock = {
@@ -91,7 +83,6 @@ describe('IngestContractCreateComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [IngestContractCreateComponent, VitamUICommonTestModule, LoggerModule.forRoot(), MatButtonToggleModule],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: IngestContractService, useValue: {} },

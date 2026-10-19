@@ -35,10 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { PathKind, SchemaPath, SchemaPathRules, validate, ValidationError } from '@angular/forms/signals';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { validateObservable } from 'vitamui-library';
 import { ArchiveService } from '../../../archive.service';
+
+type EntryOperationIdsError = ValidationError & Record<string, unknown>;
 
 @Injectable({
   providedIn: 'root',
@@ -55,66 +58,65 @@ export class EntryOperationValidatorService {
    * - Validates each operation ID exists in the logbook via backend API
    * - Returns validation errors for invalid or non-existent IDs
    */
-  validateEntryOperationIds(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      const value = control.value;
+  validateEntryOperationIds<TPathKind extends PathKind = PathKind.Root>(
+    path: SchemaPath<string, SchemaPathRules.Supported, TPathKind>,
+  ): void {
+    // Check if value is only whitespace
+    validate(path, ({ value }) => (value() && value().trim().length === 0 ? { kind: 'whitespaceOnly' } : undefined));
 
-      // Don't validate empty values (use Validators.required for that)
-      if (!value) {
-        return of(null);
-      }
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (value) => this.entryOperationIdsErrors(value),
+      onSuccess: (error) => error ?? undefined,
+    });
+  }
 
-      // Check if value is only whitespace
-      if (typeof value === 'string' && value.trim().length === 0) {
-        return of({ whitespaceOnly: true });
-      }
+  private entryOperationIdsErrors(value: string): Observable<EntryOperationIdsError | null> {
+    // Don't validate empty values (use required for that)
+    if (!value) {
+      return of(null);
+    }
 
-      return timer(this.debounceTime).pipe(
-        switchMap(() => {
-          // Split, trim, and filter out empty values
-          const idsArray = value
-            .split(',')
-            .map((id: string) => id.trim())
-            .filter((id: string) => id.length > 0);
+    // Split, trim, and filter out empty values
+    const idsArray = value
+      .split(',')
+      .map((id: string) => id.trim())
+      .filter((id: string) => id.length > 0);
 
-          if (idsArray.length === 0) {
-            return of({ emptyAfterTrim: true });
-          }
+    if (idsArray.length === 0) {
+      return of({ kind: 'emptyAfterTrim' });
+    }
 
-          // Check for duplicates
-          const uniqueIds = new Set(idsArray);
-          if (uniqueIds.size !== idsArray.length) {
-            const duplicateIds = idsArray.filter((id: string, index: number) => idsArray.indexOf(id) !== index);
-            return of({ duplicateIds: { duplicateIds: [...new Set(duplicateIds)].join(', ') } });
-          }
+    // Check for duplicates
+    const uniqueIds = new Set(idsArray);
+    if (uniqueIds.size !== idsArray.length) {
+      const duplicateIds = idsArray.filter((id: string, index: number) => idsArray.indexOf(id) !== index);
+      return of({ kind: 'duplicateIds', duplicateIds: [...new Set(duplicateIds)].join(', ') });
+    }
 
-          // Validate format: 36 lowercase alphanumeric characters
-          const operationIdPattern = /^[a-z0-9]{36}$/;
-          const invalidFormatIds = idsArray.filter((id: string) => !operationIdPattern.test(id));
+    // Validate format: 36 lowercase alphanumeric characters
+    const operationIdPattern = /^[a-z0-9]{36}$/;
+    const invalidFormatIds = idsArray.filter((id: string) => !operationIdPattern.test(id));
 
-          if (invalidFormatIds.length > 0) {
-            return of({ invalidFormat: { invalidIds: invalidFormatIds.join(', ') } });
-          }
+    if (invalidFormatIds.length > 0) {
+      return of({ kind: 'invalidFormat', invalidIds: invalidFormatIds.join(', ') });
+    }
 
-          // check existence
-          return this.archiveService.checkOperationIdsExistence(idsArray).pipe(
-            map((existenceMap: { [key: string]: boolean }) => {
-              const invalidIds = idsArray.filter((id: string) => !existenceMap[id]);
+    // check existence
+    return this.archiveService.checkOperationIdsExistence(idsArray).pipe(
+      map((existenceMap: { [key: string]: boolean }) => {
+        const invalidIds = idsArray.filter((id: string) => !existenceMap[id]);
 
-              if (invalidIds.length > 0) {
-                return { invalidOperationIds: { invalidIds: invalidIds.join(', ') } };
-              }
+        if (invalidIds.length > 0) {
+          return { kind: 'invalidOperationIds', invalidIds: invalidIds.join(', ') };
+        }
 
-              return null;
-            }),
-            catchError(() => {
-              // In case of error, consider all IDs as potentially invalid
-              return of({ invalidOperationIds: { invalidIds: idsArray.join(', ') } });
-            }),
-          );
-        }),
-        take(1),
-      );
-    };
+        return null;
+      }),
+      catchError(() => {
+        // In case of error, consider all IDs as potentially invalid
+        return of({ kind: 'invalidOperationIds', invalidIds: idsArray.join(', ') });
+      }),
+    );
   }
 }

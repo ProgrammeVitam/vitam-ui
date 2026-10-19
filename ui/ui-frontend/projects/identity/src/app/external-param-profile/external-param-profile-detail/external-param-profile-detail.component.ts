@@ -45,7 +45,6 @@ import { ThresholdsTabComponent } from './thresholds-tab/thresholds-tab.componen
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-external-param-profile-detail',
@@ -60,7 +59,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })

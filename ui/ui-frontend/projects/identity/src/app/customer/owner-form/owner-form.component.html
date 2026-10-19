@@ -1,41 +1,36 @@
 <div class="gap-3 align-items-stretch">
-  <ng-container [formGroup]="form">
-    <vitamui-input
-      class="col-6 pl-0"
-      formControlName="code"
-      [placeholder]="'CUSTOMER.OWNER.CODE' | translate"
-      [errorMessageMap]="{
-        pattern: 'COMMON.ERROR.WRONG_FORMAT' | translate,
-        uniqueCode: 'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate,
-      }"
-    >
+  <vitamui-input
+    class="col-6 pl-0"
+    [formField]="form.code"
+    [placeholder]="'CUSTOMER.OWNER.CODE' | translate"
+    [errorMessageMap]="{
+      pattern: 'COMMON.ERROR.WRONG_FORMAT' | translate,
+      uniqueCode: 'CUSTOMER.OWNER.MODAL.CODE_ALREADY_EXIST' | translate,
+    }"
+  >
+  </vitamui-input>
+
+  <div class="d-flex">
+    <vitamui-input class="col-6 pl-0" [formField]="form.name" [placeholder]="'CUSTOMER.OWNER.NAME' | translate"> </vitamui-input>
+    <vitamui-input class="col-6" [formField]="form.companyName" [placeholder]="'CUSTOMER.OWNER.SOCIAL_REASON' | translate"> </vitamui-input>
+  </div>
+
+  <vitamui-input class="col-12 pl-0" [formField]="form.address.street" [placeholder]="'COMMON.ADRESS.STREET' | translate"> </vitamui-input>
+
+  <div class="d-flex">
+    <vitamui-input class="col-4 pl-0" [formField]="form.address.zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
     </vitamui-input>
+    <vitamui-input class="col-4" [formField]="form.address.city" [placeholder]="'COMMON.ADRESS.CITY' | translate"> </vitamui-input>
+    <vitamui-select
+      class="col-4"
+      [formField]="form.address.country"
+      [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
+      [options]="{ options: countries }"
+      [multiple]="false"
+      [enableSearch]="false"
+    ></vitamui-select>
+  </div>
 
-    <div class="d-flex">
-      <vitamui-input class="col-6 pl-0" formControlName="name" [placeholder]="'CUSTOMER.OWNER.NAME' | translate"> </vitamui-input>
-      <vitamui-input class="col-6" formControlName="companyName" [placeholder]="'CUSTOMER.OWNER.SOCIAL_REASON' | translate">
-      </vitamui-input>
-    </div>
-
-    <ng-container formGroupName="address">
-      <vitamui-input class="col-12 pl-0" formControlName="street" [placeholder]="'COMMON.ADRESS.STREET' | translate"> </vitamui-input>
-
-      <div class="d-flex">
-        <vitamui-input class="col-4 pl-0" formControlName="zipCode" [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate"> </vitamui-input>
-        <vitamui-input class="col-4" formControlName="city" [maxlength]="100" [placeholder]="'COMMON.ADRESS.CITY' | translate">
-        </vitamui-input>
-        <vitamui-select
-          class="col-4"
-          formControlName="country"
-          [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
-          [options]="{ options: countries }"
-          [multiple]="false"
-          [enableSearch]="false"
-        ></vitamui-select>
-      </div>
-    </ng-container>
-
-    <vitamui-input class="col-12 pl-0" formControlName="internalCode" [placeholder]="'CUSTOMER.OWNER.INTERNAL_CODE' | translate">
-    </vitamui-input>
-  </ng-container>
+  <vitamui-input class="col-12 pl-0" [formField]="form.internalCode" [placeholder]="'CUSTOMER.OWNER.INTERNAL_CODE' | translate">
+  </vitamui-input>
 </div>

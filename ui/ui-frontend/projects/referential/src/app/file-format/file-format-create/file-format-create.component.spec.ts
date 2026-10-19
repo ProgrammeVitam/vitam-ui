@@ -37,7 +37,6 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -57,7 +56,8 @@ const expectedFileFormat = {
   version: '1.0',
   name: 'Test',
   mimeType: 'application/test',
-  extensions: '.test, .tst',
+  extensions: ['.test', '.tst'],
+  hasPriorityOverFileFormatIDs: [] as string[],
 };
 
 let component: FileFormatCreateComponent;
@@ -69,7 +69,7 @@ class Page {
   }
 
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.nativeElement.querySelector('[ng-reflect-form-field=' + name + ']');
   }
 }
 
@@ -90,18 +90,11 @@ describe.skip('  FileFormatCreateComponent', () => {
       create: vi.fn().mockName('FileFormatService.create').mockReturnValue(of({})),
     };
     const fileFormatCreateValidatorsSpy = {
-      uniquePuid: vi
-        .fn()
-        .mockName('FileFormatCreateValidators.uniquePuid')
-        .mockReturnValue(() => of(null)),
-      uniqueName: vi
-        .fn()
-        .mockName('FileFormatCreateValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
+      uniquePuid: vi.fn().mockName('FileFormatCreateValidators.uniquePuid'),
+      uniqueName: vi.fn().mockName('FileFormatCreateValidators.uniqueName'),
     };
     await TestBed.configureTestingModule({
       imports: [
-        ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatButtonToggleModule,
@@ -145,7 +138,7 @@ describe.skip('  FileFormatCreateComponent', () => {
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue(expectedFileFormat);
+      component.form().value.set(expectedFileFormat);
       fixture.detectChanges();
       expect(page.submit.attributes.disabled).toBeFalsy();
     });
@@ -153,12 +146,12 @@ describe.skip('  FileFormatCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue(expectedFileFormat);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedFileFormat);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
@@ -177,11 +170,11 @@ describe.skip('  FileFormatCreateComponent', () => {
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: 'name' | 'puid' | 'version', value: string) {
+        const field = component.form[name]();
+        field.value.set(value);
 
-        return control;
+        return { invalid: field.invalid(), valid: field.valid() };
       }
     });
   });
@@ -202,7 +195,7 @@ describe.skip('  FileFormatCreateComponent', () => {
     it('should call create()', () => {
       const fileFormatService = TestBed.inject(FileFormatService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue(expectedFileFormat);
+      component.form().value.set(expectedFileFormat);
       component.onSubmit();
       expect(fileFormatService.create).toHaveBeenCalledTimes(1);
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);

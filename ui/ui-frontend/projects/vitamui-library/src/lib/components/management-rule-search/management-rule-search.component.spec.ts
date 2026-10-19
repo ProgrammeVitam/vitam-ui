@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 import { ManagementRuleSearchComponent } from './management-rule-search.component';
 import { MANAGEMENT_RULE_SEARCH_CONFIG, ManagementRuleCheckboxDescriptor, ManagementRuleType } from './management-rule-search.config';
@@ -83,6 +82,7 @@ describe('ManagementRuleSearchComponent', () => {
             checkboxConfig: [] as ManagementRuleCheckboxDescriptor[],
             checkboxes: [{ key: 'MyKey', labelKey: 'MyKeyLabel' }],
             id_endDate: 'myEndDateId',
+            ruleTypeForFilter: 'AccessRule',
           },
           [ManagementRuleType.APPRAISAL]: {
             ruleType: 'APPRAISAL_RULE',
@@ -122,7 +122,6 @@ describe('ManagementRuleSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ManagementRuleSearchComponent],
       providers: [
-        FormBuilder,
         { provide: QueryParamsService, useValue: mockQueryParamsService },
         { provide: SearchCriteriaService, useValue: mockSearchCriteriaService },
         { provide: StartupService, useValue: { CURRENT_APP_ID: ApplicationId.COLLECT_APP } },
@@ -146,6 +145,10 @@ describe('ManagementRuleSearchComponent', () => {
       })
       .compileComponents();
 
+    createComponent();
+  });
+
+  function createComponent() {
     fixture = TestBed.createComponent(ManagementRuleSearchComponent);
     component = fixture.componentInstance;
 
@@ -154,7 +157,7 @@ describe('ManagementRuleSearchComponent', () => {
     fixture.componentRef.setInput('rules', of([]));
 
     fixture.detectChanges();
-  });
+  }
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -166,20 +169,55 @@ describe('ManagementRuleSearchComponent', () => {
   });
 
   it('should reset date inputs after adding criteria', () => {
-    component.criteriaForm.controls['ruleStartDate'].setValue('2023-01-01');
+    component.criteriaForm.ruleStartDate().value.set(new Date('2023-01-01'));
     component.addBeginDtCriteria();
-    expect(component.criteriaForm.controls['ruleStartDate'].value).toBeNull();
+    expect(component.criteriaForm.ruleStartDate().value()).toBeNull();
   });
 
   it('should reset ruleEliminationIdentifier after processing form update', () => {
     fixture.componentRef.setInput('type', ManagementRuleType.APPRAISAL);
     component.ngOnInit();
-    component.criteriaForm.controls['ruleEliminationIdentifier'].setValue('ELIM-123');
+    component.criteriaForm.ruleEliminationIdentifier().value.set('ELIM-123');
 
     // @ts-ignore
-    component.processFormUpdate(component.criteriaForm.value);
+    component.processFormUpdate(component.criteriaForm().value());
 
-    expect(component.criteriaForm.controls['ruleEliminationIdentifier'].value).toBeNull();
+    expect(component.criteriaForm.ruleEliminationIdentifier().value()).toBeNull();
+  });
+
+  describe('with fake timers', () => {
+    let criteriaService: typeof mockManagementRuleCriteriaService;
+
+    beforeEach(() => {
+      // Recreate the component with fake timers, so that the debounce timers are faked
+      fixture.destroy();
+      vi.useFakeTimers();
+      createComponent();
+      criteriaService = fixture.debugElement.injector.get(ManagementRuleCriteriaService);
+    });
+    afterEach(() => vi.useRealTimers());
+
+    it('should add the selected rule identifiers to the criteria and reset the select', async () => {
+      component.criteriaForm.ruleIdentifier().value.set(['ACC-00001', 'ACC-00002']);
+      fixture.detectChanges();
+      await vi.advanceTimersByTimeAsync(200);
+
+      expect(criteriaService.addFromParams).toHaveBeenCalledTimes(1);
+      expect(criteriaService.addFromParams).toHaveBeenCalledWith({ accessRuleIdentifier: ['ACC-00001', 'ACC-00002'] });
+      expect(component.criteriaForm.ruleIdentifier().value()).toEqual([]);
+    });
+
+    it('should add the elimination identifier to the criteria when the form changes', async () => {
+      fixture.componentRef.setInput('type', ManagementRuleType.APPRAISAL);
+
+      component.criteriaForm.ruleEliminationIdentifier().value.set('ELIM-123');
+      fixture.detectChanges();
+      await vi.advanceTimersByTimeAsync(100);
+
+      expect(criteriaService.addFromParams).toHaveBeenCalledTimes(1);
+      expect(Object.values(criteriaService.addFromParams.mock.calls[0][0])).toEqual(['ELIM-123']);
+      expect(component.criteriaForm.ruleEliminationIdentifier().value()).toBeNull();
+    });
   });
 
   it('should initialize ORIGIN_WAITING_RECALCULATE from hasWaitingToRecalculateCriteria input', () => {

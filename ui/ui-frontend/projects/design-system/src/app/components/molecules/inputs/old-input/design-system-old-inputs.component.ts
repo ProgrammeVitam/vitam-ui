@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { disabled, form, FormField, maxLength, SchemaPathTree } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import {
@@ -53,6 +53,33 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { extend } from 'underscore';
 
+interface OldInputsForm {
+  pattern: string[] | null;
+  toggleGroup: string | null;
+  streetEmpty: string;
+  streetDisabled: string;
+  editablePatterns: string[] | null;
+  emailFirstPart: string;
+  email: string;
+  domain: string;
+  country: string;
+  textarea: string;
+  level: string;
+  toggle: string;
+  file: File;
+}
+
+function oldInputsSchema(path: SchemaPathTree<OldInputsForm>) {
+  maxLength(path.streetEmpty, 3);
+  maxLength(path.streetDisabled, 6);
+  maxLength(path.emailFirstPart, 25);
+  maxLength(path.email, 25);
+  maxLength(path.domain, 10);
+  maxLength(path.country, 10);
+  maxLength(path.textarea, 25);
+  maxLength(path.level, 10);
+}
+
 @Component({
   selector: 'design-system-old-inputs',
   imports: [
@@ -62,7 +89,7 @@ import { extend } from 'underscore';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormField,
     TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -77,30 +104,33 @@ export class DesignSystemOldInputsComponent implements OnInit {
     { value: 'pattern 1', disabled: false },
     { value: 'pattern 2', disabled: false },
   ];
-  patternControl = new FormControl();
 
-  control = new FormControl();
-
-  streetEmpty = new FormControl('', [Validators.maxLength(3)]);
-  streetDisable = new FormControl('azerty', [Validators.maxLength(6)]);
-
-  editablePatterns = new FormControl();
   editablePatternsOptions = [
     { value: 'value 1', disabled: false },
     { value: 'value 2', disabled: false },
   ];
 
-  emailFirstPart = new FormControl('azerty', [Validators.maxLength(25)]);
-  email = new FormControl('azerty@test.fr', [Validators.maxLength(25)]);
-  domain = new FormControl('test.fr', [Validators.maxLength(10)]);
-  emails = new FormControl(['azerty@test.fr', 'azerty@test2.com'], [Validators.maxLength(30)]);
-
-  country = new FormControl('FR', [Validators.maxLength(10)]);
-  textarea = new FormControl('name\naddress\ncity', [Validators.maxLength(25)]);
-  level = new FormControl('LEVEL', [Validators.maxLength(10)]);
-  toggle = new FormControl('Value 3');
-
-  file = new FormControl(new File(['test'], 'test', { type: 'text/plain' }));
+  // The same model is shared by the enabled and the disabled versions of the components
+  readonly model = signal<OldInputsForm>({
+    pattern: null,
+    toggleGroup: null,
+    streetEmpty: '',
+    streetDisabled: 'azerty',
+    editablePatterns: null,
+    emailFirstPart: 'azerty',
+    email: 'azerty@test.fr',
+    domain: 'test.fr',
+    country: 'FR',
+    textarea: 'name\naddress\ncity',
+    level: 'LEVEL',
+    toggle: 'Value 3',
+    file: new File(['test'], 'test', { type: 'text/plain' }),
+  });
+  readonly fields = form(this.model, oldInputsSchema);
+  readonly disabledFields = form(this.model, (path) => {
+    oldInputsSchema(path);
+    disabled(path);
+  });
 
   countries: Option[] = [];
 

@@ -36,13 +36,13 @@
  */
 import { CdkStepperModule } from '@angular/cdk/stepper';
 import { I18nPluralPipe } from '@angular/common';
-import { AfterViewInit, Component, computed, DestroyRef, inject, OnInit, signal, Signal, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { AfterViewInit, Component, computed, DestroyRef, inject, Injector, OnInit, signal, Signal, viewChild } from '@angular/core';
+import { disabled, form, FormField, FormRoot, required, validate } from '@angular/forms/signals';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { switchMap } from 'rxjs';
+import { skip, switchMap } from 'rxjs';
 import { ArchiveUnit } from '../../../app/modules/archive-unit/models/archive-unit';
 import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
 import { BadgeComponent } from '../../../app/modules/components/badge/badge.component';
@@ -62,8 +62,7 @@ import { NextStepComponent } from '../next-step/next-step.component';
 import { PreviousStepComponent } from '../previous-step/previous-step.component';
 import { SelectComponent } from '../select/select.component';
 import { ReclassificationValidatorService } from './reclassification-validator.service';
-import { tap } from 'rxjs/operators';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { searchAllRecordsQuery } from './reclassification-dialog.queries';
 import { BaseReclassificationDialogService, BuildQueryParams } from './reclassification-dialog.service';
 import { ReclassificationMode } from './reclassification-dialog.types';
@@ -75,11 +74,24 @@ interface ActionOption extends Option {
   key: 'ADD' | 'PULL' | 'REPLACE';
 }
 
-const atLeastOneFilingPlan: ValidatorFn = (control) => {
-  if (control.value?.included?.length > 0) return null;
+interface FilingPlanSelection {
+  included: string[];
+  excluded: string[];
+}
 
-  return { required: true };
-};
+interface ReclassificationForm {
+  action: ActionOption['key'] | null;
+  reclassificationMode: ReclassificationMode;
+  singleSelect: {
+    id: string | null;
+    title: string | null;
+  };
+  multiSelect: {
+    filingPlan: FilingPlanSelection;
+  };
+}
+
+const emptyFilingPlan = (): FilingPlanSelection => ({ included: [], excluded: [] });
 
 @Component({
   selector: 'vitamui-reclassification-dialog',
@@ -89,7 +101,8 @@ const atLeastOneFilingPlan: ValidatorFn = (control) => {
     DialogHeaderComponent,
     CdkStepperModule,
     StepperComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     MatProgressSpinner,
     BadgeComponent,
     TranslatePipe,
@@ -109,7 +122,6 @@ const atLeastOneFilingPlan: ValidatorFn = (control) => {
 export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
   private readonly reclassificationDialogService = inject(BaseReclassificationDialogService);
   private readonly translateService = inject(TranslateService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly reclassificationService = inject(ReclassificationService);
   private readonly reclassificationValidator = inject(ReclassificationValidatorService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
@@ -134,6 +146,7 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
   protected readonly ReclassificationMode = ReclassificationMode;
 
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
 
   private readonly hasNoParent = computed(() => {
     return !this.reclassificationDialogService.hasParent();
@@ -148,17 +161,38 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
     '=1': 'RECLASSIFICATION.FIRST_STEP.CURRENT_PARENT_FOLDERS',
     other: 'RECLASSIFICATION.FIRST_STEP.CURRENT_PARENT_FOLDERS_PLURAL',
   };
-  readonly form = this.formBuilder.group({
-    action: [null, Validators.required],
-    reclassificationMode: [ReclassificationMode.FILING_PLAN],
-    singleSelect: this.formBuilder.group({
-      id: [null, [Validators.required]],
-      title: [{ value: null, disabled: true }, [Validators.required]],
-    }),
-    multiSelect: this.formBuilder.group({
-      filingPlan: new FormControl({ included: [], excluded: [] }),
-    }),
+  private readonly model = signal<ReclassificationForm>({
+    action: null,
+    reclassificationMode: ReclassificationMode.FILING_PLAN,
+    singleSelect: { id: null, title: null },
+    multiSelect: { filingPlan: emptyFilingPlan() },
   });
+  readonly form = form(
+    this.model,
+    (path) => {
+      required(path.action);
+      // Only one target selection mode is enabled at a time
+      disabled(path.singleSelect, ({ valueOf }) => valueOf(path.reclassificationMode) !== ReclassificationMode.ARCHIVE_UNIT_ID);
+      disabled(path.multiSelect, ({ valueOf }) => valueOf(path.reclassificationMode) !== ReclassificationMode.FILING_PLAN);
+      required(path.singleSelect.id);
+      this.reclassificationValidator.alreadyExistParents(path.singleSelect.id, this.data.archiveUnitAllunitup);
+      this.reclassificationValidator.existArchiveUnit(path.singleSelect.id, () => this.reclassificationDialogService.initialQuery());
+      // The title is retrieved from the archive unit id
+      disabled(path.singleSelect.title);
+      required(path.singleSelect.title);
+      validate(path.multiSelect.filingPlan, ({ value }) => (value()?.included?.length > 0 ? undefined : { kind: 'required' }));
+    },
+    {
+      // The submit button is disabled when the step is invalid
+      submission: {
+        action: async () => {
+          this.onSubmit();
+          return undefined;
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   readonly actions: Signal<{ options: ActionOption[] }> = computed(() => {
     return {
@@ -171,48 +205,18 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
   });
   readonly reclassificationModes: ReclassificationMode[] = [ReclassificationMode.FILING_PLAN, ReclassificationMode.ARCHIVE_UNIT_ID];
 
-  readonly action = toSignal<ActionOption['key']>(
-    this.form.controls.action.valueChanges.pipe(tap(() => this.form.controls.singleSelect.reset())),
-  );
+  readonly action = computed<ActionOption['key'] | undefined>(() => this.form.action().value() ?? undefined);
   readonly shouldSelectTarget = computed(() => {
     return this.action() === 'ADD' || this.action() === 'REPLACE';
   });
-  readonly mode = toSignal(
-    this.form.controls.reclassificationMode.valueChanges.pipe(
-      tap((mode) => {
-        switch (mode) {
-          case ReclassificationMode.ARCHIVE_UNIT_ID:
-            this.form.controls.singleSelect.reset();
-            this.form.controls.singleSelect.enable();
-            this.form.controls.singleSelect.controls.title.disable();
-            this.form.controls.multiSelect.disable();
-            const archiveUnitId = this.form.controls.multiSelect.controls.filingPlan.value.included.at(0);
-            this.form.controls.singleSelect.controls.id.setValue(archiveUnitId);
-            break;
-          case ReclassificationMode.FILING_PLAN:
-            this.form.controls.singleSelect.disable();
-            this.form.controls.multiSelect.enable();
-            this.form.controls.multiSelect.controls.filingPlan.reset({ included: [], excluded: [] });
-            break;
-        }
-      }),
-    ),
-  );
-
-  readonly singleSelectStatus = toSignal(this.form.controls.singleSelect.controls.id.statusChanges, {
-    initialValue: this.form.controls.singleSelect.controls.id.status,
-  });
-
-  readonly multiSelectValue = toSignal(this.form.controls.multiSelect.controls.filingPlan.valueChanges, {
-    initialValue: this.form.controls.multiSelect.controls.filingPlan.value,
-  });
+  readonly mode = computed(() => this.form.reclassificationMode().value());
 
   readonly hasInvalidTarget = computed(() => {
     switch (this.mode()) {
       case ReclassificationMode.ARCHIVE_UNIT_ID:
-        return ['INVALID', 'PENDING'].includes(this.singleSelectStatus());
+        return this.form.singleSelect.id().invalid() || this.form.singleSelect.id().pending();
       case ReclassificationMode.FILING_PLAN:
-        return this.multiSelectValue()?.included?.length === 0;
+        return this.form.multiSelect.filingPlan().value()?.included?.length === 0;
     }
   });
 
@@ -281,27 +285,37 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.onCancel());
 
-    this.form.controls.singleSelect.controls.id.addAsyncValidators([
-      this.reclassificationValidator.alreadyExistParents(undefined, this.data.archiveUnitAllunitup),
-      this.reclassificationValidator.existArchiveUnit(this.reclassificationDialogService.initialQuery()),
-    ]);
-
-    this.form.controls.singleSelect.controls.id.valueChanges
+    toObservable(this.form.singleSelect.id().value, { injector: this.injector })
       .pipe(
+        skip(1),
         switchMap(() => this.reclassificationValidator.getArchiveUnitTitle()),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((title) => {
-        this.form.controls.singleSelect.controls.title.setValue(title);
+        this.form.singleSelect.title().value.set(title);
       });
-
-    this.form.controls.multiSelect.controls.filingPlan.setValidators([atLeastOneFilingPlan]);
-    this.form.controls.reclassificationMode.setValue(ReclassificationMode.FILING_PLAN);
 
     this.reclassificationDialogService.triggerLoadChildrenCount();
 
     if (this.data.appName === 'COLLECT') {
       this.loadProjectUnits();
+    }
+  }
+
+  onActionChange() {
+    this.form.singleSelect().reset({ id: null, title: null });
+  }
+
+  onModeChange(mode: ReclassificationMode) {
+    switch (mode) {
+      case ReclassificationMode.ARCHIVE_UNIT_ID: {
+        const archiveUnitId = this.form.multiSelect.filingPlan().value().included.at(0) ?? null;
+        this.form.singleSelect().reset({ id: archiveUnitId, title: null });
+        break;
+      }
+      case ReclassificationMode.FILING_PLAN:
+        this.form.multiSelect.filingPlan().reset(emptyFilingPlan());
+        break;
     }
   }
 
@@ -324,16 +338,21 @@ export class ReclassificationDialogComponent implements OnInit, AfterViewInit {
   }
 
   onCancel() {
-    if (this.form.dirty) return this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
+    if (this.form().dirty()) return this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
 
     this.dialogRef.close();
   }
 
+  // Only the enabled target selection mode is sent (as the value of the former reactive form, that excluded disabled controls)
+  private buildQueryParams(): BuildQueryParams {
+    const { action, reclassificationMode, singleSelect, multiSelect } = this.model();
+    return reclassificationMode === ReclassificationMode.ARCHIVE_UNIT_ID
+      ? { action, reclassificationMode, singleSelect: { id: singleSelect.id } as BuildQueryParams['singleSelect'] }
+      : { action, reclassificationMode, multiSelect: multiSelect as BuildQueryParams['multiSelect'] };
+  }
+
   onSubmit() {
-    const reclassificationQuery = this.reclassificationDialogService.buildQuery(
-      { ...this.form.value } as BuildQueryParams,
-      this.parentIds(),
-    );
+    const reclassificationQuery = this.reclassificationDialogService.buildQuery(this.buildQueryParams(), this.parentIds());
     this.reclassificationService.reclassification(this.data.transactionId, reclassificationQuery).subscribe({
       next: (response) => {
         this.dialogRef.close(true);

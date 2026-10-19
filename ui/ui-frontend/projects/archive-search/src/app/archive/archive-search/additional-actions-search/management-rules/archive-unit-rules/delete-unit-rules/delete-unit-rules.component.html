@@ -1,11 +1,11 @@
 <div class="container p-4">
-  <form [formGroup]="ruleDetailsForm" class="gap-4 align-items-stretch">
+  <form [formRoot]="ruleDetailsForm" class="gap-4 align-items-stretch">
     <div class="gap-2 align-items-stretch">
       <label class="text bold normal primary uppercase"> {{ 'RULES.SOURCE_MANAGEMENT_RULE' | translate }}</label>
       <div class="row content vitamui-form">
         <vitamui-select
           class="col"
-          formControlName="rule"
+          [formField]="ruleDetailsForm.rule"
           [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
@@ -37,7 +37,7 @@
     }
 
     <div class="d-flex">
-      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl() || !ruleDetailsForm.valid" (click)="submit()">
+      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl() || !ruleDetailsForm().valid()">
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>

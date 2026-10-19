@@ -43,7 +43,6 @@ import { FileFormatService } from '../file-format.service';
 import { FileFormatInformationTabComponent } from './file-format-information-tab/file-format-information-tab.component';
 
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -60,7 +59,6 @@ import { CommonModule } from '@angular/common';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })

@@ -5,6 +5,7 @@
   </div>
   <div>
     <button
+      type="button"
       [ngStyle]="{ width: secondPopup() ? 'fit-content' : '' }"
       (click)="changeStatus(firstChoice())"
       [ngClass]="{ 'pastis-vitamui-language-seda-button-selected': status, 'pastis-vitamui-language-seda-button': !status }"
@@ -12,6 +13,7 @@
       {{ firstChoice() }}
     </button>
     <button
+      type="button"
       [ngStyle]="{ width: secondPopup() ? 'fit-content' : '' }"
       (click)="changeStatus(secondChoice())"
       [ngClass]="{ 'pastis-vitamui-language-fr-button-selected': !status, 'pastis-vitamui-language-fr-button': status }"

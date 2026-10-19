@@ -18,52 +18,53 @@
 
 <vitamui-stepper #stepper>
   <cdk-step>
-    <form [formGroup]="formGroups[0]">
+    <div>
       <mat-dialog-content class="gap-4 align-items-stretch">
-        <vitamui-input formControlName="messageRequestIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.REQUEST_ID' | translate">
+        <vitamui-input [formField]="step1Form.messageRequestIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.REQUEST_ID' | translate">
         </vitamui-input>
 
-        <vitamui-input formControlName="requesterIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.REQUESTER_ID' | translate"> </vitamui-input>
+        <vitamui-input [formField]="step1Form.requesterIdentifier" [placeholder]="'ARCHIVE_SEARCH.DIP.REQUESTER_ID' | translate">
+        </vitamui-input>
 
         <vitamui-select
-          formControlName="archivalAgencyIdentifier"
+          [formField]="step1Form.archivalAgencyIdentifier"
           [options]="agencyOptionsResource"
           [placeholder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY_PLACEHOLDER' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY_SEARCHBAR_PLACEHOLDER' | translate"
         ></vitamui-select>
 
         <vitamui-input
-          formControlName="authorizationRequestReplyIdentifier"
+          [formField]="step1Form.authorizationRequestReplyIdentifier"
           [placeholder]="'ARCHIVE_SEARCH.DIP.AUTHORISATION_REQUEST_REPLY' | translate"
         >
         </vitamui-input>
 
         <vitamui-select
-          formControlName="submissionAgencyIdentifier"
+          [formField]="step1Form.submissionAgencyIdentifier"
           [options]="agencyOptionsResource"
           [placeholder]="'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID_PLACEHOLDER' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID_SEARCHBAR_PLACEHOLDER' | translate"
         ></vitamui-select>
 
-        <vitamui-input formControlName="comment" [placeholder]="'ARCHIVE_SEARCH.DIP.COMMENT' | translate"> </vitamui-input>
+        <vitamui-input [formField]="step1Form.comment" [placeholder]="'ARCHIVE_SEARCH.DIP.COMMENT' | translate"> </vitamui-input>
       </mat-dialog-content>
-    </form>
+    </div>
 
     <mat-dialog-actions>
-      <vitamui-next-step [disabled]="formGroups[0].invalid"></vitamui-next-step>
+      <vitamui-next-step [disabled]="step1Form().invalid()"></vitamui-next-step>
       <button type="button" class="btn link cancel" (click)="onCancel()">
         {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
       </button>
     </mat-dialog-actions>
   </cdk-step>
   <cdk-step>
-    <form [formGroup]="formGroups[1]" (ngSubmit)="onSubmit()">
+    <form [formRoot]="step2Form">
       <mat-dialog-content>
         <div class="gap-4">
           <div class="gap-2">
             <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.LOGS' | translate }}</div>
             <mat-button-toggle-group
-              formControlName="includeLifeCycleLogs"
+              [formField]="step2Form.includeLifeCycleLogs"
               #group="matButtonToggleGroup"
               class="vitamui-button-toggle-group"
             >
@@ -74,7 +75,7 @@
 
           <div class="gap-2">
             <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.SEDA_VERSION' | translate }}</div>
-            <mat-button-toggle-group formControlName="sedaVersion" class="vitamui-button-toggle-group">
+            <mat-button-toggle-group [formField]="step2Form.sedaVersion" class="vitamui-button-toggle-group">
               <mat-button-toggle value="2.1">SEDA 2.1</mat-button-toggle>
               <mat-button-toggle value="2.2">SEDA 2.2</mat-button-toggle>
               <mat-button-toggle value="2.3">SEDA 2.3</mat-button-toggle>
@@ -84,7 +85,7 @@
           <div class="gap-5">
             <div class="gap-2">
               <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.INCLUDE_OBJECTS' | translate }}</div>
-              <mat-button-toggle-group formControlName="includeObjects" class="vitamui-button-toggle-group">
+              <mat-button-toggle-group [formField]="step2Form.includeObjects" class="vitamui-button-toggle-group">
                 <mat-button-toggle [value]="UsageVersionEnum.ALL">{{ 'ARCHIVE_SEARCH.DIP.ALL' | translate }} </mat-button-toggle>
                 <mat-button-toggle [value]="UsageVersionEnum.NONE">{{ 'ARCHIVE_SEARCH.DIP.NONE' | translate }} </mat-button-toggle>
                 <mat-button-toggle [value]="UsageVersionEnum.SELECTION"
@@ -93,24 +94,24 @@
               </mat-button-toggle-group>
             </div>
 
-            @if (formGroups[1].get('includeObjects').value === UsageVersionEnum.SELECTION) {
-              <div class="gap-2" formArrayName="usages">
-                @for (usage of usages.controls; track usage; let i = $index) {
+            @if (step2Form.includeObjects().value() === UsageVersionEnum.SELECTION) {
+              <div class="gap-2">
+                @for (usage of step2Form.usages; track usage; let i = $index) {
                   <div class="hgap-6">
-                    <div class="hgap-4" [formGroupName]="i">
-                      @if (usageOptions[i]) {
+                    <div class="hgap-4">
+                      @if (usageOptions()[i]) {
                         <vitamui-select
                           [multiple]="false"
                           [enableSearch]="false"
                           [enableSelectAll]="false"
                           [placeholder]="'ARCHIVE_SEARCH.DIP.TARGET_USAGE_#' | translate: { i: i + 1 }"
-                          formControlName="usage"
-                          [options]="usageOptions[i]"
+                          [formField]="usage.usage"
+                          [options]="usageOptions()[i]"
                         ></vitamui-select>
                       }
                       <div class="gap-2">
                         <label class="text caption bold primary"> {{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSION' | translate }}</label>
-                        <mat-radio-group class="hgap-2" formControlName="version">
+                        <mat-radio-group class="hgap-2" [formField]="usage.version">
                           <mat-radio-button value="FIRST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.FIRST' | translate }} </mat-radio-button>
                           <mat-radio-button value="ALL">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.ALL' | translate }} </mat-radio-button>
                           <mat-radio-button value="LAST">{{ 'ARCHIVE_SEARCH.DIP.USAGE_VERSIONS.LAST' | translate }} </mat-radio-button>
@@ -124,7 +125,7 @@
                     }
                   </div>
                 }
-                @if (usages.length < dataObjectVersions.length) {
+                @if (step2Form.usages().value().length < dataObjectVersions.length) {
                   <button type="button" class="btn link" (click)="addUsage()">
                     <i class="vitamui-icon vitamui-icon-add"></i>
                     {{ 'ARCHIVE_SEARCH.DIP.ADD_USAGE' | translate }}
@@ -137,7 +138,7 @@
           <div class="gap-2">
             <div class="text medium bold primary uppercase">{{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT' | translate }}</div>
             <div class="col-6">
-              <vitamui-slide-toggle formControlName="exportWithTree">
+              <vitamui-slide-toggle [formField]="step2Form.exportWithTree">
                 {{ 'ARCHIVE_SEARCH.DIP.EXPORT_FORMAT_MESSAGE' | translate }}
               </vitamui-slide-toggle>
             </div>
@@ -147,7 +148,7 @@
 
       <mat-dialog-actions>
         <div>
-          <button type="submit" class="btn primary" [disabled]="isLoading || formGroups[1].invalid">
+          <button type="submit" class="btn primary" [disabled]="isLoading || step2Form().invalid()">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
           <button type="button" class="btn link cancel" (click)="onCancel()">

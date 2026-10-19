@@ -38,7 +38,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { ProjectsService } from '../projects.service';
 
-import { FormBuilder } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { BrowserModule } from '@angular/platform-browser';
@@ -155,7 +154,6 @@ describe('ProjectPreviewComponent', () => {
         MatButtonToggleModule,
       ],
       providers: [
-        FormBuilder,
         {
           provide: MatDialogRef,
           useValue: {
@@ -204,19 +202,21 @@ describe('ProjectPreviewComponent', () => {
 
   it('should get project when update', async () => {
     component.showEdit(component.tabs().at(0));
+    // showEdit is called from a click in the template, which marks the view for check
+    fixture.changeDetectorRef.markForCheck();
     await fixture.whenStable();
-    expect(component.form.value.messageIdentifier).toEqual(project.messageIdentifier);
-    expect(component.form.value.legalStatus).toEqual(project.legalStatus);
-    expect(component.form.value.archivalAgreement).toEqual(project.archivalAgreement);
-    expect(component.form.value.acquisitionInformation).toEqual(project.acquisitionInformation);
-    expect(component.form.value.submissionAgencyIdentifier).toEqual(project.submissionAgencyIdentifier);
-    expect(component.form.value.originatingAgencyIdentifier).toEqual(project.originatingAgencyIdentifier);
+    expect(component.form().value().messageIdentifier).toEqual(project.messageIdentifier ?? null);
+    expect(component.form().value().legalStatus).toEqual(project.legalStatus ?? null);
+    expect(component.form().value().archivalAgreement).toEqual(project.archivalAgreement ?? null);
+    expect(component.form().value().acquisitionInformation).toEqual(project.acquisitionInformation ?? null);
+    expect(component.form().value().submissionAgencyIdentifier).toEqual(project.submissionAgencyIdentifier ?? null);
+    expect(component.form().value().originatingAgencyIdentifier).toEqual(project.originatingAgencyIdentifier ?? null);
   });
 
   it('should update project without transactions', async () => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs().at(0));
-    component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
+    component.form.messageIdentifier().value.set(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(false);
     await fixture.whenStable();
@@ -226,7 +226,7 @@ describe('ProjectPreviewComponent', () => {
   it('should update project with transactions', async () => {
     vi.spyOn(projectServiceMock, 'updateProjectDescription').mockReturnValue(of(projectAfterUpdate));
     component.showEdit(component.tabs().at(0));
-    component.form.get('messageIdentifier').setValue(projectAfterUpdate.messageIdentifier);
+    component.form.messageIdentifier().value.set(projectAfterUpdate.messageIdentifier);
     component.update();
     component.updateProject(true);
     expect(projectServiceMock.updateProjectDescription).toHaveBeenCalled();

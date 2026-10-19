@@ -34,27 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import {
   FormFieldValueWrapperComponent,
+  requiredValue,
   SearchType,
   SearchWithTypeSelectorComponent,
   SearchWithTypeSelectorValue,
   VitamUICommonModule,
 } from 'vitamui-library';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+
+type SearchValue = SearchWithTypeSelectorValue | null;
+
+interface SearchWithTypeSelectorForm {
+  default: SearchValue;
+  active: SearchValue;
+  disabled: SearchValue;
+  disabledType: SearchValue;
+  error: SearchValue;
+  wrapper: SearchValue;
+}
 
 @Component({
   selector: 'design-system-search-with-type-selector',
-  imports: [
-    SearchWithTypeSelectorComponent,
-    ReactiveFormsModule,
-    FormFieldValueWrapperComponent,
-    FormsModule,
-    JsonPipe,
-    VitamUICommonModule,
-  ],
+  imports: [SearchWithTypeSelectorComponent, FormField, FormFieldValueWrapperComponent, JsonPipe, VitamUICommonModule],
   templateUrl: './design-system-search-with-type-selector.component.html',
   styleUrl: './design-system-search-with-type-selector.component.scss',
 })
@@ -69,18 +74,22 @@ export class DesignSystemSearchWithTypeSelectorComponent {
     { label: 'Recherche exacte', value: 'strict', disabled: true },
   ];
 
-  control = new FormControl();
-  activeControl = new FormControl<SearchWithTypeSelectorValue>({ type: this.searchTypes[1], value: 'Ma recherche' });
-  disabledControl = (() => {
-    const fc = new FormControl('');
-    fc.disable();
-    return fc;
-  })();
-  disabledTypeControl = new FormControl();
-  errorControl = (() => {
-    const fc = new FormControl(null, [Validators.required]);
-    fc.markAsTouched();
-    return fc;
-  })();
-  wrapperControl = new FormControl();
+  readonly searchForm = form(
+    signal<SearchWithTypeSelectorForm>({
+      default: null,
+      active: { type: this.searchTypes[1], value: 'Ma recherche' },
+      disabled: null,
+      disabledType: null,
+      error: null,
+      wrapper: null,
+    }),
+    (path) => {
+      disabled(path.disabled);
+      requiredValue(path.error);
+    },
+  );
+
+  constructor() {
+    this.searchForm.error().markAsTouched();
+  }
 }

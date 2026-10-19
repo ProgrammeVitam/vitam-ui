@@ -37,13 +37,12 @@
 import { Component } from '@angular/core';
 
 import { FileValidationErrors, readFileContent, VitamUICommonModule } from 'vitamui-library';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'design-system-upload',
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
-  imports: [VitamUICommonModule, FormsModule, ReactiveFormsModule],
+  imports: [VitamUICommonModule],
 })
 export class UploadComponent {
   filenameValidator =

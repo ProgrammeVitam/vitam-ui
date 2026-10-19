@@ -8,11 +8,11 @@
   ]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <vitamui-stepper #stepper>
     <cdk-step>
       <mat-dialog-content>
-        <mat-button-toggle-group formControlName="auditActions" class="vitamui-button-toggle-group">
+        <mat-button-toggle-group [formField]="form.auditActions" class="vitamui-button-toggle-group">
           @for (action of getAuditActions(); track action) {
             <mat-button-toggle [value]="action">
               <span>{{ 'AUDIT.CREATE_DIALOG.OPERATIONS_CATEGORIES.' + action | translate }}</span>
@@ -24,7 +24,7 @@
           <div class="mt-4">
             <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.CHOOSE_AUDIT_PERIMETER' | translate }}</div>
             <vitamui-select
-              formControlName="auditPerimeter"
+              [formField]="form.auditPerimeter"
               [placeholder]="'AUDIT.CREATE_DIALOG.AUDIT_PERIMETER' | translate"
               [options]="auditPerimetersOptions"
               [multiple]="false"
@@ -38,7 +38,7 @@
             <div class="text large bold mb-3">{{ 'AUDIT.CREATE_DIALOG.ENTER_CONCERNED_CONSISTENCY_AUDIT_IDENTIFIER' | translate }}</div>
             <vitamui-input
               class="w-100 mt-4"
-              formControlName="evidenceAudit"
+              [formField]="form.evidenceAudit"
               [placeholder]="'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_IDENTIFIER' | translate"
               [errorMessageMap]="{ invalidEvidenceAuditId: 'AUDIT.CREATE_DIALOG.EVIDENCE_AUDIT_NOT_FOUND' | translate }"
             >
@@ -54,16 +54,14 @@
       <cdk-step>
         <mat-dialog-content>
           @if (chooseOriginatingAgency()) {
-            <vitamui-slide-toggle [formControl]="allProducerServices">
+            <vitamui-slide-toggle [formField]="uiForm.allProducerServices">
               <span>{{ 'AUDIT.CREATE_DIALOG.SELECT_ALL_PRODUCERS' | translate }}</span>
             </vitamui-slide-toggle>
             @if (showProducerSelection()) {
               <vitamui-select
                 [multiple]="true"
-                [formControl]="producerServicesMultiSelect"
-                formControlName="originatingAgencyIds"
+                [formField]="uiForm.producerServicesMultiSelect"
                 [options]="producerServicesMultiSelectOptions"
-                required
                 [placeholder]="'AUDIT.CREATE_DIALOG.PRODUCERS' | translate"
                 [searchBarPlaceHolder]="'AUDIT.CREATE_DIALOG.ALL_PRODUCERS_SEARCHBAR_PLACEHOLDER' | translate"
               >
@@ -72,14 +70,13 @@
           } @else if (enterIngestOperationsIdentifiers()) {
             <vitamui-input
               class="w-100 mt-4"
-              [formControl]="ingestOperationsEntries"
-              formControlName="ingestOperationIds"
+              [formField]="uiForm.ingestOperationsEntries"
               [placeholder]="'AUDIT.CREATE_DIALOG.ENTER_INGEST_OPERATIONS_IDENTIFIERS_PLACEHOLDER' | translate"
             >
             </vitamui-input>
           } @else if (chooseAttachmentPosition()) {
             <vitamui-library-filing-plan
-              [formControl]="selectedNodes"
+              [formField]="uiForm.selectedNodes"
               [tenantIdentifier]="tenantIdentifier()"
               [mode]="FILLING_PLAN_MODE_INCLUDE"
             >
@@ -129,15 +126,13 @@
     <div class="start-date">
       <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_FROM' | translate }}</p>
       <vitamui-datepicker
-        [formControl]="startDateControl"
+        [formField]="uiForm.startDate"
         [label]="
           refiningStep
             ? 'AUDIT.CREATE_DIALOG.AU_CREATION_DATE_PLACEHOLDER'
             : ('AUDIT.CREATE_DIALOG.INGEST_OPERATION_DATE_PLACEHOLDER' | translate)
         "
         [hint]="'AUDIT.CREATE_DIALOG.DATE_GMT_TIME_CAPTION'"
-        [required]="isStartDateRequired()"
-        required
         outputType="String"
         format="yyyy-MM-dd"
       ></vitamui-datepicker>
@@ -145,7 +140,7 @@
     <div class="end-date">
       <p>{{ 'AUDIT.CREATE_DIALOG.PERIOD_TO' | translate }}</p>
       <vitamui-datepicker
-        [formControl]="endDateControl"
+        [formField]="uiForm.endDate"
         [label]="
           refiningStep
             ? 'AUDIT.CREATE_DIALOG.AU_CREATION_DATE_PLACEHOLDER'

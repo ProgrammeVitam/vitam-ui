@@ -3,11 +3,11 @@
   [title]="'FILE_FORMATS.CREATE_DIALOG.TITLE' | translate"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()" cdkFocusInitial>
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()" cdkFocusInitial>
   <mat-dialog-content class="gap-3">
     <vitamui-input
       class="w-100"
-      formControlName="puid"
+      [formField]="form.puid"
       [placeholder]="'FILE_FORMATS.CREATE_DIALOG.IDENTIFIER' | translate"
       [errorMessageMap]="{ puidExists: 'FILE_FORMATS.CREATE_DIALOG.IDENTIFIER_ALREADY_EXISTS' | translate }"
     >
@@ -15,24 +15,24 @@
 
     <vitamui-input
       class="w-100"
-      formControlName="name"
+      [formField]="form.name"
       [placeholder]="'FILE_FORMATS.CREATE_DIALOG.NAME' | translate"
       [errorMessageMap]="{ nameExists: 'FILE_FORMATS.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate }"
     >
     </vitamui-input>
 
     <!-- Must we validate Min / max length ? -->
-    <vitamui-input class="w-100" formControlName="mimeType" [placeholder]="'FILE_FORMATS.CREATE_DIALOG.MIME_TYPE' | translate">
+    <vitamui-input class="w-100" [formField]="form.mimeType" [placeholder]="'FILE_FORMATS.CREATE_DIALOG.MIME_TYPE' | translate">
     </vitamui-input>
 
     <!-- Must we validate Min / max length ? -->
-    <vitamui-input class="w-100" formControlName="version" [placeholder]="'FILE_FORMATS.CREATE_DIALOG.VERSION' | translate">
+    <vitamui-input class="w-100" [formField]="form.version" [placeholder]="'FILE_FORMATS.CREATE_DIALOG.VERSION' | translate">
     </vitamui-input>
 
     <!-- Must we validate Min / max length ? -->
     <vitamui-input
       class="w-100"
-      formControlName="extensions"
+      [formField]="form.extensions"
       [multiple]="true"
       [placeholder]="'FILE_FORMATS.CREATE_DIALOG.EXTENSION' | translate"
     >
@@ -41,7 +41,7 @@
     <vitamui-select
       [multiple]="true"
       class="w-100"
-      formControlName="hasPriorityOverFileFormatIDs"
+      [formField]="form.hasPriorityOverFileFormatIDs"
       [placeholder]="'FILE_FORMATS.CREATE_DIALOG.HAS_PRIORITY_OVER_FILE_FORMAT_ID' | translate"
       [searchBarPlaceHolder]="'FILE_FORMATS.CREATE_DIALOG.HAS_PRIORITY_OVER_FILE_FORMAT_ID_SEARCH' | translate"
       [options]="hasPriorityOverFileFormatIDsOptions"
@@ -50,7 +50,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isCreationPending || isDisabledButton()">
+    <button type="submit" class="btn primary" [disabled]="form().pending() || form().invalid() || isCreationPending || isDisabledButton()">
       {{ 'COMMON.TERMINATE' | translate }}
     </button>
     <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>

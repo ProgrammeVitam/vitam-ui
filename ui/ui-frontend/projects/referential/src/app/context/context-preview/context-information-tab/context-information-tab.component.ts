@@ -35,36 +35,93 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, signal, output, input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { disabled, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
-import { Context, DatepickerComponent, diff, InputComponent, Option, SelectComponent, SlideToggleComponent } from 'vitamui-library';
+import {
+  Context,
+  DatepickerComponent,
+  diff,
+  InputComponent,
+  Option,
+  requiredValue,
+  SelectComponent,
+  SlideToggleComponent,
+} from 'vitamui-library';
 import { RULE_TYPES } from '../../../rule/rules.constants';
 import { SecurityProfileService } from '../../../security-profile/security-profile.service';
 import { ContextService } from '../../context.service';
 import { ContextCreateValidators } from '../../context-create/context-create.validators';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface ContextInformationForm {
+  name: string;
+  status: string;
+  securityProfile: string;
+  enableControl: boolean;
+  creationDate: string;
+  activationDate: string;
+  lastUpdate: string;
+  deactivationDate: string;
+}
+
+const FORM_KEYS: (keyof ContextInformationForm)[] = [
+  'name',
+  'status',
+  'securityProfile',
+  'enableControl',
+  'creationDate',
+  'activationDate',
+  'lastUpdate',
+  'deactivationDate',
+];
+
 @Component({
   selector: 'app-context-information-tab',
   templateUrl: './context-information-tab.component.html',
   styleUrls: ['./context-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, SlideToggleComponent, InputComponent, SelectComponent, DatepickerComponent, TranslatePipe],
+  imports: [FormRoot, FormField, SlideToggleComponent, InputComponent, SelectComponent, DatepickerComponent, TranslatePipe],
 })
 export class ContextInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly contextService = inject(ContextService);
   private readonly securityProfileService = inject(SecurityProfileService);
   private readonly contextCreateValidators = inject(ContextCreateValidators);
 
   readonly updated = output<boolean>();
 
-  form: FormGroup;
+  // Name of the displayed context, ignored by the unique name validator
+  private readonly nameToIgnore = signal<string>(undefined);
+
+  readonly form = form(
+    signal<ContextInformationForm>(this.toFormValue({} as Context)),
+    (path) => {
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.contextCreateValidators.allowedName(path.name);
+      this.contextCreateValidators.uniqueName(path.name, () => this.nameToIgnore());
+      required(path.status);
+      required(path.securityProfile);
+      requiredValue(path.enableControl);
+      required(path.creationDate);
+      disabled(path, () => !!this.readOnly());
+      disabled(path.creationDate);
+      disabled(path.activationDate);
+      disabled(path.lastUpdate);
+      disabled(path.deactivationDate);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   submitted = signal(false);
-
-  statusControl = new FormControl();
 
   securityProfiles: Option[] = [];
 
@@ -72,39 +129,15 @@ export class ContextInformationTabComponent implements OnChanges {
 
   rules: Option[] = RULE_TYPES;
 
-  previousValue = (): any => {
-    return (Object.keys(this.form.controls || {}) as (keyof Context)[]).reduce((acc: any, key) => {
-      acc[key] = this._context[key] ?? null;
-      return acc;
-    }, {} as Partial<Context>);
-  };
+  previousValue = (): any => this.toFormValue(this._context);
 
   readonly context = input<Context>(undefined);
 
   readonly readOnly = input<boolean>(undefined);
 
   constructor() {
-    this.form = this.formBuilder.group({
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100), this.contextCreateValidators.allowedName()],
-        this.contextCreateValidators.uniqueName(),
-      ],
-      status: [null, Validators.required],
-      securityProfile: [null, Validators.required],
-      enableControl: [null, Validators.required],
-      creationDate: [{ value: null, disabled: true }, Validators.required],
-      activationDate: [{ value: null, disabled: true }],
-      lastUpdate: [{ value: null, disabled: true }],
-      deactivationDate: [{ value: null, disabled: true }],
-    });
-
     this.securityProfileService.getAll().subscribe((securityProfiles) => {
       this.securityProfiles = securityProfiles.map((x) => ({ label: x.name, key: x.identifier }));
-    });
-
-    this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
   }
 
@@ -112,15 +145,13 @@ export class ContextInformationTabComponent implements OnChanges {
     if (changes['context']) {
       this.setContext(this.context());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
-    }
+  }
+
+  private toFormValue(context: Context): ContextInformationForm {
+    return FORM_KEYS.reduce((acc: any, key) => {
+      acc[key] = (context as any)[key] ?? null;
+      return acc;
+    }, {}) as ContextInformationForm;
   }
 
   private setContext(context: Context) {
@@ -130,7 +161,7 @@ export class ContextInformationTabComponent implements OnChanges {
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -140,7 +171,7 @@ export class ContextInformationTabComponent implements OnChanges {
   }
 
   prepareSubmit(): Observable<Context> {
-    const diffValue = diff(this.form.getRawValue(), this.previousValue());
+    const diffValue = diff(this.form().value(), this.previousValue());
 
     return of(diffValue).pipe(
       filter((formData) => !isEmpty(formData)),
@@ -184,8 +215,11 @@ export class ContextInformationTabComponent implements OnChanges {
   }
 
   resetForm(context: Context) {
-    this.statusControl.setValue(context.status === 'ACTIVE');
-    this.form.get('name').setAsyncValidators(this.contextCreateValidators.uniqueName(context.name)); // Keep this line before reset to make sure the new form value is used for validation.
-    this.form.reset(context, { emitEvent: false });
+    this.nameToIgnore.set(context.name); // Keep this line before reset to make sure the new form value is used for validation.
+    this.form().reset(this.toFormValue(context));
+  }
+
+  onStatusChange(active: boolean) {
+    this.form.status().value.set(active ? 'ACTIVE' : 'INACTIVE');
   }
 }

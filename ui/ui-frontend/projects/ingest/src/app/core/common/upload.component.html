@@ -4,11 +4,11 @@
 ></vitamui-dialog-header>
 
 <mat-dialog-content>
-  <vitamui-file-selector [formControl]="sipControl" [maxSizeInBytes]="FILE_MAX_SIZE" [extensions]="extensions" />
+  <vitamui-file-selector [formField]="sipField" [maxSizeInBytes]="FILE_MAX_SIZE" [extensions]="extensions" />
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button type="button" class="btn primary" [disabled]="sipControl.invalid || sipControl.pending" (click)="upload()">
+  <button type="button" class="btn primary" [disabled]="sipField().invalid() || sipField().pending()" (click)="upload()">
     {{ (contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.CONFIRM_BLANK' : 'INGEST_UPLOAD.CONFIRM') | translate }}
   </button>
   <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>

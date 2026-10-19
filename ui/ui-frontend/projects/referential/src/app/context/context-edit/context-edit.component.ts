@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, ContextPermission, DialogHeaderComponent } from 'vitamui-library';
@@ -47,7 +47,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-context-edit',
   templateUrl: './context-edit.component.html',
   styleUrls: ['./context-edit.component.scss'],
-  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, ContextEditPermissionComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, FormRoot, FormField, MatDialogContent, ContextEditPermissionComponent, MatDialogActions, TranslatePipe],
 })
 export class ContextEditComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ContextEditComponent>>(MatDialogRef);
@@ -55,11 +55,23 @@ export class ContextEditComponent implements OnInit, OnDestroy {
     permissions: ContextPermission[];
     enableControl: boolean;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly contextCreateValidators = inject(ContextCreateValidators);
 
-  form: FormGroup;
+  readonly form = form(
+    signal<{ permissions: ContextPermission[] }>({ permissions: [] }),
+    (path) => {
+      this.contextCreateValidators.permissionInvalid(path.permissions, () => !!this.data.enableControl);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   hasError = true;
   message: string;
   isPermissionsOnMultipleOrganisations = false;
@@ -73,7 +85,7 @@ export class ContextEditComponent implements OnInit, OnDestroy {
 
     this.permissions = data.permissions;
 
-    let permissions: any[] = [];
+    let permissions: ContextPermission[] = [];
     if (this.permissions) {
       permissions = this.permissions.map((permission) => {
         return {
@@ -84,12 +96,7 @@ export class ContextEditComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.form = this.formBuilder.group({
-      permissions: [permissions],
-    });
-    if (data.enableControl) {
-      this.form.controls['permissions'].setValidators([this.contextCreateValidators.permissionInvalid()]);
-    }
+    this.form().reset({ permissions });
   }
 
   ngOnInit() {
@@ -101,7 +108,7 @@ export class ContextEditComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -109,7 +116,14 @@ export class ContextEditComponent implements OnInit, OnDestroy {
   }
 
   isPermissionsInvalid(): boolean {
-    return this.form.get('permissions').invalid;
+    return this.form.permissions().invalid();
+  }
+
+  hasPermissionsError(kind: string): boolean {
+    return this.form
+      .permissions()
+      .errors()
+      .some((error) => error.kind === kind);
   }
 
   onChangeOrganisations(organisations: string[]) {
@@ -129,15 +143,18 @@ export class ContextEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
 
     // Update the context permissions
-    this.permissions = this.form.value.permissions.map(
-      (item: { tenant: string; accessContracts: string[]; ingestContracts: string[] }) =>
-        new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts),
-    );
+    this.permissions = this.form
+      .permissions()
+      .value()
+      .map(
+        (item: { tenant: string; accessContracts: string[]; ingestContracts: string[] }) =>
+          new ContextPermission('' + item.tenant, item.accessContracts, item.ingestContracts),
+      );
 
     this.dialogRef.close({ permissions: this.permissions });
   }

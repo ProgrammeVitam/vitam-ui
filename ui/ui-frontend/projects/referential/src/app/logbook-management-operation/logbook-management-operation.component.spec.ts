@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from 'vitamui-library';
@@ -54,14 +53,7 @@ describe('LogbookManagementOperationComponent', () => {
     });
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        InjectorModule,
-        VitamUICommonModule,
-        LoggerModule.forRoot(),
-        MatDatepickerModule,
-        LogbookManagementOperationComponent,
-      ],
+      imports: [InjectorModule, VitamUICommonModule, LoggerModule.forRoot(), MatDatepickerModule, LogbookManagementOperationComponent],
       providers: [
         provideNativeDateAdapter(),
         {

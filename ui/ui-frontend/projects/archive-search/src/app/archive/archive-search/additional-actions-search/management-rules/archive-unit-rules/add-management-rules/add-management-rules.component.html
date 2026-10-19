@@ -2,11 +2,11 @@
   <div class="gap-2 align-items-stretch">
     <label class="text bold normal primary uppercase"> {{ 'RULES.MANAGEMENT_RULE' | translate }}</label>
 
-    <form [formGroup]="ruleDetailsForm" class="gap-4 align-items-stretch">
+    <form [formRoot]="ruleDetailsForm" class="gap-4 align-items-stretch">
       <div class="row hgap-4">
         <vitamui-select
           class="col w-50"
-          formControlName="rule"
+          [formField]="ruleDetailsForm.rule"
           [options]="ruleOptions()"
           [placeholder]="'RULES.MANAGEMENT_RULE' | translate"
           [searchBarPlaceHolder]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.PLACEHOLDER_SEARCHBAR_CHOOSE_MANAGEMENT_RULE' | translate"
@@ -18,7 +18,7 @@
           <div class="hgap-2">
             <vitamui-datepicker
               [label]="'RULES.APPRAISAL_RULES.START_DATE' | translate"
-              formControlName="startDate"
+              [formField]="ruleDetailsForm.startDate"
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
@@ -30,7 +30,7 @@
                 width: '30',
                 height: '30',
               }"
-              [style.visibility]="ruleDetailsForm.get('startDate').value && isShowCheckButton ? 'visible' : 'hidden'"
+              [style.visibility]="ruleDetailsForm.startDate().value() && isShowCheckButton ? 'visible' : 'hidden'"
               type="button"
               mat-mini-fab
               (click)="addStartDate()"
@@ -40,7 +40,8 @@
           </div>
         </div>
 
-        <vitamui-input class="col" formControlName="endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate"> </vitamui-input>
+        <vitamui-input class="col" [formField]="ruleDetailsForm.endDate" [placeholder]="'RULES.APPRAISAL_RULES.END_DATE' | translate">
+        </vitamui-input>
       </div>
 
       @if (isLoading()) {
@@ -81,7 +82,7 @@
       }
 
       <div class="d-flex">
-        <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled()" (click)="submit()">
+        <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm().valid() || isDisabled()">
           {{ 'RULES.COMMON.CONTROL' | translate }}
         </button>
         <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>

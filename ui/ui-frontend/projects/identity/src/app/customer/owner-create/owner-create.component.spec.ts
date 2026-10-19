@@ -36,7 +36,7 @@
  */
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EMPTY, of } from 'rxjs';
@@ -60,7 +60,7 @@ import { MatOptionModule } from '@angular/material/core';
       multi: true,
     },
   ],
-  imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, ReactiveFormsModule, VitamUICommonTestModule],
+  imports: [MatOptionModule, MatProgressBarModule, MatSelectModule, VitamUICommonTestModule],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   readonly customerId = input<any>(undefined);
@@ -102,16 +102,10 @@ describe('OwnerCreateComponent', () => {
       create: vi.fn().mockName('OwnerService.create').mockReturnValue(of(owner)),
     };
     const ownerFormValidatorsSpy = {
-      uniqueCode: vi
-        .fn()
-        .mockName('OwnerFormValidators.uniqueCode')
-        .mockReturnValue(() => of(null)),
+      uniqueCodeRule: vi.fn().mockName('OwnerFormValidators.uniqueCodeRule'),
     };
     const tenantFormValidatorsSpy = {
-      uniqueName: vi
-        .fn()
-        .mockName('TenantFormValidators.uniqueName')
-        .mockReturnValue(() => of(null)),
+      uniqueNameRule: vi.fn().mockName('TenantFormValidators.uniqueNameRule'),
     };
     const tenantServiceSpy = {
       create: vi.fn().mockName('TenantService.create').mockReturnValue(of({})),
@@ -126,7 +120,6 @@ describe('OwnerCreateComponent', () => {
         MatOptionModule,
         MatProgressBarModule,
         MatSelectModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         OwnerCreateComponent,
         OwnerFormStubComponent,
@@ -145,13 +138,9 @@ describe('OwnerCreateComponent', () => {
       .overrideComponent(OwnerCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="ownerForm">
-              <input formControlName="owner" />
-            </form>
-            <form [formGroup]="tenantForm">
-              <input formControlName="name" />
-              <input formControlName="identifier" />
-              <input formControlName="enabled" />
+            <form [formRoot]="ownerForm"></form>
+            <form [formRoot]="tenantForm">
+              <input [formField]="tenantForm.name" />
             </form>
           `,
         },
@@ -184,7 +173,7 @@ describe('OwnerCreateComponent', () => {
   it('should call ownerService.create()', () => {
     const ownerService = TestBed.inject(OwnerService);
     const matDialogRef = TestBed.inject(MatDialogRef);
-    component.ownerForm.setValue({ owner });
+    component.ownerForm().value.set({ owner } as any);
     component.onOwnerSubmit();
     expect(ownerService.create).toHaveBeenCalledTimes(1);
     expect(matDialogRef.close).toHaveBeenCalledTimes(1);
@@ -199,9 +188,9 @@ describe('OwnerCreateComponent', () => {
   it('should call tenantService.create()', () => {
     const tenantService = TestBed.inject(TenantService);
     const matDialogRef = TestBed.inject(MatDialogRef);
-    component.ownerForm.setValue({ owner });
+    component.ownerForm().value.set({ owner } as any);
     const tenant = { identifier: 2, name: 'tenant name', ownerId: owner.id, customerId: '42', enabled: true };
-    component.tenantForm.setValue(tenant);
+    component.tenantForm().value.set(tenant);
     component.onTenantSubmit();
     expect(tenantService.create).toHaveBeenCalledWith(
       {

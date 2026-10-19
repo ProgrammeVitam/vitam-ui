@@ -1,10 +1,10 @@
 <div class="container">
-  <form [formGroup]="criteriaForm" class="gap-4 align-items-stretch">
+  <div class="gap-4 align-items-stretch">
     <!-- Identifier -->
     <div class="hgap-4">
       <vitamui-select
         class="w-100"
-        formControlName="ruleIdentifier"
+        [formField]="criteriaForm.ruleIdentifier"
         [options]="ruleOptions()"
         [multiple]="true"
         [placeholder]="config.fieldIdPlaceholder | translate"
@@ -12,10 +12,10 @@
       >
       </vitamui-select>
       <div class="w-100">
-        @if (criteriaForm.controls['ruleEliminationIdentifier']) {
+        @if (isAppraisal()) {
           <vitamui-common-editable-input
             class="w-100"
-            formControlName="ruleEliminationIdentifier"
+            [formField]="criteriaForm.ruleEliminationIdentifier"
             [label]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ELIMINATION_TECHNICAL_ID' | translate"
           >
           </vitamui-common-editable-input>
@@ -33,15 +33,15 @@
         <vitamui-datepicker
           class="w-100"
           [label]="(endDateInterval ? config.fieldEndDateBeginLabel : config.fieldEndDateEqualLabel) | translate"
-          formControlName="ruleStartDate"
-          [max]="ruleEndDateCtrl.value"
+          [formField]="criteriaForm.ruleStartDate"
+          [max]="criteriaForm.ruleEndDate().value()"
           outputType="Date"
           format="dd/MM/yyyy"
         ></vitamui-datepicker>
 
         <div class="w-100 hgap-4">
           @if (!endDateInterval) {
-            @if (ruleStartDateCtrl.value) {
+            @if (criteriaForm.ruleStartDate().value()) {
               <button class="btn btn-circle default medium secondary" (click)="addBeginDtCriteria()">
                 <i class="material-icons">check</i>
               </button>
@@ -53,13 +53,13 @@
           } @else {
             <vitamui-datepicker
               [label]="config.fieldEndDateEndLabel | translate"
-              formControlName="ruleEndDate"
-              [min]="ruleStartDateCtrl.value"
+              [formField]="criteriaForm.ruleEndDate"
+              [min]="criteriaForm.ruleStartDate().value()"
               outputType="Date"
               format="dd/MM/yyyy"
               class="w-100"
             ></vitamui-datepicker>
-            @if (ruleStartDateCtrl.value && ruleEndDateCtrl.value) {
+            @if (criteriaForm.ruleStartDate().value() && criteriaForm.ruleEndDate().value()) {
               <button class="btn btn-circle default medium secondary" (click)="addIntervalDtCriteria()">
                 <i class="material-icons">check</i>
               </button>
@@ -137,5 +137,5 @@
         }
       </div>
     </div>
-  </form>
+  </div>
 </div>

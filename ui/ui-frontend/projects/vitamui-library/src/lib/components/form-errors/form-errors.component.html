@@ -1,4 +1,4 @@
-@if (control().touched) {
+@if (touched) {
   @for (errorKey of Object.keys(errors); track errorKey) {
     <vitamui-form-error
       [errorMessageMap]="errorMessageMap()"

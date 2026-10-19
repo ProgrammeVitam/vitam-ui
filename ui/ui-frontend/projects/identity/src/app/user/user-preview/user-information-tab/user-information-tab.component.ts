@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnChanges, OnInit, SimpleChanges, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { merge, of } from 'rxjs';
+import { ChangeDetectorRef, Component, computed, inject, OnChanges, OnInit, SimpleChanges, input, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField, required } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 import {
@@ -74,13 +76,70 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 
 const UPDATE_DEBOUNCE_TIME = 200;
+const PHONE_PATTERN = /^[+]{1}[0-9]{11,12}$/;
+
+interface UserInformationModel {
+  id: string;
+  identifier: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  mobile: string;
+  phone: string;
+  level: string;
+  otp: boolean;
+  type: string;
+  status: string;
+  customerId: string;
+  groupId: string;
+  subrogeable: boolean;
+  address: {
+    street: string;
+    zipCode: string;
+    city: string;
+    country: string;
+  };
+  siteCode: string;
+  centerCodes: string[];
+  internalCode: string;
+  autoProvisioningEnabled: boolean;
+}
+
+function toUserInformationModel(user: User): UserInformationModel {
+  return {
+    id: user?.id ?? null,
+    identifier: user?.identifier ?? null,
+    firstname: user?.firstname ?? null,
+    lastname: user?.lastname ?? null,
+    email: user?.email ?? null,
+    mobile: user?.mobile ?? null,
+    phone: user?.phone ?? null,
+    level: user?.level ?? null,
+    otp: user?.otp ?? null,
+    type: user?.type ?? null,
+    status: user?.status ?? null,
+    customerId: user?.customerId ?? null,
+    groupId: user?.groupId ?? null,
+    subrogeable: user?.subrogeable ?? null,
+    address: {
+      street: user?.address?.street ?? null,
+      zipCode: user?.address?.zipCode ?? null,
+      city: user?.address?.city ?? null,
+      country: user?.address?.country ?? null,
+    },
+    siteCode: user?.siteCode ?? null,
+    centerCodes: user?.centerCodes ?? null,
+    internalCode: user?.internalCode ?? null,
+    autoProvisioningEnabled: user?.autoProvisioningEnabled ?? null,
+  };
+}
 
 @Component({
   selector: 'app-user-info-tab',
   templateUrl: './user-information-tab.component.html',
   styleUrls: ['./user-information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     VitamUIFieldErrorComponent,
     FormFieldValueWrapperComponent,
     SelectComponent,
@@ -91,7 +150,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
     CommonModule,
     EditableEmailInputComponent,
     EditableInputComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -104,7 +162,6 @@ const UPDATE_DEBOUNCE_TIME = 200;
 export class UserInfoTabComponent implements OnChanges, OnInit {
   private readonly userService = inject(UserService);
   private readonly userInfoService = inject(UserInfoService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly userCreateValidators = inject(UserCreateValidators);
   private readonly countryService = inject(CountryService);
   private readonly startupService = inject(StartupService);
@@ -116,88 +173,56 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   readonly readOnly = input<boolean>(undefined);
   readonly adminUserProfile = input<AdminUserProfile>(undefined);
 
-  public maxStreetLength: number;
-  public form: FormGroup;
-  public userInfoForm: FormGroup;
-  public showTooltip: boolean;
+  public maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
   public isPopup: boolean;
   public customerEmailDomains: string[];
   public countries: Option[];
-  public previousValue: {
-    firstname: string;
-    lastname: string;
-    email: string;
-    mobile: string;
-    phone: string;
-    level: string;
-    otp: boolean;
-    type: string;
-    status: string;
-    customerId: string;
-    groupId: string;
-    identifier: string;
-    subrogeable: boolean;
-    address: {
-      street: string;
-      zipCode: string;
-      city: string;
-      country: string;
-    };
-    siteCode: string;
-    centerCodes: string[];
-    internalCode: string;
-    autoProvisioningEnabled: boolean;
-  };
+  public previousValue: UserInformationModel;
 
   public previousUserInfoValue: {
     language: string;
   };
 
+  private readonly model = signal<UserInformationModel>({ ...toUserInformationModel(null), level: '', subrogeable: false });
+  // Values set by the reset methods: like a reset with emitEvent: false, they must not trigger an update
+  private resetValue = this.model();
+  // Activation state of the form, updated by resetForm
+  private readonly formDisabled = signal(false);
+  private readonly typeDisabled = signal(false);
+  private readonly otpStateManaged = signal(false);
+  public readonly form = form(this.model, (path) => {
+    disabled(path, () => this.formDisabled());
+    // The identifier and the level are never editable
+    disabled(path.identifier);
+    disabled(path.level);
+    disabled(path.type, () => this.typeDisabled());
+    // The OTP can be enabled only when the user has a mobile phone number
+    disabled(path.otp, ({ valueOf }) => this.otpStateManaged() && !valueOf(path.mobile));
+    required(path.address.country);
+  });
+  public readonly showTooltip = computed(() => this.otpStateManaged() && !this.form.mobile().value());
+
+  private readonly userInfoModel = signal<{ language: string }>({ language: null });
+  private userInfoResetValue = this.userInfoModel();
+  public readonly userInfoForm = form(this.userInfoModel, (path) => required(path.language));
+
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  private readonly userEmail = signal<string>(undefined);
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly emailValidator: ValidatorFn = Validators.compose([Validators.required, Validators.email]);
+  readonly emailAsyncValidator = computed<AsyncValidatorFn>(() => this.userCreateValidators.uniqueEmail(this.userEmail()));
+  readonly mobileValidator = computed<ValidatorFn>(() =>
+    Validators.compose([Validators.pattern(PHONE_PATTERN), ...(this.form.otp().value() ? [Validators.required] : [])]),
+  );
+  readonly phoneValidator: ValidatorFn = Validators.pattern(PHONE_PATTERN);
+  readonly streetValidator: ValidatorFn = Validators.compose([Validators.required, Validators.maxLength(this.maxStreetLength)]);
+
   constructor() {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
-    this.form = this.formBuilder.group({
-      id: [null],
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      firstname: [null, Validators.required],
-      lastname: [null, Validators.required],
-      email: [null, [Validators.required, Validators.email], this.userCreateValidators.uniqueEmail()],
-      mobile: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      phone: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      level: [{ value: '', disabled: true }],
-      otp: [null],
-      type: [null],
-      status: [null],
-      customerId: [null],
-      groupId: [null],
-      subrogeable: false,
-      address: this.formBuilder.group({
-        street: [null, [Validators.required, Validators.maxLength(this.maxStreetLength)]],
-        zipCode: [null, Validators.required],
-        city: [null, Validators.required],
-        country: [null, Validators.required],
-      }),
-      siteCode: [null],
-      centerCodes: [null],
-      internalCode: [null],
-      autoProvisioningEnabled: null,
-    });
-    this.userInfoForm = this.formBuilder.group({
-      language: [null, Validators.required],
-    });
-  }
-
-  ngOnInit() {
-    this.form.get('mobile').valueChanges.subscribe(() => {
-      this.updateOtpState(this.form);
-    });
-    this.form.get('otp').valueChanges.subscribe(() => {
-      this.initMobileValidators(this.form);
-    });
-
-    merge(this.form.valueChanges, this.form.statusChanges)
+    toObservable(computed(() => ({ value: this.model(), valid: this.form().valid() })))
       .pipe(
+        filter(({ value }) => value !== this.resetValue),
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.form.getRawValue(), this.previousValue)),
+        map(() => diff(this.model(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => {
           // centerCodes is used for auto-provisioning (Xelians) and should be an array
@@ -205,6 +230,7 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
           return { ...formData, id: this.user().id, centerCodes };
         }),
         switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
       )
       .subscribe((user: User) => {
         if (user) {
@@ -213,33 +239,24 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
         }
       });
 
-    merge(this.userInfoForm.valueChanges, this.userInfoForm.statusChanges)
+    toObservable(this.userInfoModel)
       .pipe(
+        filter((value) => value !== this.userInfoResetValue),
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.userInfoForm.getRawValue(), this.previousUserInfoValue)),
+        map(() => diff(this.userInfoModel(), this.previousUserInfoValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.userInfo().id }, formData)),
         switchMap((formData) => this.userInfoService.patch(formData, this.user()).pipe(catchError(() => of(null)))),
+        takeUntilDestroyed(),
       )
       .subscribe((userInfo: UserInfo) => this.resetUserInfoForm(userInfo));
+  }
 
+  ngOnInit() {
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
       this.cdr.markForCheck();
     });
-  }
-
-  private updateOtpState(form: FormGroup): void {
-    if (this.canModifyOtp()) {
-      if (form.get('mobile') && (!form.get('mobile').value || form.get('mobile').value === '')) {
-        this.showTooltip = true;
-        form.get('otp').disable({ emitEvent: false });
-      } else if (form.get('otp').disable) {
-        this.showTooltip = false;
-        form.get('otp').enable({ emitEvent: true });
-      }
-      this.cdr.markForCheck();
-    }
   }
 
   private canModifyOtp() {
@@ -267,52 +284,36 @@ export class UserInfoTabComponent implements OnChanges, OnInit {
   }
 
   private resetForm(user: User) {
-    this.form.reset(user, { emitEvent: false });
-    this.previousValue = this.form.getRawValue();
-    this.initFormValidators(this.form, user);
-    this.initFormActivationState(this.form);
-    this.form.updateValueAndValidity({ emitEvent: false });
+    this.resetValue = toUserInformationModel(user);
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.previousValue = this.resetValue;
+    this.userEmail.set(user.email);
+    this.initFormActivationState();
   }
+
   private resetUserInfoForm(userInfo: UserInfo) {
     if (userInfo) {
-      this.userInfoForm.reset(userInfo, { emitEvent: false });
-      this.previousUserInfoValue = this.userInfoForm.getRawValue();
-      this.userInfoForm.updateValueAndValidity({ emitEvent: false });
+      this.userInfoResetValue = { language: userInfo.language ?? null };
+      this.userInfoModel.set(this.userInfoResetValue);
+      this.userInfoForm().reset();
+      this.previousUserInfoValue = this.userInfoResetValue;
     }
   }
 
-  private initFormValidators(form: FormGroup, user: User) {
-    form.get('email').setAsyncValidators(this.userCreateValidators.uniqueEmail(user.email));
-    this.initMobileValidators(form);
-  }
-
-  private initMobileValidators(form: FormGroup) {
-    const mobileValidators = [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)];
-    if (form.get('otp').value) {
-      mobileValidators.push(Validators.required);
-    }
-    form.get('mobile').setValidators(mobileValidators);
-  }
-
-  private initFormActivationState(form: FormGroup) {
+  private initFormActivationState() {
     // get customer email domains
     this.customerEmailDomains = [];
     this.customer().emailDomains.forEach((domain) => this.customerEmailDomains.push(domain.replace('*.', '')));
     const adminUserProfile = this.adminUserProfile();
     if (this.readOnly() || !adminUserProfile.standardAttrsAllowed) {
-      form.disable({ emitEvent: false });
+      this.formDisabled.set(true);
 
       return;
     }
 
-    form.enable({ emitEvent: false });
-
-    form.get('identifier').disable({ emitEvent: false });
-    form.get('level').disable({ emitEvent: false });
-    if (!adminUserProfile.genericAllowed) {
-      form.get('type').disable({ emitEvent: false });
-    }
-
-    this.updateOtpState(form);
+    this.formDisabled.set(false);
+    this.typeDisabled.set(!adminUserProfile.genericAllowed);
+    this.otpStateManaged.set(!!this.canModifyOtp());
   }
 }

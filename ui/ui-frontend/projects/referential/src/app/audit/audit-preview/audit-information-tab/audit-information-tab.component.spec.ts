@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
 import { AuditInformationTabComponent } from './audit-information-tab.component';
 
@@ -96,7 +95,7 @@ describe('AuditInformationTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuditInformationTabComponent, ReactiveFormsModule, VitamUICommonTestModule],
+      imports: [AuditInformationTabComponent, VitamUICommonTestModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });

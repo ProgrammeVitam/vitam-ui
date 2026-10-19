@@ -57,7 +57,7 @@
               }
               <div class="col-5" vitamuiCommonEllipsis>{{ getProfileFromId(id)?.name }}</div>
               <div class="d-flex justify-content-end" [ngClass]="{ 'col-1': !tenantIdentifier(), 'col-4': tenantIdentifier() }">
-                <button class="btn link" (click)="remove(index)">
+                <button type="button" class="btn link" (click)="remove(index)">
                   <i class="material-icons">clear</i>
                 </button>
               </div>

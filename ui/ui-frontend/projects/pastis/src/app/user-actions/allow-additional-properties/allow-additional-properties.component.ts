@@ -36,14 +36,13 @@
  */
 import { Component, OnInit, output, model } from '@angular/core';
 import { SlideToggleComponent } from 'vitamui-library';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'allow-additional-properties',
   templateUrl: './allow-additional-properties.component.html',
   styleUrls: ['./allow-additional-properties.component.scss'],
-  imports: [SlideToggleComponent, FormsModule],
+  imports: [SlideToggleComponent],
 })
 export class AllowAdditionalPropertiesComponent implements OnInit {
   readonly stateToggleButton = output<boolean>();

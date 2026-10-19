@@ -76,7 +76,7 @@ import { VitamUICommonTestModule } from 'vitamui-library/testing';
 
 import { Component, forwardRef, NO_ERRORS_SCHEMA, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -143,7 +143,7 @@ class Page {
     return fixture.nativeElement.querySelector('button[type=submit]');
   }
   control(name: string) {
-    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+    return fixture.nativeElement.querySelector('[data-field="' + name + '"]');
   }
 }
 
@@ -158,23 +158,11 @@ describe('GroupCreateComponent', () => {
       create: vi.fn().mockName('GroupService.create').mockReturnValue(of({})),
     };
     const groupValidatorsSpy = {
-      nameExists: vi
-        .fn()
-        .mockName('GroupValidators.nameExists')
-        .mockReturnValue(() => of(null)),
+      nameExistsRule: vi.fn().mockName('GroupValidators.nameExistsRule'),
     };
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        CommonModule,
-        FormsModule,
-        LevelInputComponent,
-        TranslatePipe,
-        GroupCreateComponent,
-      ],
+      imports: [MatProgressBarModule, VitamUICommonTestModule, CommonModule, LevelInputComponent, TranslatePipe, GroupCreateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -189,14 +177,11 @@ describe('GroupCreateComponent', () => {
       .overrideComponent(GroupCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form">
-              <input formControlName="name" />
-              <input formControlName="description" />
-              <input formControlName="level" />
-              <input formControlName="enabled" />
-              <input formControlName="profileIds" />
-              <input formControlName="units" />
-              <button type="submit" [disabled]="form.invalid"></button>
+            <form [formRoot]="form">
+              <input data-field="name" [formField]="form.name" />
+              <input data-field="description" [formField]="form.description" />
+              <input data-field="level" [formField]="form.level" />
+              <button type="submit" [disabled]="form().invalid()"></button>
             </form>
           `,
         },
@@ -225,7 +210,7 @@ describe('GroupCreateComponent', () => {
     it('should have a submit button', () => {
       expect(page.submit).toBeTruthy();
       expect(page.submit.attributes.disabled).toBeTruthy();
-      component.form.setValue({
+      component.form().value.set({
         customerId: expectedGroup.customerId,
         name: expectedGroup.name,
         level: '',
@@ -241,11 +226,11 @@ describe('GroupCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it('should be valid', () => {
-      component.form.setValue({
+      component.form().value.set({
         customerId: expectedGroup.customerId,
         name: expectedGroup.name,
         level: '',
@@ -254,29 +239,29 @@ describe('GroupCreateComponent', () => {
         profileIds: expectedGroup.profileIds,
         units: expectedGroup.units,
       });
-      expect(component.form.valid).toBeTruthy();
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
       describe('fields', () => {
         it('should be required', () => {
-          expect(setControlValue('name', '').invalid).toBeTruthy();
-          expect(setControlValue('name', 'nn').valid).toBeTruthy();
+          expect(setControlValue('name', '').invalid()).toBeTruthy();
+          expect(setControlValue('name', 'nn').valid()).toBeTruthy();
 
-          expect(setControlValue('description', '').invalid).toBeTruthy();
-          expect(setControlValue('description', 'tttt').valid).toBeTruthy();
+          expect(setControlValue('description', '').invalid()).toBeTruthy();
+          expect(setControlValue('description', 'tttt').valid()).toBeTruthy();
 
-          expect(setControlValue('profileIds', '').invalid).toBeTruthy();
-          expect(setControlValue('profileIds', []).invalid).toBeTruthy();
-          expect(setControlValue('profileIds', ['test1']).valid).toBeTruthy();
+          expect(setControlValue('profileIds', '').invalid()).toBeTruthy();
+          expect(setControlValue('profileIds', []).invalid()).toBeTruthy();
+          expect(setControlValue('profileIds', ['test1']).valid()).toBeTruthy();
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: string, value: any) {
+        const field = name.split('.').reduce((tree: any, key) => tree[key], component.form);
+        field().value.set(value);
 
-        return control;
+        return field();
       }
     });
   });
@@ -297,7 +282,7 @@ describe('GroupCreateComponent', () => {
     it('should call create()', () => {
       const groupService = TestBed.inject(GroupService);
       const matDialogRef = TestBed.inject(MatDialogRef);
-      component.form.setValue({
+      component.form().value.set({
         customerId: expectedGroup.customerId,
         name: expectedGroup.name,
         level: '',

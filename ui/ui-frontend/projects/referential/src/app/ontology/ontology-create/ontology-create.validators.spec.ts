@@ -35,117 +35,75 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { FormControl } from '@angular/forms';
-import { from, of } from 'rxjs';
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
+import { of } from 'rxjs';
 
 import { OntologyCreateValidators } from './ontology-create.validators';
 
 describe('Ontology Create Validators', () => {
+  let ontologyServiceSpy: { exists: ReturnType<typeof vi.fn> };
+  let ontologyCreateValidators: OntologyCreateValidators;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    ontologyServiceSpy = {
+      exists: vi.fn().mockName('OntologyService.exists'),
+    };
+    ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  describe('uniqueCode', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const ontologyServiceSpy = {
-        exists: vi.fn().mockName('OntologyService.exists'),
-      };
+  async function validate(identifier: string) {
+    const testForm = form(
+      signal({ identifier }),
+      (path) => {
+        ontologyCreateValidators.patternID(path.identifier);
+        ontologyCreateValidators.uniqueID(path.identifier);
+      },
+      { injector: TestBed.inject(Injector) },
+    );
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    return testForm
+      .identifier()
+      .errors()
+      .map((error) => error.kind);
+  }
+
+  describe('uniqueID', () => {
+    it('should not return any error', async () => {
       ontologyServiceSpy.exists.mockReturnValue(of(false));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
-      from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
 
-      await vi.advanceTimersByTimeAsync(400);
-      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
+      expect(await validate('123456')).toEqual([]);
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('123456');
     });
 
-    it('should return { idExists: true }', async () => {
-      vi.useFakeTimers();
-      const ontologyServiceSpy = {
-        exists: vi.fn().mockName('OntologyService.exists'),
-      };
+    it('should return idExists', async () => {
       ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
-      from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ idExists: true });
-      });
 
-      await vi.advanceTimersByTimeAsync(400);
+      expect(await validate('123456')).toEqual(['idExists']);
       expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('123456');
     });
 
-    it('should call the service', async () => {
-      vi.useFakeTimers();
-      const ontologyServiceSpy = {
-        exists: vi.fn().mockName('OntologyService.exists'),
-      };
+    it('should return idExists for a domain', async () => {
       ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
-      from(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({ idExists: true });
-      });
 
-      await vi.advanceTimersByTimeAsync(400);
-      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
-    });
-
-    it('should call the service', async () => {
-      vi.useFakeTimers();
-      const ontologyServiceSpy = {
-        exists: vi.fn().mockName('OntologyService.exists'),
-      };
-      ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
-      from(ontologyCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ idExists: true });
-      });
-
-      await vi.advanceTimersByTimeAsync(400);
-      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
-      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('111111');
+      expect(await validate('test.com')).toEqual(['idExists']);
+      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
     });
   });
 
-  describe('uniqueDomain', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const ontologyServiceSpy = {
-        exists: vi.fn().mockName('OntologyService.exists'),
-      };
-      ontologyServiceSpy.exists.mockReturnValue(of(false));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
-      from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-
-      await vi.advanceTimersByTimeAsync(400);
-      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
-      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
-    });
-
-    it('should return { idExists: true }', async () => {
-      vi.useFakeTimers();
-      const ontologyServiceSpy = {
-        exists: vi.fn().mockName('OntologyService.exists'),
-      };
-      ontologyServiceSpy.exists.mockReturnValue(of(true));
-      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy as any);
-      from(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ idExists: true });
-      });
-
-      await vi.advanceTimersByTimeAsync(400);
-      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
-      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
+  describe('patternID', () => {
+    it('should return idPattern', async () => {
+      expect(await validate('_id')).toEqual(['idPattern']);
+      expect(await validate('#id')).toEqual(['idPattern']);
+      expect(await validate('my id')).toEqual(['idPattern']);
+      expect(ontologyServiceSpy.exists).not.toHaveBeenCalled();
     });
   });
 });

@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Component, inject, OnInit, output, signal } from '@angular/core';
+import { disabled, form, FormField, validate, ValidationError } from '@angular/forms/signals';
+import { MatRadioChange } from '@angular/material/radio';
 import {
   AccessContract,
   AccessContractDisplay,
@@ -46,6 +47,7 @@ import {
   NextStepComponent,
   Option,
   PreviousStepComponent,
+  requiredValue,
   SelectComponent,
   SlideToggleComponent,
   TooltipDirective,
@@ -56,13 +58,31 @@ import { RULE_TYPES } from '../../../../rule/rules.constants';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface AccessContractAuthorizationsForm {
+  accessRightSelected: AccessRightType;
+  originatingAgencies: string[];
+  ruleCategoryToFilter: string[];
+  ruleCategoryToFilterForTheOtherOriginatingAgencies: string[];
+  doNotFilterFilingSchemes: boolean;
+}
+
+const ORIGINATING_AGENCIES_ACCESS_RIGHTS = [
+  AccessRightType.ACCESS_BY_PRODUCERS,
+  AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES,
+  AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES,
+];
+const RULE_CATEGORY_ACCESS_RIGHTS = [
+  AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES,
+  AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES,
+];
+
 @Component({
   selector: 'app-access-contract-authorizations-update',
   templateUrl: './access-contract-authorizations-update.component.html',
   styleUrls: ['./access-contract-authorizations-update.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
     MatDialogContent,
     MatRadioGroup,
     MatRadioButton,
@@ -77,7 +97,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   dialogRef = inject<MatDialogRef<AccessContractAuthorizationsUpdateComponent>>(MatDialogRef);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly accessContractService = inject(AccessContractService);
   private readonly agencyService = inject(AgencyService);
   data = inject<{
@@ -92,46 +111,58 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
   readonly validateEvent = output<any>();
   readonly cancelEvent = output<any>();
 
-  form: FormGroup;
   updateMode = false;
 
-  accessRightSelected: FormControl = new FormControl();
+  readonly form = form(
+    signal<AccessContractAuthorizationsForm>({
+      accessRightSelected: AccessRightType.ACCESS_FULL,
+      originatingAgencies: [],
+      ruleCategoryToFilter: [],
+      ruleCategoryToFilterForTheOtherOriginatingAgencies: [],
+      doNotFilterFilingSchemes: true,
+    }),
+    (path) => {
+      requiredValue(path.originatingAgencies, {
+        when: ({ valueOf }) => ORIGINATING_AGENCIES_ACCESS_RIGHTS.includes(valueOf(path.accessRightSelected)),
+      });
+      requiredValue(path.ruleCategoryToFilter, {
+        when: ({ valueOf }) => RULE_CATEGORY_ACCESS_RIGHTS.includes(valueOf(path.accessRightSelected)),
+      });
+      requiredValue(path.ruleCategoryToFilterForTheOtherOriginatingAgencies, {
+        when: ({ valueOf }) => valueOf(path.accessRightSelected) === AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES,
+      });
+      disabled(path.doNotFilterFilingSchemes, ({ valueOf }) => valueOf(path.accessRightSelected) === AccessRightType.ACCESS_FULL);
+      validate(path, ({ value }) => this.checkFormValidity(value()));
+    },
+  );
 
   constructor() {
     const data = this.data;
 
-    this.form = this.formBuilder.group(
-      {
-        accessRightSelected: this.accessRightSelected,
-        originatingAgencies: [[]],
-        ruleCategoryToFilter: [[]],
-        ruleCategoryToFilterForTheOtherOriginatingAgencies: [[]],
-        doNotFilterFilingSchemes: [true],
-      },
-      {
-        validators: [this.checkFormValidity()],
-      },
-    );
-    this.accessRightSelected.valueChanges.subscribe((value: AccessRightType) => {
-      const doNotFilterFilingSchemesControl = this.form.controls['doNotFilterFilingSchemes'];
-      if (value === AccessRightType.ACCESS_FULL) {
-        doNotFilterFilingSchemesControl.setValue(true);
-        doNotFilterFilingSchemesControl.disable({ onlySelf: true });
-      } else {
-        doNotFilterFilingSchemesControl.enable({ onlySelf: true });
-      }
-    });
-    this.form.controls['accessRightSelected'].setValue(AccessRightType.ACCESS_FULL);
     if (data && data.accessContract) {
       this.updateMode = true;
-      this.form.controls['accessRightSelected'].setValue(data.accessContract.accessRightType);
-      this.form.controls['originatingAgencies'].setValue(data.accessContract.originatingAgencies || []);
-      this.form.controls['ruleCategoryToFilter'].setValue(data.accessContract.ruleCategoryToFilter || []);
-      this.form.controls['ruleCategoryToFilterForTheOtherOriginatingAgencies'].setValue(
-        data.accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies || [],
-      );
-      this.form.controls['doNotFilterFilingSchemes'].setValue(data.accessContract.doNotFilterFilingSchemes);
+      this.form().value.set({
+        accessRightSelected: data.accessContract.accessRightType,
+        originatingAgencies: data.accessContract.originatingAgencies || [],
+        ruleCategoryToFilter: data.accessContract.ruleCategoryToFilter || [],
+        ruleCategoryToFilterForTheOtherOriginatingAgencies: data.accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies || [],
+        doNotFilterFilingSchemes: data.accessContract.doNotFilterFilingSchemes ?? null,
+      });
     }
+  }
+
+  get accessRightSelected(): AccessRightType {
+    return this.form.accessRightSelected().value();
+  }
+
+  onAccessRightChange({ value }: MatRadioChange): void {
+    if (value === AccessRightType.ACCESS_FULL) {
+      this.form.doNotFilterFilingSchemes().value.set(true);
+    }
+  }
+
+  hasFormErrors(): boolean {
+    return this.form().errors().length > 0;
   }
 
   ngOnInit() {
@@ -168,83 +199,62 @@ export class AccessContractAuthorizationsUpdateComponent implements OnInit {
       accessContract.id = this.data.accessContract.id;
       accessContract.identifier = this.data.accessContract.identifier;
     }
-    switch (this.accessRightSelected.value) {
+    switch (this.accessRightSelected) {
       case AccessRightType.ACCESS_FULL:
         accessContract.everyOriginatingAgency = true;
         accessContract.originatingAgencies = [];
         accessContract.ruleCategoryToFilter = [];
         accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = [];
-        accessContract.doNotFilterFilingSchemes = this.form.get('doNotFilterFilingSchemes').value;
+        accessContract.doNotFilterFilingSchemes = this.form.doNotFilterFilingSchemes().value();
         break;
       case AccessRightType.ACCESS_BY_PRODUCERS:
         accessContract.everyOriginatingAgency = false;
-        accessContract.originatingAgencies = this.form.get('originatingAgencies').value;
+        accessContract.originatingAgencies = this.form.originatingAgencies().value();
         accessContract.ruleCategoryToFilter = [];
         accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = [];
-        accessContract.doNotFilterFilingSchemes = this.form.get('doNotFilterFilingSchemes').value;
+        accessContract.doNotFilterFilingSchemes = this.form.doNotFilterFilingSchemes().value();
         break;
       case AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES:
         accessContract.everyOriginatingAgency = true;
         accessContract.originatingAgencies = [];
-        accessContract.ruleCategoryToFilter = this.form.get('ruleCategoryToFilter').value;
+        accessContract.ruleCategoryToFilter = this.form.ruleCategoryToFilter().value();
         accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = [];
-        accessContract.doNotFilterFilingSchemes = this.form.get('doNotFilterFilingSchemes').value;
+        accessContract.doNotFilterFilingSchemes = this.form.doNotFilterFilingSchemes().value();
         break;
       case AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES:
         accessContract.everyOriginatingAgency = false;
-        accessContract.originatingAgencies = this.form.get('originatingAgencies').value;
+        accessContract.originatingAgencies = this.form.originatingAgencies().value();
         accessContract.ruleCategoryToFilter = [];
-        accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = this.form.get(
-          'ruleCategoryToFilterForTheOtherOriginatingAgencies',
-        ).value;
-        accessContract.doNotFilterFilingSchemes = this.form.get('doNotFilterFilingSchemes').value;
+        accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = this.form
+          .ruleCategoryToFilterForTheOtherOriginatingAgencies()
+          .value();
+        accessContract.doNotFilterFilingSchemes = this.form.doNotFilterFilingSchemes().value();
         break;
       case AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES:
         accessContract.everyOriginatingAgency = false;
-        accessContract.originatingAgencies = this.form.get('originatingAgencies').value;
-        accessContract.ruleCategoryToFilter = this.form.get('ruleCategoryToFilter').value;
+        accessContract.originatingAgencies = this.form.originatingAgencies().value();
+        accessContract.ruleCategoryToFilter = this.form.ruleCategoryToFilter().value();
         accessContract.ruleCategoryToFilterForTheOtherOriginatingAgencies = [];
-        accessContract.doNotFilterFilingSchemes = this.form.get('doNotFilterFilingSchemes').value;
+        accessContract.doNotFilterFilingSchemes = this.form.doNotFilterFilingSchemes().value();
         break;
     }
     return accessContract;
   }
 
-  checkFormValidity(): ValidatorFn {
-    return (form: FormGroup): ValidationErrors | null => {
-      let errors = null;
-      switch (this.accessRightSelected.value) {
-        case AccessRightType.ACCESS_FULL:
-          return null;
-        case AccessRightType.ACCESS_BY_PRODUCERS:
-          if (form.get('originatingAgencies').value.length < 1) {
-            errors = { originatingAgencies: true };
-          }
-          return errors;
-        case AccessRightType.ACCESS_BY_EXPIRED_MANAGEMENT_RULES:
-          if (form.get('ruleCategoryToFilter').value.length < 1) {
-            errors = { ruleCategoryToFilter: true };
-          }
-          return errors;
-        case AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES:
-          if (form.get('originatingAgencies').value.length < 1) {
-            errors = { originatingAgencies: true };
-          }
-          if (form.get('ruleCategoryToFilterForTheOtherOriginatingAgencies').value.length < 1) {
-            errors = { ...errors, ruleCategoryToFilterForTheOtherOriginatingAgencies: true };
-          }
-          return errors;
-        case AccessRightType.ACCESS_BY_PRODUCERS_AND_EXPIRED_MANAGEMENT_RULES:
-          if (form.get('originatingAgencies').value.length < 1) {
-            errors = { originatingAgencies: true };
-          }
-          if (form.get('ruleCategoryToFilter').value.length < 1) {
-            errors = { ...errors, ruleCategoryToFilter: true };
-          }
-          return errors;
-        default:
-          return null;
-      }
-    };
+  private checkFormValidity(value: AccessContractAuthorizationsForm): ValidationError.WithoutFieldTree[] {
+    const errors: ValidationError.WithoutFieldTree[] = [];
+    if (ORIGINATING_AGENCIES_ACCESS_RIGHTS.includes(value.accessRightSelected) && value.originatingAgencies.length < 1) {
+      errors.push({ kind: 'originatingAgencies' });
+    }
+    if (RULE_CATEGORY_ACCESS_RIGHTS.includes(value.accessRightSelected) && value.ruleCategoryToFilter.length < 1) {
+      errors.push({ kind: 'ruleCategoryToFilter' });
+    }
+    if (
+      value.accessRightSelected === AccessRightType.ACCESS_BY_PRODUCERS_OR_EXPIRED_MANAGEMENT_RULES &&
+      value.ruleCategoryToFilterForTheOtherOriginatingAgencies.length < 1
+    ) {
+      errors.push({ kind: 'ruleCategoryToFilterForTheOtherOriginatingAgencies' });
+    }
+    return errors;
   }
 }

@@ -34,43 +34,80 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, effect, inject, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, input, signal } from '@angular/core';
+import { disabled, email, form, FormField, pattern, required } from '@angular/forms/signals';
 
 import type { Account } from '../../models/account/account.interface';
 import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface AccountInformationForm {
+  id: Account['id'] | null;
+  firstname: string | null;
+  lastname: string | null;
+  email: string | null;
+  level: string | null;
+  otp: boolean | null;
+  mobile: string | null;
+  phone: string | null;
+  address: Account['address'] | null;
+  type: string | null;
+  profileGroup: Account['profileGroup'] | null;
+}
+
+const PHONE_PATTERN = /^[+]{1}[0-9]{11,12}$/;
+
+function toFormModel(account?: Partial<Account>): AccountInformationForm {
+  return {
+    id: account?.id ?? null,
+    firstname: account?.firstname ?? null,
+    lastname: account?.lastname ?? null,
+    email: account?.email ?? null,
+    level: account?.level ?? null,
+    otp: account?.otp ?? null,
+    mobile: account?.mobile ?? null,
+    phone: account?.phone ?? null,
+    address: account?.address ?? null,
+    type: account?.type ?? null,
+    profileGroup: account?.profileGroup ?? null,
+  };
+}
+
 @Component({
   selector: 'vitamui-common-account-information-tab',
   templateUrl: './account-information-tab.component.html',
   styleUrls: ['./account-information-tab.component.scss'],
-  imports: [FormsModule, ReactiveFormsModule, SlideToggleComponent, TranslatePipe],
+  imports: [FormField, SlideToggleComponent, TranslatePipe],
 })
 export class AccountInformationTabComponent {
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly model = signal<AccountInformationForm>(toFormModel());
 
-  public form: FormGroup;
+  public readonly form = form(this.model, (path) => {
+    // Read-only form: every field but the id is disabled
+    disabled(path.firstname);
+    disabled(path.lastname);
+    disabled(path.email);
+    disabled(path.level);
+    disabled(path.otp);
+    disabled(path.mobile);
+    disabled(path.phone);
+    disabled(path.address);
+    disabled(path.type);
+    disabled(path.profileGroup);
+    required(path.firstname);
+    required(path.lastname);
+    required(path.email);
+    email(path.email);
+    pattern(path.mobile, PHONE_PATTERN);
+    pattern(path.phone, PHONE_PATTERN);
+    required(path.address);
+  });
 
   public language: string;
 
   public account = input<Account | null>(null);
 
   constructor() {
-    this.form = this.formBuilder.group({
-      id: [null],
-      firstname: [{ value: null, disabled: true }, Validators.required],
-      lastname: [{ value: null, disabled: true }, Validators.required],
-      email: [{ value: null, disabled: true }, [Validators.required, Validators.email]],
-      level: [{ value: null, disabled: true }],
-      otp: [{ value: null, disabled: true }],
-      mobile: [{ value: null, disabled: true }, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      phone: [{ value: null, disabled: true }, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      address: [{ value: null, disabled: true }, Validators.required],
-      type: [{ value: null, disabled: true }],
-      profileGroup: [{ value: null, disabled: true }],
-    });
-
     effect(() => {
       const acc = this.account();
       if (acc?.userInfo) {
@@ -83,7 +120,6 @@ export class AccountInformationTabComponent {
   }
 
   private resetForm(account: Account) {
-    // Passing the user email to the validator so it doesn't check if his own code exists
-    this.form.reset(account, { emitEvent: false });
+    this.form().reset(toFormModel(account));
   }
 }

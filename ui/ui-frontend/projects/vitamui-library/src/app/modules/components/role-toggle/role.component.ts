@@ -37,13 +37,12 @@
 import { Component, input, model } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SlideToggleComponent } from '../../../../lib/components/slide-toggle/slide-toggle.component';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-common-role',
   templateUrl: './role.component.html',
   styleUrls: ['./role.component.scss'],
-  imports: [SlideToggleComponent, FormsModule],
+  imports: [SlideToggleComponent],
 })
 export class RoleComponent {
   readonly checked = model<boolean>(undefined);
@@ -53,6 +52,12 @@ export class RoleComponent {
   forceDisabled: boolean;
 
   readonly _checkedChange = new Subject<boolean>();
+
+  // Called when the user toggles the slide toggle
+  protected onToggle(checked: boolean) {
+    this.checked.set(checked);
+    this._checkedChange.next(checked);
+  }
 
   get checkedChange(): Observable<boolean> {
     return this._checkedChange.asObservable();

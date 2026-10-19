@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnChanges, signal, input, output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { disabled, form, FormField, FormRoot } from '@angular/forms/signals';
 import { EMPTY, Observable } from 'rxjs';
 import { IngestContract, SignaturePolicy, SignedDocumentPolicyEnum } from 'vitamui-library';
 import { IngestContractService } from '../../ingest-contract.service';
@@ -43,27 +43,54 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
 import { MatCheckbox } from '@angular/material/checkbox';
 import { TranslatePipe } from '@ngx-translate/core';
 
+const SIGNATURE_POLICY_KEYS: (keyof SignaturePolicy)[] = [
+  'signedDocument',
+  'declaredSignature',
+  'declaredTimestamp',
+  'declaredAdditionalProof',
+];
+
 @Component({
   selector: 'app-ingest-contract-signature-tab',
   templateUrl: './ingest-contract-signature-tab.component.html',
   styleUrls: ['./ingest-contract-signature-tab.component.scss'],
-  imports: [ReactiveFormsModule, MatButtonToggleGroup, MatButtonToggle, MatCheckbox, TranslatePipe],
+  imports: [FormRoot, FormField, MatButtonToggleGroup, MatButtonToggle, MatCheckbox, TranslatePipe],
 })
 export class IngestContractSignatureTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
 
   readonly SignedDocumentPolicyEnum = SignedDocumentPolicyEnum;
 
   readonly updated = output<boolean>();
 
-  form: FormGroup;
-  submitting = signal(false);
-  private _ingestContract: IngestContract;
-
   readonly ingestContract = input<IngestContract>(undefined);
 
   readonly readOnly = input<boolean>(undefined);
+
+  readonly form = form(
+    signal<SignaturePolicy>({
+      signedDocument: SignedDocumentPolicyEnum.ALLOWED,
+      declaredSignature: false,
+      declaredTimestamp: false,
+      declaredAdditionalProof: false,
+    }),
+    (path) => {
+      disabled(path.signedDocument, () => !!this.readOnly());
+      for (const checkbox of [path.declaredSignature, path.declaredTimestamp, path.declaredAdditionalProof]) {
+        disabled(checkbox, ({ valueOf }) => !!this.readOnly() || valueOf(path.signedDocument) === SignedDocumentPolicyEnum.FORBIDDEN);
+      }
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  submitting = signal(false);
+  private _ingestContract: IngestContract;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['ingestContract']) {
@@ -87,10 +114,34 @@ export class IngestContractSignatureTabComponent implements OnChanges {
     return this._ingestContract.signaturePolicy;
   };
 
+  /**
+   * Value of the form, without the disabled fields (unless they are all disabled) and the unset fields,
+   * as the value of the former reactive form.
+   */
+  private formValue(): SignaturePolicy {
+    const allDisabled = SIGNATURE_POLICY_KEYS.every((key) => this.form[key]().disabled());
+    return SIGNATURE_POLICY_KEYS.reduce((acc: any, key) => {
+      const value = this.form[key]().value();
+      if ((allDisabled || !this.form[key]().disabled()) && value != null) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {}) as SignaturePolicy;
+  }
+
   signaturePolicyUnchanged() {
-    const actual = this.form.value as SignaturePolicy;
+    const actual = this.formValue();
     const previous = this.previousValue();
-    const unchanged = JSON.stringify(actual) === JSON.stringify(previous);
+    // Unset values were omitted by JSON.stringify in the former reactive form value
+    const definedPrevious = previous
+      ? SIGNATURE_POLICY_KEYS.reduce((acc: any, key) => {
+          if (previous[key] != null) {
+            acc[key] = previous[key];
+          }
+          return acc;
+        }, {})
+      : previous;
+    const unchanged = JSON.stringify(actual) === JSON.stringify(definedPrevious);
     this.updated.emit(!unchanged);
     return unchanged;
   }
@@ -99,7 +150,7 @@ export class IngestContractSignatureTabComponent implements OnChanges {
     if (this.signaturePolicyUnchanged()) {
       return EMPTY;
     }
-    const signaturePolicy = this.form.value as SignaturePolicy;
+    const signaturePolicy = this.formValue();
     const isForbidden = signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
     const formData = {
       id: this._ingestContract.id,
@@ -129,55 +180,24 @@ export class IngestContractSignatureTabComponent implements OnChanges {
   }
 
   changeSignedDocumentPolicy(signedDocumentPolicyEnum: SignedDocumentPolicyEnum): void {
+    // The checkboxes are disabled by the form schema when the signed documents are forbidden
     if (signedDocumentPolicyEnum === SignedDocumentPolicyEnum.FORBIDDEN) {
-      this.form.setValue({
+      this.form().value.set({
         signedDocument: SignedDocumentPolicyEnum.FORBIDDEN,
         declaredSignature: false,
         declaredTimestamp: false,
         declaredAdditionalProof: false,
       });
     }
-    const isDisabled = this.signedDocumentPolicyIsDisabled();
-    if (isDisabled) {
-      this.form.get('declaredSignature').disable();
-      this.form.get('declaredTimestamp').disable();
-      this.form.get('declaredAdditionalProof').disable();
-    } else {
-      this.form.get('declaredSignature').enable();
-      this.form.get('declaredTimestamp').enable();
-      this.form.get('declaredAdditionalProof').enable();
-    }
-  }
-
-  private signedDocumentPolicyIsDisabled(): boolean {
-    return this.form.value.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 
   resetForm(ingestContract: IngestContract) {
-    if (ingestContract.signaturePolicy) {
-      const disabledCheckbox = this._ingestContract.signaturePolicy.signedDocument == SignedDocumentPolicyEnum.FORBIDDEN || this.readOnly();
-      this.form = this.formBuilder.group({
-        signedDocument: { value: this._ingestContract.signaturePolicy.signedDocument, disabled: this.readOnly() },
-        declaredSignature: {
-          value: this._ingestContract.signaturePolicy.declaredSignature,
-          disabled: disabledCheckbox,
-        },
-        declaredTimestamp: {
-          value: this._ingestContract.signaturePolicy.declaredTimestamp,
-          disabled: disabledCheckbox,
-        },
-        declaredAdditionalProof: {
-          value: this._ingestContract.signaturePolicy.declaredAdditionalProof,
-          disabled: disabledCheckbox,
-        },
-      });
-    } else {
-      this.form = this.formBuilder.group({
-        signedDocument: { value: SignedDocumentPolicyEnum.ALLOWED, disabled: this.readOnly() },
-        declaredSignature: { value: false, disabled: this.readOnly() },
-        declaredTimestamp: { value: false, disabled: this.readOnly() },
-        declaredAdditionalProof: { value: false, disabled: this.readOnly() },
-      });
-    }
+    const signaturePolicy = ingestContract.signaturePolicy ? this._ingestContract.signaturePolicy : undefined;
+    this.form().reset({
+      signedDocument: signaturePolicy ? (signaturePolicy.signedDocument ?? null) : SignedDocumentPolicyEnum.ALLOWED,
+      declaredSignature: signaturePolicy ? (signaturePolicy.declaredSignature ?? null) : false,
+      declaredTimestamp: signaturePolicy ? (signaturePolicy.declaredTimestamp ?? null) : false,
+      declaredAdditionalProof: signaturePolicy ? (signaturePolicy.declaredAdditionalProof ?? null) : false,
+    });
   }
 }

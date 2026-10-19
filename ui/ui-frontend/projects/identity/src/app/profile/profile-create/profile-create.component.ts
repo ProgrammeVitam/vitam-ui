@@ -38,8 +38,6 @@ import { Subscription } from 'rxjs';
 import {
   ApplicationId,
   AuthService,
-  AuthUser,
-  buildValidators,
   ConfirmDialogService,
   DialogHeaderComponent,
   InputComponent,
@@ -51,8 +49,8 @@ import {
   SlideToggleComponent,
 } from 'vitamui-library';
 
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
@@ -60,6 +58,19 @@ import { ProfileService } from '../profile.service';
 import { ProfileValidators } from '../profile.validators';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { levelRules } from '../../shared/signal-forms/signal-form-validators';
+import { hasError } from '../../shared/signal-forms/signal-form-utils';
+
+interface ProfileCreateModel {
+  enabled: boolean;
+  name: string;
+  description: string;
+  level: string;
+  customerId: string;
+  applicationName: string;
+  tenantIdentifier: string;
+  roles: { name: Role }[];
+}
 
 @Component({
   selector: 'app-profile-create',
@@ -67,14 +78,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./profile-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     MatDialogContent,
     SlideToggleComponent,
     InputComponent,
     MatDialogActions,
     TranslatePipe,
     CommonModule,
-    FormsModule,
     LevelInputComponent,
     RoleComponent,
     RoleToggleComponent,
@@ -87,46 +98,45 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
   customerService = inject(CustomerService);
   profileValidators = inject(ProfileValidators);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  adminProfileForm: FormGroup;
-  tenantWithProofId: string;
+  tenantWithProofId: string = this.authService.user.proofTenantIdentifier;
   roleEnum = Role;
+
+  private readonly model = signal<ProfileCreateModel>({
+    enabled: true,
+    name: null,
+    description: null,
+    level: '',
+    customerId: this.authService.user.customerId,
+    applicationName: 'USERS_APP',
+    tenantIdentifier: this.tenantWithProofId,
+    roles: [{ name: this.roleEnum.ROLE_GET_USERS }, { name: this.roleEnum.ROLE_GET_GROUPS }, { name: this.roleEnum.ROLE_GET_USER_INFOS }],
+  });
+  readonly adminProfileForm = form(
+    this.model,
+    (path) => {
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      // The name must be unique for the selected level
+      this.profileValidators.nameExistsRule(path.name, ({ valueOf }) => ({
+        tenantIdentifier: Number(this.tenantWithProofId),
+        level: valueOf(path.level),
+        applicationName: ApplicationId.USERS_APP,
+      }));
+      required(path.description);
+      minLength(path.description, 2);
+      maxLength(path.description, 250);
+      levelRules(path.level, this.authService.user);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
+  protected readonly hasError = hasError;
 
   private keyPressSubscription: Subscription;
 
-  constructor() {
-    this.adminProfileForm = this.formBuilder.group({
-      enabled: true,
-      name: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      description: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(250)]],
-      level: ['', buildValidators(this.authService.user)],
-      customerId: [this.authService.user.customerId],
-      applicationName: 'USERS_APP',
-      tenantIdentifier: this.tenantWithProofId,
-      roles: [
-        [{ name: this.roleEnum.ROLE_GET_USERS }, { name: this.roleEnum.ROLE_GET_GROUPS }, { name: this.roleEnum.ROLE_GET_USER_INFOS }],
-      ],
-    });
-  }
-
   ngOnInit() {
-    const user: AuthUser = this.authService.user;
-    this.tenantWithProofId = user.proofTenantIdentifier;
-
-    this.adminProfileForm.get('tenantIdentifier').setValue(this.tenantWithProofId);
-    this.adminProfileForm
-      .get('name')
-      .setAsyncValidators(this.profileValidators.nameExists(Number(this.tenantWithProofId), '', ApplicationId.USERS_APP));
-
-    this.adminProfileForm.get('level').valueChanges.subscribe((level) => {
-      this.adminProfileForm
-        .get('name')
-        .setAsyncValidators(this.profileValidators.nameExists(Number(this.tenantWithProofId), level, ApplicationId.USERS_APP));
-      this.adminProfileForm.get('name').updateValueAndValidity();
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -135,7 +145,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.adminProfileForm.dirty) {
+    if (this.adminProfileForm().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -144,11 +154,11 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
 
   firstStepInvalid(): boolean {
     return (
-      this.adminProfileForm.get('name').invalid ||
-      this.adminProfileForm.get('name').pending ||
-      this.adminProfileForm.get('description').invalid ||
-      this.adminProfileForm.get('description').pending ||
-      this.adminProfileForm.get('level').invalid
+      this.adminProfileForm.name().invalid() ||
+      this.adminProfileForm.name().pending() ||
+      this.adminProfileForm.description().invalid() ||
+      this.adminProfileForm.description().pending() ||
+      this.adminProfileForm.level().invalid()
     );
   }
 
@@ -196,10 +206,11 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.adminProfileForm.invalid) {
+    if (this.adminProfileForm().invalid()) {
       return;
     }
-    const profile: Profile = this.adminProfileForm.getRawValue();
+    // The roles are completed below: a copy is used to keep the form model unchanged
+    const profile = { ...this.model(), roles: [...this.model().roles] } as unknown as Profile;
     this.completeUpdateRoles(profile);
     this.completeCreateRoles(profile);
     this.rngProfileService.create(profile).subscribe(

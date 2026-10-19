@@ -34,8 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, HostListener, inject, OnInit, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, HostListener, inject, Injector, OnInit, signal, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField } from '@angular/forms/signals';
+import { skip } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -62,6 +64,11 @@ import { MatMenuItem } from '@angular/material/menu';
 import { UploadTrackingComponent } from '../shared/upload-tracking/upload-tracking.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface DateRangeFilterForm {
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
 @Component({
   selector: 'app-ingest',
   templateUrl: './ingest.component.html',
@@ -77,7 +84,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     NgStyle,
     VitamuiMenuButtonComponent,
     MatMenuItem,
-    ReactiveFormsModule,
+    FormField,
     DatepickerComponent,
     UploadTrackingComponent,
     IngestListComponent,
@@ -87,7 +94,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class IngestComponent extends SidenavPage<LogbookOperation> implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly dialog = inject(MatDialog);
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly injector = inject(Injector);
   private readonly uploadSipService = inject(UploadService);
 
   readonly searchBar = viewChild.required(SearchBarComponent);
@@ -99,7 +106,7 @@ export class IngestComponent extends SidenavPage<LogbookOperation> implements On
   tenantIdentifier = '';
   guard = true;
   connectedUserInfo!: AdminUserProfile;
-  dateRangeFilterForm!: ReturnType<typeof this.buildDateRangeForm>;
+  readonly dateRangeFilterForm = form(signal<DateRangeFilterForm>({ startDate: null, endDate: null }));
   filters: { startDate?: Date; endDate?: Date } = {};
   ingestList: IngestList = new IngestList();
   ingestThatHasChanged: LogbookOperation | null = null;
@@ -154,23 +161,19 @@ export class IngestComponent extends SidenavPage<LogbookOperation> implements On
   }
 
   private initDateRangeForm(): void {
-    this.dateRangeFilterForm = this.buildDateRangeForm();
+    // skip(1): only react to the changes, not to the initial value
+    toObservable(this.dateRangeFilterForm.startDate().value, { injector: this.injector })
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters = { ...this.filters, startDate: value };
+      });
 
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, startDate: value };
-    });
-
-    this.dateRangeFilterForm.controls.endDate.valueChanges.subscribe((value) => {
-      this.filters = { ...this.filters, endDate: value };
-      this.ingestListComponent().direction = Direction.DESCENDANT;
-    });
-  }
-
-  private buildDateRangeForm() {
-    return this.formBuilder.group({
-      startDate: null as Date | null,
-      endDate: null as Date | null,
-    });
+    toObservable(this.dateRangeFilterForm.endDate().value, { injector: this.injector })
+      .pipe(skip(1))
+      .subscribe((value) => {
+        this.filters = { ...this.filters, endDate: value };
+        this.ingestListComponent().direction = Direction.DESCENDANT;
+      });
   }
 
   private subscribeToUploadStatus(): void {

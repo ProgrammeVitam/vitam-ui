@@ -1,8 +1,7 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="gap-5">
+<form [formRoot]="form" class="gap-5">
   <div class="gap-3 w-100 align-items-stretch">
     <vitamui-input
-      [disabled]="(checkUpdateRole | async) === false"
-      formControlName="name"
+      [formField]="form.name"
       [placeholder]="'AGENCY.TAB.NAME' | translate"
       [errorMessageMap]="{
         nameExists: 'AGENCY.CREATE_DIALOG.NAME_ALREADY_EXISTS' | translate,
@@ -11,13 +10,7 @@
     >
     </vitamui-input>
 
-    <vitamui-input
-      [disabled]="(checkUpdateRole | async) === false"
-      formControlName="description"
-      [placeholder]="'AGENCY.TAB.DESCRIPTION' | translate"
-      [textarea]="true"
-    >
-    </vitamui-input>
+    <vitamui-input [formField]="form.description" [placeholder]="'AGENCY.TAB.DESCRIPTION' | translate" [textarea]="true"> </vitamui-input>
   </div>
 
   @if (checkUpdateRole | async) {

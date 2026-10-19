@@ -34,13 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Agency, AgencyService, ConfirmDialogService, DialogHeaderComponent, InputComponent } from 'vitamui-library';
 import { AgencyCreateValidators } from './agency-create.validators';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
+
+interface AgencyCreateForm {
+  name: string;
+  identifier: string;
+  description: string;
+}
 
 @Component({
   selector: 'app-agency-create',
@@ -49,38 +55,44 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     DialogHeaderComponent,
     MatDialogContent,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     InputComponent,
     MatProgressSpinner,
     MatDialogActions,
     TranslatePipe,
   ],
 })
-export class AgencyCreateComponent implements OnInit {
+export class AgencyCreateComponent {
   dialogRef = inject<MatDialogRef<AgencyCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly agencyService = inject(AgencyService);
   private readonly agencyCreateValidators = inject(AgencyCreateValidators);
 
-  form: FormGroup;
+  readonly form = form(
+    signal<AgencyCreateForm>({ name: null, identifier: null, description: null }),
+    (path) => {
+      required(path.name);
+      this.agencyCreateValidators.onlyWhitespaces(path.name);
+      this.agencyCreateValidators.uniqueName(path.name);
+      required(path.identifier);
+      this.agencyCreateValidators.onlyWhitespaces(path.identifier);
+      this.agencyCreateValidators.uniqueIdentifier(path.identifier);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   isLoading = signal(false);
 
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: [null, [Validators.required, this.agencyCreateValidators.onlyWhitespaces], this.agencyCreateValidators.uniqueName()],
-      identifier: [
-        null,
-        [Validators.required, this.agencyCreateValidators.onlyWhitespaces],
-        this.agencyCreateValidators.uniqueIdentifier(),
-      ],
-      description: [null],
-    });
-  }
-
   public onCancel(): void {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -88,12 +100,12 @@ export class AgencyCreateComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
 
     this.isLoading.set(true);
-    this.agencyService.create(this.form.value).subscribe(
+    this.agencyService.create(this.form().value() as Agency).subscribe(
       () => {
         this.dialogRef.close({ success: true, action: 'none' });
       },
@@ -106,9 +118,9 @@ export class AgencyCreateComponent implements OnInit {
 
   public submitAndEdit(): void {
     const agency: Partial<Agency> = {
-      name: this.form.controls['name'].value,
-      identifier: this.form.controls['identifier'].value,
-      description: this.form.controls['description'].value,
+      name: this.form.name().value(),
+      identifier: this.form.identifier().value(),
+      description: this.form.description().value(),
     };
 
     this.isLoading.set(true);

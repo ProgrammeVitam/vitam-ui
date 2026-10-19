@@ -44,7 +44,6 @@ import { SecurityProfileInformationTabComponent } from './security-profile-infor
 import { SecurityProfilePermissionsTabComponent } from './security-profile-permissions-tab/security-profile-permissions-tab.component';
 
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -62,7 +61,6 @@ import { CommonModule } from '@angular/common';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })

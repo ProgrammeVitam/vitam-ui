@@ -37,7 +37,6 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -116,7 +115,6 @@ describe('AccessContractCreateComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         AccessContractCreateComponent,
-        ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         MatButtonToggleModule,
@@ -140,7 +138,7 @@ describe('AccessContractCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AccessContractCreateComponent);
     component = fixture.componentInstance;
-    component.allNodes.setValue(true);
+    component.allNodes.set(true);
     fixture.detectChanges();
     page = new Page();
   });
@@ -178,12 +176,12 @@ describe('AccessContractCreateComponent', () => {
 
   describe('Form', () => {
     it('should be invalid when empty', () => {
-      expect(component.form.invalid).toBeTruthy();
+      expect(component.form().invalid()).toBeTruthy();
     });
 
     it.skip('should be valid', () => {
-      component.form.setValue(expectedAccessContract);
-      expect(component.form.valid).toBeTruthy();
+      component.form().value.set(expectedAccessContract as any);
+      expect(component.form().valid()).toBeTruthy();
     });
 
     describe('Validators', () => {
@@ -197,11 +195,11 @@ describe('AccessContractCreateComponent', () => {
         });
       });
 
-      function setControlValue(name: string | Array<string | number>, value: any) {
-        const control = component.form.get(name);
-        control.setValue(value);
+      function setControlValue(name: 'name' | 'identifier', value: string) {
+        const field = component.form[name];
+        field().value.set(value);
 
-        return control;
+        return field();
       }
     });
   });
@@ -215,7 +213,7 @@ describe('AccessContractCreateComponent', () => {
 
     it('should not call create()', () => {
       const accessContractService = TestBed.inject(AccessContractService);
-      component.allNodes.setValue(false);
+      component.allNodes.set(false);
       component.onSubmit();
       expect(accessContractService.create).toHaveBeenCalledTimes(0);
     });

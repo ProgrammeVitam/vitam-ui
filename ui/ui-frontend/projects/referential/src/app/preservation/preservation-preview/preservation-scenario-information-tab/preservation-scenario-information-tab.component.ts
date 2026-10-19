@@ -35,20 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, effect, inject, input } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActionType, Option, PreservationScenario, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
+import { Component, inject, input, linkedSignal } from '@angular/core';
+import { disabled, form, FormField } from '@angular/forms/signals';
+import { ActionType, DateTimePipe, Option, PreservationScenario, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
+interface PreservationScenarioInformationForm {
+  Identifier: string;
+  Name: string;
+  ActionList: ActionType[];
+  Description: string;
+  CreationDate: string;
+  LastUpdate: string;
+}
 
 @Component({
   selector: 'app-preservation-scenario-information-tab',
-  imports: [FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  imports: [FormField, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  providers: [DateTimePipe],
   templateUrl: './preservation-scenario-information-tab.component.html',
 })
 export class PreservationScenarioInformationTabComponent {
   private readonly translateService = inject(TranslateService);
-
-  private readonly formBuilder = inject(FormBuilder);
+  private readonly dateTimePipe = inject(DateTimePipe);
 
   possibleActions: Option[] = [
     { key: 'GENERATE', label: this.translateService.instant('PRESERVATION.SCENARIO.TABLE.HEADER.ACTIONS.GENERATE') },
@@ -60,23 +69,19 @@ export class PreservationScenarioInformationTabComponent {
 
   inputPreservationScenario = input.required<PreservationScenario>();
 
-  readonly form = this.formBuilder.nonNullable.group({
-    Identifier: [{ value: '', disabled: true }, Validators.required],
-    Name: [{ value: '', disabled: true }, Validators.required],
-    ActionList: [{ value: [] as ActionType[], disabled: true }, Validators.required],
-    Description: [{ value: '', disabled: true }],
-    CreationDate: [{ value: null as Date, disabled: true }],
-    LastUpdate: [{ value: null as Date, disabled: true }],
-  });
-
-  constructor() {
-    effect(() => {
-      Object.entries(this.form.controls).forEach(([, control]) => control.disable());
-
-      this.form.reset(
-        { ...this.inputPreservationScenario(), Description: this.inputPreservationScenario().Description ?? '' },
-        { emitEvent: false },
-      );
-    });
-  }
+  // Read only form, with the dates formatted for display
+  readonly form = form(
+    linkedSignal<PreservationScenarioInformationForm>(() => {
+      const scenario = this.inputPreservationScenario();
+      return {
+        Identifier: scenario.Identifier ?? '',
+        Name: scenario.Name ?? '',
+        ActionList: scenario.ActionList ?? [],
+        Description: scenario.Description ?? '',
+        CreationDate: this.dateTimePipe.transform(scenario.CreationDate, 'dd/MM/yyyy'),
+        LastUpdate: this.dateTimePipe.transform(scenario.LastUpdate, 'dd/MM/yyyy'),
+      };
+    }),
+    (path) => disabled(path),
+  );
 }

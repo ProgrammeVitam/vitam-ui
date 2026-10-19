@@ -42,6 +42,7 @@ import { LoadProfileComponent, LoadProfileConfig } from './load-profile.componen
 
 describe('LoadProfileComponent', () => {
   let fixture: ComponentFixture<LoadProfileComponent>;
+  let component: LoadProfileComponent;
 
   const config: LoadProfileConfig = {
     title: 'Title',
@@ -62,27 +63,36 @@ describe('LoadProfileComponent', () => {
       providers: [provideTranslateService(), { provide: MAT_DIALOG_DATA, useValue: config }],
     }).compileComponents();
     fixture = TestBed.createComponent(LoadProfileComponent);
-    fixture.detectChanges();
+    component = fixture.componentInstance;
     await fixture.whenStable();
   });
 
   it('should disable the OK button while no file is selected', () => {
+    expect(component['files']().valid()).toBe(true);
     expect(okButton().disabled).toBe(true);
   });
 
-  it('should enable the OK button with a file having an allowed extension', async () => {
-    await fileSelector().handleFilesSelection([new File(['{}'], 'profile.json', { type: 'application/json' })]);
+  it('should keep the form valid with a file having an allowed extension', async () => {
+    const profile = new File(['{}'], 'profile.json', { type: 'application/json' });
+    await fileSelector().handleFilesSelection([profile]);
     await fixture.whenStable();
-    fixture.detectChanges();
 
+    expect(component['files']().value()).toEqual([profile]);
+    expect(component['files']().valid()).toBe(true);
     expect(okButton().disabled).toBe(false);
   });
 
-  it('should disable the OK button with a file having a wrong extension', async () => {
+  it('should make the form invalid with a file having a wrong extension', async () => {
     await fileSelector().handleFilesSelection([new File(['text'], 'profile.txt', { type: 'text/plain' })]);
     await fixture.whenStable();
-    fixture.detectChanges();
 
+    expect(component['files']().invalid()).toBe(true);
+    expect(
+      component['files']()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['invalidFiles']);
+    // Bug #16995: the OK button must stay disabled with an invalid file
     expect(okButton().disabled).toBe(true);
   });
 });

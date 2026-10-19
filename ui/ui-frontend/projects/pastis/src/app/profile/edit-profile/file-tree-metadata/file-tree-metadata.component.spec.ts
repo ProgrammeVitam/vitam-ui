@@ -36,7 +36,6 @@
  */
 import { APP_BASE_HREF } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { LoggerModule, ProfileService, WINDOW_LOCATION } from 'vitamui-library';
@@ -90,7 +89,6 @@ describe('FileTreeMetadataComponent', () => {
         ProfileService,
         PastisApiService,
         PastisConfiguration,
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },

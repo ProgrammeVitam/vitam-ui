@@ -35,11 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit, viewChild, input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, Injector, OnDestroy, OnInit, viewChild, input, signal, Signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { EMPTY, forkJoin, of, Subject } from 'rxjs';
-import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { catchError, map, skip, switchMap, take, takeUntil } from 'rxjs/operators';
 import {
   AccessContractService,
   AccessionRegisterSummary,
@@ -56,6 +57,7 @@ import {
   VitamuiHttpHeaders,
   VitamUILibraryModule,
   VitamuiSelectOptions,
+  requiredValue,
 } from 'vitamui-library';
 import { AuditAction, AuditPerimeter } from '../../models/audit.interface';
 import { AuditService } from '../audit.service';
@@ -69,6 +71,37 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { CdkStepper } from '@angular/cdk/stepper';
 
+interface AuditCreateForm {
+  auditActions: AuditAction;
+  auditPerimeter: AuditPerimeter;
+  evidenceAudit: string;
+  objectId: string | number;
+  originatingAgencyIds: string[];
+  ingestOperationIds: string[];
+  attachmentPositionIds: string[];
+  startDate: string;
+  endDate: string;
+}
+
+/** Fields of the dialog which are not sent in the request (their values are copied in the request fields) */
+interface AuditCreateUiForm {
+  allProducerServices: boolean;
+  selectedNodes: { included: string[]; excluded: string[] };
+  producerServicesMultiSelect: string[];
+  ingestOperationsEntries: string;
+  startDate: string;
+  endDate: string;
+}
+
+type RequiredField =
+  | 'auditPerimeter'
+  | 'evidenceAudit'
+  | 'objectId'
+  | 'originatingAgencyIds'
+  | 'ingestOperationIds'
+  | 'attachmentPositionIds'
+  | 'startDate';
+
 @Component({
   selector: 'app-audit-create',
   templateUrl: './audit-create.component.html',
@@ -80,7 +113,8 @@ import { CdkStepper } from '@angular/cdk/stepper';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -91,7 +125,6 @@ import { CdkStepper } from '@angular/cdk/stepper';
 export class AuditCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<AuditCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   private readonly auditService = inject(AuditService);
   private readonly agencyService = inject(AgencyService);
@@ -100,16 +133,67 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   private readonly auditCreateValidator = inject(AuditCreateValidators);
   private readonly externalParameterService = inject(ExternalParametersService);
   private readonly snackBarService = inject(SnackBarService);
+  private readonly injector = inject(Injector);
 
   readonly tenantIdentifier = input<number>(undefined);
 
-  public form: FormGroup;
-  public allProducerServices = new FormControl(false);
-  public selectedNodes = new FormControl({ included: [], excluded: [] });
-  public producerServicesMultiSelect = new FormControl();
-  public ingestOperationsEntries = new FormControl();
-  public startDateControl = new FormControl('');
-  public endDateControl = new FormControl('');
+  // Fields whose required validator is added/removed depending on the selected audit action and perimeter
+  private readonly requiredFields = signal<Record<RequiredField, boolean>>({
+    auditPerimeter: true,
+    evidenceAudit: false,
+    objectId: false,
+    originatingAgencyIds: false,
+    ingestOperationIds: false,
+    attachmentPositionIds: false,
+    startDate: false,
+  });
+
+  public readonly form = form(
+    signal<AuditCreateForm>({
+      auditActions: AuditAction.AUDIT_FILE_INTEGRITY,
+      auditPerimeter: null,
+      evidenceAudit: null,
+      objectId: this.startupService.getTenantIdentifier(),
+      originatingAgencyIds: [],
+      ingestOperationIds: [],
+      attachmentPositionIds: [],
+      startDate: null,
+      endDate: null,
+    }),
+    (path) => {
+      requiredValue(path.auditActions);
+      requiredValue(path.auditPerimeter, { when: () => this.requiredFields().auditPerimeter });
+      requiredValue(path.evidenceAudit, { when: () => this.requiredFields().evidenceAudit });
+      requiredValue(path.objectId, { when: () => this.requiredFields().objectId });
+      requiredValue(path.originatingAgencyIds, { when: () => this.requiredFields().originatingAgencyIds });
+      requiredValue(path.ingestOperationIds, { when: () => this.requiredFields().ingestOperationIds });
+      requiredValue(path.attachmentPositionIds, { when: () => this.requiredFields().attachmentPositionIds });
+      requiredValue(path.startDate, { when: () => this.requiredFields().startDate });
+      this.auditCreateValidator.checkEvidenceAuditId(path.evidenceAudit);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  public readonly uiForm = form(
+    signal<AuditCreateUiForm>({
+      allProducerServices: false,
+      selectedNodes: { included: [], excluded: [] },
+      producerServicesMultiSelect: null,
+      ingestOperationsEntries: null,
+      startDate: '',
+      endDate: '',
+    }),
+    (path) => {
+      requiredValue(path.producerServicesMultiSelect);
+      requiredValue(path.startDate, { when: () => this.isStartDateRequired() });
+    },
+  );
   public accessContractId: string = null;
   public producerServicesOptions: Option[] = [];
   public producerServicesMultiSelectOptions: VitamuiSelectOptions;
@@ -134,18 +218,6 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      auditActions: [AuditAction.AUDIT_FILE_INTEGRITY, Validators.required],
-      auditPerimeter: [null, Validators.required],
-      evidenceAudit: [null, null, this.auditCreateValidator.checkEvidenceAuditId()],
-      objectId: [this.startupService.getTenantIdentifier()],
-      originatingAgencyIds: [[]],
-      ingestOperationIds: [[]],
-      attachmentPositionIds: [[]],
-      startDate: [null],
-      endDate: [null],
-    });
-
     this.externalParameterService
       .getUserExternalParameters()
       .pipe(switchMap((params: Map<string, string>) => this.loadAccessContractAndProducerServicesOptions(params)))
@@ -164,43 +236,24 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyer$))
       .subscribe(() => this.onCancel());
 
-    this.form.controls['auditActions'].valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((auditActions) => this.changeDefaultOnActionSelection(auditActions));
-
-    this.form.controls['auditPerimeter'].valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.updateFieldsOnAuditPerimeterChange(value));
-
-    this.allProducerServices.valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.updateFieldsOnAllProducerServicesChange(value));
-
-    this.selectedNodes.valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.updateAttachmentPositionIdsOnSelectionNodesChange(value));
-
-    this.producerServicesMultiSelect.valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.updateOriginatingAgencyIdsOnChange(value));
-
-    this.ingestOperationsEntries.valueChanges
-      .pipe(takeUntil(this.destroyer$))
-      .subscribe((value) => this.updateIngestOperationsEntriesOnChange(value));
-
-    this.form.controls['evidenceAudit'].valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      if (this.form.get('auditActions').value === AuditAction.AUDIT_FILE_RECTIFICATION) {
-        this.form.controls['objectId'].setValue(value);
+    this.onValueChange(this.form.auditActions().value, (auditActions) => this.changeDefaultOnActionSelection(auditActions));
+    this.onValueChange(this.form.auditPerimeter().value, (value) => this.updateFieldsOnAuditPerimeterChange(value));
+    this.onValueChange(this.uiForm.allProducerServices().value, (value) => this.updateFieldsOnAllProducerServicesChange(value));
+    this.onValueChange(this.uiForm.selectedNodes().value, (value) => this.updateAttachmentPositionIdsOnSelectionNodesChange(value));
+    this.onValueChange(this.uiForm.producerServicesMultiSelect().value, (value) => this.updateOriginatingAgencyIdsOnChange(value));
+    this.onValueChange(this.uiForm.ingestOperationsEntries().value, (value) => this.updateIngestOperationsEntriesOnChange(value));
+    this.onValueChange(this.form.evidenceAudit().value, (value) => {
+      if (this.form.auditActions().value() === AuditAction.AUDIT_FILE_RECTIFICATION) {
+        this.form.objectId().value.set(value);
       }
     });
+    this.onValueChange(this.uiForm.startDate().value, (value) => this.form.startDate().value.set(value));
+    this.onValueChange(this.uiForm.endDate().value, (value) => this.form.endDate().value.set(value));
+  }
 
-    this.startDateControl.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      this.form.controls['startDate'].setValue(value);
-    });
-
-    this.endDateControl.valueChanges.pipe(takeUntil(this.destroyer$)).subscribe((value) => {
-      this.form.controls['endDate'].setValue(value);
-    });
+  /** Calls `callback` when the value changes (not with the initial value) */
+  private onValueChange<T>(value: Signal<T>, callback: (value: T) => void) {
+    toObservable(value, { injector: this.injector }).pipe(skip(1), takeUntil(this.destroyer$)).subscribe(callback);
   }
 
   ngOnDestroy() {
@@ -215,14 +268,11 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   onPreviousStep() {
     if (this.refiningStep) {
       this.refiningStep = false;
-      this.startDateControl.setValue(null);
-      this.endDateControl.setValue(null);
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
-      this.form.get('endDate').clearValidators();
-      this.form.get('endDate').markAsUntouched();
-      this.form.get('startDate').updateValueAndValidity();
-      this.form.get('endDate').updateValueAndValidity();
+      this.uiForm.startDate().value.set(null);
+      this.uiForm.endDate().value.set(null);
+      this.setRequired('startDate', false);
+      this.form.startDate().reset();
+      this.form.endDate().reset();
     }
   }
 
@@ -231,17 +281,17 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   };
 
   public showProducerToggle(): boolean {
-    const selectedAuditAction = this.form.get('auditActions').value;
+    const selectedAuditAction = this.form.auditActions().value();
     return selectedAuditAction !== AuditAction.AUDIT_FILE_RECTIFICATION;
   }
 
   public showAuditPerimeter(): boolean {
-    const selectedAuditAction = this.form.get('auditActions').value;
+    const selectedAuditAction = this.form.auditActions().value();
     return selectedAuditAction !== AuditAction.AUDIT_FILE_RECTIFICATION;
   }
 
   public showProducerSelection(): boolean {
-    return this.showProducerToggle() && this.allProducerServices.value === false;
+    return this.showProducerToggle() && this.uiForm.allProducerServices().value() === false;
   }
 
   public secondStepTitleKey(): string {
@@ -253,27 +303,27 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   public chooseAttachmentPosition(): boolean {
-    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ATTACHMENT_POSITION';
+    return this.form.auditPerimeter().value() === 'AUDIT_PERIMETER_ATTACHMENT_POSITION';
   }
 
   public enterIngestOperationsIdentifiers(): boolean {
-    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER';
+    return this.form.auditPerimeter().value() === 'AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER';
   }
 
   public chooseOriginatingAgency(): boolean {
-    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_ORIGINATING_AGENCY';
+    return this.form.auditPerimeter().value() === 'AUDIT_PERIMETER_ORIGINATING_AGENCY';
   }
 
   public chooseIngestOperationPeriod(): boolean {
-    return this.form.get('auditPerimeter')?.value === 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD';
+    return this.form.auditPerimeter().value() === 'AUDIT_PERIMETER_INGEST_OPERATION_PERIOD';
   }
 
   public canShowPeriodErrorMessage(): boolean {
-    return this.startDateControl.value && this.endDateControl.value && this.form.get('endDate').valid && this.isDateIntervalInvalid();
+    return this.uiForm.startDate().value() && this.uiForm.endDate().value() && this.form.endDate().valid() && this.isDateIntervalInvalid();
   }
 
   public isStartDateRequired() {
-    return this.form.controls['startDate'].hasValidator(Validators.required);
+    return this.requiredFields().startDate;
   }
 
   private loadAccessContractAndProducerServicesOptions(params: Map<string, string>) {
@@ -297,110 +347,102 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   private changeDefaultOnActionSelection(auditActions: AuditAction): void {
     // Update the validators
     if (auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
-      this.form.get('evidenceAudit').setValidators(Validators.required);
-      this.form.get('auditPerimeter').clearValidators();
+      this.setRequired('evidenceAudit', true);
+      this.setRequired('auditPerimeter', false);
     } else {
       this.clearField('evidenceAudit');
-      this.form.get('auditPerimeter').setValidators(Validators.required);
+      this.setRequired('auditPerimeter', true);
     }
     this.clearField('originatingAgencyIds');
     this.clearField('ingestOperationIds');
     this.clearField('attachmentPositionIds');
 
-    this.form.get('startDate').clearValidators();
-    this.form.get('startDate').markAsUntouched();
+    this.setRequired('startDate', false);
+    this.form.startDate().reset();
 
-    this.producerServicesMultiSelect.setValue([]);
-    this.ingestOperationsEntries.setValue([]);
-    this.startDateControl.setValue(null);
-    this.endDateControl.setValue(null);
-    this.allProducerServices.setValue(false);
-    this.form.get('objectId').setValue(this.startupService.getTenantIdentifier());
-    this.form.get('evidenceAudit').updateValueAndValidity();
-    this.form.get('originatingAgencyIds').updateValueAndValidity();
-    this.form.get('ingestOperationIds').updateValueAndValidity();
-    this.form.get('auditPerimeter').updateValueAndValidity();
-    this.form.get('startDate').updateValueAndValidity();
-    this.form.get('endDate').updateValueAndValidity();
+    this.resetUiFields();
+    this.form.objectId().value.set(this.startupService.getTenantIdentifier());
     this.updateObjectIdValidators();
-    this.form.updateValueAndValidity();
   }
 
-  private clearField(fieldName: string): void {
-    this.form.get(fieldName).clearValidators();
-    this.form.get(fieldName).setValue(this.idsArray.includes(fieldName) ? [] : null);
-    this.form.get(fieldName).markAsUntouched();
+  private resetUiFields(): void {
+    this.uiForm.producerServicesMultiSelect().value.set([]);
+    this.uiForm.ingestOperationsEntries().value.set('');
+    this.uiForm.startDate().value.set(null);
+    this.uiForm.endDate().value.set(null);
+    this.uiForm.allProducerServices().value.set(false);
+  }
+
+  private setRequired(field: RequiredField, required: boolean): void {
+    this.requiredFields.update((requiredFields) => ({ ...requiredFields, [field]: required }));
+  }
+
+  private clearField(fieldName: Exclude<RequiredField, 'auditPerimeter' | 'objectId' | 'startDate'>): void {
+    this.setRequired(fieldName, false);
+    if (fieldName === 'evidenceAudit') {
+      this.form.evidenceAudit().reset(null);
+    } else {
+      this.form[fieldName]().reset([]);
+    }
   }
 
   private updateFieldsOnAllProducerServicesChange(allProducerServices: boolean): void {
-    if (this.form.controls['auditActions'].value !== AuditAction.AUDIT_FILE_RECTIFICATION) {
+    if (this.form.auditActions().value() !== AuditAction.AUDIT_FILE_RECTIFICATION) {
       const allOptions = this.producerServicesOptions.map((option) => option.key);
-      this.form.controls['originatingAgencyIds'].setValue(allProducerServices ? allOptions : this.producerServicesMultiSelect.value);
+      this.form.originatingAgencyIds().value.set(allProducerServices ? allOptions : this.uiForm.producerServicesMultiSelect().value());
     }
-    this.form.controls['objectId'].setValue(this.startupService.getTenantIdentifier());
-    this.form.get('originatingAgencyIds').updateValueAndValidity();
+    this.form.objectId().value.set(this.startupService.getTenantIdentifier());
     this.updateObjectIdValidators();
-    this.form.updateValueAndValidity();
   }
 
   private updateFieldsOnAuditPerimeterChange(auditPerimeter: AuditPerimeter) {
     if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY) {
-      this.form.get('originatingAgencyIds').setValidators(Validators.required);
+      this.setRequired('originatingAgencyIds', true);
       this.clearField('ingestOperationIds');
       this.clearField('attachmentPositionIds');
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
+      this.setRequired('startDate', false);
+      this.form.startDate().reset();
     } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER) {
-      this.form.get('ingestOperationIds').setValidators(Validators.required);
+      this.setRequired('ingestOperationIds', true);
       this.clearField('originatingAgencyIds');
       this.clearField('attachmentPositionIds');
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
+      this.setRequired('startDate', false);
+      this.form.startDate().reset();
     } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ATTACHMENT_POSITION) {
-      this.form.get('attachmentPositionIds').setValidators(Validators.required);
+      this.setRequired('attachmentPositionIds', true);
       this.clearField('originatingAgencyIds');
       this.clearField('ingestOperationIds');
-      this.form.get('startDate').clearValidators();
-      this.form.get('startDate').markAsUntouched();
+      this.setRequired('startDate', false);
+      this.form.startDate().reset();
     } else if (auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_PERIOD) {
-      this.form.get('startDate').setValidators([Validators.required]);
+      this.setRequired('startDate', true);
       this.clearField('originatingAgencyIds');
       this.clearField('attachmentPositionIds');
       this.clearField('ingestOperationIds');
     }
-    this.producerServicesMultiSelect.setValue([]);
-    this.ingestOperationsEntries.setValue([]);
-    this.allProducerServices.setValue(false);
-    this.startDateControl.setValue(null);
-    this.endDateControl.setValue(null);
-    this.form.get('objectId').setValue(this.startupService.getTenantIdentifier());
-    this.form.get('ingestOperationIds').updateValueAndValidity();
-    this.form.get('attachmentPositionIds').updateValueAndValidity();
-    this.form.get('originatingAgencyIds').updateValueAndValidity();
-    this.form.get('startDate').updateValueAndValidity();
-    this.form.get('endDate').updateValueAndValidity();
+    this.resetUiFields();
+    this.form.objectId().value.set(this.startupService.getTenantIdentifier());
     this.updateObjectIdValidators();
-    this.form.updateValueAndValidity();
   }
 
   private updateIngestOperationsEntriesOnChange(value: string) {
-    if (value.length > 0) {
+    if (value?.length > 0) {
       const values = value.split(',');
-      this.form.controls['ingestOperationIds'].setValue(values);
+      this.form.ingestOperationIds().value.set(values);
     } else {
-      this.form.controls['ingestOperationIds'].setValue([]);
+      this.form.ingestOperationIds().value.set([]);
     }
   }
 
   private updateOriginatingAgencyIdsOnChange(values: Array<string>) {
-    this.form.controls['originatingAgencyIds'].setValue(values);
+    this.form.originatingAgencyIds().value.set(values);
   }
 
   private updateAttachmentPositionIdsOnSelectionNodesChange(value: { included: Array<string>; excluded: Array<string> }) {
     if (value && value.included && value.included.length > 0) {
-      this.form.controls['attachmentPositionIds'].setValue(value.included);
+      this.form.attachmentPositionIds().value.set(value.included);
     } else {
-      this.form.controls['attachmentPositionIds'].setValue([]);
+      this.form.attachmentPositionIds().value.set([]);
     }
   }
 
@@ -408,58 +450,55 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
    * Add or remove the required validator on the field 'objectId'
    */
   private updateObjectIdValidators() {
-    if (this.form.value.auditActions !== AuditAction.AUDIT_FILE_RECTIFICATION) {
-      this.form.get('objectId').setValidators(Validators.required);
-    } else {
-      this.form.get('objectId').clearValidators();
-    }
+    this.setRequired('objectId', this.form.auditActions().value() !== AuditAction.AUDIT_FILE_RECTIFICATION);
   }
 
   public initPeriodScreen() {
     this.refiningStep = true;
     setTimeout(() => this.stepper().next()); // Go to next step after it's been created (thanks to refiningStep=true)
-    this.form.get('startDate').setValidators([Validators.required]);
+    this.setRequired('startDate', true);
   }
 
   public isDateIntervalInvalid(): boolean {
-    if (this.form.get('startDate').value === null) return true;
-    let startDate = new Date(this.form.get('startDate').value);
-    if (this.form.get('endDate').value === null) return false;
-    let endDate = new Date(this.form.get('endDate').value);
-    return this.form.get('endDate').invalid || this.form.get('endDate').pending || endDate < startDate;
+    if (this.form.startDate().value() === null) return true;
+    let startDate = new Date(this.form.startDate().value());
+    if (this.form.endDate().value() === null) return false;
+    let endDate = new Date(this.form.endDate().value());
+    return this.form.endDate().invalid() || this.form.endDate().pending() || endDate < startDate;
   }
 
   isStepOneValid(): boolean {
-    if (this.form.value.auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
-      return !this.form.get('evidenceAudit').invalid && !this.form.get('evidenceAudit').pending && this.accessContractId != null;
+    if (this.form.auditActions().value() === AuditAction.AUDIT_FILE_RECTIFICATION) {
+      return !this.form.evidenceAudit().invalid() && !this.form.evidenceAudit().pending() && this.accessContractId != null;
     }
-    return !this.form.get('auditPerimeter').invalid && !this.form.get('auditPerimeter').pending;
+    return !this.form.auditPerimeter().invalid() && !this.form.auditPerimeter().pending();
   }
 
   canSubmit(): boolean {
     if (this.stepper().selectedIndex === 0) return this.isStepOneValid();
 
     const isOriginatingAgencyValid =
-      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY &&
+      this.form.auditPerimeter().value() === AuditPerimeter.AUDIT_PERIMETER_ORIGINATING_AGENCY &&
       this.accessContractId != null &&
-      (this.allProducerServices.value || (this.producerServicesMultiSelect.value && this.producerServicesMultiSelect.value.length > 0));
+      (this.uiForm.allProducerServices().value() ||
+        (this.uiForm.producerServicesMultiSelect().value() && this.uiForm.producerServicesMultiSelect().value().length > 0));
 
     const isIngestOperationValid =
-      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER &&
+      this.form.auditPerimeter().value() === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_IDENTIFIER &&
       this.accessContractId != null &&
-      !this.form.get('ingestOperationIds').invalid &&
-      !this.form.get('ingestOperationIds').pending;
+      !this.form.ingestOperationIds().invalid() &&
+      !this.form.ingestOperationIds().pending();
 
     const isAttachmentPositionValid =
-      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_ATTACHMENT_POSITION &&
+      this.form.auditPerimeter().value() === AuditPerimeter.AUDIT_PERIMETER_ATTACHMENT_POSITION &&
       this.accessContractId != null &&
-      this.selectedNodes.value.included.length > 0;
+      this.uiForm.selectedNodes().value().included.length > 0;
 
     const isIngestPeriodValid =
-      this.form.value.auditPerimeter === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_PERIOD &&
+      this.form.auditPerimeter().value() === AuditPerimeter.AUDIT_PERIMETER_INGEST_OPERATION_PERIOD &&
       this.accessContractId != null &&
-      !this.form.get('startDate').invalid &&
-      !this.form.get('startDate').pending;
+      !this.form.startDate().invalid() &&
+      !this.form.startDate().pending();
 
     if (this.refiningStep) {
       return (isOriginatingAgencyValid || isAttachmentPositionValid) && !this.isDateIntervalInvalid();
@@ -474,7 +513,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -482,14 +521,14 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       this.isDisabledButton = true;
       return;
     }
     this.isDisabledButton = true;
 
     this.auditService
-      .create(this.form.value, new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
+      .create(this.form().value(), new HttpHeaders().set(VitamuiHttpHeaders.X_ACCESS_CONTRACT_ID, this.accessContractId))
       .subscribe(
         () => {
           this.isDisabledButton = false;

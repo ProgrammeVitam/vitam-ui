@@ -37,7 +37,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { FileFormat, SecurityService, StartupService, WINDOW_LOCATION } from 'vitamui-library';
@@ -58,7 +57,7 @@ describe('FileFormatInformationTabComponent', () => {
     getAllForTenant: (_data: any) => of(null),
   };
 
-  const fileFormatValue: Partial<FileFormat> = {
+  const fileFormatValue = {
     puid: 'EXTERNAL_puid',
     name: 'Name',
     mimeType: 'application/puid',
@@ -97,7 +96,7 @@ describe('FileFormatInformationTabComponent', () => {
       getTenantIdentifier: () => '',
     };
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, VitamUICommonTestModule, FileFormatInformationTabComponent],
+      imports: [VitamUICommonTestModule, FileFormatInformationTabComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         {
@@ -125,7 +124,7 @@ describe('FileFormatInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FileFormatInformationTabComponent);
     component = fixture.componentInstance;
-    component.form.setValue(fileFormatValue);
+    component.form().value.set(fileFormatValue);
     component.previousValue = (): FileFormat => previousValue;
     fixture.detectChanges();
   });

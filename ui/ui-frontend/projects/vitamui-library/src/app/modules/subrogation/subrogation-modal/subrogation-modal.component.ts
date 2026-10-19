@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../auth.service';
 import { SnackBarService } from '../../components/snack-bar/snack-bar.service';
@@ -49,6 +49,11 @@ import { SelectComponent } from '../../../../lib/components/select/select.compon
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface SubrogationForm {
+  emailFirstPart: string | null;
+  domain: string | null;
+}
+
 @Component({
   selector: 'vitamui-common-subrogation-modal',
   templateUrl: './subrogation-modal.component.html',
@@ -58,8 +63,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     StepperComponent,
     CdkStep,
     MatDialogContent,
-    FormsModule,
-    ReactiveFormsModule,
+    FormField,
     InputComponent,
     SelectComponent,
     MatDialogActions,
@@ -70,7 +74,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class SubrogationModalComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SubrogationModalComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  builder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly snackBarService = inject(SnackBarService);
   private readonly subrogationService = inject(SubrogationService);
@@ -79,17 +82,13 @@ export class SubrogationModalComponent implements OnInit {
   public domains: string[];
   public customerId: string;
   public user: { email: string; firstname: string; lastname: string };
-  public form: FormGroup;
+  public readonly form = form(signal<SubrogationForm>({ emailFirstPart: null, domain: null }), (path) => {
+    required(path.emailFirstPart);
+    required(path.domain);
+  });
   public pending: boolean;
 
   private subrogation: Subrogation;
-
-  constructor() {
-    this.form = this.builder.group({
-      emailFirstPart: [null, Validators.required],
-      domain: [null, Validators.required],
-    });
-  }
 
   ngOnInit() {
     this.domains = this.data.domains;
@@ -99,7 +98,7 @@ export class SubrogationModalComponent implements OnInit {
       this.stepIndex.set(1);
       this.retrieveOrCreateSubrogation(this.user.email);
     } else {
-      this.form.get('domain').setValue(this.domains[0], { emitEvent: false });
+      this.form.domain().value.set(this.domains[0]);
     }
   }
 
@@ -138,7 +137,8 @@ export class SubrogationModalComponent implements OnInit {
   }
 
   askForSubrogation() {
-    const surrogateEmail = this.form.get('emailFirstPart').value + '@' + this.form.get('domain').value;
+    const { emailFirstPart, domain } = this.form().value();
+    const surrogateEmail = emailFirstPart + '@' + domain;
     this.user = { email: surrogateEmail, firstname: undefined, lastname: undefined };
     this.retrieveOrCreateSubrogation(surrogateEmail);
   }

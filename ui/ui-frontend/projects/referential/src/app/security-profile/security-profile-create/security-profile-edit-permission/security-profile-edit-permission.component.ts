@@ -34,87 +34,52 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, forwardRef, inject, input } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { Component, computed, inject, input, linkedSignal, model, OnInit } from '@angular/core';
+import { disabled, form, FormField, FormValueControl } from '@angular/forms/signals';
 import { PermissionStructure, PermissionUtils } from '../permission.utils';
 import { SlideToggleComponent, TooltipDirective } from 'vitamui-library';
 import { TranslatePipe } from '@ngx-translate/core';
-
-export const PERMISSION_SELECT_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => SecurityProfileEditPermissionComponent),
-  multi: true,
-};
 
 @Component({
   selector: 'app-security-profile-edit-permission',
   templateUrl: './security-profile-edit-permission.component.html',
   styleUrls: ['./security-profile-edit-permission.component.scss'],
-  providers: [PERMISSION_SELECT_VALUE_ACCESSOR],
-  imports: [ReactiveFormsModule, TooltipDirective, SlideToggleComponent, TranslatePipe],
+  imports: [FormField, TooltipDirective, SlideToggleComponent, TranslatePipe],
 })
-export class SecurityProfileEditPermissionComponent implements ControlValueAccessor {
+export class SecurityProfileEditPermissionComponent implements FormValueControl<string[] | null>, OnInit {
   private readonly permissionUtils = inject(PermissionUtils);
-  private readonly formBuilder = inject(FormBuilder);
 
-  permissions: PermissionStructure;
-  loaded = false;
-  form: FormGroup;
-
-  getPermissionString = this.permissionUtils.getPermissionString;
-
-  disabled: boolean;
+  // Allowed permissions, bound to the signal forms field of the parent form with [formField]. All permissions are allowed when null.
+  readonly value = model<string[] | null>(null);
 
   readonly forceDisabled = input<boolean>(undefined);
 
-  onChange = (_x: any) => {};
-  onTouched = () => {};
+  readonly permissions = computed<PermissionStructure>(() => {
+    const value = this.value();
+    return value === null ? this.permissionUtils.getInitPermissions(true) : this.permissionUtils.getPermissionsFromList(value);
+  });
+
+  // Activation state of each permission, by permission string
+  private readonly permissionsModel = linkedSignal<Record<string, boolean>>(() =>
+    this.permissionUtils.getFormConfigFromPermission(this.permissions()),
+  );
+  protected readonly permissionsForm = form(this.permissionsModel, (path) => {
+    disabled(path, () => !!this.forceDisabled());
+  });
+
+  getPermissionString = this.permissionUtils.getPermissionString;
+
+  ngOnInit() {
+    // Normalizes the bound value, as the former ControlValueAccessor did when registered
+    this.onSubmit();
+  }
 
   onSubmit() {
-    this.onChange(this.getAllowedPermissions());
+    this.value.set(this.getAllowedPermissions());
   }
 
   getAllowedPermissions() {
-    const allowedPermissions: string[] = [];
-    for (const permission in this.form.value) {
-      if (this.form.value.hasOwnProperty(permission) && this.form.value[permission] === true) {
-        allowedPermissions.push(permission);
-      }
-    }
-    return allowedPermissions;
-  }
-
-  getDefaultPermissions() {
-    this.permissions = this.permissionUtils.getInitPermissions(true);
-    const formConfig = this.permissionUtils.getFormConfigFromPermission(this.permissions);
-    this.form = this.formBuilder.group(formConfig);
-  }
-
-  initPermissions(initialPermissions: string[]) {
-    this.permissions = this.permissionUtils.getPermissionsFromList(initialPermissions);
-    const formConfig = this.permissionUtils.getFormConfigFromPermission(this.permissions);
-    this.form = this.formBuilder.group(formConfig);
-  }
-
-  writeValue(value: any) {
-    if (value === null) {
-      this.getDefaultPermissions();
-    } else {
-      this.initPermissions(value);
-    }
-    this.loaded = true;
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-    this.onChange(this.getAllowedPermissions());
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState(isDisabled: boolean) {
-    this.disabled = isDisabled;
+    const values = this.permissionsModel();
+    return Object.keys(values).filter((permission) => values[permission] === true);
   }
 }

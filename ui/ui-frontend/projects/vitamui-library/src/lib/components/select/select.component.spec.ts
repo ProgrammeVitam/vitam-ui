@@ -36,8 +36,9 @@
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectComponent, VitamuiSelectOptions } from './select.component';
-import { Component, viewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { By } from '@angular/platform-browser';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -401,6 +402,29 @@ describe('SelectComponent', () => {
       // Verify the value is still displayed after opening
       const valueTextAfterOpen = await selectHarness.getValueText();
       expect(valueTextAfterOpen).toBe('Option 95');
+    });
+  });
+
+  describe('with signal forms, in multiple mode', () => {
+    @Component({
+      template: '<vitamui-select [options]="options" [multiple]="true" [formField]="testForm.keys"></vitamui-select>',
+      imports: [SelectComponent, FormField],
+    })
+    class SignalFormHostComponent {
+      readonly options = defaultOptions;
+      readonly testForm = form(signal({ keys: ['option1', 'option2'] }));
+    }
+
+    it('should keep the initial value without infinite change detection', async () => {
+      TestBed.resetTestingModule();
+      await TestBed.configureTestingModule({ imports: [SignalFormHostComponent] }).compileComponents();
+      const fixture = TestBed.createComponent(SignalFormHostComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.testForm.keys().value()).toEqual(['option1', 'option2']);
+      expect(fixture.componentInstance.testForm().dirty()).toBe(false);
     });
   });
 });

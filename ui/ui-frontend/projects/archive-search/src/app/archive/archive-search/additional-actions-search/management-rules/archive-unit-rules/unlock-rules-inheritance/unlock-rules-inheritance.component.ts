@@ -35,22 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal, TemplateRef, input, output, viewChild } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MatDialog, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash-es';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
-import { merge, Observable, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, filter, map, skip } from 'rxjs/operators';
 import {
   CriteriaDataType,
   CriteriaOperator,
   DialogHeaderComponent,
   diff,
-  ManagementRuleValidators,
   Rule,
   RuleService,
+  ruleIdPattern,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SelectComponent,
@@ -67,12 +68,17 @@ const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 const APPRAISAL_PREVENT_RULE_IDENTIFIER = 'APPRAISAL_PREVENT_RULE_IDENTIFIER';
 const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
 
+interface RuleDetailsForm {
+  rule: string | null;
+}
+
 @Component({
   selector: 'app-unlock-rules-inheritance',
   templateUrl: './unlock-rules-inheritance.component.html',
   styleUrls: ['./unlock-rules-inheritance.component.css'],
   imports: [
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     MatProgressSpinner,
     DialogHeaderComponent,
@@ -85,7 +91,6 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   private readonly managementRulesValidatorService = inject(ManagementRulesValidatorService);
   private readonly managementRulesSharedDataService = inject(ManagementRulesSharedDataService);
   private readonly archiveService = inject(ArchiveService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly dialog = inject(MatDialog);
   private readonly translateService = inject(TranslateService);
   private readonly updateUnitManagementRuleService = inject(UpdateUnitManagementRuleService);
@@ -111,7 +116,24 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
   ruleTypeDUA: RuleCategoryAction = { preventRulesIdToRemove: [] };
   lastRuleId: string;
 
-  ruleDetailsForm: FormGroup;
+  private readonly model = signal<RuleDetailsForm>({ rule: null });
+  readonly ruleDetailsForm = form(
+    this.model,
+    (path) => {
+      required(path.rule);
+      ruleIdPattern(path.rule);
+      this.managementRulesValidatorService.uniquePreventRuleId(path.rule);
+      this.managementRulesValidatorService.checkRuleIdExistence(path.rule);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.addPreventRuleIdToDelete();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   previousRuleDetails: {
     rule: string;
   };
@@ -134,22 +156,16 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
       rule: '',
     };
 
-    this.ruleDetailsForm = this.formBuilder.group({
-      rule: [
-        null,
-        [Validators.required, ManagementRuleValidators.ruleIdPattern],
-        [this.managementRulesValidatorService.uniquePreventRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
-      ],
-    });
-    merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
+    toObservable(this.model)
       .pipe(
+        skip(1),
         debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
-        map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
+        map(() => diff(this.model(), this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
         filter((formData) => this.patchForm(formData)),
       )
       .subscribe(() => {
-        this.ruleDetailsForm.reset(this.previousRuleDetails);
+        this.ruleDetailsForm().reset({ ...this.previousRuleDetails });
       });
   }
 
@@ -159,7 +175,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     this.isLoading.set(true);
 
     const rule: RuleAction = {
-      rule: this.ruleDetailsForm.get('rule').value,
+      rule: this.ruleDetailsForm.rule().value(),
     };
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
@@ -204,7 +220,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
     this.addRuleToQuery();
     // TODO: The 'emit' function requires a mandatory any argument
     this.confirmStep.emit();
-    this.lastRuleId = this.ruleDetailsForm.get('rule').value;
+    this.lastRuleId = this.ruleDetailsForm.rule().value();
   }
 
   onDeleteBloc() {
@@ -215,7 +231,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.delete.emit(this.ruleDetailsForm.get('rule').value);
+        this.delete.emit(this.ruleDetailsForm.rule().value());
       });
   }
 
@@ -251,7 +267,7 @@ export class UnlockRulesInheritanceComponent implements OnDestroy, OnInit {
 
     const criteriaWithRuleIdToCheck: SearchCriteriaEltDto = {
       criteria: APPRAISAL_PREVENT_RULE_IDENTIFIER,
-      values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
+      values: [{ id: this.ruleDetailsForm.rule().value(), value: this.ruleDetailsForm.rule().value() }],
       category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory()),
       operator: CriteriaOperator.IN,
       dataType: CriteriaDataType.STRING,

@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { of } from 'rxjs';
@@ -97,7 +96,6 @@ describe('ManagementContractStorageTabComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [MatSidenavModule, InjectorModule, VitamUICommonTestModule, LoggerModule.forRoot(), ManagementContractStorageTabComponent],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: MatDialog, useValue: matDialogSpy },
@@ -124,7 +122,7 @@ describe('ManagementContractStorageTabComponent', () => {
       objectStrategy: 'default',
     };
     component.inputManagementContract.set(managementContract);
-    component.form.setValue(storageStrategyForm);
+    component.form().value.set(storageStrategyForm);
 
     vi.spyOn(managementContractServiceMock, 'patch');
 
@@ -159,7 +157,7 @@ describe('ManagementContractStorageTabComponent', () => {
     };
     // component.inputManagementContract = managementContract;
     component.inputManagementContract.set(managementContract);
-    component.form.setValue(storageStrategyForm);
+    component.form().value.set(storageStrategyForm);
     vi.spyOn(managementContractServiceMock, 'get');
     vi.spyOn(managementContractServiceMock, 'patch');
 
@@ -187,7 +185,7 @@ describe('ManagementContractStorageTabComponent', () => {
       objectStrategy: 'new Contrat de gestion valide déclarant pas de surcharge pour le stockage avec la stratégie par défaut',
     };
     component.inputManagementContract.set(managementContract);
-    component.form.setValue(storageStrategyForm);
+    component.form().value.set(storageStrategyForm);
 
     // When
     const response = component.unchanged();

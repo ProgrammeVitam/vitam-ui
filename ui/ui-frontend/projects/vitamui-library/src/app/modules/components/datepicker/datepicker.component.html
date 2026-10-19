@@ -10,8 +10,8 @@
     [matDatepicker]="datepicker"
     [value]="datePickerValue"
     (dateChange)="onDateChange('day', $event.value)"
-    [min]="min()"
-    [max]="max()"
+    [min]="minDate()"
+    [max]="maxDate()"
   />
   <input
     #vitamUIInput

@@ -34,25 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import {
   AuthService,
-  buildValidators,
   ConfirmDialogService,
   CriteriaSearchQuery,
   DialogHeaderComponent,
   LevelInputComponent,
   Operators,
   Profile,
+  requiredValue,
   SlideToggleComponent,
 } from 'vitamui-library';
 import { HierarchyService } from '../hierarchy.service';
 import { ProfilesFormComponent } from '../../shared/profiles-form/profiles-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { levelRules } from '../../shared/signal-forms/signal-form-validators';
+import { hasError } from '../../shared/signal-forms/signal-form-utils';
+
+interface HierarchyCreateModel {
+  enabled: boolean;
+  level: string;
+  profileIds: string[];
+  customerId: string;
+}
 
 @Component({
   selector: 'app-hierarchy-create',
@@ -60,14 +69,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./hierarchy-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     MatDialogContent,
     SlideToggleComponent,
     ProfilesFormComponent,
     MatDialogActions,
     TranslatePipe,
     CommonModule,
-    FormsModule,
     LevelInputComponent,
   ],
 })
@@ -75,22 +84,28 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<HierarchyCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
   authService = inject(AuthService);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly hierarchyService = inject(HierarchyService);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  form: FormGroup;
+  private readonly model = signal<HierarchyCreateModel>({
+    enabled: true,
+    level: '',
+    profileIds: null,
+    customerId: this.authService.user.customerId,
+  });
+  readonly form = form(
+    this.model,
+    (path) => {
+      levelRules(path.level, this.authService.user);
+      requiredValue(path.profileIds);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
+  protected readonly hasError = hasError;
 
   private keyPressSubscription: Subscription;
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      enabled: [true],
-      level: ['', buildValidators(this.authService.user)],
-      profileIds: [null, Validators.required],
-      customerId: [this.authService.user.customerId],
-    });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -99,7 +114,7 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
   }
 
   public onCancel(): void {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -107,11 +122,11 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
 
-    const form = this.form.getRawValue();
+    const form = this.model();
     const observables: Observable<Profile>[] = [];
     const query: CriteriaSearchQuery = { criteria: [{ key: 'id', value: form.profileIds, operator: Operators.in }] };
 
@@ -133,6 +148,6 @@ export class HierarchyCreateComponent implements OnInit, OnDestroy {
   }
 
   public formValid(): boolean {
-    return this.form.pending || this.form.invalid;
+    return this.form().pending() || this.form().invalid();
   }
 }

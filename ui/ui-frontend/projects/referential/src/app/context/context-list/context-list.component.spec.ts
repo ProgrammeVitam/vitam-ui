@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EMPTY, of } from 'rxjs';
@@ -74,14 +73,7 @@ describe('ContextListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [
-        VitamUICommonTestModule,
-        MatProgressSpinnerModule,
-        ReactiveFormsModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        ContextListComponent,
-      ],
+      imports: [VitamUICommonTestModule, MatProgressSpinnerModule, InjectorModule, LoggerModule.forRoot(), ContextListComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },

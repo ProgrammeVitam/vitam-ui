@@ -34,8 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { applyEach, PathKind, required, schema, SchemaPath, SchemaPathRules, validate } from '@angular/forms/signals';
+import { requiredValue } from 'vitamui-library';
+import { ObjectUsagePolicyForm, PersistentIdentifierPolicyForm } from '../components/management-contract-to-form-model-converter.service';
+
+type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
 export enum ManagementContractValidationErrors {
   INVALID_AUTHORITY = 'InvalidAuthority',
@@ -43,39 +46,46 @@ export enum ManagementContractValidationErrors {
   INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET = 'invalidPersistentIdentifierPolicyTarget',
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+const AUTHORITY_REGEX = /^([0-9]{5}|[0-9]{9})$/;
+
 export class ManagementContractValidators {
-  static authorityValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-    const regex = /^([0-9]{5}|[0-9]{9})$/;
+  static authority<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>): void {
+    validate(path, ({ value }) =>
+      AUTHORITY_REGEX.test(value()) ? undefined : { kind: ManagementContractValidationErrors.INVALID_AUTHORITY },
+    );
+  }
 
-    if (!regex.test(control.value)) {
-      return { [ManagementContractValidationErrors.INVALID_AUTHORITY]: true };
-    }
-    return null;
-  };
+  /** Validates the whole object usage policy: the initial version cannot be removed when there are no intermediary versions. */
+  static objectUsagePolicy<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<ObjectUsagePolicyForm, TPathKind>): void {
+    validate(path, ({ value }) =>
+      value().initialVersion === false && value().intermediaryVersion === 'NONE'
+        ? { kind: ManagementContractValidationErrors.INVALID_OBJECT_USAGE_POLICY }
+        : undefined,
+    );
+  }
 
-  static objectUsagePolicyValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-    const initialVersion = control.get('initialVersion');
-    const intermediaryVersion = control.get('intermediaryVersion');
-
-    if (initialVersion.value === false && intermediaryVersion.value === 'NONE') {
-      return { [ManagementContractValidationErrors.INVALID_OBJECT_USAGE_POLICY]: true };
-    }
-
-    return null;
-  };
-
-  static persistentIdentifierPolicyValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-    const shouldConcernArchiveUnits = control.get('shouldConcernArchiveUnits').value;
-    const shouldConcernObjects = control.get('shouldConcernObjects').value;
-    const valid = shouldConcernArchiveUnits || shouldConcernObjects;
-
-    if (!valid) {
-      return { [ManagementContractValidationErrors.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET]: true };
-    }
-
-    return null;
-  };
+  /** Validates the whole persistent identifier policy: it must concern archive units or objects. */
+  static persistentIdentifierPolicyTarget<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<PersistentIdentifierPolicyForm, TPathKind>,
+  ): void {
+    validate(path, ({ value }) =>
+      value().shouldConcernArchiveUnits || value().shouldConcernObjects
+        ? undefined
+        : { kind: ManagementContractValidationErrors.INVALID_PERSISTENT_IDENTIFIER_POLICY_TARGET },
+    );
+  }
 }
+
+export const objectUsagePolicySchema = schema<ObjectUsagePolicyForm>((path) => {
+  required(path.objectUsage);
+  requiredValue(path.initialVersion);
+  required(path.intermediaryVersion);
+  ManagementContractValidators.objectUsagePolicy(path);
+});
+
+export const persistentIdentifierPolicySchema = schema<PersistentIdentifierPolicyForm>((path) => {
+  required(path.authority);
+  ManagementContractValidators.authority(path.authority);
+  ManagementContractValidators.persistentIdentifierPolicyTarget(path);
+  applyEach(path.objectUsagePolicies, objectUsagePolicySchema);
+});

@@ -36,13 +36,12 @@
  */
 import { Component, ElementRef, OnChanges, SimpleChanges, input, model, output, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'vitamui-common-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
 })
 export class SearchBarComponent implements OnChanges {
   readonly placeholder = input<string>(undefined);
@@ -70,12 +69,20 @@ export class SearchBarComponent implements OnChanges {
     }
   }
 
+  onInput(value: string) {
+    this.searchValue.set(value);
+    this.searchChanged.emit(value);
+  }
+
   onSearch() {
     this.search.emit(this.searchValue());
   }
 
   reset() {
     this.searchValue.set(null);
+    // Also clear the input directly: the [value] binding is not updated if it has not been refreshed since the last input
+    const searchInput = this.searchInput()?.nativeElement as HTMLInputElement | undefined;
+    if (searchInput) searchInput.value = '';
     this.clear.emit(undefined);
     this.search.emit(this.searchValue());
   }

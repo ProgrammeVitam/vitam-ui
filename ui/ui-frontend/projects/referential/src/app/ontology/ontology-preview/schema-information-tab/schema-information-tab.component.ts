@@ -34,23 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, input, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import { Option, SchemaElement, SchemaService, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 import { sizes, types } from '../../ontology-form-options';
 import { TranslatePipe } from '@ngx-translate/core';
+
+const SCHEMA_FIELDS = [
+  'Path',
+  'ApiPath',
+  'ShortName',
+  'FieldName',
+  'SedaField',
+  'ApiField',
+  'Description',
+  'Type',
+  'DataType',
+  'Collection',
+  'Origin',
+  'Category',
+  'Cardinality',
+  'SedaVersions',
+  'StringSize',
+  'CustomSearchTypes',
+  'CreationDate',
+  'LastUpdate',
+] as const;
+
+type SchemaInformationForm = Record<(typeof SCHEMA_FIELDS)[number], any>;
 
 @Component({
   selector: 'app-schema-information-tab',
   templateUrl: './schema-information-tab.component.html',
   styleUrl: './schema-information-tab.component.scss',
-  imports: [FormsModule, ReactiveFormsModule, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
+  imports: [FormField, VitamUICommonModule, VitamUILibraryModule, TranslatePipe],
 })
 export class SchemaInformationTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   schemaService = inject(SchemaService);
 
-  form: FormGroup;
+  private readonly formModel = signal<SchemaInformationForm>({
+    ...(Object.fromEntries(SCHEMA_FIELDS.map((field) => [field, ''])) as SchemaInformationForm),
+    CreationDate: null,
+    LastUpdate: null,
+  });
+  // The schema elements are read only
+  readonly form = form(this.formModel, (path) => disabled(path));
   isExternal = false;
   showCustomSearchTypes = false;
   stringSizeVisible = false;
@@ -92,35 +120,15 @@ export class SchemaInformationTabComponent implements OnChanges {
 
   readonly inputSchema = input<SchemaElement>(undefined);
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      Path: [{ value: '', disabled: true }, [Validators.required]],
-      ApiPath: [{ value: '', disabled: true }, [Validators.required]],
-      ShortName: [{ value: '', disabled: true }],
-      FieldName: [{ value: '', disabled: true }, [Validators.required]],
-      SedaField: [{ value: '', disabled: true }],
-      ApiField: [{ value: '', disabled: true }],
-      Description: [{ value: '', disabled: true }, [Validators.required]],
-      Type: [{ value: '', disabled: true }, [Validators.required]],
-      DataType: [{ value: '', disabled: true }, [Validators.required]],
-      Collection: [{ value: '', disabled: true }, [Validators.required]],
-      Origin: [{ value: '', disabled: true }],
-      Category: [{ value: '', disabled: true }, [Validators.required]],
-      Cardinality: [{ value: '', disabled: true }, [Validators.required]],
-      SedaVersions: [{ value: '', disabled: true }],
-      StringSize: [{ value: '', disabled: true }],
-      CustomSearchTypes: [{ value: '', disabled: true }],
-      CreationDate: [{ value: null, disabled: true }],
-      LastUpdate: [{ value: null, disabled: true }],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['inputSchema']) {
       const schema = this.inputSchema();
-      if (!schema || !this.form) return;
+      if (!schema) return;
 
-      this.form.patchValue(schema);
+      this.formModel.update((value) => ({
+        ...value,
+        ...Object.fromEntries(SCHEMA_FIELDS.filter((field) => field in schema).map((field) => [field, (schema as any)[field]])),
+      }));
       this.isExternal = schema?.Origin === 'EXTERNAL';
       this.stringSizeVisible = ['TEXT', 'KEYWORD'].includes(schema?.Type);
       this.showCustomSearchTypes = !['OBJECT'].includes(schema?.Type) && schema?.CustomSearchTypes?.length > 0;

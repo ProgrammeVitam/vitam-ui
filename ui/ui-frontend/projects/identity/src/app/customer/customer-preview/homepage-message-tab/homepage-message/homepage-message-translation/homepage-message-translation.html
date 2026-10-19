@@ -1,15 +1,15 @@
-<form [formGroup]="form()" id="translationForm">
+<form id="translationForm" novalidate (submit)="$event.preventDefault()">
   <div class="d-flex align-items-center">
     <vitamui-select
       class="mt-4 mb-4"
-      formControlName="language"
+      [formField]="form().language"
       [placeholder]="('COMMON.LANGUAGE.TITLE' | translate) + ' ' + index()"
       [options]="languages()"
       [enableSearch]="false"
       [multiple]="false"
     ></vitamui-select>
 
-    <button class="pl-4 btn link" (click)="onRemove()">
+    <button type="button" class="pl-4 btn link" (click)="onRemove()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.DELETE_LANGUAGE" | translate }}</span>
     </button>
   </div>
@@ -17,7 +17,7 @@
   <div class="d-flex flex-column">
     <vitamui-input
       class="pb-2"
-      formControlName="portalTitle"
+      [formField]="form().portalTitle"
       [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE' | translate) + ' ' + index()"
     >
     </vitamui-input>
@@ -25,12 +25,12 @@
     <vitamui-input
       [textarea]="true"
       class="pb-2"
-      formControlName="portalMessage"
+      [formField]="form().portalMessage"
       [placeholder]="('CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_PORTAL_MESSAGE' | translate) + ' ' + index()"
     >
     </vitamui-input>
     <small class="d-flex justify-content-end"
-      >{{ form().get("portalMessage")?.value?.length }} {{ "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate }}</small
+      >{{ form().portalMessage().value()?.length }} {{ "CUSTOMER.HOMEPAGE_MESSAGE.PORTAL_MESSAGE_LENGTH" | translate }}</small
     >
   </div>
 </form>

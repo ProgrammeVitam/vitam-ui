@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, NO_ERRORS_SCHEMA, viewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, signal, viewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { of } from 'rxjs';
 
@@ -45,14 +45,22 @@ import { CustomerCreateValidators } from '../../customer/customer-create/custome
 import { DomainsInputComponent } from './domains-input.component';
 
 @Component({
-  template: '<app-domains-input [(ngModel)]="domains" [(selected)]="selected"></app-domains-input>',
-  imports: [DomainsInputComponent, FormsModule],
+  template: '<app-domains-input [formField]="domainsForm.domains" [(selected)]="selected"></app-domains-input>',
+  imports: [DomainsInputComponent, FormField],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {
   readonly component = viewChild(DomainsInputComponent);
-  domains: string[];
+  readonly domainsForm = form(signal<{ domains: string[] }>({ domains: null }));
   selected: string;
+
+  get domains(): string[] {
+    return this.domainsForm.domains().value();
+  }
+
+  set domains(domains: string[]) {
+    this.domainsForm.domains().value.set(domains);
+  }
 }
 
 let testhost: TestHostComponent;
@@ -65,7 +73,7 @@ describe('DomainsInputComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, MatProgressSpinnerModule, DomainsInputComponent, TestHostComponent],
+      imports: [MatProgressSpinnerModule, DomainsInputComponent, TestHostComponent],
       providers: [{ provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -90,7 +98,7 @@ describe('DomainsInputComponent', () => {
   });
 
   it('should add one domain', () => {
-    testhost.component().control.setValue('test.com');
+    testhost.component().domainForm.domain().value.set('test.com');
     testhost.component().add();
     fixture.detectChanges();
     expect(testhost.domains).toEqual(['test.com']);
@@ -123,7 +131,7 @@ describe('DomainsInputComponent', () => {
     input(elInput, 'this is invalid');
     testhost.component().add();
     fixture.detectChanges();
-    expect(testhost.domains).toBeUndefined();
+    expect(testhost.domains).toBeNull();
   });
 
   it('should emit the selected value', () => {

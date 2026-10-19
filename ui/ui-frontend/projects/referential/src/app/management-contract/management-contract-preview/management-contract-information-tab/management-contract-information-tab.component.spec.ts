@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { of } from 'rxjs';
@@ -112,7 +111,6 @@ describe('ManagementContractInformationTabComponent', () => {
         DateTimeStubPipe,
       ],
       providers: [
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: MatDialog, useValue: matDialogSpy },
@@ -140,7 +138,7 @@ describe('ManagementContractInformationTabComponent', () => {
       status: true,
     };
     component.inputManagementContract.set(managementContract);
-    component.form.setValue(managementContractForm);
+    component.form().value.set(managementContractForm);
 
     vi.spyOn(managementContractServiceMock, 'patch');
 
@@ -179,7 +177,7 @@ describe('ManagementContractInformationTabComponent', () => {
       status: true,
     };
     component.inputManagementContract.set(managementContract);
-    component.form.setValue(managementContractForm);
+    component.form().value.set(managementContractForm);
     vi.spyOn(managementContractServiceMock, 'get');
     vi.spyOn(managementContractServiceMock, 'patch');
 
@@ -216,7 +214,7 @@ describe('ManagementContractInformationTabComponent', () => {
       status: true,
     };
     component.inputManagementContract.set(managementContract);
-    component.form.setValue(managementContractForm);
+    component.form().value.set(managementContractForm);
 
     // When
     const response = component.unchanged();
@@ -233,7 +231,7 @@ describe('ManagementContractInformationTabComponent', () => {
     fixture.detectChanges();
 
     // When
-    component.form.setValue({
+    component.form().value.set({
       identifier: 'MCDefaultStorageAll',
       name: 'Management contract name updated',
       description: 'Management contract description updated',
@@ -259,7 +257,7 @@ describe('ManagementContractInformationTabComponent', () => {
     fixture.detectChanges();
 
     // When
-    component.form.setValue({
+    component.form().value.set({
       identifier: 'MCDefaultStorageAll',
       name: 'Management contract name updated',
       description: 'Management contract description updated',

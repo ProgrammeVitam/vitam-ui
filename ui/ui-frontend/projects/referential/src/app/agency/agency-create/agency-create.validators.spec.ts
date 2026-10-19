@@ -35,92 +35,100 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { FormControl } from '@angular/forms';
-import { from, of } from 'rxjs';
+import { Injector, signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { AgencyCreateValidators } from './agency-create.validators';
 
 describe('Agency Create Validators', () => {
+  let agencyServiceSpy: { existsProperties: ReturnType<typeof vi.fn> };
+  let agencyCreateValidators: AgencyCreateValidators;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    agencyServiceSpy = {
+      existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
+    };
+    agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
+  });
+
   afterEach(() => {
     vi.useRealTimers();
   });
 
-  describe('uniqueCode', () => {
-    it('should return null', async () => {
-      vi.useFakeTimers();
-      const agencyServiceSpy = {
-        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
-      };
+  function nameForm(name: string, nameToIgnore?: string) {
+    return form(
+      signal({ name }),
+      (path) => {
+        agencyCreateValidators.onlyWhitespaces(path.name);
+        agencyCreateValidators.uniqueName(path.name, () => nameToIgnore);
+      },
+      { injector: TestBed.inject(Injector) },
+    );
+  }
+
+  async function validate(name: string, nameToIgnore?: string) {
+    const testForm = nameForm(name, nameToIgnore);
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    return testForm
+      .name()
+      .errors()
+      .map((error) => error.kind);
+  }
+
+  describe('uniqueName', () => {
+    it('should not return any error', async () => {
       agencyServiceSpy.existsProperties.mockReturnValue(of(false));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
-      from(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
 
-      await vi.advanceTimersByTimeAsync(400);
-      expect(agencyServiceSpy.existsProperties).toHaveBeenCalled();
+      expect(await validate('123456')).toEqual([]);
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     });
 
-    it('should return { nameExists: true }', async () => {
-      vi.useFakeTimers();
-      const agencyServiceSpy = {
-        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
-      };
+    it('should return nameExists', async () => {
       agencyServiceSpy.existsProperties.mockReturnValue(of(true));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
-      from(agencyCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ nameExists: true });
-      });
 
-      await vi.advanceTimersByTimeAsync(400);
-      expect(agencyServiceSpy.existsProperties).toHaveBeenCalled();
+      expect(await validate('123456')).toEqual(['nameExists']);
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     });
 
-    it('should return { onlyWhitespaces: true }', async () => {
-      vi.useFakeTimers();
-      const agencyServiceSpy = {
-        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
-      };
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
-      expect(agencyCreateValidators.onlyWhitespaces(new FormControl('   '))).toEqual({
-        onlyWhitespaces: true,
-      });
-    });
-
-    it('should not call the service', async () => {
-      vi.useFakeTimers();
-      const agencyServiceSpy = {
-        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
-      };
-      agencyServiceSpy.existsProperties.mockReturnValue(of(true));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
-      from(agencyCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toBeNull();
-      });
-
-      await vi.advanceTimersByTimeAsync(400);
+    it('should return onlyWhitespaces', async () => {
+      expect(await validate('   ')).toEqual(['onlyWhitespaces']);
       expect(agencyServiceSpy.existsProperties).not.toHaveBeenCalled();
     });
 
-    it('should call the service and return { nameExists: true }', async () => {
-      vi.useFakeTimers();
-      const agencyServiceSpy = {
-        existsProperties: vi.fn().mockName('AgencyService.existsProperties'),
-      };
+    it('should not call the service', async () => {
       agencyServiceSpy.existsProperties.mockReturnValue(of(true));
-      const agencyCreateValidators = new AgencyCreateValidators(agencyServiceSpy as any);
-      from(agencyCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toBeDefined();
-        expect(result).not.toBeNull();
-        expect(result).toEqual({ nameExists: true });
-      });
 
-      await vi.advanceTimersByTimeAsync(400);
-      expect(agencyServiceSpy.existsProperties).toHaveBeenCalled();
+      expect(await validate('123456', '123456')).toEqual([]);
+      expect(agencyServiceSpy.existsProperties).not.toHaveBeenCalled();
+    });
+
+    it('should call the service and return nameExists', async () => {
+      agencyServiceSpy.existsProperties.mockReturnValue(of(true));
+
+      expect(await validate('111111', '123456')).toEqual(['nameExists']);
       expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
+    });
+  });
+
+  describe('uniqueIdentifier', () => {
+    it('should return identifierExists', async () => {
+      agencyServiceSpy.existsProperties.mockReturnValue(of(true));
+      const testForm = form(signal({ identifier: 'id' }), (path) => agencyCreateValidators.uniqueIdentifier(path.identifier), {
+        injector: TestBed.inject(Injector),
+      });
+      TestBed.tick();
+      await vi.advanceTimersByTimeAsync(400);
+
+      expect(
+        testForm
+          .identifier()
+          .errors()
+          .map((error) => error.kind),
+      ).toEqual(['identifierExists']);
+      expect(agencyServiceSpy.existsProperties).toHaveBeenCalledWith({ identifier: 'id' });
     });
   });
 });

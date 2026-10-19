@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { UpdateUnitManagementRuleService } from 'projects/archive-search/src/app/archive/common-services/update-unit-management-rule.service';
 import { ManagementRulesValidatorService } from 'projects/archive-search/src/app/archive/validators/management-rules-validator.service';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
@@ -166,22 +165,9 @@ const updateUnitManagementRuleServiceMock = {
 };
 
 const managementRulesValidatorServiceMock = {
-  uniquePreventRuleId: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.uniquePreventRuleId')
-    .mockReturnValue(() => of({})),
-  uniqueRuleId: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.uniqueRuleId')
-    .mockReturnValue(() => of({})),
-  ruleIdPattern: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.ruleIdPattern')
-    .mockReturnValue(() => of({})),
-  checkRuleIdExistence: vi
-    .fn()
-    .mockName('ManagementRulesValidatorService.checkRuleIdExistence')
-    .mockReturnValue(() => of({})),
+  uniquePreventRuleId: vi.fn().mockName('ManagementRulesValidatorService.uniquePreventRuleId'),
+  uniqueRuleId: vi.fn().mockName('ManagementRulesValidatorService.uniqueRuleId'),
+  checkRuleIdExistence: vi.fn().mockName('ManagementRulesValidatorService.checkRuleIdExistence'),
 };
 
 describe('UnlockRulesInheritanceComponent', () => {
@@ -192,7 +178,6 @@ describe('UnlockRulesInheritanceComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot(), VitamUICommonTestModule, UnlockRulesInheritanceComponent],
       providers: [
-        FormBuilder,
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
         { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },

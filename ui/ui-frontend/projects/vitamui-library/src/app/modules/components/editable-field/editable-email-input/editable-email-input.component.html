@@ -5,11 +5,20 @@
         <div class="editable-field-content">
           <label>{{ label() }}</label>
           <span class="editable-field-text-content">{{ control?.value }}</span>
-          <div class="editable-field-control align" [formGroup]="formEmail">
-            <input type="text" formControlName="emailFirstPart" />
+          <div class="editable-field-control align">
+            <input
+              type="text"
+              [formField]="formEmail.emailFirstPart"
+              (input)="onEmailChange({ emailFirstPart: $any($event.target).value })"
+            />
             <span class="layer">&#64;</span>
             <mat-form-field class="vitamui-mat-select vitamui-mat-select-mini">
-              <mat-select formControlName="domain" required panelClass="vitamui-mat-select" #select>
+              <mat-select
+                [formField]="formEmail.domain"
+                (selectionChange)="onEmailChange({ domain: $event.value })"
+                panelClass="vitamui-mat-select"
+                #select
+              >
                 @for (domainTmp of domains(); track domainTmp; let index = $index) {
                   <mat-option value="{{ domainTmp }}">
                     {{ domainTmp }}

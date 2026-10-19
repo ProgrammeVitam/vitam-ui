@@ -36,7 +36,7 @@
  */
 import { Component, forwardRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { EMPTY, of } from 'rxjs';
@@ -55,7 +55,7 @@ import { UnitsEditComponent } from './units-edit.component';
       multi: true,
     },
   ],
-  imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule],
+  imports: [MatProgressBarModule, VitamUICommonTestModule],
 })
 class UnitsFormStubComponent {
   writeValue() {}
@@ -76,7 +76,7 @@ describe('UnitsEditComponent', () => {
 
     await TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [MatProgressBarModule, ReactiveFormsModule, VitamUICommonTestModule, UnitsEditComponent, UnitsFormStubComponent],
+      imports: [MatProgressBarModule, VitamUICommonTestModule, UnitsEditComponent, UnitsFormStubComponent],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { group: { id: '42', name: 'Test', units: [] } } },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -101,8 +101,8 @@ describe('UnitsEditComponent', () => {
       const groupService = TestBed.inject(GroupService);
       vi.spyOn(groupService, 'patch');
       const matDialogRefSpy = TestBed.inject(MatDialogRef);
-      component.form.setValue({ units: ['1', '2', '3'] });
-      component.form.markAsDirty();
+      component.form().value.set({ units: ['1', '2', '3'] });
+      component.form().markAsDirty();
       component.onSubmit();
       expect(groupService.patch).toHaveBeenCalledWith({ id: '42', units: ['1', '2', '3'] });
       expect(matDialogRefSpy.close).toHaveBeenCalledWith({ result: 'test' });
@@ -111,7 +111,7 @@ describe('UnitsEditComponent', () => {
     it('should not call groupService.patch when form is pristine', () => {
       const groupService = TestBed.inject(GroupService);
       vi.spyOn(groupService, 'patch');
-      component.form.markAsPristine();
+      component.form().reset();
       component.onSubmit();
       expect(groupService.patch).toHaveBeenCalledTimes(0);
     });

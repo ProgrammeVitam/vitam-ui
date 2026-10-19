@@ -35,8 +35,8 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, effect, inject, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { disabled, form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
@@ -44,6 +44,7 @@ import {
   FilingPlanMode,
   IngestContract,
   Option,
+  requiredValue,
   SelectComponent,
   SignaturePolicy,
   SignedDocumentPolicyEnum,
@@ -67,6 +68,39 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface FilingPlanSelection {
+  included: string[];
+  excluded: string[];
+}
+
+interface SignaturePolicyForm {
+  signedDocument: SignedDocumentPolicyEnum;
+  declaredSignature: boolean | null;
+  declaredTimestamp: boolean | null;
+  declaredAdditionalProof: boolean | null;
+}
+
+interface IngestContractCreateForm {
+  identifier: string;
+  status: string;
+  name: string;
+  description: string;
+  archiveProfiles: string[];
+  managementContractId: string | null;
+  everyFormatType: boolean;
+  formatType: string[];
+  formatUnidentifiedAuthorized: boolean;
+  binaryObjectMandatory: boolean;
+  everyDataObjectVersion: boolean;
+  dataObjectVersion: string[];
+  checkParentLink: string;
+  signaturePolicy: SignaturePolicyForm;
+  signedDocument: SignedDocumentPolicyEnum;
+  elementsToCheck: string[];
+  masterMandatory: boolean;
+  computeInheritedRulesAtIngest: boolean;
+}
+
 @Component({
   selector: 'app-ingest-contract-create',
   templateUrl: './ingest-contract-create.component.html',
@@ -79,7 +113,8 @@ import { TranslatePipe } from '@ngx-translate/core';
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
-    ReactiveFormsModule,
+    FormRoot,
+    FormField,
     SelectComponent,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -93,7 +128,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     tenantIdentifier: number;
     isSlaveMode: boolean;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly ingestContractService = inject(IngestContractService);
   private readonly ingestContractCreateValidators = inject(IngestContractCreateValidators);
   private readonly confirmDialogService = inject(ConfirmDialogService);
@@ -107,7 +141,76 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   protected readonly tenantIdentifier: number;
   protected readonly isSlaveMode: boolean;
 
-  form: FormGroup;
+  readonly form = form(
+    signal<IngestContractCreateForm>({
+      identifier: '',
+      status: 'INACTIVE',
+      name: '',
+      description: '',
+      /* <- step 2 -> */
+      archiveProfiles: [],
+      managementContractId: null,
+      /* <- step 3 -> */
+      everyFormatType: true,
+      formatType: [],
+      formatUnidentifiedAuthorized: false,
+      /* <- step 4 -> */
+      binaryObjectMandatory: true,
+      everyDataObjectVersion: true,
+      dataObjectVersion: [],
+      /* <- step 5 -> */
+      checkParentLink: 'AUTHORIZED',
+      /* <- step 9 -> */
+      signaturePolicy: {
+        signedDocument: SignedDocumentPolicyEnum.ALLOWED,
+        declaredSignature: null,
+        declaredTimestamp: null,
+        declaredAdditionalProof: null,
+      },
+      signedDocument: SignedDocumentPolicyEnum.ALLOWED,
+      elementsToCheck: [],
+      /* default */
+      masterMandatory: true,
+      computeInheritedRulesAtIngest: false,
+    }),
+    (path) => {
+      required(path.identifier);
+      minLength(path.identifier, 2);
+      maxLength(path.identifier, 100);
+      this.ingestContractCreateValidators.uniqueIdentifier(path.identifier);
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.ingestContractCreateValidators.uniqueName(path.name);
+      required(path.description);
+      requiredValue(path.everyFormatType);
+      requiredValue(path.formatType);
+      requiredValue(path.formatUnidentifiedAuthorized);
+      requiredValue(path.dataObjectVersion);
+      required(path.checkParentLink);
+      requiredValue(path.masterMandatory);
+      requiredValue(path.computeInheritedRulesAtIngest);
+      const { declaredSignature, declaredTimestamp, declaredAdditionalProof, signedDocument } = path.signaturePolicy;
+      for (const checkbox of [declaredSignature, declaredTimestamp, declaredAdditionalProof]) {
+        disabled(checkbox, ({ valueOf }) => valueOf(signedDocument) === SignedDocumentPolicyEnum.FORBIDDEN);
+      }
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
+  // Values of the filing plans, used to compute linkParentId and checkParentId
+  readonly filingPlanForm = form(
+    signal<{ linkParentId: FilingPlanSelection; checkParentId: FilingPlanSelection }>({
+      linkParentId: { included: [], excluded: [] },
+      checkParentId: { included: [], excluded: [] },
+    }),
+  );
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -119,11 +222,14 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
     this.tenantIdentifier = data.tenantIdentifier;
     this.isSlaveMode = data.isSlaveMode;
-  }
 
-  statusControl = new FormControl(false);
-  linkParentIdControl = new FormControl();
-  checkParentIdControl = new FormControl();
+    effect(() => {
+      const name = this.form.name().value();
+      if (!this.isSlaveMode) {
+        untracked(() => this.form.identifier().value.set(name));
+      }
+    });
+  }
 
   formatTypesOptions: VitamuiSelectOptions = { options: [] };
   managementContracts: Option[];
@@ -139,52 +245,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      identifier: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.ingestContractCreateValidators.uniqueIdentifier(),
-      ],
-      status: ['INACTIVE'],
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        this.ingestContractCreateValidators.uniqueName(),
-      ],
-      description: [null, Validators.required],
-      /* <- step 2 -> */
-      archiveProfiles: [new Array<string>() /* Validators.required */],
-      managementContractId: [null],
-
-      /* <- step 3 -> */
-      everyFormatType: [true, Validators.required],
-      formatType: [new Array<string>(), Validators.required],
-      formatUnidentifiedAuthorized: [false, Validators.required],
-      /* <- step 4 -> */
-      binaryObjectMandatory: [true],
-      everyDataObjectVersion: [true],
-      dataObjectVersion: [new Array<string>(), Validators.required],
-
-      /* <- step 5 -> */
-      checkParentLink: ['AUTHORIZED', Validators.required],
-      linkParentId: [null, Validators.required],
-      checkParentId: [new Array<string>(), Validators.required],
-
-      /* <- step 9 -> */
-      signaturePolicy: this.formBuilder.group({
-        signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
-        declaredSignature: [],
-        declaredTimestamp: [],
-        declaredAdditionalProof: [],
-      }),
-      signedDocument: [SignedDocumentPolicyEnum.ALLOWED],
-      elementsToCheck: [new Array<string>()],
-
-      /* default */
-      masterMandatory: [true, Validators.required],
-      computeInheritedRulesAtIngest: [false, Validators.required],
-    });
-
     this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe((fileFormats) => {
       this.formatTypesOptions.options = fileFormats.map((fileFormat) => {
         return { key: fileFormat.puid, label: fileFormat.puid + ' - ' + fileFormat.name };
@@ -205,35 +265,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
       this.archiveProfiles = archiveProfiles.map((archiveProfile) => ({ key: archiveProfile.identifier, label: archiveProfile.name }));
     });
 
-    this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls['status'].setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
-
-    this.form.controls['name'].valueChanges.subscribe((value) => {
-      if (!this.isSlaveMode) {
-        this.form.controls['identifier'].setValue(value);
-      }
-    });
-
-    this.linkParentIdControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
-      if (value.included.length === 1) {
-        this.form.controls['linkParentId'].setValue(value.included[0]);
-      } else {
-        this.form.controls['linkParentId'].setValue(null);
-      }
-    });
-
-    this.checkParentIdControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
-      if (value.included.length > 0) {
-        this.form.controls['checkParentId'].setValue(value.included);
-      } else {
-        this.form.controls['checkParentId'].setValue([]);
-      }
-    });
-
-    this.linkParentIdControl.setValue({ included: [], excluded: [] });
-    this.checkParentIdControl.setValue({ included: [], excluded: [] });
-
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
 
@@ -242,7 +273,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -251,7 +282,18 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.isDisabledButton.set(true);
-    const ingestContract = this.form.value as IngestContract;
+    const { linkParentId, checkParentId } = this.filingPlanForm().value();
+    const formValue = this.form().value();
+    const ingestContract = {
+      ...formValue,
+      // Disabled fields were not part of the value of the former reactive form
+      signaturePolicy:
+        formValue.signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN
+          ? { signedDocument: formValue.signaturePolicy.signedDocument }
+          : formValue.signaturePolicy,
+      linkParentId: linkParentId.included.length === 1 ? linkParentId.included[0] : null,
+      checkParentId: checkParentId.included.length > 0 ? checkParentId.included : [],
+    } as unknown as IngestContract;
     ingestContract.status === 'ACTIVE'
       ? (ingestContract.activationDate = new Date().toISOString())
       : (ingestContract.deactivationDate = new Date().toISOString());
@@ -267,16 +309,14 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     );
   }
 
+  private isInvalidOrPending(...fields: (() => { invalid: () => boolean; pending: () => boolean })[]): boolean {
+    return fields.some((field) => field().invalid() || field().pending());
+  }
+
   firstStepInvalid(): boolean {
-    const invalid =
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('description').invalid ||
-      this.form.get('description').pending ||
-      this.form.get('status').invalid ||
-      this.form.get('status').pending;
+    const invalid = this.isInvalidOrPending(this.form.name, this.form.description, this.form.status);
     if (this.isSlaveMode) {
-      return invalid || this.form.get('identifier').invalid || this.form.get('identifier').pending;
+      return invalid || this.isInvalidOrPending(this.form.identifier);
     } else {
       return invalid;
     }
@@ -284,35 +324,31 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   thirdStepInvalid(): boolean {
     return (
-      this.form.get('everyFormatType').invalid ||
-      this.form.get('everyFormatType').pending ||
-      (this.form.get('everyFormatType').value === false && (this.form.get('formatType').invalid || this.form.get('formatType').pending))
+      this.isInvalidOrPending(this.form.everyFormatType) ||
+      (this.form.everyFormatType().value() === false && this.isInvalidOrPending(this.form.formatType))
     );
   }
 
   fourthStepInvalid(): boolean {
     return (
-      this.form.get('everyDataObjectVersion').invalid ||
-      this.form.get('everyDataObjectVersion').pending ||
-      (this.form.get('everyDataObjectVersion').value === false &&
-        (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending))
+      this.isInvalidOrPending(this.form.everyDataObjectVersion) ||
+      (this.form.everyDataObjectVersion().value() === false && this.isInvalidOrPending(this.form.dataObjectVersion))
     );
   }
 
   seventhStepInvalid(): boolean {
     return (
-      this.checkParentIdControl.invalid ||
-      this.checkParentIdControl.pending ||
-      (this.form.get('checkParentLink').value === 'REQUIRED' && this.checkParentIdControl.value.included.length === 0)
+      this.isInvalidOrPending(this.filingPlanForm.checkParentId) ||
+      (this.form.checkParentLink().value() === 'REQUIRED' && this.filingPlanForm.checkParentId().value().included.length === 0)
     );
   }
 
-  get signaturePolicy(): FormGroup {
-    return this.form.controls['signaturePolicy'] as FormGroup;
+  onStatusChange(active: boolean) {
+    this.form.status().value.set(active ? 'ACTIVE' : 'INACTIVE');
   }
 
   selectedSignedDocumentPolicyInvalid(): boolean {
-    const signaturePolicy: SignaturePolicy = this.signaturePolicy.value;
+    const signaturePolicy = this.form.signaturePolicy().value() as SignaturePolicy;
     if (signaturePolicy.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN) {
       return signaturePolicy.declaredSignature || signaturePolicy.declaredTimestamp || signaturePolicy.declaredAdditionalProof;
     }
@@ -321,26 +357,13 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   changeSignedDocumentPolicy(signedDocumentPolicyEnum: SignedDocumentPolicyEnum): void {
     if (signedDocumentPolicyEnum === SignedDocumentPolicyEnum.FORBIDDEN) {
-      this.signaturePolicy.setValue({
+      // The checkboxes are disabled by the form schema when the signed documents are forbidden
+      this.form.signaturePolicy().value.set({
         signedDocument: SignedDocumentPolicyEnum.FORBIDDEN,
         declaredSignature: null,
         declaredTimestamp: null,
         declaredAdditionalProof: null,
       });
     }
-    const isDisabled = this.signedDocumentPolicyIsDisabled();
-    if (isDisabled) {
-      this.signaturePolicy.get('declaredSignature').disable();
-      this.signaturePolicy.get('declaredTimestamp').disable();
-      this.signaturePolicy.get('declaredAdditionalProof').disable();
-    } else {
-      this.signaturePolicy.get('declaredSignature').enable();
-      this.signaturePolicy.get('declaredTimestamp').enable();
-      this.signaturePolicy.get('declaredAdditionalProof').enable();
-    }
-  }
-
-  private signedDocumentPolicyIsDisabled(): boolean {
-    return this.signaturePolicy?.value?.signedDocument === SignedDocumentPolicyEnum.FORBIDDEN;
   }
 }

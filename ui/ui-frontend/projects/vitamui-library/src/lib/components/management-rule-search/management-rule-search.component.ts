@@ -34,9 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit, signal, input } from '@angular/core';
-
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, computed, inject, Injector, OnDestroy, OnInit, signal, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { debounce, form, FormField } from '@angular/forms/signals';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 
@@ -76,25 +76,26 @@ import { ManagementRuleCheckboxComponent } from './management-rule-checkbox.comp
 import { TranslatePipe } from '@ngx-translate/core';
 import { EditableInputComponent } from '../../../app/modules/components/editable-field/editable-input/editable-input.component';
 
-type RuleForm = {
-  ruleIdentifier: FormControl<any[]>;
-  ruleStartDate: FormControl<string | null>;
-  ruleEndDate: FormControl<string | null>;
-  ruleEliminationIdentifier?: FormControl<string | null>;
+interface RuleForm {
+  ruleIdentifier: string[];
+  ruleStartDate: Date | null;
+  ruleEndDate: Date | null;
+  // Only used for the APPRAISAL rule type
+  ruleEliminationIdentifier: string | null;
+}
+
+const INITIAL_RULE_FORM: RuleForm = {
+  ruleIdentifier: [],
+  ruleStartDate: null,
+  ruleEndDate: null,
+  ruleEliminationIdentifier: null,
 };
 
 @Component({
   selector: 'vitamui-management-rule-search',
   templateUrl: './management-rule-search.component.html',
   styleUrls: ['./management-rule-search.component.scss'],
-  imports: [
-    ReactiveFormsModule,
-    SelectComponent,
-    ManagementRuleCheckboxComponent,
-    DatepickerComponent,
-    EditableInputComponent,
-    TranslatePipe,
-  ],
+  imports: [FormField, SelectComponent, ManagementRuleCheckboxComponent, DatepickerComponent, EditableInputComponent, TranslatePipe],
   providers: [
     ManagementRuleCriteriaService,
     {
@@ -105,7 +106,7 @@ type RuleForm = {
   ],
 })
 export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
-  protected formBuilder = inject(FormBuilder);
+  private readonly injector = inject(Injector);
   protected sharedDataService = inject<ManagementRuleSharedDataService>(MANAGEMENT_RULE_SHARED_DATA_SERVICE);
   protected managementRuleCriteriaService = inject(ManagementRuleCriteriaService);
 
@@ -126,7 +127,12 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
 
   // Properties from previous abstract class
   readonly ruleOptions = signal<VitamuiSelectOptions>(undefined);
-  criteriaForm: FormGroup;
+  private readonly criteriaModel = signal<RuleForm>({ ...INITIAL_RULE_FORM });
+  readonly criteriaForm = form(this.criteriaModel, (path) => {
+    // The rule identifiers are only taken into account when the select is closed
+    debounce(path.ruleIdentifier, 'blur');
+  });
+  protected readonly isAppraisal = computed(() => this.type() === ManagementRuleType.APPRAISAL);
   additionalCriteria: Map<string, boolean> = new Map();
   endDateInterval = false;
   previousCriteriaValue: Record<string, any>;
@@ -158,7 +164,7 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
       this.checkboxConfig,
       this.hasWaitingToRecalculateCriteria(),
     );
-    this.criteriaForm = this.initForm();
+    this.initForm();
     this.initSubscriptions();
     this.loadRules();
     this.managementRuleCriteriaService.initializeFromSearchCriteria(
@@ -175,32 +181,21 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
     );
   }
 
-  protected initForm(): FormGroup<RuleForm> {
-    const controls: RuleForm = {
-      ruleIdentifier: this.formBuilder.control<any[]>([], { updateOn: 'blur' }),
-      ruleStartDate: this.formBuilder.control<string | null>(null),
-      ruleEndDate: this.formBuilder.control<string | null>(null),
-    };
+  protected initForm(): void {
+    this.criteriaForm().reset({ ...INITIAL_RULE_FORM });
 
-    if (this.type() === ManagementRuleType.APPRAISAL) {
-      controls.ruleEliminationIdentifier = this.formBuilder.control<string | null>(null);
-    }
-
-    const form = this.formBuilder.group(controls);
-
-    form.controls.ruleIdentifier.valueChanges
+    toObservable(this.criteriaForm.ruleIdentifier().value, { injector: this.injector })
       .pipe(
+        // The initial (empty) value is filtered out
         takeUntil(this.destroyed$),
         debounceTime(200),
-        filter((value): value is any[] => Array.isArray(value) && value.length > 0),
+        filter((value) => Array.isArray(value) && value.length > 0),
       )
       .subscribe((value) => {
         const identifierKey = ManagementRuleFormUtils.getIdentifierKey(this.config.ruleTypeForFilter);
         this.managementRuleCriteriaService.addFromParams({ [identifierKey]: value });
-        form.controls.ruleIdentifier.reset(undefined, { emitEvent: false });
+        this.criteriaForm.ruleIdentifier().reset([]);
       });
-
-    return form;
   }
 
   protected getFromMainObservable(): Observable<SearchCriteriaRemoveAction> {
@@ -221,12 +216,12 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
     );
 
     if (Object.keys(consistentData).length > 0) {
-      if (this.type() === ManagementRuleType.APPRAISAL && consistentData['ruleEliminationIdentifier']) {
+      if (this.isAppraisal() && consistentData['ruleEliminationIdentifier']) {
         this.managementRuleCriteriaService.addFromParams({
           [ELIMINATION_TECHNICAL_ID + this.config.ruleTypeSuffix]:
             formData.ruleEliminationIdentifier && formData.ruleEliminationIdentifier !== '' ? formData.ruleEliminationIdentifier : null,
         });
-        this.criteriaForm.controls['ruleEliminationIdentifier']?.reset(undefined, { emitEvent: false });
+        this.criteriaForm.ruleEliminationIdentifier().reset(null);
       }
 
       this.previousCriteriaValue = consistentData;
@@ -242,30 +237,22 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   addBeginDtCriteria() {
-    const startDt = this.criteriaForm.controls['ruleStartDate']?.value;
-    const endDt = this.endDateInterval ? this.criteriaForm.controls['ruleEndDate']?.value : null;
+    const startDt = this.criteriaForm.ruleStartDate().value();
+    const endDt = this.endDateInterval ? this.criteriaForm.ruleEndDate().value() : null;
     // FIXME: Interval detection not based on valu presences but on id name (eltValue.id) after emit...
     const isInterval = startDt && endDt;
     const dateId = isInterval ? INTERVAL_DATE_ACCESS : this.config.id_endDate;
 
     this.handleDateCriteria(RULE_END_DATE, dateId, startDt, endDt);
 
-    this.criteriaForm.controls['ruleStartDate'].reset();
+    this.criteriaForm.ruleStartDate().reset(null);
     if (this.endDateInterval) {
-      this.criteriaForm.controls['ruleEndDate'].reset();
+      this.criteriaForm.ruleEndDate().reset(null);
     }
   }
 
   addIntervalDtCriteria() {
     this.addBeginDtCriteria();
-  }
-
-  get ruleStartDateCtrl(): FormControl {
-    return this.criteriaForm.controls['ruleStartDate'] as FormControl;
-  }
-
-  get ruleEndDateCtrl(): FormControl {
-    return this.criteriaForm.controls['ruleEndDate'] as FormControl;
   }
 
   protected initAdditionalCriteria() {
@@ -275,10 +262,12 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   }
 
   protected initSubscriptions() {
-    this.criteriaForm.valueChanges.pipe(takeUntil(this.destroyed$), debounceTime(100)).subscribe((data) => {
-      this.processFormUpdate(data);
-      this.resetForm();
-    });
+    toObservable(this.criteriaModel, { injector: this.injector })
+      .pipe(takeUntil(this.destroyed$), debounceTime(100)) // The initial (empty) value has no effect
+      .subscribe((data) => {
+        this.processFormUpdate(data);
+        this.resetForm();
+      });
 
     const mainObservable = this.getFromMainObservable();
     if (mainObservable) {
@@ -314,14 +303,13 @@ export class ManagementRuleSearchComponent implements OnInit, OnDestroy {
   updateEndDateInterval(status: boolean) {
     this.endDateInterval = status;
     if (!status) {
-      this.criteriaForm.controls['ruleEndDate'].reset();
+      this.criteriaForm.ruleEndDate().reset(null);
     }
   }
 
   protected resetForm() {
-    this.criteriaForm.markAsPristine();
-    this.criteriaForm.markAsUntouched();
-    this.criteriaForm.updateValueAndValidity({ emitEvent: false });
+    // Marks the form as pristine and untouched, without changing its value
+    this.criteriaForm().reset();
   }
 
   protected loadRules() {

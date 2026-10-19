@@ -38,7 +38,6 @@ import { DatePipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
 import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
@@ -88,7 +87,6 @@ describe('SearchCriteriaSaverComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, LoggerModule.forRoot(), SearchCriteriaSaverComponent, MockTruncatePipe],
       providers: [
-        FormBuilder,
         ArchiveSharedDataService,
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -118,7 +116,7 @@ describe('SearchCriteriaSaverComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.nameControl).toEqual('');
+    expect(component.searchCriteriaForm.name().value()).toEqual('');
   });
 
   it('should create new searchCriteria', () => {

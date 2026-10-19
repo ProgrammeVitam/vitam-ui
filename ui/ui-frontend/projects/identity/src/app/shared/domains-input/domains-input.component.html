@@ -6,12 +6,12 @@
       [style.width.px]="280"
       type="text"
       size="10"
-      [formControl]="control"
+      [formField]="domainForm.domain"
       [attr.placeholder]="placeholder()"
       (blur)="onTouched()"
       (keydown.enter)="add()"
     />
-    @if (control.pending) {
+    @if (domainForm.domain().pending()) {
       <mat-spinner class="ml-2" [diameter]="spinnerDiameter()"></mat-spinner>
     }
   </div>
@@ -22,13 +22,13 @@
 </div>
 
 <div class="vitamui-input-errors">
-  @if (control?.hasError('pattern')) {
+  @if (hasError('pattern')) {
     <div>{{ 'SHARED.DOMAIN_INPUT.WRONG_FORMAT' | translate }}</div>
   }
   @if (domainExists) {
     <div>{{ 'SHARED.DOMAIN_INPUT.DOMAIN_ALREADY_EXIST' | translate }}</div>
   }
-  @if (!domainExists && control?.hasError('uniqueDomain')) {
+  @if (!domainExists && hasError('uniqueDomain')) {
     <div>{{ 'SHARED.DOMAIN_INPUT.DOMAIN_ALREADY_USED' | translate }}</div>
   }
 </div>

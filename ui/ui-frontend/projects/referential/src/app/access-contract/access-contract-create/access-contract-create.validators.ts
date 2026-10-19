@@ -35,10 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AccessContract, AccessContractService } from 'vitamui-library';
+import { PathKind, SchemaPath, SchemaPathRules } from '@angular/forms/signals';
+import { Observable, of } from 'rxjs';
+import { AccessContractService, validateObservable } from 'vitamui-library';
+
+type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
 
 @Injectable({
   providedIn: 'root',
@@ -50,51 +51,42 @@ export class AccessContractCreateValidators {
     this.accessContractService = accessContractService;
   }
 
-  private readonly debounceTime = 400;
-
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  };
-
-  uniqueNameWhileEdit = (accessContract: () => AccessContract, nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFieldsWhileEdit(accessContract, 'name', 'nameExists', nameToIgnore);
-  };
-
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  };
-
-  private uniqueFieldsWhileEdit(accessContract: () => AccessContract, field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value?.trim();
-      const existField: any = {};
-      existField[existTag] = true;
-
-      if (accessContract() === undefined || control.value === accessContract().name) {
-        return of(null);
-      } else {
-        return timer(this.debounceTime).pipe(
-          switchMap(() => (control.value !== valueToIgnore ? this.accessContractService.existsProperties(properties) : of(false))),
-          take(1),
-          map((exists: boolean) => (exists ? existField : null)),
-        );
-      }
-    };
+  /**
+   * Checks that no other access contract has the same name.
+   * @param nameToIgnore returns the name that is not checked
+   */
+  uniqueName<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>, nameToIgnore?: () => string): void {
+    this.uniqueField(path, 'name', 'nameExists', (value) => value !== nameToIgnore?.());
   }
 
-  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value?.trim();
-      const existField: any = {};
-      existField[existTag] = true;
+  /**
+   * Checks that no other access contract has the same name, ignoring the name of the edited access contract.
+   * @param accessContract returns the edited access contract
+   */
+  uniqueNameWhileEdit<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    accessContract: () => { name?: string } | undefined,
+  ): void {
+    this.uniqueField(path, 'name', 'nameExists', (value) => accessContract() !== undefined && value !== accessContract().name);
+  }
 
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.accessContractService.existsProperties(properties) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? existField : null)),
-      );
-    };
+  uniqueIdentifier<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    identifierToIgnore?: () => string,
+  ): void {
+    this.uniqueField(path, 'identifier', 'identifierExists', (value) => value !== identifierToIgnore?.());
+  }
+
+  private uniqueField<TPathKind extends PathKind>(
+    path: FieldPath<string, TPathKind>,
+    field: string,
+    errorKind: string,
+    shouldCheck: (value: string) => boolean,
+  ): void {
+    validateObservable(path, {
+      stream: (value: string): Observable<boolean> =>
+        shouldCheck(value) ? this.accessContractService.existsProperties({ [field]: value?.trim() }) : of(false),
+      onSuccess: (exists: boolean) => (exists ? { kind: errorKind } : undefined),
+    });
   }
 }

@@ -36,9 +36,11 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { PathKind } from '@angular/forms/signals';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { ApplicationId } from 'vitamui-library';
+import { ApplicationId, validateObservable } from 'vitamui-library';
+import { FieldPath } from '../shared/signal-forms/signal-form-validators';
 import { ExternalParamProfileService } from './external-param-profile.service';
 
 @Injectable({
@@ -62,4 +64,20 @@ export class ExternalParamProfileValidators {
       );
     };
   };
+
+  /** Signal forms version of `nameExists`: `tenantIdentifier` and `nameToIgnore` are read each time the check runs. */
+  nameExistsRule<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    tenantIdentifier: () => number,
+    nameToIgnore: () => string = () => undefined,
+  ) {
+    validateObservable(path, {
+      debounceTime: this.debounceTime,
+      stream: (name: string) =>
+        name !== nameToIgnore()
+          ? this.externalParamProfileService.exists(tenantIdentifier(), ApplicationId.EXTERNAL_PARAMS, name)
+          : of(false),
+      onSuccess: (exists: boolean) => (exists ? { kind: 'nameExists' } : undefined),
+    });
+  }
 }

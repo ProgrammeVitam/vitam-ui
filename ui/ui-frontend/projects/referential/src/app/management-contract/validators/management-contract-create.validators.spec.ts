@@ -34,16 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
+import { Injector, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { form } from '@angular/forms/signals';
 import { of } from 'rxjs';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from './management-contract-create.validators';
 
 describe('ManagementContractCreateValidators', () => {
   let service: ManagementContractCreateValidators;
+  let injector: Injector;
 
   const managementContractServiceMock = {
-    existsProperties: () => of(null),
+    existsProperties: vi.fn(() => of(false)),
   };
 
   beforeEach(() => {
@@ -51,6 +55,12 @@ describe('ManagementContractCreateValidators', () => {
       providers: [{ provide: ManagementContractService, useValue: managementContractServiceMock }],
     });
     service = TestBed.inject(ManagementContractCreateValidators);
+    injector = TestBed.inject(Injector);
+    managementContractServiceMock.existsProperties.mockClear();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('should create an instance', () => {
@@ -64,11 +74,39 @@ describe('ManagementContractCreateValidators', () => {
     expect(service).toBeTruthy();
   });
 
-  it(' uniqueIdentifier should return true when contract identifier does not exist in Vitam', () => {
-    expect(service.uniqueIdentifier('contractIdentifier')).toBeTruthy();
+  it('uniqueIdentifier should return an error when contract identifier exists in Vitam', async () => {
+    vi.useFakeTimers();
+    managementContractServiceMock.existsProperties.mockReturnValueOnce(of(true));
+    const testForm = form(signal({ identifier: 'contractIdentifier' }), (path) => service.uniqueIdentifier(path.identifier), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(managementContractServiceMock.existsProperties).toHaveBeenCalledWith({ identifier: 'contractIdentifier' });
+    expect(
+      testForm
+        .identifier()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['identifierExists']);
   });
 
-  it(' uniqueName should return true when contract name does not exist in Vitam', () => {
-    expect(service.uniqueName('contractName')).toBeTruthy();
+  it('uniqueName should not return an error when contract name does not exist in Vitam', async () => {
+    vi.useFakeTimers();
+    const testForm = form(signal({ name: 'contractName' }), (path) => service.uniqueName(path.name), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(managementContractServiceMock.existsProperties).toHaveBeenCalledWith({ name: 'contractName' });
+    expect(testForm.name().valid()).toBe(true);
+  });
+
+  it('uniqueName should not call the service for the name to ignore', async () => {
+    vi.useFakeTimers();
+    const testForm = form(signal({ name: 'contractName' }), (path) => service.uniqueName(path.name, () => 'contractName'), { injector });
+
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(managementContractServiceMock.existsProperties).not.toHaveBeenCalled();
+    expect(testForm.name().valid()).toBe(true);
   });
 });

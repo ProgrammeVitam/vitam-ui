@@ -14,22 +14,22 @@
       <vitamui-banner [searchbarPlaceholder]="'SECURE.HOME.SEARCH_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
       </vitamui-banner>
 
-      <form [formGroup]="dateRangeFilterForm" class="d-flex align-items-center mt-4 px-2 hgap-3">
+      <div class="d-flex align-items-center mt-4 px-2 hgap-3">
         <vitamui-datepicker
-          formControlName="startDate"
+          [formField]="dateRangeFilterForm.startDate"
           [label]="'SECURE.HOME.START_DATE' | translate"
-          [max]="dateRangeFilterForm.get('endDate')?.value"
+          [max]="dateRangeFilterForm.endDate().value()"
           outputType="Date"
           format="yyyy-MM-dd"
         ></vitamui-datepicker>
         <vitamui-datepicker
-          formControlName="endDate"
+          [formField]="dateRangeFilterForm.endDate"
           [label]="'SECURE.HOME.END_DATE' | translate"
-          [min]="dateRangeFilterForm.get('startDate')?.value"
+          [min]="dateRangeFilterForm.startDate().value()"
           outputType="Date"
           format="yyyy-MM-dd"
         ></vitamui-datepicker>
-      </form>
+      </div>
     </div>
 
     <div class="vitamui-content">

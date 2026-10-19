@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService, Rule, RuleService, SecurityService, WINDOW_LOCATION } from 'vitamui-library';
@@ -88,7 +87,6 @@ describe('RuleInformationTabComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RuleInformationTabComponent],
       providers: [
-        FormBuilder,
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: AuthService, useValue: authServiceMock },
@@ -102,7 +100,7 @@ describe('RuleInformationTabComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleInformationTabComponent);
     component = fixture.componentInstance;
-    component.form.setValue(ruleValue);
+    component.form().value.set(ruleValue);
     component.previousValue = (): Rule => previousValue;
     fixture.detectChanges();
   });

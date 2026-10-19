@@ -43,12 +43,13 @@ import {
   FileTypes,
   FileValidationErrors,
   FileValidatorFunction,
+  requiredValue,
   SnackBarService,
 } from 'vitamui-library';
 import { firstValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ImportDialogParam, ReferentialImportInvalidFileError, ReferentialTypes } from './import-dialog-param.interface';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ReferentialImportService } from './referential-import.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -57,15 +58,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
   selector: 'app-import-dialog',
   templateUrl: './import-dialog.component.html',
   styleUrls: ['./import-dialog.component.scss'],
-  imports: [
-    DialogHeaderComponent,
-    MatDialogContent,
-    FileSelectorComponent,
-    ReactiveFormsModule,
-    MatDialogActions,
-    MatProgressSpinner,
-    TranslatePipe,
-  ],
+  imports: [DialogHeaderComponent, MatDialogContent, FileSelectorComponent, FormField, MatDialogActions, MatProgressSpinner, TranslatePipe],
 })
 export class ImportDialogComponent implements OnDestroy {
   dialogParams = inject<ImportDialogParam>(MAT_DIALOG_DATA);
@@ -79,7 +72,7 @@ export class ImportDialogComponent implements OnDestroy {
   extensions: string[] = [];
   usesCsvValidator: boolean;
 
-  fileControl = new FormControl<File[]>(undefined, [Validators.required]);
+  readonly uploadForm = form(signal<{ files: File[] }>({ files: [] }), (path) => requiredValue(path.files));
 
   constructor() {
     this.setExtensions();
@@ -89,7 +82,7 @@ export class ImportDialogComponent implements OnDestroy {
   public submitFile(): void {
     this.isLoading.set(true);
     this.referentialImportService
-      .importReferential(this.dialogParams.referential, this.fileControl.value[0])
+      .importReferential(this.dialogParams.referential, this.uploadForm.files().value()[0])
       .pipe(takeUntil(this.destroy))
       .subscribe({
         next: () => {

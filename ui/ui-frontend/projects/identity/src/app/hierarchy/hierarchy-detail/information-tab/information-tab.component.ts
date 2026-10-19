@@ -34,9 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnChanges, OnDestroy, SimpleChanges, input } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { merge, of, Subscription } from 'rxjs';
+import { Component, computed, inject, OnChanges, SimpleChanges, input, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { AsyncValidatorFn, ValidatorFn, Validators } from '@angular/forms';
+import { disabled, form, FormField } from '@angular/forms/signals';
+import { of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
 
@@ -66,12 +68,30 @@ import { CommonModule } from '@angular/common';
 
 const DEBOUNCE_TIME = 400;
 
+interface HierarchyInformationModel {
+  name: string;
+  identifier: string;
+  description: string;
+  level: string;
+  enabled: boolean;
+}
+
+function toHierarchyInformationModel(profile: Profile): HierarchyInformationModel {
+  return {
+    name: profile?.name ?? null,
+    identifier: profile?.identifier ?? null,
+    description: profile?.description ?? null,
+    level: profile?.level ?? null,
+    enabled: profile?.enabled ?? null,
+  };
+}
+
 @Component({
   selector: 'app-information-tab',
   templateUrl: './information-tab.component.html',
   styleUrls: ['./information-tab.component.scss'],
   imports: [
-    ReactiveFormsModule,
+    FormField,
     SlideToggleComponent,
     TooltipDirective,
     VitamUIFieldErrorComponent,
@@ -80,7 +100,6 @@ const DEBOUNCE_TIME = 400;
     EditableInputComponent,
     EditableLevelInputComponent,
     EditableTextareaComponent,
-    FormsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -90,41 +109,47 @@ const DEBOUNCE_TIME = 400;
     OverlayModule,
   ],
 })
-export class InformationTabComponent implements OnDestroy, OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
+export class InformationTabComponent implements OnChanges {
   private readonly hierarchyService = inject(HierarchyService);
   private readonly profileValidators = inject(ProfileValidators);
   private readonly authService = inject(AuthService);
 
-  form: FormGroup;
-  userLevel: string;
-  previousValue: {
-    name: string;
-    level: string;
-    description: string;
-    enabled: boolean;
-  };
+  userLevel: string = this.authService.user.level;
+  previousValue: HierarchyInformationModel;
 
   readonly profile = input<Profile>(undefined);
 
   readonly readOnly = input<boolean>(undefined);
 
-  private updateSub: Subscription;
+  private readonly model = signal<HierarchyInformationModel>(toHierarchyInformationModel(null));
+  // Value set by resetForm: like a reset with emitEvent: false, it must not trigger an update
+  private resetValue = this.model();
+  // Profile used to compute the activation state of the fields, updated by resetForm
+  private readonly formProfile = signal<Profile>(undefined);
+  readonly form = form(this.model, (path) => {
+    disabled(path, () => !!this.readOnly());
+    // The identifier is never editable
+    disabled(path.identifier);
+    disabled(path.enabled, () => this.formProfile()?.groupsCount > 0);
+    disabled(path.level, () => this.formProfile()?.groupsCount > 0);
+  });
+
+  // Validators of the editable fields (they validate the value being edited, before it is set in the form)
+  readonly requiredValidator: ValidatorFn = Validators.required;
+  readonly nameAsyncValidator = computed<AsyncValidatorFn>(() => {
+    const profile = this.formProfile();
+    return profile
+      ? this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name)
+      : null;
+  });
+  readonly levelValidator: ValidatorFn = Validators.compose([...buildValidators(this.authService.user), Validators.maxLength(250)]);
 
   constructor() {
-    this.userLevel = this.authService.user.level;
-    this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      identifier: [{ value: null, disabled: true }, Validators.required],
-      description: [null, Validators.required],
-      level: [null, buildValidators(this.authService.user)],
-      enabled: null,
-    });
-
-    this.updateSub = merge(this.form.valueChanges, this.form.statusChanges)
+    toObservable(computed(() => ({ value: this.model(), valid: this.form().valid() })))
       .pipe(
+        filter(({ value }) => value !== this.resetValue),
         debounceTime(DEBOUNCE_TIME),
-        map(() => diff(this.form.value, this.previousValue)),
+        map(() => diff(this.model(), this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) =>
           extend(
@@ -135,52 +160,25 @@ export class InformationTabComponent implements OnDestroy, OnChanges {
         switchMap((formData) => {
           return this.hierarchyService.patch(formData).pipe(catchError(() => of(null)));
         }),
+        takeUntilDestroyed(),
       )
-      .subscribe((profile) => this.resetForm(this.form, profile, this.readOnly()));
-  }
-
-  ngOnDestroy() {
-    this.updateSub.unsubscribe();
+      .subscribe((profile) => this.resetForm(profile));
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('profile') || changes.hasOwnProperty('readOnly')) {
       const profile = this.profile();
       if (profile) {
-        this.resetForm(this.form, profile, this.readOnly());
-        this.previousValue = this.form.value;
+        this.resetForm(profile);
+        this.previousValue = this.model();
       }
     }
   }
 
-  private resetForm(form: FormGroup, profile: Profile, readOnly: boolean) {
-    form.reset(profile, { emitEvent: false });
-    this.initFormValidators(form, profile);
-    this.initFormActivationState(form, profile, readOnly);
-    form.updateValueAndValidity({ emitEvent: false });
-  }
-
-  private initFormValidators(form: FormGroup, profile: Profile) {
-    form
-      .get('name')
-      .setAsyncValidators(
-        this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name),
-      );
-  }
-
-  private initFormActivationState(form: FormGroup, profile: Profile, readOnly: boolean) {
-    if (readOnly) {
-      form.disable({ emitEvent: false });
-
-      return;
-    }
-
-    form.enable({ emitEvent: false });
-
-    form.get('identifier').disable({ emitEvent: false });
-    if (profile.groupsCount && profile.groupsCount > 0) {
-      form.get('enabled').disable({ emitEvent: false });
-      form.get('level').disable({ emitEvent: false });
-    }
+  private resetForm(profile: Profile) {
+    this.resetValue = toHierarchyInformationModel(profile);
+    this.model.set(this.resetValue);
+    this.form().reset();
+    this.formProfile.set(profile);
   }
 }

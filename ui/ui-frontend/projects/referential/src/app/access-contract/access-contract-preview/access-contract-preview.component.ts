@@ -62,7 +62,6 @@ import { AccessContractWriteAccessTabComponent } from './access-contract-write-a
 import { AccessContractNodesTabComponent } from './access-contract-nodes-tab/access-contract-nodes-tab.component';
 
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -82,7 +81,6 @@ import { CommonModule } from '@angular/common';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })
@@ -136,7 +134,7 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   private async checkBeforeExit() {
     const activeTabComponent = this.getActiveTab().component;
     // If we didn't define the tab component we don't need to check it.
-    if (!activeTabComponent || activeTabComponent.form.invalid || activeTabComponent.unChanged) {
+    if (!activeTabComponent || activeTabComponent.form().invalid() || activeTabComponent.unChanged) {
       return;
     }
     if (await this.confirmAction()) {

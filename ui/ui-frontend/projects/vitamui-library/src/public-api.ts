@@ -115,6 +115,8 @@ export * from './lib/vitamui-library.service';
 
 export * from './lib/validators/management-rule.validators';
 export * from './lib/validators/misc.validators';
+export * from './lib/signal-forms/signal-form-errors';
+export * from './lib/signal-forms/signal-form-validators';
 
 /* Previous ui-frontend-common */
 export * from './app/modules/account/account.component';

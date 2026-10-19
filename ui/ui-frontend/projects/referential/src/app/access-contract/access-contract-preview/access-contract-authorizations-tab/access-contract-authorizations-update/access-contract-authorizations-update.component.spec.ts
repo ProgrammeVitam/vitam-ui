@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AccessContractService, AgencyService, InjectorModule, LoggerModule } from 'vitamui-library';
 import { VitamUICommonTestModule } from 'vitamui-library/testing';
@@ -64,7 +63,6 @@ describe('AccessContractAuthorizationsUpdateComponent', () => {
       imports: [VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot(), AccessContractAuthorizationsUpdateComponent],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
-        FormBuilder,
         { provide: AccessContractService, useValue: accessContractServiceMock },
         { provide: AgencyService, useValue: agencyServiceMock },
         { provide: MAT_DIALOG_DATA, useValue: {} },

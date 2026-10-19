@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -59,10 +58,7 @@ describe('ExternalParamProfileCreateComponent', () => {
   };
 
   const externalParamProfileValidators = {
-    nameExists: vi
-      .fn()
-      .mockName('ExternalParamProfileValidators.nameExists')
-      .mockReturnValue(() => of(null)),
+    nameExistsRule: vi.fn().mockName('ExternalParamProfileValidators.nameExistsRule'),
   };
   const matDialogSpy = {
     open: vi.fn().mockName('MatDialog.open'),
@@ -79,11 +75,9 @@ describe('ExternalParamProfileCreateComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [
         BrowserAnimationsModule,
-        FormsModule,
         MatButtonToggleModule,
         MatProgressBarModule,
         MatSelectModule,
-        ReactiveFormsModule,
         VitamUICommonTestModule,
         ExternalParamProfileCreateComponent,
         CollapseComponent,
@@ -91,7 +85,6 @@ describe('ExternalParamProfileCreateComponent', () => {
       ],
       providers: [
         DecimalPipe,
-        FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
@@ -106,13 +99,10 @@ describe('ExternalParamProfileCreateComponent', () => {
       .overrideComponent(ExternalParamProfileCreateComponent, {
         set: {
           template: `
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-              <input formControlName="enabled" />
-              <input formControlName="accessContract" />
-              <input formControlName="description" />
-              <input formControlName="name" />
-              <input formControlName="usePlatformThreshold" />
-              <input formControlName="bulkOperationsThreshold" />
+            <form [formRoot]="form">
+              <input [formField]="form.accessContract" />
+              <input [formField]="form.description" />
+              <input [formField]="form.name" />
             </form>
           `,
         },

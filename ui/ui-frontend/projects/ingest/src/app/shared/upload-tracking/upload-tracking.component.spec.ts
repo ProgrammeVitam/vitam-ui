@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { of } from 'rxjs';
 import { LoggerModule } from 'vitamui-library';
@@ -55,7 +54,7 @@ describe('UploadTrackingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatProgressBarModule, LoggerModule.forRoot(), UploadTrackingComponent],
-      providers: [FormBuilder, { provide: UploadService, useValue: UploadServiceSpy }],
+      providers: [{ provide: UploadService, useValue: UploadServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

@@ -97,7 +97,7 @@ import { AttributeData } from '../../../../models/edit-attribute-models';
 import { CardinalityConstants, DataTypeConstants, FileNode, TypeConstants, ValueOrDataConstants } from '../../../../models/file-node';
 import { SedaData } from '../../../../models/seda-data';
 import { FileTreeMetadataService } from '../file-tree-metadata.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule, NgClass, NgStyle } from '@angular/common';
 import { EditableTextareaComponent, TooltipDirective } from 'vitamui-library';
 import { MatOption, MatSelect, MatSelectModule } from '@angular/material/select';
@@ -141,7 +141,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatProgressSpinnerModule,
     MatSelectModule,
     OverlayModule,
-    ReactiveFormsModule,
   ],
 })
 export class AttributesPopupComponent implements OnInit, OnDestroy {

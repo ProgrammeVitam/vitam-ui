@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { signal } from '@angular/core';
+import { form } from '@angular/forms/signals';
 import { TestBed } from '@angular/core/testing';
 import { FormControl } from '@angular/forms';
 import { from, of } from 'rxjs';
@@ -107,5 +109,40 @@ describe('Tenant Form Validators', () => {
     });
     vi.advanceTimersByTime(400);
     expect(tenantServiceSpy.exists).toHaveBeenCalledWith('name');
+  });
+});
+
+describe('Tenant Form Validators (signal forms)', () => {
+  const createForm = (exists: boolean, nameToIgnore?: string) => {
+    const tenantServiceSpy = { exists: vi.fn().mockName('TenantService.exists').mockReturnValue(of(exists)) };
+    TestBed.configureTestingModule({ providers: [{ provide: TenantService, useValue: tenantServiceSpy }] });
+    const validators = TestBed.inject(TenantFormValidators);
+    const nameForm = TestBed.runInInjectionContext(() =>
+      form(signal({ name: '' }), (path) => validators.uniqueNameRule(path.name, () => nameToIgnore)),
+    );
+    return { nameForm, tenantServiceSpy };
+  };
+
+  it('should set the uniqueName error', async () => {
+    const { nameForm, tenantServiceSpy } = createForm(true);
+    nameForm.name().value.set('name');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(tenantServiceSpy.exists).toHaveBeenCalledWith('name');
+    expect(
+      nameForm
+        .name()
+        .errors()
+        .map((error) => error.kind),
+    ).toEqual(['uniqueName']);
+  });
+
+  it('should not call the service for the name to ignore', async () => {
+    const { nameForm, tenantServiceSpy } = createForm(true, 'name');
+    nameForm.name().value.set('name');
+    TestBed.tick();
+    await vi.advanceTimersByTimeAsync(400);
+    expect(tenantServiceSpy.exists).not.toHaveBeenCalled();
+    expect(nameForm.name().valid()).toBe(true);
   });
 });

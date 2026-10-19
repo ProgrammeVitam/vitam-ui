@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ChangeDetectorRef, Component, inject, OnDestroy, TemplateRef, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, signal, TemplateRef, viewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
@@ -45,13 +45,14 @@ import {
   Logger,
   PipesModule,
   readFileContent,
+  requiredValue,
   SnackBarService,
   VitamUICommonModule,
   VitamUILibraryModule,
 } from 'vitamui-library';
 import { ArchiveService } from '../../archive.service';
 import { XMLParser } from 'fast-xml-parser';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CdkStep } from '@angular/cdk/stepper';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -69,8 +70,8 @@ const ATR_EXTENSION = '.xml';
     MatDialogActions,
     MatDialogContent,
     MatProgressSpinner,
+    FormField,
     PipesModule,
-    ReactiveFormsModule,
     TranslatePipe,
     VitamUICommonModule,
     VitamUILibraryModule,
@@ -97,7 +98,9 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
 
   transferAcknowledgementSubscription: Subscription;
 
-  atrControl = new FormControl<File[]>(undefined, [Validators.required]);
+  readonly atrForm = form(signal<File[]>([]), (path) => {
+    requiredValue(path);
+  });
 
   readonly confirmDeleteTransferAcknowledgmentDialog = viewChild<TemplateRef<TransferAcknowledgmentComponent>>(
     'confirmDeleteTransferAcknowledgmentDialog',
@@ -164,7 +167,7 @@ export class TransferAcknowledgmentComponent implements OnDestroy {
   // Step 3 :
   applyTransferAcknowledgment() {
     this.isSubmitBtnDisabled = true;
-    const atrFile = this.atrControl.value[0];
+    const atrFile = this.atrForm().value()[0];
     this.transferAcknowledgementSubscription = this.archiveSearchService
       .transferAcknowledgment(this.data.tenantIdentifier, atrFile)
       .subscribe(

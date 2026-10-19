@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 
@@ -55,8 +54,6 @@ interface ButtonType {
   imports: [TranslatePipe, TitleCasePipe, NgTemplateOutlet],
 })
 export class ButtonsComponent {
-  public control = new FormControl();
-
   variations = ['default', 'hover', 'active', 'disabled'];
 
   buttonTypes: ButtonType[] = [

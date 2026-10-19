@@ -35,11 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentType } from '@angular/cdk/portal';
-import { Component, inject, OnDestroy, OnInit, TemplateRef, signal, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, TemplateRef, signal, ChangeDetectorRef, computed } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { FormGroup } from '@angular/forms';
+import { applyEach, disabled, FieldTree, form, FormField, FormRoot, maxLength, min, pattern, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
-import { finalize, merge, Observable, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { finalize, Observable, Subscription } from 'rxjs';
+import { filter, skip, tap } from 'rxjs/operators';
 import {
   ConfirmDialogService,
   CountryOption,
@@ -52,6 +54,7 @@ import {
   Option,
   OtpState,
   PreviousStepComponent,
+  requiredValue,
   SelectComponent,
   SlideToggleComponent,
   StartupService,
@@ -68,9 +71,41 @@ import { NgTemplateOutlet } from '@angular/common';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { DomainsInputComponent } from '../../shared/domains-input/domains-input.component';
 import { GraphicIdentityComponent } from '../customer-preview/graphic-identity-tab/graphic-identity/graphic-identity.component';
-import { HomepageMessageComponent } from '../customer-preview/homepage-message-tab/homepage-message/homepage-message.component';
-import { OwnerFormComponent } from '../owner-form/owner-form.component';
+import {
+  HomepageMessageComponent,
+  HomepageMessageModel,
+} from '../customer-preview/homepage-message-tab/homepage-message/homepage-message.component';
+import { OwnerFormComponent, OwnerFormModel } from '../owner-form/owner-form.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { enabledValue } from '../../shared/signal-forms/signal-form-utils';
+
+export interface CustomerCreateModel {
+  gdprAlert: boolean;
+  gdprAlertDelay: number;
+  enabled: boolean;
+  code: string;
+  name: string;
+  companyName: string;
+  passwordRevocationDelay: number;
+  otp: OtpState;
+  address: {
+    street: string;
+    zipCode: string;
+    city: string;
+    country: string;
+  };
+  internalCode: string;
+  language: string;
+  emailDomains: string[];
+  defaultEmailDomain: string;
+  hasCustomGraphicIdentity: boolean;
+  themeColors: { [key: string]: string };
+  portalMessages: { [language: string]: string };
+  portalTitles: { [language: string]: string };
+  owners: OwnerFormModel[];
+  tenantName: string;
+  tenantId: string;
+}
 
 @Component({
   selector: 'app-customer-create',
@@ -78,7 +113,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrls: ['./customer-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     StepperComponent,
     CdkStep,
     MatDialogContent,
@@ -103,7 +139,6 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   dialogRef = inject<MatDialogRef<CustomerCreateComponent>>(MatDialogRef);
   data = inject(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly customerService = inject(CustomerService);
   private readonly customerCreateValidators = inject(CustomerCreateValidators);
   private readonly confirmDialogService = inject(ConfirmDialogService);
@@ -114,18 +149,79 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   private readonly matDialog = inject(MatDialog);
 
   public customerCodeMaxLength = CUSTOMER_CODE_MAX_LENGTH;
-  public maxStreetLength: number;
+  public maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
   public stepIndex = 0;
   public stepCount = 6;
-  public form: FormGroup;
-  public hasError = true;
-  public message: string;
-  public readonly isLoading = signal(false);
-  public customerInfo: any = {
+  gdprReadOnlyStatus: boolean = this.data?.gdprReadOnlySettingStatus;
+  private readonly model = signal<CustomerCreateModel>({
+    gdprAlert: true,
+    gdprAlertDelay: 72,
+    enabled: true,
     code: null,
     name: null,
     companyName: null,
-  };
+    passwordRevocationDelay: 6,
+    otp: OtpState.OPTIONAL,
+    address: {
+      street: null,
+      zipCode: null,
+      city: null,
+      country: 'FR',
+    },
+    internalCode: null,
+    language: 'FRENCH',
+    emailDomains: null,
+    defaultEmailDomain: null,
+    hasCustomGraphicIdentity: false,
+    themeColors: null,
+    portalMessages: null,
+    portalTitles: null,
+    owners: [null],
+    tenantName: null,
+    tenantId: null,
+  });
+  public readonly form = form(
+    this.model,
+    (path) => {
+      disabled(path.gdprAlert, () => !!this.gdprReadOnlyStatus);
+      required(path.gdprAlertDelay);
+      min(path.gdprAlertDelay, 1);
+      disabled(path.gdprAlertDelay, ({ valueOf }) => !!this.gdprReadOnlyStatus || !valueOf(path.gdprAlert));
+      requiredValue(path.enabled);
+      required(path.code);
+      pattern(path.code, ALPHA_NUMERIC_REGEX);
+      maxLength(path.code, this.customerCodeMaxLength);
+      this.customerCreateValidators.uniqueCodeRule(path.code);
+      required(path.name);
+      maxLength(path.name, 100);
+      required(path.companyName);
+      maxLength(path.companyName, 250);
+      required(path.address.street);
+      maxLength(path.address.street, this.maxStreetLength);
+      required(path.address.zipCode);
+      maxLength(path.address.zipCode, 10);
+      required(path.address.city);
+      maxLength(path.address.city, 100);
+      required(path.address.country);
+      maxLength(path.internalCode, 20);
+      required(path.language);
+      requiredValue(path.emailDomains);
+      required(path.defaultEmailDomain);
+      applyEach(path.owners, (owner) => requiredValue(owner));
+      required(path.tenantName);
+      this.tenantFormValidators.uniqueNameRule(path.tenantName);
+      required(path.tenantId);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
+  public hasError = true;
+  public message: string;
+  public readonly isLoading = signal(false);
+  public readonly customerInfo = computed(() => ({
+    code: this.form.code().value(),
+    name: this.form.name().value(),
+    companyName: this.form.companyName().value(),
+  }));
 
   public get customerForm(): FormGroup {
     return this._customerForm;
@@ -140,69 +236,31 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public portalTitles: { [language: string]: string };
   public portalMessages: { [language: string]: string };
 
-  public get homepageMessageForm(): FormGroup {
-    return this._homepageMessageForm;
-  }
+  public homepageMessageForm: FieldTree<HomepageMessageModel>;
 
-  public set homepageMessageForm(form: FormGroup) {
-    this._homepageMessageForm = form;
-  }
-
-  gdprReadOnlyStatus: boolean;
   private subscription: Subscription;
-  private _homepageMessageForm: FormGroup;
   private _customerForm: FormGroup;
+  // Once the GDPR alert has been disabled, each change of the GDPR alert resets its delay
+  private resetGdprAlertDelayOnChange = false;
 
   customer: Customer;
   tenantOptions: VitamuiSelectOptions;
 
   constructor() {
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
-    this.form = this.formBuilder.group({
-      gdprAlert: true,
-      gdprAlertDelay: [72, [Validators.required, Validators.min(1)]],
-      enabled: [true, Validators.required],
-      code: [
-        null,
-        [Validators.required, Validators.pattern(ALPHA_NUMERIC_REGEX), Validators.maxLength(this.customerCodeMaxLength)],
-        this.customerCreateValidators.uniqueCode(),
-      ],
-      name: [null, [Validators.required, Validators.maxLength(100)]],
-      companyName: [null, [Validators.required, Validators.maxLength(250)]],
-      passwordRevocationDelay: 6,
-      otp: OtpState.OPTIONAL,
-      address: this.formBuilder.group({
-        street: [null, [Validators.required, Validators.maxLength(this.maxStreetLength)]],
-        zipCode: [null, [Validators.required, Validators.maxLength(10)]],
-        city: [null, [Validators.required, Validators.maxLength(100)]],
-        country: ['FR', Validators.required],
-      }),
-      internalCode: [null, [Validators.maxLength(20)]],
-      language: ['FRENCH', Validators.required],
-      emailDomains: [null, Validators.required],
-      defaultEmailDomain: [null, Validators.required],
-      hasCustomGraphicIdentity: false,
-      themeColors: [null],
-      portalMessages: [null],
-      portalTitles: [null],
-      owners: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
-      tenantName: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
-      tenantId: [null, [Validators.required]],
-    });
-
-    if (this.data) {
-      this.gdprReadOnlyStatus = this.data.gdprReadOnlySettingStatus;
-    }
-
-    this.form.get('gdprAlert').valueChanges.subscribe(() => {
-      if (!this.form.get('gdprAlert').value) {
-        this.confirm(CustomerAlertingComponent).subscribe(() => this.form.get('gdprAlert').setValue(true));
-      }
-    });
+    toObservable(computed(() => this.form.gdprAlert().value()))
+      .pipe(skip(1))
+      .subscribe((gdprAlert) => {
+        if (this.resetGdprAlertDelayOnChange) {
+          this.form.gdprAlertDelay().value.set(72);
+        }
+        if (!gdprAlert) {
+          this.resetGdprAlertDelayOnChange = true;
+          this.confirm(CustomerAlertingComponent).subscribe(() => this.form.gdprAlert().value.set(true));
+        }
+      });
   }
 
   ngOnInit() {
-    this.onChanges();
     this.customerService.getMyCustomer().subscribe((customerDetails) => {
       this.customer = customerDetails;
       this.cdr.markForCheck();
@@ -218,7 +276,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
           const options = tenantIds.map((id) => ({ key: `${id}`, label: `${id}` }));
           const defaultTenant = `${second ? second : first}`;
           this.tenantOptions = { options };
-          this.form.patchValue({ tenantId: defaultTenant });
+          this.form.tenantId().value.set(defaultTenant);
           this.cdr.markForCheck();
         }),
       )
@@ -235,25 +293,13 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onChanges() {
-    merge(this.form.get('code').valueChanges, this.form.get('name').valueChanges, this.form.get('companyName').valueChanges).subscribe(
-      () => {
-        this.customerInfo = {
-          code: this.form.get('code').value,
-          name: this.form.get('name').value,
-          companyName: this.form.get('companyName').value,
-        };
-        this.cdr.markForCheck();
-      },
-    );
-  }
-
   getOwnerName(): string {
-    return this.form.get(['owners', 0]).value ? this.form.get(['owners', 0]).value.name : '';
+    const owner = this.form.owners[0]().value();
+    return owner ? owner.name : '';
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -283,11 +329,12 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public getCustomerFromForm(): Customer {
-    let customer = this.form.getRawValue();
+    let customer: any = this.model();
 
     if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
       customer = {
-        ...this.form.value,
+        // Disabled fields are excluded, as in the value of a reactive form
+        ...enabledValue(this.form),
         ...{
           hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
           themeColors: this.customerForm.get('themeColors').value,
@@ -299,7 +346,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       customer = {
         ...customer,
         ...{
-          id: this.homepageMessageForm.get('id').value,
+          id: this.homepageMessageForm.id().value(),
           portalTitles: this.portalTitles,
           portalMessages: this.portalMessages,
         },
@@ -309,44 +356,32 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   isDurationNotValid(): boolean {
-    if (this.form.get('gdprAlert').value) {
-      return this.form.get('gdprAlertDelay').invalid || this.form.get('gdprAlertDelay').pending;
-    } else {
-      this.form.get('gdprAlert').valueChanges.subscribe(() => {
-        this.form.get('gdprAlertDelay').setValue(72);
-      });
-      return false;
+    if (this.form.gdprAlert().value()) {
+      return this.form.gdprAlertDelay().invalid() || this.form.gdprAlertDelay().pending();
     }
+    return false;
   }
 
   firstStepInvalid(): boolean {
-    return (
-      this.form.get('code').invalid ||
-      this.form.get('code').pending ||
-      this.form.get('name').invalid ||
-      this.form.get('name').pending ||
-      this.form.get('companyName').invalid ||
-      this.form.get('companyName').pending ||
-      this.form.get('address.street').invalid ||
-      this.form.get('address.street').pending ||
-      this.form.get('address.zipCode').invalid ||
-      this.form.get('address.zipCode').pending ||
-      this.form.get('address.city').invalid ||
-      this.form.get('address.city').pending ||
-      this.isDurationNotValid() ||
-      this.form.get('internalCode').invalid ||
-      this.form.get('internalCode').pending ||
-      this.form.get('address.country').invalid ||
-      this.form.get('address.country').pending
-    );
+    const fields = [
+      this.form.code,
+      this.form.name,
+      this.form.companyName,
+      this.form.address.street,
+      this.form.address.zipCode,
+      this.form.address.city,
+      this.form.internalCode,
+      this.form.address.country,
+    ];
+    return this.isDurationNotValid() || fields.some((field) => field().invalid() || field().pending());
   }
 
   secondStepInvalid(): boolean {
     return (
-      this.form.get('passwordRevocationDelay').invalid ||
-      this.form.get('otp').invalid ||
-      this.form.get('emailDomains').invalid ||
-      this.form.get('defaultEmailDomain').invalid
+      this.form.passwordRevocationDelay().invalid() ||
+      this.form.otp().invalid() ||
+      this.form.emailDomains().invalid() ||
+      this.form.defaultEmailDomain().invalid()
     );
   }
 
@@ -355,21 +390,11 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   public fourthStepValid(): boolean {
-    return this.homepageMessageForm && this.homepageMessageForm.valid && this.checkValidation(this.homepageMessageForm.value.translations);
-  }
-
-  private checkValidation(forms: FormGroup[]): boolean {
-    let isValid = true;
-    forms.forEach((x) => {
-      if (!x.valid) {
-        isValid = false;
-      }
-    });
-    return isValid;
+    return !!this.homepageMessageForm && this.homepageMessageForm().valid();
   }
 
   lastStepIsInvalid(): boolean {
     const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid() || !this.fourthStepValid();
-    return this.form.pending || this.form.invalid || invalid || this.isLoading();
+    return this.form().pending() || this.form().invalid() || invalid || this.isLoading();
   }
 }

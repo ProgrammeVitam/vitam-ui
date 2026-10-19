@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, signal, output, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnDestroy, inject, signal, output, model, OnChanges, SimpleChanges } from '@angular/core';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -48,14 +48,28 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'app-management-contract-storage-tab',
   templateUrl: './management-contract-storage-tab.component.html',
   styleUrls: ['./management-contract-storage-tab.component.scss'],
-  imports: [ReactiveFormsModule, InputComponent, MatProgressSpinner, TranslatePipe],
+  imports: [FormRoot, FormField, InputComponent, MatProgressSpinner, TranslatePipe],
 })
 export class ManagementContractStorageTabComponent implements OnChanges, OnDestroy {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly managementContractService = inject(ManagementContractService);
 
   readonly updated = output<boolean>();
-  form: FormGroup;
+  readonly form = form(
+    signal<StorageStrategy>({ unitStrategy: null, objectGroupStrategy: null, objectStrategy: null }),
+    (path) => {
+      required(path.unitStrategy);
+      required(path.objectGroupStrategy);
+      required(path.objectStrategy);
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   submited = signal(false);
   showSpinner = signal(false);
   storageStrategy: StorageStrategy = {
@@ -72,14 +86,6 @@ export class ManagementContractStorageTabComponent implements OnChanges, OnDestr
     return this.inputManagementContract()?.storage;
   };
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      unitStrategy: [null, Validators.required],
-      objectGroupStrategy: [null, Validators.required],
-      objectStrategy: [null, Validators.required],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['inputManagementContract']) {
       this.setInputManagementContract(this.inputManagementContract());
@@ -88,14 +94,14 @@ export class ManagementContractStorageTabComponent implements OnChanges, OnDestr
 
   unchanged(): boolean {
     // if (this.previousValue() !== undefined) {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.form().value(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
     // }
   }
 
   prepareSubmit(): Observable<ManagementContract> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.inputManagementContract().id, identifier: this.inputManagementContract().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) => {
@@ -144,7 +150,12 @@ export class ManagementContractStorageTabComponent implements OnChanges, OnDestr
   }
 
   resetForm(managementContract: ManagementContract) {
-    this.form.reset(managementContract.storage, { emitEvent: false });
+    const storage = managementContract.storage;
+    this.form().reset({
+      unitStrategy: storage?.unitStrategy ?? null,
+      objectGroupStrategy: storage?.objectGroupStrategy ?? null,
+      objectStrategy: storage?.objectStrategy ?? null,
+    });
   }
 
   ngOnDestroy() {

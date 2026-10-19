@@ -80,7 +80,6 @@ import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dial
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { MatDivider, MatList, MatSelectionList } from '@angular/material/list';
 import { NgStyle } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TooltipDirective } from 'vitamui-library';
 
 const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
@@ -99,7 +98,7 @@ function constantToTranslate() {
   selector: 'pastis-user-action-add-metadata',
   templateUrl: './add-pua-control.component.html',
   styleUrls: ['./add-pua-control.component.scss'],
-  imports: [MatDivider, MatList, NgStyle, MatSelectionList, FormsModule, TooltipDirective, TranslatePipe],
+  imports: [MatDivider, MatList, NgStyle, MatSelectionList, TooltipDirective, TranslatePipe],
 })
 export class UserActionAddPuaControlComponent implements OnInit {
   dialogRef = inject<MatDialogRef<PastisDialogConfirmComponent>>(MatDialogRef);

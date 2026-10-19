@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { form, FormField, FormRoot, maxLength, minLength, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import {
@@ -58,13 +58,23 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { CdkStep } from '@angular/cdk/stepper';
 
+interface ExternalParamProfileCreateModel {
+  enabled: boolean;
+  accessContract: string;
+  description: string;
+  name: string;
+  usePlatformThreshold: boolean;
+  bulkOperationsThreshold: number;
+}
+
 @Component({
   selector: 'app-external-param-profile-create',
   templateUrl: './external-param-profile-create.component.html',
   styleUrls: ['./external-param-profile-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     StepperComponent,
     CdkStep,
     MatDialogContent,
@@ -80,14 +90,34 @@ import { CdkStep } from '@angular/cdk/stepper';
   ],
 })
 export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly dialogRef = inject<MatDialogRef<ExternalParamProfileCreateComponent>>(MatDialogRef);
   private readonly externalParamProfileService = inject(ExternalParamProfileService);
   private readonly externalParamProfileValidators = inject(ExternalParamProfileValidators);
   private readonly confirmDialogService = inject(ConfirmDialogService);
   data = inject(MAT_DIALOG_DATA);
 
-  form: FormGroup;
+  private readonly model = signal<ExternalParamProfileCreateModel>({
+    enabled: true,
+    accessContract: null,
+    description: null,
+    name: null,
+    usePlatformThreshold: true,
+    bulkOperationsThreshold: null,
+  });
+  readonly form = form(
+    this.model,
+    (path) => {
+      required(path.accessContract);
+      required(path.description);
+      minLength(path.description, 2);
+      maxLength(path.description, 250);
+      required(path.name);
+      minLength(path.name, 2);
+      maxLength(path.name, 100);
+      this.externalParamProfileValidators.nameExistsRule(path.name, () => +this.data.tenantIdentifier);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
   activeAccessContractsIdentifiers$: Observable<string[]>;
   private keyPressSubscription: Subscription;
   tenantIdentifier: string;
@@ -106,7 +136,6 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initForm(this.data.tenantIdentifier);
     this.tenantIdentifier = this.data.tenantIdentifier;
 
     this.activeAccessContractsIdentifiers$ = this.externalParamProfileService
@@ -119,26 +148,11 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     this.keyPressSubscription.unsubscribe();
   }
 
-  private initForm(tenantIdentifier: string) {
-    this.form = this.formBuilder.group({
-      enabled: true,
-      accessContract: [null, Validators.required],
-      description: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(250)]],
-      name: [
-        null,
-        [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
-        [this.externalParamProfileValidators.nameExists(+tenantIdentifier)],
-      ],
-      usePlatformThreshold: true,
-      bulkOperationsThreshold: [null, []],
-    });
-  }
-
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
-    const externalParamProfile: ExternalParamProfile = this.form.getRawValue();
+    const externalParamProfile = { ...this.model() } as ExternalParamProfile;
     if (externalParamProfile.usePlatformThreshold) {
       externalParamProfile.bulkOperationsThreshold = null;
     }
@@ -155,7 +169,7 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -163,14 +177,12 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
   }
 
   isFormInvalid() {
-    return this.form.pending || this.form.invalid;
+    return this.form().pending() || this.form().invalid();
   }
 
   firstStepInvalid(): boolean {
-    const nameControl = this.form.controls['name'];
-    const descriptionControl = this.form.controls['description'];
-    const accessContractControl = this.form.controls['accessContract'];
+    const nameField = this.form.name();
 
-    return nameControl.invalid || nameControl.pending || descriptionControl.invalid || accessContractControl.invalid;
+    return nameField.invalid() || nameField.pending() || this.form.description().invalid() || this.form.accessContract().invalid();
   }
 }

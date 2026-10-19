@@ -14,7 +14,7 @@
 <div class="color-select-container">
   <h2>{{ 'ICONS.TITLE' | translate }}</h2>
   <vitamui-select
-    [(ngModel)]="selectedColor"
+    [formField]="colorForm.selectedColor"
     [placeholder]="'ICONS.SELECT_COLOR' | translate"
     [options]="colorOptions"
     [multiple]="false"
@@ -26,7 +26,7 @@
   @for (icon of icons; track icon) {
     <li>
       <div class="icon-container">
-        <i class="vitamui-icon vitamui-icon-{{ icon }} {{ selectedColor }}">
+        <i class="vitamui-icon vitamui-icon-{{ icon }} {{ colorForm.selectedColor().value() }}">
           @if (coloredIcons[icon]; as paths) {
             @for (path of paths; track path) {
               <span [class]="path"></span>

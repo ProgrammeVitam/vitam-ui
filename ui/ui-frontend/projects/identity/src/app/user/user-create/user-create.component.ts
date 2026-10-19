@@ -35,9 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { disabled, FieldTree, form, FormField, FormRoot, maxLength, minLength, pattern, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
 import {
   AdminUserProfile,
   AuthService,
@@ -59,11 +61,11 @@ import {
   StartupService,
   StepperComponent,
   UserInfo,
+  validateObservable,
 } from 'vitamui-library';
 import { GroupSelection } from './../group-selection.interface';
 import { UserInfoService } from './../user-info.service';
 
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { UserService } from '../user.service';
 import { UserCreateValidators } from './user-create.validators';
 import { CdkStep } from '@angular/cdk/stepper';
@@ -72,6 +74,38 @@ import { GroupListComponent } from '../group-attribution/group-list/group-list.c
 import { TranslatePipe } from '@ngx-translate/core';
 
 const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
+const phoneValidator: RegExp = /^[+]{1}[0-9]{11,12}$/;
+
+interface UserCreateModel {
+  enabled: boolean;
+  email: string;
+  firstname: string;
+  lastname: string;
+  mobile: string;
+  phone: string;
+  groupId: string;
+  customerId: string;
+  otp: boolean;
+  type: string;
+  subrogeable: boolean;
+  status: string;
+  userInfoId: string;
+  address: {
+    street: string;
+    zipCode: string;
+    city: string;
+    country: string;
+  };
+  internalCode: string;
+  siteCode: string;
+  centerCodes: string;
+  autoProvisioningEnabled: boolean;
+}
+
+interface UserEmailModel {
+  emailFirstPart: string;
+  domain: string;
+}
 
 @Component({
   selector: 'app-user-create',
@@ -79,7 +113,8 @@ const emailFirstPartValidator: RegExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+$/;
   styleUrls: ['./user-create.component.scss'],
   imports: [
     DialogHeaderComponent,
-    ReactiveFormsModule,
+    FormField,
+    FormRoot,
     StepperComponent,
     CdkStep,
     MatDialogContent,
@@ -103,7 +138,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     customer: Customer;
     groups: Group[];
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly userService = inject(UserService);
   private readonly userInfoService = inject(UserInfoService);
   private readonly authService = inject(AuthService);
@@ -113,19 +147,91 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   private readonly startupService = inject(StartupService);
   private readonly loggerService = inject(Logger);
 
-  public maxStreetLength: number;
-  public form: FormGroup;
-  public formEmail: FormGroup;
-  public customer: Customer;
+  public maxStreetLength: number = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
+  public customer: Customer = this.data.customer;
+  public connectedUserInfo: AdminUserProfile = this.data.userInfo;
+
+  private readonly emailModel = signal<UserEmailModel>({ emailFirstPart: null, domain: this.customer.emailDomains[0] });
+  public readonly formEmail = form(this.emailModel, (path) => {
+    required(path.emailFirstPart);
+    maxLength(path.emailFirstPart, 50);
+    pattern(path.emailFirstPart, emailFirstPartValidator);
+    required(path.domain);
+    // The uniqueness of the whole email is checked, the error is displayed on its first part
+    validateObservable(path, {
+      stream: ({ emailFirstPart, domain }) => this.userCreateValidators.emailExists(`${emailFirstPart}@${domain}`),
+      onSuccess: (exists, { fieldTree }) =>
+        exists ? { kind: 'uniqueEmail', fieldTree: fieldTree.emailFirstPart as unknown as FieldTree<unknown> } : undefined,
+    });
+  });
+
+  private readonly model = signal<UserCreateModel>({
+    enabled: this.connectedUserInfo.type !== 'NONE',
+    email: null,
+    firstname: null,
+    lastname: null,
+    mobile: null,
+    phone: null,
+    groupId: null,
+    customerId: this.authService.user.customerId,
+    otp: this.customer.otp !== OtpState.DEACTIVATED,
+    type: 'NOMINATIVE',
+    subrogeable: false,
+    status: null,
+    userInfoId: null,
+    address: {
+      street: null,
+      zipCode: null,
+      city: null,
+      country: 'FR',
+    },
+    internalCode: null,
+    siteCode: null,
+    centerCodes: null,
+    autoProvisioningEnabled: false,
+  });
+  public readonly form = form(
+    this.model,
+    (path) => {
+      disabled(path.enabled, () => this.connectedUserInfo.type === 'NONE');
+      required(path.firstname);
+      minLength(path.firstname, 2);
+      maxLength(path.firstname, 50);
+      required(path.lastname);
+      minLength(path.lastname, 2);
+      maxLength(path.lastname, 50);
+      required(path.mobile, { when: ({ valueOf }) => !!valueOf(path.otp) });
+      pattern(path.mobile, phoneValidator);
+      pattern(path.phone, phoneValidator);
+      required(path.groupId, { when: () => this.connectedUserInfo.type !== 'NONE' });
+      disabled(path.otp, () => this.customer.otp !== OtpState.OPTIONAL);
+      disabled(path.type, () => !this.connectedUserInfo.genericAllowed);
+      // The address is optional, but must be complete when one of its fields is filled
+      const addressFilled = (address: UserCreateModel['address']) => !!(address.street || address.zipCode || address.city);
+      required(path.address.street, { when: ({ valueOf }) => addressFilled(valueOf(path.address)) });
+      required(path.address.zipCode, { when: ({ valueOf }) => addressFilled(valueOf(path.address)) });
+      required(path.address.city, { when: ({ valueOf }) => addressFilled(valueOf(path.address)) });
+      maxLength(path.address.street, this.maxStreetLength);
+      maxLength(path.address.zipCode, 10);
+      maxLength(path.address.city, 100);
+      maxLength(path.internalCode, 20);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
   public groups: GroupSelection[] = [];
   public fullGroup: Group[];
   public groupName: string;
-  public connectedUserInfo: AdminUserProfile;
   public readonly creating = signal(false);
   private keyPressSubscription: Subscription;
   public countries: Option[];
 
   LAST_STEP_INDEX = 2;
+
+  constructor() {
+    toObservable(this.emailModel)
+      .pipe(skip(1))
+      .subscribe((emailData) => this.form.email().value.set(`${emailData.emailFirstPart}@${emailData.domain}`));
+  }
 
   ngOnInit() {
     this.fullGroup = this.data.groups;
@@ -140,96 +246,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       };
     }) as GroupSelection[];
 
-    this.maxStreetLength = this.startupService.getConfigNumberValue('MAX_STREET_LENGTH');
     if (!isRootLevel(this.authService.user)) {
       this.groups = this.groups.filter((group: GroupSelection) => group.id !== this.authService.user.groupId);
     }
 
     this.groups.sort((a, b) => (a.name.toUpperCase() < b.name.toUpperCase() ? -1 : a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0));
 
-    this.customer = this.data.customer;
-    this.connectedUserInfo = this.data.userInfo;
-
-    this.formEmail = this.formBuilder.group(
-      {
-        emailFirstPart: [null, [Validators.required, Validators.maxLength(50), Validators.pattern(emailFirstPartValidator)]],
-        domain: [this.customer.emailDomains[0], Validators.required],
-      },
-      {
-        asyncValidators: () => {
-          const emailFirstPart = this.formEmail.get('emailFirstPart');
-          emailFirstPart.markAsPending();
-          return (this.userCreateValidators.uniqueEmail()(this.form.get('email')) as Observable<ValidationErrors | null>).pipe(
-            tap((validationErrors) => emailFirstPart.setErrors(validationErrors)),
-          );
-        },
-      },
-    );
-
-    this.form = this.formBuilder.group({
-      enabled: true,
-      email: [null],
-      firstname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      lastname: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      mobile: [
-        null,
-        [...(this.customer.otp !== OtpState.DEACTIVATED ? [Validators.required] : []), Validators.pattern(/^[+]{1}[0-9]{11,12}$/)],
-      ],
-      phone: [null, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      groupId: [null, Validators.required],
-      customerId: this.authService.user.customerId,
-      otp: [
-        {
-          value: this.customer.otp !== OtpState.DEACTIVATED,
-          disabled: this.customer.otp !== OtpState.OPTIONAL,
-        },
-      ],
-      type: [{ value: 'NOMINATIVE', disabled: !this.connectedUserInfo.genericAllowed }],
-      subrogeable: false,
-      status: null,
-      userInfoId: null,
-      address: this.formBuilder.group({
-        street: [null, Validators.maxLength(this.maxStreetLength)],
-        zipCode: [null, [Validators.maxLength(10)]],
-        city: [null, [Validators.maxLength(100)]],
-        country: ['FR'],
-      }),
-      internalCode: [null, [Validators.maxLength(20)]],
-      siteCode: [null],
-      centerCodes: [null],
-      autoProvisioningEnabled: false,
-    });
     this.applyUserProfile();
-    this.onChanges();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
-
-    const addressControl = this.form.get('address');
-    addressControl.valueChanges
-      .pipe(
-        map((value) => !value.street && !value.zipCode && !value.city),
-        distinctUntilChanged(),
-      )
-      .subscribe((addressEmpty) => {
-        const streetControl = addressControl.get('street');
-        const zipCodeControl = addressControl.get('zipCode');
-        const cityControl = addressControl.get('city');
-        if (addressEmpty) {
-          [streetControl, zipCodeControl, cityControl].forEach((control) => control.removeValidators(Validators.required));
-        } else {
-          [streetControl, zipCodeControl, cityControl].forEach((control) => control.addValidators(Validators.required));
-        }
-        [streetControl, zipCodeControl, cityControl].forEach((control) => control.updateValueAndValidity());
-      });
-
-    this.form.get('otp').valueChanges.subscribe((otp) => {
-      const mobileControl = this.form.get('mobile');
-      if (otp) {
-        mobileControl.addValidators(Validators.required);
-      } else {
-        mobileControl.removeValidators(Validators.required);
-      }
-      mobileControl.updateValueAndValidity();
-    });
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values.map((country) => ({ key: country.code, label: country.name }));
@@ -242,12 +266,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   applyUserProfile() {
-    if (this.connectedUserInfo.type === 'NONE') {
-      this.form.get('enabled').setValue(false);
-      this.form.get('enabled').disable();
-      this.form.get('groupId').setValidators(null);
-      this.form.updateValueAndValidity({ emitEvent: false });
-    } else if (this.connectedUserInfo.type === 'LIST') {
+    // When the connected user type is 'NONE', the user is disabled and no group is required (see the form schema)
+    if (this.connectedUserInfo.type === 'LIST') {
       this.groups = this.connectedUserInfo.profilGroup.map((group) => {
         const profilGroup = this.groups.find((g) => g.id === group.id);
         return Object({
@@ -263,7 +283,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -271,20 +291,20 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.invalid) {
+    if (this.form().invalid()) {
       return;
     }
     this.creating.set(true);
     let status = '';
-    this.form.get('enabled').value ? (status = 'ENABLED') : (status = 'DISABLED');
-    this.form.get('status').setValue(status);
+    this.form.enabled().value() ? (status = 'ENABLED') : (status = 'DISABLED');
+    this.form.status().value.set(status);
     this.userInfoService.create({ id: null, language: this.customer.language }).subscribe(
       (response: UserInfo) => {
-        this.form.get('userInfoId').setValue(response.id);
-        const formData = this.form.getRawValue();
+        this.form.userInfoId().value.set(response.id);
+        const formData = this.model();
         // centerCodes is used for auto-provisioning (Xelians) and should be an array
         const centerCodes = formData.centerCodes?.split(',')?.map((v: string) => v.trim());
-        this.userService.create({ ...formData, centerCodes }).subscribe(
+        this.userService.create({ ...formData, centerCodes } as any).subscribe(
           () => this.dialogRef.close(true),
           (error) => {
             this.creating.set(false);
@@ -299,41 +319,34 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     );
   }
 
-  onChanges(): void {
-    this.formEmail.valueChanges.subscribe((emailData) => {
-      this.form.patchValue({ email: `${emailData.emailFirstPart}@${emailData.domain}` });
-    });
-  }
-
   firstStepInvalid(): boolean {
     return (
-      this.form.pending ||
-      this.form.get('firstname').invalid ||
-      this.form.get('lastname').invalid ||
-      this.formEmail.get('emailFirstPart').invalid ||
-      this.formEmail.get('emailFirstPart').pending ||
-      this.formEmail.get('domain').invalid ||
-      this.form.get('enabled').invalid
+      this.form().pending() ||
+      this.form.firstname().invalid() ||
+      this.form.lastname().invalid() ||
+      this.formEmail.emailFirstPart().invalid() ||
+      this.formEmail.emailFirstPart().pending() ||
+      this.formEmail.domain().invalid() ||
+      this.form.enabled().invalid()
     );
   }
 
   public thirdStepInvalid(): boolean {
     return (
-      this.form.get('address').pending ||
-      this.form.get('address').invalid ||
-      this.form.get('internalCode').pending ||
-      this.form.get('internalCode').invalid
+      this.form.address().pending() ||
+      this.form.address().invalid() ||
+      this.form.internalCode().pending() ||
+      this.form.internalCode().invalid()
     );
   }
 
   formInvalid(): boolean {
-    return this.form.pending || this.form.invalid;
+    return this.form().pending() || this.form().invalid();
   }
 
   updateGroup(event: any) {
     const selectedGroup: GroupSelection = event;
     this.groupName = selectedGroup.name;
-    const groupId = selectedGroup.id;
-    this.form.patchValue({ groupId });
+    this.form.groupId().value.set(selectedGroup.id);
   }
 }

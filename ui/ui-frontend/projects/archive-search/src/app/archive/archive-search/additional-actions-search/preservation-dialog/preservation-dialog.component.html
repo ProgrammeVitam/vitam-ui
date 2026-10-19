@@ -3,7 +3,7 @@
   [title]="'ARCHIVE_SEARCH.PRESERVATION.TITLE' | translate"
 ></vitamui-dialog-header>
 
-<form [formGroup]="preservationForm" (ngSubmit)="launch()">
+<form [formRoot]="preservationForm">
   <mat-dialog-content class="gap-4 align-items-stretch">
     <div class="d-flex flex-column gap-1">
       <p class="text light m-0">
@@ -23,7 +23,7 @@
       [enableSearch]="false"
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.SOURCE_USAGE' | translate"
-      formControlName="sourceUsage"
+      [formField]="preservationForm.sourceUsage"
       [options]="usageOptions"
     ></vitamui-select>
 
@@ -32,7 +32,7 @@
       [enableSearch]="false"
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.VERSION' | translate"
-      formControlName="version"
+      [formField]="preservationForm.version"
       [options]="versionOptions"
     ></vitamui-select>
 
@@ -41,7 +41,7 @@
       [enableSearch]="true"
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.SCENARIO' | translate"
-      formControlName="scenarioIdentifier"
+      [formField]="preservationForm.scenarioIdentifier"
       [options]="scenarioOptions()"
     ></vitamui-select>
 
@@ -50,13 +50,13 @@
       [enableSearch]="false"
       [enableSelectAll]="false"
       [placeholder]="'ARCHIVE_SEARCH.PRESERVATION.TARGET_USAGE' | translate"
-      formControlName="targetUsage"
+      [formField]="preservationForm.targetUsage"
       [options]="usageOptions"
     ></vitamui-select>
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" [disabled]="preservationForm.invalid" class="btn primary">
+    <button type="submit" [disabled]="preservationForm().invalid()" class="btn primary">
       {{ 'ARCHIVE_SEARCH.PRESERVATION.LAUNCH' | translate }}
     </button>
     <button type="button" class="btn link cancel" (click)="onCancel()">

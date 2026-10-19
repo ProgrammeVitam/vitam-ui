@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { disabled, form, FormField, FormRoot } from '@angular/forms/signals';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { extend, isEmpty } from 'underscore';
@@ -44,23 +44,38 @@ import { SecurityProfileService } from '../../security-profile.service';
 import { SecurityProfileEditPermissionComponent } from '../../security-profile-create/security-profile-edit-permission/security-profile-edit-permission.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface SecurityProfilePermissionsForm {
+  fullAccess: boolean | null;
+  permissions: string[] | null;
+}
+
 @Component({
   selector: 'app-security-profile-permissions-tab',
   templateUrl: './security-profile-permissions-tab.component.html',
   styleUrls: ['./security-profile-permissions-tab.component.scss'],
-  imports: [ReactiveFormsModule, SecurityProfileEditPermissionComponent, TranslatePipe],
+  imports: [FormRoot, FormField, SecurityProfileEditPermissionComponent, TranslatePipe],
 })
 export class SecurityProfilePermissionsTabComponent implements OnChanges {
-  private readonly formBuilder = inject(FormBuilder);
   private readonly SecurityProfileService = inject(SecurityProfileService);
 
   readonly updated = output<boolean>();
 
-  form: FormGroup;
+  readonly form = form(
+    signal<SecurityProfilePermissionsForm>({ fullAccess: null, permissions: null }),
+    (path) => {
+      disabled(path, () => !!this.readOnly());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
 
   submited = signal(false);
-
-  ruleFilter = new FormControl();
 
   // FIXME: Get list from common var ?
   rules: Option[] = [
@@ -80,43 +95,22 @@ export class SecurityProfilePermissionsTabComponent implements OnChanges {
 
   readonly readOnly = input<boolean>(undefined);
 
-  constructor() {
-    this.form = this.formBuilder.group({
-      fullAccess: [null],
-      permissions: [null],
-    });
-
-    this.ruleFilter.valueChanges.subscribe((val) => {
-      if (val === true) {
-        this.form.controls['ruleCategoryToFilter'].setValue(new Array<string>());
-      }
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['SecurityProfile']) {
       this.setSecurityProfile(this.SecurityProfile());
-    }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-        this.form.get('identifier').disable({ emitEvent: false });
-      }
     }
   }
 
   unchanged(): boolean {
     let unchanged = true;
+    const formValue = this.form().value();
 
     if (this.previousValue().permissions && this.previousValue().permissions) {
-      if (this.form.getRawValue().permissions.length !== this.previousValue().permissions.length) {
+      if (formValue.permissions.length !== this.previousValue().permissions.length) {
         unchanged = false;
       } else {
         const previousPermissions = this.previousValue().permissions;
-        const diff = this.form.getRawValue().permissions.filter((permission: string) => {
+        const diff = formValue.permissions.filter((permission: string) => {
           return previousPermissions.indexOf(permission) === -1;
         });
         if (diff.length > 0) {
@@ -124,8 +118,8 @@ export class SecurityProfilePermissionsTabComponent implements OnChanges {
         }
       }
     } else if (
-      (!this.form.getRawValue().permissions && this.previousValue().permissions && this.previousValue().permissions.length > 0) ||
-      (this.form.getRawValue().permissions && this.form.getRawValue().permissions.length > 0 && !this.previousValue().permissions)
+      (!formValue.permissions && this.previousValue().permissions && this.previousValue().permissions.length > 0) ||
+      (formValue.permissions && formValue.permissions.length > 0 && !this.previousValue().permissions)
     ) {
       unchanged = false;
     }
@@ -139,7 +133,7 @@ export class SecurityProfilePermissionsTabComponent implements OnChanges {
   }
 
   prepareSubmit(): Observable<SecurityProfile> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.form().value(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string; [key: string]: any }) =>
@@ -176,6 +170,6 @@ export class SecurityProfilePermissionsTabComponent implements OnChanges {
   }
 
   resetForm(SecurityProfile: SecurityProfile) {
-    this.form.reset(SecurityProfile, { emitEvent: false });
+    this.form().reset({ fullAccess: SecurityProfile.fullAccess ?? null, permissions: SecurityProfile.permissions ?? null });
   }
 }

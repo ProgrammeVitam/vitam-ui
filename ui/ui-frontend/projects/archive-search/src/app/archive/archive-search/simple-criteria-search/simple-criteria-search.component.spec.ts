@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, of } from 'rxjs';
 import {
@@ -91,7 +90,6 @@ describe('SimpleCriteriaSearchComponent', () => {
     await TestBed.configureTestingModule({
       imports: [InjectorModule, AgenciesModule, LoggerModule.forRoot(), SimpleCriteriaSearchComponent],
       providers: [
-        FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },
         { provide: ArchiveSharedDataService, useValue: archiveExchangeDataServiceMock },
         { provide: MatDialog, useValue: matDialogSpy },

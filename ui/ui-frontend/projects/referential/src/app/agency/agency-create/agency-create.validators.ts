@@ -35,11 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { SchemaPath, validate } from '@angular/forms/signals';
 
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { AgencyService } from 'vitamui-library';
+import { Observable, of } from 'rxjs';
+import { AgencyService, validateObservable } from 'vitamui-library';
 
 @Injectable({
   providedIn: 'root',
@@ -51,33 +50,29 @@ export class AgencyCreateValidators {
     this.agencyService = agencyService;
   }
 
-  private readonly debounceTime = 400;
-
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
+  /** Adds a `nameExists` error when an agency with the same name already exists (except `nameToIgnore`). */
+  uniqueName = (path: SchemaPath<string>, nameToIgnore: () => string = () => undefined): void => {
+    this.uniqueField(path, 'name', 'nameExists', nameToIgnore);
   };
 
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
+  /** Adds an `identifierExists` error when an agency with the same identifier already exists (except `identifierToIgnore`). */
+  uniqueIdentifier = (path: SchemaPath<string>, identifierToIgnore: () => string = () => undefined): void => {
+    this.uniqueField(path, 'identifier', 'identifierExists', identifierToIgnore);
   };
 
-  onlyWhitespaces: ValidatorFn = (control: AbstractControl) => {
-    const regExp = /^\s+$/;
-    return regExp.test(control.value) ? { onlyWhitespaces: true } : null;
+  onlyWhitespaces = (path: SchemaPath<string>): void => {
+    validate(path, ({ value }) => (/^\s+$/.test(value()) ? { kind: 'onlyWhitespaces' } : undefined));
   };
 
-  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value;
-      const existField: any = {};
-      existField[existTag] = true;
+  /** Checks if an agency with the given property value exists (`false` without calling the backend if the value is `valueToIgnore`). */
+  exists(field: string, value: string, valueToIgnore?: string): Observable<boolean> {
+    return value !== valueToIgnore ? this.agencyService.existsProperties({ [field]: value }) : of(false);
+  }
 
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.agencyService.existsProperties(properties) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? existField : null)),
-      );
-    };
+  private uniqueField(path: SchemaPath<string>, field: string, existTag: string, valueToIgnore: () => string) {
+    validateObservable(path, {
+      stream: (value: string) => this.exists(field, value, valueToIgnore()),
+      onSuccess: (exists: boolean) => (exists ? { kind: existTag } : undefined),
+    });
   }
 }

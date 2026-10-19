@@ -56,7 +56,7 @@ import {
   viewChild,
   viewChildren,
 } from '@angular/core';
-import { FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import { Option } from '../../../app/modules/components/autocomplete/utils/option.interface';
 import { SearchBarComponent } from '../../../app/modules/components/search-bar/search-bar.component';
@@ -248,7 +248,8 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     '=1': 'SELECT.SELECTED_ELEMENT.SINGULAR',
     other: 'SELECT.SELECTED_ELEMENT.PLURAL',
   };
-  protected searchTextControl = new FormControl();
+  // Text searched in the options
+  protected readonly searchText = signal<string | null>(null);
   protected showOnlySelectedOption = false;
   protected selectedOptions: Option[] = [];
   protected containerHeightInSearchView = '0px';
@@ -386,7 +387,7 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     if (!this.showOnlySelectedOption) {
       this.displayedOptions = this.allOptions;
       this.resizeContainerHeightInSearchView();
-      this.searchTextControl.reset();
+      this.searchText.set(null);
     } else {
       this.searchBar()?.reset();
     }
@@ -410,10 +411,10 @@ export class SelectComponent extends AbstractFormInputDirective implements After
   }
 
   protected onSearch(value: string): void {
-    this.searchTextControl.setValue(value ? value : null);
-    if (this.searchTextControl.value) {
+    this.searchText.set(value ? value : null);
+    if (this.searchText()) {
       this.displayedOptions = this.allOptions.filter(
-        (option) => normalizeString(option.label).indexOf(normalizeString(this.searchTextControl.value)) !== -1,
+        (option) => normalizeString(option.label).indexOf(normalizeString(this.searchText())) !== -1,
       );
       this.resizeContainerHeightInSearchView();
     } else {
@@ -428,11 +429,11 @@ export class SelectComponent extends AbstractFormInputDirective implements After
     if (searchBar && this.enableSearch()) {
       searchBar.reset();
     }
-    this.searchTextControl.reset();
+    this.searchText.set(null);
   }
 
   protected resetSearchBar(): void {
-    this.searchTextControl.reset();
+    this.searchText.set(null);
     this.displayedOptions = this.allOptions;
     this.resizeContainerHeightInSearchView();
     this.searchBar()?.onFocus();

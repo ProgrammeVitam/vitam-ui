@@ -36,7 +36,6 @@
  */
 import { Component, linkedSignal, model, output, input } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
 import { TableFilterComponent } from './table-filter.component';
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
 
@@ -44,7 +43,7 @@ import { TableFilterOptionComponent } from './table-filter-option/table-filter-o
   selector: 'vitamui-common-table-filter-search',
   templateUrl: './table-filter-search.component.html',
   styleUrls: ['./table-filter-search.component.scss'],
-  imports: [FormsModule, TableFilterComponent, TableFilterOptionComponent],
+  imports: [TableFilterComponent, TableFilterOptionComponent],
 })
 export class TableFilterSearchComponent {
   readonly filter = model<any[]>(undefined);

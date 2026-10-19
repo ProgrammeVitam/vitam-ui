@@ -35,12 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable, inject } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
-
-import { of, timer } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { ContextPermission } from 'vitamui-library';
+import { LogicFn, PathKind, SchemaPath, SchemaPathRules, validate } from '@angular/forms/signals';
+import { of } from 'rxjs';
+import { ContextPermission, validateObservable } from 'vitamui-library';
 import { ContextService } from '../context.service';
+
+type FieldPath<TValue, TPathKind extends PathKind> = SchemaPath<TValue, SchemaPathRules.Supported, TPathKind>;
+
+const ALLOWED_NAME_REGEX = /^[a-zA-Z0-9+=@_-]*$/;
 
 @Injectable({
   providedIn: 'root',
@@ -52,42 +54,55 @@ export class ContextCreateValidators {
     this.contextService = contextService;
   }
 
-  private readonly debounceTime = 400;
-
-  uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  };
-
-  uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
-    return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  };
-
-  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
-    return (control: AbstractControl) => {
-      const properties: any = {};
-      properties[field] = control.value?.trim();
-      const existField: any = {};
-      existField[existTag] = true;
-
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.contextService.existsProperties(properties) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? existField : null)),
-      );
-    };
+  /**
+   * Checks that no other context has the same name.
+   * @param nameToIgnore returns the name that is not checked (e.g. the current name of the edited context)
+   */
+  uniqueName<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>, nameToIgnore?: () => string): void {
+    this.uniqueField(path, 'name', 'nameExists', nameToIgnore);
   }
 
-  public permissionInvalid() {
-    return (control: AbstractControl) => {
-      switch (this.checkTenantsValid(control.value)) {
-        case 'tenant':
-          return { permissionsTenant: true };
-        case 'empty':
-          return { noPermissions: true };
-        default:
-          return null;
+  uniqueIdentifier<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<string, TPathKind>,
+    identifierToIgnore?: () => string,
+  ): void {
+    this.uniqueField(path, 'identifier', 'identifierExists', identifierToIgnore);
+  }
+
+  private uniqueField<TPathKind extends PathKind>(
+    path: FieldPath<string, TPathKind>,
+    field: string,
+    errorKind: string,
+    valueToIgnore?: () => string,
+  ): void {
+    validateObservable(path, {
+      stream: (value: string) =>
+        value !== valueToIgnore?.() ? this.contextService.existsProperties({ [field]: value?.trim() }) : of(false),
+      onSuccess: (exists: boolean) => (exists ? { kind: errorKind } : undefined),
+    });
+  }
+
+  /**
+   * Checks that there is at least one permission and that each permission has a tenant.
+   * @param enabled the validation is only applied when it returns true
+   */
+  permissionInvalid<TPathKind extends PathKind = PathKind.Root>(
+    path: FieldPath<ContextPermission[], TPathKind>,
+    enabled: NoInfer<LogicFn<ContextPermission[], boolean, TPathKind>> = () => true,
+  ): void {
+    validate(path, (ctx) => {
+      if (!enabled(ctx)) {
+        return undefined;
       }
-    };
+      switch (this.checkTenantsValid(ctx.value())) {
+        case 'tenant':
+          return { kind: 'permissionsTenant' };
+        case 'empty':
+          return { kind: 'noPermissions' };
+        default:
+          return undefined;
+      }
+    });
   }
 
   private checkTenantsValid(value: ContextPermission[]): string {
@@ -104,15 +119,7 @@ export class ContextCreateValidators {
     return null;
   }
 
-  allowedName = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors => {
-      return !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectName: true };
-    };
-  };
-
-  allowedIdentifier = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors => {
-      return !control.value || control.value.match('^[a-zA-Z0-9+=@_-]*$') ? null : { incorrectIdentifier: true };
-    };
-  };
+  allowedName<TPathKind extends PathKind = PathKind.Root>(path: FieldPath<string, TPathKind>): void {
+    validate(path, ({ value }) => (!value() || ALLOWED_NAME_REGEX.test(value()) ? undefined : { kind: 'incorrectName' }));
+  }
 }

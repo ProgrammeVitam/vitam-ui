@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 
 import { RoleComponent } from './role.component';
 
@@ -45,7 +44,7 @@ describe('RoleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormsModule, RoleComponent],
+      imports: [RoleComponent],
     }).compileComponents();
   });
 
@@ -57,5 +56,28 @@ describe('RoleComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should update checked and emit checkedChange when the user toggles', async () => {
+    const changes: boolean[] = [];
+    component.checkedChange.subscribe((checked) => changes.push(checked));
+    fixture.componentRef.setInput('checked', false);
+    await fixture.whenStable();
+
+    fixture.nativeElement.querySelector('input').click();
+    await fixture.whenStable();
+
+    expect(component.checked()).toBe(true);
+    expect(changes).toEqual([true]);
+  });
+
+  it('should not emit checkedChange when checked is set by the parent', async () => {
+    const changes: boolean[] = [];
+    component.checkedChange.subscribe((checked) => changes.push(checked));
+    component.checked.set(true);
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('input').checked).toBe(true);
+    expect(changes).toEqual([]);
   });
 });

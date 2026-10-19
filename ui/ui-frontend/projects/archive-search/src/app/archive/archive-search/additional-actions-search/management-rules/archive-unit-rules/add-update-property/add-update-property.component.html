@@ -6,7 +6,7 @@
       class="w-100"
       [placeholder]="'RULES.FINAL_ACTION.TITLE' | translate"
       (change)="onChangeValue($event)"
-      [(ngModel)]="rulePropertyName"
+      [formField]="rulePropertyName"
       [options]="
         ruleCategory() === 'AppraisalRule'
           ? [

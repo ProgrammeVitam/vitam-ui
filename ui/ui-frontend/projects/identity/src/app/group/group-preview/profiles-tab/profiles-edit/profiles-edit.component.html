@@ -1,12 +1,12 @@
 <vitamui-dialog-header [title]="'GROUP.PROFILE.MODAL.TITLE' | translate: { name: data?.group?.name }"></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <mat-dialog-content>
-    <app-profiles-form formControlName="profileIds" [level]="data?.group?.level"></app-profiles-form>
+    <app-profiles-form [formField]="form.profileIds" [level]="data?.group?.level"></app-profiles-form>
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button type="submit" class="btn primary" [disabled]="form.pristine || form.invalid">{{ 'COMMON.SUBMIT' | translate }}</button>
+    <button type="submit" class="btn primary" [disabled]="!form().dirty() || form().invalid()">{{ 'COMMON.SUBMIT' | translate }}</button>
     <button type="button" class="btn cancel link" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
   </mat-dialog-actions>
 </form>

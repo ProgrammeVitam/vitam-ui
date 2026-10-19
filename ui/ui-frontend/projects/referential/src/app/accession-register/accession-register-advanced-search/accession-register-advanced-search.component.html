@@ -1,5 +1,5 @@
 <div class="card-criteria">
-  <form [formGroup]="advancedSearchForm">
+  <div>
     <div class="row">
       <div class="col-12">
         <div class="row justify-content-around">
@@ -14,7 +14,7 @@
             </label>
             <vitamui-multi-inputs
               id="originating-agencies"
-              formControlName="originatingAgencies"
+              [formField]="advancedSearchForm.originatingAgencies"
               [searchActivated]="globalSearchButtonEvent$ | async"
               [reset]="(isAdvancedFormChanged$ | async) !== true"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ORIGINATING_AGENCY_LABEL' | translate }}"
@@ -26,7 +26,7 @@
             </label>
             <vitamui-multi-inputs
               id="archival-agreement"
-              formControlName="archivalAgreements"
+              [formField]="advancedSearchForm.archivalAgreements"
               [searchActivated]="globalSearchButtonEvent$ | async"
               [reset]="(isAdvancedFormChanged$ | async) !== true"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ARCHIVAL_AGREEMENT_LABEL' | translate }}"
@@ -40,7 +40,7 @@
             </label>
             <vitamui-multi-inputs
               id="archival-profil"
-              formControlName="archivalProfiles"
+              [formField]="advancedSearchForm.archivalProfiles"
               [searchActivated]="globalSearchButtonEvent$ | async"
               [reset]="(isAdvancedFormChanged$ | async) !== true"
               label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.ARCHIVAL_PROFILE_LABEL' | translate }}"
@@ -52,7 +52,7 @@
             </label>
 
             <vitamui-select
-              [formControl]="acquisitionInformationsControl"
+              [formField]="advancedSearchForm.acquisitionInformations"
               [options]="acquisitionInformations"
               [multiple]="true"
               [enableSelectAll]="true"
@@ -80,7 +80,7 @@
                 <mat-radio-group
                   aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_ELIMINATIONS' | translate }}"
                   id="eliminations"
-                  formControlName="elimination"
+                  [formField]="advancedSearchForm.elimination"
                 >
                   <mat-radio-button class="mr-2" value="true">{{
                     'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate
@@ -103,7 +103,7 @@
                 <mat-radio-group
                   aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_TRANSFERTS' | translate }}"
                   id="transferts"
-                  formControlName="transferReply"
+                  [formField]="advancedSearchForm.transferReply"
                 >
                   <mat-radio-button class="mr-2" value="true">{{
                     'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate
@@ -126,7 +126,7 @@
                 <mat-radio-group
                   aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_REASSIGNMENTS' | translate }}"
                   id="reassignments"
-                  formControlName="originatingAgencyReassignment"
+                  [formField]="advancedSearchForm.originatingAgencyReassignment"
                 >
                   <mat-radio-button class="mr-2" value="true">{{
                     'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate
@@ -151,5 +151,5 @@
         </div>
       </div>
     </div>
-  </form>
+  </div>
 </div>

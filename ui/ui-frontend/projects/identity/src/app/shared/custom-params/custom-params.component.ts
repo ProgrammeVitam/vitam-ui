@@ -35,9 +35,10 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { ENTER } from '@angular/cdk/keycodes';
-import { AfterContentInit, Component, forwardRef, input, contentChildren } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { InputComponent, VitamUIFieldErrorComponent } from 'vitamui-library';
+import { Component, forwardRef, input, contentChildren, effect, signal } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { form, FormField } from '@angular/forms/signals';
+import { InputComponent, toValidationErrors, VitamUIFieldErrorComponent } from 'vitamui-library';
 import { KeyValuePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -53,9 +54,9 @@ export const LIST_INPUT_ACCESSOR: any = {
   templateUrl: './custom-params.component.html',
   styleUrls: ['./custom-params.component.scss'],
   providers: [LIST_INPUT_ACCESSOR],
-  imports: [InputComponent, ReactiveFormsModule, KeyValuePipe, TranslatePipe],
+  imports: [InputComponent, FormField, KeyValuePipe, TranslatePipe],
 })
-export class CustomParamsComponent implements AfterContentInit, ControlValueAccessor {
+export class CustomParamsComponent implements ControlValueAccessor {
   readonly keyPlaceholder = input<string>(undefined);
   readonly valuePlaceholder = input<string>(undefined);
   readonly spinnerDiameter = input(25);
@@ -63,21 +64,16 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
   readonly errors = contentChildren(VitamUIFieldErrorComponent);
   readonly selectedValues = input<Map<string, string>>(undefined);
   values = new Map<string, string>();
-  controlKey: FormControl;
-  controlValue: FormControl;
+  readonly paramForm = form(signal<{ key: string; value: string }>({ key: null, value: null }));
   separatorKeysCodes = [ENTER];
   onChange: (_: any) => void;
   onTouched: () => void;
 
   constructor() {
-    this.controlKey = new FormControl(null);
-    this.controlValue = new FormControl(null);
-  }
-
-  ngAfterContentInit() {
-    this.controlKey.statusChanges.subscribe(() => {
+    effect(() => {
+      const keyErrors = toValidationErrors(this.paramForm.key().errors());
       this.errors().forEach((error: VitamUIFieldErrorComponent) => {
-        error.show = this.controlKey.errors ? !!this.controlKey.errors[error.errorKey()] : false;
+        error.show = keyErrors ? !!keyErrors[error.errorKey()] : false;
       });
     });
   }
@@ -98,18 +94,18 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
   }
 
   add(): void {
-    if (this.controlKey.invalid || this.controlKey.pending) {
+    const keyField = this.paramForm.key();
+    if (keyField.invalid() || keyField.pending()) {
       return;
     }
-    const key = this.controlKey.value?.trim();
-    const value = this.controlValue.value?.trim();
+    const key = keyField.value()?.trim();
+    const value = this.paramForm.value().value()?.trim();
     if (!!this.values.get(key) || !key || !value) {
       return;
     }
     this.values.set(key, value);
     this.onChange(this.strMapToObj(this.values));
-    this.controlKey.reset();
-    this.controlValue.reset();
+    this.paramForm().reset({ key: null, value: null });
   }
 
   remove(val: string): void {
@@ -122,14 +118,15 @@ export class CustomParamsComponent implements AfterContentInit, ControlValueAcce
   }
 
   buttonAddDisabled(): boolean {
-    return !this.controlValue.value?.trim() || !this.controlKey.value?.trim() || this.valueExists;
+    return !this.paramForm.value().value()?.trim() || !this.paramForm.key().value()?.trim() || this.valueExists;
   }
 
   get valueExists(): boolean {
-    if (!this.controlKey.value) {
+    const key = this.paramForm.key().value();
+    if (!key) {
       return true;
     }
-    return !!this.values.get(this.controlKey.value);
+    return !!this.values.get(key);
   }
 
   private strMapToObj(strMap: Map<string, string>) {

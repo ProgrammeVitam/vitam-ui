@@ -52,7 +52,6 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { IngestInformationTabComponent } from './ingest-information-tab/ingest-information-tab.component';
 import { IngestErrorsDetailsTabComponent } from './ingest-errors-details-tab/ingest-errors-details-tab.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -72,7 +71,6 @@ import { CommonModule } from '@angular/common';
     TranslatePipe,
     CommonModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule,
     VitamuiSidenavHeaderComponent,
   ],
 })

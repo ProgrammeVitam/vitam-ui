@@ -36,7 +36,6 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { of } from 'rxjs';
 import { SignedDocumentPolicyEnum } from 'vitamui-library';
@@ -54,14 +53,8 @@ describe('IngestContractSignatureTabComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-        MatButtonToggleModule,
-        MatCheckboxModule,
-        IngestContractSignatureTabComponent,
-      ],
-      providers: [FormBuilder, { provide: IngestContractService, useValue: ingestContractServiceSpy }],
+      imports: [VitamUICommonTestModule, MatButtonToggleModule, MatCheckboxModule, IngestContractSignatureTabComponent],
+      providers: [{ provide: IngestContractService, useValue: ingestContractServiceSpy }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -108,7 +101,7 @@ describe('IngestContractSignatureTabComponent', () => {
   });
 
   it('should provide `undefined` value for declared* attributes when signedDocument is FORBIDDEN', () => {
-    component.form.patchValue({
+    component.form().value.set({
       signedDocument: SignedDocumentPolicyEnum.FORBIDDEN,
       declaredSignature: true,
       declaredTimestamp: true,
@@ -130,11 +123,11 @@ describe('IngestContractSignatureTabComponent', () => {
   });
 
   it('should provide `false` value for declared* attributes when signedDocument is not FORBIDDEN and declared* values are unset', () => {
-    component.form.patchValue({
+    component.form().value.set({
       signedDocument: SignedDocumentPolicyEnum.ALLOWED,
-      declaredSignature: undefined,
-      declaredTimestamp: undefined,
-      declaredAdditionalProof: undefined,
+      declaredSignature: null,
+      declaredTimestamp: null,
+      declaredAdditionalProof: null,
     });
 
     component.onSubmit();

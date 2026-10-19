@@ -37,7 +37,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PipesModule, VitamUICommonModule, VitamUILibraryModule } from 'vitamui-library';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -59,7 +58,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     MatButtonToggleModule,
     MatDatepickerModule,
     MatDialogModule,
@@ -72,7 +70,6 @@ import { TranslatePipe } from '@ngx-translate/core';
     PipesModule,
     ProjectPreviewComponent,
     ProjectRoutingModule,
-    ReactiveFormsModule,
     VitamUICommonModule,
     VitamUILibraryModule,
     TranslatePipe,

@@ -34,10 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ConfirmDialogService, DialogHeaderComponent, InputComponent, Owner, SelectComponent, Tenant } from 'vitamui-library';
+import {
+  ConfirmDialogService,
+  DialogHeaderComponent,
+  InputComponent,
+  Owner,
+  requiredValue,
+  SelectComponent,
+  Tenant,
+} from 'vitamui-library';
 
 import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 
 import { finalize, Subscription } from 'rxjs';
@@ -45,11 +53,19 @@ import { TenantService } from '../tenant.service';
 import { TenantFormValidators } from './tenant-form.validators';
 import { TranslatePipe } from '@ngx-translate/core';
 
+interface TenantCreateModel {
+  ownerId: string;
+  customerId: string;
+  name: string;
+  identifier: number;
+  enabled: boolean;
+}
+
 @Component({
   selector: 'app-tenant-create',
   templateUrl: './tenant-create.component.html',
   styleUrls: ['./tenant-create.component.scss'],
-  imports: [DialogHeaderComponent, ReactiveFormsModule, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
+  imports: [DialogHeaderComponent, FormField, FormRoot, MatDialogContent, InputComponent, SelectComponent, MatDialogActions, TranslatePipe],
 })
 export class TenantCreateComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
@@ -57,33 +73,36 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   data = inject<{
     owner: Owner;
   }>(MAT_DIALOG_DATA);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly tenantService = inject(TenantService);
   private readonly tenantFormValidators = inject(TenantFormValidators);
   private readonly confirmDialogService = inject(ConfirmDialogService);
 
-  form: FormGroup;
+  private readonly model = signal<TenantCreateModel>({
+    ownerId: this.data.owner.id,
+    customerId: this.data.owner.customerId,
+    name: null,
+    identifier: null,
+    enabled: true,
+  });
+  readonly form = form(
+    this.model,
+    (path) => {
+      required(path.name);
+      this.tenantFormValidators.uniqueNameRule(path.name);
+      required(path.identifier);
+      requiredValue(path.enabled);
+    },
+    { submission: { action: async () => this.onSubmit(), ignoreValidators: 'all' } },
+  );
 
   private keyPressSubscription: Subscription;
   availableTenants: number[];
   readonly isLoading = signal(false);
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      ownerId: [this.data.owner.id],
-      customerId: [this.data.owner.customerId],
-      name: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
-      identifier: [null, [Validators.required]],
-      enabled: [true, Validators.required],
-    });
     this.tenantService.getAvailableTenants().subscribe((availableTenants) => {
       this.availableTenants = availableTenants.sort((tenantI1: number, tenantI2: number) => tenantI1 - tenantI2);
-      if (this.availableTenants && this.availableTenants.length > 0) {
-        const tenantIdToSelect =
-          this.availableTenants[0] === 0 && this.availableTenants.length > 1 ? this.availableTenants[1] : this.availableTenants[0];
-        // To select as default tenant the first one other than 0
-        this.form.patchValue({ tenantId: tenantIdToSelect });
-      }
+      // The default tenant was patched in a 'tenantId' control that does not exist in the form: no tenant is selected by default
       this.cdr.markForCheck();
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -94,7 +113,7 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
-    if (this.form.dirty) {
+    if (this.form().dirty()) {
       this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
     } else {
       this.dialogRef.close();
@@ -102,12 +121,12 @@ export class TenantCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (this.form.pending || this.form.invalid) {
+    if (this.form().pending() || this.form().invalid()) {
       return;
     }
     this.isLoading.set(true);
     this.tenantService
-      .create(this.form.value, this.data.owner.name)
+      .create(this.model() as Tenant, this.data.owner.name)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (newTenant: Tenant) => {

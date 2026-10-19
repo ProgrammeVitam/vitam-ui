@@ -38,7 +38,6 @@
 import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 
 import { TableFilterOptionComponent } from './table-filter-option/table-filter-option.component';
 import { TableFilterSearchComponent } from './table-filter-search.component';
@@ -48,7 +47,7 @@ import { TableFilterSearchComponent } from './table-filter-search.component';
     <vitamui-common-table-filter-search [(filter)]="filter" [options]="options" (filterClose)="onClose()">
     </vitamui-common-table-filter-search>
   `,
-  imports: [FormsModule, TableFilterSearchComponent],
+  imports: [TableFilterSearchComponent],
   schemas: [NO_ERRORS_SCHEMA],
 })
 export class TestHostComponent {

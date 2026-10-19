@@ -34,8 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, inject, signal, output, input, model, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal, output, input, model, OnChanges, Signal, SimpleChanges } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { disabled, form, FormField, FormRoot, required } from '@angular/forms/signals';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
@@ -45,15 +46,19 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AsyncPipe } from '@angular/common';
 import { AgencyCreateValidators } from '../../agency-create/agency-create.validators';
 
+interface AgencyInformationForm {
+  name: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-agency-information-tab',
   templateUrl: './agency-information-tab.component.html',
   styleUrls: ['./agency-information-tab.component.scss'],
-  imports: [ReactiveFormsModule, VitamUICommonModule, TranslatePipe, AsyncPipe],
+  imports: [FormRoot, FormField, VitamUICommonModule, TranslatePipe, AsyncPipe],
 })
 export class AgencyInformationTabComponent implements OnChanges {
   private readonly route = inject(ActivatedRoute);
-  private readonly formBuilder = inject(FormBuilder);
   private readonly agencyService = inject(AgencyService);
   private readonly securityService = inject(SecurityService);
   private readonly agencyCreateValidators = inject(AgencyCreateValidators);
@@ -63,10 +68,31 @@ export class AgencyInformationTabComponent implements OnChanges {
   tenantIdentifier: number;
   isLoading = signal(false);
   checkUpdateRole = new Observable<boolean>();
+  private readonly hasUpdateRole: Signal<boolean>;
+  private readonly nameToIgnore = signal<string>(undefined);
 
-  form: FormGroup;
+  private readonly formModel = signal<AgencyInformationForm>({ name: null, description: null });
+  readonly form = form(
+    this.formModel,
+    (path) => {
+      disabled(path, () => !!this.readOnly());
+      disabled(path.name, () => this.hasUpdateRole() === false);
+      disabled(path.description, () => this.hasUpdateRole() === false);
+      required(path.name);
+      this.agencyCreateValidators.onlyWhitespaces(path.name);
+      this.agencyCreateValidators.uniqueName(path.name, () => this.nameToIgnore());
+    },
+    {
+      submission: {
+        action: async () => {
+          this.onSubmit();
+        },
+        ignoreValidators: 'all',
+      },
+    },
+  );
   previousValue = (): any => {
-    return (Object.keys(this.form.controls || {}) as (keyof Agency)[]).reduce((acc: any, key) => {
+    return (Object.keys(this.formModel()) as (keyof Agency)[]).reduce((acc: any, key) => {
       acc[key] = this.agency()[key];
       return acc;
     }, {} as Partial<Agency>);
@@ -77,46 +103,32 @@ export class AgencyInformationTabComponent implements OnChanges {
   readonly readOnly = input<boolean>(undefined);
 
   constructor() {
-    const agencyCreateValidators = this.agencyCreateValidators;
-
-    this.form = this.formBuilder.group({
-      name: [null, [Validators.required, agencyCreateValidators.onlyWhitespaces]],
-      description: [null],
-    });
-
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params['tenantIdentifier'];
     });
 
     this.checkUpdateRole = this.securityService.hasRole$(ApplicationId.AGENCIES_APP, Role.ROLE_UPDATE_AGENCIES, this.tenantIdentifier);
+    this.hasUpdateRole = toSignal(this.checkUpdateRole);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['agency']) {
       this.setAgency(this.agency());
     }
-    if (changes['readOnly']) {
-      const readOnly = this.readOnly();
-      if (readOnly && this.form.enabled) {
-        this.form.disable({ emitEvent: false });
-      } else if (this.form.disabled) {
-        this.form.enable({ emitEvent: false });
-      }
-    }
   }
 
   unchanged(): boolean {
-    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    const unchanged = JSON.stringify(diff(this.formModel(), this.previousValue())) === '{}';
     this.updated.emit(!unchanged);
     return unchanged;
   }
 
   isInvalid(): boolean {
-    return this.form.get('name').invalid || this.form.get('name').pending;
+    return this.form.name().invalid() || this.form.name().pending();
   }
 
   prepareSubmit(): Observable<Agency> {
-    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
+    return of(diff(this.formModel(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => this.copyProperties(formData)),
       switchMap((agency) => this.agencyService.patch(agency).pipe(catchError(() => of(null)))),
@@ -158,7 +170,7 @@ export class AgencyInformationTabComponent implements OnChanges {
   }
 
   resetForm(agency: Agency) {
-    this.form.get('name').setAsyncValidators(this.agencyCreateValidators.uniqueName(agency.name)); // Keep this line before reset to make sure the new form value is used for validation.
-    this.form.reset(agency, { emitEvent: false });
+    this.nameToIgnore.set(agency.name); // Keep this line before reset to make sure the new form value is used for validation.
+    this.form().reset({ name: agency.name ?? null, description: agency.description ?? null });
   }
 }

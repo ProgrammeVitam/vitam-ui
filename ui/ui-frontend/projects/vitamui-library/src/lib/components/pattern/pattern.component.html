@@ -2,14 +2,20 @@
   <vitamui-select
     #select
     class="w-50 mr-2"
-    [formControl]="control"
+    [formField]="selectedPatternField"
     [placeholder]="'SHARED.PATTERN' | translate"
     [options]="availableOptions"
     [multiple]="false"
     [enableSearch]="false"
   ></vitamui-select>
 
-  <button class="btn primary btn-circle mt-2" [class.btn-small]="vitamuiMiniMode()" (click)="add()" [disabled]="!controlValueValid()">
+  <button
+    type="button"
+    class="btn primary btn-circle mt-2"
+    [class.btn-small]="vitamuiMiniMode()"
+    (click)="add()"
+    [disabled]="!controlValueValid()"
+  >
     <i class="vitamui-icon vitamui-icon-add"></i>
   </button>
 </div>

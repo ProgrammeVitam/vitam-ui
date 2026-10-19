@@ -1,24 +1,24 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formRoot]="form">
   <h5 class="mt-0 mb-4">{{ 'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.STORAGE_STRATEGY' | translate }}</h5>
 
   <div class="gap-3">
     <vitamui-input
       class="w-100"
-      formControlName="unitStrategy"
+      [formField]="form.unitStrategy"
       [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.UNIT_STRATEGY' | translate"
     >
     </vitamui-input>
 
     <vitamui-input
       class="w-100"
-      formControlName="objectGroupStrategy"
+      [formField]="form.objectGroupStrategy"
       [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.OBJECT_GROUP_STRATEGY' | translate"
     >
     </vitamui-input>
 
     <vitamui-input
       class="w-100"
-      formControlName="objectStrategy"
+      [formField]="form.objectStrategy"
       [placeholder]="'CONTRACT_MANAGEMENT.PREVIEW.STORAGE_DETAILS.OBJECT_STRATEGY' | translate"
     >
     </vitamui-input>
@@ -29,7 +29,7 @@
       </div>
     } @else {
       <div class="form-group bottom">
-        <button type="submit" class="btn secondary" [disabled]="form.invalid || unchanged() || submited()">
+        <button type="submit" class="btn secondary" [disabled]="form().invalid() || unchanged() || submited()">
           {{ 'CONTRACT_MANAGEMENT.PREVIEW.INFORMATION.SAVE' | translate }}
         </button>
       </div>

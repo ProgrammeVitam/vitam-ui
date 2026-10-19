@@ -4,7 +4,7 @@
   [title]="['RECLASSIFICATION.FIRST_STEP.SUBTITLE' | translate, 'RECLASSIFICATION.' + action() + '_STEP.TITLE' | translate]"
 ></vitamui-dialog-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+<form [formRoot]="form" (keydown.enter)="$event.preventDefault()">
   <mat-dialog-content>
     <vitamui-stepper #stepper (selectionChange)="stepIndex.set($event.selectedIndex)">
       <cdk-step>
@@ -43,7 +43,8 @@
         <div class="form-group">
           @if (actions().options) {
             <vitamui-select
-              formControlName="action"
+              [formField]="form.action"
+              (change)="onActionChange()"
               [options]="actions().options"
               [placeholder]="'RECLASSIFICATION.FIRST_STEP.SELECT_ACTION_MESSAGE_2' | translate"
               [enableSearch]="false"
@@ -70,26 +71,29 @@
                   {{ 'RECLASSIFICATION.FIRST_STEP.ALERT_REMOVED_CURRENT_PARENTS_FOLDERS' | translate }}
                 </div>
               }
-              <mat-button-toggle-group formControlName="reclassificationMode" class="my-3 vitamui-button-toggle-group">
+              <mat-button-toggle-group
+                [formField]="form.reclassificationMode"
+                (change)="onModeChange($event.value)"
+                class="my-3 vitamui-button-toggle-group"
+              >
                 @for (mode of reclassificationModes; track mode) {
                   <mat-button-toggle [value]="mode">
                     <span>{{ 'RECLASSIFICATION.COMMON.' + mode | translate }}</span>
                   </mat-button-toggle>
                 }
               </mat-button-toggle-group>
-              @switch (form.controls.reclassificationMode.value) {
+              @switch (form.reclassificationMode().value()) {
                 @case (ReclassificationMode.FILING_PLAN) {
                   <vitamui-library-filing-plan
                     [mode]="FilingPlanMode.SOLO"
                     [tenantIdentifier]="data.tenantIdentifier"
-                    [formControl]="form.controls.multiSelect.controls.filingPlan"
+                    [formField]="form.multiSelect.filingPlan"
                   ></vitamui-library-filing-plan>
                 }
                 @case (ReclassificationMode.ARCHIVE_UNIT_ID) {
-                  <div [formGroup]="form.controls.singleSelect" class="gap-3 align-items-stretch">
+                  <div class="gap-3 align-items-stretch">
                     <vitamui-input
-                      formControlName="id"
-                      required
+                      [formField]="form.singleSelect.id"
                       [placeholder]="'RECLASSIFICATION.COMMON.ATTACHMENT_GUID_LABEL' | translate"
                       [errorMessageMap]="{
                         targetGuid: 'RECLASSIFICATION.COMMON.GUID_ALREADY_EXISTS' | translate,
@@ -98,8 +102,7 @@
                     >
                     </vitamui-input>
                     <vitamui-input
-                      formControlName="title"
-                      required
+                      [formField]="form.singleSelect.title"
                       [placeholder]="'RECLASSIFICATION.COMMON.TARGET_GUID_TITLE_LABEL' | translate"
                     ></vitamui-input>
                   </div>
@@ -116,7 +119,7 @@
                 @if (projectUnits()) {
                   <vitamui-library-filing-plan
                     [mode]="FilingPlanMode.SOLO"
-                    [formControl]="form.controls.multiSelect.controls.filingPlan"
+                    [formField]="form.multiSelect.filingPlan"
                     [dataSource]="projectUnits()"
                   >
                   </vitamui-library-filing-plan>
