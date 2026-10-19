@@ -74,7 +74,7 @@ public class PdfFileGenerator {
         final Map<String, Object> dataMap
     ) throws Exception {
         final Template template = new Template(
-            "probativevaluereport.ftlh",
+            "template.ftlh",
             new InputStreamReader(CloseShieldInputStream.wrap(htmlTemplateInputStream), StandardCharsets.UTF_8),
             FREEMARKER_CONFIGURATION
         );
@@ -83,7 +83,6 @@ public class PdfFileGenerator {
         template.process(dataMap, htmlWriter);
 
         new PdfRendererBuilder()
-            .useFastMode()
             .useUriResolver((baseUri, uri) -> null)
             .withHtmlContent(htmlWriter.toString(), null)
             .toStream(pdfOutputStream)

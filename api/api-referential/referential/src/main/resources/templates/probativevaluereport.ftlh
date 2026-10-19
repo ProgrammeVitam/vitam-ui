@@ -6,6 +6,14 @@
         @page {
             size: A4;
             margin: 16mm 12mm;
+            @top-center {
+                content: "Relevé de valeur probante";
+                font-size: 8pt;
+            }
+            @bottom-right {
+                content: counter(page) "/" counter(pages);
+                font-size: 8pt;
+            }
         }
 
         body {

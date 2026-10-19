@@ -133,10 +133,10 @@ public class ProbativeValueService {
             File file = new File(workspaceOperationPath, operationId + JSON_EXTENSION);
             FileUtils.copyInputStreamToFile(reportStream, file);
         } catch (VitamClientException e) {
-            LOGGER.error("Error while getting probative value report from Vitam", e.getMessage());
+            LOGGER.error("Error while getting probative value report from Vitam", e);
             throw new InternalServerException("Unable to get Probative Value Report from VITAM", e);
         } catch (IOException e) {
-            LOGGER.error("Error on probative value report", e.getMessage());
+            LOGGER.error("Error on probative value report", e);
             throw new InternalServerException("Unable to create JSON from Probative Value Report", e);
         }
     }
@@ -164,11 +164,11 @@ public class ProbativeValueService {
                 dataMap.put("report", report);
                 PdfFileGenerator.createPdf(htmlTemplate, pdfOutputStream, dataMap);
             } catch (Exception e) {
-                LOGGER.error("Unable to create PDF from Probative Value Report HTML template", e.getMessage());
+                LOGGER.error("Unable to create PDF from Probative Value Report HTML template", e);
                 throw new InternalServerException("Unable to create PDF from Probative Value Report HTML template", e);
             }
         } catch (InvalidParseOperationException | VitamClientException exc) {
-            LOGGER.error("Unable to create PDF from Probative Value Report Json value", exc.getMessage());
+            LOGGER.error("Unable to create PDF from Probative Value Report Json value", exc);
             throw new InternalServerException("Unable to create PDF from Probative Value Report Json value", exc);
         }
     }
@@ -188,7 +188,7 @@ public class ProbativeValueService {
 
             SecureZipUtils.zipFiles(filesPaths, outputStream);
         } catch (Exception e) {
-            LOGGER.error("Unable to generate ZIP", e.getMessage());
+            LOGGER.error("Unable to generate ZIP", e);
             throw new InternalServerException("Unable to generate ZIP: %s".formatted(e.getMessage()), e);
         }
     }
