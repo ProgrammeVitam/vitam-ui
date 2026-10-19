@@ -47,6 +47,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitCommonService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.service.VitamBatchReportCommonService;
@@ -62,6 +63,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -72,6 +74,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -97,6 +101,50 @@ class ProbativeValueServiceTest {
     public void setup() {
         mocks = MockitoAnnotations.openMocks(this);
         probativeValueService = new ProbativeValueService(vitamProbativeValueService, unitCommonService);
+    }
+
+    @Test
+    void shouldPreserveVitamDownloadFailure() throws VitamClientException {
+        VitamClientException cause = new VitamClientException("Vitam report unavailable");
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenThrow(cause);
+
+        InternalServerException exception = assertThrows(
+            InternalServerException.class,
+            () ->
+                probativeValueService.exportReport(
+                    new VitamContext(0),
+                    "Test",
+                    folder.getAbsolutePath(),
+                    new ByteArrayOutputStream()
+                )
+        );
+
+        assertSame(cause, exception.getCause());
+    }
+
+    @Test
+    void shouldPreserveReportReadFailure() throws VitamClientException {
+        IOException cause = new IOException("Report stream interrupted");
+        InputStream reportStream = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw cause;
+            }
+        };
+        when(vitamProbativeValueService.downloadBatchReport(any(), any())).thenReturn(reportStream);
+
+        InternalServerException exception = assertThrows(
+            InternalServerException.class,
+            () ->
+                probativeValueService.exportReport(
+                    new VitamContext(0),
+                    "Test",
+                    folder.getAbsolutePath(),
+                    new ByteArrayOutputStream()
+                )
+        );
+
+        assertSame(cause, exception.getCause());
     }
 
     @Test
